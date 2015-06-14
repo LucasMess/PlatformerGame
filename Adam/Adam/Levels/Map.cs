@@ -26,7 +26,6 @@ namespace Adam
         int[] visibleLightArray = new int[60 * 100];
         Light[] lightArray;
         Light playerLight;
-        Chunk[] chunkArray;
 
         private Level CurrentLevel;
 

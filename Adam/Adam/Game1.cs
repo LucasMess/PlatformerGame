@@ -107,9 +107,7 @@ namespace Adam
         //Game Variables
         Map map;
         Session session;
-        LevelEditor levelEditor;
         GameDataManager gameData;
-        LevelGen levelGen;
         Player player;
         LoadingScreen loadingScreen;
         public static ContentManager Content;
@@ -155,7 +153,6 @@ namespace Adam
             player = new Player();
             overlay = new Overlay();
             cutscene = new Cutscene();
-            levelGen = new LevelGen();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -230,50 +227,6 @@ namespace Adam
             reloadThread.IsBackground = true;
             reloadThread.Start();
 
-        }
-
-        public void ReloadMap(GameState desiredGameState)
-        {
-            CurrentGameState = GameState.LoadingScreen;
-            this.desiredGameState = desiredGameState;
-            hasLoadedContent = false;
-            loadingScreen.Restart();
-            map = new Map(GraphicsDevice, monitorRes);
-            levelEditor = new LevelEditor();
-
-            reloadThread = new Thread(new ThreadStart(BackgroundLevelEditorLoad));
-            reloadThread.IsBackground = true;
-            reloadThread.Start();
-        }
-
-        protected void BackgroundLevelEditorLoad()
-        {
-            hasLoadedContent = false;
-            levelEditor.Initialize();
-            levelEditor.Load(Content);
-            hasLoadedContent = true;
-        }
-
-        public void ReloadLevelGen(GameState desiredGameState)
-        {
-            CurrentGameState = GameState.LoadingScreen;
-            this.desiredGameState = desiredGameState;
-            hasLoadedContent = false;
-            loadingScreen.Restart();
-            player = new Player();
-            levelGen = new LevelGen();
-
-            reloadThread = new Thread(new ThreadStart(BackgroundLevelGenLoad));
-            reloadThread.IsBackground = true;
-            reloadThread.Start();
-        }
-
-        protected void BackgroundLevelGenLoad()
-        {
-            hasLoadedContent = false;
-            levelGen.GenerateNewLevel(Content, player);
-            player.Load();
-            hasLoadedContent = true;
         }
 
         protected void BackgroundMapLoad()
@@ -386,20 +339,7 @@ namespace Adam
                     break;
                 case GameState.Multiplayer:
 
-                    break;
-                case GameState.LevelGen:
-                    levelGen.Update(player);
-                    player.Update(gameTime, map);
-                    levelGen.PlayerCollision(player);
-                    overlay.Update(gameTime, player, map);
-                    camera.UpdateWithZoom(new Vector2(player.collRectangle.X + player.collRectangle.Width / 2, player.collRectangle.Y + player.collRectangle.Height / 2));
-
-                    if (player.returnToMainMenu)
-                        ReloadMap(GameState.MainMenu, Level.Level0);
-
-                    //levelEditor.Update(gameTime);
-                    //camera.Update(levelEditor.cameraPos);
-                    break;
+                    break;               
             }
 
             base.Update(gameTime);
@@ -484,15 +424,6 @@ namespace Adam
                     UiSB.End();
 
                     break;
-                case GameState.LevelGen:
-                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, null, null, null, camera.Translate);
-                    levelGen.DrawBehind(gameSB);
-                    levelGen.Draw(gameSB);
-                    player.Draw(gameSB);
-                    gameSB.End();
-
-                    break;
-
             }
 
             //Return the current RenderTarget to the default
