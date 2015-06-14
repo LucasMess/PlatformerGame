@@ -17,7 +17,7 @@ namespace Adam
         Top,
         Null,
     }
-
+       
     class Entity
     {
         public delegate void TerrainCollisionHandler(TerrainCollisionEventArgs e);
@@ -43,49 +43,79 @@ namespace Adam
         protected ContentManager Content;
 
         protected float opacity = 1f;
-
+        
+        /// <summary>
+        /// All things that move or can collide with other things inherit the Entity class.
+        /// </summary>
         public Entity()
         {
             Content = Game1.Content;
         }
 
+        /// <summary>
+        /// The opacity of the object.
+        /// </summary>
         public float Opacity
         {
             get { return opacity; }
             set { value = opacity; }
         }
 
+        /// <summary>
+        /// Base update that provides basic logic.
+        /// </summary>
         public virtual void Update()
         {
 
         }
 
+        /// <summary>
+        /// Basic draw logic for simple objects.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
         }
 
+        /// <summary>
+        /// Special draw method that will draw the object with its center as the main coordinate.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public virtual void DrawFromCenter(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, drawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
         }
 
+        /// <summary>
+        /// Convert a Vector2 into Rectangle position to avoid having to write "(int)" every time.
+        /// </summary>
+        /// <param name="position"></param>
         public void SetRectPos(Vector2 position)
         {
             drawRectangle.X = (int)position.X;
             drawRectangle.Y = (int)position.Y;
         }
 
+        /// <summary>
+        /// Put the Rectangle coordinates at the origin so that the sprite is drawn as if it had no origin.
+        /// </summary>
+        /// <param name="position"></param>
         public void SetRectPosAtOrigin(Vector2 position)
         {
             drawRectangle.X = (int)(position.X + origin.X);
             drawRectangle.Y = (int)(position.Y + origin.Y);
         }
 
+        /// <summary>
+        /// If the entity is colliding with the terrain, it will return the collision location and the tile that it is colliding with.
+        /// </summary>
+        /// <param name="map">The map the entity is in.</param>
+        /// <param name="tile">Tile that entity collided with.</param>
+        /// <returns>The location of the collision.</returns>
         public CollisionLocation CheckTerrainCollision(Map map, out Tile tile)
         {
             Texture2D mapTexture = map.mapTexture;
-
 
             //Gets all the tile indexes of the tiles surrounding the entity.
             int[] q = new int[12];
@@ -136,9 +166,15 @@ namespace Adam
                 }
             }
             tile = new Tile();
+            //If no collision was detected return null collision.
             return CollisionLocation.Null;
         }
 
+        /// <summary>
+        /// Checks for collision with other entity and returns the location of said collision.
+        /// </summary>
+        /// <param name="entity">The entity that collision will be checked on.</param>
+        /// <returns>The location of the collision.</returns>
         public CollisionLocation CheckCollisionWithOtherEntity(Entity entity)
         {
             if (yRect.Intersects(entity.collRectangle))
@@ -166,6 +202,11 @@ namespace Adam
             else return CollisionLocation.Null;
         }
 
+        /// <summary>
+        /// Whether the entity is simply intersecting terrain.
+        /// </summary>
+        /// <param name="map">Map the entity is in.</param>
+        /// <returns></returns>
         public bool IsTouchingTerrain(Map map)
         {
             int[] q = GetNearbyTileIndexes(map);
@@ -182,9 +223,8 @@ namespace Adam
         }
 
         /// <summary>
-        /// Updates the tile index and returns it.
+        /// Updates the tile index and returns it. The tile index is used to determine an entity's position in the map.
         /// </summary>
-        /// 
         /// <param name="map"> The map so that the size of the world can be retrieved.</param>
         /// <returns></returns>
         public int GetTileIndex(Map map)
@@ -196,7 +236,6 @@ namespace Adam
         /// <summary>
         /// Returns all of the tile indexes of the tiles surrounding the entity.
         /// </summary>
-        /// 
         /// <param name="map">The map the entity is in.</param>
         /// <returns></returns>
         public int[] GetNearbyTileIndexes(Map map)
@@ -283,6 +322,10 @@ namespace Adam
             }
         }
 
+        /// <summary>
+        /// If the entity is simply colliding with terrain anywhere, it will raise an event.
+        /// </summary>
+        /// <param name="map">The map the entity is in.</param>
         public void CheckSimpleTerrainCollision(Map map)
         {
             int[] q = GetNearbyTileIndexes(map);
@@ -301,7 +344,6 @@ namespace Adam
         /// <summary>
         /// This will return the volume that the listener should be hearing from the source.
         /// </summary>
-        /// 
         /// <param name="listener">Who the listener is.</param>
         /// <returns>Volume of sound.</returns>
         public float GetSoundVolume(Entity listener)
@@ -316,7 +358,6 @@ namespace Adam
         }
 
     }
-
 
 
     class TerrainCollisionEventArgs : EventArgs
