@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adam", "CodenameAdam\CodenameAdam\Adam.csproj", "{2820CE5B-824F-4186-93CA-70CDC3B2548C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adam", "Adam\Adam\Adam.csproj", "{2820CE5B-824F-4186-93CA-70CDC3B2548C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamContent", "CodenameAdam\CodenameAdamContent\AdamContent.contentproj", "{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdamContent", "Adam\AdamContent\AdamContent.contentproj", "{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

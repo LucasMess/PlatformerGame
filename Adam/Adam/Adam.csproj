@@ -223,13 +223,6 @@
     <Content Include="thumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodenameAdamContent\AdamContent.contentproj">
-      <Name>AdamContent</Name>
-      <XnaReferenceType>Content</XnaReferenceType>
-      <Project>{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -257,13 +250,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
-    <None Include="ClassDiagram3.cd" />
     <None Include="CodenameAdam_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AdamContent\AdamContent.contentproj">
+      <Project>{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}</Project>
+      <Name>AdamContent</Name>
+      <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
