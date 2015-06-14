@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
 
-namespace CodenameAdam
+namespace Adam
 {
     class Gem : Entity
     {

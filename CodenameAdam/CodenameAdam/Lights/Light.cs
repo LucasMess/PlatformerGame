@@ -1,4 +1,4 @@
-﻿using CodenameAdam;
+﻿using Adam;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,16 +56,16 @@ namespace Adam
             rectangle.Y = rectangle.Y - (int)origin.Y;
         }
 
-        public void EffectLight(float intensity, CodenameAdam.Particle effect, ContentManager Content)
+        public void EffectLight(float intensity, Adam.Particle effect, ContentManager Content)
         {
             this.Content = Content;
             this.intensity = intensity;
             switch (effect.CurrentParticle)
             {
-                case CodenameAdam.Particle.ParticleType.WeaponBurst:
+                case Adam.Particle.ParticleType.WeaponBurst:
                     texture = Content.Load<Texture2D>("Tiles/red_dim_light");
                     break;
-                case CodenameAdam.Particle.ParticleType.ChestSparkles:
+                case Adam.Particle.ParticleType.ChestSparkles:
                     texture = Content.Load<Texture2D>("Tiles/yellow_dim_light");
                     break;
             }
@@ -186,7 +186,7 @@ namespace Adam
             rectangle.Y = rectangle.Y - (int)origin.Y;
         }
 
-        public void Update(CodenameAdam.Particle effect)
+        public void Update(Adam.Particle effect)
         {
             lightHere = true;
             rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));

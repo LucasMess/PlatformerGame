@@ -6,17 +6,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using CodenameAdam;
+using Adam;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-using Adam;
+
 using Adam.Enemies;
 using System.Threading;
 using Adam.Interactables;
 using Adam.Obstacles;
 using Adam.Network;
 
-namespace CodenameAdam
+namespace Adam
 {
     class Map
     {

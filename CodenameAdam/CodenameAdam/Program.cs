@@ -1,6 +1,6 @@
 using System;
 
-namespace CodenameAdam
+namespace Adam
 {
 #if WINDOWS || XBOX
     static class Program

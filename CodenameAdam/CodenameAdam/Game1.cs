@@ -8,17 +8,16 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using CodenameAdam;
+using Adam;
 using System.Threading;
 using System.Diagnostics;
-using Adam;
 using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 using Adam.GameData;
 using Adam.Network;
 
-namespace CodenameAdam
+namespace Adam
 {
     public enum GameState
     {
