@@ -1,5 +1,5 @@
 ﻿using Adam.Projectiles;
-using CodenameAdam;
+using Adam;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;

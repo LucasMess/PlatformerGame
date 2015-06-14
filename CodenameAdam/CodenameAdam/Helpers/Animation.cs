@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodenameAdam
+namespace Adam
 {
     public enum AnimationType { Loop, PlayOnce, PlayInIntervals, SlowPanVertical }
 

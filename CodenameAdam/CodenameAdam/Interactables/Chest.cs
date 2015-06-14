@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
 
-namespace CodenameAdam
+namespace Adam
 {
     class Chest
     {

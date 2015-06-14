@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-namespace CodenameAdam
+namespace Adam
 {
     public enum WeaponType
     {

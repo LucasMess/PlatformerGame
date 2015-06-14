@@ -9,7 +9,7 @@ using Adam;
 using Microsoft.Xna.Framework.Input;
 using Adam.Lights;
 
-namespace CodenameAdam
+namespace Adam
 {
     public enum ProjectileSource
     {

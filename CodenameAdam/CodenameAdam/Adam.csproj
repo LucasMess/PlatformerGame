@@ -223,9 +223,10 @@
     <Content Include="thumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodenameAdamContent\CodenameAdamContent.contentproj">
-      <Name>CodenameAdamContent</Name>
+    <ProjectReference Include="..\CodenameAdamContent\AdamContent.contentproj">
+      <Name>AdamContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

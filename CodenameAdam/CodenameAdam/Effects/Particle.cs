@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Adam;
 using Adam.Interactables;
 
-namespace CodenameAdam
+namespace Adam
 {
     class Particle : Entity
     {
