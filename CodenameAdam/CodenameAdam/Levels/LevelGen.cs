@@ -25,7 +25,7 @@ namespace Adam
 
         public LevelGen()
         {
-            this.tileSize = Game1.TILESIZE;
+            this.tileSize = Game1.Tilesize;
             mapWidth = 300;
             mapHeight = 300;
             entranceWidth = 4;

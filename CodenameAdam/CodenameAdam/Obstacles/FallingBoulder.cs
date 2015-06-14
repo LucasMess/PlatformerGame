@@ -29,7 +29,7 @@ namespace Adam.Obstacles
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
-            drawRectangle = new Rectangle(x, y, Game1.TILESIZE * 2, Game1.TILESIZE * 2);
+            drawRectangle = new Rectangle(x, y, Game1.Tilesize * 2, Game1.Tilesize * 2);
             collRectangle = drawRectangle;            
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
@@ -61,7 +61,7 @@ namespace Adam.Obstacles
 
             CheckTerrainCollision(map);
 
-            TileIndex = (int)(collRectangle.Y / Game1.TILESIZE * map.mapTexture.Width) + (int)(collRectangle.X / Game1.TILESIZE);
+            TileIndex = (int)(collRectangle.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.X / Game1.Tilesize);
 
             drawRectangle.X += (int)velocity.X;
             drawRectangle.Y += (int)velocity.Y;

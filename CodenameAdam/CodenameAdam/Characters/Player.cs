@@ -575,7 +575,7 @@ namespace CodenameAdam
         {
             Texture2D mapTexture = this.map.mapTexture;
             //This defines the player position in the map. 
-            TileIndex = (int)(topMidBound.Y / Game1.TILESIZE * mapTexture.Width) + (int)(topMidBound.X / Game1.TILESIZE);
+            TileIndex = (int)(topMidBound.Y / Game1.Tilesize * mapTexture.Width) + (int)(topMidBound.X / Game1.Tilesize);
             if (isGhost)
                 return;
 
@@ -651,11 +651,11 @@ namespace CodenameAdam
             //Check if player is out of bounds
             if (position.X < 0)
                 position.X = 0;
-            if (position.X > (int)(map.mapTexture.Width * Game1.TILESIZE - collRectangle.Width))
-                position.X = (int)(map.mapTexture.Width * Game1.TILESIZE - collRectangle.Width);
+            if (position.X > (int)(map.mapTexture.Width * Game1.Tilesize - collRectangle.Width))
+                position.X = (int)(map.mapTexture.Width * Game1.Tilesize - collRectangle.Width);
             if (position.Y < 0)
                 position.Y = 0;
-            if (position.Y > (int)(map.mapTexture.Height * Game1.TILESIZE - collRectangle.Width) + 100)
+            if (position.Y > (int)(map.mapTexture.Height * Game1.Tilesize - collRectangle.Width) + 100)
             {
                 KillAndRespawn();
                 if (!fallSoundPlayed)
@@ -1154,7 +1154,7 @@ namespace CodenameAdam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(previousSingleTexture.Width / Game1.TILESIZE, previousSingleTexture.Height / Game1.TILESIZE);
+            Vector2 size = new Vector2(previousSingleTexture.Width / Game1.Tilesize, previousSingleTexture.Height / Game1.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
             int width = previousSingleTexture.Width / xSize;

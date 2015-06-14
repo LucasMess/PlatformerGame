@@ -24,7 +24,7 @@ namespace Adam
         {
             this.secret = secret;
             texture = Content.Load<Texture2D>("Objects/key");
-            rectangle = new Rectangle(x, y, Game1.TILESIZE, Game1.TILESIZE);
+            rectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
             pickSound = Content.Load<SoundEffect>("Sounds/key_get");
         }
 

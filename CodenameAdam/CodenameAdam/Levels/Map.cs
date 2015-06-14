@@ -79,7 +79,7 @@ namespace CodenameAdam
         public Map(GraphicsDevice GraphicsDevice, Vector2 monitorRes)
         {
             this.GraphicsDevice = GraphicsDevice;
-            tileSize = Game1.TILESIZE;
+            tileSize = Game1.Tilesize;
             this.monitorRes = monitorRes;
 
             player = new Player();
@@ -156,7 +156,7 @@ namespace CodenameAdam
 
             background.Load(Content, CurrentLevel, monitorResolution, this);
             blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
-            blackCorners.Rectangle = new Rectangle(0, 0, Game1.Default_ResWidth, Game1.Default_ResHeight);
+            blackCorners.Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
 
 
             if (levelTheme != null)

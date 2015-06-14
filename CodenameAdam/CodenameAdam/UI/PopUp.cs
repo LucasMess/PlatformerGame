@@ -76,7 +76,7 @@ namespace CodenameAdam
         {
             this.Content = Content;
 
-            Vector2 monitorResolution = new Vector2(Game1.PREFFERED_RESWIDTH, Game1.PREFFERED_RESHEIGHT);
+            Vector2 monitorResolution = new Vector2(Game1.PrefferedResWidth, Game1.PrefferedResHeight);
             dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
             dialog = new Dialog(Content, Dialog.Type.ActionRequired);
 

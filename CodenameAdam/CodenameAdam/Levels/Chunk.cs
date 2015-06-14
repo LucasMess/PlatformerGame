@@ -25,7 +25,7 @@ namespace Adam
         public Chunk(GraphicsDevice GraphicsDevice)
         {
             this.GraphicsDevice = GraphicsDevice;
-            this.tileSize = Game1.TILESIZE;
+            this.tileSize = Game1.Tilesize;
             rectangle = new Rectangle(0, 0, tileSize * dimensions, tileSize * dimensions);
         }
 

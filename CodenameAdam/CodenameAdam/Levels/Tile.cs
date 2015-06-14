@@ -43,7 +43,7 @@ namespace CodenameAdam
 
         public Tile()
         {
-            tilesize = Game1.TILESIZE / 2;
+            tilesize = Game1.Tilesize / 2;
             //sourceRectangle = new Rectangle(0, 0, tilesize, tilesize);
         }
 

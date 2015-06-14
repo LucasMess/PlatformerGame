@@ -29,7 +29,7 @@ namespace Adam
 
         public Light()
         {
-            this.tileSize = Game1.TILESIZE;
+            this.tileSize = Game1.Tilesize;
             this.Content = Game1.Content;
             color = Color.White;
             opacity = 1;

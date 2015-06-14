@@ -77,7 +77,7 @@ namespace Adam.Interactables
             if (velocity.X == 0 && velocity.Y == 0) { }
             else
             {
-                tileIndex = (int)(topMidBound.Y / Game1.TILESIZE * map.mapTexture.Width) + (int)(topMidBound.X / Game1.TILESIZE);
+                tileIndex = (int)(topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[9];
                 q[0] = tileIndex - map.mapTexture.Width - 1;

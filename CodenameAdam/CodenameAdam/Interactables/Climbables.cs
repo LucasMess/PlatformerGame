@@ -17,7 +17,7 @@ namespace CodenameAdam
 
         public Climbables(int x, int y)
         {
-            tileSize = Game1.TILESIZE;
+            tileSize = Game1.Tilesize;
             rectangle = new Rectangle(x, y, tileSize, tileSize);
         }
 

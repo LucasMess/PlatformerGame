@@ -24,7 +24,7 @@ namespace Adam
         {
             this.ID = ID;
             this.rectangle = rectangle;
-            this.tilesize = Game1.TILESIZE / 2;
+            this.tilesize = Game1.Tilesize / 2;
         }
 
         public override void DefineTexture(ContentManager Content)
@@ -46,7 +46,7 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12,0);
                     size.Y = 2;
-                    rectangle.Height = Game1.TILESIZE * 2;
+                    rectangle.Height = Game1.Tilesize * 2;
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(0, 0);

@@ -38,7 +38,7 @@ namespace CodenameAdam
         {
             texture = Content.Load<Texture2D>("Objects/gold_apple");
             glow = Content.Load<SoundEffect>("Sounds/apple_glow");
-            tileSize = Game1.TILESIZE;
+            tileSize = Game1.Tilesize;
             rectangle = new Rectangle(x, y, tileSize, tileSize);
             animation = new Animation(texture, rectangle, 50, 3000, AnimationType.PlayInIntervals);
             radius = new Rectangle(x - 1000, y - 1000, 2000, 2000);

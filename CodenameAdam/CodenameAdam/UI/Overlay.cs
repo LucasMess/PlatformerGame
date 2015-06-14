@@ -51,8 +51,8 @@ namespace CodenameAdam
 
         public Overlay()
         {
-            screenWidth = Game1.PREFFERED_RESWIDTH;
-            screenHeight = Game1.PREFFERED_RESHEIGHT;
+            screenWidth = Game1.PrefferedResWidth;
+            screenHeight = Game1.PrefferedResHeight;
         }
 
         public void Load()

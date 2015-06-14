@@ -150,7 +150,7 @@ namespace CodenameAdam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(singleTexture.Width / Game1.TILESIZE, singleTexture.Height / Game1.TILESIZE);
+            Vector2 size = new Vector2(singleTexture.Width / Game1.Tilesize, singleTexture.Height / Game1.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
             int width = singleTexture.Width / xSize;

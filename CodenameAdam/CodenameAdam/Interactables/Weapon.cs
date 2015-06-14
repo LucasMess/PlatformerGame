@@ -124,8 +124,8 @@ namespace CodenameAdam
             CheckCollisions();
 
             MouseState mouse = Mouse.GetState();
-            Vector2 center = new Vector2((Game1.PREFFERED_RESWIDTH / 2) + (player.collRectangle.Width / 2),
-                (Game1.PREFFERED_RESHEIGHT * 3 / 5) + (player.collRectangle.Height / 2));
+            Vector2 center = new Vector2((Game1.PrefferedResWidth / 2) + (player.collRectangle.Width / 2),
+                (Game1.PrefferedResHeight * 3 / 5) + (player.collRectangle.Height / 2));
 
             //Find the unit vector according to where the mouse is
             double xDiff = (mouse.X - center.X);
@@ -175,7 +175,7 @@ namespace CodenameAdam
 
         private bool HasHitTerrain(Projectile projectile)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.TILESIZE * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.TILESIZE);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[9];
             q[0] = projectileTilePos - map.mapTexture.Width - 1;
@@ -207,7 +207,7 @@ namespace CodenameAdam
 
         public bool HasHitEnemy(Projectile projectile, Enemy enemy)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.TILESIZE * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.TILESIZE);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[9];
             q[0] = projectileTilePos - map.mapTexture.Width - 1;

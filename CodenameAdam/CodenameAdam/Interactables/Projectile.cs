@@ -126,8 +126,8 @@ namespace CodenameAdam
                     light.SetColor(Color.Red);
 
                     MouseState mouse = Mouse.GetState();
-                    Vector2 center = new Vector2((Game1.PREFFERED_RESWIDTH / 2) + (player.collRectangle.Width / 2),
-                        (Game1.PREFFERED_RESHEIGHT * 3 / 5) + (player.collRectangle.Height / 2));
+                    Vector2 center = new Vector2((Game1.PrefferedResWidth / 2) + (player.collRectangle.Width / 2),
+                        (Game1.PrefferedResHeight * 3 / 5) + (player.collRectangle.Height / 2));
 
                     //Find the unit vector according to where the mouse is
                     double xDiff = (mouse.X - center.X);
@@ -284,7 +284,7 @@ namespace CodenameAdam
 
         private void CheckIfOutsideBoundaries()
         {
-            if (collRectangle.Y > map.mapTexture.Height * Game1.TILESIZE)
+            if (collRectangle.Y > map.mapTexture.Height * Game1.Tilesize)
                 IsInactive = true;
         }
     }

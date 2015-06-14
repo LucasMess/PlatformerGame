@@ -31,7 +31,7 @@ namespace Adam.Obstacles
         /// <param name="y"></param>
         public void SetStartPoint(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, Game1.TILESIZE * 12, Game1.TILESIZE);
+            collRectangle = new Rectangle(x, y, Game1.Tilesize * 12, Game1.Tilesize);
             drawRectangle = collRectangle;
             original = drawRectangle;
         }

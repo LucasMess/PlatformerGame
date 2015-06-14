@@ -189,7 +189,7 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex(Map map)
         {
-            TileIndex = (int)(collRectangle.Y / Game1.TILESIZE * map.mapTexture.Width) + (int)(collRectangle.X / Game1.TILESIZE);
+            TileIndex = (int)(collRectangle.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.X / Game1.Tilesize);
             return TileIndex;
         }
 
@@ -359,8 +359,8 @@ namespace Adam
         /// <returns>Size variable with X and Y components.</returns>
         public static Size GetSize(Rectangle rectangle)
         {
-            byte x = (byte)(rectangle.X / Game1.TILESIZE);
-            byte y = (byte)(rectangle.Y / Game1.TILESIZE);
+            byte x = (byte)(rectangle.X / Game1.Tilesize);
+            byte y = (byte)(rectangle.Y / Game1.Tilesize);
 
             return new Size(x, y);
         }

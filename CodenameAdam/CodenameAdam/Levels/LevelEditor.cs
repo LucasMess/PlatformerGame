@@ -73,7 +73,7 @@ namespace Adam
             if (Keyboard.GetState().IsKeyDown(Keys.S))
                 cameraPos.Y += 5f;
 
-            currentTilePos = (int)(cursor.positionOnGame.Y / Game1.TILESIZE) * width + (int)(cursor.positionOnGame.X / Game1.TILESIZE);
+            currentTilePos = (int)(cursor.positionOnGame.Y / Game1.Tilesize) * width + (int)(cursor.positionOnGame.X / Game1.Tilesize);
 
             selectedTileSourceRect = cursor.sourceRectangle;
 

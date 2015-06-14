@@ -13,7 +13,7 @@ namespace Adam.Obstacles
 
         public Lava(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, Game1.TILESIZE, Game1.TILESIZE);
+            collRectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
         }
 
         public override void Update(GameTime gameTime, Player player, Map map)

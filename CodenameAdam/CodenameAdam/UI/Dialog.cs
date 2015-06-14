@@ -29,13 +29,13 @@ namespace CodenameAdam
         public Dialog(ContentManager Content, Type type)
         {
             this.type = type;
-            monitorRes = new Vector2(Game1.PREFFERED_RESWIDTH, Game1.PREFFERED_RESHEIGHT);
+            monitorRes = new Vector2(Game1.PrefferedResWidth, Game1.PrefferedResHeight);
             Load(Content);
         }
 
         public void AddText(string text)
         {
-            rectangle = new Rectangle((int)monitorRes.X / 2, (int)monitorRes.Y / Game1.Default_ResHeight * (Game1.Default_ResHeight / 2 - 100), 1000, 200);
+            rectangle = new Rectangle((int)monitorRes.X / 2, (int)monitorRes.Y / Game1.DefaultResHeight * (Game1.DefaultResHeight / 2 - 100), 1000, 200);
             this.text = text;
         }
 

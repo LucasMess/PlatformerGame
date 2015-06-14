@@ -34,7 +34,7 @@ namespace CodenameAdam
             this.monitorRes = monitorRes;
 
             dialog = new Dialog(Content, Dialog.Type.Notification);
-            animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Game1.TILESIZE, Game1.TILESIZE * 2), 10, 0, AnimationType.SlowPanVertical);
+            animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
             lockedSound = Content.Load<SoundEffect>("Sounds/lock_closed");
             openSound = Content.Load<SoundEffect>("Sounds/lock_open");
             radiusRect = new Rectangle(x - 100, y - 100, 200, 200);

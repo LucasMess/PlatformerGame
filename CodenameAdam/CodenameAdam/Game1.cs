@@ -65,14 +65,36 @@ namespace CodenameAdam
         int fps, totalFrames;
         int updateCount, drawCount;
 
-        //Constant variables that will be used throughout the program
-        public const int TILESIZE = 32;
-        public const int Default_ResWidth = 960;
-        public const int Default_ResHeight = 540;
+#region Constants
+        /// <summary>
+        /// The default tilesize.
+        /// </summary>
+        public const int Tilesize = 32;
+        /// <summary>
+        /// The resolution width the game is scaled to.
+        /// </summary>
+        public const int DefaultResWidth = 960;
+        /// <summary>
+        /// The resolution height the game is scale to.
+        /// </summary>
+        public const int DefaultResHeight = 540;
+        /// <summary>
+        /// Current version of the game.
+        /// </summary>
         public const string Version = "Version 0.5.3";
+        /// <summary>
+        /// Producers of the game.
+        /// </summary>
         public const string Producers = "Duck Knight Duel Games";
-        public static int PREFFERED_RESWIDTH;
-        public static int PREFFERED_RESHEIGHT;
+        /// <summary>
+        /// The current monitor resolution of the user.
+        /// </summary>
+        public static int PrefferedResWidth;
+        /// <summary>
+        /// The current monitor resolution height of the user.
+        /// </summary>
+        public static int PrefferedResHeight;
+#endregion
 
         public bool wasPressed, debugOn, debugPressed;
 
@@ -100,17 +122,16 @@ namespace CodenameAdam
 
             //Get the current monitor resolution and set it as the game's resolution
             monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            PREFFERED_RESWIDTH = (int)monitorRes.X;
-            PREFFERED_RESHEIGHT = (int)monitorRes.Y;
-            graphics.PreferredBackBufferWidth = PREFFERED_RESWIDTH;
-            graphics.PreferredBackBufferHeight = PREFFERED_RESHEIGHT;
+            PrefferedResWidth = (int)monitorRes.X;
+            PrefferedResHeight = (int)monitorRes.Y;
+            graphics.PreferredBackBufferWidth = PrefferedResWidth;
+            graphics.PreferredBackBufferHeight = PrefferedResHeight;
 
             //Change Game Settings Here
             //Sync with vertical retrace needs to be on until I fix the jittery jump bug
             graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.PreferMultiSampling = false;
+            graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
-
 
             gameData = new GameDataManager();
 
@@ -129,7 +150,7 @@ namespace CodenameAdam
         protected override void Initialize()
         {
             //Initialize all instances
-            camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(Default_ResWidth, Default_ResHeight));
+            camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
             menu = new Menu(monitorRes);
             map = new Map(GraphicsDevice, monitorRes);
             player = new Player();
@@ -138,13 +159,13 @@ namespace CodenameAdam
             levelGen = new LevelGen();
 
             //Initialize the game render target
-            mainRenderTarget = new RenderTarget2D(GraphicsDevice, Default_ResWidth, Default_ResHeight,
+            mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             maxRenderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
-            lightingRenderTarget = new RenderTarget2D(GraphicsDevice, Default_ResWidth, Default_ResHeight,
+            lightingRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            interfaceRenderTarget = new RenderTarget2D(GraphicsDevice, Default_ResWidth, Default_ResHeight,
+            interfaceRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
 
             //Initialize Spritebatches
