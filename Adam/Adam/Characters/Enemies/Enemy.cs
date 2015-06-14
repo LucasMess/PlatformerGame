@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
+using Adam.Interactables;
 
 namespace Adam
 {
@@ -46,6 +47,7 @@ namespace Adam
         protected GameTime gameTime;
         protected List<ParabolicProjectile> projList = new List<ParabolicProjectile>();
         protected List<Particle> effectList = new List<Particle>();
+        protected List<Entity> entities;
 
         public Enemy()
         {
@@ -58,11 +60,12 @@ namespace Adam
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
         }
 
-        public virtual void Update(Player player, GameTime gameTime)
+        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities)
         {
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
 
+            this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
 
@@ -118,9 +121,7 @@ namespace Adam
 
             if (health <= 0 && !isDead)
             {
-                player.score += AddScore(player);
-                PlayDeathSound();
-                isDead = true;
+                Kill();
             }
 
             //Update death effect
@@ -240,6 +241,7 @@ namespace Adam
             PlayDeathSound();
             isDead = true;
             health = 0;
+            entities.Add(new Food(this));
         }
 
         public void CreateDeathEffect()

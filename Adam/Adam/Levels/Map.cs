@@ -805,7 +805,7 @@ namespace Adam
 
             foreach (Enemy enemy in enemyList)
             {
-                enemy.Update(player, gameTime);
+                enemy.Update(player, gameTime, entities);
                 EnemyCollision(enemy, player);
             }
 

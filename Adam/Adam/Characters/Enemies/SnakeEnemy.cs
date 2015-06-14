@@ -41,9 +41,9 @@ namespace Adam.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime, List<Entity> entities)
         {
-            base.Update(player, gameTime);
+            base.Update(player, gameTime, entities);
 
             collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
             damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width  + 10, collRectangle.Height/2);

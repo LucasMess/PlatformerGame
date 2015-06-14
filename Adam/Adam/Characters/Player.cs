@@ -1360,6 +1360,14 @@ namespace Adam
             }
         }
 
+        public void Heal(int amount)
+        {
+            //TODO add sounds.
+            health += amount;
+            if (health > maxHealth)
+                health = maxHealth;
+        }
+
     }
 
 }
