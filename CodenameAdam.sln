@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodenameAdam", "CodenameAdam\CodenameAdam\CodenameAdam.csproj", "{2820CE5B-824F-4186-93CA-70CDC3B2548C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodenameAdamContent", "CodenameAdam\CodenameAdamContent\CodenameAdamContent.contentproj", "{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2820CE5B-824F-4186-93CA-70CDC3B2548C}.Debug|x86.ActiveCfg = Debug|x86
+		{2820CE5B-824F-4186-93CA-70CDC3B2548C}.Debug|x86.Build.0 = Debug|x86
+		{2820CE5B-824F-4186-93CA-70CDC3B2548C}.Release|x86.ActiveCfg = Release|x86
+		{2820CE5B-824F-4186-93CA-70CDC3B2548C}.Release|x86.Build.0 = Release|x86
+		{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}.Debug|x86.ActiveCfg = Debug|x86
+		{61A9F6A7-FA2E-4F3E-B14B-65B39D92AED1}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal
