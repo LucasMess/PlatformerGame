@@ -60,12 +60,10 @@ namespace Adam
 
             room.AddExit(exitTilePos, 3, tileArray);
 
-            //foreach (Tile t in tileArray)
-            //    t.SetSubIDTexture(tileArray, mapHeight, mapHeight);
             foreach (Tile t in tileArray)
-                t.DefineTexture(Content);
+                t.DefineTexture();
             foreach (Tile w in wallArray)
-                w.DefineTexture(Content);
+                w.DefineTexture();
         }
 
         void GenerateEntrance(Player player)

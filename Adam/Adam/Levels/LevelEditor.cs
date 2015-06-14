@@ -56,7 +56,7 @@ namespace Adam
 
             foreach (var t in tileArray)
             {
-                t.DefineTexture(Content);
+                t.DefineTexture();
             }
         }
 

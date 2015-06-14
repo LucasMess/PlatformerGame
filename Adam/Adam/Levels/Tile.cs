@@ -23,19 +23,15 @@ namespace Adam
         int mapWidth;
         protected int tilesize;
         private int randSeed;
-        public int numberOfTilesAround;
         public bool isVoid;
         public bool emitsLight;
         public bool hasTexture;
         Tile[] array;
 
-        Color noise;
-        public Color newNoise;
         public int randDens;
         public int tempDens;
         public int temp2Dens;
         public int avgDens;
-        Random randGen;
 
         //Variables for Animation
         Vector2 frameCount;
@@ -44,15 +40,17 @@ namespace Adam
         public Tile()
         {
             tilesize = Game1.Tilesize / 2;
-            //sourceRectangle = new Rectangle(0, 0, tilesize, tilesize);
         }
 
-        public virtual void DefineTexture(ContentManager Content)
+        /// <summary>
+        /// After the IDs have been defined, this will give the tile the correct location of its texture in the spritemap.
+        /// </summary>
+        public virtual void DefineTexture()
         {
+            //Air ID is 0, so it can emit sunlight.
             if (ID != 0)
             {
-                texture = Content.Load<Texture2D>("Tiles/Spritemaps/spritemap_9");
-                randGen = new Random(rectangle.X);
+                texture = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_9");
             }
             else
             {
@@ -198,7 +196,6 @@ namespace Adam
                     }
                     break;
                 case 3: //Marble
-                    randGen.Next(0, 3);
                     subID = 4;
                     switch (subID)
                     {
@@ -549,15 +546,19 @@ namespace Adam
                 #endregion
             }
 
+            //Gets the position in the Vector2 form and converts it to pixel coordinates.
             sourceRectangle = new Rectangle((int)(position.X * tilesize), (int)(position.Y * tilesize), tilesize, tilesize);
 
         }
 
+        /// <summary>
+        /// This updates the animation of the tile.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-
+            //Not used for normal textures, only animated textures.
         }
-
 
         public virtual void Draw(SpriteBatch spritebatch)
         {
@@ -570,61 +571,16 @@ namespace Adam
         {
             if (texture != null)
                 spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.Red);
-        }
+        }       
 
-        public void GiveSeed(int randSeed)
-        {
-            this.randSeed = randSeed;
-        }
-
-        public void SetSubIDTexture(Tile[] array, int mapWidth, int mapHeight)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (i - mapWidth - 1 >= 0 && i + mapWidth + 1 < array.Length)
-                {
-                    Tile tile = array[i];
-                    //Check to see if a grass tile is not exposed. If it isn't, change to dirt
-                    if (tile.ID == array[i - mapWidth].ID && tile.ID == 1)
-                    {
-                        tile.subID = 1;
-                    }
-                    //Check for Continued Left Corner Grass
-                    if (array[i - 1].isSolid == false && array[i + mapWidth - 1].ID == 1 && array[i - mapWidth].isSolid == false && tile.ID == 1)
-                    {
-                        tile.subID = 5;
-                    }
-                    //Check for Continued Right Corner Grass
-                    if (array[i + 1].isSolid == false && array[i + mapWidth + 1].ID == 1 && array[i - mapWidth].isSolid == false && tile.ID == 1)
-                    {
-                        tile.subID = 4;
-                    }
-                    //Check for Inner Left Corner Grass
-                    if (tile.ID == 1 && array[i - mapWidth].ID == 1 && array[i - 1].ID == 1 && array[i - mapWidth - 1].isSolid == false)
-                    {
-                        tile.subID = 6;
-                    }
-                    //Check for Inner Right Corner Grass
-                    if (tile.ID == 1 && array[i - mapWidth].ID == 1 && array[i + 1].ID == 1 && array[i - mapWidth + 1].isSolid == false)
-                    {
-                        tile.subID = 7;
-                    }
-                    //Check for Grass End Corner Left
-                    if (tile.ID == 1 && array[i - 1].ID != 1 && array[i - mapWidth].ID != 1 && array[i + mapWidth - 1].ID != 1 && array[i - mapWidth + 1].ID != 1)
-                    {
-                        tile.subID = 3;
-                    }
-                    //Check for Grass End Corner Right
-                    if (tile.ID == 1 && array[i + 1].ID != 1 && array[i - mapWidth].ID != 1 && array[i + mapWidth + 1].ID != 1 && array[i - mapWidth - 1].ID != 1)
-                    {
-                        tile.subID = 2;
-                    }
-                }
-            }
-        }
-
+        /// <summary>
+        /// This is used for the tiles that have special textures for corners. In the spritesheet they are arranged in the same way. This includes grass, sand, stone, and mesa.
+        /// </summary>
+        /// <param name="array">The tile array that will be analyzed.</param>
+        /// <param name="mapWidth">The width of the map in tiles.</param>
         public void FindConnectedTextures(Tile[] array, int mapWidth)
         {
+            //Please don't change this was a headache to make. -Lucas 2015
             this.mapWidth = mapWidth;
             this.array = array;
 

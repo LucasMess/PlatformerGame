@@ -27,11 +27,11 @@ namespace Adam
             this.tilesize = Game1.Tilesize / 2;
         }
 
-        public override void DefineTexture(ContentManager Content)
+        public override void DefineTexture()
         {
             startingPosition = new Vector2(0, 0);
             Vector2 size =  new Vector2(1,1);
-            texture = Content.Load<Texture2D>("Tiles/Spritemaps/spritemap_9");
+            texture = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_9");
             switch (ID)
             {
                 case 8: //Metal

@@ -459,12 +459,12 @@ namespace Adam
             //now that all IDs have been given, define all textures for the tiles.
             foreach (Tile tile in array)
             {
-                tile.DefineTexture(Content);
+                tile.DefineTexture();
             }
 
             foreach (AnimatedTile tile in animatedTileList)
             {
-                tile.DefineTexture(Content);
+                tile.DefineTexture();
             }
 
         }
