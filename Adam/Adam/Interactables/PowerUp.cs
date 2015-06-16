@@ -34,7 +34,7 @@ namespace Adam.Interactables
             drawRectangle.Y += (int)velocity.Y;
 
             //They are supposed to bounce up an down but it is not working right....
-            
+
             topMidBound = new Rectangle(drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height / 2, 1, 1);
             xRect = new Rectangle(drawRectangle.X, drawRectangle.Y + 5, drawRectangle.Width, drawRectangle.Height - 10);
             yRect = new Rectangle(drawRectangle.X + 10, drawRectangle.Y, drawRectangle.Width - 20, drawRectangle.Height);
@@ -47,18 +47,22 @@ namespace Adam.Interactables
             {
                 wasPickedUp = true;
                 toDelete = true;
-                loopInstance.Stop();
+                if (loopInstance != null)
+                    loopInstance.Stop();
             }
-
-            if (loopInstance.State == SoundState.Stopped)
-                loopInstance.Play();
 
             float xDist = player.collRectangle.Center.X - drawRectangle.Center.X;
             float yDist = player.collRectangle.Center.Y - drawRectangle.Center.Y;
             float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
-            if (distanceTo > 1000)
-                loopInstance.Volume = 0;
-            else loopInstance.Volume = .5f - (distanceTo / 1000) / 2;
+            if (loopInstance != null)
+            {
+                if (loopInstance.State == SoundState.Stopped)
+                    loopInstance.Play();
+
+                if (distanceTo > 1000)
+                    loopInstance.Volume = 0;
+                else loopInstance.Volume = .5f - (distanceTo / 1000) / 2;
+            }
 
             foreach (var eff in effects)
             {

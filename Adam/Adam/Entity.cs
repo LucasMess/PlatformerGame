@@ -222,6 +222,11 @@ namespace Adam
             return false;
         }
 
+        public bool IsTouchingEntity(Entity entity)
+        {
+            return entity.collRectangle.Intersects(this.collRectangle);
+        }
+
         /// <summary>
         /// Updates the tile index and returns it. The tile index is used to determine an entity's position in the map.
         /// </summary>

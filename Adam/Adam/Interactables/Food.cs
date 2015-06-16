@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,25 @@ namespace Adam.Interactables
         int healAmount;
         bool hasHealed;
 
+        SoundEffect pickUpSound;
+
         /// <summary>
         /// Creates new food based on enemy killed.
         /// </summary>
         /// <param name="enemy"></param>
         public Food(Enemy enemy)
         {
+            IsCollidable = true;
             drawRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
             collRectangle = drawRectangle;
+
+            pickUpSound = ContentHelper.LoadSound("Sounds/eat");
 
             switch (enemy.CurrentEnemyType)
             {
                 case EnemyType.Snake:
                     healAmount = 10;
-                    texture = ContentHelper.LoadTexture("Objects/Gold Ore Chunk");                    
+                    texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");                    
                     break;
                 case EnemyType.Potato:
                     break;
@@ -38,6 +44,8 @@ namespace Adam.Interactables
                 default:
                     break;
             }
+
+
         }
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime, Player player, Map map)
@@ -48,7 +56,10 @@ namespace Adam.Interactables
             {
                 hasHealed = true;
                 player.Heal(healAmount);
+                pickUpSound.Play();
             }
+
+            velocity.Y += .3f;
         }
     }
 }
