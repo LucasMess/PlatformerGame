@@ -19,9 +19,9 @@ namespace Adam
         Top,
         Null,
     }
-       
+
     class Entity
-    {       
+    {
 
         protected Texture2D texture;
         public Vector2 position;
@@ -41,7 +41,7 @@ namespace Adam
         protected ContentManager Content;
 
         protected float opacity = 1f;
-        
+
         /// <summary>
         /// All things that move or can collide with other things inherit the Entity class.
         /// </summary>
@@ -245,6 +245,16 @@ namespace Adam
         }
 
         /// <summary>
+        /// Gets tile index at specified coordinate.
+        /// </summary>
+        /// <param name="coord"></param>
+        /// <returns></returns>
+        public int GetTileIndex(Vector2 coord)
+        {
+            return (int)(coord.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(coord.X / Game1.Tilesize);
+        }
+
+        /// <summary>
         /// Returns all of the tile indexes of the tiles surrounding the entity.
         /// </summary>
         /// <param name="map">The map the entity is in.</param>
@@ -252,43 +262,25 @@ namespace Adam
         public int[] GetNearbyTileIndexes(Map map)
         {
             TileIndex = GetTileIndex(map);
-            Size size = Size.GetSize(collRectangle);
             int width = map.mapTexture.Width;
-            int[] q = new int[0];
 
-            if (size == new Size(1, 1) || size == new Size(0, 0))
+            int startingIndex = TileIndex - width - 1;
+            int rightCornerIndex = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Y)) - width;
+            int widthInTiles = rightCornerIndex - startingIndex;
+
+            int leftCornerIndex = GetTileIndex(new Vector2(collRectangle.X - Game1.Tilesize, collRectangle.Y + collRectangle.Height));
+            int heightInTiles = (leftCornerIndex - startingIndex) / width;
+
+            List<int> indexes = new List<int>();
+            for (int h = 0; h < heightInTiles; h++)
             {
-                q = new int[]
+                for (int w = 0; w < widthInTiles; w++)
                 {
-                    TileIndex - width - 1,
-                    TileIndex - width,
-                    TileIndex - width + 1,
-                    TileIndex - 1,
-                    TileIndex,
-                    TileIndex + 1,
-                    TileIndex + width - 1,
-                    TileIndex + width,
-                    TileIndex + width + 1,
-                };
+                    int i = startingIndex + (h * width) + w;
+                    indexes.Add(i);
+                }
             }
-            else
-            {
-                q = new int[12];
-                q[0] = TileIndex - width - 1;
-                q[1] = TileIndex - width;
-                q[2] = TileIndex - width + 1;
-                q[3] = TileIndex - 1;
-                q[4] = TileIndex;
-                q[5] = TileIndex + 1;
-                q[6] = TileIndex + width - 1;
-                q[7] = TileIndex + width;
-                q[8] = TileIndex + width + 1;
-                q[9] = TileIndex + width + width - 1;
-                q[10] = TileIndex + width + width;
-                q[11] = TileIndex + width + width + 1;
-            }
-
-            return q;
+            return indexes.ToArray();
         }
 
         /// <summary>
@@ -352,7 +344,7 @@ namespace Adam
                 if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
                 {
                     if (collRectangle.Intersects(map.tileArray[quadrant].rectangle)) { }
-                        //CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
+                    //CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
                 }
             }
         }
@@ -372,100 +364,6 @@ namespace Adam
             if (distanceTo > 1000)
                 return 0;
             else return .5f - (distanceTo / 1000) / 2;
-        }
-
-        //protected virtual void CollidedWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        //{
-
-        //}
-
-        //protected virtual void CollidedWithTerrainAbove(TerrainCollisionEventArgs e)
-        //{
-
-        //}
-        //protected virtual void CollidedWithTerrainBelow(TerrainCollisionEventArgs e)
-        //{
-
-        //}
-        //protected virtual void CollidedWithTerrainLeft(TerrainCollisionEventArgs e)
-        //{
-
-        //}
-        //protected virtual void CollidedWithTerrainRight(TerrainCollisionEventArgs e)
-        //{
-
-        //}
-    }
-
-
-
-
-    class EntityCollisionEventArgs : EventArgs
-    {
-
-    }
-
-    struct Size
-    {
-        byte X { get; set; }
-        byte Y { get; set; }
-
-        /// <summary>
-        /// Variable that stores the dimensions of a rectangle in terms of tiles.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public Size(byte x, byte y)
-        {
-            this = new Size();
-            X = x;
-            Y = y;
-        }
-
-        /// <summary>
-        /// Takes a rectangle and calculates how many tiles wide and tall it is.
-        /// </summary>
-        /// <param name="rectangle">Rectangle to be examined.</param>
-        /// <returns>Size variable with X and Y components.</returns>
-        public static Size GetSize(Rectangle rectangle)
-        {
-            byte x = (byte)(rectangle.X / Game1.Tilesize);
-            byte y = (byte)(rectangle.Y / Game1.Tilesize);
-
-            return new Size(x, y);
-        }
-
-        public static bool operator ==(Size size1, Size size2)
-        {
-            if (size1.X == size2.X && size1.Y == size2.Y)
-                return true;
-            else return false;
-        }
-        public static bool operator !=(Size size1, Size size2)
-        {
-            if (size1.X != size2.X || size1.Y != size2.Y)
-                return true;
-            else return false;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            if ((Size)obj == this)
-                return base.Equals(obj);
-            else return false;
-        }
-
-        // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            // TODO: write your implementation of GetHashCode() here
-            throw new NotImplementedException();
-            //return base.GetHashCode();
         }
     }
 }

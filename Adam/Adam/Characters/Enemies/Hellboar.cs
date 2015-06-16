@@ -58,17 +58,14 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -31,7 +31,6 @@ namespace Adam
         Color color = Color.White;
         Light light;
         Player player;
-        Map map;
 
         public enum ParticleType
         {
