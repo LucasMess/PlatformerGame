@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System;
@@ -35,7 +36,7 @@ namespace Adam.Obstacles
             IsCollidable = true;
             original = new Vector2(drawRectangle.X, drawRectangle.Y);
 
-            CollidedWithTerrainBelow += FallingBoulderObstacle_CollidedWithTerrainBelow;
+           // CollidedWithTerrainBelow += FallingBoulderObstacle_CollidedWithTerrainBelow;
 
         }
 
@@ -59,7 +60,7 @@ namespace Adam.Obstacles
         {
             base.Update(gameTime, player, map);
 
-            CheckTerrainCollision(map);
+            //CheckTerrainCollision(map);
 
             TileIndex = (int)(collRectangle.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.X / Game1.Tilesize);
 

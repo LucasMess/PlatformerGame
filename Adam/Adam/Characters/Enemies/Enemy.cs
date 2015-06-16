@@ -41,7 +41,6 @@ namespace Adam
         protected double projCooldownTimer;
         protected SoundEffect meanSound, attackSound, deathSound;
         protected SoundEffectInstance meanSoundInstance, attackSoundInstance, deathSoundInstance;
-        protected Map map;
         protected Player player;
         public EnemyType CurrentEnemyType;
         protected GameTime gameTime;
@@ -64,10 +63,11 @@ namespace Adam
         {
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
-
+            
             this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
+            this.map = map;
 
             //See if player in range
             radiusRect.X = collRectangle.X - radiusRect.Width / 2;
@@ -132,6 +132,9 @@ namespace Adam
                 }
             }
 
+
+            base.Update();
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -141,8 +144,8 @@ namespace Adam
             foreach (var eff in effectList)
                 eff.Draw(spriteBatch);
 
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red);
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), damageBox, Color.Green);
+           spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Green);
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue);
         }
 

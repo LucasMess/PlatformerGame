@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Adam;
 using Adam.Interactables;
+using Adam.Misc.Interfaces;
 
 namespace Adam
 {
@@ -180,7 +181,7 @@ namespace Adam
             velocity = new Vector2(Map.randGen.Next(-10, 10), Map.randGen.Next(-10, 10));
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             this.map = map;
-            CollidedWithTerrainAnywhere += Blood_CollidedWithTerrainAnywhere;
+            //CollidedWithTerrainAnywhere += Blood_CollidedWithTerrainAnywhere;
         }
 
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)

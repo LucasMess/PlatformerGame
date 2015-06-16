@@ -140,15 +140,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Enemies\Hellboar.cs" />
+    <Compile Include="Misc\Errors\Exceptions.cs" />
+    <Compile Include="Misc\Interfaces\ICollidable.cs" />
     <Compile Include="Interactables\Food.cs" />
     <Compile Include="Levels\AnimatedTile.cs" />
-    <Compile Include="Helpers\Animation.cs" />
-    <Compile Include="Helpers\ContentHelper.cs" />
+    <Compile Include="Misc\Animation.cs" />
+    <Compile Include="Misc\ContentHelper.cs" />
     <Compile Include="GameData\GameDataManager.cs" />
     <Compile Include="GameData\Save.cs" />
     <Compile Include="Interactables\Apple.cs" />
     <Compile Include="Levels\Background.cs" />
-    <Compile Include="Helpers\CalcHelper.cs" />
+    <Compile Include="Misc\CalcHelper.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\DataPacket.cs" />
@@ -167,7 +169,7 @@
     <Compile Include="Characters\Enemies\BloodlessEnemy.cs" />
     <Compile Include="Characters\Enemies\DroneEnemy.cs" />
     <Compile Include="Characters\Enemies\SnakeEnemy.cs" />
-    <Compile Include="Helpers\EnemyDB.cs" />
+    <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Camera.cs" />
@@ -183,7 +185,7 @@
     <Compile Include="Interactables\Jetpack.cs" />
     <Compile Include="Interactables\JetpackPowerUp.cs" />
     <Compile Include="Interactables\Key.cs" />
-    <Compile Include="Helpers\InputHelper.cs" />
+    <Compile Include="Misc\InputHelper.cs" />
     <Compile Include="Interactables\PowerUp.cs" />
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
@@ -210,9 +212,9 @@
     <Compile Include="Characters\Enemies\ShadeEnemy.cs" />
     <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Interactables\Climbables.cs" />
-    <Compile Include="Helpers\TextDB.cs" />
+    <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\Timer.cs" />
-    <Compile Include="Helpers\TriggerZone.cs" />
+    <Compile Include="Misc\TriggerZone.cs" />
     <Compile Include="Interactables\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +258,9 @@
       <Name>AdamContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Misc\Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

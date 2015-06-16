@@ -1,4 +1,6 @@
 ﻿using Adam;
+using Adam.Misc.Errors;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,14 +21,7 @@ namespace Adam
     }
        
     class Entity
-    {
-        public delegate void TerrainCollisionHandler(TerrainCollisionEventArgs e);
-
-        public event TerrainCollisionHandler CollidedWithTerrainAbove;
-        public event TerrainCollisionHandler CollidedWithTerrainBelow;
-        public event TerrainCollisionHandler CollidedWithTerrainRight;
-        public event TerrainCollisionHandler CollidedWithTerrainLeft;
-        public event TerrainCollisionHandler CollidedWithTerrainAnywhere;
+    {       
 
         protected Texture2D texture;
         public Vector2 position;
@@ -35,6 +30,9 @@ namespace Adam
         public Rectangle collRectangle;
         protected Rectangle sourceRectangle;
         protected Animation animation;
+        protected Map map;
+
+        int count;
 
         public Rectangle yRect, xRect;
 
@@ -66,7 +64,10 @@ namespace Adam
         /// </summary>
         public virtual void Update()
         {
-
+            if (this is ICollidable)
+            {
+                CheckTerrainCollision(map);
+            }
         }
 
         /// <summary>
@@ -222,6 +223,11 @@ namespace Adam
             return false;
         }
 
+        /// <summary>
+        /// Simple collision detection for entities.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public bool IsTouchingEntity(Entity entity)
         {
             return entity.collRectangle.Intersects(this.collRectangle);
@@ -289,8 +295,12 @@ namespace Adam
         /// Call this method if the entity needs collision check with terrain. The method will check collisions and raise events.
         /// </summary>
         /// <param name="map">The map the entity is in.</param>
-        public void CheckTerrainCollision(Map map)
+        private void CheckTerrainCollision(Map map)
         {
+            if (this is ICollidable) { } else throw new Exception("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
+
+            ICollidable ent = (ICollidable)this;
+
             int[] q = GetNearbyTileIndexes(map);
 
             foreach (int quadrant in q)
@@ -304,22 +314,24 @@ namespace Adam
                         {
                             if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
                             {
-                                CollidedWithTerrainBelow(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
+                                count++;
+                                Console.WriteLine("Collided bottom: " + this.GetType().ToString() + "-" + count);
                             }
                             else  //hits top
                             {
-                                CollidedWithTerrainAbove(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
                             }
                         }
                         else if (xRect.Intersects(tile.rectangle))
                         {
                             if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
                             {
-                                CollidedWithTerrainRight(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
                             }
                             else //hits left
                             {
-                                CollidedWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
                             }
                         }
                     }
@@ -339,8 +351,8 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[quadrant].rectangle))
-                        CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
+                    if (collRectangle.Intersects(map.tileArray[quadrant].rectangle)) { }
+                        //CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
                 }
             }
         }
@@ -362,19 +374,31 @@ namespace Adam
             else return .5f - (distanceTo / 1000) / 2;
         }
 
+        //protected virtual void CollidedWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        //{
+
+        //}
+
+        //protected virtual void CollidedWithTerrainAbove(TerrainCollisionEventArgs e)
+        //{
+
+        //}
+        //protected virtual void CollidedWithTerrainBelow(TerrainCollisionEventArgs e)
+        //{
+
+        //}
+        //protected virtual void CollidedWithTerrainLeft(TerrainCollisionEventArgs e)
+        //{
+
+        //}
+        //protected virtual void CollidedWithTerrainRight(TerrainCollisionEventArgs e)
+        //{
+
+        //}
     }
 
 
-    class TerrainCollisionEventArgs : EventArgs
-    {
-        Tile tile;
-        public TerrainCollisionEventArgs(Tile tile)
-        {
-            this.tile = tile;
-        }
 
-        public Tile Tile { get { return tile; } }
-    }
 
     class EntityCollisionEventArgs : EventArgs
     {

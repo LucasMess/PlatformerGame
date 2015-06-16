@@ -1,5 +1,6 @@
 ﻿using Adam;
 using Adam.Interactables;
+using Adam.Misc.Interfaces;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -28,6 +29,9 @@ namespace Adam
 
     class Player : Entity
     {
+        //temp
+        int count;
+
         public delegate void PlayerRespawnHandler();
         public event PlayerRespawnHandler PlayerRespawned;
 
@@ -1003,6 +1007,8 @@ namespace Adam
 
         private void DetectCollisions()
         {
+            count++;
+            Console.WriteLine(count);
             foreach (Obstacle ob in map.entities.OfType<Obstacle>())
             {
                 if (ob.IsCollidable)
