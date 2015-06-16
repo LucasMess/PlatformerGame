@@ -61,7 +61,17 @@ namespace Adam
                     background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
                     break;
                 case Level.Level4:
-                    background.Texture = Content.Load<Texture2D>("backgroundTest");
+                    for (int i = 0; i < middlegrounds.Length; i++)
+                    {
+                        middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
+                    }
+
+                    for (int i = 0; i < foregrounds.Length; i++)
+                    {
+                        foregrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_foreground");
+                    }
+
+                    background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
                     break;
 
             }

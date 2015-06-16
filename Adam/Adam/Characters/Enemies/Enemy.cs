@@ -56,11 +56,11 @@ namespace Adam
 
         protected void Initialize()
         {
-            radiusRect = new Rectangle(drawRectangle.X, drawRectangle.Y, 2000, 2000);
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            radiusRect = new Rectangle(collRectangle.X, collRectangle.Y, 2000, 2000);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
         }
 
-        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities)
+        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
         {
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
@@ -70,8 +70,8 @@ namespace Adam
             this.gameTime = gameTime;
 
             //See if player in range
-            radiusRect.X = drawRectangle.X - radiusRect.Width / 2;
-            radiusRect.Y = drawRectangle.Y - radiusRect.Height / 2;
+            radiusRect.X = collRectangle.X - radiusRect.Width / 2;
+            radiusRect.Y = collRectangle.Y - radiusRect.Height / 2;
 
             if (radiusRect.Intersects(player.collRectangle) == false)
             {
@@ -85,20 +85,17 @@ namespace Adam
 
             //if in range, do below
 
-            if (player.collRectangle.X > drawRectangle.X)
+            if (player.collRectangle.X > collRectangle.X)
                 isPlayerToTheRight = true;
             else isPlayerToTheRight = false;
 
-            if (player.collRectangle.Y < drawRectangle.Y)
+            if (player.collRectangle.Y < collRectangle.Y)
                 isPlayerAbove = true;
             else isPlayerAbove = false;
 
             //Velocity
-            position.X += (int)(velocity.X * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));
-            position.Y += (int)(velocity.Y * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));
-
-            drawRectangle.X = (int)position.X;
-            drawRectangle.Y = (int)position.Y;           
+            collRectangle.X += (int)(velocity.X * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));
+            collRectangle.Y += (int)(velocity.Y * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));        
 
 
             //Random chance of being mean.

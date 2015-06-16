@@ -49,9 +49,9 @@ namespace Adam.Enemies
             Initialize();
         }
 
-        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime, List<Entity> entities)
+        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime, List<Entity> entities, Map map)
         {
-            base.Update(player, gameTime, entities);
+            base.Update(player, gameTime, entities, map);
             Animate();
 
             if (!isInRange)

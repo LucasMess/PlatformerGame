@@ -139,6 +139,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Interactables\Food.cs" />
     <Compile Include="Levels\AnimatedTile.cs" />
     <Compile Include="Helpers\Animation.cs" />

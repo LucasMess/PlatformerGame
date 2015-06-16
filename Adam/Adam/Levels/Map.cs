@@ -15,6 +15,7 @@ using System.Threading;
 using Adam.Interactables;
 using Adam.Obstacles;
 using Adam.Network;
+using Adam.Characters.Enemies;
 
 namespace Adam
 {
@@ -308,7 +309,8 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(81, 103, 34)) //snake
                 {
-                    enemyList.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
+                    enemyList.Add(new Hellboar(Xcoor, Ycoor));
+                   // enemyList.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
                 }
                 else if (colorCode == new Vector3(143, 148, 0)) //potato
                 {
@@ -805,7 +807,7 @@ namespace Adam
 
             foreach (Enemy enemy in enemyList)
             {
-                enemy.Update(player, gameTime, entities);
+                enemy.Update(player, gameTime, entities, this);
                 EnemyCollision(enemy, player);
             }
 
