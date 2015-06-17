@@ -1,5 +1,6 @@
 ﻿using Adam;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,6 +16,9 @@ namespace Adam
         Rectangle heartRect, heartSource;
         Vector2 heartOrigin;
         Vector2 heartFrameCount;
+        bool isHeartPumping;
+        bool heartHasPumped, heartHasPumped2;
+        double pumpTimer;
         int currentFrameHeart, switchFrameHeart;
         double heartTimer, restartTimer;
         float heartRotation;
@@ -48,6 +52,9 @@ namespace Adam
         Vector2 healthPos, scorePos, timePos;
         ContentManager Content;
 
+        SoundEffect heartBeat1, heartBeat2;
+        SoundEffectInstance h1i, h2i;
+
         public Overlay()
         {
             screenWidth = Game1.PrefferedResWidth;
@@ -57,6 +64,13 @@ namespace Adam
         public void Load()
         {
             this.Content = Game1.Content;
+
+            heartBeat1 = ContentHelper.LoadSound("Sounds/Menu/heartbeat1");
+            heartBeat2 = ContentHelper.LoadSound("Sounds/Menu/heartbeat2");
+
+            h1i = heartBeat1.CreateInstance();
+            h2i = heartBeat2.CreateInstance();
+
 
             heart = Content.Load<Texture2D>("Menu/player_heart");
             heartFrameCount = new Vector2(3, 0);
@@ -95,6 +109,35 @@ namespace Adam
         public void Update(GameTime gameTime, Player player, Map map)
         {
             this.gameTime = gameTime;
+
+            if (player.health < (maxHealth * .2))
+            {
+                isHeartPumping = true;
+            }
+            else isHeartPumping = false;
+
+            if (isHeartPumping)
+            {
+                pumpTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                if (pumpTimer > 500 && !heartHasPumped)
+                {
+                    heartRect.Width *= 2;
+                    heartRect.Height *= 2;
+                    pumpTimer = 0;
+                    heartHasPumped = true;
+                    h1i.Play();
+                }
+
+                if (pumpTimer > 100 && heartHasPumped)
+                {
+                    heartRect.Width /= 2;
+                    heartRect.Height /= 2;
+                    pumpTimer = 0;
+                    heartHasPumped = false;
+                    h2i.Play();
+                }
+            }
 
             AnimateCoin();
             AnimateHeart();
