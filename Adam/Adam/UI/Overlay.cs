@@ -185,20 +185,44 @@ namespace Adam
                 chrono.switchFrame = 100;
             else chrono.switchFrame = 600;
 
-            score = player.score;
-            currentHealth = player.health;
-            maxHealth = player.maxHealth;
-
-            if (oldCurrentHealth < currentHealth)
+            if (score < player.score)
             {
-                splashDamage.Add(new SplashDamage(currentHealth - oldCurrentHealth, screenWidth, screenHeight, Content));
-                oldCurrentHealth = currentHealth;
+                score++;
+            }
+            if (score > player.score)
+            {
+                score--;
             }
 
-            if (oldCurrentHealth > currentHealth)
+            if (currentHealth < player.health)
             {
-                splashDamage.Add(new SplashDamage(currentHealth - oldCurrentHealth, screenWidth, screenHeight, Content));
-                oldCurrentHealth = currentHealth;
+                currentHealth++;
+            }
+            if (currentHealth > player.health)
+            {
+                currentHealth--;
+            }
+
+            if (maxHealth < player.maxHealth)
+            {
+                maxHealth++;
+            }
+            if (maxHealth > player.maxHealth)
+            {
+                maxHealth--;
+            }
+
+
+            if (oldCurrentHealth < player.health)
+            {
+                splashDamage.Add(new SplashDamage(player.health - oldCurrentHealth, screenWidth, screenHeight, Content));
+                oldCurrentHealth = player.health;
+            }
+
+            if (oldCurrentHealth > player.health)
+            {
+                splashDamage.Add(new SplashDamage(player.health - oldCurrentHealth, screenWidth, screenHeight, Content));
+                oldCurrentHealth = player.health;
             }
 
             foreach (var spl in splashDamage)
@@ -355,7 +379,7 @@ namespace Adam
             opacity -= .05f;
             position += velocity;
 
-            velocity.Y = velocity.Y * 0.9f;
+            velocity.Y = velocity.Y * 0.95f;
 
             if (scale > normScale * 2)
             {
@@ -364,7 +388,7 @@ namespace Adam
 
             if (!hasExpanded)
             {
-                scale += .05f;
+                scale += .00005f;
             }
             else
             {
@@ -379,9 +403,9 @@ namespace Adam
         {
             if (isNegative)
             {
-                spriteBatch.DrawString(font, text, position, Color.Red * opacity, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, text, position, Color.OrangeRed * opacity, 0, origin, scale, SpriteEffects.None, 0);
             }
-            else spriteBatch.DrawString(font, "+" + text, position, Color.Green * opacity, 0, origin, scale, SpriteEffects.None, 0);
+            else spriteBatch.DrawString(font, "+" + text, position, Color.ForestGreen * opacity, 0, origin, scale, SpriteEffects.None, 0);
         }
     }
 
