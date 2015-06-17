@@ -12,7 +12,7 @@ namespace Adam
 {
     class Overlay
     {
-        Texture2D heart;
+        Texture2D liveHeart, deadHeart, currentHeart;
         Rectangle heartRect, heartSource;
         Vector2 heartOrigin;
         Vector2 heartFrameCount;
@@ -23,6 +23,8 @@ namespace Adam
         double heartTimer, restartTimer;
         float heartRotation;
         bool isRotatingRight = true;
+        Color healthColor;
+        bool isHeartDead;
 
         Texture2D coin;
         Rectangle coinRect, coinSource;
@@ -72,7 +74,9 @@ namespace Adam
             h2i = heartBeat2.CreateInstance();
 
 
-            heart = Content.Load<Texture2D>("Menu/player_heart");
+            liveHeart = Content.Load<Texture2D>("Menu/live_heart");
+            deadHeart = ContentHelper.LoadTexture("Menu/dead_heart");
+            currentHeart = liveHeart;
             heartFrameCount = new Vector2(3, 0);
 
             coin = Content.Load<Texture2D>("Menu/player_coin");
@@ -80,7 +84,7 @@ namespace Adam
 
             chrono = new Animation(Content.Load<Texture2D>("Menu/chronoshift"), new Rectangle(screenWidth - 100, screenHeight* 2/12, 64, 64), 50, 0, AnimationType.Loop);
 
-            heartRect = new Rectangle(screenWidth * 1 / 12, screenHeight * 1 / 12, 64, heart.Height);
+            heartRect = new Rectangle(screenWidth * 1 / 12, screenHeight * 1 / 12, 64, liveHeart.Height);
             heartSource = new Rectangle(0, 0, 64, 64);
             heartOrigin = new Vector2(32, 32);
 
@@ -100,7 +104,7 @@ namespace Adam
 
             font = Content.Load<SpriteFont>("Fonts/overlay");
 
-            healthPos = new Vector2(heartRect.X + 64 + 10, heartRect.Y - heart.Height / 2);
+            healthPos = new Vector2(heartRect.X + 64 + 10, heartRect.Y - liveHeart.Height / 2);
             scorePos = new Vector2(coinRect.X + 64 + 10, coinRect.Y - coin.Height / 2);
             timePos = new Vector2(timeRect.X + 64 + 50, scorePos.Y);
 
@@ -114,7 +118,30 @@ namespace Adam
             {
                 isHeartPumping = true;
             }
-            else isHeartPumping = false;
+            else
+            {
+                isHeartPumping = false;
+                healthColor = Color.White;
+            }
+
+            if (player.health <= 0)
+            {
+                isHeartPumping = false;
+                healthColor = Color.Red;
+                isHeartDead = true;
+            }
+            else isHeartDead = false;
+
+            if (isHeartDead)
+            {
+                currentHeart = deadHeart;
+                heartRotation = 0;
+            }
+            else
+            {
+                currentHeart = liveHeart;
+                RotateHeart();
+            }
 
             if (isHeartPumping)
             {
@@ -127,6 +154,7 @@ namespace Adam
                     pumpTimer = 0;
                     heartHasPumped = true;
                     h1i.Play();
+                    healthColor = Color.Red;
                 }
 
                 if (pumpTimer > 100 && heartHasPumped)
@@ -136,12 +164,13 @@ namespace Adam
                     pumpTimer = 0;
                     heartHasPumped = false;
                     h2i.Play();
+                    healthColor = Color.White;
                 }
             }
 
             AnimateCoin();
             AnimateHeart();
-            RotateHeart();
+
 
             chrono.Update(gameTime);
             timeAnimation.Update(gameTime);
@@ -262,24 +291,16 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(heart, heartRect, heartSource, Color.White, heartRotation, heartOrigin, SpriteEffects.None, 0);
+            spriteBatch.Draw(currentHeart, heartRect, heartSource, Color.White, heartRotation, heartOrigin, SpriteEffects.None, 0);
             spriteBatch.Draw(coin, coinRect, coinSource, Color.White, 0, coinOrigin, SpriteEffects.None, 0);
             //chrono.Draw(spriteBatch);
             //armor.Draw(spriteBatch);
             timeAnimation.Draw(spriteBatch);
 
-            //spriteBatch.DrawString(font, currentHealth + "/" + maxHealth, healthPos, Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch, font, currentHealth + "/" + maxHealth, healthPos, 5, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, font, currentHealth + "/" + maxHealth, healthPos, 5, healthColor, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, font, score.ToString(), scorePos, 5, Color.White, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, font, currentTime.ToString(), timePos, 5, Color.White, Color.Black);
-
-            //spriteBatch.DrawString(font, score.ToString(), new Vector2(scorePos.X+5, scorePos.Y), Color.Black);
-            //spriteBatch.DrawString(font, score.ToString(), new Vector2(scorePos.X-5, scorePos.Y), Color.Black);
-            //spriteBatch.DrawString(font, score.ToString(), new Vector2(scorePos.X, scorePos.Y+5), Color.Black);
-            //spriteBatch.DrawString(font, score.ToString(), new Vector2(scorePos.X, scorePos.Y-5), Color.Black);
-
-            //spriteBatch.DrawString(font, score.ToString(), scorePos, Color.White);
 
             foreach (var spl in splashDamage)
             {
