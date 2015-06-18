@@ -139,15 +139,19 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            if (isDead) goto DrawOthers;
+            if (isFacingRight)
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
 
+DrawOthers:
             foreach (var proj in projList)
                 proj.Draw(spriteBatch);
             foreach (var eff in effectList)
                 eff.Draw(spriteBatch);
 
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Green * .5f);
+           // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), damageBox, Color.Green * .5f);
           // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
         }
 
@@ -180,6 +184,8 @@ namespace Adam
                     return EnemyDB.Snake_TouchDamage;
                 case EnemyType.Potato:
                     return EnemyDB.Potato_TouchDamage;
+                case EnemyType.Hellboar:
+                    return EnemyDB.Hellboar_TouchDamage;
             }
             return 0;
         }

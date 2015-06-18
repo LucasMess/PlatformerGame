@@ -565,7 +565,7 @@ namespace Adam
                     player.Jump();
                     goto SkipDamage;
                 }
-                else if (player.collRectangle.Intersects(enemy.drawRectangle))
+                else if (player.collRectangle.Intersects(enemy.collRectangle))
                 {
                     player.TakeDamageAndKnockBack(enemy.GetTouchDamage());
                     enemy.BeMean();

@@ -45,9 +45,11 @@ namespace Adam.Characters.Enemies
             this.gameTime = gameTime;
             base.Update(player, gameTime, entities, map);
 
+            if (isDead) return;
+
             drawRectangle.X = collRectangle.X - 18;
             drawRectangle.Y = collRectangle.Y - 44;
-            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width + 10, collRectangle.Height / 2);
+            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2);
 
             int t = GetTileIndex();
             int[] i = GetNearbyTileIndexes(map);
@@ -146,13 +148,13 @@ namespace Adam.Characters.Enemies
         {
             Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
-            if (isFacingRight)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
 
-            if (rects != null)
-                foreach (var rect in rects)
-                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), new Rectangle(rect.X, rect.Y, 16, 16), Color.Black);
+
+            //if (rects != null)
+            //    foreach (var rect in rects)
+            //        spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), new Rectangle(rect.X, rect.Y, 16, 16), Color.Black);
+
+            base.Draw(spriteBatch);
 
             DrawSurroundIndexes(spriteBatch);
         }
@@ -174,12 +176,14 @@ namespace Adam.Characters.Enemies
         {
             collRectangle.X = e.Tile.rectangle.X - collRectangle.Width;
             velocity.X = 0;
+            CurrentAnimation = AnimationState.Idle;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             collRectangle.X = e.Tile.rectangle.X + e.Tile.rectangle.Width;
             velocity.X = 0;
+            CurrentAnimation = AnimationState.Idle;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)

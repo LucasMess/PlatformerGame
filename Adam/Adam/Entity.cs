@@ -23,7 +23,7 @@ namespace Adam
     class Entity
     {
 
-        protected Texture2D texture;
+        protected Texture2D texture = Game1.DefaultTexture;
         public Vector2 position;
         protected Vector2 origin;
         public Rectangle drawRectangle;

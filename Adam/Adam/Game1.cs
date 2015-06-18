@@ -93,6 +93,11 @@ namespace Adam
         /// The current monitor resolution height of the user.
         /// </summary>
         public static int PrefferedResHeight;
+        /// <summary>
+        /// The default texture.
+        /// </summary>
+        public static Texture2D DefaultTexture;
+
 #endregion
 
         public bool wasPressed, debugOn, debugPressed;
@@ -133,7 +138,7 @@ namespace Adam
             gameData = new GameDataManager();
 
             graphics.IsFullScreen = gameData.Settings.IsFullscreen;
-
+                      
 
             //MediaPlayer Settings
             MediaPlayer.IsRepeating = true;
@@ -141,11 +146,14 @@ namespace Adam
 
             //Creates ContentManager to be used by other classes
             Content = new ContentManager(Services, "Content");
+
+
         }
 
 
         protected override void Initialize()
-        {
+        {            
+            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp");
             //Initialize all instances
             camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
             menu = new Menu(monitorRes);
