@@ -121,4 +121,13 @@ namespace Adam
 
 
     }
+
+    struct AnimationData
+    {
+        public int SwitchFrame { get; set; }
+        public int CurrentFrame { get; set; }
+        public Vector2 FrameCount { get; set; }
+        public double FrameTimer { get; set; }
+
+    }
 }

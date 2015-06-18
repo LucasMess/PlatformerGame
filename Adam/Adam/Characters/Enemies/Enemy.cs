@@ -13,7 +13,7 @@ namespace Adam
 {
     public enum EnemyType
     {
-        Snake, Potato, Shade, Drone, Bloodless
+        Snake, Potato, Shade, Drone, Bloodless, Hellboar,
     }
 
     class Enemy : Entity
