@@ -260,6 +260,9 @@ namespace Adam
         /// <param name="map"></param>
         public void Update(GameTime gameTime, Map map)
         {
+            if (health < 0)
+                health = 0;
+
             //If the player is currently chronoshifting, most of the update method is skipped.
             if (hasChronoshifted)
                 goto UpdateChrono;
