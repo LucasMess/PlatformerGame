@@ -63,14 +63,10 @@ namespace Adam
             this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
-            this.map = map;
-
-            
+            this.map = map;           
 
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
-
-
 
             //See if player in range
             radiusRect.X = collRectangle.X - radiusRect.Width / 2;
@@ -157,6 +153,7 @@ namespace Adam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
+            if (singleTexture == null) throw new Exception("This object is missing its single texture file");
             Vector2 size = new Vector2(singleTexture.Width / Game1.Tilesize, singleTexture.Height / Game1.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;

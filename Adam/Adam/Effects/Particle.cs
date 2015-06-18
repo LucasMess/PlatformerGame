@@ -180,7 +180,6 @@ namespace Adam
             velocity = new Vector2(Map.randGen.Next(-10, 10), Map.randGen.Next(-10, 10));
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             this.map = map;
-            //CollidedWithTerrainAnywhere += Blood_CollidedWithTerrainAnywhere;
         }
 
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
@@ -454,7 +453,13 @@ namespace Adam
                     collRectangle = drawRectangle;
 
                     velocity.Y += .3f;
-                    CheckSimpleTerrainCollision(map);
+
+                    if (this.IsTouchingTerrain(map))
+                    {
+                        velocity.X = 0;
+                        velocity.Y = 0;
+                        dead = true;
+                    }
                     break;
             }
         }
@@ -502,13 +507,6 @@ namespace Adam
         {
             if (light != null)
                 light.Draw(spriteBatch);
-        }
-
-        void Blood_CollidedWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-            velocity.Y = 0;
-            dead = true;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class FallingBoulder : Obstacle
+    class FallingBoulder : Obstacle, ICollidable
     {
         bool hasFallen;
         Vector2 velocity;
@@ -31,12 +31,12 @@ namespace Adam.Obstacles
             fallingSoundInstance = fallingSound.CreateInstance();
 
             drawRectangle = new Rectangle(x, y, Game1.Tilesize * 2, Game1.Tilesize * 2);
-            collRectangle = drawRectangle;            
+            collRectangle = drawRectangle;
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
             original = new Vector2(drawRectangle.X, drawRectangle.Y);
 
-           // CollidedWithTerrainBelow += FallingBoulderObstacle_CollidedWithTerrainBelow;
+            // CollidedWithTerrainBelow += FallingBoulderObstacle_CollidedWithTerrainBelow;
 
         }
 
@@ -59,8 +59,6 @@ namespace Adam.Obstacles
         public override void Update(GameTime gameTime, Player player, Map map)
         {
             base.Update(gameTime, player, map);
-
-            //CheckTerrainCollision(map);            
 
             drawRectangle.X += (int)velocity.X;
             drawRectangle.Y += (int)velocity.Y;
@@ -100,5 +98,37 @@ namespace Adam.Obstacles
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }
 
+
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+            velocity.Y = 0;
+            drawRectangle.Y = e.Tile.rectangle.Y - drawRectangle.Height - 1;
+            hasFallen = true;
+            fallingSoundInstance.Play();
+
+            float xDist = player.collRectangle.Center.X - drawRectangle.Center.X;
+            float yDist = player.collRectangle.Center.Y - drawRectangle.Center.Y;
+            float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
+
+            if (distanceTo > 1000)
+                fallingSoundInstance.Volume = 0;
+            else fallingSoundInstance.Volume = .5f - (distanceTo / 1000) / 2;
+        }
+
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+        }
     }
 }

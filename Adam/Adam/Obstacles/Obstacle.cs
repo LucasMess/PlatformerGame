@@ -33,8 +33,10 @@ namespace Adam.Obstacles
 
         public virtual void Update(GameTime gameTime, Player player, Map map)
         {
-            base.Update();
+            this.map = map;
             this.player = player;
+
+            base.Update();
 
             //Defines the attack box depending on what the Damage type is.
             switch (CurrentDamageType)

@@ -70,7 +70,7 @@ namespace Adam
         {
             if (this is ICollidable)
             {
-                CheckTerrainCollision(map);
+                CheckTerrainCollision();
             }
             if (this is INewtonian)
             {
@@ -290,10 +290,9 @@ namespace Adam
         }
 
         /// <summary>
-        /// Call this method if the entity needs collision check with terrain. The method will check collisions and raise events.
+        /// This will check for terrain collision if entity implements ICollidable.
         /// </summary>
-        /// <param name="map">The map the entity is in.</param>
-        private void CheckTerrainCollision(Map map)
+        private void CheckTerrainCollision()
         {
             if (this is ICollidable) { } else throw new Exception("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
 
@@ -313,8 +312,6 @@ namespace Adam
                             if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
                             {
                                 ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
-                                //count++;
-                                //Console.WriteLine("Collided bottom: " + this.GetType().ToString() + "-" + count);
                             }
                             else  //hits top
                             {
@@ -401,8 +398,11 @@ namespace Adam
                 gravity = newt.GravityStrength;
 
             //IF there is no tile below the entity, he will start falling.
-            if (TileIndex + (map.mapTexture.Width * 2) < map.tileArray.Length)
-                if (!map.tileArray[TileIndex + (map.mapTexture.Width * 2)].isSolid)
+            int heightInTiles = collRectangle.Height / Game1.Tilesize;
+            heightInTiles++;
+
+            if (TileIndex + (map.mapTexture.Width * heightInTiles) < map.tileArray.Length)
+                if (!map.tileArray[TileIndex + (map.mapTexture.Width * heightInTiles)].isSolid)
                     velocity.Y += gravity;
         }
     }
