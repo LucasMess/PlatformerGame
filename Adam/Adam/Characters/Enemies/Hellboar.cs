@@ -15,9 +15,12 @@ namespace Adam.Characters.Enemies
         List<Rectangle> rects;
         AnimationData animationData;
 
+        double idleTimer;
+        bool isWalking;
+
         enum AnimationState
         {
-            Idle,
+            Idle, Walking,
         }
 
         AnimationState CurrentAnimation = AnimationState.Idle;
@@ -26,7 +29,7 @@ namespace Adam.Characters.Enemies
         {
             health = 100;
             collRectangle = new Rectangle(x, y, 50 * 2, 38 * 2);
-            drawRectangle = new Rectangle(x - 18, y - 44, 68 *2, 60 *2);
+            drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
             singleTexture = texture;
@@ -53,6 +56,7 @@ namespace Adam.Characters.Enemies
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             CheckForPlayer();
+            WalkRandomly();
             Animate();
         }
 
@@ -63,6 +67,36 @@ namespace Adam.Characters.Enemies
                 isAngry = true;
             }
             else isAngry = false;
+        }
+
+        private void WalkRandomly()
+        {
+            idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (idleTimer > 5000 && !isWalking)
+            {
+                idleTimer = 0;
+                isWalking = true;
+                CurrentAnimation = AnimationState.Walking;
+                velocity.X = 2f;
+
+                if (Map.randGen.Next(0, 2) == 0)
+                {
+                    velocity.X = -velocity.X;
+                    isFacingRight = false;
+                }
+                else
+                {
+                    isFacingRight = true;
+                }
+            }
+
+            if (idleTimer > 1000 && isWalking)
+            {
+                idleTimer = 0;
+                isWalking = false;
+                CurrentAnimation = AnimationState.Idle;
+                velocity.X = 0;
+            }
         }
 
         private void Animate()
@@ -87,26 +121,46 @@ namespace Adam.Characters.Enemies
                         sourceRectangle.X = 0;
                     }
                     break;
+                case AnimationState.Walking:
+                    sourceRectangle.Y = sourceRectangle.Height;
+                    animationData.SwitchFrame = 125;
+                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (animationData.FrameTimer >= animationData.SwitchFrame)
+                    {
+                        animationData.FrameTimer = 0;
+                        sourceRectangle.X += sourceRectangle.Width;
+                        animationData.CurrentFrame++;
+                    }
+
+                    if (animationData.CurrentFrame > animationData.FrameCount.X)
+                    {
+                        animationData.CurrentFrame = 0;
+                        sourceRectangle.X = 0;
+                    }
+                    break;
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Color color =Color.White;
+            Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
+            if (isFacingRight)
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
+            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
 
             if (rects != null)
                 foreach (var rect in rects)
                     spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), new Rectangle(rect.X, rect.Y, 16, 16), Color.Black);
 
-            //DrawSurroundIndexes(spriteBatch);
+            DrawSurroundIndexes(spriteBatch);
         }
 
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.rectangle.Y - collRectangle.Height;
+            collRectangle.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height;
             velocity.Y = 0;
         }
 
@@ -118,10 +172,14 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
+            collRectangle.X = e.Tile.rectangle.X - collRectangle.Width;
+            velocity.X = 0;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
+            collRectangle.X = e.Tile.rectangle.X + e.Tile.rectangle.Width;
+            velocity.X = 0;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)

@@ -273,7 +273,7 @@ namespace Adam
         public int[] GetNearbyTileIndexes(Map map)
         {
             int width = map.mapTexture.Width;
-            int startingIndex = TileIndex - width - 1;
+            int startingIndex = TileIndex - width - 2;
             int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
 
