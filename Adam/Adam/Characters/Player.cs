@@ -1064,7 +1064,7 @@ namespace Adam
             if (weapon != null)
                 weapon.Draw(spriteBatch);
 
-            DrawSurroundIndexes(spriteBatch);
+            //DrawSurroundIndexes(spriteBatch);
         }
 
         public void TakeDamage(int damage)

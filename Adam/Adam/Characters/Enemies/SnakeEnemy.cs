@@ -80,7 +80,7 @@ namespace Adam.Enemies
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            DrawDependentEntities(spriteBatch);
 
             if (isDead)
                 return;

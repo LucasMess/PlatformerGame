@@ -156,7 +156,7 @@ namespace Adam.Characters.Enemies
 
             base.Draw(spriteBatch);
 
-            DrawSurroundIndexes(spriteBatch);
+            //DrawSurroundIndexes(spriteBatch);
         }
 
 

@@ -155,6 +155,14 @@ DrawOthers:
           // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
         }
 
+        public void DrawDependentEntities(SpriteBatch spriteBatch)
+        {
+            foreach (var proj in projList)
+                proj.Draw(spriteBatch);
+            foreach (var eff in effectList)
+                eff.Draw(spriteBatch);
+        }
+
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
             if (singleTexture == null) throw new Exception("This object is missing its single texture file");
