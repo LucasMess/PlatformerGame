@@ -1,4 +1,5 @@
 ﻿using Adam.Misc.Interfaces;
+using Adam.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,6 +11,8 @@ namespace Adam.Characters.Enemies
 {
     class Hellboar : Enemy , ICollidable, INewtonian
     {
+        bool isAngry;
+        List<Rectangle> rects;
 
         public Hellboar(int x, int y)
         {
@@ -18,6 +21,7 @@ namespace Adam.Characters.Enemies
             drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 50, 38);
             texture = ContentHelper.LoadTexture("Enemies/hellboar");
+            singleTexture = texture;
 
 
             base.Initialize();
@@ -25,6 +29,7 @@ namespace Adam.Characters.Enemies
 
         public override void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
         {
+            this.player = player;
             base.Update(player, gameTime, entities, map);
 
             drawRectangle.X = collRectangle.X;
@@ -35,12 +40,29 @@ namespace Adam.Characters.Enemies
             int[] i = GetNearbyTileIndexes(map);
 
             xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);            
+            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
+
+            CheckForPlayer();
+        }
+
+        private void CheckForPlayer()
+        {            
+            if (CollisionRay.IsPlayerInSight(this, player, map, out rects))
+            {
+                isAngry = true;
+            }
+            else isAngry = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            Color color;
+            if (isAngry) color = Color.Blue; else color = Color.White;
+            spriteBatch.Draw(texture, drawRectangle, color);
+
+            if (rects != null)
+            foreach (var rect in rects)
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), new Rectangle(rect.X,rect.Y,16,16), Color.Black);
 
             DrawSurroundIndexes(spriteBatch);
         }
