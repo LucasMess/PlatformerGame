@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    class Hellboar : Enemy , ICollidable
+    class Hellboar : Enemy , ICollidable, INewtonian
     {
 
         public Hellboar(int x, int y)
@@ -25,22 +25,28 @@ namespace Adam.Characters.Enemies
 
         public override void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
         {
-            drawRectangle = collRectangle;
+            base.Update(player, gameTime, entities, map);
+
+            drawRectangle.X = collRectangle.X;
+            drawRectangle.Y = collRectangle.Y;
             //damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width + 10, collRectangle.Height / 2);
 
-            velocity.Y += .3f;
+            int t = GetTileIndex();
+            int[] i = GetNearbyTileIndexes(map);
 
             xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             //CheckTerrainCollision(map);
 
-            base.Update(player, gameTime, entities, map);
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+
+            DrawSurroundIndexes(spriteBatch);
         }
 
 
@@ -66,6 +72,12 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
         {
+        }
+
+
+        public float GravityStrength
+        {
+            get { return 0; }
         }
     }
 }

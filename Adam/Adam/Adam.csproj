@@ -151,6 +151,7 @@
     <Compile Include="Interactables\Apple.cs" />
     <Compile Include="Levels\Background.cs" />
     <Compile Include="Misc\CalcHelper.cs" />
+    <Compile Include="Misc\Interfaces\INewtonian.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\DataPacket.cs" />

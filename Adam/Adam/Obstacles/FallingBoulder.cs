@@ -60,9 +60,7 @@ namespace Adam.Obstacles
         {
             base.Update(gameTime, player, map);
 
-            //CheckTerrainCollision(map);
-
-            TileIndex = (int)(collRectangle.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.X / Game1.Tilesize);
+            //CheckTerrainCollision(map);            
 
             drawRectangle.X += (int)velocity.X;
             drawRectangle.Y += (int)velocity.Y;

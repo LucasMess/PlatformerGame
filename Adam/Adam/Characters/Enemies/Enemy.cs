@@ -22,7 +22,6 @@ namespace Adam
         protected Rectangle radiusRect;
         public Rectangle topMidBound;
         public Rectangle damageBox;
-        public Vector2 velocity;
         protected Vector2 maxVelocity;
         public bool isFacingRight;
         public bool isDead;
@@ -61,13 +60,17 @@ namespace Adam
 
         public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
         {
-            //Each class implements their own update logic.
-            //Call base.Update for the basic update logic.
-            
             this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
             this.map = map;
+
+            
+
+            //Each class implements their own update logic.
+            //Call base.Update for the basic update logic.
+
+
 
             //See if player in range
             radiusRect.X = collRectangle.X - radiusRect.Width / 2;
@@ -94,8 +97,9 @@ namespace Adam
             else isPlayerAbove = false;
 
             //Velocity
-            collRectangle.X += (int)(velocity.X * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));
-            collRectangle.Y += (int)(velocity.Y * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds));        
+
+            collRectangle.X += (int)(velocity.X);
+            collRectangle.Y += (int)(velocity.Y);
 
 
             //Random chance of being mean.
@@ -132,21 +136,23 @@ namespace Adam
                 }
             }
 
-
             base.Update();
+
 
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
+
             foreach (var proj in projList)
                 proj.Draw(spriteBatch);
             foreach (var eff in effectList)
                 eff.Draw(spriteBatch);
 
-           spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Green);
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Green * .5f);
+          // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
         }
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)

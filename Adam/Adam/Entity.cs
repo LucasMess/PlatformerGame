@@ -31,12 +31,16 @@ namespace Adam
         protected Rectangle sourceRectangle;
         protected Animation animation;
         protected Map map;
+        public Vector2 velocity;
 
         int count;
 
         public Rectangle yRect, xRect;
 
-        public int TileIndex { get; set; }
+        public int TileIndex
+        {
+            get { return GetTileIndex(); }
+        }
 
         protected ContentManager Content;
 
@@ -67,6 +71,10 @@ namespace Adam
             if (this is ICollidable)
             {
                 CheckTerrainCollision(map);
+            }
+            if (this is INewtonian)
+            {
+                ApplyGravity();
             }
         }
 
@@ -234,14 +242,15 @@ namespace Adam
         }
 
         /// <summary>
-        /// Updates the tile index and returns it. The tile index is used to determine an entity's position in the map.
+        /// Gets the entity' tile index. The tile index is used to determine an entity's position in the map.
         /// </summary>
-        /// <param name="map"> The map so that the size of the world can be retrieved.</param>
+        /// 
         /// <returns></returns>
-        public int GetTileIndex(Map map)
+        public int GetTileIndex()
         {
-            TileIndex = (int)(collRectangle.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.X / Game1.Tilesize);
-            return TileIndex;
+            if (map != null)
+                return (int)(collRectangle.Center.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.Center.X / Game1.Tilesize);
+            else throw new Exception("Map is null");
         }
 
         /// <summary>
@@ -251,7 +260,9 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex(Vector2 coord)
         {
-            return (int)(coord.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(coord.X / Game1.Tilesize);
+            if (map != null)
+                return (int)((int)coord.Y / Game1.Tilesize * map.mapTexture.Width) + (int)((int)coord.X / Game1.Tilesize);
+            else throw new Exception("Map is null");
         }
 
         /// <summary>
@@ -261,15 +272,10 @@ namespace Adam
         /// <returns></returns>
         public int[] GetNearbyTileIndexes(Map map)
         {
-            TileIndex = GetTileIndex(map);
             int width = map.mapTexture.Width;
-
             int startingIndex = TileIndex - width - 1;
-            int rightCornerIndex = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Y)) - width;
-            int widthInTiles = rightCornerIndex - startingIndex;
-
-            int leftCornerIndex = GetTileIndex(new Vector2(collRectangle.X - Game1.Tilesize, collRectangle.Y + collRectangle.Height));
-            int heightInTiles = (leftCornerIndex - startingIndex) / width;
+            int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
+            int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)
@@ -300,22 +306,22 @@ namespace Adam
                 if (quadrant >= 0 && quadrant < map.tileArray.Length)
                 {
                     Tile tile = map.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && tile.isSolid == true)
+                    if (quadrant >= 0 && quadrant < map.tileArray.Length && tile.isSolid == true)
                     {
                         if (yRect.Intersects(map.tileArray[quadrant].rectangle))
                         {
                             if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
                             {
                                 ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
-                                count++;
-                                Console.WriteLine("Collided bottom: " + this.GetType().ToString() + "-" + count);
+                                //count++;
+                                //Console.WriteLine("Collided bottom: " + this.GetType().ToString() + "-" + count);
                             }
                             else  //hits top
                             {
                                 ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
                             }
                         }
-                        else if (xRect.Intersects(tile.rectangle))
+                        if (xRect.Intersects(tile.rectangle))
                         {
                             if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
                             {
@@ -364,6 +370,40 @@ namespace Adam
             if (distanceTo > 1000)
                 return 0;
             else return .5f - (distanceTo / 1000) / 2;
+        }
+
+        public void DrawSurroundIndexes(SpriteBatch spriteBatch)
+        {
+            if (map == null) return;
+            foreach (int i in GetNearbyTileIndexes(map))
+            {
+                if (i < map.tileArray.Length && i >= 0)
+                {
+                    Tile t = map.tileArray[i];
+                    if (t.isSolid)
+                        spriteBatch.Draw(t.texture, t.rectangle, t.sourceRectangle, Color.Red);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Makes objects fall.
+        /// </summary>
+        private void ApplyGravity()
+        {
+            if (this is INewtonian) { } else throw new Exception("This object is not affected by gravity because it does not implement INewtonian.");
+            INewtonian newt = (INewtonian)this;
+
+            float gravity = .3f;
+
+            if (newt.GravityStrength != 0)
+                gravity = newt.GravityStrength;
+
+            //IF there is no tile below the entity, he will start falling.
+            if (TileIndex + (map.mapTexture.Width * 2) < map.tileArray.Length)
+                if (!map.tileArray[TileIndex + (map.mapTexture.Width * 2)].isSolid)
+                    velocity.Y += gravity;
         }
     }
 }

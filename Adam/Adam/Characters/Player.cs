@@ -46,13 +46,11 @@ namespace Adam
 
         public Weapon weapon;
 
-        public Vector2 velocity;
         public Vector2 previousPosition;
 
         public Rectangle attackBox;
         public Rectangle topMidBound, botMidBound;
 
-        Map map;
         Jetpack jetpack = new Jetpack();
 
         SoundEffect jumpSound, takeDamageSound, attackSound, gameOverSound, tadaSound, fallSound;
@@ -579,7 +577,6 @@ namespace Adam
         {
             Texture2D mapTexture = this.map.mapTexture;
             //This defines the player position in the map. 
-            TileIndex = (int)(topMidBound.Y / Game1.Tilesize * mapTexture.Width) + (int)(topMidBound.X / Game1.Tilesize);
             if (isGhost)
                 return;
 
@@ -1066,6 +1063,8 @@ namespace Adam
 
             if (weapon != null)
                 weapon.Draw(spriteBatch);
+
+            DrawSurroundIndexes(spriteBatch);
         }
 
         public void TakeDamage(int damage)
