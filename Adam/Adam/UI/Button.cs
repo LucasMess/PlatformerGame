@@ -54,11 +54,11 @@ namespace Adam
         public void Update()
         {
             MouseState mouseState = Mouse.GetState();
-            Rectangle mouseRect = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
+            Rectangle mouseRect = new Rectangle(mouseState.X * (Game1.DefaultResWidth/Game1.PrefferedResWidth), mouseState.Y * (Game1.DefaultResHeight/Game1.PrefferedResHeight), 1, 1);
             if (mouseRect.Intersects(rectangle))
             {
                 sourceRectangle.X = 230;
-                textColor = Color.Gray;
+                textColor = new Color(97, 34, 34);;
 
                 if (t1 == true)
                     r1 += .1f;
@@ -84,13 +84,13 @@ namespace Adam
             else
             {
                 sourceRectangle.X = 0;
-                textColor = Color.White;
+                textColor = new Color(196, 69, 69);;
             }
         }
 
-        public void SetPosition(int x, int y)
+        public void SetPosition(Vector2 pos)
         {
-            rectangle = new Rectangle(x, y, 300, 100);
+            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 300, 100);
         }
 
         public void SetText(string text)
@@ -100,12 +100,12 @@ namespace Adam
             textPos = new Vector2(rectangle.Center.X, rectangle.Center.Y);
 
             float textX = textPos.X - textOrigin.X*scale;
-            float textY = textPos.Y - textOrigin.Y*scale; 
+            float textY = textPos.Y - textOrigin.Y*scale;
 
-            leaf1 = new Rectangle((int)(textX - texture.Width), (int)textY, texture.Width, texture.Height);
-            leaf2 = new Rectangle((int)(textX + textOrigin.X * 2 * scale), (int)textY, texture.Width, texture.Height);
+            leaf1 = new Rectangle((int)(textX - 32), (int)textY, 32, 32);
+            leaf2 = new Rectangle((int)(textX + textOrigin.X * 2 * scale), (int)textY, 32, 32);
 
-            leafOrigin = new Vector2(texture.Width / 2, texture.Height / 2);
+            leafOrigin = new Vector2(16,16);
         }
 
         public void Draw(SpriteBatch spriteBatch)

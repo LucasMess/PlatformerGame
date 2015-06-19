@@ -42,9 +42,10 @@ namespace Adam
         ContentManager Content;
         Vector2 monitorResolution;
 
-        Texture2D background, adam, title;
+        Texture2D background, foreground, adam, apple;
         Song theme;
-        Rectangle adamRect, sourceRect, titleRect;
+        Rectangle adamRect, sourceRect;
+        Rectangle appleRect, appleSource;
         GameTime gameTime;
         double frameTimer;
         int switchFrame, currentFrame;
@@ -105,9 +106,10 @@ namespace Adam
             SetPosition();
             SetText();
 
-            background = Content.Load<Texture2D>("Backgrounds/Main Menu/menu_background");
-            adam = Content.Load<Texture2D>("Backgrounds/Main Menu/menu_adam");
-            title = Content.Load<Texture2D>("Backgrounds/Main Menu/menu_title");
+            background = Content.Load<Texture2D>("Menu/menu_back");
+            adam = Content.Load<Texture2D>("Menu/menu_adam");
+            foreground = Content.Load<Texture2D>("Menu/menu_front");
+            apple = ContentHelper.LoadTexture("Menu/menu_apple");
 
             theme = Content.Load<Song>("Music/Alchemists Tower");
             font = Content.Load<SpriteFont>("Fonts/button");
@@ -117,10 +119,11 @@ namespace Adam
             cursorSound = Content.Load<SoundEffect>("Sounds/Menu/cursor_style_2");
             backSound = Content.Load<SoundEffect>("Sounds/Menu/back_style_2_001");
 
-
-            adamRect = new Rectangle(182, 442, adam.Width / 4, adam.Height);
-            titleRect = new Rectangle(0, 0, (int)monitorResolution.X, (int)monitorResolution.Y);
-            sourceRect = new Rectangle(0, 0, adamRect.Width, adamRect.Height);
+            int scale = 8;
+            appleRect = new Rectangle(5 * scale, 36 * scale, 16 * scale, 16 * scale);
+            appleSource = new Rectangle(0, 0, 16, 16);
+            adamRect = new Rectangle(20 * scale, 17 * scale, adam.Width / 4 * scale, adam.Height * scale);
+            sourceRect = new Rectangle(0, 0, 24, 36);
 
         }
 
@@ -145,24 +148,30 @@ namespace Adam
 
         void SetPosition()
         {
-            play.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 440 / 1080));
-            quit.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 540 / 1080));
-            options.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 640 / 1080));
-            multiplayer.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 740 / 1080));
+            Vector2 first = new Vector2(550, 180);
+            Vector2 second = new Vector2(550, 220);
+            Vector2 third = new Vector2(550, 260);
+            Vector2 fourth = new Vector2(550, 300);
+            Vector2 fifth = new Vector2(550, 340);
 
-            smoothPixels.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 440 / 1080));
-            lighting.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 540 / 1080));
-            fullscreen.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 640 / 1080));
+            play.SetPosition(first);
+            quit.SetPosition(second);
+            options.SetPosition(third);
+            multiplayer.SetPosition(fourth);
 
-            backButton.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 940 / 1080));
+            smoothPixels.SetPosition(first);
+            lighting.SetPosition(second);
+            fullscreen.SetPosition(third);
+            
+            backButton.SetPosition(fifth);
 
-            level1.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 440 / 1080));
-            level2.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 540 / 1080));
-            level3.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 640 / 1080));
-            level4.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 740 / 1080));
+            level1.SetPosition(first);
+            level2.SetPosition(second);
+            level3.SetPosition(third);
+            level4.SetPosition(fourth);
 
-            hostGame.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 640 / 1080));
-            joinGame.SetPosition((int)(monitorResolution.X * 1100 / 1920), (int)(monitorResolution.Y * 740 / 1080));
+            hostGame.SetPosition(first);
+            joinGame.SetPosition(second);
         }
 
         public void Update(Game1 game1, GameTime gameTime, Settings settings)
@@ -179,7 +188,7 @@ namespace Adam
 
             foreach (var z in zzzList)
             {
-                z.Update(gameTime);                
+                z.Update(gameTime);
             }
             foreach (var z in zzzList)
             {
@@ -407,7 +416,21 @@ namespace Adam
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {           
+        {
+           
+        }
+
+
+        public void DrawBackground(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+            spriteBatch.Draw(foreground, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+            spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
+            spriteBatch.Draw(apple, appleRect, appleSource, Color.White);
+
+            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), .3f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, 30), Color.White, 0, new Vector2(0, 0), .3f, SpriteEffects.None, 0);
+
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
@@ -430,17 +453,6 @@ namespace Adam
                     backButton.Draw(spriteBatch);
                     break;
             }
-        }
-
-
-        public void DrawBackground(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(background, new Rectangle(0, 0, 1920, 1080), Color.White);
-            spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
-            spriteBatch.Draw(title, titleRect, Color.White);
-
-            spriteBatch.DrawString(font, Game1.Producers, new Vector2(0, 0), Color.White, 0, new Vector2(0, 0), .25f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Game1.Version, new Vector2(0, 40), Color.White, 0, new Vector2(0, 0), .2f, SpriteEffects.None, 0);
 
             foreach (var z in zzzList)
                 z.Draw(spriteBatch);
