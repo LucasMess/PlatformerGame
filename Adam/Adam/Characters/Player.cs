@@ -1066,8 +1066,9 @@ namespace Adam
             if (tileParticleTimer < Math.Abs(350 / velocity.X))
                 return;
             Tile tile = new Tile();
-            if (TileIndex + (map.mapTexture.Width * 2) < map.tileArray.Length)
-                tile = map.tileArray[TileIndex + (map.mapTexture.Width * 2)];
+            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (map.mapTexture.Width * 2);
+            if (tileIndexBelow < map.tileArray.Length)
+                tile = map.tileArray[tileIndexBelow];
             //If the player is above air skip.
             if (tile.ID == 0)
                 return;

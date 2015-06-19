@@ -223,9 +223,8 @@ namespace Adam
                 //7 shortgrass
                 else if (colorCode == new Vector3(78, 78, 78)) //metaltile
                 {
-                    tile.ID = 8;
-                    tile.isSolid = true;
-                    animatedTileList.Add(new AnimatedTile(8, tile.rectangle));
+                    tileArray[i] = new AnimatedTile(8, tile.rectangle);
+                    tileArray[i].isSolid = true;
                 }
                 //9 tallgrass
                 else if (colorCode == new Vector3(225, 127, 0)) //goldBricks
@@ -235,13 +234,11 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(249, 64, 45))//torch
                 {
-                    tile.ID = 11;
-                    animatedTileList.Add(new AnimatedTile(11, tile.rectangle));
+                    tileArray[i] = new AnimatedTile(11, tile.rectangle);
                 }
                 else if (colorCode == new Vector3(191, 129, 9)) //chandelier
                 {
-                    tile.ID = 12;
-                    animatedTileList.Add(new AnimatedTile(12, tile.rectangle));
+                    tileArray[i] = new AnimatedTile(12, tile.rectangle);
                 }
                 //13 see doors
                 else if (colorCode == new Vector3(35, 138, 52)) //vines
@@ -287,7 +284,7 @@ namespace Adam
                 //23 24 25
                 else if (colorCode == new Vector3(244, 121, 0)) // Lava
                 {
-                    array[i] = new AnimatedTile(24, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(24, tile.rectangle);
                     entities.Add(new Lava(Xcoor, Ycoor));
                 }
                 else if (colorCode == new Vector3(255, 255, 0)) // Golden Apple

@@ -17,7 +17,7 @@ namespace Adam
         public Rectangle sourceRectangle;
 
         public bool isSolid = false;
-        public int ID = 0;
+        public byte ID = 0;
         public int subID = 0;
         public int TileIndex { get; set; }
         int mapWidth;

@@ -14,7 +14,7 @@ namespace Adam
     class Particle : Entity
     {
         Texture2D nextTexture;
-        Vector2 velocity, originalPosition, originalVelocity;
+        Vector2 originalPosition, originalVelocity;
         Vector2 differenceInPosition, endPosition;
         Random randGen;
         double frameTimer;
@@ -204,6 +204,11 @@ namespace Adam
             texture = tile.texture;
             drawRectangle = new Rectangle(player.collRectangle.Center.X - 2, player.collRectangle.Y + player.collRectangle.Height, 8, 8);
             sourceRectangle = new Rectangle(tile.sourceRectangle.X, tile.sourceRectangle.Y, 4, 4);
+            if (tile is AnimatedTile)
+            {
+                AnimatedTile t = (AnimatedTile)tile;
+                sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
+            }
             sourceRectangle.X += (Map.randGen.Next(0, 4) * Game1.Tilesize / 4);
             velocity.X = (-player.velocity.X / 2) * (float)Map.randGen.NextDouble();
             velocity.Y = Map.randGen.Next(-1, 1);

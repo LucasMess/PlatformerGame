@@ -20,7 +20,7 @@ namespace Adam
         Vector2 startingPosition;
         Rectangle startingRectangle;
 
-        public AnimatedTile(int ID, Rectangle rectangle)
+        public AnimatedTile(byte ID, Rectangle rectangle)
         {
             this.ID = ID;
             this.rectangle = rectangle;

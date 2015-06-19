@@ -396,7 +396,7 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
-            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Bottom)) + map.mapTexture.Width;
+            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (map.mapTexture.Width * (collRectangle.Height/Game1.Tilesize));
             if (!map.tileArray[indexBelowEntity].isSolid)
             {
                 newt.IsAboveTile = false;
