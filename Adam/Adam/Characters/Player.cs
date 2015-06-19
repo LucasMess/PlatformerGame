@@ -27,7 +27,7 @@ namespace Adam
         InProgress,
     }
 
-    class Player : Entity
+    class Player : Entity, ICollidable, INewtonian
     {
         //temp
         int count;
@@ -270,6 +270,8 @@ namespace Adam
             this.gameTime = gameTime;
             this.map = map;
 
+            
+
             deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
             //Update Method is spread out!
@@ -279,7 +281,8 @@ namespace Adam
             CheckTimers();
             UpdateInput();
             UpdatePlayerPosition();
-            DetectCollisionWithTerrain();
+            //DetectCollisionWithTerrain();
+            base.Update();
             //CheckTerrainCollision(map);
             DetectCollisions();
             CreateWalkingParticles();
@@ -540,38 +543,6 @@ namespace Adam
                 }
             }
         }
-
-        private void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            Tile tile = e.Tile;
-            position.Y = tile.rectangle.Y + tile.rectangle.Height + 1;
-            velocity.Y = 0f;
-        }
-
-        private void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            Tile tile = e.Tile;
-            position.Y = tile.rectangle.Y - collRectangle.Height;
-            velocity.Y = 0f;
-            isJumping = false;
-            isFlying = false;
-            PlayStompSound();
-        }
-
-        private void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            Tile tile = e.Tile;
-            position.X = tile.rectangle.X - collRectangle.Width - 1;
-            velocity.X = 0f;
-        }
-
-        private void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            Tile tile = e.Tile;
-            position.X = tile.rectangle.X + tile.rectangle.Width + 1;
-            velocity.X = 0f;
-        }
-
 
         /// <summary>
         /// This method will check if the player is colliding with the terrain and prevent it.
@@ -1045,6 +1016,8 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //DrawSurroundIndexes(spriteBatch);
+
             jetpack.Draw(spriteBatch);
 
             //Draw the player facing the direction he is supposed to be facing
@@ -1055,7 +1028,8 @@ namespace Adam
                 spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White);
             else spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
 
         DrawOtherThings:
             foreach (Particle z in particles)
@@ -1067,7 +1041,7 @@ namespace Adam
             if (weapon != null)
                 weapon.Draw(spriteBatch);
 
-            //DrawSurroundIndexes(spriteBatch);
+            
         }
 
         public void TakeDamage(int damage)
@@ -1376,6 +1350,50 @@ namespace Adam
                 health = maxHealth;
         }
 
+
+        void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        {
+            //if (velocity.Y <= -.5f)
+            position.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height + 1;
+            //else position.Y = previousPosition.Y;
+            velocity.Y = 0f;
+        }
+
+        void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+            //if (velocity.Y >= .5f)
+            position.Y = e.Tile.rectangle.Y - collRectangle.Height;
+            //else position.Y = previousPosition.Y;
+            velocity.Y = 0f;
+            isJumping = false;
+            isFlying = false;
+            PlayStompSound();
+        }
+
+        void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+            //if (velocity.X >= .5f)
+            position.X = e.Tile.rectangle.X - collRectangle.Width - 1;
+            //else position.X = previousPosition.X;
+            velocity.X = 0f;
+        }
+
+        void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+            //if (velocity.X <= -.5f)
+            position.X = e.Tile.rectangle.X + e.Tile.rectangle.Width + 1;
+            //else position.X = previousPosition.X;
+            velocity.X = 0f;
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public float GravityStrength
+        {
+            get { return 0; }
+        }
     }
 
 }

@@ -146,6 +146,8 @@ namespace Adam.Characters.Enemies
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            DrawSurroundIndexes(spriteBatch);
+
             Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
 
@@ -156,7 +158,7 @@ namespace Adam.Characters.Enemies
 
             base.Draw(spriteBatch);
 
-            //DrawSurroundIndexes(spriteBatch);
+            
         }
 
 

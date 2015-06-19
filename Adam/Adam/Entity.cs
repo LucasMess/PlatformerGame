@@ -273,7 +273,7 @@ namespace Adam
         public int[] GetNearbyTileIndexes(Map map)
         {
             int width = map.mapTexture.Width;
-            int startingIndex = TileIndex - width - 2;
+            int startingIndex = GetTileIndex(new Vector2(collRectangle.X,collRectangle.Y)) - width - 1;
             int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
 
@@ -304,29 +304,32 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant < map.tileArray.Length)
                 {
-                    Tile tile = map.tileArray[quadrant];
+                    Tile tile = map.tileArray[quadrant];                    
                     if (quadrant >= 0 && quadrant < map.tileArray.Length && tile.isSolid == true)
                     {
-                        if (yRect.Intersects(map.tileArray[quadrant].rectangle))
+                        if (collRectangle.Intersects(tile.rectangle))
                         {
-                            if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
+                            if (yRect.Intersects(map.tileArray[quadrant].rectangle))
                             {
-                                ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
+                                if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
+                                {
+                                    ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
+                                }
+                                else  //hits top
+                                {
+                                    ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
+                                }
                             }
-                            else  //hits top
+                            else if (xRect.Intersects(tile.rectangle))
                             {
-                                ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
-                            }
-                        }
-                        if (xRect.Intersects(tile.rectangle))
-                        {
-                            if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
-                            {
-                                ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
-                            }
-                            else //hits left
-                            {
-                                ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                                if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
+                                {
+                                    ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
+                                }
+                                else //hits left
+                                {
+                                     ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                                }
                             }
                         }
                     }
@@ -377,8 +380,7 @@ namespace Adam
                 if (i < map.tileArray.Length && i >= 0)
                 {
                     Tile t = map.tileArray[i];
-                    if (t.isSolid)
-                        spriteBatch.Draw(t.texture, t.rectangle, t.sourceRectangle, Color.Red);
+                    spriteBatch.Draw(Game1.DefaultTexture, t.rectangle, t.sourceRectangle, Color.Red);
                 }
             }
         }
