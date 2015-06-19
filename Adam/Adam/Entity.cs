@@ -33,8 +33,6 @@ namespace Adam
         protected Map map;
         public Vector2 velocity;
 
-        int count;
-
         public Rectangle yRect, xRect;
 
         public int TileIndex

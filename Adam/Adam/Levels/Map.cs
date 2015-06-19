@@ -49,6 +49,7 @@ namespace Adam
         public bool levelComplete;
         bool isRunningOutOfTime, isPlayingFastTheme;
         public static Random randGen = new Random();
+        public static Texture2D SpriteSheet;
         Song levelTheme, fastLevelTheme;
 
         public List<Cloud> cloudList = new List<Cloud>();
@@ -83,6 +84,7 @@ namespace Adam
             this.monitorRes = monitorRes;
 
             player = new Player();
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
         }
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
@@ -145,11 +147,11 @@ namespace Adam
 
             LoadGrid(tileArray, mapTexture);
             LoadGrid(wallArray, wall);
+
             LoadLights();
 
             playerLight = new Light();
             playerLight.Load(Content);
-            //LoadChunks();
 
             hurryUpSound = ContentHelper.LoadSound("Sounds/hurryUp");
             hurryUpInstance = hurryUpSound.CreateInstance();
@@ -458,6 +460,7 @@ namespace Adam
             foreach (Tile tile in array)
             {
                 tile.DefineTexture();
+                tile.AddRandomlyGeneratedDecoration(array, mapTexture.Width);
             }
 
             foreach (AnimatedTile tile in animatedTileList)

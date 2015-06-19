@@ -30,21 +30,25 @@ namespace Adam
         public override void DefineTexture()
         {
             startingPosition = new Vector2(0, 0);
-            Vector2 size =  new Vector2(1,1);
-            texture = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_9");
+            Vector2 size = new Vector2(1, 1);
+            texture = Map.SpriteSheet;
             switch (ID)
             {
+                case 7: //short grass
+                    frameCount = new Vector2(4, 0);
+                    startingPosition = new Vector2(12, 16);
+                    break;
+                case 9: //tall Grass
+                    frameCount = new Vector2(12, 0);
+                    startingPosition = new Vector2(0, 16);
+                    break;
                 case 8: //Metal
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 2);
                     break;
-                case 9: //tall Grass
-                    frameCount = new Vector2(12, 0);
-                    startingPosition = new Vector2(0, 11);
-                    break;
                 case 11: //Torch
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12,0);
+                    startingPosition = new Vector2(12, 0);
                     size.Y = 2;
                     rectangle.Height = Game1.Tilesize * 2;
                     break;
@@ -52,13 +56,21 @@ namespace Adam
                     frameCount = new Vector2(0, 0);
                     startingPosition = new Vector2(14, 6);
                     break;
+                case 17: //Daffodyls
+                    frameCount = new Vector2(4, 0);
+                    startingPosition = new Vector2(12, 10 + (2 * Map.randGen.Next(0, 2)));
+                    size.Y = 2;
+                    rectangle.Height = Game1.Tilesize * 2;
+                    rectangle.Y -= Game1.Tilesize;
+                    break;
                 case 24: //Lava
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
                     break;
+
             }
-            sourceRectangle = new Rectangle((int)(startingPosition.X * tilesize), (int)(startingPosition.Y * tilesize), (int)(tilesize*size.X), (int)(tilesize*size.Y));
+            sourceRectangle = new Rectangle((int)(startingPosition.X * tilesize), (int)(startingPosition.Y * tilesize), (int)(tilesize * size.X), (int)(tilesize * size.Y));
             startingRectangle = sourceRectangle;
 
             if (hasRandomStartingPoint)
@@ -74,24 +86,21 @@ namespace Adam
         {
             switch (ID)
             {
-                case 7: //something
+                case 7: //Short grass
                     switchFrame = 120;
                     frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
                     if (frameTimer >= switchFrame)
                     {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += tilesize;
-                            currentFrame++;
-                        }
+                        frameTimer = 0;
+                        sourceRectangle.X += sourceRectangle.Width;
+                        currentFrame++;
                     }
 
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle.X = 0;
+                        sourceRectangle.X = startingRectangle.X;
                     }
                     break;
                 case 9: //Tall grass
@@ -135,7 +144,7 @@ namespace Adam
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle.X = 12*16;
+                        sourceRectangle.X = 12 * 16;
                         restartTimer = 0;
                     }
                     break;
@@ -156,7 +165,24 @@ namespace Adam
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle.X = 12*16;
+                        sourceRectangle.X = 12 * 16;
+                    }
+                    break;
+                case 17:
+                    switchFrame = 120;
+                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (frameTimer >= switchFrame)
+                    {
+                        frameTimer = 0;
+                        sourceRectangle.X += sourceRectangle.Width;
+                        currentFrame++;
+                    }
+
+                    if (currentFrame >= frameCount.X)
+                    {
+                        currentFrame = 0;
+                        sourceRectangle.X = startingRectangle.X;
                     }
                     break;
                 case 24: //Lava

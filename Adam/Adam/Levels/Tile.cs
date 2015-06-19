@@ -11,30 +11,20 @@ namespace Adam
     class Tile
     {
         #region Variables
-        //General Variables
         public Texture2D texture;
         public Rectangle rectangle;
         public Rectangle sourceRectangle;
 
         public bool isSolid = false;
         public byte ID = 0;
-        public int subID = 0;
+        public byte subID = 0;
         public int TileIndex { get; set; }
-        int mapWidth;
+        private int mapWidth;
         protected int tilesize;
-        private int randSeed;
         public bool isVoid;
         public bool emitsLight;
-        public bool hasTexture;
         Tile[] array;
 
-        public int randDens;
-        public int tempDens;
-        public int temp2Dens;
-        public int avgDens;
-
-        //Variables for Animation
-        Vector2 frameCount;
         #endregion
 
         public Tile()
@@ -50,7 +40,7 @@ namespace Adam
             //Air ID is 0, so it can emit sunlight.
             if (ID != 0)
             {
-                texture = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_9");
+                texture = Map.SpriteSheet;
             }
             else
             {
@@ -58,13 +48,13 @@ namespace Adam
                 return;
             }
 
-            Vector2 position = new Vector2(0, 0);
+            Vector2 position = Vector2.Zero;
             Vector2 startingPoint;
 
             switch (ID)
             {
                 case 1: //Grass
-                    startingPoint = new Vector2(0,0);
+                    startingPoint = new Vector2(0, 0);
                     switch (subID)
                     {
                         case 0: //Dirt
@@ -375,8 +365,7 @@ namespace Adam
                 case 6: //vacant
                     break;
                 case 7: //ShortGrass
-                    position = new Vector2(0, 11);
-                    frameCount = new Vector2(4, 0);
+                    isVoid = true;
                     break;
                 case 8: //Metal
                     isVoid = true;
@@ -471,15 +460,7 @@ namespace Adam
                     position = new Vector2(14, 7);
                     break;
                 case 17: //Daffodyls
-                    switch (subID)
-                    {
-                        case 0://White
-                            break;
-                        case 1://Cyan
-                            break;
-                        case 2://Pink
-                            break;
-                    }
+                    isVoid = true;
                     break;
                 case 18://Marble Column
                     switch (subID)
@@ -541,7 +522,7 @@ namespace Adam
                 case 104://Marble wall
                     break;
                 case 105://Sand Wall
-                    position = new Vector2(15,9);
+                    position = new Vector2(15, 9);
                     break;
                 #endregion
             }
@@ -571,7 +552,7 @@ namespace Adam
         {
             if (texture != null)
                 spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.Red);
-        }       
+        }
 
         /// <summary>
         /// This is used for the tiles that have special textures for corners. In the spritesheet they are arranged in the same way. This includes grass, sand, stone, and mesa.
@@ -753,6 +734,35 @@ namespace Adam
                midRight.ID != mid.ID &&
                bot.ID != mid.ID)
                 subID = 19;
+
+        }
+
+
+        public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
+        {
+            //Add decoration on top of grass tile.
+            if (ID == 1 && subID == 5)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                if (array[indexAbove].ID == 0)
+                {
+                    int rand = Map.randGen.Next(0, 10);
+                    if (rand == 0) //flower
+                    {
+                        array[indexAbove] = new AnimatedTile(17, array[indexAbove].rectangle);
+                    }
+                    else if (rand == 1 || rand == 2) //tall grass
+                    {
+                        array[indexAbove] = new AnimatedTile(9, array[indexAbove].rectangle);
+                    }
+                    else //short grass
+                    {
+                        array[indexAbove] = new AnimatedTile(7, array[indexAbove].rectangle);
+                    }
+
+                    array[indexAbove].DefineTexture();
+                }
+            }
 
         }
 
