@@ -273,7 +273,7 @@ namespace Adam
         public int[] GetNearbyTileIndexes(Map map)
         {
             int width = map.mapTexture.Width;
-            int startingIndex = GetTileIndex(new Vector2(collRectangle.X,collRectangle.Y)) - width - 1;
+            int startingIndex = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) - width - 1;
             int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
 
@@ -304,7 +304,7 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant < map.tileArray.Length)
                 {
-                    Tile tile = map.tileArray[quadrant];                    
+                    Tile tile = map.tileArray[quadrant];
                     if (quadrant >= 0 && quadrant < map.tileArray.Length && tile.isSolid == true)
                     {
                         if (collRectangle.Intersects(tile.rectangle))
@@ -328,7 +328,7 @@ namespace Adam
                                 }
                                 else //hits left
                                 {
-                                     ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                                    ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
                                 }
                             }
                         }
@@ -394,18 +394,19 @@ namespace Adam
             if (this is INewtonian) { } else throw new Exception("This object is not affected by gravity because it does not implement INewtonian.");
             INewtonian newt = (INewtonian)this;
 
-            float gravity = .3f;
+            //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
+            float gravity = newt.GravityStrength;
+            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Bottom)) + map.mapTexture.Width;
+            if (!map.tileArray[indexBelowEntity].isSolid)
+            {
+                newt.IsAboveTile = false;
+            }
+            else newt.IsAboveTile = true;
 
-            if (newt.GravityStrength != 0)
-                gravity = newt.GravityStrength;
-
-            //IF there is no tile below the entity, he will start falling.
-            int heightInTiles = collRectangle.Height / Game1.Tilesize;
-            heightInTiles++;
-
-            if (TileIndex + (map.mapTexture.Width * heightInTiles) < map.tileArray.Length)
-                if (!map.tileArray[TileIndex + (map.mapTexture.Width * heightInTiles)].isSolid)
-                    velocity.Y += gravity;
+            if (!newt.IsAboveTile || newt.IsJumping)
+            {
+                velocity.Y += gravity;
+            }
         }
     }
 }

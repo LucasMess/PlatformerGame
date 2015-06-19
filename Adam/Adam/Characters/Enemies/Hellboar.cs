@@ -197,5 +197,12 @@ namespace Adam.Characters.Enemies
         {
             get { return 0; }
         }
+
+
+        public bool IsFlying { get; set; }
+
+        public bool IsJumping { get; set; }
+
+        public bool IsAboveTile { get; set; }
     }
 }

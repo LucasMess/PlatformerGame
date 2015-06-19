@@ -97,6 +97,10 @@ namespace Adam
         /// The default texture.
         /// </summary>
         public static Texture2D DefaultTexture;
+        /// <summary>
+        /// Default gravity.
+        /// </summary>
+        public const float Gravity = .8f;
 
 #endregion
 
@@ -569,7 +573,7 @@ namespace Adam
                     debugSB.Begin();
                     debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 240), Color.White * .3f);
                     debugSB.DrawString(debugFont, "Frames Per Second:" + fps, new Vector2(0, 0), Color.White);
-                    debugSB.DrawString(debugFont, "SamplerState:" + gameData.Settings.DesiredSamplerState, new Vector2(0, 20), Color.White);
+                    debugSB.DrawString(debugFont, "Tile Below Player: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Player Position:" + player.position.X + "," + player.position.Y, new Vector2(0, 40), Color.White);
                     debugSB.DrawString(debugFont, "Player Rectangle Position:" + player.collRectangle.X +","+player.collRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);

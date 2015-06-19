@@ -270,21 +270,18 @@ namespace Adam
             this.gameTime = gameTime;
             this.map = map;
 
-            
-
             deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
             //Update Method is spread out!
             //Check the following things
-            DefineStats();
+            UpdateStats();
             CheckDead();
-            CheckTimers();
+            UpdateTimers();
             UpdateInput();
             UpdatePlayerPosition();
-            //DetectCollisionWithTerrain();
-            base.Update();
-            //CheckTerrainCollision(map);
-            DetectCollisions();
+            if (!isGhost)
+                base.Update();
+            UpdateCollisions();
             CreateWalkingParticles();
             Animate();
             SetEvolutionAttributes();
@@ -498,27 +495,7 @@ namespace Adam
                 offGroundTimer += gameTime.ElapsedGameTime.TotalSeconds;
             else offGroundTimer = 0;
 
-            if (!canFly)
-            {
-                //IF there is a tile below the player, he will start falling.
-                if (TileIndex + (map.mapTexture.Width * 2) < map.tileArray.Length)
-                    if (!map.tileArray[TileIndex + (map.mapTexture.Width * 2)].isSolid)
-                        velocity.Y += .2f * deltaTime;
-                    else
-                    {
-                        isFlying = false;
-                        if (CurrentAnimation == AnimationState.Jumping && !isJumping)
-                            CurrentAnimation = AnimationState.Still;
-                    }
-                //This is for the high jump mechanic, where the player jumps higher if he holds the spacebar.
-                if (isJumping)
-                {
-                    velocity.Y += .2f * deltaTime;
-                    if (InputHelper.IsKeyDown(Keys.Space) && offGroundTimer < .3f)
-                    { }
-                    else velocity.Y += .07f * deltaTime;
-                }
-            }
+
 
             //if the player falls off a ledge without jumping, do not allow him to jump, but give him some room to jump if he is fast enough.
             if (velocity.Y > 2f)
@@ -541,80 +518,6 @@ namespace Adam
                     if (velocity.Y < Jetpack.MaxSpeed)
                         velocity.Y = Jetpack.MaxSpeed;
                 }
-            }
-        }
-
-        /// <summary>
-        /// This method will check if the player is colliding with the terrain and prevent it.
-        /// </summary>
-        private void DetectCollisionWithTerrain()
-        {
-            Texture2D mapTexture = this.map.mapTexture;
-            //This defines the player position in the map. 
-            if (isGhost)
-                return;
-
-            int[] q = new int[12];
-            q[0] = TileIndex - mapTexture.Width - 1;
-            q[1] = TileIndex - mapTexture.Width;
-            q[2] = TileIndex - mapTexture.Width + 1;
-            q[3] = TileIndex - 1;
-            q[4] = TileIndex;
-            q[5] = TileIndex + 1;
-            q[6] = TileIndex + mapTexture.Width - 1;
-            q[7] = TileIndex + mapTexture.Width;
-            q[8] = TileIndex + mapTexture.Width + 1;
-            q[9] = TileIndex + mapTexture.Width + mapTexture.Width - 1;
-            q[10] = TileIndex + mapTexture.Width + mapTexture.Width;
-            q[11] = TileIndex + mapTexture.Width + mapTexture.Width + 1;
-
-            //check the tiles around the player for collision
-            foreach (int quadrant in q)
-            {
-                if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true && isPlayerDead == false)
-                {
-                    if (yRect.Intersects(map.tileArray[quadrant].rectangle))
-                    {
-                        if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
-                        {
-                            //if (velocity.Y >= .5f)
-                            position.Y = map.tileArray[quadrant].rectangle.Y - collRectangle.Height;
-                            //else position.Y = previousPosition.Y;
-                            velocity.Y = 0f;
-                            isJumping = false;
-                            isFlying = false;
-                            PlayStompSound();
-                        }
-                        if (position.Y > map.tileArray[quadrant].rectangle.Y) //hits top
-                        {
-                            //if (velocity.Y <= -.5f)
-                            position.Y = map.tileArray[quadrant].rectangle.Y + map.tileArray[quadrant].rectangle.Height + 1;
-                            //else position.Y = previousPosition.Y;
-                            velocity.Y = 0f;
-
-                        }
-                    }
-                    else if (xRect.Intersects(map.tileArray[quadrant].rectangle))
-                    {
-                        if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
-                        {
-                            //if (velocity.X >= .5f)
-                            position.X = map.tileArray[quadrant].rectangle.X - collRectangle.Width - 1;
-                            //else position.X = previousPosition.X;
-                            velocity.X = 0f;
-                        }
-                        if (position.X > map.tileArray[quadrant].rectangle.X) //hits left
-                        {
-                            //if (velocity.X <= -.5f)
-                            position.X = map.tileArray[quadrant].rectangle.X + map.tileArray[quadrant].rectangle.Width + 1;
-                            //else position.X = previousPosition.X;
-                            velocity.X = 0f;
-
-
-                        }
-                    }
-                }
-
             }
         }
 
@@ -734,7 +637,7 @@ namespace Adam
             }
         }
 
-        public void DefineStats()
+        public void UpdateStats()
         {
         }
 
@@ -940,7 +843,7 @@ namespace Adam
             }
         }
 
-        private void CheckTimers()
+        private void UpdateTimers()
         {
             //If player became invincible for some reason, make him vincible again after the timer runs out.
             if (isInvincible)
@@ -976,7 +879,7 @@ namespace Adam
             }
         }
 
-        private void DetectCollisions()
+        private void UpdateCollisions()
         {
             count++;
             Console.WriteLine(count);
@@ -1041,7 +944,7 @@ namespace Adam
             if (weapon != null)
                 weapon.Draw(spriteBatch);
 
-            
+
         }
 
         public void TakeDamage(int damage)
@@ -1076,12 +979,6 @@ namespace Adam
                 velocity.Y = -5;
                 isJumping = true;
             }
-        }
-
-        //TODO
-        public void GetKnockedBack(Projectile projectile)
-        {
-
         }
 
         private void Respawn()
@@ -1123,7 +1020,6 @@ namespace Adam
             }
         }
 
-        //Getters and Setters
         public bool IsGameOver
         {
             get { return isPlayerDead; }
@@ -1204,7 +1100,7 @@ namespace Adam
         public void Jump()
         {
             //Make his velocity increase once
-            velocity.Y = -10f;
+            velocity.Y = -8f;
             //Move him away from the tiles so collision does not stop the jump
             collRectangle.Y -= 1;
             //Make him unable to jump again
@@ -1269,11 +1165,6 @@ namespace Adam
             health = 0;
             hasControl = false;
             isWaitingForRespawn = true;
-        }
-
-        public void GameOver()
-        {
-
         }
 
         private int GetTextureNumber(Evolution ev)
@@ -1392,8 +1283,46 @@ namespace Adam
 
         public float GravityStrength
         {
-            get { return 0; }
+            get
+            {
+                float gravity = 0;
+                if (!canFly)
+                {
+                    gravity = .2f;
+                    if (InputHelper.IsKeyDown(Keys.Space) && offGroundTimer < .3f)
+                    { }
+                    else gravity = .5f;
+                }
+                return gravity;
+            }
         }
+
+
+        public bool IsFlying
+        {
+            get
+            {
+                return isFlying;
+            }
+            set
+            {
+                isFlying = value;
+            }
+        }
+
+        public bool IsJumping
+        {
+            get
+            {
+                return isJumping;
+            }
+            set
+            {
+                isJumping = value;
+            }
+        }
+
+        public bool IsAboveTile { get; set; }
     }
 
 }
