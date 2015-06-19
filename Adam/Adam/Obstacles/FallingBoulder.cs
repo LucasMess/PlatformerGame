@@ -26,7 +26,7 @@ namespace Adam.Obstacles
         /// <param name="y"></param>
         public FallingBoulder(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Tiles/Obstacles/falling_boulder");
+            texture = ContentHelper.LoadTexture("Tiles/Obstacles/mesa_boulder");
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
@@ -67,7 +67,6 @@ namespace Adam.Obstacles
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             collRectangle = drawRectangle;
-            attackBox = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + drawRectangle.Height - 5, drawRectangle.Width - 16, 5);
 
             if (!hasFallen)
             {

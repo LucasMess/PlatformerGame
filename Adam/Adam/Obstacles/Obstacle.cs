@@ -49,7 +49,7 @@ namespace Adam.Obstacles
                 case DamageType.Sides:
                     break;
                 case DamageType.Bottom:
-                    attackBox = new Rectangle(drawRectangle.X + 2, drawRectangle.Y + drawRectangle.Height - 5, drawRectangle.Width - 4, 10);
+                    attackBox = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + drawRectangle.Height - 20, drawRectangle.Width - 16, 10);
                     break;
                 default:
                     break;

@@ -493,7 +493,12 @@ namespace Adam
             //if the player is flying, start timing the time his is off ground for the high jump mechanic. If he is not, reset the timer.
             if (isJumping)
                 offGroundTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            else offGroundTimer = 0;
+            else
+            {
+                offGroundTimer = 0;
+                if (CurrentAnimation == AnimationState.Jumping || CurrentAnimation == AnimationState.Falling)
+                    CurrentAnimation = AnimationState.Still;
+            }
 
 
 
@@ -931,8 +936,8 @@ namespace Adam
                 spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White);
             else spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
 
         DrawOtherThings:
             foreach (Particle z in particles)

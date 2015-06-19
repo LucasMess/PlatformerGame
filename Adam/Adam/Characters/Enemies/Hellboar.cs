@@ -32,7 +32,7 @@ namespace Adam.Characters.Enemies
             drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
-            singleTexture = texture;
+            singleTexture = ContentHelper.LoadTexture("Enemies/hellboar_single");
             CurrentEnemyType = EnemyType.Hellboar;
             animationData.FrameCount = new Vector2(3, 0);
 
@@ -146,7 +146,7 @@ namespace Adam.Characters.Enemies
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            DrawSurroundIndexes(spriteBatch);
+            //DrawSurroundIndexes(spriteBatch);
 
             Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
@@ -158,7 +158,7 @@ namespace Adam.Characters.Enemies
 
             base.Draw(spriteBatch);
 
-            
+
         }
 
 
