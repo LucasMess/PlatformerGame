@@ -365,6 +365,7 @@ namespace Adam
                 case 6: //vacant
                     break;
                 case 7: //ShortGrass
+                    emitsLight = true;
                     isVoid = true;
                     break;
                 case 8: //Metal
@@ -372,6 +373,7 @@ namespace Adam
                     break;
                 case 9://Tall Grass
                     isVoid = true;
+                    emitsLight = true;
                     break;
                 case 10: //Gold
                     startingPoint = new Vector2(0, 5);
@@ -529,6 +531,7 @@ namespace Adam
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
             sourceRectangle = new Rectangle((int)(position.X * tilesize), (int)(position.Y * tilesize), tilesize, tilesize);
+
 
         }
 

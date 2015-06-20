@@ -466,6 +466,10 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.Level:
+                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
+                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+                    lightingSB.End();
+
                     lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
                     map.DrawLights(lightingSB);
                     lightingSB.End();
@@ -521,12 +525,14 @@ namespace Adam
 
                     if (gameData.Settings.DesiredLight)
                     {
+                        Color sunny = new Color(255,238,186);
+                        Color hell = new Color(255, 129, 116);
                         BlendState WHATTHEFUCK = new BlendState();
                         WHATTHEFUCK.AlphaSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorDestinationBlend = Blend.Zero;
                         mainLightSB.Begin(SpriteSortMode.Immediate, WHATTHEFUCK, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.Orange);
+                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), sunny);
                         mainLightSB.End();
                     }
 

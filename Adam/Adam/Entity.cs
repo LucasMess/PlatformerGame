@@ -248,7 +248,7 @@ namespace Adam
         {
             if (map != null)
                 return (int)(collRectangle.Center.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(collRectangle.Center.X / Game1.Tilesize);
-            else throw new Exception("Map is null");
+            else return 0;
         }
 
         /// <summary>

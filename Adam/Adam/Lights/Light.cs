@@ -38,7 +38,7 @@ namespace Adam
         public void Load(ContentManager Content)
         {
             this.Content = Content;
-            texture = Content.Load<Texture2D>("Tiles/shadow10");
+            texture = Content.Load<Texture2D>("Tiles/shadow_pixel");
             origin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
