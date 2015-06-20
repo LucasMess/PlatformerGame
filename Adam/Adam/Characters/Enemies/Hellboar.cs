@@ -20,7 +20,7 @@ namespace Adam.Characters.Enemies
 
         enum AnimationState
         {
-            Idle, Walking,
+            Idle, Walking, Transforming,
         }
 
         AnimationState CurrentAnimation = AnimationState.Idle;
@@ -73,31 +73,39 @@ namespace Adam.Characters.Enemies
 
         private void WalkRandomly()
         {
-            idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (idleTimer > 5000 && !isWalking)
+            if (isAngry)
             {
-                idleTimer = 0;
-                isWalking = true;
-                CurrentAnimation = AnimationState.Walking;
-                velocity.X = 2f;
-
-                if (Map.randGen.Next(0, 2) == 0)
-                {
-                    velocity.X = -velocity.X;
-                    isFacingRight = false;
-                }
-                else
-                {
-                    isFacingRight = true;
-                }
-            }
-
-            if (idleTimer > 1000 && isWalking)
-            {
-                idleTimer = 0;
-                isWalking = false;
-                CurrentAnimation = AnimationState.Idle;
+                CurrentAnimation = AnimationState.Transforming;
                 velocity.X = 0;
+            }
+            else
+            {
+                idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (idleTimer > 5000 && !isWalking)
+                {
+                    idleTimer = 0;
+                    isWalking = true;
+                    CurrentAnimation = AnimationState.Walking;
+                    velocity.X = 2f;
+
+                    if (Map.randGen.Next(0, 2) == 0)
+                    {
+                        velocity.X = -velocity.X;
+                        isFacingRight = false;
+                    }
+                    else
+                    {
+                        isFacingRight = true;
+                    }
+                }
+
+                if (idleTimer > 1000 && isWalking)
+                {
+                    idleTimer = 0;
+                    isWalking = false;
+                    CurrentAnimation = AnimationState.Idle;
+                    velocity.X = 0;
+                }
             }
         }
 
@@ -139,6 +147,24 @@ namespace Adam.Characters.Enemies
                     {
                         animationData.CurrentFrame = 0;
                         sourceRectangle.X = 0;
+                    }
+                    break;
+                case AnimationState.Transforming:
+                    sourceRectangle.Y = sourceRectangle.Height * 2;
+                    animationData.SwitchFrame = 125;
+                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (animationData.FrameTimer >= animationData.SwitchFrame)
+                    {
+                        animationData.FrameTimer = 0;
+                        sourceRectangle.X += sourceRectangle.Width;
+                        animationData.CurrentFrame++;
+                    }
+
+                    if (animationData.CurrentFrame > animationData.FrameCount.X)
+                    {
+                        animationData.CurrentFrame = 3;
+                        sourceRectangle.X = sourceRectangle.Width * 3;
                     }
                     break;
             }
