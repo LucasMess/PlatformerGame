@@ -527,6 +527,9 @@ namespace Adam
                     {
                         Color sunny = new Color(255,238,186);
                         Color hell = new Color(255, 129, 116);
+                        Color winter = new Color(200, 243, 255);
+                        Color night = new Color(120, 127, 183);
+                        Color sunset = new Color(255, 155, 13);
                         BlendState WHATTHEFUCK = new BlendState();
                         WHATTHEFUCK.AlphaSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;
