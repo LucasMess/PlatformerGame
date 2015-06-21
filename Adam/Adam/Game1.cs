@@ -506,7 +506,7 @@ namespace Adam
                         WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorDestinationBlend = Blend.Zero;
                         mainLightSB.Begin(SpriteSortMode.Immediate, WHATTHEFUCK, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.Orange);
+                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                         mainLightSB.End();
                     }
 

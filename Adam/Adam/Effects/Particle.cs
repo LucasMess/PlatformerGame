@@ -114,7 +114,7 @@ namespace Adam
             color = new Color(255, 255, 255, 255);
             if (player.isFacingRight)
                 position = new Vector2(player.collRectangle.X + randGen.Next(-5, 5) + player.collRectangle.Width - 8, player.collRectangle.Y + randGen.Next(-5, 5));
-            else position = new Vector2(player.collRectangle.X + randGen.Next(-5, 5), player.collRectangle.Y + randGen.Next(-5, 5));
+            else position = new Vector2(player.collRectangle.Center.X + randGen.Next(0, 20), player.collRectangle.Y + randGen.Next(-5, 5));
             drawRectangle = new Rectangle((int)position.X, (int)position.Y, 8, 8);
 
         }
@@ -126,8 +126,8 @@ namespace Adam
             CurrentParticle = ParticleType.MenuZZZ;
             texture = ContentHelper.LoadTexture("Effects/new_Z");
             color = new Color(255, 255, 255, 255);
-            position = new Vector2(rectangle.X + randGen.Next(-50, 50) + rectangle.Width - 80, rectangle.Y + randGen.Next(-50, 50));
-            this.drawRectangle = new Rectangle((int)position.X, (int)position.Y, 80, 80);
+            position = new Vector2(rectangle.X + randGen.Next(-5, 5) + rectangle.Width - 8, rectangle.Y + randGen.Next(-5, 5));
+            this.drawRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
         }
 
         public void CreateWeaponBurstEffect(Player player, Projectile proj, ContentManager Content)
@@ -310,7 +310,7 @@ namespace Adam
                     drawRectangle.X = (int)position.X;
                     drawRectangle.Y = (int)position.Y;
                     position += velocity;
-                    velocity = new Vector2(randGen.Next(-5, 6), -2f);
+                    velocity = new Vector2(randGen.Next(-1, 2), -1f);
                     opacityTimer += gameTime.ElapsedGameTime.TotalSeconds;
                     if (opacityTimer > 1)
                     {

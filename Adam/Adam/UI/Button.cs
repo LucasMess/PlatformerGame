@@ -39,7 +39,7 @@ namespace Adam
         public bool IsPressed()
         {
             MouseState mouseState = Mouse.GetState();
-            Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
+            Rectangle mouseRect = new Rectangle(mouseState.X / 2, mouseState.Y / 2, 1, 1);
             if (mouseState.LeftButton == ButtonState.Pressed && mouseRect.Intersects(rectangle))
             {
                 return true;
@@ -54,11 +54,11 @@ namespace Adam
         public void Update()
         {
             MouseState mouseState = Mouse.GetState();
-            Rectangle mouseRect = new Rectangle(mouseState.X * (Game1.DefaultResWidth/Game1.PrefferedResWidth), mouseState.Y * (Game1.DefaultResHeight/Game1.PrefferedResHeight), 1, 1);
+            Rectangle mouseRect = new Rectangle(mouseState.X/2, mouseState.Y/2, 1, 1);
             if (mouseRect.Intersects(rectangle))
             {
                 sourceRectangle.X = 230;
-                textColor = new Color(97, 34, 34);;
+                textColor = new Color(0, 0, 0);;
 
                 if (t1 == true)
                     r1 += .1f;
@@ -84,13 +84,13 @@ namespace Adam
             else
             {
                 sourceRectangle.X = 0;
-                textColor = new Color(196, 69, 69);;
+                textColor = new Color(68, 77, 114);;
             }
         }
 
         public void SetPosition(Vector2 pos)
         {
-            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 300, 100);
+            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 300, 50);
         }
 
         public void SetText(string text)

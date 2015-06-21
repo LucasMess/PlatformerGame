@@ -48,6 +48,7 @@ namespace Adam
         Rectangle appleRect, appleSource;
         GameTime gameTime;
         double frameTimer;
+        double appleTimer;
         int switchFrame, currentFrame;
         bool isSongPlaying;
         bool mouseButtonReleased;
@@ -122,7 +123,7 @@ namespace Adam
             int scale = 8;
             appleRect = new Rectangle(5 * scale, 36 * scale, 16 * scale, 16 * scale);
             appleSource = new Rectangle(0, 0, 16, 16);
-            adamRect = new Rectangle(20 * scale, 17 * scale, adam.Width / 4 * scale, adam.Height * scale);
+            adamRect = new Rectangle(20 * scale, 16 * scale, (adam.Width / 4) * scale, adam.Height * scale);
             sourceRect = new Rectangle(0, 0, 24, 36);
 
         }
@@ -162,7 +163,7 @@ namespace Adam
             smoothPixels.SetPosition(first);
             lighting.SetPosition(second);
             fullscreen.SetPosition(third);
-            
+
             backButton.SetPosition(fifth);
 
             level1.SetPosition(first);
@@ -370,8 +371,7 @@ namespace Adam
                     break;
             }
 
-            AnimateAdam();
-            SleepEffect();
+            AnimateSprites();
 
             if (!isSongPlaying && game1.CurrentGameState == GameState.MainMenu)
             {
@@ -387,15 +387,17 @@ namespace Adam
 
         }
 
-        public void AnimateAdam()
+        int appleFrame;
+        public void AnimateSprites()
         {
             switchFrame = 600;
             frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            appleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (frameTimer > switchFrame)
             {
                 frameTimer = 0;
-                sourceRect.X += adamRect.Width;
+                sourceRect.X += sourceRect.Width;
                 currentFrame++;
             }
 
@@ -404,20 +406,24 @@ namespace Adam
                 sourceRect.X = 0;
                 currentFrame = 0;
             }
-        }
 
-        public void SleepEffect()
-        {
-            //zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            //if (zzzTimer > 1)
-            //{
+            if (appleTimer > 150)
+            {
+                appleSource.X += appleSource.Width;
+                appleTimer = 0;
+                appleFrame++;
+            }
 
-            //}
+            if (appleFrame > 3)
+            {
+                appleSource.X = 0;
+                appleFrame = 0;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-           
+
         }
 
 
