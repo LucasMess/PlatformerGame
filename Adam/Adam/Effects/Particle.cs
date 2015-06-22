@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Adam;
 using Adam.Interactables;
 using Adam.Misc.Interfaces;
+using Adam.Obstacles;
 
 namespace Adam
 {
@@ -48,6 +49,7 @@ namespace Adam
             MusicNotes,
             JetpackSmoke,
             Blood,
+            Lava,
         }
         public ParticleType CurrentParticle;
 
@@ -278,6 +280,19 @@ namespace Adam
             opacity = 1f;
         }
 
+        public void CreateLavaParticle(Lava lava, Map map)
+        {
+            CurrentParticle = ParticleType.Lava;
+            //texture = ContentHelper.LoadTexture("Effects/lava");
+            texture = Game1.DefaultTexture;
+            drawRectangle = new Rectangle(lava.collRectangle.Center.X, lava.collRectangle.Y + 16, 16, 16);
+            velocity.Y = -10f;
+            velocity.X = Map.randGen.Next(-2, 3);
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 10f;
+            this.map = map;
+        }
+
         public void Update(GameTime gameTime)
         {
             switch (CurrentParticle)
@@ -465,6 +480,20 @@ namespace Adam
                         velocity.Y = 0;
                         dead = true;
                     }
+                    break;
+                case ParticleType.Lava:
+                    position += velocity;
+
+                    drawRectangle.X = (int)position.X;
+                    drawRectangle.Y = (int)position.Y;
+
+                    collRectangle = drawRectangle;
+
+                    velocity.Y += .3f;
+
+                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (opacity <= 0)
+                        toDelete = true;
                     break;
             }
         }

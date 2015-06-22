@@ -10,6 +10,8 @@ namespace Adam.Obstacles
 {
     class Lava : Obstacle
     {
+        double particleTimer;
+        bool isOnTop;
 
         public Lava(int x, int y)
         {
@@ -24,6 +26,15 @@ namespace Adam.Obstacles
             {
                 player.KillAndRespawn();
                 //TODO: Add player.PlayBurningSound();
+            }
+
+            particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (particleTimer > Map.randGen.Next(3,8) && map.particles.Count < 1000)
+            {
+                Particle par = new Particle();
+                par.CreateLavaParticle(this, map);
+                map.particles.Add(par);
+                particleTimer = 0;
             }
         }
 
