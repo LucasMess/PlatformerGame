@@ -469,6 +469,12 @@ namespace Adam
                 tile.DefineTexture();
             }
 
+            //Check lava to see if it is on top for lava effects.
+            foreach (Lava lava in entities.OfType<Lava>())
+            {
+                lava.CheckOnTop(array, this);
+            }
+
         }
 
         public void LoadLights()

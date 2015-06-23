@@ -11,11 +11,16 @@ namespace Adam.Obstacles
     class Lava : Obstacle
     {
         double particleTimer;
+        double restartTime;
         bool isOnTop;
+
 
         public Lava(int x, int y)
         {
             collRectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
+            particleTimer = Map.randGen.Next(0, 8);
+            restartTime = Map.randGen.Next(5, 8);
+
         }
 
         public override void Update(GameTime gameTime, Player player, Map map)
@@ -25,11 +30,13 @@ namespace Adam.Obstacles
             if (IsTouching)
             {
                 player.KillAndRespawn();
-                //TODO: Add player.PlayBurningSound();
             }
 
+            if (!isOnTop)
+                return;
+
             particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (particleTimer > Map.randGen.Next(3,8) && map.particles.Count < 1000)
+            if (particleTimer > restartTime)
             {
                 Particle par = new Particle();
                 par.CreateLavaParticle(this, map);
@@ -38,9 +45,15 @@ namespace Adam.Obstacles
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void CheckOnTop(Tile[] array, Map map)
         {
-            //Blank because it is in the animated tile.
+            this.map = map;
+            int indexAbove = TileIndex - map.mapTexture.Width;
+            if (array[indexAbove].ID == 0)
+            {
+                this.isOnTop = true;
+                Console.WriteLine("Tile above: " + array[indexAbove].ID +" "+array[TileIndex].ID+ " "+isOnTop );
+            }
         }
     }
 }
