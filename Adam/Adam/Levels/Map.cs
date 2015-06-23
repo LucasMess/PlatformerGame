@@ -110,8 +110,8 @@ namespace Adam
                 case Level.Level0:
                     break;
                 case Level.Level1:
-                    mapTexture = Content.Load<Texture2D>("Levels/1-1_main");
-                    wall = Content.Load<Texture2D>("Levels/1-1_wall");
+                    mapTexture = Content.Load<Texture2D>("Levels/1-2_main");
+                    wall = Content.Load<Texture2D>("Levels/1-2_wall");
                     levelTheme = Content.Load<Song>("Music/Vivacity");
                     fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
                     timer = new GameTimer(300);
