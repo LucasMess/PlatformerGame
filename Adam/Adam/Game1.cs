@@ -47,7 +47,7 @@ namespace Adam
         SpriteFont debugFont, UIFont;
         Camera camera;
         public Vector2 monitorRes;
-        RenderTarget2D mainRenderTarget, maxRenderTarget, lightingRenderTarget, interfaceRenderTarget;
+        RenderTarget2D mainRenderTarget, lightingRenderTarget;
         Menu menu;
         Thread reloadThread;
         Thread backgroundUpdateThread;
@@ -169,11 +169,7 @@ namespace Adam
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            maxRenderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080,
-                false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
             lightingRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
-                false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            interfaceRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
                 false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
 
             //Initialize Spritebatches
@@ -211,10 +207,6 @@ namespace Adam
             debug = new GameDebug(debugFont, monitorRes, blackScreen);
 
             CurrentLevel = Level.Level0;
-            //loadingScreen = new LoadingScreen(monitorResolution, Content);
-            //loadThread = new Thread(new ThreadStart(FirstLoad));
-            //loadThread.IsBackground = true;
-            //loadThread.Start();
 
         }
 
@@ -390,7 +382,7 @@ namespace Adam
                     DrawToMainRenderTarget(mainRenderTarget);
                     break;
                 case GameState.MainMenu:
-                    DrawToMaxRenderTarget(maxRenderTarget);
+                    DrawToMainRenderTarget(mainRenderTarget);
                     break;
                 case GameState.LevelGen:
                     DrawToMainRenderTarget(mainRenderTarget);
@@ -417,6 +409,9 @@ namespace Adam
                     gameSB.End();
                     break;
                 case GameState.MainMenu:
+                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    menu.DrawBackground(backgroundSB);
+                    backgroundSB.End();
                     break;
                 case GameState.Level:
                     backgroundSB.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,SamplerState.PointClamp, DepthStencilState.Default,RasterizerState.CullCounterClockwise);
@@ -437,21 +432,6 @@ namespace Adam
 
                     break;
             }
-
-            //Return the current RenderTarget to the default
-            GraphicsDevice.SetRenderTarget(null);
-        }
-
-        protected void DrawToMaxRenderTarget(RenderTarget2D renderTarget)
-        {
-            //Change RenderTarget to this from the default
-            GraphicsDevice.SetRenderTarget(renderTarget);
-            //Set up the background color
-            GraphicsDevice.Clear(Color.Peru);
-
-            backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, null);
-            menu.DrawBackground(backgroundSB);
-            backgroundSB.End();
 
             //Return the current RenderTarget to the default
             GraphicsDevice.SetRenderTarget(null);
@@ -509,8 +489,8 @@ namespace Adam
                     break;
                 case GameState.MainMenu:
                     //Draw the MaxRenderTarget
-                    backgroundSB.Begin();
-                    backgroundSB.Draw(maxRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
+                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    backgroundSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     backgroundSB.End();
 
                     mainSB.Begin();

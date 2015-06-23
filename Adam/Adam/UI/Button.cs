@@ -11,7 +11,7 @@ namespace Adam
 {
     class Button
     {
-        public enum SettingsState {ON, OFF}
+        public enum SettingsState { ON, OFF }
         public SettingsState currentSettingsState = SettingsState.OFF;
         public bool wasPressed;
 
@@ -38,9 +38,7 @@ namespace Adam
 
         public bool IsPressed()
         {
-            MouseState mouseState = Mouse.GetState();
-            Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
-            if (mouseState.LeftButton == ButtonState.Pressed && mouseRect.Intersects(rectangle))
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && MouseRectangle.Intersects(rectangle))
             {
                 return true;
             }
@@ -53,12 +51,10 @@ namespace Adam
 
         public void Update()
         {
-            MouseState mouseState = Mouse.GetState();
-            Rectangle mouseRect = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
-            if (mouseRect.Intersects(rectangle))
+            if (MouseRectangle.Intersects(rectangle))
             {
                 sourceRectangle.X = 230;
-                textColor = Color.Gray;
+                textColor = new Color(0, 0, 0); ;
 
                 if (t1 == true)
                     r1 += .1f;
@@ -84,13 +80,25 @@ namespace Adam
             else
             {
                 sourceRectangle.X = 0;
-                textColor = Color.White;
+                textColor = new Color(68, 77, 114); ;
             }
         }
 
-        public void SetPosition(int x, int y)
+        public void SetPosition(Vector2 pos)
         {
-            rectangle = new Rectangle(x, y, 300, 100);
+            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 300, 50);
+        }
+
+        private Rectangle MouseRectangle
+        {
+            get
+            {
+                MouseState mouseState = Mouse.GetState();
+                double widthRatio = ((double)Game1.DefaultResWidth / (double)Game1.PrefferedResWidth);
+                double heightRatio = ((double)Game1.DefaultResHeight / (double)Game1.PrefferedResHeight);
+                Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio),(int)( mouseState.Y * heightRatio), 1, 1);
+                return mouseRect;
+            }
         }
 
         public void SetText(string text)
@@ -99,23 +107,19 @@ namespace Adam
             textOrigin = font.MeasureString(text) / 2;
             textPos = new Vector2(rectangle.Center.X, rectangle.Center.Y);
 
-            float textX = textPos.X - textOrigin.X*scale;
-            float textY = textPos.Y - textOrigin.Y*scale; 
+            float textX = textPos.X - textOrigin.X * scale;
+            float textY = textPos.Y - textOrigin.Y * scale;
 
-            leaf1 = new Rectangle((int)(textX - texture.Width), (int)textY, texture.Width, texture.Height);
-            leaf2 = new Rectangle((int)(textX + textOrigin.X * 2 * scale), (int)textY, texture.Width, texture.Height);
+            leaf1 = new Rectangle((int)(textX - 32), (int)textY, 32, 32);
+            leaf2 = new Rectangle((int)(textX + textOrigin.X * 2 * scale), (int)textY, 32, 32);
 
-            leafOrigin = new Vector2(texture.Width / 2, texture.Height / 2);
+            leafOrigin = new Vector2(16, 16);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //Debug
-            //spriteBatch.Draw(texture, rectangle, Color.White);
-
-
-            spriteBatch.Draw(texture, leaf1, null, Color.White,0, new Vector2(0,0), SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, leaf2, null, Color.White, 0, new Vector2(0,0), SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(texture, leaf1, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, leaf2, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             spriteBatch.DrawString(font, text, textPos, textColor, 0, textOrigin, scale, SpriteEffects.None, 0);
         }
 

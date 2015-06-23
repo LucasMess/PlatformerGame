@@ -65,6 +65,7 @@ namespace Adam
         public List<Key> keyList = new List<Key>();
         public List<NonPlayableCharacter> noobList = new List<NonPlayableCharacter>();
         public List<Entity> entities = new List<Entity>();
+        public List<Particle> particles = new List<Particle>();
         Weapon weapon = new Weapon();
         ContentManager Content;
         public GameTime gameTime;
@@ -468,6 +469,12 @@ namespace Adam
                 tile.DefineTexture();
             }
 
+            //Check lava to see if it is on top for lava effects.
+            foreach (Lava lava in entities.OfType<Lava>())
+            {
+                lava.CheckOnTop(array, this);
+            }
+
         }
 
         public void LoadLights()
@@ -693,27 +700,6 @@ namespace Adam
             }
         }
 
-        public void PlayWalkingSounds()
-        {
-            //walkingSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            //if (walkingSoundTimer > 500)
-            //{
-            //    if (player.playerTileIndex + map.Width + map.Width > 0 && player.playerTileIndex + map.Width + map.Width < tileArray.Length)
-            //    {
-            //        if (tileArray[player.playerTileIndex + map.Width + map.Width].ID == 1 && (Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.A)))
-            //        {
-            //            grassSound.Play();
-            //            walkingSoundTimer = 0;
-            //        }
-            //        if (tileArray[player.playerTileIndex + map.Width + map.Width].ID == 2 && (Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.A)))
-            //        {
-            //            stoneSound.Play();
-            //            walkingSoundTimer = 0;
-            //        }
-            //    }
-            //}
-        }
-
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
             if (player.hasChronoshifted)
@@ -721,13 +707,11 @@ namespace Adam
 
             this.Content = Game1.Content;
             this.gameTime = gameTime;
-            this.player = player;
             popUp.Update(gameTime, player);
             background.Update(camera);
             UpdateInBackground();
             if (apple != null)
                 apple.Update(player, gameTime, this);
-            PlayWalkingSounds();
 
             if (player.isPlayerDead == false)
             {
@@ -824,6 +808,14 @@ namespace Adam
                     entities.Remove(pow);
                     break;
                 }
+            }
+
+            for (int i = particles.Count - 1; i >= 0; i--)
+            {
+                Particle p = particles[i];
+                p.Update(gameTime);
+                if (p.ToDelete())
+                    particles.Remove(p);
             }
 
             foreach (var vine in climbablesList)
@@ -986,6 +978,10 @@ namespace Adam
             foreach (Particle effect in effectList)
             {
                 effect.Draw(spriteBatch);
+            }
+            foreach (Particle par in particles)
+            {
+                par.Draw(spriteBatch);
             }
             foreach (Projectile proj in projectileList)
             {
