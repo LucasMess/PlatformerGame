@@ -59,8 +59,8 @@ namespace Adam
 
         public Overlay()
         {
-            screenWidth = Game1.PrefferedResWidth;
-            screenHeight = Game1.PrefferedResHeight;
+            screenWidth = Game1.DefaultResWidth;
+            screenHeight = Game1.DefaultResHeight;
         }
 
         public void Load()
@@ -418,7 +418,7 @@ namespace Adam
             spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + outlineWidth), outlineColor);
             spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor);
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X,position.Y+10), fontColor);
+            spriteBatch.DrawString(font, text, new Vector2(position.X,position.Y), fontColor);
         }
     }
 

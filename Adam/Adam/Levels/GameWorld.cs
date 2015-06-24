@@ -122,7 +122,7 @@ namespace Adam
                     wall = Content.Load<Texture2D>("Levels/1-1_wall");
                     levelTheme = Content.Load<Song>("Music/Vivacity");
                     fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
-                    timer = new GameTimer(300);
+                    timer = new GameTimer(600);
                     wantClouds = true;
                     break;
                 case Level.Level2and1:
@@ -130,7 +130,7 @@ namespace Adam
                     wall = Content.Load<Texture2D>("Levels/2-1_wall");
                     levelTheme = Content.Load<Song>("Music/Desert City");
                     //fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
-                    timer = new GameTimer(300);
+                    timer = new GameTimer(600);
                     wantClouds = true;
                     break;
                 case Level.Level3and1:
@@ -1074,11 +1074,6 @@ namespace Adam
                     isPlayingFastTheme = true;
                 }
             }
-        }
-
-        public void WarnOutOfTime()
-        {
-
         }
 
         public void RespawnEnemies()

@@ -197,6 +197,9 @@
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />
     <Compile Include="UI\NewButton.cs" />
+    <Compile Include="UI\Overlay Elements\Coin.cs" />
+    <Compile Include="UI\Overlay Elements\Heart.cs" />
+    <Compile Include="UI\Overlay Elements\Hourglass.cs" />
     <Compile Include="UI\Overlay.cs" />
     <Compile Include="Levels\GameWorld.cs" />
     <Compile Include="UI\Cursor.cs" />
