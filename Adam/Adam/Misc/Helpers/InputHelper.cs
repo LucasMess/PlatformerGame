@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,17 @@ namespace Adam
             if (mouse.LeftButton == ButtonState.Released)
                 return true;
             else return false;
+        }
+        public static Rectangle MouseRectangle
+        {
+            get
+            {
+                MouseState mouseState = Mouse.GetState();
+                double widthRatio = ((double)Game1.DefaultResWidth / (double)Game1.PrefferedResWidth);
+                double heightRatio = ((double)Game1.DefaultResHeight / (double)Game1.PrefferedResHeight);
+                Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio), (int)(mouseState.Y * heightRatio), 1, 1);
+                return mouseRect;
+            }
         }
 
     }

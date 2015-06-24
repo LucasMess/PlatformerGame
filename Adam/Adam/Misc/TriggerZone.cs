@@ -10,7 +10,7 @@ namespace Adam
     class TriggerZone
     {
         Rectangle rectangle;
-        Map map;
+        GameWorld map;
         int ID;
         int incrementingWidth;
         int incrementingHeight;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adam.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace Adam.GameData
 {
-    class GameDataManager
+    public class GameDataManager
     {
         Save[] saves;
         Settings settings;
@@ -93,5 +94,6 @@ namespace Adam.GameData
         {
             get { return saves[SelectedSave]; }
         }
+
     }
 }

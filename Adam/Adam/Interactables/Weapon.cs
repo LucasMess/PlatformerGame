@@ -22,7 +22,7 @@ namespace Adam
         ContentManager Content;
         Vector2 origin;
         Player player;
-        Map map;
+        GameWorld map;
         GameTime gameTime;
         double fireTimer;
         bool isFlipped;
@@ -109,7 +109,7 @@ namespace Adam
             }
         }
 
-        public void Update(Player player, Map map, GameTime gameTime)
+        public void Update(Player player, GameWorld map, GameTime gameTime)
         {
             this.player = player;
             this.gameTime = gameTime;

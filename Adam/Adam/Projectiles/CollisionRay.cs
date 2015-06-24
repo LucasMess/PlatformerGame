@@ -9,7 +9,7 @@ namespace Adam.Projectiles
 {
     static class CollisionRay
     {
-        public static bool IsPlayerInSight(Enemy enemy, Player player, Map map, out List<Rectangle> rects)
+        public static bool IsPlayerInSight(Enemy enemy, Player player, GameWorld map, out List<Rectangle> rects)
         {
             Rectangle rect = new Rectangle(enemy.collRectangle.Center.X, enemy.collRectangle.Center.Y, 1, 1);
             rects = new List<Rectangle>();

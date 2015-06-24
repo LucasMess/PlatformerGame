@@ -17,7 +17,7 @@ namespace Adam.Obstacles
             texture = ContentHelper.LoadTexture("Tiles/spikes");
         }
 
-        public override void Update(GameTime gameTime, Player player, Map map)
+        public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 

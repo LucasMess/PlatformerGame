@@ -114,9 +114,9 @@ namespace Adam
         public Level CurrentLevel;
 
         //Game Variables
-        Map map;
+        GameWorld map;
         Session session;
-        GameDataManager gameData;
+        public GameDataManager gameData;
         Player player;
         LoadingScreen loadingScreen;
         public static ContentManager Content;
@@ -160,8 +160,8 @@ namespace Adam
             DefaultTexture = ContentHelper.LoadTexture("Tiles/temp");
             //Initialize all instances
             camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
-            menu = new Menu(monitorRes);
-            map = new Map(GraphicsDevice, monitorRes);
+            menu = new Menu(this);
+            map = new GameWorld(GraphicsDevice, monitorRes);
             player = new Player();
             overlay = new Overlay();
             cutscene = new Cutscene();
@@ -216,7 +216,7 @@ namespace Adam
         }
 
 
-        public void ReloadMap(GameState desiredGameState, Level desiredLevel)
+        public void ChangeState(GameState desiredGameState, Level desiredLevel)
         {
             CurrentGameState = GameState.LoadingScreen;
             CurrentLevel = desiredLevel;
@@ -224,7 +224,7 @@ namespace Adam
             hasLoadedContent = false;
             loadingScreen.Restart();
 
-            map = new Map(GraphicsDevice, monitorRes);
+            map = new GameWorld(GraphicsDevice, monitorRes);
             player = new Player();
 
             reloadThread = new Thread(new ThreadStart(BackgroundMapLoad));
@@ -288,7 +288,7 @@ namespace Adam
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
-                ReloadMap(GameState.MainMenu, Level.Level0);
+                ChangeState(GameState.MainMenu, Level.Level0);
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)
@@ -339,7 +339,7 @@ namespace Adam
                     //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
-                        ReloadMap(GameState.MainMenu, Level.Level0);
+                        ChangeState(GameState.MainMenu, Level.Level0);
                     break;
                 case GameState.Multiplayer:
 
@@ -410,7 +410,7 @@ namespace Adam
                     break;
                 case GameState.MainMenu:
                     backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    menu.DrawBackground(backgroundSB);
+                    menu.Draw(backgroundSB);
                     backgroundSB.End();
                     break;
                 case GameState.Level:
@@ -492,10 +492,6 @@ namespace Adam
                     backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     backgroundSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     backgroundSB.End();
-
-                    mainSB.Begin();
-                    menu.Draw(mainSB);
-                    mainSB.End();
                     break;
                 case GameState.Level:
                     //Draw the rendertarget

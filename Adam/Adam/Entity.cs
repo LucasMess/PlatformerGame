@@ -30,7 +30,7 @@ namespace Adam
         public Rectangle collRectangle;
         protected Rectangle sourceRectangle;
         protected Animation animation;
-        protected Map map;
+        protected GameWorld map;
         public Vector2 velocity;
 
         public Rectangle yRect, xRect;
@@ -120,7 +120,7 @@ namespace Adam
         /// <param name="map">The map the entity is in.</param>
         /// <param name="tile">Tile that entity collided with.</param>
         /// <returns>The location of the collision.</returns>
-        public CollisionLocation CheckTerrainCollision(Map map, out Tile tile)
+        public CollisionLocation CheckTerrainCollision(GameWorld map, out Tile tile)
         {
             Texture2D mapTexture = map.mapTexture;
 
@@ -214,7 +214,7 @@ namespace Adam
         /// </summary>
         /// <param name="map">Map the entity is in.</param>
         /// <returns></returns>
-        public bool IsTouchingTerrain(Map map)
+        public bool IsTouchingTerrain(GameWorld map)
         {
             int[] q = GetNearbyTileIndexes(map);
 
@@ -268,7 +268,7 @@ namespace Adam
         /// </summary>
         /// <param name="map">The map the entity is in.</param>
         /// <returns></returns>
-        public int[] GetNearbyTileIndexes(Map map)
+        public int[] GetNearbyTileIndexes(GameWorld map)
         {
             int width = map.mapTexture.Width;
             int startingIndex = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) - width - 1;
@@ -339,7 +339,7 @@ namespace Adam
         /// If the entity is simply colliding with terrain anywhere, it will raise an event.
         /// </summary>
         /// <param name="map">The map the entity is in.</param>
-        public void CheckSimpleTerrainCollision(Map map)
+        public void CheckSimpleTerrainCollision(GameWorld map)
         {
             int[] q = GetNearbyTileIndexes(map);
 

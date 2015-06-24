@@ -258,7 +258,7 @@ namespace Adam
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="map"></param>
-        public void Update(GameTime gameTime, Map map)
+        public void Update(GameTime gameTime, GameWorld map)
         {
             if (health < 0)
                 health = 0;
@@ -964,7 +964,7 @@ namespace Adam
             isInvincible = true;
             isReceivingInput = false;
             takeDamageSound.Play();
-            SpillBlood(Map.randGen.Next(3, 5));
+            SpillBlood(GameWorld.randGen.Next(3, 5));
         }
 
         public void TakeDamageAndKnockBack(int damage)
@@ -1164,7 +1164,7 @@ namespace Adam
                 particles.Add(eff);
             }
 
-            int rand = Map.randGen.Next(20, 30);
+            int rand = GameWorld.randGen.Next(20, 30);
             SpillBlood(rand);
 
 
@@ -1218,7 +1218,7 @@ namespace Adam
         {
             if (!goreSoundPlayed)
             {
-                int rand = Map.randGen.Next(0, 2);
+                int rand = GameWorld.randGen.Next(0, 2);
                 goreSounds[rand].Play();
                 goreSoundPlayed = true;
             }

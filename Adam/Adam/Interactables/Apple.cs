@@ -33,7 +33,7 @@ namespace Adam
             animation = new Animation(texture, rectangle, 200, 100, AnimationType.PlayInIntervals);
         }
 
-        public void Update(Player player, GameTime gameTime, Map map)
+        public void Update(Player player, GameTime gameTime, GameWorld map)
         {
             if (player.collRectangle.Intersects(rectangle))
             {

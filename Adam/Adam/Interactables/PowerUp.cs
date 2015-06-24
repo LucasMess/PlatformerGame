@@ -23,11 +23,11 @@ namespace Adam.Interactables
         protected double effectTimer;
         protected List<Particle> effects = new List<Particle>();
 
-        Map map;
+        GameWorld map;
 
         public PowerUp() { }
 
-        public virtual void Update(GameTime gameTime, Player player, Map map)
+        public virtual void Update(GameTime gameTime, Player player, GameWorld map)
         {
             this.map = map;
             drawRectangle.X += (int)velocity.X;

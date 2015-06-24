@@ -15,7 +15,7 @@ namespace Adam.GameData
         {
             playerStats = new PlayerStats();
             playerStats.SetToDefault();
-            currentLevel = Level.Level0;
+            currentLevel = Level.Level1;
         }
 
         public PlayerStats PlayerStats

@@ -145,12 +145,12 @@
     <Compile Include="Interactables\Food.cs" />
     <Compile Include="Levels\AnimatedTile.cs" />
     <Compile Include="Misc\Animation.cs" />
-    <Compile Include="Misc\ContentHelper.cs" />
+    <Compile Include="Misc\Helpers\ContentHelper.cs" />
     <Compile Include="GameData\GameDataManager.cs" />
     <Compile Include="GameData\Save.cs" />
     <Compile Include="Interactables\Apple.cs" />
     <Compile Include="Levels\Background.cs" />
-    <Compile Include="Misc\CalcHelper.cs" />
+    <Compile Include="Misc\Helpers\CalcHelper.cs" />
     <Compile Include="Misc\Interfaces\INewtonian.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
@@ -186,7 +186,7 @@
     <Compile Include="Interactables\Jetpack.cs" />
     <Compile Include="Interactables\JetpackPowerUp.cs" />
     <Compile Include="Interactables\Key.cs" />
-    <Compile Include="Misc\InputHelper.cs" />
+    <Compile Include="Misc\Helpers\InputHelper.cs" />
     <Compile Include="Interactables\PowerUp.cs" />
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
@@ -196,8 +196,9 @@
     <Compile Include="Obstacles\FallingBoulder.cs" />
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />
+    <Compile Include="UI\NewButton.cs" />
     <Compile Include="UI\Overlay.cs" />
-    <Compile Include="Levels\Map.cs" />
+    <Compile Include="Levels\GameWorld.cs" />
     <Compile Include="UI\Cursor.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Levels\Tile.cs" />
@@ -260,9 +261,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Misc\Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

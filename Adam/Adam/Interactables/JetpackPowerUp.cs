@@ -25,7 +25,7 @@ namespace Adam.Interactables
             velocity.Y = -10f;
         }
 
-        public override void Update(GameTime gameTime, Player player, Map map)
+        public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
             this.gameTime = gameTime;

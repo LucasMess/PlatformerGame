@@ -39,7 +39,7 @@ namespace Adam.Characters.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
+        public override void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
         {
             this.player = player;
             this.gameTime = gameTime;
@@ -81,7 +81,7 @@ namespace Adam.Characters.Enemies
                 CurrentAnimation = AnimationState.Walking;
                 velocity.X = 2f;
 
-                if (Map.randGen.Next(0, 2) == 0)
+                if (GameWorld.randGen.Next(0, 2) == 0)
                 {
                     velocity.X = -velocity.X;
                     isFacingRight = false;

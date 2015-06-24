@@ -18,12 +18,12 @@ namespace Adam.Obstacles
         public Lava(int x, int y)
         {
             collRectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
-            particleTimer = Map.randGen.Next(0, 8);
-            restartTime = Map.randGen.Next(5, 8);
+            particleTimer = GameWorld.randGen.Next(0, 8);
+            restartTime = GameWorld.randGen.Next(5, 8);
 
         }
 
-        public override void Update(GameTime gameTime, Player player, Map map)
+        public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 
@@ -45,7 +45,7 @@ namespace Adam.Obstacles
             }
         }
 
-        public void CheckOnTop(Tile[] array, Map map)
+        public void CheckOnTop(Tile[] array, GameWorld map)
         {
             this.map = map;
             int indexAbove = TileIndex - map.mapTexture.Width;

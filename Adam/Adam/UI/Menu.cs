@@ -10,37 +10,42 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Adam.Network;
+using Adam.UI;
+using Adam.GameData;
 
 namespace Adam
 {
     class Menu
     {
+        Vector2 first = new Vector2(550, 180);
+        Vector2 second = new Vector2(550, 220);
+        Vector2 third = new Vector2(550, 260);
+        Vector2 fourth = new Vector2(550, 300);
+        Vector2 fifth = new Vector2(550, 340);
+
         //Main Menu
-        Button play;
-        Button options;
-        Button quit;
-        Button multiplayer;
+        NewButton play;
+        NewButton options;
+        NewButton quit;
+        NewButton multiplayer;
 
         //Level Selector
-        Button level1;
-        Button level2;
-        Button level3;
-        Button level4;
+        NewButton save1;
+        NewButton save2;
+        NewButton save3;
 
         //Options
-        Button smoothPixels;
-        Button lighting;
-        Button fullscreen;
+        NewButton smoothPixels;
+        NewButton lighting;
+        NewButton fullscreen;
 
         //Multiplayer
-        Button hostGame;
-        Button joinGame;
-        Button connect;
+        NewButton hostGame;
+        NewButton joinGame;
+        NewButton connect;
 
-        Button backButton;
-
-        ContentManager Content;
-        Vector2 monitorResolution;
+        NewButton backButton;
+        List<NewButton> buttons = new List<NewButton>();
 
         Texture2D background, foreground, adam, apple;
         Song theme;
@@ -51,9 +56,8 @@ namespace Adam
         double appleTimer;
         int switchFrame, currentFrame;
         bool isSongPlaying;
-        bool mouseButtonReleased;
-        SoundEffect confirmSound, cursorSound, backSound, errorSound;
         SpriteFont font;
+        Game1 game1;
 
         List<Particle> zzzList = new List<Particle>();
         double zzzTimer;
@@ -61,52 +65,184 @@ namespace Adam
         enum MenuState { Main, Options, LevelSelector, MultiplayerSession }
         MenuState CurrentMenuState = MenuState.Main;
 
-        public Menu(Vector2 monitorResolution)
+        public Menu(Game1 game1)
         {
-            play = new Button();
-            quit = new Button();
-            options = new Button();
-            multiplayer = new Button();
+            this.game1 = game1;
+            
+            play = new NewButton(first, "Play");
+            play.MouseClicked += play_MouseClicked;
+            buttons.Add(play);
 
-            smoothPixels = new Button();
-            lighting = new Button();
-            fullscreen = new Button();
+            quit = new NewButton(second, "Quit");
+            quit.MouseClicked += quit_MouseClicked;
+            buttons.Add(quit);
 
-            backButton = new Button();
+            options = new NewButton(third, "Options");
+            options.MouseClicked += options_MouseClicked;
+            buttons.Add(options);
 
-            level1 = new Button();
-            level2 = new Button();
-            level3 = new Button();
-            level4 = new Button();
+            multiplayer = new NewButton(fourth, "Multiplayer");
+            multiplayer.MouseClicked += multiplayer_MouseClicked;
+            buttons.Add(multiplayer);
 
-            hostGame = new Button();
-            joinGame = new Button();
-            this.monitorResolution = monitorResolution;
+            smoothPixels = new NewButton(first, "Smooth Pixels: ");
+            smoothPixels.MouseClicked += smoothPixels_MouseClicked;
+            buttons.Add(smoothPixels);
 
+            lighting = new NewButton(second, "Lighting: ");
+            lighting.MouseClicked += lighting_MouseClicked;
+            buttons.Add(lighting);
+
+            fullscreen = new NewButton(third, "Fullscreen: ");
+            fullscreen.MouseClicked += fullscreen_MouseClicked;
+            fullscreen.IsActive = game1.gameData.Settings.IsFullscreen;
+            buttons.Add(fullscreen);
+
+            backButton = new NewButton(fifth, "Back");
+            backButton.MouseClicked += backButton_MouseClicked;
+            buttons.Add(backButton);
+
+            save1 = new NewButton(first, "Save 1");
+            save1.MouseClicked += level1_MouseClicked;
+            buttons.Add(save1);
+
+            save2 = new NewButton(second, "Save 2");
+            save2.MouseClicked += level2_MouseClicked;
+            buttons.Add(save2);
+
+            save3 = new NewButton(third, "Save 3");
+            save3.MouseClicked += level3_MouseClicked;
+            buttons.Add(save3);
+
+            hostGame = new NewButton(first, "Host Game");
+            hostGame.MouseClicked += hostGame_MouseClicked;
+            buttons.Add(hostGame);
+
+            joinGame = new NewButton(second, "Join Game");
+            joinGame.MouseClicked += joinGame_MouseClicked;
+            buttons.Add(joinGame);
+        }
+
+        void joinGame_MouseClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        void hostGame_MouseClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        void level4_MouseClicked()
+        {
+            game1.ChangeState(GameState.Level, Level.Level4);
+        }
+
+        void level3_MouseClicked()
+        {
+            game1.ChangeState(GameState.Level, Level.Level3);
+        }
+
+        void level2_MouseClicked()
+        {
+            game1.ChangeState(GameState.Level, Level.Level2);
+        }
+
+        void level1_MouseClicked()
+        {
+            game1.ChangeState(GameState.Level,Level.Level1);
+        }
+
+        void backButton_MouseClicked()
+        {
+            switch (CurrentMenuState)
+            {
+                case MenuState.Main:
+                    break;
+                case MenuState.Options:
+                    CurrentMenuState = MenuState.Main;
+                    break;
+                case MenuState.LevelSelector:
+                    CurrentMenuState = MenuState.Main;
+                    break;
+                case MenuState.MultiplayerSession:
+                    CurrentMenuState = MenuState.Main;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void fullscreen_MouseClicked()
+        {
+
+            switch (fullscreen.IsActive)
+            {
+                case true:
+                    fullscreen.IsActive = false;
+                    game1.gameData.Settings.IsFullscreen = false;
+                    game1.gameData.Settings.NeedsRestart = true;
+                    game1.gameData.Settings.HasChanged = true;
+                    break;
+                case false:
+                    fullscreen.IsActive = true;
+                    game1.gameData.Settings.IsFullscreen = true;
+                    game1.gameData.Settings.NeedsRestart = true;
+                    game1.gameData.Settings.HasChanged = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void lighting_MouseClicked()
+        {
+            switch (lighting.IsActive)
+            {
+                case true:
+                    lighting.IsActive = false;
+                    game1.gameData.Settings.DesiredLight = false;
+                    game1.gameData.Settings.NeedsRestart = true;
+                    game1.gameData.Settings.HasChanged = true;
+                    break;
+                case false:
+                    lighting.IsActive = true;
+                    game1.gameData.Settings.DesiredLight = true;
+                    game1.gameData.Settings.NeedsRestart = true;
+                    game1.gameData.Settings.HasChanged = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void smoothPixels_MouseClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        void multiplayer_MouseClicked()
+        {
+            CurrentMenuState = MenuState.MultiplayerSession;
+        }
+
+        void quit_MouseClicked()
+        {
+            game1.Exit();
+        }
+
+        void play_MouseClicked()
+        {
+            CurrentMenuState = MenuState.LevelSelector;
+        }
+
+        void options_MouseClicked()
+        {
+            CurrentMenuState = MenuState.Options;
         }
 
         public void Load(ContentManager Content)
         {
-            this.Content = Content;
-            play.Load(Content);
-            quit.Load(Content);
-            options.Load(Content);
-            multiplayer.Load(Content);
-
-            smoothPixels.Load(Content);
-            lighting.Load(Content);
-            fullscreen.Load(Content);
-
-            backButton.Load(Content);
-
-            level1.Load(Content);
-            level2.Load(Content);
-            level3.Load(Content);
-            level4.Load(Content);
-
-            SetPosition();
-            SetText();
-
             background = Content.Load<Texture2D>("Menu/menu_back");
             adam = Content.Load<Texture2D>("Menu/menu_adam");
             foreground = Content.Load<Texture2D>("Menu/menu_front");
@@ -115,10 +251,7 @@ namespace Adam
             theme = Content.Load<Song>("Music/Alchemists Tower");
             font = Content.Load<SpriteFont>("Fonts/button");
 
-            errorSound = Content.Load<SoundEffect>("Sounds/Menu/error_style_2_001");
-            confirmSound = Content.Load<SoundEffect>("Sounds/Menu/confirm_style_4_001");
-            cursorSound = Content.Load<SoundEffect>("Sounds/Menu/cursor_style_2");
-            backSound = Content.Load<SoundEffect>("Sounds/Menu/back_style_2_001");
+            
 
             int scale = 8;
             appleRect = new Rectangle(5 * scale, 36 * scale, 16 * scale, 16 * scale);
@@ -128,62 +261,12 @@ namespace Adam
 
         }
 
-        void SetText()
-        {
-            play.SetText("Play");
-            quit.SetText("Quit");
-            options.SetText("Options");
-            multiplayer.SetText("Multiplayer");
-
-            smoothPixels.SetText("Smooth Pixels: " + smoothPixels.currentSettingsState);
-            lighting.SetText("Lighting: " + lighting.currentSettingsState);
-            fullscreen.SetText("Fullscreen: " + fullscreen.currentSettingsState);
-
-            backButton.SetText("Back");
-
-            level1.SetText("Level 1 - Garden of Eden");
-            level2.SetText("Level 2 - The Desert");
-            level3.SetText("Level 3 - Debug");
-            level4.SetText("Level 4 - None");
-        }
-
-        void SetPosition()
-        {
-            Vector2 first = new Vector2(550, 180);
-            Vector2 second = new Vector2(550, 220);
-            Vector2 third = new Vector2(550, 260);
-            Vector2 fourth = new Vector2(550, 300);
-            Vector2 fifth = new Vector2(550, 340);
-
-            play.SetPosition(first);
-            quit.SetPosition(second);
-            options.SetPosition(third);
-            multiplayer.SetPosition(fourth);
-
-            smoothPixels.SetPosition(first);
-            lighting.SetPosition(second);
-            fullscreen.SetPosition(third);
-
-            backButton.SetPosition(fifth);
-
-            level1.SetPosition(first);
-            level2.SetPosition(second);
-            level3.SetPosition(third);
-            level4.SetPosition(fourth);
-
-            hostGame.SetPosition(first);
-            joinGame.SetPosition(second);
-        }
-
         public void Update(Game1 game1, GameTime gameTime, Settings settings)
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Released)
-                mouseButtonReleased = true;
-
             zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (zzzTimer > 1)
             {
-                zzzList.Add(new Particle(adamRect, Content));
+                zzzList.Add(new Particle(adamRect));
                 zzzTimer = 0;
             }
 
@@ -209,153 +292,23 @@ namespace Adam
                     quit.Update();
                     options.Update();
                     multiplayer.Update();
-
-                    if (play.IsPressed())
-                    {
-                        CurrentMenuState = MenuState.LevelSelector;
-                        mouseButtonReleased = false;
-                        cursorSound.Play();
-                    }
-                    if (quit.IsPressed())
-                    {
-                        cursorSound.Play();
-                        game1.Exit();
-                    }
-                    if (options.IsPressed())
-                    {
-                        mouseButtonReleased = false;
-                        CurrentMenuState = MenuState.Options;
-                        cursorSound.Play();
-                    }
-                    //if (levelEditor.IsPressed())
-                    //{
-                    //    game1.ReloadLevelGen(GameState.LevelGen);
-                    //    cursorSound.Play();
-                    //}
                     break;
                 case MenuState.LevelSelector:
-                    level1.Update();
-                    level2.Update();
-                    level3.Update();
-                    level4.Update();
+                    save1.Update();
+                    save2.Update();
+                    save3.Update();
                     backButton.Update();
-
-                    if (level1.IsPressed() && mouseButtonReleased == true)
-                    {
-                        game1.ReloadMap(GameState.Level, Level.Level1);
-                        confirmSound.Play();
-                    }
-                    if (level2.IsPressed())
-                    {
-                        game1.ReloadMap(GameState.Level, Level.Level2);
-                        confirmSound.Play();
-                    }
-                    if (level3.IsPressed())
-                    {
-                        game1.ReloadMap(GameState.Level, Level.Level3);
-                        confirmSound.Play();
-                    }
-                    if (level4.IsPressed())
-                    {
-                        game1.ReloadMap(GameState.Level, Level.Level4);
-                        confirmSound.Play();
-                    }
-
-                    if (backButton.IsPressed())
-                    {
-                        CurrentMenuState = MenuState.Main;
-                        backSound.Play();
-                    }
-
                     break;
                 case MenuState.Options:
-                    smoothPixels.SetText("Smooth Pixels: " + smoothPixels.currentSettingsState);
-                    lighting.SetText("Lighting: " + lighting.currentSettingsState);
-                    fullscreen.SetText("Fullscreen: " + fullscreen.currentSettingsState);
+                    smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
+                    lighting.Text = "Lighting: " + lighting.IsActive;
+                    fullscreen.Text = "Fullscreen: " + fullscreen.IsActive;
 
                     smoothPixels.Update();
                     lighting.Update();
                     fullscreen.Update();
 
                     backButton.Update();
-
-                    //Smooth Pixels
-                    if (smoothPixels.IsPressed() && smoothPixels.wasPressed == false && smoothPixels.currentSettingsState == Button.SettingsState.OFF)
-                    {
-                        smoothPixels.wasPressed = true;
-                        settings.DesiredSamplerState = SamplerState.LinearClamp;
-                        settings.HasChanged = true;
-                        cursorSound.Play();
-                    }
-
-                    if (smoothPixels.IsPressed() && smoothPixels.wasPressed == false && smoothPixels.currentSettingsState == Button.SettingsState.ON)
-                    {
-                        smoothPixels.wasPressed = true;
-                        settings.DesiredSamplerState = SamplerState.PointClamp;
-                        settings.HasChanged = true;
-                        cursorSound.Play();
-                    }
-
-                    if (settings.DesiredSamplerState == SamplerState.PointClamp)
-                        smoothPixels.currentSettingsState = Button.SettingsState.OFF;
-                    else smoothPixels.currentSettingsState = Button.SettingsState.ON;
-
-                    if (smoothPixels.IsPressed() == false)
-                        smoothPixels.wasPressed = false;
-
-                    //Lighting
-                    if (lighting.IsPressed() && lighting.wasPressed == false && lighting.currentSettingsState == Button.SettingsState.OFF)
-                    {
-                        lighting.wasPressed = true;
-                        settings.DesiredLight = true;
-                        settings.HasChanged = true;
-                        cursorSound.Play();
-                    }
-                    if (lighting.IsPressed() && lighting.wasPressed == false && lighting.currentSettingsState == Button.SettingsState.ON)
-                    {
-                        lighting.wasPressed = true;
-                        settings.DesiredLight = false;
-                        settings.HasChanged = true;
-                        cursorSound.Play();
-                    }
-
-                    if (settings.DesiredLight == false)
-                        lighting.currentSettingsState = Button.SettingsState.OFF;
-                    else lighting.currentSettingsState = Button.SettingsState.ON;
-
-                    if (lighting.IsPressed() == false)
-                        lighting.wasPressed = false;
-
-                    //fullscreen
-                    if (fullscreen.IsPressed() && fullscreen.wasPressed == false && fullscreen.currentSettingsState == Button.SettingsState.OFF && mouseButtonReleased)
-                    {
-                        fullscreen.wasPressed = true;
-                        settings.IsFullscreen = true;
-                        settings.HasChanged = true;
-                        settings.NeedsRestart = true;
-                        cursorSound.Play();
-                    }
-                    if (fullscreen.IsPressed() && fullscreen.wasPressed == false && fullscreen.currentSettingsState == Button.SettingsState.ON && mouseButtonReleased)
-                    {
-                        fullscreen.wasPressed = true;
-                        settings.IsFullscreen = false;
-                        settings.HasChanged = true;
-                        settings.NeedsRestart = true;
-                        cursorSound.Play();
-                    }
-
-                    if (settings.IsFullscreen == false)
-                        fullscreen.currentSettingsState = Button.SettingsState.OFF;
-                    else fullscreen.currentSettingsState = Button.SettingsState.ON;
-
-                    if (fullscreen.IsPressed() == false)
-                        fullscreen.wasPressed = false;
-
-                    if (backButton.IsPressed())
-                    {
-                        backSound.Play();
-                        CurrentMenuState = MenuState.Main;
-                    }
                     break;
 
                 case MenuState.MultiplayerSession:
@@ -423,12 +376,6 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
-        }
-
-
-        public void DrawBackground(SpriteBatch spriteBatch)
-        {
             spriteBatch.Draw(background, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
             spriteBatch.Draw(foreground, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
             spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
@@ -446,10 +393,9 @@ namespace Adam
                     multiplayer.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
-                    level1.Draw(spriteBatch);
-                    level2.Draw(spriteBatch);
-                    level3.Draw(spriteBatch);
-                    level4.Draw(spriteBatch);
+                    save1.Draw(spriteBatch);
+                    save2.Draw(spriteBatch);
+                    save3.Draw(spriteBatch);
                     backButton.Draw(spriteBatch);
                     break;
                 case MenuState.Options:
@@ -464,11 +410,5 @@ namespace Adam
                 z.Draw(spriteBatch);
         }
 
-        public bool WantsToExit()
-        {
-            if (quit.IsPressed())
-                return true;
-            else return false;
-        }
     }
 }

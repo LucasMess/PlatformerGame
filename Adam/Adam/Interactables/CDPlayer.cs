@@ -23,7 +23,7 @@ namespace Adam.Interactables
             IsCollidable = true;
         }
 
-        public override void Update(GameTime gameTime, Player player, Map map)
+        public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 

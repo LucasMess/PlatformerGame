@@ -58,7 +58,7 @@ namespace Adam
             position = new Vector2(collRectangle.X, collRectangle.Y);
         }
 
-        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
+        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
         {
             this.entities = entities;
             this.player = player;
@@ -99,7 +99,7 @@ namespace Adam
 
 
             //Random chance of being mean.
-            int shouldIShowDominace = Map.randGen.Next(0, 1000);
+            int shouldIShowDominace = GameWorld.randGen.Next(0, 1000);
             if (shouldIShowDominace == 1)
             {
                 BeMean();

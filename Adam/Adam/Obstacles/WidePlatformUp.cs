@@ -54,7 +54,7 @@ namespace Adam.Obstacles
             collRectangle = original;
         }
 
-        public override void Update(GameTime gameTime, Player player, Map map)
+        public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 

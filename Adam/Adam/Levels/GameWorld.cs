@@ -19,7 +19,7 @@ using Adam.Characters.Enemies;
 
 namespace Adam
 {
-    class Map
+    class GameWorld
     {
         //Basic tile grid and the visible tile grid
         public Tile[] tileArray, wallArray;
@@ -76,9 +76,9 @@ namespace Adam
         SoundEffectInstance hurryUpInstance;
         double walkingSoundTimer;
 
-        public Map() { }
+        public GameWorld() { }
 
-        public Map(GraphicsDevice GraphicsDevice, Vector2 monitorRes)
+        public GameWorld(GraphicsDevice GraphicsDevice, Vector2 monitorRes)
         {
             this.GraphicsDevice = GraphicsDevice;
             tileSize = Game1.Tilesize;

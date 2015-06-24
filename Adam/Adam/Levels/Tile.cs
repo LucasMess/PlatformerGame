@@ -41,7 +41,7 @@ namespace Adam
             //Air ID is 0, so it can emit sunlight.
             if (ID != 0)
             {
-                texture = Map.SpriteSheet;
+                texture = GameWorld.SpriteSheet;
             }
             else
             {
@@ -750,7 +750,7 @@ namespace Adam
                 int indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].ID == 0)
                 {
-                    int rand = Map.randGen.Next(0, 10);
+                    int rand = GameWorld.randGen.Next(0, 10);
                     if (rand == 0) //flower
                     {
                         array[indexAbove] = new AnimatedTile(17, array[indexAbove].rectangle);

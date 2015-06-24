@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Adam
 {
@@ -26,6 +27,7 @@ namespace Adam
         float scale = .3f;
         float r1, r2;
         bool t1, t2;
+
 
         public Button() { }
 

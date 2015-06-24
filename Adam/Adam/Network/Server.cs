@@ -46,7 +46,7 @@ namespace Adam.Network
             }
         }
 
-        public void SendMapDataPacket(Map map)
+        public void SendMapDataPacket(GameWorld map)
         {
             MapDataPacket m = new MapDataPacket(map);
             byte[] mapBytes = CalcHelper.ToByteArray(m);

@@ -34,7 +34,7 @@ namespace Adam
             rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
-        public void Update(Game1 game1, Player player, Map map, bool isOnDebug)
+        public void Update(Game1 game1, Player player, GameWorld map, bool isOnDebug)
         {
             if (!isOnDebug)
             {

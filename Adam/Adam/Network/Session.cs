@@ -16,7 +16,7 @@ namespace Adam.Network
         IPEndPoint serverIP;
         Level CurrentLevel = Level.Level0;
 
-        Map map;
+        GameWorld map;
 
         string playerName;
         bool isHost;

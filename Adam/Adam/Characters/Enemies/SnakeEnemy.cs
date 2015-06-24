@@ -12,7 +12,7 @@ namespace Adam.Enemies
 {
     class SnakeEnemy : Enemy
     {
-        public SnakeEnemy(int x, int y, ContentManager Content, Map map)
+        public SnakeEnemy(int x, int y, ContentManager Content, GameWorld map)
         {
             this.Content = Content;
             this.map = map;
@@ -41,7 +41,7 @@ namespace Adam.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime, List<Entity> entities, Map map)
+        public override void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
         {
             base.Update(player, gameTime, entities, map);
 
@@ -55,7 +55,7 @@ namespace Adam.Enemies
 
             if (projCooldownTimer > 3 && !isDead)
             {
-                if (Map.randGen.Next(0, 1000) < 50)
+                if (GameWorld.randGen.Next(0, 1000) < 50)
                 {
                     projList.Add(new ParabolicProjectile(this, map, Content, ProjectileSource.Snake));
                     PlayAttackSound();

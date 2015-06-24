@@ -48,7 +48,7 @@ namespace Adam.Interactables
 
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime, Player player, Map map)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 

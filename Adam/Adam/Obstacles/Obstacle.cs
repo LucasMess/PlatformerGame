@@ -31,7 +31,7 @@ namespace Adam.Obstacles
 
         }
 
-        public virtual void Update(GameTime gameTime, Player player, Map map)
+        public virtual void Update(GameTime gameTime, Player player, GameWorld map)
         {
             this.map = map;
             this.player = player;

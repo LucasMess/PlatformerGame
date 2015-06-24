@@ -54,7 +54,7 @@ namespace Adam
                 translation = Matrix.CreateTranslation(new Vector3(-lastCenterPos.X + ((int)defRes.X / 2), -lastCenterPos.Y + (3 * (int)defRes.Y / 5), 0));
         }
 
-        public void UpdateSmoothly(Player player, Map map)
+        public void UpdateSmoothly(Player player, GameWorld map)
         {
             Vector2 playerPos = new Vector2(player.position.X + player.collRectangle.Width / 2, player.position.Y + player.collRectangle.Height / 2);
             Vector3 currentLeftCorner = new Vector3(-playerPos.X + defRes.X / 2, -playerPos.Y + (3 * defRes.Y / 5), 0);

@@ -30,7 +30,7 @@ namespace Adam.Enemies
         List<Rectangle> rects = new List<Rectangle>();
         AnimationState CurrentAnimationState = AnimationState.Still;
 
-        public DroneEnemy(int x, int y, ContentManager Content, Map map)
+        public DroneEnemy(int x, int y, ContentManager Content, GameWorld map)
         {
             this.Content = Content;
             this.map = map;
@@ -49,7 +49,7 @@ namespace Adam.Enemies
             Initialize();
         }
 
-        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime, List<Entity> entities, Map map)
+        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime, List<Entity> entities, GameWorld map)
         {
             base.Update(player, gameTime, entities, map);
             Animate();

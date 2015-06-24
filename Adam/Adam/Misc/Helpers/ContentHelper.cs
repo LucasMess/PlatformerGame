@@ -15,7 +15,6 @@ namespace Adam
         {
             return Game1.Content.Load<Texture2D>(file);
         }
-
         public static SoundEffect LoadSound(string file)
         {
             return Game1.Content.Load<SoundEffect>(file);
@@ -23,6 +22,10 @@ namespace Adam
         public static Song LoadSong(string file)
         {
             return Game1.Content.Load<Song>(file);
+        }
+        public static SpriteFont LoadFont(string file)
+        {
+            return Game1.Content.Load<SpriteFont>(file);
         }
 
 

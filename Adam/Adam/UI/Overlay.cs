@@ -110,7 +110,7 @@ namespace Adam
 
         }
 
-        public void Update(GameTime gameTime, Player player, Map map)
+        public void Update(GameTime gameTime, Player player, GameWorld map)
         {
             this.gameTime = gameTime;
 

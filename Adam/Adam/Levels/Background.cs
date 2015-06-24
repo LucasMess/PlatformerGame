@@ -16,7 +16,7 @@ namespace Adam
 
         Vector2 fPos, mPos;
 
-        public void Load(ContentManager Content, Level CurrentLevel, Vector2 resolution, Map map)
+        public void Load(ContentManager Content, Level CurrentLevel, Vector2 resolution, GameWorld map)
         {
 
             switch (CurrentLevel)

@@ -30,7 +30,7 @@ namespace Adam
         protected bool isFlipped;
         protected double effTimer;
         protected GameTime gameTime;
-        protected Map map;
+        protected GameWorld map;
         protected Player player;
         protected Enemy enemy;
         protected List<Particle> effectList = new List<Particle>();
@@ -216,7 +216,7 @@ namespace Adam
     //Only use this with enemies
     class ParabolicProjectile : Projectile
     {
-        public ParabolicProjectile(Enemy enemy, Map map, ContentManager Content, ProjectileSource CurrentProjectileSource)
+        public ParabolicProjectile(Enemy enemy, GameWorld map, ContentManager Content, ProjectileSource CurrentProjectileSource)
         {
             this.CurrentProjectileSource = CurrentProjectileSource;
             this.map = map;

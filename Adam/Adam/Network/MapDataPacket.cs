@@ -33,7 +33,7 @@ namespace Adam.Network
 
         public GameTime gameTime;
 
-        public MapDataPacket(Map map)
+        public MapDataPacket(GameWorld map)
         {
             apple = map.apple;
             timer = map.timer;
