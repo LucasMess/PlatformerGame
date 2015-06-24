@@ -32,11 +32,11 @@ namespace Adam
             {
                 case Level.Level0:
                     break;
-                case Level.Level1:
+                case Level.Level1and1:
                     break;
-                case Level.Level2:
+                case Level.Level2and1:
                     break;
-                case Level.Level3:
+                case Level.Level3and1:
                     break;
                 default:
                     break;

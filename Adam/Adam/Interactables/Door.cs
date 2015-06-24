@@ -26,12 +26,12 @@ namespace Adam
         ContentManager Content;
         double dialogTimer;
 
-        public Door(int x, int y, ContentManager Content, int secret, int tilePos, Vector2 monitorRes)
+        public Door(int x, int y, ContentManager Content, int secret, int tilePos)
         {
             this.secret = secret;
             this.tilePos = tilePos;
             this.Content = Content;
-            this.monitorRes = monitorRes;
+            this.monitorRes = new Vector2(Game1.DefaultResWidth,Game1.DefaultResHeight);
 
             dialog = new Dialog(Content, Dialog.Type.Notification);
             animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);

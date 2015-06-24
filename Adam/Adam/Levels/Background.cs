@@ -21,7 +21,7 @@ namespace Adam
 
             switch (CurrentLevel)
             {
-                case Level.Level1:
+                case Level.Level1and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
                         middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/eden_middleground");
@@ -34,7 +34,7 @@ namespace Adam
 
                     background.Texture = Content.Load<Texture2D>("Backgrounds/eden_background");
                     break;
-                case Level.Level2:                   
+                case Level.Level2and1:                   
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
                         middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
@@ -47,7 +47,7 @@ namespace Adam
 
                     background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
                     break;
-                case Level.Level3:
+                case Level.Level3and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
                         middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
@@ -60,7 +60,7 @@ namespace Adam
 
                     background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
                     break;
-                case Level.Level4:
+                case Level.Level4and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
                         middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");

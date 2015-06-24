@@ -185,11 +185,11 @@ namespace Adam
                 chrono.switchFrame = 100;
             else chrono.switchFrame = 600;
 
-            if (score < player.score)
+            if (score < player.Score)
             {
                 score++;
             }
-            if (score > player.score)
+            if (score > player.Score)
             {
                 score--;
             }

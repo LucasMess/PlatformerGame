@@ -135,22 +135,23 @@ namespace Adam
 
         void level4_MouseClicked()
         {
-            game1.ChangeState(GameState.Level, Level.Level4);
+            game1.ChangeState(GameState.GameWorld, Level.Level4and1);
         }
 
         void level3_MouseClicked()
         {
-            game1.ChangeState(GameState.Level, Level.Level3);
+            game1.ChangeState(GameState.GameWorld, Level.Level3and1);
         }
 
         void level2_MouseClicked()
         {
-            game1.ChangeState(GameState.Level, Level.Level2);
+            game1.ChangeState(GameState.GameWorld, Level.Level2and1);
         }
 
         void level1_MouseClicked()
         {
-            game1.ChangeState(GameState.Level,Level.Level1);
+            game1.gameData.SelectedSave = 0;
+            game1.ChangeState(GameState.GameWorld, game1.gameData.CurrentSave.CurrentLevel);
         }
 
         void backButton_MouseClicked()
@@ -294,6 +295,10 @@ namespace Adam
                     multiplayer.Update();
                     break;
                 case MenuState.LevelSelector:
+                    save1.Text = "Save 1: " + game1.gameData.saves[0].Completeness;
+                    save2.Text = "Save 2: " + game1.gameData.saves[1].Completeness;
+                    save3.Text = "Save 3: " + game1.gameData.saves[2].Completeness;
+
                     save1.Update();
                     save2.Update();
                     save3.Update();

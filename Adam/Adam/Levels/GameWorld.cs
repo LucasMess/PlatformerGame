@@ -41,9 +41,7 @@ namespace Adam
         int columns;
         int tileSize;
         int enemyTilePos;
-        int projectileTilePos;
         int gemTilePos;
-        public double fireTimer;
         bool wantClouds;
         public bool isPaused;
         public bool levelComplete;
@@ -51,47 +49,56 @@ namespace Adam
         public static Random randGen = new Random();
         public static Texture2D SpriteSheet;
         Song levelTheme, fastLevelTheme;
+        Game1 game1;
 
-        public List<Cloud> cloudList = new List<Cloud>();
-        public List<Gem> gemList = new List<Gem>();
-        public List<Chest> chestList = new List<Chest>();
-        public List<Enemy> enemyList = new List<Enemy>();
-        public List<Particle> effectList = new List<Particle>();
-        public List<PlayerWeaponProjectile> projectileList = new List<PlayerWeaponProjectile>();
-        public List<Climbables> climbablesList = new List<Climbables>();
-        public List<Tech> techList = new List<Tech>();
-        public List<AnimatedTile> animatedTileList = new List<AnimatedTile>();
-        public List<Door> doorList = new List<Door>();
-        public List<Key> keyList = new List<Key>();
-        public List<NonPlayableCharacter> noobList = new List<NonPlayableCharacter>();
-        public List<Entity> entities = new List<Entity>();
-        public List<Particle> particles = new List<Particle>();
-        Weapon weapon = new Weapon();
+        public List<Cloud> cloudList;
+        public List<Gem> gemList;
+        public List<Chest> chestList;
+        public List<Enemy> enemyList;
+        public List<Particle> effectList;
+        public List<PlayerWeaponProjectile> projectileList;
+        public List<Climbables> climbablesList;
+        public List<Tech> techList;
+        public List<AnimatedTile> animatedTileList;
+        public List<Door> doorList;
+        public List<Key> keyList;
+        public List<NonPlayableCharacter> noobList;
+        public List<Entity> entities;
+        public List<Particle> particles;
         ContentManager Content;
         public GameTime gameTime;
-        GraphicsDevice GraphicsDevice;
-        Vector2 monitorRes;
 
         SoundEffect hurryUpSound;
         SoundEffectInstance hurryUpInstance;
-        double walkingSoundTimer;
 
         public GameWorld() { }
 
-        public GameWorld(GraphicsDevice GraphicsDevice, Vector2 monitorRes)
+        public GameWorld(Game1 game1)
         {
-            this.GraphicsDevice = GraphicsDevice;
             tileSize = Game1.Tilesize;
-            this.monitorRes = monitorRes;
+            this.game1 = game1;
 
-            player = new Player();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
         }
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
         {
+            cloudList = new List<Cloud>();
+            gemList = new List<Gem>();
+            chestList = new List<Chest>();
+            enemyList = new List<Enemy>();
+            effectList = new List<Particle>();
+            projectileList = new List<PlayerWeaponProjectile>();
+            climbablesList = new List<Climbables>();
+            techList = new List<Tech>();
+            animatedTileList = new List<AnimatedTile>();
+            doorList = new List<Door>();
+            keyList = new List<Key>();
+            noobList = new List<NonPlayableCharacter>();
+            entities = new List<Entity>();
+            particles = new List<Particle>();
+
             this.Content = Content;
-            weapon.Load();
             this.player = player;
             popUp.Load(Content);
 
@@ -110,15 +117,15 @@ namespace Adam
             {
                 case Level.Level0:
                     break;
-                case Level.Level1:
-                    mapTexture = Content.Load<Texture2D>("Levels/1-2_main");
-                    wall = Content.Load<Texture2D>("Levels/1-2_wall");
+                case Level.Level1and1:
+                    mapTexture = Content.Load<Texture2D>("Levels/1-1_main");
+                    wall = Content.Load<Texture2D>("Levels/1-1_wall");
                     levelTheme = Content.Load<Song>("Music/Vivacity");
                     fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
                     timer = new GameTimer(300);
                     wantClouds = true;
                     break;
-                case Level.Level2:
+                case Level.Level2and1:
                     mapTexture = Content.Load<Texture2D>("Levels/2-1_main");
                     wall = Content.Load<Texture2D>("Levels/2-1_wall");
                     levelTheme = Content.Load<Song>("Music/Desert City");
@@ -126,13 +133,13 @@ namespace Adam
                     timer = new GameTimer(300);
                     wantClouds = true;
                     break;
-                case Level.Level3:
+                case Level.Level3and1:
                     mapTexture = Content.Load<Texture2D>("Levels/debug_main");
                     wall = Content.Load<Texture2D>("Levels/debug_wall");
                     levelTheme = Content.Load<Song>("Music/Heart of Nowhere");
                     wantClouds = true;
                     break;
-                case Level.Level4:
+                case Level.Level4and1:
 
                     break;
 
@@ -318,7 +325,7 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(15, 74, 225)) //NPC
                 {
-                    noobList.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, randGen.Next(), monitorRes));
+                    noobList.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, randGen.Next()));
                 }
                 else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
                 {
@@ -386,20 +393,20 @@ namespace Adam
 
                 else if (colorCode == new Vector3(191, 81, 0)) //door secret 1
                 {
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 1, i, monitorRes));
+                    doorList.Add(new Door(Xcoor, Ycoor, Content, 1, i));
                     tile.ID = 13;
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(191, 81, 1)) //door secret 2
                 {
                     tile.ID = 13;
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 2, i, monitorRes));
+                    doorList.Add(new Door(Xcoor, Ycoor, Content, 2, i));
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(191, 81, 2)) //door secret 3
                 {
                     tile.ID = 13;
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 3, i, monitorRes));
+                    doorList.Add(new Door(Xcoor, Ycoor, Content, 3, i));
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(246, 255, 0)) //key secret 1
@@ -711,7 +718,7 @@ namespace Adam
             background.Update(camera);
             UpdateInBackground();
             if (apple != null)
-                apple.Update(player, gameTime, this);
+                apple.Update(player, gameTime, this, game1);
 
             if (player.isPlayerDead == false)
             {
@@ -902,8 +909,8 @@ namespace Adam
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
-        {            
-            
+        {
+
             //if (wallArray[player.TileIndex].ID != 0)
             //    playerLight.Draw(spriteBatch);
 

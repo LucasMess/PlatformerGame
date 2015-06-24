@@ -29,8 +29,6 @@ namespace Adam
 
     class Player : Entity, ICollidable, INewtonian
     {
-        //temp
-        int count;
 
         public delegate void PlayerRespawnHandler();
         public event PlayerRespawnHandler PlayerRespawned;
@@ -43,6 +41,7 @@ namespace Adam
         Texture2D maxTexture;
         Texture2D[] textureArray;
         Texture2D[] singleTextureArray;
+        Game1 game1;
 
         public Weapon weapon;
 
@@ -117,7 +116,26 @@ namespace Adam
         public bool isGhost;
 
         //Player stats
-        public int score = 0;
+        private int score;
+        public int Score
+        {
+            get
+            {
+                try
+                {
+                    return game1.gameData.CurrentSave.PlayerStats.Score;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                game1.gameData.CurrentSave.PlayerStats.Score = value;
+            }
+        }
+
         public int health = 100;
         public int maxHealth = 100;
         public int armorPoints = 100;
@@ -144,12 +162,11 @@ namespace Adam
         public AnimationState CurrentAnimation = AnimationState.Still;
         public Evolution CurrentEvolution = Evolution.Eden;
 
-        public Player()
+        public Player(Game1 game1)
         {
-            //CollidedWithTerrainAbove += OnCollisionWithTerrainAbove;
-            //CollidedWithTerrainBelow += OnCollisionWithTerrainBelow;
-            //CollidedWithTerrainRight += OnCollisionWithTerrainRight;
-            //CollidedWithTerrainLeft += OnCollisionWithTerrainLeft;
+            this.game1 = game1;
+            Initialize(0, 0);
+            Load();
         }
 
         /// <summary>
@@ -531,7 +548,7 @@ namespace Adam
         /// </summary>
         private void UpdatePlayerPosition()
         {
-            //Check if player is out of bounds
+
             if (position.X < 0)
                 position.X = 0;
             if (position.X > (int)(map.mapTexture.Width * Game1.Tilesize - collRectangle.Width))
@@ -886,8 +903,6 @@ namespace Adam
 
         private void UpdateCollisions()
         {
-            count++;
-            Console.WriteLine(count);
             foreach (Obstacle ob in map.entities.OfType<Obstacle>())
             {
                 if (ob.IsCollidable)
@@ -937,7 +952,7 @@ namespace Adam
             else spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
+        //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
 
         DrawOtherThings:
             foreach (Particle z in particles)

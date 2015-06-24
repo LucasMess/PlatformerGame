@@ -4,23 +4,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace Adam.GameData
 {
     public class GameDataManager
     {
-        Save[] saves;
+        public Save[] saves;
         Settings settings;
 
         public int SelectedSave { get; set; }
 
         public GameDataManager()
         {
-            saves = new Save[2];
+            saves = new Save[3];
+            for (int i = 0; i < saves.Length; i++)
+            {
+                saves[i] = new Save();
+            }
+
             settings = new Settings();
 
             LoadSaves();
+            Thread.Sleep(10);
             LoadSettings();
         }
 
@@ -93,6 +100,11 @@ namespace Adam.GameData
         public Save CurrentSave
         {
             get { return saves[SelectedSave]; }
+        }
+
+        public Save GetSave(int number)
+        {
+            return saves[number];
         }
 
     }

@@ -25,18 +25,18 @@ namespace Adam
         Cutscene,
         MainMenu,
         LoadingScreen,
-        Level,
+        GameWorld,
         GameOver,
         LevelGen,
         Multiplayer,
     }
-    public enum Level : byte
-    { 
-        Level0 = 0,
-        Level1 = 1,
-        Level2 = 2,
-        Level3 = 3,
-        Level4 = 4
+    public enum Level
+    {
+        Level0,
+        Level1and1, Level1and2, Level1and3,
+        Level2and1,
+        Level3and1,
+        Level4and1,
     }
 
     public class Game1 : Microsoft.Xna.Framework.Game
@@ -64,7 +64,7 @@ namespace Adam
         int fps, totalFrames;
         int updateCount, drawCount;
 
-#region Constants
+        #region Constants
         /// <summary>
         /// The default tilesize.
         /// </summary>
@@ -102,7 +102,7 @@ namespace Adam
         /// </summary>
         public const float Gravity = .8f;
 
-#endregion
+        #endregion
 
         public bool wasPressed, debugOn, debugPressed;
 
@@ -114,7 +114,7 @@ namespace Adam
         public Level CurrentLevel;
 
         //Game Variables
-        GameWorld map;
+        GameWorld gameWorld;
         Session session;
         public GameDataManager gameData;
         Player player;
@@ -142,7 +142,7 @@ namespace Adam
             gameData = new GameDataManager();
 
             graphics.IsFullScreen = gameData.Settings.IsFullscreen;
-                      
+
 
             //MediaPlayer Settings
             MediaPlayer.IsRepeating = true;
@@ -156,13 +156,13 @@ namespace Adam
 
 
         protected override void Initialize()
-        {            
+        {
             DefaultTexture = ContentHelper.LoadTexture("Tiles/temp");
             //Initialize all instances
             camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
             menu = new Menu(this);
-            map = new GameWorld(GraphicsDevice, monitorRes);
-            player = new Player();
+            gameWorld = new GameWorld(this);
+            player = new Player(this);
             overlay = new Overlay();
             cutscene = new Cutscene();
 
@@ -215,7 +215,6 @@ namespace Adam
             hasLoadedContent = true;
         }
 
-
         public void ChangeState(GameState desiredGameState, Level desiredLevel)
         {
             CurrentGameState = GameState.LoadingScreen;
@@ -223,9 +222,6 @@ namespace Adam
             this.desiredGameState = desiredGameState;
             hasLoadedContent = false;
             loadingScreen.Restart();
-
-            map = new GameWorld(GraphicsDevice, monitorRes);
-            player = new Player();
 
             reloadThread = new Thread(new ThreadStart(BackgroundMapLoad));
             reloadThread.IsBackground = true;
@@ -238,8 +234,7 @@ namespace Adam
             loadWatch.Reset();
             loadWatch.Start();
             hasLoadedContent = false;
-            map.Load(Content, monitorRes, player, CurrentLevel);
-            player.Load();
+            gameWorld.Load(Content, monitorRes, player, CurrentLevel);
             hasLoadedContent = true;
             wasPressed = false;
             loadWatch.Stop();
@@ -269,7 +264,7 @@ namespace Adam
                 case GameState.MainMenu:
                     this.IsMouseVisible = true;
                     break;
-                case GameState.Level:
+                case GameState.GameWorld:
                     this.IsMouseVisible = true;
                     break;
             }
@@ -288,8 +283,11 @@ namespace Adam
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
+            {
+                gameData.SaveGame();
                 ChangeState(GameState.MainMenu, Level.Level0);
 
+            }
             //Update the game based on what GameState it is
             switch (CurrentGameState)
             {
@@ -328,14 +326,14 @@ namespace Adam
                     if (hasLoadedContent && loadingScreen.isReady)
                         CurrentGameState = desiredGameState;
                     break;
-                case GameState.Level:
-                    if (map.isPaused)
+                case GameState.GameWorld:
+                    if (gameWorld.isPaused)
                         break;
 
-                    map.Update(gameTime, CurrentLevel, camera);              
-                    player.Update(gameTime, map);
-                    overlay.Update(gameTime, player, map);                 
-                    camera.UpdateSmoothly(player, map);
+                    gameWorld.Update(gameTime, CurrentLevel, camera);
+                    player.Update(gameTime, gameWorld);
+                    overlay.Update(gameTime, player, gameWorld);
+                    camera.UpdateSmoothly(player, gameWorld);
                     //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
@@ -343,11 +341,11 @@ namespace Adam
                     break;
                 case GameState.Multiplayer:
 
-                    break;               
+                    break;
             }
 
             base.Update(gameTime);
-            debug.Update(this, player, map, debugOn);
+            debug.Update(this, player, gameWorld, debugOn);
 
             if (drawCount > 100000 || updateCount > 100000)
             {
@@ -366,7 +364,7 @@ namespace Adam
             //Does all rendertarget work
             switch (CurrentGameState)
             {
-                case GameState.Level:
+                case GameState.GameWorld:
                     renderWatch.Start();
                     DrawToMainRenderTarget(mainRenderTarget);
                     renderTime = renderWatch.ElapsedMilliseconds;
@@ -413,21 +411,21 @@ namespace Adam
                     menu.Draw(backgroundSB);
                     backgroundSB.End();
                     break;
-                case GameState.Level:
-                    backgroundSB.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,SamplerState.PointClamp, DepthStencilState.Default,RasterizerState.CullCounterClockwise);
-                    map.DrawBackground(backgroundSB);
-                    map.DrawClouds(backgroundSB);
+                case GameState.GameWorld:
+                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+                    gameWorld.DrawBackground(backgroundSB);
+                    gameWorld.DrawClouds(backgroundSB);
                     backgroundSB.End();
 
                     gameSB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    map.DrawInBack(gameSB);
-                    map.Draw(gameSB);
+                    gameWorld.DrawInBack(gameSB);
+                    gameWorld.Draw(gameSB);
                     player.Draw(gameSB);
                     gameSB.End();
 
 
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    map.DrawAfterEffects(UiSB);
+                    gameWorld.DrawAfterEffects(UiSB);
                     UiSB.End();
 
                     break;
@@ -445,13 +443,13 @@ namespace Adam
 
             switch (CurrentGameState)
             {
-                case GameState.Level:
+                case GameState.GameWorld:
                     lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
                     lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
                     lightingSB.End();
 
                     lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    map.DrawLights(lightingSB);
+                    gameWorld.DrawLights(lightingSB);
                     lightingSB.End();
                     break;
             }
@@ -493,7 +491,7 @@ namespace Adam
                     backgroundSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     backgroundSB.End();
                     break;
-                case GameState.Level:
+                case GameState.GameWorld:
                     //Draw the rendertarget
                     mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
@@ -501,7 +499,7 @@ namespace Adam
 
                     if (gameData.Settings.DesiredLight)
                     {
-                        Color sunny = new Color(255,238,186);
+                        Color sunny = new Color(255, 238, 186);
                         Color hell = new Color(255, 129, 116);
                         Color winter = new Color(200, 243, 255);
                         Color night = new Color(120, 127, 183);
@@ -517,7 +515,7 @@ namespace Adam
 
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     overlay.Draw(UiSB);
-                    map.DrawUI(UiSB);
+                    gameWorld.DrawUI(UiSB);
                     UiSB.End();
 
                     break;
@@ -528,7 +526,7 @@ namespace Adam
 
                     UiSB.Begin();
                     overlay.Draw(UiSB);
-                    map.DrawUI(UiSB);
+                    gameWorld.DrawUI(UiSB);
                     UiSB.End();
 
                     break;
@@ -560,16 +558,16 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Frames Per Second:" + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Tile Below Player: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Player Position:" + player.position.X + "," + player.position.Y, new Vector2(0, 40), Color.White);
-                    debugSB.DrawString(debugFont, "Player Rectangle Position:" + player.collRectangle.X +","+player.collRectangle.Y, new Vector2(0, 60), Color.White);
+                    debugSB.DrawString(debugFont, "Player Rectangle Position:" + player.collRectangle.X + "," + player.collRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Game World Render Time:" + renderTime, new Vector2(0, 100), Color.White);
                     debugSB.DrawString(debugFont, "Light Render Time:" + lightTime, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
-                    debugSB.DrawString(debugFont, "Load time: " +loadWatch.ElapsedMilliseconds, new Vector2(0, 200), Color.White);
+                    debugSB.DrawString(debugFont, "Load time: " + loadWatch.ElapsedMilliseconds, new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
-                    debugSB.DrawString(debugFont, "Number of items in effects: " + player.particles.Count ,new Vector2(0, 240), Color.White);
+                    debugSB.DrawString(debugFont, "Number of items in effects: " + player.particles.Count, new Vector2(0, 240), Color.White);
                     debug.Draw(debugSB);
                     debugSB.End();
                 }

@@ -65,12 +65,12 @@ namespace Adam
 
         }
 
-        public NonPlayableCharacter(int x, int y, int ID, ContentManager Content, int seed, Vector2 monitorRes)
+        public NonPlayableCharacter(int x, int y, int ID, ContentManager Content, int seed)
         {
             this.ID = ID;
             this.complexity = ChatComplexity.Simple;
             this.Content = Content;
-            this.monitorRes = monitorRes;
+            this.monitorRes = new Vector2(Game1.DefaultResWidth,Game1.DefaultResHeight);
             randGen = new Random(seed);
             DefineStats();
             Load();

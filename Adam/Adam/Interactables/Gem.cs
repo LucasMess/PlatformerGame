@@ -101,19 +101,19 @@ namespace Adam
             switch (type)
             {
                 case Type.copperOre:
-                    player.score += 1;
+                    player.Score += 1;
                     break;
                 case Type.goldOre:
-                    player.score += 5;
+                    player.Score += 5;
                     break;
                 case Type.emerald:
-                    player.score += 10;
+                    player.Score += 10;
                     break;
                 case Type.sapphire:
-                    player.score += 20;
+                    player.Score += 20;
                     break;
                 case Type.diamond:
-                    player.score += 30;
+                    player.Score += 30;
                     break;
             }
         }

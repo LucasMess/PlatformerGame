@@ -239,21 +239,10 @@ namespace Adam
         {
             if (player != null)
             {
-                //if (player.isFacingRight == true)
-                //    spriteBatch.Draw(texture, rectangle, Color.White);
-                //else spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-
-                //if (!isFlipped)
-                //    spriteBatch.Draw(texture, rectangle, null, Color.White, rotation, origin, SpriteEffects.None, 0);
-                //else spriteBatch.Draw(texture, rectangle, null, Color.White, rotation, origin, SpriteEffects.FlipVertically, 0);
-
                 foreach (var proj in projectileList)
                     proj.Draw(spriteBatch);
                 foreach (var eff in effectList)
                     eff.Draw(spriteBatch);
-
-                //debug
-                spriteBatch.Draw(Content.Load<Texture2D>("Tiles/black"), new Rectangle((int)tipPos.X, (int)tipPos.Y, 1, 1), Color.Red);
             }
         }
 

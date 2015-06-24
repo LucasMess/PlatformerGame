@@ -8,6 +8,8 @@ namespace Adam.GameData
 {
     public class Save
     {
+        double progress;
+        double maxprogress = 1000;
         Level currentLevel;
         PlayerStats playerStats;
 
@@ -15,7 +17,8 @@ namespace Adam.GameData
         {
             playerStats = new PlayerStats();
             playerStats.SetToDefault();
-            currentLevel = Level.Level1;
+            currentLevel = Level.Level1and1;
+            progress = 0;
         }
 
         public PlayerStats PlayerStats
@@ -29,9 +32,28 @@ namespace Adam.GameData
             get { return currentLevel; }
             set { currentLevel = value; }
         }
+
+        public string Completeness
+        {
+            get
+            {
+                double percent = (progress / maxprogress) * 100;
+                return percent + "%";
+            }
+        }
+
+        public double Progress
+        {
+            set
+            {
+                progress = value;
+                if (progress > maxprogress)
+                    throw new Exception("Progress set is bigger than maximum allowed progress!");
+            }
+        }
     }
 
-    public struct PlayerStats
+    public class PlayerStats
     {
         byte lives;
         public byte Lives
