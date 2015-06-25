@@ -16,6 +16,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Adam.GameData;
 using Adam.Network;
+using Adam.UI;
 
 namespace Adam
 {
@@ -52,6 +53,7 @@ namespace Adam
         Thread reloadThread;
         Thread backgroundUpdateThread;
         Overlay overlay;
+        public NewDialog dialog;
         Texture2D splashDKD, blackScreen;
         SoundEffect quack;
         GameDebug debug;
@@ -165,6 +167,7 @@ namespace Adam
             player = new Player(this);
             overlay = new Overlay();
             cutscene = new Cutscene();
+            dialog = new NewDialog();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -287,6 +290,12 @@ namespace Adam
                 ChangeState(GameState.MainMenu, Level.Level0);
 
             }
+
+            if (InputHelper.IsKeyDown(Keys.P))
+                dialog.Show("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
+            if (InputHelper.IsKeyDown(Keys.O))
+                dialog.Show("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
+
             //Update the game based on what GameState it is
             switch (CurrentGameState)
             {
@@ -333,6 +342,7 @@ namespace Adam
                     player.Update(gameTime, gameWorld);
                     overlay.Update(gameTime, player, gameWorld);
                     camera.UpdateSmoothly(player, gameWorld);
+                    dialog.Update(gameTime);
                     //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
@@ -515,6 +525,7 @@ namespace Adam
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     overlay.Draw(UiSB);
                     gameWorld.DrawUI(UiSB);
+                    dialog.Draw(UiSB);
                     UiSB.End();
 
                     break;

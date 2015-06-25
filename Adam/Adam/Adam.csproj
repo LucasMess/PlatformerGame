@@ -198,6 +198,7 @@
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />
     <Compile Include="UI\NewButton.cs" />
+    <Compile Include="UI\NewDialog.cs" />
     <Compile Include="UI\Overlay Elements\Coin.cs" />
     <Compile Include="UI\Overlay Elements\Heart.cs" />
     <Compile Include="UI\Overlay Elements\Hourglass.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Characters\Player.cs" />
+    <Compile Include="UI\PlaceNotification.cs" />
     <Compile Include="UI\PopUp.cs" />
     <Compile Include="Characters\Enemies\PotatoEnemy.cs" />
     <Compile Include="Interactables\Projectile.cs" />
