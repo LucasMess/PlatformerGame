@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using Adam.GameData;
 using Adam.Network;
 using Adam.UI;
+using Adam.UI.Information;
 
 namespace Adam
 {
@@ -118,6 +119,7 @@ namespace Adam
         //Game Variables
         GameWorld gameWorld;
         Session session;
+        ObjectiveTracker objTracker;
         public GameDataManager GameData;
         Player player;
         LoadingScreen loadingScreen;
@@ -142,7 +144,6 @@ namespace Adam
             IsFixedTimeStep = true;
 
             GameData = new GameDataManager();
-
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
 
@@ -168,6 +169,7 @@ namespace Adam
             overlay = new Overlay();
             cutscene = new Cutscene();
             dialog = new NewDialog();
+            objTracker = new ObjectiveTracker();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -232,6 +234,7 @@ namespace Adam
             loadWatch.Start();
             hasLoadedContent = false;
             gameWorld.Load(Content, monitorRes, player, CurrentLevel);
+            objTracker = GameData.CurrentSave.ObjTracker;
             hasLoadedContent = true;
             wasPressed = false;
             loadWatch.Stop();
@@ -290,6 +293,16 @@ namespace Adam
                 dialog.Show("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
             if (InputHelper.IsKeyDown(Keys.O))
                 dialog.Show("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
+            if (InputHelper.IsKeyDown(Keys.I))
+            {
+                Objective obj = new Objective();
+                obj.Create("Test Objective", ObjectiveType.GoSomewhere, 0);
+                objTracker.AddObjective(obj);
+            }
+            if (InputHelper.IsKeyDown(Keys.U))
+            {
+                objTracker.CompleteObjective(0);
+            }
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)
@@ -338,6 +351,7 @@ namespace Adam
                     overlay.Update(gameTime, player, gameWorld);
                     camera.UpdateSmoothly(player, gameWorld);
                     dialog.Update(gameTime);
+                    objTracker.Update(gameTime);
                     //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
@@ -521,6 +535,7 @@ namespace Adam
                     overlay.Draw(UiSB);
                     gameWorld.DrawUI(UiSB);
                     dialog.Draw(UiSB);
+                    objTracker.Draw(UiSB);
                     UiSB.End();
 
                     break;

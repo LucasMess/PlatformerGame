@@ -66,6 +66,8 @@ namespace Adam.UI
                 opacity = .7f;
             if (opacity < 0)
                 opacity = 0;
+
+            if (textPos.X < 0) textPos.X = 0;
         }
 
         public void Draw(SpriteBatch spriteBatch)

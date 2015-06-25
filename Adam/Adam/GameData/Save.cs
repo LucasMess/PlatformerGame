@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.UI.Information;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,11 @@ namespace Adam.GameData
         double maxprogress = 1000;
         Level currentLevel;
         PlayerStats playerStats;
+        ObjectiveTracker objTracker;
 
         public Save()
         {
+            objTracker = new ObjectiveTracker();
             playerStats = new PlayerStats();
             playerStats.SetToDefault();
             currentLevel = Level.Level1and1;
@@ -50,6 +53,12 @@ namespace Adam.GameData
                 if (progress > maxprogress)
                     throw new Exception("Progress set is bigger than maximum allowed progress!");
             }
+        }
+
+        public ObjectiveTracker ObjTracker
+        {
+            get { return objTracker; }
+            set { objTracker = value; }
         }
     }
 

@@ -17,6 +17,7 @@ using Adam.Obstacles;
 using Adam.Network;
 using Adam.Characters.Enemies;
 using Adam.UI;
+using Adam.UI.Information;
 
 namespace Adam
 {
@@ -45,6 +46,7 @@ namespace Adam
         int enemyTilePos;
         int gemTilePos;
         bool wantClouds;
+        string levelName;
         public bool isPaused;
         public bool levelComplete;
         bool isRunningOutOfTime, isPlayingFastTheme;
@@ -121,6 +123,7 @@ namespace Adam
                 case Level.Level0:
                     break;
                 case Level.Level1and1:
+                    levelName = "Garden of Eden";
                     mapTexture = Content.Load<Texture2D>("Levels/1-1_main");
                     wall = Content.Load<Texture2D>("Levels/1-1_wall");
                     levelTheme = Content.Load<Song>("Music/Vivacity");
@@ -129,6 +132,7 @@ namespace Adam
                     wantClouds = true;
                     break;
                 case Level.Level2and1:
+                    levelName = "Desolate Desert";
                     mapTexture = Content.Load<Texture2D>("Levels/2-1_main");
                     wall = Content.Load<Texture2D>("Levels/2-1_wall");
                     levelTheme = Content.Load<Song>("Music/Desert City");
@@ -137,6 +141,7 @@ namespace Adam
                     wantClouds = true;
                     break;
                 case Level.Level3and1:
+                    levelName = "Entrance to Hell";
                     mapTexture = Content.Load<Texture2D>("Levels/debug_main");
                     wall = Content.Load<Texture2D>("Levels/debug_wall");
                     levelTheme = Content.Load<Song>("Music/Heart of Nowhere");
@@ -175,7 +180,7 @@ namespace Adam
             if (levelTheme != null)
                 MediaPlayer.Play(levelTheme);
 
-            placeNot.Show("Garden of Eden");
+            placeNot.Show(levelName);
 
         }
 
