@@ -126,8 +126,8 @@ namespace Adam
                     light.SetColor(Color.Red);
 
                     MouseState mouse = Mouse.GetState();
-                    Vector2 center = new Vector2((Game1.PrefferedResWidth / 2) + (player.collRectangle.Width / 2),
-                        (Game1.PrefferedResHeight * 3 / 5) + (player.collRectangle.Height / 2));
+                    Vector2 center = new Vector2((Game1.UserResWidth / 2) + (player.collRectangle.Width / 2),
+                        (Game1.UserResHeight * 3 / 5) + (player.collRectangle.Height / 2));
 
                     //Find the unit vector according to where the mouse is
                     double xDiff = (mouse.X - center.X);

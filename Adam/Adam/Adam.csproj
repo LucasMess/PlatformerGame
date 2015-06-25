@@ -141,6 +141,7 @@
   <ItemGroup>
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
+    <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\ICollidable.cs" />
     <Compile Include="Interactables\Food.cs" />
     <Compile Include="Levels\AnimatedTile.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Interactables\Climbables.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
+    <Compile Include="UI\SplashDamage.cs" />
     <Compile Include="UI\Timer.cs" />
     <Compile Include="Misc\TriggerZone.cs" />
     <Compile Include="Interactables\Weapon.cs" />

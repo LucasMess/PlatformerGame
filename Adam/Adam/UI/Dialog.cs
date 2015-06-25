@@ -28,7 +28,7 @@ namespace Adam
         public Dialog(ContentManager Content, Type type)
         {
             this.type = type;
-            monitorRes = new Vector2(Game1.PrefferedResWidth, Game1.PrefferedResHeight);
+            monitorRes = new Vector2(Game1.UserResWidth, Game1.UserResHeight);
             Load(Content);
         }
 

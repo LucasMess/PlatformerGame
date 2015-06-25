@@ -88,11 +88,11 @@ namespace Adam
         /// <summary>
         /// The current monitor resolution of the user.
         /// </summary>
-        public static int PrefferedResWidth;
+        public static int UserResWidth;
         /// <summary>
         /// The current monitor resolution height of the user.
         /// </summary>
-        public static int PrefferedResHeight;
+        public static int UserResHeight;
         /// <summary>
         /// The default texture.
         /// </summary>
@@ -128,10 +128,10 @@ namespace Adam
 
             //Get the current monitor resolution and set it as the game's resolution
             monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            PrefferedResWidth = (int)monitorRes.X;
-            PrefferedResHeight = (int)monitorRes.Y;
-            graphics.PreferredBackBufferWidth = PrefferedResWidth;
-            graphics.PreferredBackBufferHeight = PrefferedResHeight;
+            UserResWidth = (int)monitorRes.X;
+            UserResHeight = (int)monitorRes.Y;
+            graphics.PreferredBackBufferWidth = UserResWidth;
+            graphics.PreferredBackBufferHeight = UserResHeight;
 
             //Change Game Settings Here
             //Sync with vertical retrace needs to be on until I fix the jittery jump bug
@@ -201,7 +201,6 @@ namespace Adam
 
             debugFont = Content.Load<SpriteFont>("debug");
             menu.Load(Content);
-            overlay.Load();
             cutscene.Load(Content);
 
             debug = new GameDebug(debugFont, monitorRes, blackScreen);
