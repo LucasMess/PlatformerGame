@@ -123,7 +123,7 @@ namespace Adam
             {
                 try
                 {
-                    return game1.gameData.CurrentSave.PlayerStats.Score;
+                    return game1.GameData.CurrentSave.PlayerStats.Score;
                 }
                 catch
                 {
@@ -132,7 +132,7 @@ namespace Adam
             }
             set
             {
-                game1.gameData.CurrentSave.PlayerStats.Score = value;
+                game1.GameData.CurrentSave.PlayerStats.Score = value;
             }
         }
 

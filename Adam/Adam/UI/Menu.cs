@@ -95,7 +95,7 @@ namespace Adam
 
             fullscreen = new NewButton(third, "Fullscreen: ");
             fullscreen.MouseClicked += fullscreen_MouseClicked;
-            fullscreen.IsActive = game1.gameData.Settings.IsFullscreen;
+            fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
             buttons.Add(fullscreen);
 
             backButton = new NewButton(fifth, "Back");
@@ -150,8 +150,8 @@ namespace Adam
 
         void level1_MouseClicked()
         {
-            game1.gameData.SelectedSave = 0;
-            game1.ChangeState(GameState.GameWorld, game1.gameData.CurrentSave.CurrentLevel);
+            game1.GameData.SelectedSave = 0;
+            game1.ChangeState(GameState.GameWorld, game1.GameData.CurrentSave.CurrentLevel);
         }
 
         void backButton_MouseClicked()
@@ -181,15 +181,15 @@ namespace Adam
             {
                 case true:
                     fullscreen.IsActive = false;
-                    game1.gameData.Settings.IsFullscreen = false;
-                    game1.gameData.Settings.NeedsRestart = true;
-                    game1.gameData.Settings.HasChanged = true;
+                    game1.GameData.Settings.IsFullscreen = false;
+                    game1.GameData.Settings.NeedsRestart = true;
+                    game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     fullscreen.IsActive = true;
-                    game1.gameData.Settings.IsFullscreen = true;
-                    game1.gameData.Settings.NeedsRestart = true;
-                    game1.gameData.Settings.HasChanged = true;
+                    game1.GameData.Settings.IsFullscreen = true;
+                    game1.GameData.Settings.NeedsRestart = true;
+                    game1.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -202,15 +202,15 @@ namespace Adam
             {
                 case true:
                     lighting.IsActive = false;
-                    game1.gameData.Settings.DesiredLight = false;
-                    game1.gameData.Settings.NeedsRestart = true;
-                    game1.gameData.Settings.HasChanged = true;
+                    game1.GameData.Settings.DesiredLight = false;
+                    game1.GameData.Settings.NeedsRestart = true;
+                    game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     lighting.IsActive = true;
-                    game1.gameData.Settings.DesiredLight = true;
-                    game1.gameData.Settings.NeedsRestart = true;
-                    game1.gameData.Settings.HasChanged = true;
+                    game1.GameData.Settings.DesiredLight = true;
+                    game1.GameData.Settings.NeedsRestart = true;
+                    game1.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -295,9 +295,9 @@ namespace Adam
                     multiplayer.Update();
                     break;
                 case MenuState.LevelSelector:
-                    save1.Text = "Save 1: " + game1.gameData.saves[0].Completeness;
-                    save2.Text = "Save 2: " + game1.gameData.saves[1].Completeness;
-                    save3.Text = "Save 3: " + game1.gameData.saves[2].Completeness;
+                    save1.Text = "Save 1: " + game1.GameData.saves[0].Completeness;
+                    save2.Text = "Save 2: " + game1.GameData.saves[1].Completeness;
+                    save3.Text = "Save 3: " + game1.GameData.saves[2].Completeness;
 
                     save1.Update();
                     save2.Update();

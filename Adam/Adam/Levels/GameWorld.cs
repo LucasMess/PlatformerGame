@@ -16,6 +16,7 @@ using Adam.Interactables;
 using Adam.Obstacles;
 using Adam.Network;
 using Adam.Characters.Enemies;
+using Adam.UI;
 
 namespace Adam
 {
@@ -36,6 +37,7 @@ namespace Adam
         Background background = new Background();
         BackGroundImage blackCorners = new BackGroundImage();
         PopUp popUp = new PopUp();
+        PlaceNotification placeNot;
         public GameTimer timer;
         int rows;
         int columns;
@@ -78,6 +80,7 @@ namespace Adam
             tileSize = Game1.Tilesize;
             this.game1 = game1;
 
+            placeNot = new PlaceNotification();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
         }
 
@@ -171,6 +174,8 @@ namespace Adam
 
             if (levelTheme != null)
                 MediaPlayer.Play(levelTheme);
+
+            placeNot.Show("Garden of Eden");
 
         }
 
@@ -716,6 +721,7 @@ namespace Adam
             this.gameTime = gameTime;
             popUp.Update(gameTime, player);
             background.Update(camera);
+            placeNot.Update(gameTime);
             UpdateInBackground();
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
@@ -1043,7 +1049,7 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
 
-
+            placeNot.Draw(spriteBatch);
             popUp.Draw(spriteBatch);
 
             foreach (var noob in noobList)

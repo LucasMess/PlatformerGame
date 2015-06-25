@@ -118,7 +118,7 @@ namespace Adam
         //Game Variables
         GameWorld gameWorld;
         Session session;
-        public GameDataManager gameData;
+        public GameDataManager GameData;
         Player player;
         LoadingScreen loadingScreen;
         public static ContentManager Content;
@@ -137,13 +137,13 @@ namespace Adam
 
             //Change Game Settings Here
             //Sync with vertical retrace needs to be on until I fix the jittery jump bug
-            graphics.SynchronizeWithVerticalRetrace = true;
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
 
-            gameData = new GameDataManager();
+            GameData = new GameDataManager();
 
-            graphics.IsFullScreen = gameData.Settings.IsFullscreen;
+            graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
 
             //MediaPlayer Settings
@@ -212,11 +212,6 @@ namespace Adam
 
         }
 
-        public void FirstLoad()
-        {
-            hasLoadedContent = true;
-        }
-
         public void ChangeState(GameState desiredGameState, Level desiredLevel)
         {
             CurrentGameState = GameState.LoadingScreen;
@@ -272,21 +267,21 @@ namespace Adam
             }
             #endregion
 
-            if (gameData.Settings.HasChanged)
+            if (GameData.Settings.HasChanged)
             {
-                gameData.SaveSettings();
-                if (gameData.Settings.NeedsRestart)
+                GameData.SaveSettings();
+                if (GameData.Settings.NeedsRestart)
                 {
-                    graphics.IsFullScreen = gameData.Settings.IsFullscreen;
+                    graphics.IsFullScreen = GameData.Settings.IsFullscreen;
                     graphics.ApplyChanges();
-                    gameData.Settings.NeedsRestart = false;
+                    GameData.Settings.NeedsRestart = false;
                 }
-                gameData.Settings.HasChanged = false;
+                GameData.Settings.HasChanged = false;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
             {
-                gameData.SaveGame();
+                GameData.SaveGame();
                 ChangeState(GameState.MainMenu, Level.Level0);
 
             }
@@ -327,7 +322,7 @@ namespace Adam
                     }
                     break;
                 case GameState.MainMenu:
-                    menu.Update(this, gameTime, gameData.Settings);
+                    menu.Update(this, gameTime, GameData.Settings);
                     break;
                 case GameState.LoadingScreen:
                     loadingScreen.Update(gameTime);
@@ -496,17 +491,17 @@ namespace Adam
                     break;
                 case GameState.MainMenu:
                     //Draw the MaxRenderTarget
-                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     backgroundSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     backgroundSB.End();
                     break;
                 case GameState.GameWorld:
                     //Draw the rendertarget
-                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     mainSB.End();
 
-                    if (gameData.Settings.DesiredLight)
+                    if (GameData.Settings.DesiredLight)
                     {
                         Color sunny = new Color(255, 238, 186);
                         Color hell = new Color(255, 129, 116);
@@ -517,7 +512,7 @@ namespace Adam
                         WHATTHEFUCK.AlphaSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorDestinationBlend = Blend.Zero;
-                        mainLightSB.Begin(SpriteSortMode.Immediate, WHATTHEFUCK, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        mainLightSB.Begin(SpriteSortMode.Immediate, WHATTHEFUCK, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                         mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), sunny);
                         mainLightSB.End();
                     }
@@ -530,7 +525,7 @@ namespace Adam
 
                     break;
                 case GameState.LevelGen:
-                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, gameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     mainSB.End();
 
