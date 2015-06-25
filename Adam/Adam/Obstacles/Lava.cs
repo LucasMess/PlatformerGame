@@ -45,10 +45,10 @@ namespace Adam.Obstacles
             }
         }
 
-        public void CheckOnTop(Tile[] array, GameWorld map)
+        public void CheckOnTop(Tile[] array, GameWorld gameWorld)
         {
-            this.map = map;
-            int indexAbove = TileIndex - map.mapTexture.Width;
+            this.gameWorld = gameWorld;
+            int indexAbove = TileIndex - gameWorld.worldData.mainMap.Width;
             if (array[indexAbove].ID == 0)
             {
                 this.isOnTop = true;

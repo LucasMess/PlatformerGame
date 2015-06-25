@@ -181,7 +181,7 @@ namespace Adam
             collRectangle = drawRectangle;
             velocity = new Vector2(GameWorld.randGen.Next(-10, 10), GameWorld.randGen.Next(-10, 10));
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
-            this.map = map;
+            this.gameWorld = map;
         }
 
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
@@ -290,7 +290,7 @@ namespace Adam
             velocity.X = GameWorld.randGen.Next(-2, 3);
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 10f;
-            this.map = map;
+            this.gameWorld = map;
         }
 
         public void Update(GameTime gameTime)
@@ -474,7 +474,7 @@ namespace Adam
 
                     velocity.Y += .3f;
 
-                    if (this.IsTouchingTerrain(map))
+                    if (this.IsTouchingTerrain(gameWorld))
                     {
                         velocity.X = 0;
                         velocity.Y = 0;

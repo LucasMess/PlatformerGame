@@ -36,8 +36,6 @@ namespace Adam.UI.Overlay_Elements
             animation.Update(gameTime);
 
             currentTime = map.timer.GetTime(gameTime);
-            if (currentTime < 100)
-                map.WarnRunningOutOfTime();
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -18,6 +18,7 @@ using Adam.Network;
 using Adam.Characters.Enemies;
 using Adam.UI;
 using Adam.UI.Information;
+using Adam.Levels;
 
 namespace Adam
 {
@@ -31,8 +32,6 @@ namespace Adam
         Light playerLight;
 
         private Level CurrentLevel;
-
-        public Texture2D mapTexture, wall;
         public Player player;
         public Apple apple;
         Background background = new Background();
@@ -40,19 +39,12 @@ namespace Adam
         PopUp popUp = new PopUp();
         PlaceNotification placeNot;
         public GameTimer timer;
-        int rows;
-        int columns;
-        int tileSize;
         int enemyTilePos;
         int gemTilePos;
-        bool wantClouds;
-        string levelName;
         public bool isPaused;
         public bool levelComplete;
-        bool isRunningOutOfTime, isPlayingFastTheme;
         public static Random randGen = new Random();
         public static Texture2D SpriteSheet;
-        Song levelTheme, fastLevelTheme;
         Game1 game1;
 
         public List<Cloud> cloudList;
@@ -71,6 +63,7 @@ namespace Adam
         public List<Particle> particles;
         ContentManager Content;
         public GameTime gameTime;
+        public WorldData worldData;
 
         SoundEffect hurryUpSound;
         SoundEffectInstance hurryUpInstance;
@@ -79,7 +72,6 @@ namespace Adam
 
         public GameWorld(Game1 game1)
         {
-            tileSize = Game1.Tilesize;
             this.game1 = game1;
 
             placeNot = new PlaceNotification();
@@ -88,6 +80,8 @@ namespace Adam
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
         {
+            worldData = new WorldData(CurrentLevel);
+
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
@@ -115,54 +109,13 @@ namespace Adam
             for (int i = 0; i < maxClouds; i++)
             {
                 cloudList.Add(new Cloud(Content, monitorResolution, maxClouds, i));
-            }
+            }            
 
-            //Load the texture file to create the map according to the game level.
-            switch (CurrentLevel)
-            {
-                case Level.Level0:
-                    break;
-                case Level.Level1and1:
-                    levelName = "Garden of Eden";
-                    mapTexture = Content.Load<Texture2D>("Levels/1-2_main");
-                    wall = Content.Load<Texture2D>("Levels/1-2_wall");
-                    levelTheme = Content.Load<Song>("Music/Vivacity");
-                    fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
-                    timer = new GameTimer(600);
-                    wantClouds = true;
-                    break;
-                case Level.Level2and1:
-                    levelName = "Desolate Desert";
-                    mapTexture = Content.Load<Texture2D>("Levels/2-1_main");
-                    wall = Content.Load<Texture2D>("Levels/2-1_wall");
-                    levelTheme = Content.Load<Song>("Music/Desert City");
-                    //fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
-                    timer = new GameTimer(600);
-                    wantClouds = true;
-                    break;
-                case Level.Level3and1:
-                    levelName = "Entrance to Hell";
-                    mapTexture = Content.Load<Texture2D>("Levels/debug_main");
-                    wall = Content.Load<Texture2D>("Levels/debug_wall");
-                    levelTheme = Content.Load<Song>("Music/Heart of Nowhere");
-                    wantClouds = true;
-                    break;
-                case Level.Level4and1:
+            tileArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
+            wallArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
 
-                    break;
-
-            }
-
-            if (mapTexture == null || wall == null)
-                return;
-            columns = mapTexture.Width;
-            rows = mapTexture.Height;
-
-            tileArray = new Tile[columns * rows];
-            wallArray = new Tile[columns * rows];
-
-            LoadGrid(tileArray, mapTexture);
-            LoadGrid(wallArray, wall);
+            LoadGrid(tileArray, worldData.mainMap);
+            LoadGrid(wallArray, worldData.wallMap);
 
             LoadLights();
 
@@ -172,15 +125,15 @@ namespace Adam
             hurryUpSound = ContentHelper.LoadSound("Sounds/hurryUp");
             hurryUpInstance = hurryUpSound.CreateInstance();
 
-            background.Load(Content, CurrentLevel, monitorResolution, this);
+            background.Load(CurrentLevel, this);
             blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
             blackCorners.Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
 
 
-            if (levelTheme != null)
-                MediaPlayer.Play(levelTheme);
+            if (worldData.song != null)
+                MediaPlayer.Play(worldData.song);
 
-            placeNot.Show(levelName);
+            placeNot.Show(worldData.levelName);
 
         }
 
@@ -189,9 +142,9 @@ namespace Adam
             int currentTileNumber = 0;
 
             //Create basic grid where all block are transparent and not differentiated
-            for (int r = 1; r <= rows; r++)
+            for (int r = 1; r <= worldData.mainMap.Height; r++)
             {
-                for (int c = 1; c <= columns; c++)
+                for (int c = 1; c <= worldData.mainMap.Width; c++)
                 {
                     array[currentTileNumber] = new Tile();
                     array[currentTileNumber].TileIndex = currentTileNumber;
@@ -200,7 +153,7 @@ namespace Adam
             }
 
             //Check the pixels and differentiate tiles based off their color
-            int totalPixelCount = columns * rows;
+            int totalPixelCount = worldData.mainMap.Width * worldData.mainMap.Height;
             Color[] tilePixels = new Color[totalPixelCount];
             data.GetData<Color>(tilePixels);
 
@@ -209,10 +162,10 @@ namespace Adam
                 Tile tile = array[i];
                 Color pixel = tilePixels[i];
                 Vector3 colorCode = new Vector3(pixel.R, pixel.G, pixel.B);
-                int Xcoor = (i % columns) * tileSize;
-                int Ycoor = ((i - (i % columns)) / columns) * tileSize;
+                int Xcoor = (i % worldData.mainMap.Width) * Game1.Tilesize;
+                int Ycoor = ((i - (i % worldData.mainMap.Width)) / worldData.mainMap.Width) * Game1.Tilesize;
 
-                tile.rectangle = new Rectangle(Xcoor, Ycoor, tileSize, tileSize);
+                tile.rectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
 
                 if (colorCode == new Vector3(0, 189, 31)) //grass
                 {
@@ -277,7 +230,7 @@ namespace Adam
                     climbablesList.Add(new Climbables(Xcoor, Ycoor));
                 }
                 //17 daffodyls
-                else if (colorCode == new Vector3(239, 239, 239)) //marblecolumns
+                else if (colorCode == new Vector3(239, 239, 239)) //marbleworldData.mainMap.Width
                 {
                     tile.ID = 18;
                 }
@@ -448,21 +401,21 @@ namespace Adam
             {
                 if (tile.ID == 1 || tile.ID == 2 || tile.ID == 4 || tile.ID == 5 || tile.ID == 10)
                 {
-                    tile.FindConnectedTextures(array, mapTexture.Width);
+                    tile.FindConnectedTextures(array,worldData.mainMap.Width);
                 }
             }
 
             for (int i = 0; i < array.Length; i++)
             {
-                if (i - columns - 1 >= 0 && i + columns + 1 < array.Length)
+                if (i - worldData.mainMap.Width - 1 >= 0 && i + worldData.mainMap.Width + 1 < array.Length)
                 {
                     Tile t = array[i];
-                    if (t.ID == 1 && t.subID == 0 && array[i - columns].isSolid == false)
+                    if (t.ID == 1 && t.subID == 0 && array[i - worldData.mainMap.Width].isSolid == false)
                     {
                         int prob = randGen.Next(0, 100);
                         if (prob < 25)
                         {
-                            Tile a = array[i - columns];
+                            Tile a = array[i - worldData.mainMap.Width];
                             a.ID = 9;
                             a.isVoid = true;
                             animatedTileList.Add(new AnimatedTile(9, a.rectangle));
@@ -470,12 +423,12 @@ namespace Adam
                     }
 
                     //shortgrass
-                    if (array[i].ID == 1 && array[i - columns].ID == 0 && array[i].subID == 0)
+                    if (array[i].ID == 1 && array[i - worldData.mainMap.Width].ID == 0 && array[i].subID == 0)
                     {
-                        array[i - columns].ID = 7;
+                        array[i - worldData.mainMap.Width].ID = 7;
                     }
                     //Fences
-                    if (array[i].ID == 103 && array[i - columns].ID != 103)
+                    if (array[i].ID == 103 && array[i - worldData.mainMap.Width].ID != 103)
                     {
                         array[i].subID = 1;
                     }
@@ -488,7 +441,7 @@ namespace Adam
             foreach (Tile tile in array)
             {
                 tile.DefineTexture();
-                tile.AddRandomlyGeneratedDecoration(array, mapTexture.Width);
+                tile.AddRandomlyGeneratedDecoration(array,worldData.mainMap.Width);
             }
 
             foreach (AnimatedTile tile in animatedTileList)
@@ -506,7 +459,7 @@ namespace Adam
 
         public void LoadLights()
         {
-            lightArray = new Light[columns * rows];
+            lightArray = new Light[worldData.mainMap.Width * worldData.mainMap.Height];
 
             for (int i = 0; i < tileArray.Length; i++)
             {
@@ -521,7 +474,7 @@ namespace Adam
 
             foreach (var li in lightArray)
             {
-                li.CalculateLighting(tileArray, wallArray, mapTexture);
+                li.CalculateLighting(tileArray, wallArray,worldData.mainMap);
             }
         }
 
@@ -530,18 +483,18 @@ namespace Adam
             if (gem.velocity.X == 0 && gem.velocity.Y == 0) { }
             else
             {
-                gemTilePos = (int)(gem.topMidBound.Y / tileSize * columns) + (int)(gem.topMidBound.X / tileSize);
+                gemTilePos = (int)(gem.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(gem.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = gemTilePos - mapTexture.Width - 1;
-                q[1] = gemTilePos - mapTexture.Width;
-                q[2] = gemTilePos - mapTexture.Width + 1;
+                q[0] = gemTilePos -worldData.mainMap.Width - 1;
+                q[1] = gemTilePos -worldData.mainMap.Width;
+                q[2] = gemTilePos -worldData.mainMap.Width + 1;
                 q[3] = gemTilePos - 1;
                 q[4] = gemTilePos;
                 q[5] = gemTilePos + 1;
-                q[6] = gemTilePos + mapTexture.Width - 1;
-                q[7] = gemTilePos + mapTexture.Width;
-                q[8] = gemTilePos + mapTexture.Width + 1;
+                q[6] = gemTilePos +worldData.mainMap.Width - 1;
+                q[7] = gemTilePos +worldData.mainMap.Width;
+                q[8] = gemTilePos +worldData.mainMap.Width + 1;
 
                 //test = q;
 
@@ -606,21 +559,21 @@ namespace Adam
                 }
 
             SkipDamage:
-                enemyTilePos = (int)(enemy.topMidBound.Y / tileSize * columns) + (int)(enemy.topMidBound.X / tileSize);
+                enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[12];
-                q[0] = enemyTilePos - mapTexture.Width - 1;
-                q[1] = enemyTilePos - mapTexture.Width;
-                q[2] = enemyTilePos - mapTexture.Width + 1;
+                q[0] = enemyTilePos -worldData.mainMap.Width - 1;
+                q[1] = enemyTilePos -worldData.mainMap.Width;
+                q[2] = enemyTilePos -worldData.mainMap.Width + 1;
                 q[3] = enemyTilePos - 1;
                 q[4] = enemyTilePos;
                 q[5] = enemyTilePos + 1;
-                q[6] = enemyTilePos + mapTexture.Width - 1;
-                q[7] = enemyTilePos + mapTexture.Width;
-                q[8] = enemyTilePos + mapTexture.Width + 1;
-                q[9] = enemyTilePos + mapTexture.Width + mapTexture.Width - 1;
-                q[10] = enemyTilePos + mapTexture.Width + mapTexture.Width;
-                q[11] = enemyTilePos + mapTexture.Width + mapTexture.Width + 1;
+                q[6] = enemyTilePos +worldData.mainMap.Width - 1;
+                q[7] = enemyTilePos +worldData.mainMap.Width;
+                q[8] = enemyTilePos +worldData.mainMap.Width + 1;
+                q[9] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width - 1;
+                q[10] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width;
+                q[11] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width + 1;
 
                 //test = q;
 
@@ -666,21 +619,21 @@ namespace Adam
 
         public void NoobCollision(NonPlayableCharacter noob)
         {
-            int noobTilePos = (int)(noob.topMidBound.Y / tileSize * columns) + (int)(noob.topMidBound.X / tileSize);
+            int noobTilePos = (int)(noob.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(noob.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[12];
-            q[0] = noobTilePos - mapTexture.Width - 1;
-            q[1] = noobTilePos - mapTexture.Width;
-            q[2] = noobTilePos - mapTexture.Width + 1;
+            q[0] = noobTilePos -worldData.mainMap.Width - 1;
+            q[1] = noobTilePos -worldData.mainMap.Width;
+            q[2] = noobTilePos -worldData.mainMap.Width + 1;
             q[3] = noobTilePos - 1;
             q[4] = noobTilePos;
             q[5] = noobTilePos + 1;
-            q[6] = noobTilePos + mapTexture.Width - 1;
-            q[7] = noobTilePos + mapTexture.Width;
-            q[8] = noobTilePos + mapTexture.Width + 1;
-            q[9] = noobTilePos + mapTexture.Width + mapTexture.Width - 1;
-            q[10] = noobTilePos + mapTexture.Width + mapTexture.Width;
-            q[11] = noobTilePos + mapTexture.Width + mapTexture.Width + 1;
+            q[6] = noobTilePos +worldData.mainMap.Width - 1;
+            q[7] = noobTilePos +worldData.mainMap.Width;
+            q[8] = noobTilePos +worldData.mainMap.Width + 1;
+            q[9] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width - 1;
+            q[10] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width;
+            q[11] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width + 1;
 
             //test = q;
 
@@ -744,7 +697,7 @@ namespace Adam
             if (player.isPlayerDead == false)
             {
                 //defines which tiles are in range
-                int initial = camera.tileIndex - 17 * mapTexture.Width - 25;
+                int initial = camera.tileIndex - 17 *worldData.mainMap.Width - 25;
                 int maxHoriz = 50;
                 int maxVert = 30;
                 int i = 0;
@@ -753,11 +706,11 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleTileArray[i] = initial + mapTexture.Width * v + h;
+                        visibleTileArray[i] = initial +worldData.mainMap.Width * v + h;
                         i++;
                     }
                 }
-                initial = camera.tileIndex - 17 * 2 * mapTexture.Width - 25 * 2;
+                initial = camera.tileIndex - 17 * 2 *worldData.mainMap.Width - 25 * 2;
                 maxHoriz = 100;
                 maxVert = 60;
                 i = 0;
@@ -765,7 +718,7 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleLightArray[i] = initial + mapTexture.Width * v + h;
+                        visibleLightArray[i] = initial +worldData.mainMap.Width * v + h;
                         i++;
                     }
                 }
@@ -1032,7 +985,7 @@ namespace Adam
         {
             foreach (Cloud c in cloudList)
             {
-                if (wantClouds == true)
+                if (worldData.wantClouds == true)
                     c.Draw(spriteBatch);
             }
         }
@@ -1076,25 +1029,6 @@ namespace Adam
                 door.DrawUI(spriteBatch);
             }
 
-        }
-
-        public void WarnRunningOutOfTime()
-        {
-            if (!isRunningOutOfTime)
-            {
-                isRunningOutOfTime = true;
-                MediaPlayer.Stop();
-                hurryUpInstance.Play();
-            }
-            else
-            {
-                if (hurryUpInstance.State == SoundState.Stopped && !isPlayingFastTheme)
-                {
-                    if (fastLevelTheme != null)
-                        MediaPlayer.Play(fastLevelTheme);
-                    isPlayingFastTheme = true;
-                }
-            }
         }
 
         public void RespawnEnemies()

@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Enemies\Hellboar.cs" />
+    <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\ICollidable.cs" />

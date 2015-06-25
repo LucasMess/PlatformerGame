@@ -33,7 +33,7 @@ namespace Adam.Obstacles
 
         public virtual void Update(GameTime gameTime, Player player, GameWorld map)
         {
-            this.map = map;
+            this.gameWorld = map;
             this.player = player;
 
             base.Update();

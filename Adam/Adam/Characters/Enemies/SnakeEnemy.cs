@@ -15,7 +15,7 @@ namespace Adam.Enemies
         public SnakeEnemy(int x, int y, ContentManager Content, GameWorld map)
         {
             this.Content = Content;
-            this.map = map;
+            this.gameWorld = map;
 
             //Sets up specific variables for the snake
             CurrentEnemyType = EnemyType.Snake;

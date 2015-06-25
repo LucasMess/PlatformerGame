@@ -64,7 +64,7 @@ namespace Adam.Characters.Enemies
 
         private void CheckForPlayer()
         {
-            if (CollisionRay.IsPlayerInSight(this, player, map, out rects))
+            if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
             {
                 isAngry = true;
             }

@@ -63,7 +63,7 @@ namespace Adam
             this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
-            this.map = map;           
+            this.gameWorld = map;           
 
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.

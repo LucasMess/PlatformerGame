@@ -285,7 +285,7 @@ namespace Adam
                 goto UpdateChrono;
 
             this.gameTime = gameTime;
-            this.map = map;
+            this.gameWorld = map;
 
             deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -551,11 +551,11 @@ namespace Adam
 
             if (position.X < 0)
                 position.X = 0;
-            if (position.X > (int)(map.mapTexture.Width * Game1.Tilesize - collRectangle.Width))
-                position.X = (int)(map.mapTexture.Width * Game1.Tilesize - collRectangle.Width);
+            if (position.X > (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width))
+                position.X = (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width);
             if (position.Y < 0)
                 position.Y = 0;
-            if (position.Y > (int)(map.mapTexture.Height * Game1.Tilesize - collRectangle.Width) + 100)
+            if (position.Y > (int)(gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Width) + 100)
             {
                 KillAndRespawn();
                 if (!fallSoundPlayed)
@@ -903,7 +903,7 @@ namespace Adam
 
         private void UpdateCollisions()
         {
-            foreach (Obstacle ob in map.entities.OfType<Obstacle>())
+            foreach (Obstacle ob in gameWorld.entities.OfType<Obstacle>())
             {
                 if (ob.IsCollidable)
                 {
@@ -1023,7 +1023,7 @@ namespace Adam
             isInvisible = false;
             isWaitingForRespawn = false;
 
-            map.RespawnEnemies();
+            gameWorld.RespawnEnemies();
         }
 
         public void PlayAttackSound()
@@ -1081,9 +1081,9 @@ namespace Adam
             if (tileParticleTimer < Math.Abs(350 / velocity.X))
                 return;
             Tile tile = new Tile();
-            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (map.mapTexture.Width * 2);
-            if (tileIndexBelow < map.tileArray.Length)
-                tile = map.tileArray[tileIndexBelow];
+            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.mainMap.Width * 2);
+            if (tileIndexBelow < gameWorld.tileArray.Length)
+                tile = gameWorld.tileArray[tileIndexBelow];
             //If the player is above air skip.
             if (tile.ID == 0)
                 return;
@@ -1103,7 +1103,7 @@ namespace Adam
             movementSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             Tile tile = new Tile();
-            tile = map.tileArray[TileIndex + (map.mapTexture.Width * 2)];
+            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.mainMap.Width * 2)];
 
             if (tile.ID != 0 && movementSoundTimer > Math.Abs(500 / velocity.X))
             {
@@ -1249,7 +1249,7 @@ namespace Adam
             for (int i = 0; i < quantity; i++)
             {
                 Particle par = new Particle();
-                par.CreateBloodEffect(this, map);
+                par.CreateBloodEffect(this, gameWorld);
                 particles.Add(par);
             }
         }

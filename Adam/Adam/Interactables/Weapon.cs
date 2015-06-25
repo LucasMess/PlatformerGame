@@ -22,7 +22,7 @@ namespace Adam
         ContentManager Content;
         Vector2 origin;
         Player player;
-        GameWorld map;
+        GameWorld gameWorld;
         GameTime gameTime;
         double fireTimer;
         bool isFlipped;
@@ -74,13 +74,13 @@ namespace Adam
             {
                 if (HasHitTerrain(proj))
                 {
-                    effectList.Add(new Particle(proj, map.tileArray));
+                    effectList.Add(new Particle(proj, gameWorld.tileArray));
                     projectileList.Remove(proj);
                     break;
                 }
             }
 
-            foreach (Enemy enemy in map.enemyList)
+            foreach (Enemy enemy in gameWorld.enemyList)
             {
                 foreach (var proj in projectileList)
                 {
@@ -113,7 +113,7 @@ namespace Adam
         {
             this.player = player;
             this.gameTime = gameTime;
-            this.map = map;
+            this.gameWorld = map;
 
             rectangle.X = player.collRectangle.X + player.collRectangle.Width / 2;
             rectangle.Y = player.collRectangle.Y + player.collRectangle.Height * 3 / 5;
@@ -175,27 +175,27 @@ namespace Adam
 
         private bool HasHitTerrain(Projectile projectile)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[9];
-            q[0] = projectileTilePos - map.mapTexture.Width - 1;
-            q[1] = projectileTilePos - map.mapTexture.Width;
-            q[2] = projectileTilePos - map.mapTexture.Width + 1;
+            q[0] = projectileTilePos - gameWorld.worldData.mainMap.Width - 1;
+            q[1] = projectileTilePos - gameWorld.worldData.mainMap.Width;
+            q[2] = projectileTilePos - gameWorld.worldData.mainMap.Width + 1;
             q[3] = projectileTilePos - 1;
             q[4] = projectileTilePos;
             q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + map.mapTexture.Width - 1;
-            q[7] = projectileTilePos + map.mapTexture.Width;
-            q[8] = projectileTilePos + map.mapTexture.Width + 1;
+            q[6] = projectileTilePos + gameWorld.worldData.mainMap.Width - 1;
+            q[7] = projectileTilePos + gameWorld.worldData.mainMap.Width;
+            q[8] = projectileTilePos + gameWorld.worldData.mainMap.Width + 1;
 
             //test = q;
 
             //check the tiles around the projectile for collision
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
+                if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
                 {
-                    if (projectile.collRectangle.Intersects(map.tileArray[quadrant].rectangle))
+                    if (projectile.collRectangle.Intersects(gameWorld.tileArray[quadrant].rectangle))
                     {
                         projectile.tileHit = quadrant;
                         return true;
@@ -207,18 +207,18 @@ namespace Adam
 
         public bool HasHitEnemy(Projectile projectile, Enemy enemy)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[9];
-            q[0] = projectileTilePos - map.mapTexture.Width - 1;
-            q[1] = projectileTilePos - map.mapTexture.Width;
-            q[2] = projectileTilePos - map.mapTexture.Width + 1;
+            q[0] = projectileTilePos - gameWorld.worldData.mainMap.Width - 1;
+            q[1] = projectileTilePos - gameWorld.worldData.mainMap.Width;
+            q[2] = projectileTilePos - gameWorld.worldData.mainMap.Width + 1;
             q[3] = projectileTilePos - 1;
             q[4] = projectileTilePos;
             q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + map.mapTexture.Width - 1;
-            q[7] = projectileTilePos + map.mapTexture.Width;
-            q[8] = projectileTilePos + map.mapTexture.Width + 1;
+            q[6] = projectileTilePos + gameWorld.worldData.mainMap.Width - 1;
+            q[7] = projectileTilePos + gameWorld.worldData.mainMap.Width;
+            q[8] = projectileTilePos + gameWorld.worldData.mainMap.Width + 1;
 
             if (projectile.collRectangle.Intersects(enemy.drawRectangle) && enemy.isDead == false)
                 return true;

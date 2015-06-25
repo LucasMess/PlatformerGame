@@ -39,6 +39,7 @@ namespace Adam
         Level2and1,
         Level3and1,
         Level4and1,
+        Level8and1,
     }
 
     public class Game1 : Microsoft.Xna.Framework.Game

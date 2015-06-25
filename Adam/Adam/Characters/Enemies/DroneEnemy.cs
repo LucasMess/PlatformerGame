@@ -33,7 +33,7 @@ namespace Adam.Enemies
         public DroneEnemy(int x, int y, ContentManager Content, GameWorld map)
         {
             this.Content = Content;
-            this.map = map;
+            this.gameWorld = map;
 
             texture = Content.Load<Texture2D>("Enemies/Drone_Single");
             chargeSound = Content.Load<SoundEffect>("Sounds/Drone/Drone_Charging");

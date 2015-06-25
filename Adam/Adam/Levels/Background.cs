@@ -14,64 +14,61 @@ namespace Adam
         BackGroundImage[] middlegrounds = new BackGroundImage[3];
         BackGroundImage[] foregrounds = new BackGroundImage[6];
 
-        Vector2 fPos, mPos;
-
-        public void Load(ContentManager Content, Level CurrentLevel, Vector2 resolution, GameWorld map)
+        public void Load(Level CurrentLevel, GameWorld gameWorld)
         {
-
             switch (CurrentLevel)
             {
                 case Level.Level1and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
-                        middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/eden_middleground");
+                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
                     }
 
                     for (int i = 0; i < foregrounds.Length; i++)
                     {
-                        foregrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/eden_foreground");
+                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
                     }
 
-                    background.Texture = Content.Load<Texture2D>("Backgrounds/eden_background");
+                    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
                     break;
                 case Level.Level2and1:                   
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
-                        middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
+                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
                     }
 
                     for (int i = 0; i < foregrounds.Length; i++)
                     {
-                        foregrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_foreground");
+                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
                     }
 
-                    background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
+                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
                     break;
                 case Level.Level3and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
-                        middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
+                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
                     }
 
                     for (int i = 0; i < foregrounds.Length; i++)
                     {
-                        foregrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_foreground");
+                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
                     }
 
-                    background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
+                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
                     break;
                 case Level.Level4and1:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {
-                        middlegrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_middleground");
+                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
                     }
 
                     for (int i = 0; i < foregrounds.Length; i++)
                     {
-                        foregrounds[i].Texture = Content.Load<Texture2D>("Backgrounds/mesa_foreground");
+                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
                     }
 
-                    background.Texture = Content.Load<Texture2D>("Backgrounds/mesa_background");
+                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
                     break;
 
             }

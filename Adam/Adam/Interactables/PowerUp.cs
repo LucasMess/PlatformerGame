@@ -23,13 +23,11 @@ namespace Adam.Interactables
         protected double effectTimer;
         protected List<Particle> effects = new List<Particle>();
 
-        GameWorld map;
-
         public PowerUp() { }
 
         public virtual void Update(GameTime gameTime, Player player, GameWorld map)
         {
-            this.map = map;
+            this.gameWorld = map;
             drawRectangle.X += (int)velocity.X;
             drawRectangle.Y += (int)velocity.Y;
 
@@ -81,54 +79,54 @@ namespace Adam.Interactables
             if (velocity.X == 0 && velocity.Y == 0) { }
             else
             {
-                tileIndex = (int)(topMidBound.Y / Game1.Tilesize * map.mapTexture.Width) + (int)(topMidBound.X / Game1.Tilesize);
+                tileIndex = (int)(topMidBound.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)(topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = tileIndex - map.mapTexture.Width - 1;
-                q[1] = tileIndex - map.mapTexture.Width;
-                q[2] = tileIndex - map.mapTexture.Width + 1;
+                q[0] = tileIndex - gameWorld.worldData.mainMap.Width - 1;
+                q[1] = tileIndex - gameWorld.worldData.mainMap.Width;
+                q[2] = tileIndex - gameWorld.worldData.mainMap.Width + 1;
                 q[3] = tileIndex - 1;
                 q[4] = tileIndex;
                 q[5] = tileIndex + 1;
-                q[6] = tileIndex + map.mapTexture.Width - 1;
-                q[7] = tileIndex + map.mapTexture.Width;
-                q[8] = tileIndex + map.mapTexture.Width + 1;
+                q[6] = tileIndex + gameWorld.worldData.mainMap.Width - 1;
+                q[7] = tileIndex + gameWorld.worldData.mainMap.Width;
+                q[8] = tileIndex + gameWorld.worldData.mainMap.Width + 1;
 
                 //test = q;
 
                 //check the tiles around the goldOre for collision
                 foreach (int quadrant in q)
                 {
-                    if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
+                    if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
                     {
-                        if (yRect.Intersects(map.tileArray[quadrant].rectangle))
+                        if (yRect.Intersects(gameWorld.tileArray[quadrant].rectangle))
                         {
-                            if (drawRectangle.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
+                            if (drawRectangle.Y < gameWorld.tileArray[quadrant].rectangle.Y) //hits bot
                             {
-                                drawRectangle.Y = map.tileArray[quadrant].rectangle.Y - drawRectangle.Height;
+                                drawRectangle.Y = gameWorld.tileArray[quadrant].rectangle.Y - drawRectangle.Height;
                                 velocity.Y = -velocity.Y * .9f;
                                 velocity.X = 0;
                             }
-                            if (drawRectangle.Y > map.tileArray[quadrant].rectangle.Y) //hits top
+                            if (drawRectangle.Y > gameWorld.tileArray[quadrant].rectangle.Y) //hits top
                             {
                                 velocity.Y = -velocity.Y * .9f;
                                 velocity.X = 0;
-                                drawRectangle.Y = map.tileArray[quadrant].rectangle.Y + drawRectangle.Height + 1;
+                                drawRectangle.Y = gameWorld.tileArray[quadrant].rectangle.Y + drawRectangle.Height + 1;
                             }
                         }
-                        if (xRect.Intersects(map.tileArray[quadrant].rectangle))
+                        if (xRect.Intersects(gameWorld.tileArray[quadrant].rectangle))
                         {
-                            if (drawRectangle.X < map.tileArray[quadrant].rectangle.X) //hits right
+                            if (drawRectangle.X < gameWorld.tileArray[quadrant].rectangle.X) //hits right
                             {
                                 velocity.X = -velocity.X * .9f;
                                 velocity.Y = velocity.Y * .9f;
-                                drawRectangle.X = map.tileArray[quadrant].rectangle.X - drawRectangle.Width - 1;
+                                drawRectangle.X = gameWorld.tileArray[quadrant].rectangle.X - drawRectangle.Width - 1;
                             }
-                            if (drawRectangle.X > map.tileArray[quadrant].rectangle.X) //hits left
+                            if (drawRectangle.X > gameWorld.tileArray[quadrant].rectangle.X) //hits left
                             {
                                 velocity.X = -velocity.X * .9f;
                                 velocity.Y = velocity.Y * .9f;
-                                drawRectangle.X = map.tileArray[quadrant].rectangle.X + map.tileArray[quadrant].rectangle.Width + 1;
+                                drawRectangle.X = gameWorld.tileArray[quadrant].rectangle.X + gameWorld.tileArray[quadrant].rectangle.Width + 1;
                             }
                         }
                     }
