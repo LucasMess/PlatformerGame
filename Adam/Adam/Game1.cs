@@ -296,7 +296,7 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.I))
             {
                 Objective obj = new Objective();
-                obj.Create("Test Objective", ObjectiveType.GoSomewhere, 0);
+                obj.Create("Test Objective", 0);
                 objTracker.AddObjective(obj);
             }
             if (InputHelper.IsKeyDown(Keys.U))

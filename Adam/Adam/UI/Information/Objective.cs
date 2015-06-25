@@ -8,11 +8,6 @@ using System.Text;
 
 namespace Adam.UI.Information
 {
-    public enum ObjectiveType
-    {
-        GoSomewhere,
-    }
-
     public class Objective
     {
         SpriteFont font;
@@ -28,7 +23,6 @@ namespace Adam.UI.Information
         Color color = Color.Black;
 
         string text = "";
-        ObjectiveType CurrentObjectiveType;
 
         public Objective()
         {
@@ -38,9 +32,8 @@ namespace Adam.UI.Information
             goalX = Game1.UserResWidth - drawRectangle.Width;
         }
 
-        public void Create(string text, ObjectiveType type, int ID)
+        public void Create(string text, int ID)
         {
-            this.CurrentObjectiveType = type;
             this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 10);
             this.ID = ID;
             isActive = true;
