@@ -468,13 +468,13 @@ namespace Adam
                 case 18://Marble Column
                     switch (subID)
                     {
-                        case 0:
+                        case 0: //middle
                             position = new Vector2(13, 3);
                             break;
-                        case 1:
+                        case 1: //top
                             position = new Vector2(12, 3);
                             break;
-                        case 2:
+                        case 2: //bot
                             position = new Vector2(14, 3);
                             break;
                     }
@@ -500,6 +500,12 @@ namespace Adam
                 case 27: //golden chest
                     isVoid = true;
                     break;
+                case 29: //Marble ceiling
+                    position = new Vector2(15, 3);
+                    break;
+                case 30: //Marble ceiling support
+                    position = new Vector2(13, 4);
+                    break;
                 #region Wall Textures
                 case 100://Gold Brick Wall
                     position = new Vector2(12, 8);
@@ -523,6 +529,7 @@ namespace Adam
                     }
                     break;
                 case 104://Marble wall
+                    position = new Vector2(13, 9);
                     break;
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
@@ -765,6 +772,22 @@ namespace Adam
                     }
 
                     array[indexAbove].DefineTexture();
+                }
+            }
+
+            if (ID == 18 && subID == 0)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                int indexBelow = TileIndex + mapWidth;
+                if (array[indexAbove].ID != 18)
+                {
+                    subID = 1;
+                    DefineTexture();
+                }
+                if (array[indexBelow].ID != 18)
+                {
+                    subID = 2;
+                    DefineTexture();
                 }
             }
 

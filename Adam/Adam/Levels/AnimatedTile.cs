@@ -37,10 +37,12 @@ namespace Adam
                 case 7: //short grass
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 16);
+                    emitsLight = true;
                     break;
                 case 9: //tall Grass
                     frameCount = new Vector2(12, 0);
                     startingPosition = new Vector2(0, 16);
+                    emitsLight = true;
                     break;
                 case 8: //Metal
                     frameCount = new Vector2(4, 0);
@@ -51,10 +53,14 @@ namespace Adam
                     startingPosition = new Vector2(12, 0);
                     size.Y = 2;
                     rectangle.Height = Game1.Tilesize * 2;
+                    emitsLight = true;
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(14, 6);
+                    startingPosition = new Vector2(0, 17);
+                    size.X = 2;
+                    rectangle.Width = Game1.Tilesize * 2;
+                    emitsLight = true;
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
@@ -62,11 +68,13 @@ namespace Adam
                     size.Y = 2;
                     rectangle.Height = Game1.Tilesize * 2;
                     rectangle.Y -= Game1.Tilesize;
+                    emitsLight = true;
                     break;
                 case 24: //Lava
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
+                    emitsLight = true;
                     break;
 
             }

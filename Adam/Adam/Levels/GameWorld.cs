@@ -124,8 +124,8 @@ namespace Adam
                     break;
                 case Level.Level1and1:
                     levelName = "Garden of Eden";
-                    mapTexture = Content.Load<Texture2D>("Levels/1-1_main");
-                    wall = Content.Load<Texture2D>("Levels/1-1_wall");
+                    mapTexture = Content.Load<Texture2D>("Levels/1-2_main");
+                    wall = Content.Load<Texture2D>("Levels/1-2_wall");
                     levelTheme = Content.Load<Song>("Music/Vivacity");
                     fastLevelTheme = ContentHelper.LoadSong("Music/Vivacity x60");
                     timer = new GameTimer(600);
@@ -317,6 +317,16 @@ namespace Adam
                     tile.ID = 27;
                     chestList.Add(new Chest(new Vector2(Xcoor, Ycoor), Content, true));
                 }
+                else if (colorCode == new Vector3(255, 255, 250)) // Marble ceiling
+                {
+                    tile.ID = 29;
+                    tile.isSolid = true;
+                }
+                else if (colorCode == new Vector3(255, 255, 241)) // Marble ceiling support
+                {
+                    tile.ID = 30;
+                    tile.isSolid = true;
+                }
 
 
                 //CHARACTERS AND OTHERS
@@ -392,9 +402,9 @@ namespace Adam
                 {
                     tile.ID = 103;
                 }
-                else if (colorCode == new Vector3(154, 105, 11)) //marblewall
+                else if (colorCode == new Vector3(225, 225, 225)) //marblewall
                 {
-                    tile.ID = 105;
+                    tile.ID = 104;
                 }
                 else if (colorCode == new Vector3(154, 105, 11)) //sandwall
                 {
