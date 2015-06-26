@@ -137,11 +137,11 @@ namespace Adam
             position = player.weapon.tipPos;
             velocity = new Vector2(0, 0);
             int maxTanSpeed = 10;
-            velocity.X = (float)(GameWorld.randGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
-            velocity.Y = (float)(GameWorld.randGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
+            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
+            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
             CurrentParticle = ParticleType.WeaponBurst;
             texture = ContentHelper.LoadTexture("Effects/laser_burst");
-            int randSize = GameWorld.randGen.Next(2, 5);
+            int randSize = GameWorld.RandGen.Next(2, 5);
             drawRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             opacity = 1;
@@ -157,8 +157,8 @@ namespace Adam
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 10;
-            velocity.X = (float)(GameWorld.randGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
-            velocity.Y = (float)(GameWorld.randGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
+            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
+            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
         }
 
         public void CreateEnemyDeathEffect(Enemy enemy, Rectangle sourceRectangle)
@@ -169,7 +169,7 @@ namespace Adam
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 5;
-            velocity = new Vector2(GameWorld.randGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.randGen.Next(-maxTanSpeed, maxTanSpeed));
+            velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
         }
 
         public void CreateBloodEffect(Player player, GameWorld map) 
@@ -177,9 +177,9 @@ namespace Adam
             CurrentParticle = ParticleType.Blood;
             texture = ContentHelper.LoadTexture("Effects/blood");
             drawRectangle = new Rectangle(player.drawRectangle.Center.X, player.drawRectangle.Center.Y, 8, 8);
-            sourceRectangle = new Rectangle(GameWorld.randGen.Next(0, 4) * 8, 0, 8, 8);
+            sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 8, 0, 8, 8);
             collRectangle = drawRectangle;
-            velocity = new Vector2(GameWorld.randGen.Next(-10, 10), GameWorld.randGen.Next(-10, 10));
+            velocity = new Vector2(GameWorld.RandGen.Next(-10, 10), GameWorld.RandGen.Next(-10, 10));
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             this.gameWorld = map;
         }
@@ -193,8 +193,8 @@ namespace Adam
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxSpeed = 8;
-            velocity.X = (float)(GameWorld.randGen.Next(-maxSpeed, maxSpeed + 1));
-            velocity.Y = (float)(GameWorld.randGen.Next(-maxSpeed, maxSpeed + 1));
+            velocity.X = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
+            velocity.Y = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
             originalVelocity = velocity;
             originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
             rotationDelta = .02f;
@@ -211,9 +211,9 @@ namespace Adam
                 AnimatedTile t = (AnimatedTile)tile;
                 sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
             }
-            sourceRectangle.X += (GameWorld.randGen.Next(0, 4) * Game1.Tilesize / 4);
-            velocity.X = (-player.velocity.X / 2) * (float)GameWorld.randGen.NextDouble();
-            velocity.Y = GameWorld.randGen.Next(-1, 1);
+            sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Game1.Tilesize / 4);
+            velocity.X = (-player.velocity.X / 2) * (float)GameWorld.RandGen.NextDouble();
+            velocity.Y = GameWorld.RandGen.Next(-1, 1);
             opacity = 1;
         }
 
@@ -226,7 +226,7 @@ namespace Adam
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 5;
-            velocity = new Vector2(GameWorld.randGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.randGen.Next(-maxTanSpeed, maxTanSpeed));
+            velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
             originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
             differenceInPosition = new Vector2(player.respawnPos.X - player.position.X, player.respawnPos.Y - player.position.Y);
             endPosition = originalPosition + differenceInPosition;
@@ -238,8 +238,8 @@ namespace Adam
             CurrentParticle = ParticleType.MusicNotes;
             texture = ContentHelper.LoadTexture("Effects/music_notes");
             drawRectangle = new Rectangle(cd.drawRectangle.X, cd.drawRectangle.Y, 16, 16);
-            sourceRectangle = new Rectangle(32 * GameWorld.randGen.Next(0, 2), 0, 32, 32);
-            int randX = GameWorld.randGen.Next(0, 2);
+            sourceRectangle = new Rectangle(32 * GameWorld.RandGen.Next(0, 2), 0, 32, 32);
+            int randX = GameWorld.RandGen.Next(0, 2);
             float velocityX = .5f;
             if (randX == 0)
             {
@@ -252,7 +252,7 @@ namespace Adam
                 velocity.X = velocityX;
             }
 
-            velocity.Y = -(float)GameWorld.randGen.NextDouble();
+            velocity.Y = -(float)GameWorld.RandGen.NextDouble();
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
         }
 
@@ -261,9 +261,9 @@ namespace Adam
             CurrentParticle = ParticleType.JetpackSmoke;
             texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(jet.drawRectangle.Center.X - 8, jet.drawRectangle.Y + jet.drawRectangle.Height, 16, 16);
-            sourceRectangle = new Rectangle(GameWorld.randGen.Next(0, 4) * 16, 0, 16, 16);
+            sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
-            velocity.X = GameWorld.randGen.Next(-1, 2);
+            velocity.X = GameWorld.RandGen.Next(-1, 2);
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 1f;
         }
@@ -273,9 +273,9 @@ namespace Adam
             CurrentParticle = ParticleType.JetpackSmoke;
             texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(player.drawRectangle.Center.X - 8, player.drawRectangle.Y + player.drawRectangle.Height, 16, 16);
-            sourceRectangle = new Rectangle(GameWorld.randGen.Next(0, 4) * 16, 0, 16, 16);
+            sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
-            velocity.X = GameWorld.randGen.Next(-1, 2);
+            velocity.X = GameWorld.RandGen.Next(-1, 2);
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 1f;
         }
@@ -287,7 +287,7 @@ namespace Adam
             texture = Game1.DefaultTexture;
             drawRectangle = new Rectangle(lava.collRectangle.Center.X, lava.collRectangle.Y + 16, 16, 16);
             velocity.Y = -10f;
-            velocity.X = GameWorld.randGen.Next(-2, 3);
+            velocity.X = GameWorld.RandGen.Next(-2, 3);
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 10f;
             this.gameWorld = map;

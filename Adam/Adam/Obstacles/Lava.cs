@@ -18,8 +18,8 @@ namespace Adam.Obstacles
         public Lava(int x, int y)
         {
             collRectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
-            particleTimer = GameWorld.randGen.Next(0, 8);
-            restartTime = GameWorld.randGen.Next(5, 8);
+            particleTimer = GameWorld.RandGen.Next(0, 8);
+            restartTime = GameWorld.RandGen.Next(5, 8);
 
         }
 

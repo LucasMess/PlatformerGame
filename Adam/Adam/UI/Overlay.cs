@@ -19,9 +19,8 @@ namespace Adam
         List<SplashDamage> splashDamages = new List<SplashDamage>();
 
         Heart heart;
-        //Time is currently disabled.
-        Hourglass hourglass;
         Coin coin;
+        Image blackCorners = new Image();
 
         public Overlay()
         {
@@ -29,6 +28,10 @@ namespace Adam
 
             heart = new Heart(new Vector2(40,40));
             coin = new Coin(new Vector2(40, 120));
+
+            //Black corners of the screen
+            blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
+            blackCorners.Rectangle = new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight);
         }
 
         public void Update(GameTime gameTime, Player player, GameWorld map)
@@ -52,6 +55,8 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(blackCorners.Texture, blackCorners.Rectangle, Color.White * .6f);
+
             heart.Draw(spriteBatch);
             coin.Draw(spriteBatch);
 

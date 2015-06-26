@@ -81,7 +81,7 @@ namespace Adam.Characters.Enemies
                 CurrentAnimation = AnimationState.Walking;
                 velocity.X = 2f;
 
-                if (GameWorld.randGen.Next(0, 2) == 0)
+                if (GameWorld.RandGen.Next(0, 2) == 0)
                 {
                     velocity.X = -velocity.X;
                     isFacingRight = false;

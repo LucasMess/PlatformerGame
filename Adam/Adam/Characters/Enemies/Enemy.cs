@@ -99,7 +99,7 @@ namespace Adam
 
 
             //Random chance of being mean.
-            int shouldIShowDominace = GameWorld.randGen.Next(0, 1000);
+            int shouldIShowDominace = GameWorld.RandGen.Next(0, 1000);
             if (shouldIShowDominace == 1)
             {
                 BeMean();

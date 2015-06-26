@@ -757,7 +757,7 @@ namespace Adam
                 int indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].ID == 0)
                 {
-                    int rand = GameWorld.randGen.Next(0, 10);
+                    int rand = GameWorld.RandGen.Next(0, 10);
                     if (rand == 0) //flower
                     {
                         array[indexAbove] = new AnimatedTile(17, array[indexAbove].rectangle);

@@ -10,9 +10,9 @@ namespace Adam
 {
     class Background
     {
-        BackGroundImage background;
-        BackGroundImage[] middlegrounds = new BackGroundImage[3];
-        BackGroundImage[] foregrounds = new BackGroundImage[6];
+        Image background;
+        Image[] middlegrounds = new Image[3];
+        Image[] foregrounds = new Image[6];
 
         public void Load(Level CurrentLevel, GameWorld gameWorld)
         {
@@ -118,7 +118,7 @@ namespace Adam
         }
     }
 
-    struct BackGroundImage
+    struct Image
     {
         public Rectangle Rectangle { get; set; }
         public Texture2D Texture { get; set; }

@@ -34,16 +34,15 @@ namespace Adam
         private Level CurrentLevel;
         public Player player;
         public Apple apple;
-        Background background = new Background();
-        BackGroundImage blackCorners = new BackGroundImage();
+        Background background = new Background();        
         PopUp popUp = new PopUp();
-        PlaceNotification placeNot;
+        PlaceNotification placeNotification;
         public GameTimer timer;
         int enemyTilePos;
         int gemTilePos;
         public bool isPaused;
         public bool levelComplete;
-        public static Random randGen = new Random();
+        public static Random RandGen;
         public static Texture2D SpriteSheet;
         Game1 game1;
 
@@ -65,16 +64,14 @@ namespace Adam
         public GameTime gameTime;
         public WorldData worldData;
 
-        SoundEffect hurryUpSound;
-        SoundEffectInstance hurryUpInstance;
-
         public GameWorld() { }
 
         public GameWorld(Game1 game1)
         {
             this.game1 = game1;
 
-            placeNot = new PlaceNotification();
+            placeNotification = new PlaceNotification();
+            RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
         }
 
@@ -122,18 +119,12 @@ namespace Adam
             playerLight = new Light();
             playerLight.Load(Content);
 
-            hurryUpSound = ContentHelper.LoadSound("Sounds/hurryUp");
-            hurryUpInstance = hurryUpSound.CreateInstance();
-
             background.Load(CurrentLevel, this);
-            blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
-            blackCorners.Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
-
 
             if (worldData.song != null)
                 MediaPlayer.Play(worldData.song);
 
-            placeNot.Show(worldData.levelName);
+            placeNotification.Show(worldData.levelName);
 
         }
 
@@ -298,7 +289,7 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(15, 74, 225)) //NPC
                 {
-                    noobList.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, randGen.Next()));
+                    noobList.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, RandGen.Next()));
                 }
                 else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
                 {
@@ -412,7 +403,7 @@ namespace Adam
                     Tile t = array[i];
                     if (t.ID == 1 && t.subID == 0 && array[i - worldData.mainMap.Width].isSolid == false)
                     {
-                        int prob = randGen.Next(0, 100);
+                        int prob = RandGen.Next(0, 100);
                         if (prob < 25)
                         {
                             Tile a = array[i - worldData.mainMap.Width];
@@ -689,7 +680,7 @@ namespace Adam
             this.gameTime = gameTime;
             popUp.Update(gameTime, player);
             background.Update(camera);
-            placeNot.Update(gameTime);
+            placeNotification.Update(gameTime);
             UpdateInBackground();
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
@@ -740,17 +731,17 @@ namespace Adam
                     {
                         entities.Add(new JetpackPowerUp(chest.rectangle.X, chest.rectangle.Y));
                         entities.Add(new CDPlayer(new Vector2(chest.rectangle.X, chest.rectangle.Y)));
-                        max = randGen.Next(6, 10);
+                        max = RandGen.Next(6, 10);
                     }
-                    else max = randGen.Next(3, 6);
+                    else max = RandGen.Next(3, 6);
                     for (int i = 0; i <= max; i++)
                     {
-                        gemList.Add(new Gem(chest, randGen.Next(0, 100), Content));
+                        gemList.Add(new Gem(chest, RandGen.Next(0, 100), Content));
                     }
-                    max = randGen.Next(10, 20);
+                    max = RandGen.Next(10, 20);
                     for (int i = 0; i <= max; i++)
                     {
-                        effectList.Add(new Particle(chest, randGen.Next(0, 100)));
+                        effectList.Add(new Particle(chest, RandGen.Next(0, 100)));
                     }
                 }
 
@@ -1008,16 +999,10 @@ namespace Adam
             background.Draw(spriteBatch);
         }
 
-        public void DrawAfterEffects(SpriteBatch spriteBatch)
-        {
-            //black corners of the screen
-            spriteBatch.Draw(blackCorners.Texture, blackCorners.Rectangle, Color.White);
-        }
-
         public void DrawUI(SpriteBatch spriteBatch)
         {
 
-            placeNot.Draw(spriteBatch);
+            placeNotification.Draw(spriteBatch);
             popUp.Draw(spriteBatch);
 
             foreach (var noob in noobList)

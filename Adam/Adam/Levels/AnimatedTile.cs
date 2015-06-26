@@ -64,7 +64,7 @@ namespace Adam
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 10 + (2 * GameWorld.randGen.Next(0, 2)));
+                    startingPosition = new Vector2(12, 10 + (2 * GameWorld.RandGen.Next(0, 2)));
                     size.Y = 2;
                     rectangle.Height = Game1.Tilesize * 2;
                     rectangle.Y -= Game1.Tilesize;
@@ -83,7 +83,7 @@ namespace Adam
 
             if (hasRandomStartingPoint)
             {
-                int randX = GameWorld.randGen.Next(0, (int)frameCount.X);
+                int randX = GameWorld.RandGen.Next(0, (int)frameCount.X);
                 sourceRectangle.X += randX * tilesize;
                 currentFrame += randX;
             }

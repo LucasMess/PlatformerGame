@@ -442,9 +442,7 @@ namespace Adam
                     player.Draw(gameSB);
                     gameSB.End();
 
-
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    gameWorld.DrawAfterEffects(UiSB);
                     UiSB.End();
 
                     break;

@@ -55,7 +55,7 @@ namespace Adam.Enemies
 
             if (projCooldownTimer > 3 && !isDead)
             {
-                if (GameWorld.randGen.Next(0, 1000) < 50)
+                if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
                     projList.Add(new ParabolicProjectile(this, map, Content, ProjectileSource.Snake));
                     PlayAttackSound();

@@ -979,7 +979,7 @@ namespace Adam
             isInvincible = true;
             isReceivingInput = false;
             takeDamageSound.Play();
-            SpillBlood(GameWorld.randGen.Next(3, 5));
+            SpillBlood(GameWorld.RandGen.Next(3, 5));
         }
 
         public void TakeDamageAndKnockBack(int damage)
@@ -1179,7 +1179,7 @@ namespace Adam
                 particles.Add(eff);
             }
 
-            int rand = GameWorld.randGen.Next(20, 30);
+            int rand = GameWorld.RandGen.Next(20, 30);
             SpillBlood(rand);
 
 
@@ -1233,7 +1233,7 @@ namespace Adam
         {
             if (!goreSoundPlayed)
             {
-                int rand = GameWorld.randGen.Next(0, 2);
+                int rand = GameWorld.RandGen.Next(0, 2);
                 goreSounds[rand].Play();
                 goreSoundPlayed = true;
             }
