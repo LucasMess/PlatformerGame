@@ -21,6 +21,11 @@ namespace Adam
         Heart heart;
         Coin coin;
         Image blackCorners = new Image();
+        Image blackScreen = new Image();
+
+        bool fadeIn;
+        bool fadeOut;
+        float blackOpacity;
 
         public Overlay()
         {
@@ -32,6 +37,9 @@ namespace Adam
             //Black corners of the screen
             blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
             blackCorners.Rectangle = new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight);
+
+            blackScreen.Texture = ContentHelper.LoadTexture("Tiles/black");
+            blackScreen.Rectangle = new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight);
         }
 
         public void Update(GameTime gameTime, Player player, GameWorld map)
@@ -51,6 +59,33 @@ namespace Adam
                     break;
                 }
             }
+
+            if (fadeIn)
+            {
+                blackOpacity -= .03f;
+                if (blackOpacity <= 0)
+                    fadeIn = false;
+            }
+            if (fadeOut)
+            {
+                blackOpacity += .03f;
+                if (blackOpacity >= 1)
+                    fadeOut = false;
+            }
+        }
+
+        public void FadeIn()
+        {
+            fadeIn = true;
+            fadeOut = false;
+            blackOpacity = 3;
+        }
+
+        public void FadeOut()
+        {
+            blackOpacity = 0;
+            fadeOut = true;
+            fadeIn = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -64,6 +99,9 @@ namespace Adam
             {
                 spl.Draw(spriteBatch);
             }
+
+            if (fadeIn || fadeOut)
+            spriteBatch.Draw(blackScreen.Texture, blackScreen.Rectangle, Color.White * blackOpacity);
         }
     }
 

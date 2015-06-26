@@ -49,15 +49,15 @@ namespace Adam.Enemies
             Initialize();
         }
 
-        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime, List<Entity> entities, GameWorld map)
+        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime)
         {
-            base.Update(player, gameTime, entities, map);
+            base.Update(player, gameTime);
             Animate();
 
             if (!isInRange)
                 return;
 
-            if (CollisionRay.IsPlayerInSight(this, player, map, out rects))
+            if (CollisionRay.IsPlayerInSight(this, player, GameWorld.Instance, out rects))
             {
                 tempCo = Color.Red;
                 CurrentAnimationState = AnimationState.Alertmode;

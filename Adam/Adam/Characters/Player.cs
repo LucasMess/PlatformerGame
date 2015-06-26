@@ -65,9 +65,7 @@ namespace Adam
 
         public Vector2 respawnPos;
 
-        public List<Particle> particles = new List<Particle>();
         public List<int> keySecrets = new List<int>();
-        List<Particle> chronoshiftParticles = new List<Particle>();
 
         //Timers
         GameTime gameTime;
@@ -326,17 +324,6 @@ namespace Adam
             if (sleepTimer > 3 && !isOnVines)
                 CurrentAnimation = AnimationState.Sleeping;
 
-            //Update particles
-            foreach (Particle eff in particles)
-            {
-                eff.Update(gameTime);
-                if (eff.ToDelete())
-                {
-                    particles.Remove(eff);
-                    break;
-                }
-            }
-
             //Play death animation when player dies.
             if (isPlayerDead && !deathAnimationDone)
             {
@@ -377,19 +364,18 @@ namespace Adam
                     hasDeactiveSoundPlayed = true;
                     chronoSoundTimer = 0;
                 }
-                foreach (var eff in chronoshiftParticles)
-                {
-                    eff.Update(gameTime);
-                }
                 bool processing = false;
-                foreach (var eff in chronoshiftParticles)
+                for (int i = 0; i < GameWorld.Instance.particles.Count;i++)
                 {
-                    if (!eff.isComplete)
-                        processing = true;
+                    Particle particle = GameWorld.Instance.particles[i];
+                    if (particle.CurrentParticle == Particle.ParticleType.PlayerChronoshift)
+                    {
+                        if (particle.isComplete)
+                            processing = true;
+                    }
                 }
                 if (!processing)
                 {
-                    chronoshiftParticles = new List<Particle>();
                     currentTexture = textureArray[GetTextureNumber(CurrentEvolution)];
                     hasChronoshifted = false;
                     hasDeactiveSoundPlayed = false;
@@ -548,7 +534,6 @@ namespace Adam
         /// </summary>
         private void UpdatePlayerPosition()
         {
-
             if (position.X < 0)
                 position.X = 0;
             if (position.X > (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width))
@@ -842,7 +827,7 @@ namespace Adam
                     zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
                     if (zzzTimer > 1)
                     {
-                        particles.Add(new Particle(this));
+                        GameWorld.Instance.particles.Add(new Particle(this));
                         zzzTimer = 0;
                     }
 
@@ -955,16 +940,8 @@ namespace Adam
         //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
 
         DrawOtherThings:
-            foreach (Particle z in particles)
-                z.Draw(spriteBatch);
-            foreach (var eff in chronoshiftParticles)
-                eff.Draw(spriteBatch);
-
-
             if (weapon != null)
                 weapon.Draw(spriteBatch);
-
-
         }
 
         public void TakeDamage(int damage)
@@ -1045,11 +1022,6 @@ namespace Adam
             get { return isPlayerDead; }
         }
 
-        public int ZZZCount
-        {
-            get { return particles.Count; }
-        }
-
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
             Vector2 size = new Vector2(previousSingleTexture.Width / Game1.Tilesize, previousSingleTexture.Height / Game1.Tilesize);
@@ -1089,7 +1061,7 @@ namespace Adam
                 return;
             Particle eff = new Particle();
             eff.CreateTileParticleEffect(tile, this);
-            particles.Add(eff);
+            GameWorld.Instance.particles.Add(eff);
             tileParticleTimer = 0;
         }
 
@@ -1159,7 +1131,7 @@ namespace Adam
                 {
                     Particle eff = new Particle();
                     eff.CreatePlayerChronoshiftEffect(this, rec);
-                    chronoshiftParticles.Add(eff);
+                    GameWorld.Instance.particles.Add(eff);
                 }
             }
         }
@@ -1176,7 +1148,7 @@ namespace Adam
             {
                 Particle eff = new Particle();
                 eff.CreatePlayerDesintegrationEffect(this, rec);
-                particles.Add(eff);
+                GameWorld.Instance.particles.Add(eff);
             }
 
             int rand = GameWorld.RandGen.Next(20, 30);
@@ -1250,7 +1222,7 @@ namespace Adam
             {
                 Particle par = new Particle();
                 par.CreateBloodEffect(this, gameWorld);
-                particles.Add(par);
+                GameWorld.Instance.particles.Add(par);
             }
         }
 

@@ -340,8 +340,12 @@ namespace Adam
                     break;
                 case GameState.LoadingScreen:
                     loadingScreen.Update(gameTime);
+
                     if (hasLoadedContent && loadingScreen.isReady)
+                    {
                         CurrentGameState = desiredGameState;
+                        overlay.FadeIn();
+                    }
                     break;
                 case GameState.GameWorld:
                     if (gameWorld.isPaused)
@@ -586,7 +590,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
                     debugSB.DrawString(debugFont, "Load time: " + loadWatch.ElapsedMilliseconds, new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
-                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.effectList.Count, new Vector2(0, 240), Color.White);
+                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles.Count, new Vector2(0, 240), Color.White);
                     debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities.Count, new Vector2(0, 260), Color.White);
                     debug.Draw(debugSB);
                     debugSB.End();

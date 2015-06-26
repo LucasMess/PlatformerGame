@@ -159,7 +159,7 @@ namespace Adam
             else tipPos = new Vector2((float)(rectangle.X + xCoor), (float)(rectangle.Y + yCoor + rectangle.Height / 2));
 
             foreach (var proj in projectileList)
-                proj.Update(gameTime);
+                proj.Update(player, gameTime);
             foreach (var eff in effectList)
                 eff.Update(gameTime);
 

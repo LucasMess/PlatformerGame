@@ -775,6 +775,7 @@ namespace Adam
                 }
             }
 
+            //Marble columns
             if (ID == 18 && subID == 0)
             {
                 int indexAbove = TileIndex - mapWidth;
@@ -782,16 +783,18 @@ namespace Adam
                 if (array[indexAbove].ID != 18)
                 {
                     subID = 1;
-                    DefineTexture();
                 }
                 if (array[indexBelow].ID != 18)
                 {
                     subID = 2;
-                    DefineTexture();
                 }
             }
 
-            
+            //Fences
+            if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
+            {
+                subID = 1;
+            }
         }
 
     }

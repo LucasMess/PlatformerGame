@@ -19,10 +19,8 @@ namespace Adam
     class Projectile : Entity
     {
         public Rectangle topMidBound, botMidBound;
-        public Vector2 velocity;
         protected PointLight light;
         public int tileHit;
-        public bool toDelete;
         protected bool IsInactive;
         public ProjectileSource CurrentProjectileSource;
 
@@ -30,10 +28,8 @@ namespace Adam
         protected bool isFlipped;
         protected double effTimer;
         protected GameTime gameTime;
-        protected GameWorld gameWorld;
         protected Player player;
         protected Enemy enemy;
-        protected List<Particle> effectList = new List<Particle>();
 
 
         public Projectile()
@@ -46,24 +42,14 @@ namespace Adam
             effTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (effTimer > 20 && !IsInactive)
             {
-                effectList.Add(new Particle(this));
+                GameWorld.Instance.particles.Add(new Particle(this));
                 effTimer = 0;
             }
+        }
 
-            foreach (var eff in effectList)
-            {
-                eff.Update(gameTime);
-            }
+        public virtual void Update(Player player, GameTime gameTime)
+        {
 
-            int maxCount = effectList.Count() - 1;
-            for (int i = 0; i < effectList.Count; i++)
-            {
-                int k = maxCount - i;
-                if (effectList[k].ToDelete())
-                {
-                    effectList.Remove(effectList[k]);
-                }
-            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -77,14 +63,8 @@ namespace Adam
                     spriteBatch.Draw(texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                     if (light != null)
                         light.DrawGlow(spriteBatch);
-                    foreach (var eff in effectList)
-                        eff.Draw(spriteBatch);
                     break;
             }
-
-            foreach (var eff in effectList)
-                eff.Draw(spriteBatch);
-
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
@@ -162,7 +142,7 @@ namespace Adam
             collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), texture.Width, texture.Height);
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime)
         {
             this.gameTime = gameTime;
             collRectangle.X += (int)velocity.X;
@@ -178,16 +158,6 @@ namespace Adam
                 light.Update(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
 
             CreateTrailEffect();
-
-            foreach (var eff in effectList)
-            {
-                eff.Update(gameTime);
-                if (eff.ToDelete())
-                {
-                    effectList.Remove(eff);
-                    break;
-                }
-            }
         }
 
 
@@ -240,7 +210,7 @@ namespace Adam
 
         }
 
-        public void Update(Player player, GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime)
         {
             this.player = player;
             this.gameTime = gameTime;
@@ -267,7 +237,7 @@ namespace Adam
             CheckCollisionWithPlayer();
             CheckIfOutsideBoundaries();
 
-            if (IsInactive && effectList.Count == 0)
+            if (IsInactive)
             {
                 toDelete = true;
             }

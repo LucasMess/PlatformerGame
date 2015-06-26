@@ -100,9 +100,13 @@ namespace Adam
             CurrentParticle = ParticleType.SnakeVenom;
             texture = ContentHelper.LoadTexture("Effects/venom_blob");
             randGen = new Random();
-            int size = randGen.Next(texture.Width, texture.Width * 2);
-            drawRectangle = new Rectangle(proj.collRectangle.X + proj.collRectangle.Width / 2, proj.collRectangle.Y, size, size);
-            velocity = new Vector2(randGen.Next(2, 4), randGen.Next(-3, 4));
+            drawRectangle = new Rectangle(proj.collRectangle.X + proj.collRectangle.Width / 2, proj.collRectangle.Y, 8, 8);
+            if (proj.velocity.X > 0)
+                velocity.X = -2;
+            else velocity.X = 2;
+            velocity.Y = GameWorld.RandGen.Next(1, 4);
+            if (GameWorld.RandGen.Next(0, 2) == 0)
+                velocity.Y = -velocity.Y;
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             opacity = 1f;
         }
@@ -172,7 +176,7 @@ namespace Adam
             velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
         }
 
-        public void CreateBloodEffect(Player player, GameWorld map) 
+        public void CreateBloodEffect(Player player, GameWorld map)
         {
             CurrentParticle = ParticleType.Blood;
             texture = ContentHelper.LoadTexture("Effects/blood");
@@ -337,9 +341,8 @@ namespace Adam
                 case ParticleType.SnakeVenom:
                     drawRectangle.X += (int)velocity.X;
                     drawRectangle.Y += (int)velocity.Y;
-                    velocity.Y = velocity.Y * 0.99f;
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    velocity.X = velocity.X * 0.99f;
+                    opacity -= .03f;
+                    velocity.Y += .09f;
 
                     if (opacity < 0)
                         toDelete = true;

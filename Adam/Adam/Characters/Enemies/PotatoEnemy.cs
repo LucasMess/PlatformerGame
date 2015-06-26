@@ -40,9 +40,9 @@ namespace Adam
 
         }
 
-        public override void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
+        public override void Update(Player player, GameTime gameTime)
         {
-            base.Update(player, gameTime, entities, map);
+            base.Update(player, gameTime);
             Animate();
 
             if (!isInRange)

@@ -30,7 +30,7 @@ namespace Adam
         {
             get
             {
-                if (instance == null) 
+                if (instance == null)
                     throw new Exception("The instance of Gameworld has not yet been created.");
                 else return instance;
             }
@@ -50,7 +50,6 @@ namespace Adam
         Background background = new Background();
         PopUp popUp = new PopUp();
         PlaceNotification placeNotification;
-        public GameTimer timer;
         int enemyTilePos;
         int gemTilePos;
         public bool isPaused;
@@ -58,22 +57,17 @@ namespace Adam
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         Game1 game1;
+        Camera camera;
 
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
         public List<Cloud> cloudList;
         public List<Gem> gemList; //can be moved to entities
         public List<Chest> chestList; //can be moved to entities
-        public List<Particle> effectList; //merge with particles
-        public List<PlayerWeaponProjectile> projectileList; //SHOULD be moved to entities
         public List<Climbables> climbablesList; //could be moved to entities
-        public List<Tech> techList; //Will be deleted
-        public List<AnimatedTile> animatedTileList; //I don't think this exists anymore.
-        public List<Door> doorList; //Entities
         public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
-        public List<NonPlayableCharacter> noobList; //Entities
         public List<Entity> entities;
-        public List<Particle> particles; //(In multiplayer this would not be passed to the server.
+        public List<Particle> particles;
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
@@ -82,6 +76,8 @@ namespace Adam
 
         public GameWorld(Game1 game1)
         {
+            instance = this;
+
             this.game1 = game1;
 
             placeNotification = new PlaceNotification();
@@ -96,14 +92,8 @@ namespace Adam
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
-            effectList = new List<Particle>();
-            projectileList = new List<PlayerWeaponProjectile>();
             climbablesList = new List<Climbables>();
-            techList = new List<Tech>();
-            animatedTileList = new List<AnimatedTile>();
-            doorList = new List<Door>();
             keyList = new List<Key>();
-            noobList = new List<NonPlayableCharacter>();
             entities = new List<Entity>();
             particles = new List<Particle>();
 
@@ -112,7 +102,6 @@ namespace Adam
             popUp.Load(Content);
 
             this.CurrentLevel = CurrentLevel;
-            timer = new GameTimer(180);
             MediaPlayer.Volume = .2f;
 
             int maxClouds = 5;
@@ -141,7 +130,7 @@ namespace Adam
 
         }
 
-        public void LoadGrid(Tile[] array, Texture2D data)
+        private void LoadGrid(Tile[] array, Texture2D data)
         {
             int currentTileNumber = 0;
 
@@ -245,8 +234,7 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(16, 52, 207)) //tech
                 {
-                    tile.ID = 20;
-                    techList.Add(new Tech(Xcoor, Ycoor, Content));
+                    //REMOVED
                 }
                 else if (colorCode == new Vector3(217, 97, 9)) //scaffolding
                 {
@@ -301,7 +289,7 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(15, 74, 225)) //NPC
                 {
-                    noobList.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, RandGen.Next()));
+                    entities.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, RandGen.Next()));
                 }
                 else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
                 {
@@ -369,20 +357,20 @@ namespace Adam
 
                 else if (colorCode == new Vector3(191, 81, 0)) //door secret 1
                 {
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 1, i));
+                    entities.Add(new Door(Xcoor, Ycoor, Content, 1, i));
                     tile.ID = 13;
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(191, 81, 1)) //door secret 2
                 {
                     tile.ID = 13;
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 2, i));
+                    entities.Add(new Door(Xcoor, Ycoor, Content, 2, i));
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(191, 81, 2)) //door secret 3
                 {
                     tile.ID = 13;
-                    doorList.Add(new Door(Xcoor, Ycoor, Content, 3, i));
+                    entities.Add(new Door(Xcoor, Ycoor, Content, 3, i));
                     tile.isSolid = true;
                 }
                 else if (colorCode == new Vector3(246, 255, 0)) //key secret 1
@@ -399,7 +387,7 @@ namespace Adam
                 }
             }
 
-
+            //Connected Textures
             foreach (Tile tile in array)
             {
                 if (tile.ID == 1 || tile.ID == 2 || tile.ID == 4 || tile.ID == 5 || tile.ID == 10)
@@ -408,47 +396,11 @@ namespace Adam
                 }
             }
 
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (i - worldData.mainMap.Width - 1 >= 0 && i + worldData.mainMap.Width + 1 < array.Length)
-                {
-                    Tile t = array[i];
-                    if (t.ID == 1 && t.subID == 0 && array[i - worldData.mainMap.Width].isSolid == false)
-                    {
-                        int prob = RandGen.Next(0, 100);
-                        if (prob < 25)
-                        {
-                            Tile a = array[i - worldData.mainMap.Width];
-                            a.ID = 9;
-                            a.isVoid = true;
-                            animatedTileList.Add(new AnimatedTile(9, a.rectangle));
-                        }
-                    }
-
-                    //shortgrass
-                    if (array[i].ID == 1 && array[i - worldData.mainMap.Width].ID == 0 && array[i].subID == 0)
-                    {
-                        array[i - worldData.mainMap.Width].ID = 7;
-                    }
-                    //Fences
-                    if (array[i].ID == 103 && array[i - worldData.mainMap.Width].ID != 103)
-                    {
-                        array[i].subID = 1;
-                    }
-                }
-            }
-
-
-
-            //now that all IDs have been given, define all textures for the tiles.
+            //Now that all IDs have been given, define all textures for the tiles.
             foreach (Tile tile in array)
             {
                 tile.DefineTexture();
                 tile.AddRandomlyGeneratedDecoration(array, worldData.mainMap.Width);
-            }
-
-            foreach (AnimatedTile tile in animatedTileList)
-            {
                 tile.DefineTexture();
             }
 
@@ -690,42 +642,18 @@ namespace Adam
 
             this.Content = Game1.Content;
             this.gameTime = gameTime;
+            this.camera = camera;
+
             popUp.Update(gameTime, player);
             background.Update(camera);
             placeNotification.Update(gameTime);
             UpdateInBackground();
+            UpdateVisibleIndexes();
+
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
 
-            if (player.isPlayerDead == false)
-            {
-                //defines which tiles are in range
-                int initial = camera.tileIndex - 17 * worldData.mainMap.Width - 25;
-                int maxHoriz = 50;
-                int maxVert = 30;
-                int i = 0;
 
-                for (int v = 0; v < maxVert; v++)
-                {
-                    for (int h = 0; h < maxHoriz; h++)
-                    {
-                        visibleTileArray[i] = initial + worldData.mainMap.Width * v + h;
-                        i++;
-                    }
-                }
-                initial = camera.tileIndex - 17 * 2 * worldData.mainMap.Width - 25 * 2;
-                maxHoriz = 100;
-                maxVert = 60;
-                i = 0;
-                for (int v = 0; v < maxVert; v++)
-                {
-                    for (int h = 0; h < maxHoriz; h++)
-                    {
-                        visibleLightArray[i] = initial + worldData.mainMap.Width * v + h;
-                        i++;
-                    }
-                }
-            }
 
             foreach (Cloud c in cloudList)
             {
@@ -753,7 +681,7 @@ namespace Adam
                     max = RandGen.Next(10, 20);
                     for (int i = 0; i <= max; i++)
                     {
-                        effectList.Add(new Particle(chest, RandGen.Next(0, 100)));
+                        particles.Add(new Particle(chest, RandGen.Next(0, 100)));
                     }
                 }
 
@@ -779,7 +707,7 @@ namespace Adam
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
-                    enemy.Update(player, gameTime, entities, this);
+                    enemy.Update(player, gameTime);
                     EnemyCollision(enemy, player);
                 }
                 if (entity is Obstacle)
@@ -791,6 +719,22 @@ namespace Adam
                 {
                     PowerUp power = (PowerUp)entity;
                     power.Update(gameTime, player, this);
+                }
+                if (entity is Projectile)
+                {
+                    Projectile proj = (Projectile)entity;
+                    proj.Update(player, gameTime);
+                }
+                if (entity is NonPlayableCharacter)
+                {
+                    NonPlayableCharacter npc = (NonPlayableCharacter)entity;
+                    npc.Update(gameTime, player);
+                    NoobCollision(npc);
+                }
+                if (entity is Door)
+                {
+                    Door door = (Door)entity;
+                    door.Update(gameTime, player, tileArray);
                 }
             }
 
@@ -839,17 +783,6 @@ namespace Adam
                 }
             }
 
-            foreach (Door door in doorList)
-            {
-                door.Update(gameTime, player, tileArray);
-            }
-
-            foreach (var noob in noobList)
-            {
-                noob.Update(gameTime, player);
-                NoobCollision(noob);
-            }
-
             foreach (int tileNumber in visibleTileArray)
             {
                 if (tileNumber >= 0 && tileNumber < tileArray.Length)
@@ -861,16 +794,49 @@ namespace Adam
 
         public void UpdateInBackground()
         {
-            foreach (Particle effect in effectList)
+            foreach (Particle effect in particles)
                 effect.Update(gameTime);
 
-            for (int i = effectList.Count; i == 0; i--)
+            for (int i = particles.Count; i == 0; i--)
             {
-                if (effectList.Count == 0)
+                if (particles.Count == 0)
                     break;
-                if (effectList[i].ToDelete())
+                if (particles[i].ToDelete())
                 {
-                    effectList.Remove(effectList[i]);
+                    particles.Remove(particles[i]);
+                }
+            }
+        }
+
+        private void UpdateVisibleIndexes()
+        {
+            if (player.isPlayerDead == false)
+            {
+                //defines which tiles are in range
+                int initial = camera.tileIndex - 17 * worldData.mainMap.Width - 25;
+                int maxHoriz = 50;
+                int maxVert = 30;
+                int i = 0;
+
+                for (int v = 0; v < maxVert; v++)
+                {
+                    for (int h = 0; h < maxHoriz; h++)
+                    {
+                        visibleTileArray[i] = initial + worldData.mainMap.Width * v + h;
+                        i++;
+                    }
+                }
+                initial = camera.tileIndex - 17 * 2 * worldData.mainMap.Width - 25 * 2;
+                maxHoriz = 100;
+                maxVert = 60;
+                i = 0;
+                for (int v = 0; v < maxVert; v++)
+                {
+                    for (int h = 0; h < maxHoriz; h++)
+                    {
+                        visibleLightArray[i] = initial + worldData.mainMap.Width * v + h;
+                        i++;
+                    }
                 }
             }
         }
@@ -898,9 +864,7 @@ namespace Adam
 
             if (player.weapon != null)
                 player.weapon.DrawLights(spriteBatch);
-            //foreach (Projectile pr in projectileList)
-            //    pr.DrawLights(spriteBatch);
-            foreach (Particle ef in effectList)
+            foreach (Particle ef in particles)
                 ef.DrawLights(spriteBatch);
             foreach (Gem ge in gemList)
                 ge.DrawLights(spriteBatch);
@@ -911,11 +875,6 @@ namespace Adam
         {
             if (apple != null)
                 apple.Draw(spriteBatch);
-
-            foreach (var tech in techList)
-            {
-                tech.Draw(spriteBatch);
-            }
             foreach (Chest chest in chestList)
             {
                 chest.Draw(spriteBatch);
@@ -923,10 +882,6 @@ namespace Adam
             foreach (Gem gem in gemList)
             {
                 gem.Draw(spriteBatch);
-            }
-            foreach (var tile in animatedTileList)
-            {
-                tile.Draw(spriteBatch);
             }
             foreach (int tileNumber in visibleTileArray)
             {
@@ -940,34 +895,12 @@ namespace Adam
             {
                 key.Draw(spriteBatch);
             }
-
-            foreach (Door door in doorList)
-            {
-                door.Draw(spriteBatch);
-            }
-            foreach (Particle effect in effectList)
-            {
-                effect.Draw(spriteBatch);
-            }
             foreach (Particle par in particles)
             {
                 par.Draw(spriteBatch);
             }
-            foreach (Projectile proj in projectileList)
-            {
-                proj.Draw(spriteBatch);
-            }
-            foreach (NonPlayableCharacter noob in noobList)
-            {
-                noob.Draw(spriteBatch);
-            }
-
             foreach (Entity en in entities)
                 en.Draw(spriteBatch);
-
-
-
-
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -999,19 +932,7 @@ namespace Adam
 
         public void DrawUI(SpriteBatch spriteBatch)
         {
-
             placeNotification.Draw(spriteBatch);
-            popUp.Draw(spriteBatch);
-
-            foreach (var noob in noobList)
-            {
-                noob.DrawUI(spriteBatch);
-            }
-            foreach (var door in doorList)
-            {
-                door.DrawUI(spriteBatch);
-            }
-
         }
 
         public void ResetWorld()
@@ -1032,22 +953,8 @@ namespace Adam
         public void UpdateFromDataPacket(MapDataPacket m)
         {
             apple = m.apple;
-            timer = m.timer;
             isPaused = m.isPaused;
             levelComplete = m.levelComplete;
-
-
-            cloudList = m.cloudList;
-            gemList = m.gemList;
-            chestList = m.chestList;
-            effectList = m.effectList;
-            projectileList = m.projectileList;
-            climbablesList = m.climbablesList;
-            techList = m.techList;
-            doorList = m.doorList;
-            keyList = m.keyList;
-            noobList = m.noobList;
-            entities = m.entities;
 
             gameTime = m.gameTime;
         }

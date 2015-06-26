@@ -39,11 +39,11 @@ namespace Adam.Characters.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
+        public override void Update(Player player, GameTime gameTime)
         {
             this.player = player;
             this.gameTime = gameTime;
-            base.Update(player, gameTime, entities, map);
+            base.Update(player, gameTime);
 
             if (isDead) return;
 
@@ -52,7 +52,7 @@ namespace Adam.Characters.Enemies
             damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2);
 
             int t = GetTileIndex();
-            int[] i = GetNearbyTileIndexes(map);
+            int[] i = GetNearbyTileIndexes(GameWorld.Instance);
 
             xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);

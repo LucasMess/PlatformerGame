@@ -11,10 +11,9 @@ using System.Text;
 
 namespace Adam
 {
-    class Door
+    class Door : Entity
     {
         Rectangle radiusRect;
-        Animation animation;
         public bool isOpen;
         int secret;
         SoundEffect lockedSound;
@@ -23,7 +22,6 @@ namespace Adam
         public int tilePos;
         Dialog dialog;
         Vector2 monitorRes;
-        ContentManager Content;
         double dialogTimer;
 
         public Door(int x, int y, ContentManager Content, int secret, int tilePos)
@@ -81,7 +79,7 @@ namespace Adam
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
         }

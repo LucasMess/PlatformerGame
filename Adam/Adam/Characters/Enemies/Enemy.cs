@@ -44,9 +44,6 @@ namespace Adam
         protected Player player;
         public EnemyType CurrentEnemyType;
         protected GameTime gameTime;
-        protected List<ParabolicProjectile> projList = new List<ParabolicProjectile>();
-        protected List<Particle> effectList = new List<Particle>();
-        protected List<Entity> entities;
 
         public Enemy()
         {
@@ -60,12 +57,11 @@ namespace Adam
             maxHealth = health;
         }
 
-        public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
+        public virtual void Update(Player player, GameTime gameTime)
         {
-            this.entities = entities;
             this.player = player;
             this.gameTime = gameTime;
-            this.gameWorld = map;           
+            this.gameWorld = GameWorld.Instance;           
 
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
@@ -123,17 +119,6 @@ namespace Adam
                 Kill();
             }
 
-            //Update death effect
-            foreach (var eff in effectList)
-            {
-                eff.Update(gameTime);
-                if (eff.ToDelete())
-                {
-                    effectList.Remove(eff);
-                    break;
-                }
-            }
-
             base.Update();
 
 
@@ -141,28 +126,14 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (isDead) goto DrawOthers;
+            if (isDead) return;
             if (isFacingRight)
                 spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
 
-DrawOthers:
-            foreach (var proj in projList)
-                proj.Draw(spriteBatch);
-            foreach (var eff in effectList)
-                eff.Draw(spriteBatch);
-
            // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), damageBox, Color.Green * .5f);
           // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
-        }
-
-        public void DrawDependentEntities(SpriteBatch spriteBatch)
-        {
-            foreach (var proj in projList)
-                proj.Draw(spriteBatch);
-            foreach (var eff in effectList)
-                eff.Draw(spriteBatch);
         }
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
@@ -260,7 +231,7 @@ DrawOthers:
             PlayDeathSound();
             isDead = true;
             health = 0;
-            entities.Add(new Food(this));
+            GameWorld.Instance.entities.Add(new Food(this));
         }
 
         public void CreateDeathEffect()
@@ -272,7 +243,7 @@ DrawOthers:
             {
                 Particle eff = new Particle();
                 eff.CreateEnemyDeathEffect(this, rec);
-                effectList.Add(eff);
+                GameWorld.Instance.particles.Add(eff);
             }
         }
 

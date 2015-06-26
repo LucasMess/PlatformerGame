@@ -41,9 +41,9 @@ namespace Adam.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
+        public override void Update(Player player, GameTime gameTime)
         {
-            base.Update(player, gameTime, entities, map);
+            base.Update(player, gameTime);
 
             collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
             damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width  + 10, collRectangle.Height/2);
@@ -57,31 +57,16 @@ namespace Adam.Enemies
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
-                    projList.Add(new ParabolicProjectile(this, map, Content, ProjectileSource.Snake));
+                    GameWorld.Instance.entities.Add(new ParabolicProjectile(this, GameWorld.Instance, Content, ProjectileSource.Snake));
                     PlayAttackSound();
                     projCooldownTimer = 0;
                 }
             }
             projCooldownTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            foreach (var proj in projList)
-            {
-                proj.Update(player, gameTime);
-            }
-            foreach (var proj in projList)
-            {
-                if (proj.toDelete)
-                {
-                    projList.Remove(proj);
-                    break;
-                }
-            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            DrawDependentEntities(spriteBatch);
-
             if (isDead)
                 return;
             if (!isInRange)

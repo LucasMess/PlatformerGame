@@ -35,7 +35,6 @@ namespace Adam.UI.Overlay_Elements
         {
             animation.Update(gameTime);
 
-            currentTime = map.timer.GetTime(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
