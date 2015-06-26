@@ -22,10 +22,23 @@ using Adam.Levels;
 
 namespace Adam
 {
-    class GameWorld
+    sealed class GameWorld
     {
+        private static GameWorld instance;
+
+        public static GameWorld Instance
+        {
+            get
+            {
+                if (instance == null) 
+                    throw new Exception("The instance of Gameworld has not yet been created.");
+                else return instance;
+            }
+        }
+
         //Basic tile grid and the visible tile grid
-        public Tile[] tileArray, wallArray;
+        public Tile[] tileArray;
+        public Tile[] wallArray;
         int[] visibleTileArray = new int[30 * 50];
         int[] visibleLightArray = new int[60 * 100];
         Light[] lightArray;
@@ -34,7 +47,7 @@ namespace Adam
         private Level CurrentLevel;
         public Player player;
         public Apple apple;
-        Background background = new Background();        
+        Background background = new Background();
         PopUp popUp = new PopUp();
         PlaceNotification placeNotification;
         public GameTimer timer;
@@ -46,20 +59,21 @@ namespace Adam
         public static Texture2D SpriteSheet;
         Game1 game1;
 
+        //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
+        //performance.
         public List<Cloud> cloudList;
-        public List<Gem> gemList;
-        public List<Chest> chestList;
-        public List<Enemy> enemyList;
-        public List<Particle> effectList;
-        public List<PlayerWeaponProjectile> projectileList;
-        public List<Climbables> climbablesList;
-        public List<Tech> techList;
-        public List<AnimatedTile> animatedTileList;
-        public List<Door> doorList;
-        public List<Key> keyList;
-        public List<NonPlayableCharacter> noobList;
+        public List<Gem> gemList; //can be moved to entities
+        public List<Chest> chestList; //can be moved to entities
+        public List<Particle> effectList; //merge with particles
+        public List<PlayerWeaponProjectile> projectileList; //SHOULD be moved to entities
+        public List<Climbables> climbablesList; //could be moved to entities
+        public List<Tech> techList; //Will be deleted
+        public List<AnimatedTile> animatedTileList; //I don't think this exists anymore.
+        public List<Door> doorList; //Entities
+        public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
+        public List<NonPlayableCharacter> noobList; //Entities
         public List<Entity> entities;
-        public List<Particle> particles;
+        public List<Particle> particles; //(In multiplayer this would not be passed to the server.
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
@@ -82,7 +96,6 @@ namespace Adam
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
-            enemyList = new List<Enemy>();
             effectList = new List<Particle>();
             projectileList = new List<PlayerWeaponProjectile>();
             climbablesList = new List<Climbables>();
@@ -106,7 +119,7 @@ namespace Adam
             for (int i = 0; i < maxClouds; i++)
             {
                 cloudList.Add(new Cloud(Content, monitorResolution, maxClouds, i));
-            }            
+            }
 
             tileArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
             wallArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
@@ -280,12 +293,11 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(81, 103, 34)) //snake
                 {
-                    enemyList.Add(new Hellboar(Xcoor, Ycoor));
-                    enemyList.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
+                    entities.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
                 }
                 else if (colorCode == new Vector3(143, 148, 0)) //potato
                 {
-                    enemyList.Add(new PotatoEnemy(Xcoor, Ycoor, Content));
+                    entities.Add(new PotatoEnemy(Xcoor, Ycoor, Content));
                 }
                 else if (colorCode == new Vector3(15, 74, 225)) //NPC
                 {
@@ -392,7 +404,7 @@ namespace Adam
             {
                 if (tile.ID == 1 || tile.ID == 2 || tile.ID == 4 || tile.ID == 5 || tile.ID == 10)
                 {
-                    tile.FindConnectedTextures(array,worldData.mainMap.Width);
+                    tile.FindConnectedTextures(array, worldData.mainMap.Width);
                 }
             }
 
@@ -432,7 +444,7 @@ namespace Adam
             foreach (Tile tile in array)
             {
                 tile.DefineTexture();
-                tile.AddRandomlyGeneratedDecoration(array,worldData.mainMap.Width);
+                tile.AddRandomlyGeneratedDecoration(array, worldData.mainMap.Width);
             }
 
             foreach (AnimatedTile tile in animatedTileList)
@@ -465,7 +477,7 @@ namespace Adam
 
             foreach (var li in lightArray)
             {
-                li.CalculateLighting(tileArray, wallArray,worldData.mainMap);
+                li.CalculateLighting(tileArray, wallArray, worldData.mainMap);
             }
         }
 
@@ -477,15 +489,15 @@ namespace Adam
                 gemTilePos = (int)(gem.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(gem.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = gemTilePos -worldData.mainMap.Width - 1;
-                q[1] = gemTilePos -worldData.mainMap.Width;
-                q[2] = gemTilePos -worldData.mainMap.Width + 1;
+                q[0] = gemTilePos - worldData.mainMap.Width - 1;
+                q[1] = gemTilePos - worldData.mainMap.Width;
+                q[2] = gemTilePos - worldData.mainMap.Width + 1;
                 q[3] = gemTilePos - 1;
                 q[4] = gemTilePos;
                 q[5] = gemTilePos + 1;
-                q[6] = gemTilePos +worldData.mainMap.Width - 1;
-                q[7] = gemTilePos +worldData.mainMap.Width;
-                q[8] = gemTilePos +worldData.mainMap.Width + 1;
+                q[6] = gemTilePos + worldData.mainMap.Width - 1;
+                q[7] = gemTilePos + worldData.mainMap.Width;
+                q[8] = gemTilePos + worldData.mainMap.Width + 1;
 
                 //test = q;
 
@@ -553,18 +565,18 @@ namespace Adam
                 enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[12];
-                q[0] = enemyTilePos -worldData.mainMap.Width - 1;
-                q[1] = enemyTilePos -worldData.mainMap.Width;
-                q[2] = enemyTilePos -worldData.mainMap.Width + 1;
+                q[0] = enemyTilePos - worldData.mainMap.Width - 1;
+                q[1] = enemyTilePos - worldData.mainMap.Width;
+                q[2] = enemyTilePos - worldData.mainMap.Width + 1;
                 q[3] = enemyTilePos - 1;
                 q[4] = enemyTilePos;
                 q[5] = enemyTilePos + 1;
-                q[6] = enemyTilePos +worldData.mainMap.Width - 1;
-                q[7] = enemyTilePos +worldData.mainMap.Width;
-                q[8] = enemyTilePos +worldData.mainMap.Width + 1;
-                q[9] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width - 1;
-                q[10] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width;
-                q[11] = enemyTilePos +worldData.mainMap.Width +worldData.mainMap.Width + 1;
+                q[6] = enemyTilePos + worldData.mainMap.Width - 1;
+                q[7] = enemyTilePos + worldData.mainMap.Width;
+                q[8] = enemyTilePos + worldData.mainMap.Width + 1;
+                q[9] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width - 1;
+                q[10] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width;
+                q[11] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width + 1;
 
                 //test = q;
 
@@ -613,18 +625,18 @@ namespace Adam
             int noobTilePos = (int)(noob.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(noob.topMidBound.X / Game1.Tilesize);
 
             int[] q = new int[12];
-            q[0] = noobTilePos -worldData.mainMap.Width - 1;
-            q[1] = noobTilePos -worldData.mainMap.Width;
-            q[2] = noobTilePos -worldData.mainMap.Width + 1;
+            q[0] = noobTilePos - worldData.mainMap.Width - 1;
+            q[1] = noobTilePos - worldData.mainMap.Width;
+            q[2] = noobTilePos - worldData.mainMap.Width + 1;
             q[3] = noobTilePos - 1;
             q[4] = noobTilePos;
             q[5] = noobTilePos + 1;
-            q[6] = noobTilePos +worldData.mainMap.Width - 1;
-            q[7] = noobTilePos +worldData.mainMap.Width;
-            q[8] = noobTilePos +worldData.mainMap.Width + 1;
-            q[9] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width - 1;
-            q[10] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width;
-            q[11] = noobTilePos +worldData.mainMap.Width +worldData.mainMap.Width + 1;
+            q[6] = noobTilePos + worldData.mainMap.Width - 1;
+            q[7] = noobTilePos + worldData.mainMap.Width;
+            q[8] = noobTilePos + worldData.mainMap.Width + 1;
+            q[9] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width - 1;
+            q[10] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width;
+            q[11] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width + 1;
 
             //test = q;
 
@@ -688,7 +700,7 @@ namespace Adam
             if (player.isPlayerDead == false)
             {
                 //defines which tiles are in range
-                int initial = camera.tileIndex - 17 *worldData.mainMap.Width - 25;
+                int initial = camera.tileIndex - 17 * worldData.mainMap.Width - 25;
                 int maxHoriz = 50;
                 int maxVert = 30;
                 int i = 0;
@@ -697,11 +709,11 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleTileArray[i] = initial +worldData.mainMap.Width * v + h;
+                        visibleTileArray[i] = initial + worldData.mainMap.Width * v + h;
                         i++;
                     }
                 }
-                initial = camera.tileIndex - 17 * 2 *worldData.mainMap.Width - 25 * 2;
+                initial = camera.tileIndex - 17 * 2 * worldData.mainMap.Width - 25 * 2;
                 maxHoriz = 100;
                 maxVert = 60;
                 i = 0;
@@ -709,7 +721,7 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleLightArray[i] = initial +worldData.mainMap.Width * v + h;
+                        visibleLightArray[i] = initial + worldData.mainMap.Width * v + h;
                         i++;
                     }
                 }
@@ -761,25 +773,32 @@ namespace Adam
                 }
             }
 
-            foreach (Enemy enemy in enemyList)
+            for (int i = 0; i < entities.Count; i++)
             {
-                enemy.Update(player, gameTime, entities, this);
-                EnemyCollision(enemy, player);
-            }
-
-            foreach (Obstacle ob in entities.OfType<Obstacle>())
-            {
-                ob.Update(gameTime, player, this);
-            }
-
-            foreach (PowerUp pow in entities.OfType<PowerUp>())
-            {
-                pow.Update(gameTime, player, this);
-                if (pow.toDelete)
+                Entity entity = entities[i];
+                if (entity is Enemy)
                 {
-                    entities.Remove(pow);
-                    break;
+                    Enemy enemy = (Enemy)entity;
+                    enemy.Update(player, gameTime, entities, this);
+                    EnemyCollision(enemy, player);
                 }
+                if (entity is Obstacle)
+                {
+                    Obstacle obstacle = (Obstacle)entity;
+                    obstacle.Update(gameTime, player, this);
+                }
+                if (entity is PowerUp)
+                {
+                    PowerUp power = (PowerUp)entity;
+                    power.Update(gameTime, player, this);
+                }
+            }
+
+            for (int i = entities.Count - 1; i >= 0; i--)
+            {
+                Entity entity = entities[i];
+                if (entity.toDelete)
+                    entities.Remove(entity);
             }
 
             for (int i = particles.Count - 1; i >= 0; i--)
@@ -798,20 +817,6 @@ namespace Adam
                     break;
                 }
                 else player.isOnVines = false;
-            }
-
-            foreach (var tech in techList)
-            {
-                tech.Update(gameTime, player, popUp);
-            }
-
-            foreach (var tech in techList)
-            {
-                if (tech.ToDelete)
-                {
-                    techList.Remove(tech);
-                    break;
-                }
             }
 
             playerLight.Update(player);
@@ -856,9 +861,6 @@ namespace Adam
 
         public void UpdateInBackground()
         {
-            foreach (var tile in animatedTileList)
-                tile.Update(gameTime);
-
             foreach (Particle effect in effectList)
                 effect.Update(gameTime);
 
@@ -933,10 +935,6 @@ namespace Adam
                     if (tileArray[tileNumber].texture != null)
                         tileArray[tileNumber].Draw(spriteBatch);
                 }
-            }
-            foreach (Enemy enemy in enemyList)
-            {
-                enemy.Draw(spriteBatch);
             }
             foreach (Key key in keyList)
             {
@@ -1016,12 +1014,12 @@ namespace Adam
 
         }
 
-        public void RespawnEnemies()
+        public void ResetWorld()
         {
-            foreach (var en in enemyList)
+            foreach (Enemy enemy in entities.OfType<Enemy>())
             {
-                en.health = 1;
-                en.isDead = false;
+                enemy.health = enemy.maxHealth;
+                enemy.isDead = false;
             }
         }
 
@@ -1042,7 +1040,6 @@ namespace Adam
             cloudList = m.cloudList;
             gemList = m.gemList;
             chestList = m.chestList;
-            enemyList = m.enemyList;
             effectList = m.effectList;
             projectileList = m.projectileList;
             climbablesList = m.climbablesList;

@@ -44,7 +44,6 @@ namespace Adam.Network
             cloudList = map.cloudList;
             gemList = map.gemList;
             chestList = map.chestList;
-            enemyList = map.enemyList;
             effectList = map.effectList;
             projectileList = map.projectileList;
             climbablesList = map.climbablesList;

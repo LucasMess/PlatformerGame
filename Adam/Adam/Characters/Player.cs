@@ -1023,7 +1023,7 @@ namespace Adam
             isInvisible = false;
             isWaitingForRespawn = false;
 
-            gameWorld.RespawnEnemies();
+            gameWorld.ResetWorld();
         }
 
         public void PlayAttackSound()

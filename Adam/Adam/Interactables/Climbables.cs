@@ -10,24 +10,27 @@ using System.Text;
 
 namespace Adam
 {
-    class Climbables
-    {
-        Rectangle rectangle;
-        int tileSize;       
+    class Climbables : Entity
+    {   
 
         public Climbables(int x, int y)
         {
-            tileSize = Game1.Tilesize;
-            rectangle = new Rectangle(x, y, tileSize, tileSize);
+            int tileSize = Game1.Tilesize;
+            collRectangle = new Rectangle(x, y, tileSize, tileSize);
         }
 
         public bool IsOnPlayer(Player player)
         {
-            if (player.collRectangle.Intersects(rectangle))
+            if (player.collRectangle.Intersects(collRectangle))
             {
                 return true;
             }
             else return false;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            //DO NOTHING
         }
     }
 }

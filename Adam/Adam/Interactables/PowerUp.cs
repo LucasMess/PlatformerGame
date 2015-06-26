@@ -12,8 +12,6 @@ namespace Adam.Interactables
     class PowerUp : Entity
     {
         public bool wasPickedUp;
-        public bool toDelete;
-        protected Vector2 velocity;
         protected Rectangle topMidBound;
         protected double elapsedTime;
         protected SoundEffect loop;

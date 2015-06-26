@@ -31,6 +31,7 @@ namespace Adam
         protected Rectangle sourceRectangle;
         protected Animation animation;
         protected GameWorld gameWorld;
+        public bool toDelete;
         public Vector2 velocity;
 
         public Rectangle yRect, xRect;

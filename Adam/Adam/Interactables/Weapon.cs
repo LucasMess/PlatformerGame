@@ -80,7 +80,7 @@ namespace Adam
                 }
             }
 
-            foreach (Enemy enemy in gameWorld.enemyList)
+            foreach (Enemy enemy in gameWorld.entities.OfType<Enemy>())
             {
                 foreach (var proj in projectileList)
                 {

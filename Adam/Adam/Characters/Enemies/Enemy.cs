@@ -33,6 +33,7 @@ namespace Adam
         public bool canPassThroughWalls;
         protected bool isInRange;
         public int health;
+        public int maxHealth;
         protected int switchFrame, currentFrame;
         protected Vector2 frameCount;
         protected double frameTimer;
@@ -56,6 +57,7 @@ namespace Adam
         {
             radiusRect = new Rectangle(collRectangle.X, collRectangle.Y, 2000, 2000);
             position = new Vector2(collRectangle.X, collRectangle.Y);
+            maxHealth = health;
         }
 
         public virtual void Update(Player player, GameTime gameTime, List<Entity> entities, GameWorld map)
