@@ -52,8 +52,15 @@ namespace Adam
         PlaceNotification placeNotification;
         int enemyTilePos;
         int gemTilePos;
+
+        public int TimesUpdated;
+        public int TimesBackgroundUpdated;
+
         public bool isPaused;
         public bool levelComplete;
+        bool hasLoaded;
+        double timeStepTimer;
+        bool hasUpdated;
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         Game1 game1;
@@ -83,10 +90,16 @@ namespace Adam
             placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
+
+            Thread thread = new Thread(new ThreadStart(UpdateInBackground));
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
         {
+            hasLoaded = false;
+
             worldData = new WorldData(CurrentLevel);
 
             cloudList = new List<Cloud>();
@@ -128,6 +141,7 @@ namespace Adam
 
             placeNotification.Show(worldData.levelName);
 
+            hasLoaded = true;
         }
 
         private void LoadGrid(Tile[] array, Texture2D data)
@@ -637,6 +651,7 @@ namespace Adam
 
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
+            TimesUpdated++;
             if (player.hasChronoshifted)
                 return;
 
@@ -647,8 +662,6 @@ namespace Adam
             popUp.Update(gameTime, player);
             background.Update(camera);
             placeNotification.Update(gameTime);
-            UpdateInBackground();
-            UpdateVisibleIndexes();
 
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
@@ -738,21 +751,6 @@ namespace Adam
                 }
             }
 
-            for (int i = entities.Count - 1; i >= 0; i--)
-            {
-                Entity entity = entities[i];
-                if (entity.toDelete)
-                    entities.Remove(entity);
-            }
-
-            for (int i = particles.Count - 1; i >= 0; i--)
-            {
-                Particle p = particles[i];
-                p.Update(gameTime);
-                if (p.ToDelete())
-                    particles.Remove(p);
-            }
-
             foreach (var vine in climbablesList)
             {
                 if (vine.IsOnPlayer(player))
@@ -794,16 +792,37 @@ namespace Adam
 
         public void UpdateInBackground()
         {
-            foreach (Particle effect in particles)
-                effect.Update(gameTime);
-
-            for (int i = particles.Count; i == 0; i--)
+            while (true)
             {
-                if (particles.Count == 0)
-                    break;
-                if (particles[i].ToDelete())
+                if (hasLoaded && gameTime != null)
                 {
-                    particles.Remove(particles[i]);
+                    if (TimesBackgroundUpdated < TimesUpdated)
+                    {
+                        TimesBackgroundUpdated++;
+
+                        for (int i = 0; i < particles.Count; i++)
+                        {
+                            particles[i].Update(gameTime);
+                        }
+
+
+                        for (int i = entities.Count - 1; i >= 0; i--)
+                        {
+                            Entity entity = entities[i];
+                            if (entity.toDelete)
+                                entities.Remove(entity);
+                        }
+
+                        for (int i = particles.Count - 1; i >= 0; i--)
+                        {
+                            Particle p = particles[i];
+                            if (p.ToDelete())
+                                particles.Remove(p);
+                        }
+
+                        if (camera != null)
+                            UpdateVisibleIndexes();
+                    }
                 }
             }
         }
@@ -895,12 +914,12 @@ namespace Adam
             {
                 key.Draw(spriteBatch);
             }
-            foreach (Particle par in particles)
+            for (int i = 0; i < particles.Count; i++)
             {
-                par.Draw(spriteBatch);
+                particles[i].Draw(spriteBatch);
             }
-            foreach (Entity en in entities)
-                en.Draw(spriteBatch);
+            for (int i = 0; i < entities.Count; i++)
+                entities[i].Draw(spriteBatch);
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -937,10 +956,19 @@ namespace Adam
 
         public void ResetWorld()
         {
-            foreach (Enemy enemy in entities.OfType<Enemy>())
+            for (int i = entities.Count - 1; i >= 0; i--)
             {
-                enemy.health = enemy.maxHealth;
-                enemy.isDead = false;
+                Entity entity = entities[i];
+                if (entity is Enemy)
+                {
+                    Enemy enemy = (Enemy)entity;
+                    enemy.health = enemy.maxHealth;
+                    enemy.isDead = false;
+                }
+                if (entity is Food)
+                {
+                    entities.Remove(entity);
+                }
             }
         }
 

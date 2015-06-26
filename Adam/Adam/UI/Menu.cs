@@ -17,11 +17,11 @@ namespace Adam
 {
     class Menu
     {
-        Vector2 first = new Vector2(550, 180);
-        Vector2 second = new Vector2(550, 220);
-        Vector2 third = new Vector2(550, 260);
-        Vector2 fourth = new Vector2(550, 300);
-        Vector2 fifth = new Vector2(550, 340);
+        Vector2 first = new Vector2(550, 200);
+        Vector2 second = new Vector2(550, 240);
+        Vector2 third = new Vector2(550, 280);
+        Vector2 fourth = new Vector2(550, 320);
+        Vector2 fifth = new Vector2(550, 360);
 
         //Main Menu
         NewButton play;
@@ -249,7 +249,7 @@ namespace Adam
             foreground = Content.Load<Texture2D>("Menu/menu_front");
             apple = ContentHelper.LoadTexture("Menu/menu_apple");
 
-            theme = Content.Load<Song>("Music/Alchemists Tower");
+            theme = Content.Load<Song>("Music/Anguish");
             font = Content.Load<SpriteFont>("Fonts/button");
 
             

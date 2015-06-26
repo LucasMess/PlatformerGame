@@ -139,7 +139,6 @@ namespace Adam
             graphics.PreferredBackBufferHeight = UserResHeight;
 
             //Change Game Settings Here
-            //Sync with vertical retrace needs to be on until I fix the jittery jump bug
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
@@ -583,8 +582,8 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Player Position:" + player.position.X + "," + player.position.Y, new Vector2(0, 40), Color.White);
                     debugSB.DrawString(debugFont, "Player Rectangle Position:" + player.collRectangle.X + "," + player.collRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
-                    debugSB.DrawString(debugFont, "Game World Render Time:" + renderTime, new Vector2(0, 100), Color.White);
-                    debugSB.DrawString(debugFont, "Light Render Time:" + lightTime, new Vector2(0, 120), Color.White);
+                    debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
+                    debugSB.DrawString(debugFont, "Times Background Updated: " + gameWorld.TimesBackgroundUpdated, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
