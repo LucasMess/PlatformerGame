@@ -91,7 +91,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_10");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_11");
 
             Thread thread = new Thread(new ThreadStart(UpdateInBackground));
             thread.IsBackground = true;
@@ -288,9 +288,27 @@ namespace Adam
                     tile.ID = 30;
                     tile.isSolid = true;
                 }
+                else if (colorCode == new Vector3(0, 138, 50)) //Tree
+                {
+                    tileArray[i] = new AnimatedTile(31, tile.rectangle);
+                }
+                else if (colorCode == new Vector3(127,169,186)) //Small Rock
+                {
+                    tile.ID = 32;
+                    tile.isSolid = false;
+                }
+                else if (colorCode == new Vector3(127, 169, 187)) //Big Rock
+                {
+                    tileArray[i] = new AnimatedTile(33, tile.rectangle);
+                }
+                else if (colorCode == new Vector3(127, 169, 188)) //Medium Rock
+                {
+                    tileArray[i] = new AnimatedTile(34, tile.rectangle);
+                }
+                //35 Small pebbles - automatic
 
 
-                //CHARACTERS AND OTHERS
+      //CHARACTERS AND OTHERS
                 else if (colorCode == new Vector3(0, 255, 0)) //player
                 {
                     player.Initialize(Xcoor, Ycoor);
@@ -586,7 +604,7 @@ namespace Adam
                 }
             }
 
-        }       
+        }
 
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {

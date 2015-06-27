@@ -59,7 +59,15 @@ namespace Adam
                     switch (subID)
                     {
                         case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
+                            int rand = GameWorld.RandGen.Next(0, 100);
+                            if (rand < 95)
+                                position = startingPoint + new Vector2(0, 0);
+                            else
+                            {
+                                rand = GameWorld.RandGen.Next(0, 6);
+                                startingPoint = new Vector2(8, 17);
+                                position = startingPoint + new Vector2(rand, 0);
+                            }
                             break;
                         case 1: //Inner bot right corner
                             position = startingPoint + new Vector2(1, 0);
@@ -186,48 +194,17 @@ namespace Adam
                             break;
                     }
                     break;
-                case 3: //Marble
-                    subID = 4;
+                case 3: //Marble Floor
                     switch (subID)
                     {
-                        case 0: //Plain 1
-                            position = new Vector2(12, 4);
-                            break;
-                        case 1: //Plain 2
-                            position = new Vector2(13, 4);
-                            break;
-                        case 2: //Plain 3
-                            position = new Vector2(14, 4);
-                            break;
-                        case 3: //Plain 4
-                            position = new Vector2(15, 4);
-                            break;
-                        case 4: //Plain 5
-                            position = new Vector2(12, 5);
-                            break;
-                        case 5: //TopColumn
-                            position = new Vector2(12, 3);
-                            break;
-                        case 6: //MiddleColumn
-                            position = new Vector2(13, 3);
-                            break;
-                        case 7: //BottomColumn
-                            position = new Vector2(14, 3);
-                            break;
-                        case 8: //Random 1
-                            position = new Vector2(13, 5);
-                            break;
-                        case 9: //Random 2
+                        case 0: //Foundation
                             position = new Vector2(14, 5);
                             break;
-                        case 10: //Random 3
+                        case 1: //Foundation Right
                             position = new Vector2(15, 5);
                             break;
-                        case 11: //Plain 6
-                            position = new Vector2(15, 3);
-                            break;
-                        case 12: //Shiny one
-                            position = new Vector2(12, 5);
+                        case 2: //Foundation Left
+                            position = new Vector2(13, 5);
                             break;
                     }
                     break;
@@ -501,11 +478,36 @@ namespace Adam
                     isVoid = true;
                     break;
                 case 29: //Marble ceiling
-                    position = new Vector2(15, 3);
+                    switch (subID)
+                    {
+                        case 0: //Plain
+                            position = new Vector2(15, 3);
+                            break;
+                        case 1: //Right ledge
+                            position = new Vector2(15, 4);
+                            break;
+                        case 2: //Left ledge
+                            position = new Vector2(13, 4);
+                            break;
+                    }
+
                     break;
                 case 30: //Marble ceiling support
                     position = new Vector2(13, 4);
                     break;
+                case 31: //Tree
+                    isVoid = true;
+                    break;
+                case 32: //Small Rock
+                    position = new Vector2(13, 18);
+                    break;
+                case 33: //Big Rock
+                    isVoid = true;
+                    break;
+                case 34: //Medium Rock
+                    isVoid = true;
+                    break;
+
                 #region Wall Textures
                 case 100://Gold Brick Wall
                     position = new Vector2(12, 8);
@@ -529,7 +531,19 @@ namespace Adam
                     }
                     break;
                 case 104://Marble wall
-                    position = new Vector2(13, 9);
+                    switch (subID)
+                    {
+                        case 0: //Plain
+                            position = new Vector2(13, 9);
+                            break;
+                        case 1: //Right Edge
+                            position = new Vector2(12, 9);
+                            break;
+                        case 2: //Left Edge
+                            position = new Vector2(14, 4);
+                            break;
+                    }
+
                     break;
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
@@ -776,7 +790,7 @@ namespace Adam
             }
 
             //Marble columns
-            if (ID == 18 && subID == 0)
+            else if (ID == 18 && subID == 0)
             {
                 int indexAbove = TileIndex - mapWidth;
                 int indexBelow = TileIndex + mapWidth;
@@ -790,10 +804,38 @@ namespace Adam
                 }
             }
 
+            //Marble Floor
+            else if (ID == 3 && subID == 0)
+            {
+                if (array[TileIndex - 1].ID != 3)
+                    subID = 2;
+                if (array[TileIndex + 1].ID != 3)
+                    subID = 1;
+                DefineTexture();
+            }
+
             //Fences
-            if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
+            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
             {
                 subID = 1;
+            }
+
+            //Marble wall
+            else if (ID == 104)
+            {
+                if (array[TileIndex + 1].ID != 104)
+                    subID = 1;
+                if (array[TileIndex - 1].ID != 104)
+                    subID = 2;
+            }
+
+                //Marble Ceiling
+            else if (ID == 29)
+            {
+                if (array[TileIndex + 1].ID != 29)
+                    subID = 1;
+                if (array[TileIndex - 1].ID != 29)
+                    subID = 2;
             }
         }
 

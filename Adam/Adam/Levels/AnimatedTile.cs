@@ -56,7 +56,7 @@ namespace Adam
                     emitsLight = true;
                     break;
                 case 12: //Chandelier
-                    frameCount = new Vector2(0, 0);
+                    frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 17);
                     size.X = 2;
                     rectangle.Width = Game1.Tilesize * 2;
@@ -75,6 +75,30 @@ namespace Adam
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
                     emitsLight = true;
+                    break;
+                case 31: //Tree
+                    frameCount = new Vector2(0, 0);
+                    startingPosition = new Vector2(16,0);
+                    size.X = 6;
+                    size.Y = 7;
+                    rectangle.Height = Game1.Tilesize * 7;
+                    rectangle.Width = Game1.Tilesize * 6;
+                    rectangle.Y -= 16*6;
+                    break;
+                case 33: //Big Rock
+                    frameCount = new Vector2(0, 0);
+                    startingPosition = new Vector2(14,17);
+                    size.X = 2;
+                    size.Y = 2;
+                    rectangle.Height = Game1.Tilesize * 2;
+                    rectangle.Width = Game1.Tilesize * 2;
+                    rectangle.Y -= 16;
+                    break;
+                case 34: //Small Rock
+                    frameCount = new Vector2(0, 0);
+                    startingPosition = new Vector2(11,18);
+                    size.X = 2;
+                    rectangle.Height = Game1.Tilesize * 2;
                     break;
 
             }
@@ -165,7 +189,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += sourceRectangle.Width;
                             currentFrame++;
                         }
                     }
@@ -173,10 +197,30 @@ namespace Adam
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle.X = 12 * 16;
+                        sourceRectangle= startingRectangle;
                     }
                     break;
-                case 17:
+                case 12: //chandelier
+                    switchFrame = 120;
+                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (frameTimer >= switchFrame)
+                    {
+                        if (frameCount.X != 0)
+                        {
+                            frameTimer = 0;
+                            sourceRectangle.X += sourceRectangle.Width;
+                            currentFrame++;
+                        }
+                    }
+
+                    if (currentFrame >= frameCount.X)
+                    {
+                        currentFrame = 0;
+                        sourceRectangle= startingRectangle;
+                    }
+                    break;
+                case 17: //flowers
                     switchFrame = 120;
                     frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
