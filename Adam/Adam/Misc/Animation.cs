@@ -12,7 +12,7 @@ namespace Adam
     class Animation
     {
         public Texture2D texture;
-        public Rectangle rectangle, sourceRectangle;
+        public Rectangle drawRectangle, sourceRectangle;
 
         public int switchFrame, restart;
         int currentFrameCount;
@@ -24,27 +24,68 @@ namespace Adam
 
         AnimationType type;
 
-        public Animation(Texture2D texture, Rectangle rectangle, int switchFrame, int restart, AnimationType type)
+        public Animation(Texture2D texture, Rectangle drawRectangle, int switchFrame, int restart, AnimationType type)
         {
             this.type = type;
-            sourceRectangle = new Rectangle(0, 0, rectangle.Width, rectangle.Height);
+            sourceRectangle = new Rectangle(0, 0, drawRectangle.Width, drawRectangle.Height);
             this.texture = texture;
-            this.rectangle = rectangle;
+            this.drawRectangle = drawRectangle;
             this.switchFrame = switchFrame;
             this.restart = restart;
-            frameCount = new Vector2(texture.Width / rectangle.Width, texture.Height / rectangle.Height);
+            frameCount = new Vector2(texture.Width / drawRectangle.Width, texture.Height / drawRectangle.Height);
+        }
+
+        /// <summary>
+        /// For complex character animations
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="drawRectangle"></param>
+        /// <param name="sourceRectangle"></param>
+        public Animation(Texture2D texture, Rectangle drawRectangle, Rectangle sourceRectangle)
+        {
+            this.texture = texture;
+            this.drawRectangle = drawRectangle;
+            this.sourceRectangle = sourceRectangle;
+        }
+
+        /// <summary>
+        /// For complex character animations.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="drawRectangle"></param>
+        /// <param name="animationData"></param>
+        public void Update(GameTime gameTime, Rectangle drawRectangle, AnimationData animationData)
+        {
+            this.drawRectangle = drawRectangle;
+            sourceRectangle.Y = animationData.StartingY * sourceRectangle.Height;
+            animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (animationData.FrameTimer > animationData.SwitchFrame)
+            {
+                animationData.FrameTimer = 0;
+                animationData.CurrentFrame++;
+                sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
+                if (animationData.CurrentFrame > animationData.FrameCount.X)
+                {
+                    animationData.CurrentFrame = 0;
+                    sourceRectangle.X = 0;
+                }
+            }
+
         }
 
         public void Update(GameTime gameTime, Rectangle rectangle)
         {
-            this.rectangle = rectangle;
+            this.drawRectangle = rectangle;
             Update(gameTime);
         }
 
-        //Use this to update the animation sprite's position
+        /// <summary>
+        /// Use this to update the animation sprite's position
+        /// </summary>
+        /// <param name="rectangle"></param>
         public void UpdateRectangle(Rectangle rectangle)
         {
-            this.rectangle = rectangle;
+            this.drawRectangle = rectangle;
         }
         
         public void Update(GameTime gameTime)
@@ -114,20 +155,28 @@ namespace Adam
         public void Draw(SpriteBatch spriteBatch)
         {
             if (!isFlipped)
-                spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White);
-            else spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
+            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
 
 
 
     }
 
-    struct AnimationData
+    class AnimationData
     {
+        public AnimationData(int switchFrame, int frames, int startingY)
+        {
+            this.SwitchFrame = switchFrame;
+            this.FrameCount = new Vector2(frames - 1, 0);
+            this.StartingY = startingY;
+        }
+
         public int SwitchFrame { get; set; }
         public int CurrentFrame { get; set; }
         public Vector2 FrameCount { get; set; }
         public double FrameTimer { get; set; }
+        public int StartingY { get; set; }
 
     }
 }

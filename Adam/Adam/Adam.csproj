@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Enemies\Hellboar.cs" />
+    <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
@@ -195,8 +196,7 @@
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\LoadingScreen.cs" />
-    <Compile Include="Characters\Noobs\GodNoob.cs" />
-    <Compile Include="Characters\Noobs\NPC.cs" />
+    <Compile Include="Characters\Non-Playable\God.cs" />
     <Compile Include="Obstacles\FallingBoulder.cs" />
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />

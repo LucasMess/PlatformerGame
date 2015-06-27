@@ -48,7 +48,6 @@ namespace Adam
         public Vector2 previousPosition;
 
         public Rectangle attackBox;
-        public Rectangle topMidBound, botMidBound;
 
         Jetpack jetpack = new Jetpack();
 
@@ -272,8 +271,8 @@ namespace Adam
         /// Update player information, checks for collision and input, and many other things.
         /// </summary>
         /// <param name="gameTime"></param>
-        /// <param name="map"></param>
-        public void Update(GameTime gameTime, GameWorld map)
+        /// 
+        public void Update(GameTime gameTime)
         {
             if (health < 0)
                 health = 0;
@@ -283,7 +282,7 @@ namespace Adam
                 goto UpdateChrono;
 
             this.gameTime = gameTime;
-            this.gameWorld = map;
+            this.gameWorld = GameWorld.Instance;
 
             deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -301,7 +300,7 @@ namespace Adam
             Animate();
             SetEvolutionAttributes();
 
-            weapon.Update(this, map, gameTime);
+            weapon.Update(this, gameWorld, gameTime);
             jetpack.Update(this, gameTime);
 
             //If the player is falling really fast, he is not jumping anymore and is falling.
@@ -559,13 +558,9 @@ namespace Adam
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 16;
 
-            //Update the rectangles that define the player's position
-            topMidBound = new Rectangle(collRectangle.X + 16, collRectangle.Y + 8, 1, 1);
-            botMidBound = new Rectangle(collRectangle.X + 16, collRectangle.Y + (3 * 64 / 4), 1, 1);
-
             //Update the rectangles that define the player collision
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, 32, 64 - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, 32 - 20, 64);
+            //xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, 32, 64 - 20);
+            //yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, 32 - 20, 64);
 
             //Attack box for killing enemies
             attackBox = new Rectangle(collRectangle.X - 8, collRectangle.Y + collRectangle.Height - 10, collRectangle.Width + 16, 20);

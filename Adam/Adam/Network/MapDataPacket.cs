@@ -28,7 +28,6 @@ namespace Adam.Network
         public List<Tech> techList = new List<Tech>();
         public List<Door> doorList = new List<Door>();
         public List<Key> keyList = new List<Key>();
-        public List<NonPlayableCharacter> noobList = new List<NonPlayableCharacter>();
         public List<Entity> entities = new List<Entity>();
 
         public GameTime gameTime;

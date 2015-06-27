@@ -15,12 +15,13 @@ namespace Adam.UI
         Rectangle drawRectangle;
         Vector2 origin;
 
-        bool isActive;
+        bool isActive = false;
         string text = "";
         StringBuilder sb;
 
         public delegate void EventHandler();
-        public event EventHandler DialogOut;
+        public event EventHandler NextDialog;
+        public event EventHandler CancelDialog;
 
         float opacity = 0;
         double skipTimer;
@@ -49,17 +50,29 @@ namespace Adam.UI
             drawRectangle.Y -= 40;
         }
 
+        public void Cancel()
+        {
+            isActive = false;
+        }
+
         public void Update(GameTime gameTime)
         {
             float deltaOpacity = .03f;
-
-            skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (skipTimer > .5)
+            if (isActive)
             {
-                if (InputHelper.IsAnyInputPressed())
+                skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (skipTimer > .5)
                 {
-                    isActive = false;
-                    //DialogOut();
+                    if (InputHelper.IsLeftMousePressed())
+                    {
+                        isActive = false;
+                        NextDialog();
+                    }
+                    if (InputHelper.IsAnyInputPressed() && InputHelper.IsLeftMouseReleased())
+                    {
+                        isActive = false;
+                        CancelDialog();
+                    }
                 }
             }
 
@@ -74,14 +87,15 @@ namespace Adam.UI
                 float velocity = -3f;
                 opacity -= deltaOpacity;
                 drawRectangle.Y += (int)velocity;
+                skipTimer = 0;
             }
 
             if (opacity > 1)
                 opacity = 1;
             if (opacity < 0)
                 opacity = 0;
-            if (drawRectangle.X < -100)
-                drawRectangle.X = -100;
+            if (drawRectangle.Y < -100)
+                drawRectangle.Y = -100;
         }
 
         public void Draw(SpriteBatch spriteBatch)

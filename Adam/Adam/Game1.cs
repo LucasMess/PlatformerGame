@@ -55,7 +55,7 @@ namespace Adam
         Thread reloadThread;
         Thread backgroundUpdateThread;
         Overlay overlay;
-        public NewDialog dialog;
+        public static NewDialog Dialog;
         Texture2D splashDKD, blackScreen;
         SoundEffect quack;
         GameDebug debug;
@@ -168,7 +168,7 @@ namespace Adam
             player = new Player(this);
             overlay = new Overlay();
             cutscene = new Cutscene();
-            dialog = new NewDialog();
+            Dialog = new NewDialog();
             objTracker = new ObjectiveTracker();
 
             //Initialize the game render target
@@ -290,9 +290,9 @@ namespace Adam
             }
 
             if (InputHelper.IsKeyDown(Keys.P))
-                dialog.Show("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
+                Dialog.Show("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
             if (InputHelper.IsKeyDown(Keys.O))
-                dialog.Show("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
+                Dialog.Show("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
             if (InputHelper.IsKeyDown(Keys.I))
             {
                 Objective obj = new Objective();
@@ -343,7 +343,7 @@ namespace Adam
                     if (hasLoadedContent && loadingScreen.isReady)
                     {
                         CurrentGameState = desiredGameState;
-                        overlay.FadeIn();
+                        //overlay.FadeIn();
                     }
                     break;
                 case GameState.GameWorld:
@@ -351,10 +351,10 @@ namespace Adam
                         break;
 
                     gameWorld.Update(gameTime, CurrentLevel, camera);
-                    player.Update(gameTime, gameWorld);
+                    player.Update(gameTime);
                     overlay.Update(gameTime, player, gameWorld);
                     camera.UpdateSmoothly(player, gameWorld);
-                    dialog.Update(gameTime);
+                    Dialog.Update(gameTime);
                     objTracker.Update(gameTime);
                     //camera.UpdateWithZoom(player.position);
 
@@ -536,7 +536,7 @@ namespace Adam
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     overlay.Draw(UiSB);
                     gameWorld.DrawUI(UiSB);
-                    dialog.Draw(UiSB);
+                    Dialog.Draw(UiSB);
                     objTracker.Draw(UiSB);
                     UiSB.End();
 

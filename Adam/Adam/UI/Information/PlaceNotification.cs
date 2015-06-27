@@ -24,7 +24,6 @@ namespace Adam.UI
             texture = ContentHelper.LoadTexture("Tiles/black");
             font = ContentHelper.LoadFont("Fonts/placeNotification");
             drawRectangle = new Rectangle(0, Game1.UserResHeight - 180, Game1.UserResWidth, 130);
-
         }
 
         public void Show(string text)

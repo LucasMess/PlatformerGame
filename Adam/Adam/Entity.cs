@@ -67,8 +67,13 @@ namespace Adam
         /// </summary>
         public virtual void Update()
         {
+            gameWorld = GameWorld.Instance;
+
             if (this is ICollidable)
             {
+                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, 32, 64 - 20);
+                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, 32 - 20, 64);
+
                 CheckTerrainCollision();
             }
             if (this is INewtonian)
@@ -402,6 +407,8 @@ namespace Adam
                     newt.IsAboveTile = false;
                 }
                 else newt.IsAboveTile = true;
+
+           // Console.WriteLine(this.GetType() +""+newt.IsAboveTile);
 
             if (!newt.IsAboveTile || newt.IsJumping)
             {

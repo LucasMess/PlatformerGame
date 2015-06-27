@@ -19,6 +19,8 @@ using Adam.Characters.Enemies;
 using Adam.UI;
 using Adam.UI.Information;
 using Adam.Levels;
+using Adam.Characters.Non_Playable;
+using Adam.Noobs;
 
 namespace Adam
 {
@@ -301,9 +303,9 @@ namespace Adam
                 {
                     entities.Add(new PotatoEnemy(Xcoor, Ycoor, Content));
                 }
-                else if (colorCode == new Vector3(15, 74, 225)) //NPC
+                else if (colorCode == new Vector3(177, 0, 203)) //God
                 {
-                    entities.Add(new NonPlayableCharacter(Xcoor, Ycoor, 1, Content, RandGen.Next()));
+                    entities.Add(new God(Xcoor, Ycoor));
                 }
                 else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
                 {
@@ -584,70 +586,7 @@ namespace Adam
                 }
             }
 
-        }
-
-        public void NoobCollision(NonPlayableCharacter noob)
-        {
-            int noobTilePos = (int)(noob.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(noob.topMidBound.X / Game1.Tilesize);
-
-            int[] q = new int[12];
-            q[0] = noobTilePos - worldData.mainMap.Width - 1;
-            q[1] = noobTilePos - worldData.mainMap.Width;
-            q[2] = noobTilePos - worldData.mainMap.Width + 1;
-            q[3] = noobTilePos - 1;
-            q[4] = noobTilePos;
-            q[5] = noobTilePos + 1;
-            q[6] = noobTilePos + worldData.mainMap.Width - 1;
-            q[7] = noobTilePos + worldData.mainMap.Width;
-            q[8] = noobTilePos + worldData.mainMap.Width + 1;
-            q[9] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width - 1;
-            q[10] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width;
-            q[11] = noobTilePos + worldData.mainMap.Width + worldData.mainMap.Width + 1;
-
-            //test = q;
-
-            //check the tiles around the noob for collision
-            foreach (int quadrant in q)
-            {
-                if (quadrant >= 0 && quadrant <= tileArray.Length - 1 && tileArray[quadrant].isSolid == true)
-                {
-                    if (noob.yRect.Intersects(tileArray[quadrant].rectangle))
-                    {
-                        if (noob.collRectangle.Y < tileArray[quadrant].rectangle.Y) //hits bot
-                        {
-                            noob.velocity.Y = 0f;
-                            noob.collRectangle.Y = tileArray[quadrant].rectangle.Y - noob.collRectangle.Height;
-                            noob.isFlying = false;
-                        }
-                        if (noob.collRectangle.Y > tileArray[quadrant].rectangle.Y) //hits top
-                        {
-                            noob.velocity.Y = 0f;
-                            noob.collRectangle.Y = tileArray[quadrant].rectangle.Y + tileArray[quadrant].rectangle.Height + 1;
-                        }
-                    }
-                    if (noob.xRect.Intersects(tileArray[quadrant].rectangle))
-                    {
-                        if (noob.collRectangle.X < tileArray[quadrant].rectangle.X) //hits right
-                        {
-                            noob.velocity.X = 0;
-                            noob.collRectangle.X = tileArray[quadrant].rectangle.X - noob.collRectangle.Width - 1;
-                            noob.jumpStartTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                        }
-                        if (noob.collRectangle.X > tileArray[quadrant].rectangle.X) //hits left
-                        {
-                            noob.velocity.X = 0;
-                            noob.collRectangle.X = tileArray[quadrant].rectangle.X + tileArray[quadrant].rectangle.Width + 1;
-                            noob.jumpStartTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                        }
-                    }
-                }
-            }
-            if (noob.jumpStartTimer > 200)
-            {
-                noob.needsToJump = true;
-                noob.jumpStartTimer = 0;
-            }
-        }
+        }       
 
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
@@ -742,7 +681,6 @@ namespace Adam
                 {
                     NonPlayableCharacter npc = (NonPlayableCharacter)entity;
                     npc.Update(gameTime, player);
-                    NoobCollision(npc);
                 }
                 if (entity is Door)
                 {
