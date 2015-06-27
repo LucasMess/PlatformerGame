@@ -29,7 +29,6 @@ namespace Adam
         Rectangle objRect, objSourceRect;
         Vector2 objOrigin;
 
-        Dialog dialog;
         Rectangle dialogRect;
 
         ContentManager Content;
@@ -78,7 +77,6 @@ namespace Adam
 
             Vector2 monitorResolution = new Vector2(Game1.UserResWidth, Game1.UserResHeight);
             dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
-            dialog = new Dialog(Content, Dialog.Type.ActionRequired);
 
             fill = Content.Load<Texture2D>("Menu/Star Fill");
             outline = Content.Load<Texture2D>("Menu/Star Outline");
@@ -96,13 +94,9 @@ namespace Adam
 
         public void Update(GameTime gameTime, Player player)
         {
-            dialog.isVisible = isVisible;
 
             if (!isVisible)
                 return;
-
-            dialog.AddText(texts[0]);
-            dialog.Update(gameTime);
 
             fillRotation += .01f;
             outlineRotation -= .01f;
@@ -123,7 +117,6 @@ namespace Adam
         {
             if (isVisible)
             {
-                dialog.Draw(spriteBatch);
                 spriteBatch.Draw(fill, fillRect, null, Color.White, fillRotation, fillOrigin, SpriteEffects.None, 0);
                 spriteBatch.Draw(outline, outlineRect, null, Color.White, outlineRotation, outlineOrigin, SpriteEffects.None, 0);
                 spriteBatch.Draw(obj, objRect, objSourceRect, Color.White, 0, objOrigin, SpriteEffects.None, 0);

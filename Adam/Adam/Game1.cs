@@ -55,7 +55,7 @@ namespace Adam
         Thread reloadThread;
         Thread backgroundUpdateThread;
         Overlay overlay;
-        public static NewDialog Dialog;
+        public static Dialog Dialog;
         Texture2D splashDKD, blackScreen;
         SoundEffect quack;
         GameDebug debug;
@@ -143,6 +143,8 @@ namespace Adam
             graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
 
+            Content = new ContentManager(Services, "Content");
+
             GameData = new GameDataManager();
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
@@ -152,7 +154,7 @@ namespace Adam
             MediaPlayer.Volume = 0.4f;
 
             //Creates ContentManager to be used by other classes
-            Content = new ContentManager(Services, "Content");
+
 
 
         }
@@ -168,7 +170,7 @@ namespace Adam
             player = new Player(this);
             overlay = new Overlay();
             cutscene = new Cutscene();
-            Dialog = new NewDialog();
+            Dialog = new Dialog();
             objTracker = new ObjectiveTracker();
 
             //Initialize the game render target
@@ -290,9 +292,9 @@ namespace Adam
             }
 
             if (InputHelper.IsKeyDown(Keys.P))
-                Dialog.Show("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
+                Dialog.Say("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
             if (InputHelper.IsKeyDown(Keys.O))
-                Dialog.Show("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
+                Dialog.Say("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
             if (InputHelper.IsKeyDown(Keys.I))
             {
                 Objective obj = new Objective();

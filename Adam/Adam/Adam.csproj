@@ -155,6 +155,7 @@
     <Compile Include="Levels\Background.cs" />
     <Compile Include="Misc\Helpers\CalcHelper.cs" />
     <Compile Include="Misc\Interfaces\INewtonian.cs" />
+    <Compile Include="Misc\SoundFx.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\DataPacket.cs" />
@@ -180,7 +181,6 @@
     <Compile Include="Interactables\CDPlayer.cs" />
     <Compile Include="Interactables\Chest.cs" />
     <Compile Include="Levels\Cloud.cs" />
-    <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="Interactables\Door.cs" />
     <Compile Include="Effects\Particle.cs" />
     <Compile Include="Characters\Enemies\Enemy.cs" />
@@ -201,7 +201,7 @@
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />
     <Compile Include="UI\Elements\NewButton.cs" />
-    <Compile Include="UI\Information\NewDialog.cs" />
+    <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="UI\Overlay Elements\Coin.cs" />
     <Compile Include="UI\Overlay Elements\Heart.cs" />
     <Compile Include="UI\Overlay Elements\Hourglass.cs" />

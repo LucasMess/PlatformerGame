@@ -364,7 +364,7 @@ namespace Adam
                     chronoSoundTimer = 0;
                 }
                 bool processing = false;
-                for (int i = 0; i < GameWorld.Instance.particles.Count;i++)
+                for (int i = 0; i < GameWorld.Instance.particles.Count; i++)
                 {
                     Particle particle = GameWorld.Instance.particles[i];
                     if (particle.CurrentParticle == Particle.ParticleType.PlayerChronoshift)
@@ -1233,7 +1233,7 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
             //if (velocity.Y <= -.5f)
-            position.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height + 1;
+            position.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height;
             //else position.Y = previousPosition.Y;
             velocity.Y = 0f;
         }
@@ -1252,17 +1252,22 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
             //if (velocity.X >= .5f)
-            position.X = e.Tile.rectangle.X - collRectangle.Width - 1;
+            position.X = e.Tile.rectangle.X - collRectangle.Width;
             //else position.X = previousPosition.X;
             velocity.X = 0f;
+
+            if (Math.Abs(velocity.Y) < 1)
+                CurrentAnimation = AnimationState.Still;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             //if (velocity.X <= -.5f)
-            position.X = e.Tile.rectangle.X + e.Tile.rectangle.Width + 1;
+            position.X = e.Tile.rectangle.X + e.Tile.rectangle.Width;
             //else position.X = previousPosition.X;
             velocity.X = 0f;
+            if (Math.Abs(velocity.Y) < 1)
+                CurrentAnimation = AnimationState.Still;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)

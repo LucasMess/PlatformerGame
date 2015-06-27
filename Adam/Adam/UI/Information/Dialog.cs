@@ -1,61 +1,113 @@
-﻿using Adam;
+﻿using Adam.Misc;
+using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Adam
+namespace Adam.UI
 {
-    class Dialog
+    public class Dialog
     {
         Texture2D texture;
-        Rectangle rectangle;
-        Vector2 origin;
         SpriteFont font;
-        string text;
-        public bool isVisible;
-        Vector2 monitorRes;
-        double visibleTimer, bufferTimer;
+        Rectangle drawRectangle;
+        Vector2 origin;
 
-        public const int ExpirationTime = 2000;
+        bool isActive = false;
+        string text = "";
+        StringBuilder sb;
+        SoundFx popSound;
 
-        public enum Type { Notification, ActionRequired }
-        Type type;
+        public delegate void EventHandler();
+        public event EventHandler NextDialog;
+        public event EventHandler CancelDialog;
 
-        public Dialog(ContentManager Content, Type type)
+        float opacity = 0;
+        double skipTimer;
+
+        int originalY;
+
+        public Dialog()
         {
-            this.type = type;
-            monitorRes = new Vector2(Game1.UserResWidth, Game1.UserResHeight);
-            Load(Content);
+            texture = ContentHelper.LoadTexture("Menu/dialog_box");
+            drawRectangle = new Rectangle(Game1.UserResWidth / 2, 40, texture.Width * 2, texture.Height * 2);
+            origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
+            drawRectangle.X -= (int)origin.X;
+
+            originalY = drawRectangle.Y;
+            drawRectangle.Y -= 40;
+
+            font = ContentHelper.LoadFont("Fonts/dialog");
+            popSound = new SoundFx("Sounds/message_show");
         }
 
-        public void AddText(string text)
+        public void Say(string text)
         {
-            rectangle = new Rectangle((int)monitorRes.X / 2, (int)monitorRes.Y / Game1.DefaultResHeight * (Game1.DefaultResHeight / 2 - 100), 1000, 200);
-            this.text = text;
+            isActive = true;
+            this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 60);
+            skipTimer = 0;
+            opacity = 0;
+            drawRectangle.Y -= 40;
+            popSound.Reset();
         }
 
-        public void Load(ContentManager Content)
+        public void Cancel()
         {
-            texture = Content.Load<Texture2D>("Menu/sign_damaged");
-            font = Content.Load<SpriteFont>("dialog_box_font");
-            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            isActive = false;
         }
 
         public void Update(GameTime gameTime)
         {
+            float deltaOpacity = .03f;
+            if (isActive)
+            {
+                popSound.PlayOnce();
+                skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (skipTimer > .5)
+                {
+                    if (InputHelper.IsLeftMousePressed())
+                    {
+                        isActive = false;
+                        NextDialog();
+                    }
+                    if (InputHelper.IsAnyInputPressed() && InputHelper.IsLeftMouseReleased())
+                    {
+                        isActive = false;
+                        CancelDialog();
+                    }
+                }
+            }
+
+            if (isActive)
+            {
+                float velocity =(originalY - drawRectangle.Y) / 10;
+                drawRectangle.Y += (int)velocity;
+                opacity += deltaOpacity;
+            }
+            else
+            {
+                float velocity = -3f;
+                opacity -= deltaOpacity;
+                drawRectangle.Y += (int)velocity;
+                skipTimer = 0;
+            }
+
+            if (opacity > 1)
+                opacity = 1;
+            if (opacity < 0)
+                opacity = 0;
+            if (drawRectangle.Y < -100)
+                drawRectangle.Y = -100;
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {
-            if (isVisible)
-            {
-                spriteBatch.Draw(texture, rectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
-               // spriteBatch.DrawString(font, text, new Vector2(rectangle.X, rectangle.Y), Color.Black, 0, font.MeasureString(text) / 2, 0.2f, SpriteEffects.None, 0);
-            }
+        {            
+            spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
+            spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
         }
+
     }
 }

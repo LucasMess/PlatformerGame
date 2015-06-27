@@ -20,7 +20,6 @@ namespace Adam
         SoundEffect openSound;
         bool soundPlayed;
         public int tilePos;
-        Dialog dialog;
         Vector2 monitorRes;
         double dialogTimer;
 
@@ -31,7 +30,6 @@ namespace Adam
             this.Content = Content;
             this.monitorRes = new Vector2(Game1.DefaultResWidth,Game1.DefaultResHeight);
 
-            dialog = new Dialog(Content, Dialog.Type.Notification);
             animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
             lockedSound = Content.Load<SoundEffect>("Sounds/lock_closed");
             openSound = Content.Load<SoundEffect>("Sounds/lock_open");
@@ -53,8 +51,6 @@ namespace Adam
                         player.keySecrets.Remove(s);
                         openSound.Play();
                         tileArray[tilePos].isSolid = false;
-                        dialog.AddText("The key fit!");
-                        dialog.isVisible = true;
                         return;
                     }
                 }
@@ -62,21 +58,10 @@ namespace Adam
                 {
                     lockedSound.Play();
                     soundPlayed = true;
-                    dialog.AddText("It's locked.");
-                    dialog.isVisible = true;
                 }
             }
             if (soundPlayed && (Keyboard.GetState().IsKeyUp(Keys.W)))
                 soundPlayed = false;
-            if (dialog.isVisible)
-            {
-                dialogTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (dialogTimer > Dialog.ExpirationTime)
-                {
-                    dialog.isVisible = false;
-                    dialogTimer = 0;
-                }
-            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -86,7 +71,6 @@ namespace Adam
 
         public void DrawUI(SpriteBatch spriteBatch)
         {
-            dialog.Draw(spriteBatch);
         }
 
     }
