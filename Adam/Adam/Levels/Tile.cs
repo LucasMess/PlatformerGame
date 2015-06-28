@@ -507,6 +507,9 @@ namespace Adam
                 case 34: //Medium Rock
                     isVoid = true;
                     break;
+                case 36:
+                    position = new Vector2(12, 4);
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall

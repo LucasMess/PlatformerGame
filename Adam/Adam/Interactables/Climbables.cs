@@ -28,7 +28,7 @@ namespace Adam
             else return false;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             //DO NOTHING
         }

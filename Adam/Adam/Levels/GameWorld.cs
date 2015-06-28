@@ -46,7 +46,7 @@ namespace Adam
         Light[] lightArray;
         Light playerLight;
 
-        private Level CurrentLevel;
+        public Level CurrentLevel;
         public Player player;
         public Apple apple;
         Background background = new Background();
@@ -295,7 +295,6 @@ namespace Adam
                 else if (colorCode == new Vector3(127,169,186)) //Small Rock
                 {
                     tile.ID = 32;
-                    tile.isSolid = false;
                 }
                 else if (colorCode == new Vector3(127, 169, 187)) //Big Rock
                 {
@@ -306,6 +305,26 @@ namespace Adam
                     tileArray[i] = new AnimatedTile(34, tile.rectangle);
                 }
                 //35 Small pebbles - automatic
+                else if (colorCode == new Vector3(213, 172, 31)) //Sign 1
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 1));
+                }
+                else if (colorCode == new Vector3(213, 172, 32)) //Sign 2
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 2));
+                }
+                else if (colorCode == new Vector3(213, 172, 33)) //Sign 3
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 3));
+                }
+                else if (colorCode == new Vector3(213, 172, 34)) //Sign 4
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 4));
+                }
 
 
       //CHARACTERS AND OTHERS
@@ -619,6 +638,7 @@ namespace Adam
             popUp.Update(gameTime, player);
             background.Update(camera);
             placeNotification.Update(gameTime);
+            worldData.Update(gameTime);
 
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
@@ -704,6 +724,11 @@ namespace Adam
                 {
                     Door door = (Door)entity;
                     door.Update(gameTime, player, tileArray);
+                }
+                if (entity is Sign)
+                {
+                    Sign sign = (Sign)entity;
+                    sign.Update();
                 }
             }
 

@@ -120,7 +120,7 @@ namespace Adam
         //Game Variables
         GameWorld gameWorld;
         Session session;
-        ObjectiveTracker objTracker;
+        public static ObjectiveTracker ObjectiveTracker;
         public GameDataManager GameData;
         Player player;
         LoadingScreen loadingScreen;
@@ -171,7 +171,7 @@ namespace Adam
             overlay = new Overlay();
             cutscene = new Cutscene();
             Dialog = new Dialog();
-            objTracker = new ObjectiveTracker();
+            ObjectiveTracker = new ObjectiveTracker();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -236,7 +236,7 @@ namespace Adam
             loadWatch.Start();
             hasLoadedContent = false;
             gameWorld.Load(Content, monitorRes, player, CurrentLevel);
-            objTracker = GameData.CurrentSave.ObjTracker;
+            ObjectiveTracker = GameData.CurrentSave.ObjTracker;
             hasLoadedContent = true;
             wasPressed = false;
             loadWatch.Stop();
@@ -299,11 +299,11 @@ namespace Adam
             {
                 Objective obj = new Objective();
                 obj.Create("Test Objective", 0);
-                objTracker.AddObjective(obj);
+                ObjectiveTracker.AddObjective(obj);
             }
             if (InputHelper.IsKeyDown(Keys.U))
             {
-                objTracker.CompleteObjective(0);
+                ObjectiveTracker.CompleteObjective(0);
             }
 
             //Update the game based on what GameState it is
@@ -357,7 +357,7 @@ namespace Adam
                     overlay.Update(gameTime, player, gameWorld);
                     camera.UpdateSmoothly(player, gameWorld);
                     Dialog.Update(gameTime);
-                    objTracker.Update(gameTime);
+                    ObjectiveTracker.Update(gameTime);
                     //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
@@ -539,7 +539,7 @@ namespace Adam
                     overlay.Draw(UiSB);
                     gameWorld.DrawUI(UiSB);
                     Dialog.Draw(UiSB);
-                    objTracker.Draw(UiSB);
+                    ObjectiveTracker.Draw(UiSB);
                     UiSB.End();
 
                     break;
