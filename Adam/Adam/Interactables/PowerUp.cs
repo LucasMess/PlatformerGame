@@ -97,34 +97,34 @@ namespace Adam.Interactables
                 {
                     if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
                     {
-                        if (yRect.Intersects(gameWorld.tileArray[quadrant].rectangle))
+                        if (yRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                         {
-                            if (drawRectangle.Y < gameWorld.tileArray[quadrant].rectangle.Y) //hits bot
+                            if (drawRectangle.Y < gameWorld.tileArray[quadrant].drawRectangle.Y) //hits bot
                             {
-                                drawRectangle.Y = gameWorld.tileArray[quadrant].rectangle.Y - drawRectangle.Height;
+                                drawRectangle.Y = gameWorld.tileArray[quadrant].drawRectangle.Y - drawRectangle.Height;
                                 velocity.Y = -velocity.Y * .9f;
                                 velocity.X = 0;
                             }
-                            if (drawRectangle.Y > gameWorld.tileArray[quadrant].rectangle.Y) //hits top
+                            if (drawRectangle.Y > gameWorld.tileArray[quadrant].drawRectangle.Y) //hits top
                             {
                                 velocity.Y = -velocity.Y * .9f;
                                 velocity.X = 0;
-                                drawRectangle.Y = gameWorld.tileArray[quadrant].rectangle.Y + drawRectangle.Height + 1;
+                                drawRectangle.Y = gameWorld.tileArray[quadrant].drawRectangle.Y + drawRectangle.Height + 1;
                             }
                         }
-                        if (xRect.Intersects(gameWorld.tileArray[quadrant].rectangle))
+                        if (xRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                         {
-                            if (drawRectangle.X < gameWorld.tileArray[quadrant].rectangle.X) //hits right
+                            if (drawRectangle.X < gameWorld.tileArray[quadrant].drawRectangle.X) //hits right
                             {
                                 velocity.X = -velocity.X * .9f;
                                 velocity.Y = velocity.Y * .9f;
-                                drawRectangle.X = gameWorld.tileArray[quadrant].rectangle.X - drawRectangle.Width - 1;
+                                drawRectangle.X = gameWorld.tileArray[quadrant].drawRectangle.X - drawRectangle.Width - 1;
                             }
-                            if (drawRectangle.X > gameWorld.tileArray[quadrant].rectangle.X) //hits left
+                            if (drawRectangle.X > gameWorld.tileArray[quadrant].drawRectangle.X) //hits left
                             {
                                 velocity.X = -velocity.X * .9f;
                                 velocity.Y = velocity.Y * .9f;
-                                drawRectangle.X = gameWorld.tileArray[quadrant].rectangle.X + gameWorld.tileArray[quadrant].rectangle.Width + 1;
+                                drawRectangle.X = gameWorld.tileArray[quadrant].drawRectangle.X + gameWorld.tileArray[quadrant].drawRectangle.Width + 1;
                             }
                         }
                     }

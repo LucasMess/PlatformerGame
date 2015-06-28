@@ -194,6 +194,7 @@
     <Compile Include="Interactables\PowerUp.cs" />
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
+    <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\LoadingScreen.cs" />

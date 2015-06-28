@@ -153,9 +153,9 @@ namespace Adam
                     tile = map.tileArray[quadrant];
                     if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
                     {
-                        if (yRect.Intersects(map.tileArray[quadrant].rectangle))
+                        if (yRect.Intersects(map.tileArray[quadrant].drawRectangle))
                         {
-                            if (position.Y < map.tileArray[quadrant].rectangle.Y) //hits bot
+                            if (position.Y < map.tileArray[quadrant].drawRectangle.Y) //hits bot
                             {
                                 return CollisionLocation.Bottom;
                             }
@@ -164,9 +164,9 @@ namespace Adam
                                 return CollisionLocation.Top;
                             }
                         }
-                        else if (xRect.Intersects(map.tileArray[quadrant].rectangle))
+                        else if (xRect.Intersects(map.tileArray[quadrant].drawRectangle))
                         {
-                            if (position.X < map.tileArray[quadrant].rectangle.X) //hits right
+                            if (position.X < map.tileArray[quadrant].drawRectangle.X) //hits right
                             {
                                 return CollisionLocation.Right;
                             }
@@ -228,7 +228,7 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[quadrant].rectangle))
+                    if (collRectangle.Intersects(map.tileArray[quadrant].drawRectangle))
                         return true;
                 }
             }
@@ -311,11 +311,11 @@ namespace Adam
                     Tile tile = gameWorld.tileArray[quadrant];
                     if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
                     {
-                        if (collRectangle.Intersects(tile.rectangle))
+                        if (collRectangle.Intersects(tile.drawRectangle))
                         {
-                            if (yRect.Intersects(gameWorld.tileArray[quadrant].rectangle))
+                            if (yRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                             {
-                                if (position.Y < gameWorld.tileArray[quadrant].rectangle.Y) //hits bot
+                                if (position.Y < gameWorld.tileArray[quadrant].drawRectangle.Y) //hits bot
                                 {
                                     ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
                                 }
@@ -324,9 +324,9 @@ namespace Adam
                                     ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
                                 }
                             }
-                            else if (xRect.Intersects(tile.rectangle))
+                            else if (xRect.Intersects(tile.drawRectangle))
                             {
-                                if (position.X < gameWorld.tileArray[quadrant].rectangle.X) //hits right
+                                if (position.X < gameWorld.tileArray[quadrant].drawRectangle.X) //hits right
                                 {
                                     ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
                                 }
@@ -353,7 +353,7 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[quadrant].rectangle)) { }
+                    if (collRectangle.Intersects(map.tileArray[quadrant].drawRectangle)) { }
                     //CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
                 }
             }
@@ -384,7 +384,7 @@ namespace Adam
                 if (i < gameWorld.tileArray.Length && i >= 0)
                 {
                     Tile t = gameWorld.tileArray[i];
-                    spriteBatch.Draw(Game1.DefaultTexture, t.rectangle, t.sourceRectangle, Color.Red);
+                    spriteBatch.Draw(Game1.DefaultTexture, t.drawRectangle, t.sourceRectangle, Color.Red);
                 }
             }
         }

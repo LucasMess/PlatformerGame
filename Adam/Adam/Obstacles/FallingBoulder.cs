@@ -43,7 +43,7 @@ namespace Adam.Obstacles
         void FallingBoulderObstacle_CollidedWithTerrainBelow(TerrainCollisionEventArgs e)
         {
             velocity.Y = 0;
-            drawRectangle.Y = e.Tile.rectangle.Y - drawRectangle.Height - 1;
+            drawRectangle.Y = e.Tile.drawRectangle.Y - drawRectangle.Height - 1;
             hasFallen = true;
             fallingSoundInstance.Play();
 
@@ -105,7 +105,7 @@ namespace Adam.Obstacles
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
             velocity.Y = 0;
-            drawRectangle.Y = e.Tile.rectangle.Y - drawRectangle.Height - 1;
+            drawRectangle.Y = e.Tile.drawRectangle.Y - drawRectangle.Height - 1;
             hasFallen = true;
             fallingSoundInstance.Play();
 

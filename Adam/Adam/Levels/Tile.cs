@@ -13,7 +13,7 @@ namespace Adam
     {
         #region Variables
         public Texture2D texture;
-        public Rectangle rectangle;
+        public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
 
         public bool isSolid = false;
@@ -573,13 +573,13 @@ namespace Adam
         {
             if (!isVoid)
                 if (texture != null)
-                    spritebatch.Draw(texture, rectangle, sourceRectangle, Color.White);
+                    spritebatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)
         {
             if (texture != null)
-                spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.Red);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.Red);
         }
 
         /// <summary>
@@ -777,15 +777,15 @@ namespace Adam
                     int rand = GameWorld.RandGen.Next(0, 10);
                     if (rand == 0) //flower
                     {
-                        array[indexAbove] = new AnimatedTile(17, array[indexAbove].rectangle);
+                        array[indexAbove] = new AnimatedTile(17, array[indexAbove].drawRectangle);
                     }
                     else if (rand == 1 || rand == 2) //tall grass
                     {
-                        array[indexAbove] = new AnimatedTile(9, array[indexAbove].rectangle);
+                        array[indexAbove] = new AnimatedTile(9, array[indexAbove].drawRectangle);
                     }
                     else //short grass
                     {
-                        array[indexAbove] = new AnimatedTile(7, array[indexAbove].rectangle);
+                        array[indexAbove] = new AnimatedTile(7, array[indexAbove].drawRectangle);
                     }
 
                     array[indexAbove].DefineTexture();

@@ -78,8 +78,8 @@ namespace Adam
             CurrentParticle = ParticleType.Impact;
             texture = ContentHelper.LoadTexture("Explosion");
             if (projectile.velocity.X > 0)
-                drawRectangle = new Rectangle(tileArray[projectile.tileHit].rectangle.X - 32, projectile.collRectangle.Center.Y - 32, 64, 64);
-            else drawRectangle = new Rectangle(tileArray[projectile.tileHit].rectangle.X + 32, projectile.collRectangle.Center.Y - 32, 64, 64);
+                drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X - 32, projectile.collRectangle.Center.Y - 32, 64, 64);
+            else drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X + 32, projectile.collRectangle.Center.Y - 32, 64, 64);
             frameCount = new Vector2(texture.Width / 32, texture.Height / 32);
         }
 

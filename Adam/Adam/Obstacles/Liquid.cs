@@ -8,11 +8,16 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class Liquid : Obstacle
+    class Liquid : Tile
     {
         double particleTimer;
         double restartTime;
         bool isOnTop;
+        public Rectangle collRectangle;
+
+        GameWorld gameWorld;
+        Player player;
+        
 
         public enum Type
         {
@@ -22,17 +27,18 @@ namespace Adam.Obstacles
 
         public Liquid(int x, int y, Type type)
         {
-            collRectangle = new Rectangle(x + 8, y + 8, Game1.Tilesize/2, Game1.Tilesize/2);
+            collRectangle = new Rectangle(x + 8, y + 8, Game1.Tilesize / 2, Game1.Tilesize / 2);
             particleTimer = GameWorld.RandGen.Next(0, 8);
             restartTime = GameWorld.RandGen.Next(5, 8);
             CurrentType = type;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, player, map);
+            this.gameWorld = GameWorld.Instance;
+            this.player = gameWorld.player;
 
-            if (IsTouching)
+            if (collRectangle.Intersects(GameWorld.Instance.player.collRectangle))
             {
                 player.KillAndRespawn();
             }
@@ -46,8 +52,8 @@ namespace Adam.Obstacles
                 if (particleTimer > restartTime)
                 {
                     Particle par = new Particle();
-                    par.CreateLavaParticle(this, map);
-                    map.particles.Add(par);
+                    par.CreateLavaParticle(this, gameWorld);
+                    gameWorld.particles.Add(par);
                     particleTimer = 0;
                 }
             }

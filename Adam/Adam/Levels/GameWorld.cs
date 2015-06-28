@@ -174,7 +174,7 @@ namespace Adam
                 int Xcoor = (i % worldData.mainMap.Width) * Game1.Tilesize;
                 int Ycoor = ((i - (i % worldData.mainMap.Width)) / worldData.mainMap.Width) * Game1.Tilesize;
 
-                tile.rectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
+                tile.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
 
                 if (colorCode == new Vector3(0, 189, 31)) //grass
                 {
@@ -205,7 +205,7 @@ namespace Adam
                 //7 shortgrass
                 else if (colorCode == new Vector3(78, 78, 78)) //metaltile
                 {
-                    tileArray[i] = new AnimatedTile(8, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(8, tile.drawRectangle);
                     tileArray[i].isSolid = true;
                 }
                 //9 tallgrass
@@ -216,11 +216,11 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(249, 64, 45))//torch
                 {
-                    tileArray[i] = new AnimatedTile(11, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(11, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(191, 129, 9)) //chandelier
                 {
-                    tileArray[i] = new AnimatedTile(12, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(12, tile.drawRectangle);
                 }
                 //13 see doors
                 else if (colorCode == new Vector3(35, 138, 52)) //vines
@@ -264,18 +264,15 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(0, 100, 255)) // Water
                 {
-                    tileArray[i] = new AnimatedTile(23, tile.rectangle);
-                    entities.Add(new Liquid(Xcoor, Ycoor, Liquid.Type.Water));
+                    tileArray[i] = new AnimatedTile(23, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(244, 121, 0)) // Lava
                 {
-                    tileArray[i] = new AnimatedTile(24, tile.rectangle);
-                    entities.Add(new Liquid(Xcoor, Ycoor,Liquid.Type.Lava));
+                    tileArray[i] = new AnimatedTile(24, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(0, 255, 255)) // Poisoned Water
                 {
-                    tileArray[i] = new AnimatedTile(25, tile.rectangle);
-                    entities.Add(new Liquid(Xcoor, Ycoor, Liquid.Type.Poison));
+                    tileArray[i] = new AnimatedTile(25, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(255, 255, 0)) // Golden Apple
                 {
@@ -299,7 +296,7 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(0, 138, 50)) //Tree
                 {
-                    tileArray[i] = new AnimatedTile(31, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(31, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(127,169,186)) //Small Rock
                 {
@@ -307,11 +304,11 @@ namespace Adam
                 }
                 else if (colorCode == new Vector3(127, 169, 187)) //Big Rock
                 {
-                    tileArray[i] = new AnimatedTile(33, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(33, tile.drawRectangle);
                 }
                 else if (colorCode == new Vector3(127, 169, 188)) //Medium Rock
                 {
-                    tileArray[i] = new AnimatedTile(34, tile.rectangle);
+                    tileArray[i] = new AnimatedTile(34, tile.drawRectangle);
                 }
                 //35 Small pebbles - automatic
                 else if (colorCode == new Vector3(213, 172, 31)) //Sign 1
@@ -520,34 +517,34 @@ namespace Adam
                 {
                     if (quadrant >= 0 && quadrant <= tileArray.Length - 1 && tileArray[quadrant].isSolid == true)
                     {
-                        if (gem.yRect.Intersects(tileArray[quadrant].rectangle))
+                        if (gem.yRect.Intersects(tileArray[quadrant].drawRectangle))
                         {
-                            if (gem.rectangle.Y < tileArray[quadrant].rectangle.Y) //hits bot
+                            if (gem.rectangle.Y < tileArray[quadrant].drawRectangle.Y) //hits bot
                             {
-                                gem.rectangle.Y = tileArray[quadrant].rectangle.Y - gem.rectangle.Height;
+                                gem.rectangle.Y = tileArray[quadrant].drawRectangle.Y - gem.rectangle.Height;
                                 gem.velocity.Y = -gem.velocity.Y * .9f;
                                 gem.velocity.X = 0;
                             }
-                            if (gem.rectangle.Y > tileArray[quadrant].rectangle.Y) //hits top
+                            if (gem.rectangle.Y > tileArray[quadrant].drawRectangle.Y) //hits top
                             {
                                 gem.velocity.Y = -gem.velocity.Y * .9f;
                                 gem.velocity.X = 0;
-                                gem.rectangle.Y = tileArray[quadrant].rectangle.Y + tileArray[quadrant].rectangle.Height + 1;
+                                gem.rectangle.Y = tileArray[quadrant].drawRectangle.Y + tileArray[quadrant].drawRectangle.Height + 1;
                             }
                         }
-                        if (gem.xRect.Intersects(tileArray[quadrant].rectangle))
+                        if (gem.xRect.Intersects(tileArray[quadrant].drawRectangle))
                         {
-                            if (gem.rectangle.X < tileArray[quadrant].rectangle.X) //hits right
+                            if (gem.rectangle.X < tileArray[quadrant].drawRectangle.X) //hits right
                             {
                                 gem.velocity.X = -gem.velocity.X * .9f;
                                 gem.velocity.Y = gem.velocity.Y * .9f;
-                                gem.rectangle.X = tileArray[quadrant].rectangle.X - gem.rectangle.Width - 1;
+                                gem.rectangle.X = tileArray[quadrant].drawRectangle.X - gem.rectangle.Width - 1;
                             }
-                            if (gem.rectangle.X > tileArray[quadrant].rectangle.X) //hits left
+                            if (gem.rectangle.X > tileArray[quadrant].drawRectangle.X) //hits left
                             {
                                 gem.velocity.X = -gem.velocity.X * .9f;
                                 gem.velocity.Y = gem.velocity.Y * .9f;
-                                gem.rectangle.X = tileArray[quadrant].rectangle.X + tileArray[quadrant].rectangle.Width + 1;
+                                gem.rectangle.X = tileArray[quadrant].drawRectangle.X + tileArray[quadrant].drawRectangle.Width + 1;
                             }
                         }
                     }
@@ -599,32 +596,32 @@ namespace Adam
                 {
                     if (quadrant >= 0 && quadrant <= tileArray.Length - 1 && tileArray[quadrant].isSolid == true)
                     {
-                        if (enemy.yRect.Intersects(tileArray[quadrant].rectangle))
+                        if (enemy.yRect.Intersects(tileArray[quadrant].drawRectangle))
                         {
-                            if (enemy.drawRectangle.Y < tileArray[quadrant].rectangle.Y) //hits bot
+                            if (enemy.drawRectangle.Y < tileArray[quadrant].drawRectangle.Y) //hits bot
                             {
                                 enemy.velocity.Y = 0f;
-                                enemy.drawRectangle.Y = tileArray[quadrant].rectangle.Y - enemy.drawRectangle.Height;
+                                enemy.drawRectangle.Y = tileArray[quadrant].drawRectangle.Y - enemy.drawRectangle.Height;
                                 enemy.isFlying = false;
                             }
-                            if (enemy.drawRectangle.Y > tileArray[quadrant].rectangle.Y) //hits top
+                            if (enemy.drawRectangle.Y > tileArray[quadrant].drawRectangle.Y) //hits top
                             {
                                 enemy.velocity.Y = 0f;
-                                enemy.drawRectangle.Y = tileArray[quadrant].rectangle.Y + tileArray[quadrant].rectangle.Height + 1;
+                                enemy.drawRectangle.Y = tileArray[quadrant].drawRectangle.Y + tileArray[quadrant].drawRectangle.Height + 1;
                             }
                         }
-                        if (enemy.xRect.Intersects(tileArray[quadrant].rectangle))
+                        if (enemy.xRect.Intersects(tileArray[quadrant].drawRectangle))
                         {
-                            if (enemy.drawRectangle.X < tileArray[quadrant].rectangle.X) //hits right
+                            if (enemy.drawRectangle.X < tileArray[quadrant].drawRectangle.X) //hits right
                             {
                                 enemy.velocity.X = 0;
-                                enemy.drawRectangle.X = tileArray[quadrant].rectangle.X - enemy.drawRectangle.Width - 1;
+                                enemy.drawRectangle.X = tileArray[quadrant].drawRectangle.X - enemy.drawRectangle.Width - 1;
                                 enemy.needsToJump = true;
                             }
-                            if (enemy.drawRectangle.X > tileArray[quadrant].rectangle.X) //hits left
+                            if (enemy.drawRectangle.X > tileArray[quadrant].drawRectangle.X) //hits left
                             {
                                 enemy.velocity.X = 0;
-                                enemy.drawRectangle.X = tileArray[quadrant].rectangle.X + tileArray[quadrant].rectangle.Width + 1;
+                                enemy.drawRectangle.X = tileArray[quadrant].drawRectangle.X + tileArray[quadrant].drawRectangle.Width + 1;
                                 enemy.needsToJump = true;
                             }
                         }

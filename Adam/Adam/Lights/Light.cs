@@ -38,7 +38,8 @@ namespace Adam
         public void Load(ContentManager Content)
         {
             this.Content = Content;
-            texture = Content.Load<Texture2D>("Tiles/shadow_pixel");
+            texture = GameWorld.SpriteSheet;
+            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
             origin = new Vector2(128, 128);
         }
 
@@ -72,7 +73,7 @@ namespace Adam
 
             lightHere = true;
 
-            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(texture.Width * intensity),(int) (texture.Height * intensity));
+            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(texture.Width * intensity), (int)(texture.Height * intensity));
             origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
 
             rectangle.X = rectangle.X - (int)origin.X;
@@ -118,8 +119,8 @@ namespace Adam
             {
                 //sky light
                 lightHere = true;
-                rectangle = new Rectangle(tile[pos].rectangle.Center.X, tile[pos].rectangle.Center.Y, (int)(texture.Width * intensity), (int)(texture.Height * intensity));
-                origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+                rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+                origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
 
                 rectangle.X = rectangle.X - (int)origin.X;
                 rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -129,7 +130,7 @@ namespace Adam
             {
                 //light sauce
                 lightHere = true;
-                randGen = new Random(tile[pos].rectangle.X);
+                randGen = new Random(tile[pos].drawRectangle.X);
 
                 switch (tile[pos].ID)
                 {
@@ -137,8 +138,9 @@ namespace Adam
                         intensity = 3;
                         texture = Content.Load<Texture2D>("Tiles/shadow10");
                         shakyLight = true;
-                        rectangle = new Rectangle(tile[pos].rectangle.Center.X, tile[pos].rectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
+                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
                         origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+                        sourceRectangle = new Rectangle(0, 0, 256, 256);
 
                         rectangle.X = rectangle.X - (int)origin.X;
                         rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -148,8 +150,9 @@ namespace Adam
                     case 12:
                         intensity = 4;
                         texture = Content.Load<Texture2D>("Tiles/bright_light");
-                        rectangle = new Rectangle(tile[pos].rectangle.Center.X, tile[pos].rectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
+                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
                         origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 4);
+                        sourceRectangle = new Rectangle(0, 0, 256, 256);
 
                         rectangle.X = rectangle.X - (int)origin.X;
                         rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -221,8 +224,9 @@ namespace Adam
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+
             if (lightHere)
-                spriteBatch.Draw(texture, rectangle, Color.White * opacity);
+                spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White * opacity);
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)

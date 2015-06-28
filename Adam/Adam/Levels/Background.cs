@@ -121,6 +121,7 @@ namespace Adam
     struct Image
     {
         public Rectangle Rectangle { get; set; }
+        public Rectangle SourceRectangle { get; set; }
         public Texture2D Texture { get; set; }
     }
 }

@@ -195,7 +195,7 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
                 {
-                    if (projectile.collRectangle.Intersects(gameWorld.tileArray[quadrant].rectangle))
+                    if (projectile.collRectangle.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                     {
                         projectile.tileHit = quadrant;
                         return true;

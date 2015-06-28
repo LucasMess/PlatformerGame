@@ -164,26 +164,26 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height;
+            collRectangle.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
             velocity.Y = 0;
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.rectangle.Y - collRectangle.Height;
+            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
             velocity.Y = 0;
         }
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            collRectangle.X = e.Tile.rectangle.X - collRectangle.Width;
+            collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
             velocity.X = 0;
             CurrentAnimation = AnimationState.Idle;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            collRectangle.X = e.Tile.rectangle.X + e.Tile.rectangle.Width;
+            collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
             velocity.X = 0;
             CurrentAnimation = AnimationState.Idle;
         }

@@ -645,6 +645,12 @@ namespace Adam
 
         private void Animate()
         {
+            if (currentFrame >= frameCount.X)
+            {
+                currentFrame = 0;
+                sourceRectangle.X = 0;
+            }
+
             switch (CurrentAnimation)
             {
                 #region Still Animation
@@ -830,6 +836,12 @@ namespace Adam
                 #endregion
             }
 
+
+            if (currentFrame >= frameCount.X)
+            {
+                currentFrame = 0;
+                sourceRectangle.X = 0;
+            }
         }
 
         private void CheckDead()
@@ -1233,7 +1245,7 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
             //if (velocity.Y <= -.5f)
-            position.Y = e.Tile.rectangle.Y + e.Tile.rectangle.Height;
+            position.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
             //else position.Y = previousPosition.Y;
             velocity.Y = 0f;
         }
@@ -1241,7 +1253,7 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
             //if (velocity.Y >= .5f)
-            position.Y = e.Tile.rectangle.Y - collRectangle.Height;
+            position.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
             //else position.Y = previousPosition.Y;
             velocity.Y = 0f;
             isJumping = false;
@@ -1252,9 +1264,9 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
             //if (velocity.X >= .5f)
-            position.X = e.Tile.rectangle.X - collRectangle.Width;
+            position.X = e.Tile.drawRectangle.X - collRectangle.Width;
             //else position.X = previousPosition.X;
-            velocity.X = 0f;
+            //velocity.X = 0f;
 
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
@@ -1263,9 +1275,9 @@ namespace Adam
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             //if (velocity.X <= -.5f)
-            position.X = e.Tile.rectangle.X + e.Tile.rectangle.Width;
+            position.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
             //else position.X = previousPosition.X;
-            velocity.X = 0f;
+            //velocity.X = 0f;
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.UI.Elements;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -18,18 +19,18 @@ namespace Adam.Characters.Non_Playable
         protected bool canTalk;
         protected bool isTalking;
 
-        Image keyPopUp;
-        bool keyIsVisible;
-
+        KeyPopUp key;
         public NonPlayableCharacter()
         {
             texture = Game1.DefaultTexture;
 
-            keyPopUp.Texture = ContentHelper.LoadTexture("Menu/Keys/'W' Key");
+            key = new KeyPopUp();
         }
 
         public virtual void Update(GameTime gameTime, Player player)
         {
+            key.Update(collRectangle);
+
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
 
@@ -45,14 +46,12 @@ namespace Adam.Characters.Non_Playable
         {
             if (collRectangle.Intersects(player.collRectangle))
             {
-                keyIsVisible = true;
                 if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !isTalking)
                 {
                     isTalking = true;
                     ShowMessage();
                 }
             }
-            else keyIsVisible = false;
         }
 
         protected virtual void ShowMessage()
@@ -107,8 +106,7 @@ namespace Adam.Characters.Non_Playable
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (keyIsVisible)
-                spriteBatch.Draw(keyPopUp.Texture, new Rectangle(collRectangle.X, collRectangle.Y - 40, 32, 32), Color.White);
+            key.Draw(spriteBatch);
         }
     }
 }

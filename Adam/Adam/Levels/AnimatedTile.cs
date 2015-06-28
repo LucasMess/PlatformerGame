@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,11 +20,12 @@ namespace Adam
         Vector2 frameCount;
         Vector2 startingPosition;
         Rectangle startingRectangle;
+        Liquid liquid;
 
         public AnimatedTile(byte ID, Rectangle rectangle)
         {
             this.ID = ID;
-            this.rectangle = rectangle;
+            this.drawRectangle = rectangle;
             this.tilesize = Game1.Tilesize / 2;
         }
 
@@ -52,36 +54,39 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 0);
                     size.Y = 2;
-                    rectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Height = Game1.Tilesize * 2;
                     emitsLight = true;
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 17);
                     size.X = 2;
-                    rectangle.Width = Game1.Tilesize * 2;
+                    drawRectangle.Width = Game1.Tilesize * 2;
                     emitsLight = true;
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 10 + (2 * GameWorld.RandGen.Next(0, 2)));
                     size.Y = 2;
-                    rectangle.Height = Game1.Tilesize * 2;
-                    rectangle.Y -= Game1.Tilesize;
+                    drawRectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Y -= Game1.Tilesize;
                     emitsLight = true;
                     break;
                 case 23: //Water
+                    liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Water);
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(4, 15);
                     hasRandomStartingPoint = true;
                     break;
                 case 24: //Lava
+                    liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Lava);
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
                     emitsLight = true;
                     break;
                 case 25: //Poison
+                    liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Poison);
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(8, 15);
                     hasRandomStartingPoint = true;
@@ -91,24 +96,24 @@ namespace Adam
                     startingPosition = new Vector2(16,0);
                     size.X = 6;
                     size.Y = 7;
-                    rectangle.Height = Game1.Tilesize * 7;
-                    rectangle.Width = Game1.Tilesize * 6;
-                    rectangle.Y -= 16*6;
+                    drawRectangle.Height = Game1.Tilesize * 7;
+                    drawRectangle.Width = Game1.Tilesize * 6;
+                    drawRectangle.Y -= 16*6;
                     break;
                 case 33: //Big Rock
                     frameCount = new Vector2(0, 0);
                     startingPosition = new Vector2(14,17);
                     size.X = 2;
                     size.Y = 2;
-                    rectangle.Height = Game1.Tilesize * 2;
-                    rectangle.Width = Game1.Tilesize * 2;
-                    rectangle.Y -= 16;
+                    drawRectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Width = Game1.Tilesize * 2;
+                    drawRectangle.Y -= 16;
                     break;
                 case 34: //Small Rock
                     frameCount = new Vector2(0, 0);
                     startingPosition = new Vector2(11,18);
                     size.X = 2;
-                    rectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Height = Game1.Tilesize * 2;
                     break;
 
             }
@@ -126,6 +131,8 @@ namespace Adam
 
         public override void Update(GameTime gameTime)
         {
+            if (liquid != null) liquid.Update(gameTime);
+
             switch (ID)
             {
                 case 7: //Short grass
@@ -312,7 +319,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
         }
     }
 }
