@@ -345,7 +345,7 @@ namespace Adam
                     if (hasLoadedContent && loadingScreen.isReady)
                     {
                         CurrentGameState = desiredGameState;
-                        //overlay.FadeIn();
+                        overlay.FadeIn();
                     }
                     break;
                 case GameState.GameWorld:

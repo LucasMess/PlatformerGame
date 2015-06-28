@@ -70,11 +70,21 @@ namespace Adam
                     rectangle.Y -= Game1.Tilesize;
                     emitsLight = true;
                     break;
+                case 23: //Water
+                    frameCount = new Vector2(4, 0);
+                    startingPosition = new Vector2(4, 15);
+                    hasRandomStartingPoint = true;
+                    break;
                 case 24: //Lava
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
                     emitsLight = true;
+                    break;
+                case 25: //Poison
+                    frameCount = new Vector2(4, 0);
+                    startingPosition = new Vector2(8, 15);
+                    hasRandomStartingPoint = true;
                     break;
                 case 31: //Tree
                     frameCount = new Vector2(0, 0);
@@ -237,7 +247,47 @@ namespace Adam
                         sourceRectangle.X = startingRectangle.X;
                     }
                     break;
+                case 23://Water
+                    switchFrame = 120;
+                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (frameTimer >= switchFrame)
+                    {
+                        if (frameCount.X != 0)
+                        {
+                            frameTimer = 0;
+                            sourceRectangle.X += tilesize;
+                            currentFrame++;
+                        }
+                    }
+
+                    if (currentFrame >= frameCount.X)
+                    {
+                        currentFrame = 0;
+                        sourceRectangle.X = startingRectangle.X;
+                    }
+                    break;
                 case 24: //Lava
+                    switchFrame = 120;
+                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (frameTimer >= switchFrame)
+                    {
+                        if (frameCount.X != 0)
+                        {
+                            frameTimer = 0;
+                            sourceRectangle.X += tilesize;
+                            currentFrame++;
+                        }
+                    }
+
+                    if (currentFrame >= frameCount.X)
+                    {
+                        currentFrame = 0;
+                        sourceRectangle.X = startingRectangle.X;
+                    }
+                    break;
+                case 25: //Poison
                     switchFrame = 120;
                     frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 

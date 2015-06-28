@@ -14,6 +14,7 @@ namespace Adam.UI
         Texture2D texture;
         SpriteFont font;
         Rectangle drawRectangle;
+        Rectangle sourceRectangle;
         Vector2 origin;
 
         bool isActive = false;
@@ -32,8 +33,9 @@ namespace Adam.UI
 
         public Dialog()
         {
-            texture = ContentHelper.LoadTexture("Menu/dialog_box");
-            drawRectangle = new Rectangle(Game1.UserResWidth / 2, 40, texture.Width * 2, texture.Height * 2);
+            texture = GameWorld.SpriteSheet;
+            drawRectangle = new Rectangle(Game1.UserResWidth / 2, 40, 600, 200);
+            sourceRectangle = new Rectangle(16*16, 14*16, 16 * 3, 16);
             origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
             drawRectangle.X -= (int)origin.X;
 
@@ -105,7 +107,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {            
-            spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
             spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
         }
 

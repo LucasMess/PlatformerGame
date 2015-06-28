@@ -39,7 +39,7 @@ namespace Adam
         {
             this.Content = Content;
             texture = Content.Load<Texture2D>("Tiles/shadow_pixel");
-            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            origin = new Vector2(128, 128);
         }
 
         public void CreateProjectileLight(int intensity, Projectile proj, ContentManager Content)

@@ -164,7 +164,7 @@
     <Compile Include="Network\PlayerDataPacket.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
-    <Compile Include="Obstacles\Lava.cs" />
+    <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />

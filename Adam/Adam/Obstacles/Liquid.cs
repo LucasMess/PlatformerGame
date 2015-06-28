@@ -8,19 +8,24 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class Lava : Obstacle
+    class Liquid : Obstacle
     {
         double particleTimer;
         double restartTime;
         bool isOnTop;
 
-
-        public Lava(int x, int y)
+        public enum Type
         {
-            collRectangle = new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize);
+            Water, Poison, Lava
+        }
+        Type CurrentType;
+
+        public Liquid(int x, int y, Type type)
+        {
+            collRectangle = new Rectangle(x + 8, y + 8, Game1.Tilesize/2, Game1.Tilesize/2);
             particleTimer = GameWorld.RandGen.Next(0, 8);
             restartTime = GameWorld.RandGen.Next(5, 8);
-
+            CurrentType = type;
         }
 
         public override void Update(GameTime gameTime, Player player, GameWorld map)
@@ -35,13 +40,16 @@ namespace Adam.Obstacles
             if (!isOnTop)
                 return;
 
-            particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (particleTimer > restartTime)
+            if (CurrentType == Type.Lava)
             {
-                Particle par = new Particle();
-                par.CreateLavaParticle(this, map);
-                map.particles.Add(par);
-                particleTimer = 0;
+                particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (particleTimer > restartTime)
+                {
+                    Particle par = new Particle();
+                    par.CreateLavaParticle(this, map);
+                    map.particles.Add(par);
+                    particleTimer = 0;
+                }
             }
         }
 
@@ -52,7 +60,6 @@ namespace Adam.Obstacles
             if (array[indexAbove].ID == 0)
             {
                 this.isOnTop = true;
-                Console.WriteLine("Tile above: " + array[indexAbove].ID +" "+array[TileIndex].ID+ " "+isOnTop );
             }
         }
     }

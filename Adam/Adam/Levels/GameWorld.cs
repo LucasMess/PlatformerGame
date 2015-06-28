@@ -262,11 +262,20 @@ namespace Adam
                     tile.ID = 22;
                     entities.Add(new Spikes(Xcoor, Ycoor));
                 }
-                //23 24 25
+                else if (colorCode == new Vector3(0, 100, 255)) // Water
+                {
+                    tileArray[i] = new AnimatedTile(23, tile.rectangle);
+                    entities.Add(new Liquid(Xcoor, Ycoor, Liquid.Type.Water));
+                }
                 else if (colorCode == new Vector3(244, 121, 0)) // Lava
                 {
                     tileArray[i] = new AnimatedTile(24, tile.rectangle);
-                    entities.Add(new Lava(Xcoor, Ycoor));
+                    entities.Add(new Liquid(Xcoor, Ycoor,Liquid.Type.Lava));
+                }
+                else if (colorCode == new Vector3(0, 255, 255)) // Poisoned Water
+                {
+                    tileArray[i] = new AnimatedTile(25, tile.rectangle);
+                    entities.Add(new Liquid(Xcoor, Ycoor, Liquid.Type.Poison));
                 }
                 else if (colorCode == new Vector3(255, 255, 0)) // Golden Apple
                 {
@@ -458,7 +467,7 @@ namespace Adam
             }
 
             //Check lava to see if it is on top for lava effects.
-            foreach (Lava lava in entities.OfType<Lava>())
+            foreach (Liquid lava in entities.OfType<Liquid>())
             {
                 lava.CheckOnTop(array, this);
             }

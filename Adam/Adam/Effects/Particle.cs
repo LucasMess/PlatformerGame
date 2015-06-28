@@ -284,7 +284,7 @@ namespace Adam
             opacity = 1f;
         }
 
-        public void CreateLavaParticle(Lava lava, GameWorld map)
+        public void CreateLavaParticle(Liquid lava, GameWorld map)
         {
             CurrentParticle = ParticleType.Lava;
             //texture = ContentHelper.LoadTexture("Effects/lava");
