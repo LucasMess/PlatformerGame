@@ -58,7 +58,8 @@ namespace Adam
         public int TimesUpdated;
         public int TimesBackgroundUpdated;
 
-        public bool isPaused;
+        public bool SimulationPaused;
+        public bool isOnDebug;
         public bool levelComplete;
         bool hasLoaded;
         double timeStepTimer;
@@ -349,6 +350,10 @@ namespace Adam
                 else if (colorCode == new Vector3(177, 0, 203)) //God
                 {
                     entities.Add(new God(Xcoor, Ycoor));
+                }
+                else if (colorCode == new Vector3(0, 82, 0))
+                {
+                    entities.Add(new Frog(Xcoor, Ycoor));
                 }
                 else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
                 {
@@ -968,7 +973,7 @@ namespace Adam
         public void UpdateFromDataPacket(MapDataPacket m)
         {
             apple = m.apple;
-            isPaused = m.isPaused;
+            isOnDebug = m.isPaused;
             levelComplete = m.levelComplete;
 
             gameTime = m.gameTime;

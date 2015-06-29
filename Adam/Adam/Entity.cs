@@ -23,7 +23,7 @@ namespace Adam
     class Entity
     {
 
-        protected Texture2D texture = Game1.DefaultTexture;
+        public Texture2D texture = Game1.DefaultTexture;
         public Vector2 position;
         protected Vector2 origin;
         public Rectangle drawRectangle;
@@ -71,8 +71,8 @@ namespace Adam
 
             if (this is ICollidable)
             {
-                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, 32, 64 - 20);
-                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, 32 - 20, 64);
+                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
+                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
                 CheckTerrainCollision();
             }

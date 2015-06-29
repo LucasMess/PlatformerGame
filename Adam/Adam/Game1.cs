@@ -104,7 +104,7 @@ namespace Adam
         /// <summary>
         /// Default gravity.
         /// </summary>
-        public const float Gravity = .8f;
+        public const float Gravity = .5f;
 
         #endregion
 
@@ -139,8 +139,8 @@ namespace Adam
             graphics.PreferredBackBufferHeight = UserResHeight;
 
             //Change Game Settings Here
-            graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.PreferMultiSampling = true;
+            graphics.SynchronizeWithVerticalRetrace = true;
+            graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
 
             Content = new ContentManager(Services, "Content");
@@ -349,16 +349,19 @@ namespace Adam
                     }
                     break;
                 case GameState.GameWorld:
-                    if (gameWorld.isPaused)
+                    if (gameWorld.isOnDebug)
                         break;
 
-                    gameWorld.Update(gameTime, CurrentLevel, camera);
                     player.Update(gameTime);
                     overlay.Update(gameTime, player, gameWorld);
+
+                    //if (gameWorld.SimulationPaused)
+                    //    break;
+
+                    gameWorld.Update(gameTime, CurrentLevel, camera);                    
                     camera.UpdateSmoothly(player, gameWorld);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
-                    //camera.UpdateWithZoom(player.position);
 
                     if (player.returnToMainMenu)
                         ChangeState(GameState.MainMenu, Level.Level0);

@@ -40,13 +40,13 @@ namespace Adam
             {
                 textString = "";
                 isWritingCommand = false;
-                map.isPaused = false;
+                map.isOnDebug = false;
                 return;
             }
 
             if (!isWritingCommand)
             {
-                map.isPaused = false;
+                map.isOnDebug = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
                     && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
                     && Keyboard.GetState().IsKeyDown(Keys.C))
@@ -59,7 +59,7 @@ namespace Adam
             }
             else
             {
-                map.isPaused = true;
+                map.isOnDebug = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)

@@ -35,7 +35,7 @@ namespace Adam.Network
         public MapDataPacket(GameWorld map)
         {
             apple = map.apple;
-            isPaused = map.isPaused;
+            isPaused = map.isOnDebug;
             levelComplete = map.levelComplete;
 
 

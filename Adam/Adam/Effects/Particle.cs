@@ -156,7 +156,7 @@ namespace Adam
         public void CreateEnemyDisintegrationEffect(Enemy enemy, Rectangle sourceRectangle, Projectile proj)
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
-            texture = enemy.singleTexture;
+            texture = enemy.texture;
             drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
@@ -168,7 +168,7 @@ namespace Adam
         public void CreateEnemyDeathEffect(Enemy enemy, Rectangle sourceRectangle)
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
-            texture = enemy.singleTexture;
+            texture = enemy.texture;
             drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;

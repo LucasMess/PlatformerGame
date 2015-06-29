@@ -39,8 +39,8 @@ namespace Adam.Noobs
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 16;
 
-            still = new AnimationData(300, 4, 0);
-            walking = new AnimationData(150, 4, 1);
+            still = new AnimationData(300, 4, 0, AnimationType.Loop);
+            walking = new AnimationData(150, 4, 1, AnimationType.Loop);
 
             animation = new Animation(texture, drawRectangle, sourceRectangle);
 

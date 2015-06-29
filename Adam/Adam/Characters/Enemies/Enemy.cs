@@ -13,7 +13,7 @@ namespace Adam
 {
     public enum EnemyType
     {
-        Snake, Potato, Shade, Drone, Bloodless, Hellboar,
+        Snake, Potato, Shade, Drone, Bloodless, Hellboar, Frog
     }
 
     class Enemy : Entity
@@ -47,7 +47,7 @@ namespace Adam
 
         public Enemy()
         {
-
+            Initialize();
         }
 
         protected void Initialize()
@@ -138,12 +138,11 @@ namespace Adam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            if (singleTexture == null) throw new Exception("This object is missing its single texture file");
-            Vector2 size = new Vector2(singleTexture.Width / Game1.Tilesize, singleTexture.Height / Game1.Tilesize);
+            Vector2 size = new Vector2(drawRectangle.Width / Game1.Tilesize, drawRectangle.Height / Game1.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
-            int width = singleTexture.Width / xSize;
-            int height = singleTexture.Height / ySize;
+            int width = sourceRectangle.Width / xSize;
+            int height = sourceRectangle.Height / ySize;
             rectangles = new Rectangle[xSize * ySize];
 
             int i = 0;

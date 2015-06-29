@@ -58,18 +58,37 @@ namespace Adam
         {
             this.drawRectangle = drawRectangle;
             sourceRectangle.Y = animationData.StartingY * sourceRectangle.Height;
-            animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (animationData.FrameTimer > animationData.SwitchFrame)
+            animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;         
+
+            switch (animationData.AnimationType)
             {
-                animationData.FrameTimer = 0;
-                animationData.CurrentFrame++;
-                sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
-                if (animationData.CurrentFrame > animationData.FrameCount.X)
-                {
-                    animationData.CurrentFrame = 0;
-                    sourceRectangle.X = 0;
-                }
+                case AnimationType.Loop:
+                    if (animationData.FrameTimer > animationData.SwitchFrame)
+                    {
+                        animationData.FrameTimer = 0;
+                        animationData.CurrentFrame++;
+                        sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
+                        if (animationData.CurrentFrame > animationData.FrameCount.X)
+                        {
+                            animationData.CurrentFrame = 0;
+                            sourceRectangle.X = 0;
+                        }
+                    }
+                    break;
+                case AnimationType.PlayOnce:
+                    if (animationData.FrameTimer > animationData.SwitchFrame && !animationData.Done)
+                    {
+                        animationData.FrameTimer = 0;
+                        animationData.CurrentFrame++;
+                        sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
+                        if (animationData.CurrentFrame >= animationData.FrameCount.X)
+                        {
+                            animationData.Done = true;
+                        }
+                    }
+                    break;
             }
+            
 
         }
 
@@ -165,18 +184,26 @@ namespace Adam
 
     class AnimationData
     {
-        public AnimationData(int switchFrame, int frames, int startingY)
+        public AnimationData(int switchFrame, int frames, int startingY, AnimationType type)
         {
             this.SwitchFrame = switchFrame;
             this.FrameCount = new Vector2(frames - 1, 0);
             this.StartingY = startingY;
         }
 
+        public AnimationType AnimationType { get; set; }
         public int SwitchFrame { get; set; }
         public int CurrentFrame { get; set; }
         public Vector2 FrameCount { get; set; }
         public double FrameTimer { get; set; }
         public int StartingY { get; set; }
+        public bool Done { get; set; }
+
+        public void Reset()
+        {
+            CurrentFrame = 0;
+            Done = false;
+        }
 
     }
 }

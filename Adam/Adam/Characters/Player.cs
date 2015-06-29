@@ -1148,6 +1148,8 @@ namespace Adam
             if (isWaitingForRespawn)
                 return;
 
+            GameWorld.Instance.SimulationPaused = true;
+
             Rectangle[] rectangles;
             GetDisintegratedRectangles(out rectangles);
 
