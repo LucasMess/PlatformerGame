@@ -23,5 +23,7 @@ namespace Adam
         public const int Drone_Score = 30;
         public const int Spike_Damage = 10;
         public const int Hellboar_TouchDamage = 80;
+        public const int Frog_TouchDamage = 30;
+        public const int Frog_MaxHealth = 40;
     }
 }

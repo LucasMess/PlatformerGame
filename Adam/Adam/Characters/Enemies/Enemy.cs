@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
 using Adam.Interactables;
+using Adam.Misc;
+using System.Threading;
 
 namespace Adam
 {
@@ -31,6 +33,7 @@ namespace Adam
         public bool needsToJump;
         public bool isFlying;
         public bool canPassThroughWalls;
+        protected bool tookDamage;
         protected bool isInRange;
         public int health;
         public int maxHealth;
@@ -39,7 +42,10 @@ namespace Adam
         protected double frameTimer;
         protected double beMeanTimer;
         protected double projCooldownTimer;
+        double damagedIncapableTimer;
         protected SoundEffect meanSound, attackSound, deathSound;
+        private SoundFx killedByPlayerSound;
+        private SoundFx jumpedOnSound;
         protected SoundEffectInstance meanSoundInstance, attackSoundInstance, deathSoundInstance;
         protected Player player;
         public EnemyType CurrentEnemyType;
@@ -47,7 +53,6 @@ namespace Adam
 
         public Enemy()
         {
-            Initialize();
         }
 
         protected void Initialize()
@@ -55,13 +60,21 @@ namespace Adam
             radiusRect = new Rectangle(collRectangle.X, collRectangle.Y, 2000, 2000);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             maxHealth = health;
+
+            killedByPlayerSound = new SoundFx("Sounds/Player/enemy_kill");
+            jumpedOnSound = new SoundFx("Sounds/Player/enemy_jumpedOn");
+
+            if (meanSound != null)
+                meanSoundInstance = meanSound.CreateInstance();
         }
 
         public virtual void Update(Player player, GameTime gameTime)
         {
             this.player = player;
             this.gameTime = gameTime;
-            this.gameWorld = GameWorld.Instance;           
+            this.gameWorld = GameWorld.Instance;
+
+            if (tookDamage) goto BeingHit;
 
             //Each class implements their own update logic.
             //Call base.Update for the basic update logic.
@@ -97,7 +110,7 @@ namespace Adam
 
 
             //Random chance of being mean.
-            int shouldIShowDominace = GameWorld.RandGen.Next(0, 1000);
+            int shouldIShowDominace = GameWorld.RandGen.Next(0, 100);
             if (shouldIShowDominace == 1)
             {
                 BeMean();
@@ -118,22 +131,38 @@ namespace Adam
             {
                 Kill();
             }
-
+        
             base.Update();
 
+
+            BeingHit:
+            if (tookDamage)
+            {
+                damagedIncapableTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (damagedIncapableTimer > 300)
+                {
+                    damagedIncapableTimer = 0;
+                    tookDamage = false;
+                }
+            }           
+           
 
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            Color color;
+            if (tookDamage) color = Color.Red;
+            else color = Color.White;
+
             if (isDead) return;
             if (isFacingRight)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
 
-           // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
+            // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), collRectangle, Color.Red * .5f);
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), damageBox, Color.Green * .5f);
-          // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
+            // spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), drawRectangle, Color.Blue *.5f);
         }
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
@@ -166,6 +195,8 @@ namespace Adam
                     return EnemyDB.Potato_TouchDamage;
                 case EnemyType.Hellboar:
                     return EnemyDB.Hellboar_TouchDamage;
+                case EnemyType.Frog:
+                    return EnemyDB.Frog_TouchDamage;
             }
             return 0;
         }
@@ -223,10 +254,28 @@ namespace Adam
         public void TakeDamage(int damage)
         {
             health -= damage;
+            jumpedOnSound.Play();
+            tookDamage = true;
+
+            for (int i = 0; i < 10; i++)
+            {
+                Particle par = new Particle();
+                par.CreateTookDamage(this);
+                GameWorld.Instance.particles.Add(par);
+            }
         }
 
         public void Kill()
         {
+            for (int i = 0; i < 10; i++)
+            {
+                Particle particle = new Particle();
+                particle.CreateDeathSmoke(this);
+                GameWorld.Instance.particles.Add(particle);
+            }
+
+            CreateDeathEffect();
+            killedByPlayerSound.Play();
             PlayDeathSound();
             isDead = true;
             health = 0;

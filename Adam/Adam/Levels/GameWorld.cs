@@ -21,6 +21,7 @@ using Adam.UI.Information;
 using Adam.Levels;
 using Adam.Characters.Non_Playable;
 using Adam.Noobs;
+using System.ComponentModel;
 
 namespace Adam
 {
@@ -94,9 +95,10 @@ namespace Adam
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_11");
 
-            Thread thread = new Thread(new ThreadStart(UpdateInBackground));
-            thread.IsBackground = true;
-            thread.Start();
+            //Thread thread = new Thread(new ThreadStart(UpdateInBackground));
+            //thread.Priority = ThreadPriority.Lowest;
+            //thread.IsBackground = true;
+            //thread.Start();
         }
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
@@ -566,8 +568,7 @@ namespace Adam
             {
                 if (player.attackBox.Intersects(enemy.damageBox) && player.velocity.Y >= -1f)
                 {
-                    enemy.Kill();
-                    enemy.CreateDeathEffect();
+                    enemy.TakeDamage(20);
                     player.Jump();
                     goto SkipDamage;
                 }
@@ -650,6 +651,7 @@ namespace Adam
             background.Update(camera);
             placeNotification.Update(gameTime);
             worldData.Update(gameTime);
+            UpdateInBackground();
 
             if (apple != null)
                 apple.Update(player, gameTime, this, game1);
@@ -784,13 +786,13 @@ namespace Adam
 
         public void UpdateInBackground()
         {
-            while (true)
-            {
-                if (hasLoaded && gameTime != null)
-                {
-                    if (TimesBackgroundUpdated < TimesUpdated)
-                    {
-                        TimesBackgroundUpdated++;
+            //while (true)
+            //{
+            //    if (hasLoaded && gameTime != null)
+            //    {
+            //        if (TimesBackgroundUpdated < TimesUpdated)
+            //        {
+            //            TimesBackgroundUpdated++;
 
                         for (int i = 0; i < particles.Count; i++)
                         {
@@ -814,9 +816,9 @@ namespace Adam
 
                         if (camera != null)
                             UpdateVisibleIndexes();
-                    }
-                }
-            }
+
+                
+            
         }
 
         private void UpdateVisibleIndexes()

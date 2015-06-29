@@ -24,6 +24,7 @@ namespace Adam.Interactables
             IsCollidable = true;
             drawRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
             collRectangle = drawRectangle;
+            velocity.Y = -10f;
 
             pickUpSound = ContentHelper.LoadSound("Sounds/eat");
 
@@ -40,6 +41,10 @@ namespace Adam.Interactables
                 case EnemyType.Drone:
                     break;
                 case EnemyType.Bloodless:
+                    break;
+                case EnemyType.Frog:
+                    healAmount = 5;
+                    texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
                     break;
                 default:
                     break;
@@ -58,6 +63,9 @@ namespace Adam.Interactables
                 player.Heal(healAmount);
                 pickUpSound.Play();
             }
+
+            //if (velocity.Y > 3)
+            //    velocity.Y = 3;
 
             velocity.Y += .3f;
         }

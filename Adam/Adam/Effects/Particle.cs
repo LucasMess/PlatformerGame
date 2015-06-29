@@ -50,10 +50,15 @@ namespace Adam
             JetpackSmoke,
             Blood,
             Lava,
+            TookDamage,
+            DeathSmoke,
         }
         public ParticleType CurrentParticle;
 
-        public Particle() { }
+        public Particle()
+        {
+            gameWorld = GameWorld.Instance;
+        }
 
         public Particle(Chest chest, int seed)
         {
@@ -297,8 +302,34 @@ namespace Adam
             this.gameWorld = map;
         }
 
+        public void CreateDeathSmoke(Entity entity)
+        {
+            CurrentParticle = ParticleType.DeathSmoke;
+            texture = ContentHelper.LoadTexture("Effects/smoke");
+            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 16), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 16), 16, 16);
+            sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
+            velocity.X =(float)(GameWorld.RandGen.NextDouble()* GameWorld.RandGen.Next(-2, 3));
+            velocity.Y = -.5f;
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 2;
+        }
+
+        public void CreateTookDamage(Entity entity)
+        {
+            CurrentParticle = ParticleType.TookDamage;
+            texture = ContentHelper.LoadTexture("Sparkles");
+            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
+            sourceRectangle = new Rectangle(0, 0, 8, 8);
+            velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
+            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-1, 2));
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 1;
+            color = Color.Red;
+        }
+
         public void Update(GameTime gameTime)
         {
+            gameWorld = GameWorld.Instance;
             switch (CurrentParticle)
             {
                 case ParticleType.ChestSparkles:
@@ -498,6 +529,32 @@ namespace Adam
                     if (opacity <= 0)
                         toDelete = true;
                     break;
+                case ParticleType.DeathSmoke:
+                    position += velocity;
+
+                    drawRectangle.X = (int)position.X;
+                    drawRectangle.Y = (int)position.Y;
+
+                    velocity.X = velocity.X * 0.95f;
+                    velocity.Y = velocity.Y * 0.99f;
+
+                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (opacity <= 0)
+                        toDelete = true;
+                    break;
+                case ParticleType.TookDamage:
+                     position += velocity;
+
+                    drawRectangle.X = (int)position.X;
+                    drawRectangle.Y = (int)position.Y;
+
+                    velocity.X = velocity.X * 0.95f;
+                    velocity.Y = velocity.Y * 0.99f;
+
+                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (opacity <= 0)
+                        toDelete = true;
+                    break;
             }
         }
 
@@ -532,11 +589,11 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
             else if (CurrentParticle == ParticleType.PlayerChronoshift)
                 spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity, rotation, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2), SpriteEffects.None, 0);
             else
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
 
         }
 
@@ -545,5 +602,6 @@ namespace Adam
             if (light != null)
                 light.Draw(spriteBatch);
         }
+
     }
 }

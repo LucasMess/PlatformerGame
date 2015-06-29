@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Interfaces;
+﻿using Adam.Misc;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Adam.Characters.Enemies
         AnimationState CurrentAnimation = AnimationState.Still;
         AnimationData still, jumping;
         double jumpTimer;
+        SoundFx jumpSound;
 
         public Frog(int x, int y)
         {
@@ -25,18 +27,27 @@ namespace Adam.Characters.Enemies
             drawRectangle = new Rectangle(x - 8, y - 32, 48, 64);
             sourceRectangle = new Rectangle(0, 0, 24, 32);
             CurrentEnemyType = EnemyType.Frog;
-            health = 100;
+            health = EnemyDB.Frog_MaxHealth;
 
             still = new AnimationData(250, 4, 0, AnimationType.Loop);
             jumping = new AnimationData(125, 4, 1, AnimationType.PlayOnce);
             animation = new Animation(texture, drawRectangle, sourceRectangle);
+
+            jumpSound = new SoundFx("Sounds/Frog/frog_jump");
+            meanSound = ContentHelper.LoadSound("Sounds/Frog/frog_croak");
+
+            Initialize();
+           
         }
 
         public override void Update(Player player, GameTime gameTime)
         {
-            
+            if (isDead) return;
 
-            base.Update(player, gameTime);
+            this.gameTime = gameTime;
+
+            if (tookDamage)
+                goto BeingHit;
 
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 32;
@@ -46,7 +57,10 @@ namespace Adam.Characters.Enemies
             animation.Update(gameTime, drawRectangle, still);
 
             Jump();
-            Animate(); 
+            Animate();
+
+            BeingHit:
+            base.Update(player, gameTime);
 
         }
 
@@ -73,8 +87,8 @@ namespace Adam.Characters.Enemies
                 if (!IsJumping)
                 {
                     if (GameWorld.RandGen.Next(0, 2) == 0)
-                        velocity.X = 3f;
-                    else velocity.X = -3f;
+                        velocity.X = 2f;
+                    else velocity.X = -2f;
 
                     jumpTimer = 0;
                     velocity.Y = -11f;
@@ -82,6 +96,7 @@ namespace Adam.Characters.Enemies
                     IsJumping = true;
                     jumping.Reset();
                     CurrentAnimation = AnimationState.Jumping;
+                    jumpSound.Play();
                 }
             }
             
@@ -90,10 +105,15 @@ namespace Adam.Characters.Enemies
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             if (!isDead)
+            {
+                if (tookDamage) animation.Color = Color.Red;
+                else animation.Color = Color.White;
                 animation.Draw(spriteBatch);
 
-            spriteBatch.Draw(Game1.DefaultTexture, xRect, Color.Red);
-            spriteBatch.Draw(Game1.DefaultTexture, yRect, Color.Blue);
+               // spriteBatch.Draw(Game1.DefaultTexture, collRectangle, Color.Red);
+                //spriteBatch.Draw(Game1.DefaultTexture, xRect, Color.Red);
+                //spriteBatch.Draw(Game1.DefaultTexture, yRect, Color.Blue);
+            }
         }
 
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)

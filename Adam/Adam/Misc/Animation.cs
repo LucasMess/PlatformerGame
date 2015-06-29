@@ -21,6 +21,7 @@ namespace Adam
         public bool canStart;
         public bool isFlipped;
         Vector2 frameCount;
+        public Color Color = Color.White;
 
         AnimationType type;
 
@@ -171,11 +172,13 @@ namespace Adam
 
         }
 
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
             if (!isFlipped)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color);
+            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
 
 

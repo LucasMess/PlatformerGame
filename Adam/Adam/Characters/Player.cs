@@ -968,6 +968,10 @@ namespace Adam
 
         public void TakeDamageAndKnockBack(int damage)
         {
+            if (isInvulnerable)
+                return;
+            if (isInvincible)
+                return;
 
             TakeDamage(damage);
 
@@ -1145,6 +1149,11 @@ namespace Adam
 
         public void KillAndRespawn()
         {
+            if (isInvulnerable)
+                return;
+            if (isInvincible)
+                return;
+
             if (isWaitingForRespawn)
                 return;
 

@@ -45,6 +45,12 @@ namespace Adam
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         #region Variables
+        Color sunny = new Color(255, 238, 186);
+        Color hell = new Color(255, 129, 116);
+        Color winter = new Color(200, 243, 255);
+        Color night = new Color(120, 127, 183);
+        Color sunset = new Color(255, 155, 13);
+
         GraphicsDeviceManager graphics;
         SpriteBatch gameSB, debugSB, mainSB, UiSB, backgroundSB, lightingSB, mainLightSB;
         SpriteFont debugFont, UIFont;
@@ -139,8 +145,8 @@ namespace Adam
             graphics.PreferredBackBufferHeight = UserResHeight;
 
             //Change Game Settings Here
-            graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.PreferMultiSampling = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
 
             Content = new ContentManager(Services, "Content");
@@ -149,9 +155,12 @@ namespace Adam
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
 
+
             //MediaPlayer Settings
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.4f;
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
+
 
             //Creates ContentManager to be used by other classes
 
@@ -358,7 +367,7 @@ namespace Adam
                     //if (gameWorld.SimulationPaused)
                     //    break;
 
-                    gameWorld.Update(gameTime, CurrentLevel, camera);                    
+                    gameWorld.Update(gameTime, CurrentLevel, camera);
                     camera.UpdateSmoothly(player, gameWorld);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
@@ -444,15 +453,14 @@ namespace Adam
                     gameWorld.DrawClouds(backgroundSB);
                     backgroundSB.End();
 
-                    gameSB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawInBack(gameSB);
+                    gameSB.End();
+
+                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.Draw(gameSB);
                     player.Draw(gameSB);
                     gameSB.End();
-
-                    UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    UiSB.End();
-
                     break;
             }
 
@@ -524,11 +532,7 @@ namespace Adam
 
                     if (GameData.Settings.DesiredLight)
                     {
-                        Color sunny = new Color(255, 238, 186);
-                        Color hell = new Color(255, 129, 116);
-                        Color winter = new Color(200, 243, 255);
-                        Color night = new Color(120, 127, 183);
-                        Color sunset = new Color(255, 155, 13);
+
                         BlendState WHATTHEFUCK = new BlendState();
                         WHATTHEFUCK.AlphaSourceBlend = Blend.DestinationColor;
                         WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;

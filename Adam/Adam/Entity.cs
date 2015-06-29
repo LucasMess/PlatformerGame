@@ -69,17 +69,20 @@ namespace Adam
         {
             gameWorld = GameWorld.Instance;
 
-            if (this is ICollidable)
-            {
-                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
-                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
-
-                CheckTerrainCollision();
-            }
             if (this is INewtonian)
             {
                 ApplyGravity();
             }
+
+
+            if (this is ICollidable)
+            {
+                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 10, collRectangle.Width, collRectangle.Height - 20);
+                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
+
+                CheckTerrainCollision();
+            }
+
         }
 
         /// <summary>
@@ -311,32 +314,32 @@ namespace Adam
                     Tile tile = gameWorld.tileArray[quadrant];
                     if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
                     {
-                        if (collRectangle.Intersects(tile.drawRectangle))
+
+                        if (yRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                         {
-                            if (yRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
+                            if (position.Y <= gameWorld.tileArray[quadrant].drawRectangle.Y) //hits bot
                             {
-                                if (position.Y < gameWorld.tileArray[quadrant].drawRectangle.Y) //hits bot
-                                {
-                                    ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
-                                }
-                                else  //hits top
-                                {
-                                    ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
-                                }
+                                ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
                             }
-                            else if (xRect.Intersects(tile.drawRectangle))
+                            else  //hits top
                             {
-                                if (position.X < gameWorld.tileArray[quadrant].drawRectangle.X) //hits right
-                                {
-                                    ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
-                                }
-                                else //hits left
-                                {
-                                    ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
-                                }
+                                ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
                             }
                         }
+                        if (xRect.Intersects(tile.drawRectangle))
+                        {
+                            if (position.X <= gameWorld.tileArray[quadrant].drawRectangle.X) //hits right
+                            {
+                                ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
+                            }
+                            else //hits left
+                            {
+                                ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                            }
+ 
+                        }
                     }
+
                 }
             }
         }
@@ -408,7 +411,7 @@ namespace Adam
                 }
                 else newt.IsAboveTile = true;
 
-           // Console.WriteLine(this.GetType() +""+newt.IsAboveTile);
+            // Console.WriteLine(this.GetType() +""+newt.IsAboveTile);
 
             if (!newt.IsAboveTile || newt.IsJumping)
             {
