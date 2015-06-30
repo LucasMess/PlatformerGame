@@ -11,8 +11,8 @@ namespace Adam
     class Background
     {
         Image background;
-        Image[] middlegrounds = new Image[3];
-        Image[] foregrounds = new Image[6];
+        Image[] middlegrounds = new Image[6];
+        Image[] foregrounds = new Image[12];
 
         public void Load(Level CurrentLevel, GameWorld gameWorld)
         {
@@ -91,14 +91,14 @@ namespace Adam
 
             for (int i = 1; i < middlegrounds.Length; i++)
             {
-                middlegrounds[i].Rectangle = new Rectangle(middlegrounds[i - 1].Rectangle.X + (middlegrounds[i - 1].Rectangle.Width * i), middlegrounds[1].Rectangle.Y, middlegrounds[1].Rectangle.Width, middlegrounds[1].Rectangle.Height);
+                middlegrounds[i].Rectangle = new Rectangle(middlegrounds[i - 1].Rectangle.X + (middlegrounds[i - 1].Rectangle.Width), middlegrounds[i-1].Rectangle.Y, middlegrounds[i-1].Rectangle.Width, middlegrounds[i-1].Rectangle.Height);
             }
 
             foregrounds[0].Rectangle =  new Rectangle((int)(camera.lastCameraLeftCorner.X / 5), foregrounds[0].Rectangle.Y, foregrounds[0].Rectangle.Width, foregrounds[0].Rectangle.Height);
 
             for (int i = 1; i < foregrounds.Length; i++)
             {
-                foregrounds[i].Rectangle = new Rectangle(foregrounds[i - 1].Rectangle.X + (foregrounds[i - 1].Rectangle.Width * i), foregrounds[1].Rectangle.Y, foregrounds[1].Rectangle.Width, foregrounds[1].Rectangle.Height);
+                foregrounds[i].Rectangle = new Rectangle(foregrounds[i - 1].Rectangle.X + (foregrounds[i - 1].Rectangle.Width), foregrounds[i-1].Rectangle.Y, foregrounds[i-1].Rectangle.Width, foregrounds[i-1].Rectangle.Height);
             }
         }
 
