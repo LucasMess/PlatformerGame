@@ -196,6 +196,8 @@ namespace Adam
             //Use this string to save the path to a file if multiple files begin with the same location.
             string path;
 
+            tadaSound = ContentHelper.LoadSound("Sounds/levelup");
+
             //Use this array to get each evolution texture.
             path = "Characters/adam_";
             textureArray = new Texture2D[] 
@@ -1002,6 +1004,8 @@ namespace Adam
                 PlayerRespawned();
 
             Overlay.Instance.FadeIn();
+
+           // tadaSound.Play();
 
             health = maxHealth;
             //reset player velocity
