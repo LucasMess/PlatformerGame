@@ -507,8 +507,11 @@ namespace Adam
                 case 34: //Medium Rock
                     isVoid = true;
                     break;
-                case 36:
+                case 36: //Sign
                     position = new Vector2(12, 4);
+                    break;
+                case 37: //Checkpoint
+                    isVoid = true;
                     break;
 
                 #region Wall Textures

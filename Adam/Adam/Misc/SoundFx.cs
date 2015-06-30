@@ -11,6 +11,8 @@ namespace Adam.Misc
         SoundEffect soundEffect;
         SoundEffectInstance instance;
         bool isPlaying;
+        bool isGlobal;
+        Entity source;
 
         public SoundFx(string file)
         {
@@ -18,15 +20,25 @@ namespace Adam.Misc
             instance = soundEffect.CreateInstance();
         }
 
+        public SoundFx(string file, Entity entity)
+        {
+            soundEffect = ContentHelper.LoadSound(file);
+            instance = soundEffect.CreateInstance();
+            source = entity;
+            isGlobal = true;
+        }
+
         public void Play()
         {
-            soundEffect.Play();
+            if (isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
+            instance.Play();
         }
 
         public void PlayOnce()
         {
             if (!isPlaying)
             {
+                if (isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
                 instance.Play();
                 isPlaying = true;
             }
@@ -40,7 +52,10 @@ namespace Adam.Misc
         public void PlayIfStopped()
         {
             if (instance.State == SoundState.Stopped)
+            {
+                if (isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
                 instance.Play();
+            }
         }
     }
 }

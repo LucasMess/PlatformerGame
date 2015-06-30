@@ -342,10 +342,10 @@ namespace Adam
             }
 
             //For debugging chronoshift.
-            if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
-            {
-                Chronoshift(Evolution.Modern);
-            }
+            //if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
+            //{
+            //    Chronoshift(Evolution.Modern);
+            //}
 
             previousPosition = position;
 
@@ -958,6 +958,13 @@ namespace Adam
             if (isInvincible)
                 return;
 
+            for (int i = 0; i < damage; i++)
+            {
+                Particle par = new Particle();
+                par.CreateTookDamage(this);
+                GameWorld.Instance.particles.Add(par);
+            }
+
             health -= damage;
             //make him invincible for a while and start the being hit animation
             isInvincible = true;
@@ -993,6 +1000,8 @@ namespace Adam
         {
             if (PlayerRespawned != null)
                 PlayerRespawned();
+
+            Overlay.Instance.FadeIn();
 
             health = maxHealth;
             //reset player velocity
@@ -1169,11 +1178,16 @@ namespace Adam
                 GameWorld.Instance.particles.Add(eff);
             }
 
+            for (int i = 0; i < 10; i++)
+            {
+                Particle par = new Particle();
+                par.CreateDeathSmoke(this);
+                GameWorld.Instance.particles.Add(par);
+            }
+
             int rand = GameWorld.RandGen.Next(20, 30);
             SpillBlood(rand);
-
-
-            health = 0;
+            TakeDamageAndKnockBack(health);
             manual_hasControl = false;
             isWaitingForRespawn = true;
         }

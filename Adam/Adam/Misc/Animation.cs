@@ -192,6 +192,7 @@ namespace Adam
             this.SwitchFrame = switchFrame;
             this.FrameCount = new Vector2(frames - 1, 0);
             this.StartingY = startingY;
+            this.AnimationType = type;
         }
 
         public AnimationType AnimationType { get; set; }

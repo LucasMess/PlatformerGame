@@ -28,7 +28,7 @@ namespace Adam.Interactables
             collRectangle = drawRectangle;
             velocity.Y = -10f;
 
-            hitGround = new SoundFx("Sounds/Items/item_pop");
+            hitGround = new SoundFx("Sounds/Items/item_pop", this);
             pickUpSound = ContentHelper.LoadSound("Sounds/eat");
 
             switch (enemy.CurrentEnemyType)
@@ -47,7 +47,7 @@ namespace Adam.Interactables
                     break;
                 case EnemyType.Frog:
                     healAmount = 5;
-                    texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
+                    texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
                     break;
                 default:
                     break;
@@ -85,11 +85,14 @@ namespace Adam.Interactables
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
             collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
-            if (velocity.Y < 5)
-                velocity.Y = 5;
+            if (velocity.Y < 3)
+                velocity.Y = 0;
+            else
+            {
+                velocity.Y *= -.9f;
 
-            velocity.Y *= - .9f;
-            hitGround.PlayIfStopped();
+                hitGround.PlayIfStopped();
+            }
         }
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)

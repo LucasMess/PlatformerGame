@@ -607,8 +607,5 @@ namespace Adam
             drawTime = drawWatch.ElapsedMilliseconds;
             drawWatch.Reset();
         }
-
-
-
     }
 }

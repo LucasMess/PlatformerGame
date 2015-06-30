@@ -122,7 +122,6 @@ namespace Adam.UI
             if (isActive && skipTimer > .5)
             {
                 string mousebutton = "Press left mouse button to continue";
-               // spriteBatch.DrawString(font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X, drawRectangle.Bottom), Color.Black);
                 FontHelper.DrawWithOutline(spriteBatch, font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X - 20, drawRectangle.Bottom), 2, Color.White, Color.Black);
             }
         }

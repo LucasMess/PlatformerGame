@@ -12,7 +12,7 @@ namespace Adam.Obstacles
         public Spikes(int x, int y)
         {
             drawRectangle = new Rectangle(x, y, 32, 32);
-            collRectangle = drawRectangle;
+            collRectangle = new Rectangle(x + 4, y + 8, 24, 16);
             sourceRectangle = new Rectangle(0, 0, 32, 32);
             texture = ContentHelper.LoadTexture("Tiles/spikes");
         }

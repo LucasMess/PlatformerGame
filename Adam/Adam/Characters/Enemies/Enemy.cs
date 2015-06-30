@@ -257,7 +257,7 @@ namespace Adam
             jumpedOnSound.Play();
             tookDamage = true;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < damage; i++)
             {
                 Particle par = new Particle();
                 par.CreateTookDamage(this);

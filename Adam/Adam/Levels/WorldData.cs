@@ -38,6 +38,9 @@ namespace Adam.Levels
         string sign3 = "";
         string sign4 = "";
 
+        bool privTrig0;
+
+
         public WorldData(Level CurrentLevel)
         {
             //Default
@@ -97,7 +100,12 @@ namespace Adam.Levels
             switch (GameWorld.Instance.CurrentLevel)
             {
                 case Level.Level1and1:
-                    if (gameTimer > 5)
+                    if (InputHelper.IsKeyDown(Keys.A) || InputHelper.IsKeyDown(Keys.D))
+                    {
+                        privTrig0 = true;
+                        Game1.ObjectiveTracker.CompleteObjective(0);
+                    }
+                    if (gameTimer > 5 && !privTrig0)
                     {
                         if (!obj0)
                         {
@@ -105,12 +113,7 @@ namespace Adam.Levels
                             obj.Create("Press 'A' and 'D' to move.", 0);
                             Game1.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
-                        }
-
-                        if (InputHelper.IsKeyDown(Keys.A) || InputHelper.IsKeyDown(Keys.D))
-                        {
-                            Game1.ObjectiveTracker.CompleteObjective(0);
-                        }
+                        }                        
                     }
                     break;
             }

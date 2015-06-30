@@ -15,6 +15,9 @@ namespace Adam
 {
     class Overlay
     {
+        private static Overlay instance;
+        public static Overlay Instance { get { return instance; } }
+
         public static SpriteFont Font;
         List<SplashDamage> splashDamages = new List<SplashDamage>();
 
@@ -26,9 +29,11 @@ namespace Adam
         bool fadeIn;
         bool fadeOut;
         float blackOpacity;
+        double fadingTimer;
 
         public Overlay()
         {
+            instance = this;
             Font = ContentHelper.LoadFont("Fonts/overlay");
 
             heart = new Heart(new Vector2(40,40));
@@ -78,7 +83,7 @@ namespace Adam
         {
             fadeIn = true;
             fadeOut = false;
-            blackOpacity = 3;
+            blackOpacity = 2;
         }
 
         public void FadeOut()

@@ -33,7 +33,7 @@ namespace Adam.Characters.Enemies
             jumping = new AnimationData(125, 4, 1, AnimationType.PlayOnce);
             animation = new Animation(texture, drawRectangle, sourceRectangle);
 
-            jumpSound = new SoundFx("Sounds/Frog/frog_jump");
+            jumpSound = new SoundFx("Sounds/Frog/frog_jump", this);
             meanSound = ContentHelper.LoadSound("Sounds/Frog/frog_croak");
 
             Initialize();

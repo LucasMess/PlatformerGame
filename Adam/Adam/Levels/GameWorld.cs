@@ -334,6 +334,11 @@ namespace Adam
                     tile.ID = 36;
                     entities.Add(new Sign(Xcoor, Ycoor, 4));
                 }
+                else if (colorCode == new Vector3(30, 255, 245)) //CheckPoint
+                {
+                    tile.ID = 37;
+                    entities.Add(new CheckPoint(Xcoor, Ycoor));
+                }
 
 
       //CHARACTERS AND OTHERS
@@ -742,6 +747,11 @@ namespace Adam
                 {
                     Sign sign = (Sign)entity;
                     sign.Update();
+                }
+                if (entity is CheckPoint)
+                {
+                    CheckPoint ch = (CheckPoint)entity;
+                    ch.Update();
                 }
             }
 

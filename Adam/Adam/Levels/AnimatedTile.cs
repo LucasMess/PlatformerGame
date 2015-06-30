@@ -99,6 +99,7 @@ namespace Adam
                     drawRectangle.Height = Game1.Tilesize * 7;
                     drawRectangle.Width = Game1.Tilesize * 6;
                     drawRectangle.Y -= 16*6;
+                    drawRectangle.X -= 8 * 5;
                     break;
                 case 33: //Big Rock
                     frameCount = new Vector2(0, 0);

@@ -105,12 +105,12 @@ namespace Adam.Noobs
                             Game1.Dialog.Say("Pff... I should have known. Why did I make you sleep every day is the biggest question I suppose. Now all that I get is a sleepwalking, lazy, moronic, insensitive, piece of...", this);
                             break;
                         case 2:
-                            fx = new SoundFx("Voices/God/happy");
+                            fx = new SoundFx("Voices/God/conversation1");
                             fx.PlayOnce();
                             Game1.Dialog.Say("Erm... I digress, where were we? Oh Yes, saving Eve.", this);
                             break;
                         case 3:
-                            fx = new SoundFx("Voices/God/conversation2");
+                            fx = new SoundFx("Voices/God/conversation1");
                             fx.PlayOnce();
                             Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get it.", this);
                             break;

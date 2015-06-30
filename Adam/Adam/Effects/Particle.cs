@@ -463,7 +463,7 @@ namespace Adam
                         }
                         else
                         {
-                            velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
+                           // velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
                         }
                     }
                     else

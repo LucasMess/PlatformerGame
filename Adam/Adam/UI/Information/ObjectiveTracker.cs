@@ -22,8 +22,18 @@ namespace Adam.UI.Information
 
         public void AddObjective(Objective obj)
         {
-            obj.SetPosition(objectives.Count);
-            objectives.Add(obj);
+            bool found = false;
+            for (int i = 0; i < objectives.Count; i++)
+            {
+                if (objectives[i].ID == obj.ID)
+                    found = true;
+            }
+
+            if (!found)
+            {
+                obj.SetPosition(objectives.Count);
+                objectives.Add(obj);
+            }
         }
 
         public void Update(GameTime gameTime)
