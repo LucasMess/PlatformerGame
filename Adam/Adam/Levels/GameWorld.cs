@@ -122,7 +122,7 @@ namespace Adam
             this.CurrentLevel = CurrentLevel;
             MediaPlayer.Volume = .2f;
 
-            int maxClouds = 5;
+            int maxClouds = worldData.mainMap.Width / 100;
             for (int i = 0; i < maxClouds; i++)
             {
                 cloudList.Add(new Cloud(Content, monitorResolution, maxClouds, i));

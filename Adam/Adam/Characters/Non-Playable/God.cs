@@ -151,6 +151,8 @@ namespace Adam.Noobs
             if (EndConversation)
             {
                 //No more messages to show.
+                EndConversation = false;
+                isTalking = false;
                 CurrentConversation = StartingConversation;
             }
             else

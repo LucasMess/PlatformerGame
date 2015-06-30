@@ -53,22 +53,24 @@ namespace Adam.UI
             CurrentSender = sender;
             sender.CurrentConversation++;
 
+            Prepare(text);
+        }
+
+        public void Show(string text)
+        {
+            CurrentSender = null;
+
+            Prepare(text);
+        }
+
+        private void Prepare(string text)
+        {
             isActive = true;
             this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 60);
             skipTimer = 0;
             opacity = 0;
             drawRectangle.Y -= 40;
             popSound.Reset();
-        }
-
-        public void Display(string text)
-        {
-
-        }
-
-        public void Cancel()
-        {
-            isActive = false;
         }
 
         public void Update(GameTime gameTime)
@@ -78,12 +80,15 @@ namespace Adam.UI
             {
                 popSound.PlayOnce();
                 skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                GameWorld.Instance.player.manual_hasControl = false;
                 if (skipTimer > .5)
                 {
                     if (InputHelper.IsLeftMousePressed())
                     {
                         isActive = false;
-                        CurrentSender.OnNextDialog();
+                        GameWorld.Instance.player.manual_hasControl = true;
+                        if (CurrentSender != null)
+                            CurrentSender.OnNextDialog();
                     }
                 }
             }
@@ -114,6 +119,12 @@ namespace Adam.UI
         {
             spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
             spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
+            if (isActive && skipTimer > .5)
+            {
+                string mousebutton = "Press left mouse button to continue";
+               // spriteBatch.DrawString(font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X, drawRectangle.Bottom), Color.Black);
+                FontHelper.DrawWithOutline(spriteBatch, font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X - 20, drawRectangle.Bottom), 2, Color.White, Color.Black);
+            }
         }
 
     }

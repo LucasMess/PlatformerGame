@@ -105,9 +105,9 @@ namespace Adam
             objSourceRect.Y = (0) / 5 * 16;
 
             clickTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed && !player.hasControl)
+            if (clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed && !player.manual_hasControl)
             {
-                player.hasControl = true;
+                player.manual_hasControl = true;
                 clickTimer = 0;
                 isVisible = false;
             }

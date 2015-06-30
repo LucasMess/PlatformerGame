@@ -62,7 +62,11 @@ namespace Adam.Characters.Non_Playable
         protected void WalkAroundSpawnPoint(int spawnX)
         {
             int speed = 1;
-
+            if (isTalking)
+            {
+                velocity.X = 0;
+                return;
+            }
             if (!destinationFound)
             {
                 velocity.X = 0;
@@ -106,7 +110,8 @@ namespace Adam.Characters.Non_Playable
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            key.Draw(spriteBatch);
+            if (!isTalking)
+                key.Draw(spriteBatch);
         }
     }
 }

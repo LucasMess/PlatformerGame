@@ -78,13 +78,13 @@ namespace Adam
         public bool isJumping;
         public bool isInvincible;
         public bool isSpaceBarPressed;
-        public bool isReceivingInput = true;
+        public bool automatic_hasControl = true;
         public bool isPlayerDead;
         public bool hasFiredWeapon;
         public bool isFacingRight = true;
         public bool isOnVines;
         public bool grabbedVine;
-        public bool hasControl = true;
+        public bool manual_hasControl = true;
 
         public bool isFlying;
         public bool returnToMainMenu;
@@ -402,7 +402,7 @@ namespace Adam
 
 
             //Check if the player is moving Left
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && isReceivingInput == true && hasControl)
+            if (Keyboard.GetState().IsKeyDown(Keys.A) && automatic_hasControl == true && manual_hasControl)
             {
                 velocity.X -= acceleration;
                 isFacingRight = false;
@@ -414,7 +414,7 @@ namespace Adam
             }
 
             //Check if the player is moving right
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && isReceivingInput == true && hasControl)
+            if (Keyboard.GetState().IsKeyDown(Keys.D) && automatic_hasControl == true && manual_hasControl)
             {
 
                 velocity.X += acceleration;
@@ -427,7 +427,7 @@ namespace Adam
             }
 
             //For when he is on OP mode the player can fly up.
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && isReceivingInput == true && hasControl && canFly)
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && automatic_hasControl == true && manual_hasControl && canFly)
             {
                 velocity.Y = -10f;
                 sleepTimer = 0;
@@ -435,7 +435,7 @@ namespace Adam
             }
 
             //For when he is on op mode the player can fly down.
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && isReceivingInput == true && hasControl && canFly)
+            if (Keyboard.GetState().IsKeyDown(Keys.S) && automatic_hasControl == true && manual_hasControl && canFly)
             {
                 velocity.Y = 10f;
                 sleepTimer = 0;
@@ -451,12 +451,12 @@ namespace Adam
             //Check if the player is climbing a vine
             if (isOnVines)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.W) && hasControl)
+                if (Keyboard.GetState().IsKeyDown(Keys.W) && manual_hasControl)
                 {
                     velocity.Y = -5f;
                     grabbedVine = true;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.S) && hasControl)
+                else if (Keyboard.GetState().IsKeyDown(Keys.S) && manual_hasControl)
                 {
                     velocity.Y = 5f;
                     grabbedVine = true;
@@ -469,7 +469,7 @@ namespace Adam
             else grabbedVine = false;
 
             //Check if player is jumping
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && isSpaceBarPressed == false && isReceivingInput == true && isJumping == false && hasControl)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && isSpaceBarPressed == false && automatic_hasControl == true && isJumping == false && manual_hasControl)
             {
                 Jump();
             }
@@ -848,7 +848,7 @@ namespace Adam
         {
             //If somewhere it is game over, do not let the player control
             if (isPlayerDead)
-                isReceivingInput = false;
+                automatic_hasControl = false;
 
             //If his health falls below 0, kill him.
             if (health <= 0)
@@ -876,7 +876,7 @@ namespace Adam
                 controlTimer += gameTime.ElapsedGameTime.TotalSeconds;
                 if (controlTimer > .5)
                 {
-                    isReceivingInput = true;
+                    automatic_hasControl = true;
                     controlTimer = 0;
                 }
             }
@@ -961,7 +961,7 @@ namespace Adam
             health -= damage;
             //make him invincible for a while and start the being hit animation
             isInvincible = true;
-            isReceivingInput = false;
+            automatic_hasControl = false;
             takeDamageSound.Play();
             SpillBlood(GameWorld.RandGen.Next(3, 5));
         }
@@ -1007,7 +1007,7 @@ namespace Adam
             isPlayerDead = false;
             goreSoundPlayed = false;
 
-            hasControl = true;
+            manual_hasControl = true;
             isInvisible = false;
             isWaitingForRespawn = false;
 
@@ -1174,7 +1174,7 @@ namespace Adam
 
 
             health = 0;
-            hasControl = false;
+            manual_hasControl = false;
             isWaitingForRespawn = true;
         }
 

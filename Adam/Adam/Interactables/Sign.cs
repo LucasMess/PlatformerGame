@@ -28,7 +28,7 @@ namespace Adam.Interactables
             key.Update(collRectangle);
             if (GameWorld.Instance.player.collRectangle.Intersects(collRectangle))
             {
-                if (InputHelper.IsKeyDown(Keys.W))
+                if (InputHelper.IsKeyDown(Keys.W) && GameWorld.Instance.player.manual_hasControl)
                 {
                     ShowMessage();
                 }
@@ -37,7 +37,7 @@ namespace Adam.Interactables
 
         private void ShowMessage()
         {
-            Game1.Dialog.Display(GameWorld.Instance.worldData.GetSignMessage(ID));
+            Game1.Dialog.Show(GameWorld.Instance.worldData.GetSignMessage(ID));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

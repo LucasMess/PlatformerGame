@@ -42,7 +42,7 @@ namespace Adam
             {
                 PlaySound();
                 wasPicked = true;
-                player.hasControl = false;
+                player.manual_hasControl = false;
             }
             if (wasPicked)
             {
