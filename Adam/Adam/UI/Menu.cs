@@ -229,6 +229,7 @@ namespace Adam
 
         void quit_MouseClicked()
         {
+            game1.GameData.SaveGame();
             game1.Exit();
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Misc;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ namespace Adam.UI.Information
     {
         public List<Objective> objectives;
         double timer;
+        SoundFx completeSound;
 
         public ObjectiveTracker()
         {
+            completeSound = new SoundFx("Sounds/Menu/quest_complete");
             objectives = new List<Objective>();
         }
 
@@ -67,6 +70,7 @@ namespace Adam.UI.Information
             {
                 if (ob.ID == ID)
                 {
+                    completeSound.PlayIfStopped();
                     ob.isComplete = true;
                     break;
                 }

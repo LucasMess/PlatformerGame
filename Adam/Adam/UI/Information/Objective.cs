@@ -28,7 +28,7 @@ namespace Adam.UI.Information
         {
             texture = ContentHelper.LoadTexture("Tiles/white");
             font = ContentHelper.LoadFont("Fonts/dialog");
-            drawRectangle = new Rectangle(Game1.UserResWidth, 0, 300, 100);
+            drawRectangle = new Rectangle(Game1.UserResWidth, 0, 300, 125);
             goalX = Game1.UserResWidth - drawRectangle.Width;
         }
 
@@ -49,7 +49,7 @@ namespace Adam.UI.Information
 
         public void TransitionIntoNewPosition(int index)
         {
-            newY = (30 + (130 * index));
+            newY = (30 + (155 * index));
         }
 
         public void Update(GameTime gameTime)
@@ -85,7 +85,7 @@ namespace Adam.UI.Information
         {
             spriteBatch.Draw(texture, drawRectangle, color * opacity);
             spriteBatch.DrawString(font, "Objective:", new Vector2(drawRectangle.X + 5, drawRectangle.Y + 5), Color.Yellow * opacity);
-            spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 30), Color.White * opacity);
+            spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 30), Color.White * opacity,0,new Vector2(0,0),1,SpriteEffects.None,0);
         }
     }
 }

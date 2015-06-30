@@ -1,4 +1,5 @@
-﻿using Adam.UI.Elements;
+﻿using Adam.Misc.Interfaces;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -36,7 +37,7 @@ namespace Adam.Interactables
 
         private void ShowMessage()
         {
-            Game1.Dialog.Say(GameWorld.Instance.worldData.GetSignMessage(ID));
+            Game1.Dialog.Display(GameWorld.Instance.worldData.GetSignMessage(ID));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

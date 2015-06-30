@@ -336,7 +336,7 @@ namespace Adam
                             {
                                 ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
                             }
- 
+
                         }
                     }
 
@@ -418,5 +418,27 @@ namespace Adam
                 velocity.Y += gravity;
             }
         }
+
+        protected virtual void OnCollisionAbove(TerrainCollisionEventArgs e)
+        {
+            collRectangle.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
+            velocity.Y = 0;
+        }
+        protected virtual void OnCollisionBelow(TerrainCollisionEventArgs e)
+        {
+            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
+            velocity.Y = 0;
+        }
+        protected virtual void OnCollisionRight(TerrainCollisionEventArgs e)
+        {
+            collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
+            velocity.X = 0;
+        }
+        protected virtual void OnCollisionLeft(TerrainCollisionEventArgs e)
+        {
+            collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
+            velocity.X = 0;
+        }
+
     }
 }

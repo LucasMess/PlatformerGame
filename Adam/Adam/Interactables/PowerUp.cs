@@ -32,8 +32,8 @@ namespace Adam.Interactables
             //They are supposed to bounce up an down but it is not working right....
 
             topMidBound = new Rectangle(drawRectangle.X + drawRectangle.Width / 2, drawRectangle.Y + drawRectangle.Height / 2, 1, 1);
-            xRect = new Rectangle(drawRectangle.X, drawRectangle.Y + 5, drawRectangle.Width, drawRectangle.Height - 10);
-            yRect = new Rectangle(drawRectangle.X + 10, drawRectangle.Y, drawRectangle.Width - 20, drawRectangle.Height);
+            //xRect = new Rectangle(drawRectangle.X, drawRectangle.Y + 5, drawRectangle.Width, drawRectangle.Height - 10);
+            //yRect = new Rectangle(drawRectangle.X + 10, drawRectangle.Y, drawRectangle.Width - 20, drawRectangle.Height);
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (IsCollidable)
@@ -69,6 +69,8 @@ namespace Adam.Interactables
                     break;
                 }
             }
+
+            base.Update();
         }
 
         private void CheckCollisionWithTerrain()

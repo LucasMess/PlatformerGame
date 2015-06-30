@@ -1,6 +1,7 @@
 ﻿using Adam.Characters.Non_Playable;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
+using Adam.UI.Information;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace Adam.Noobs
 {
-    class God : NonPlayableCharacter
+    class God : NonPlayableCharacter, ITalkable
     {
         enum AnimationState
         {
@@ -23,9 +24,6 @@ namespace Adam.Noobs
         AnimationData still;
         GameTime gameTime;
         int spawnPoint;
-        int conversationProgress;
-        int conversationSave;
-        bool endOfStory;
 
         public God(int x, int y)
         {
@@ -43,26 +41,6 @@ namespace Adam.Noobs
             walking = new AnimationData(150, 4, 1, AnimationType.Loop);
 
             animation = new Animation(texture, drawRectangle, sourceRectangle);
-
-            Game1.Dialog.NextDialog += Dialog_NextDialog;
-            Game1.Dialog.CancelDialog += Dialog_CancelDialog;
-        }
-
-        void Dialog_CancelDialog()
-        {
-            conversationProgress = conversationSave;
-            isTalking = false;
-            endOfStory = false;
-        }
-
-        void Dialog_NextDialog()
-        {
-            if (endOfStory)
-            {
-                Game1.Dialog.Cancel();
-                Dialog_CancelDialog();
-            }
-            else ShowMessage();
         }
 
         public override void Update(GameTime gameTime, Player player)
@@ -111,25 +89,48 @@ namespace Adam.Noobs
         protected override void ShowMessage()
         {
             SoundFx fx;
-            switch (conversationProgress)
+            switch (GameWorld.Instance.CurrentLevel)
             {
-                case 0:
-                    fx = new SoundFx("Voices/God/conversation1");
-                    fx.PlayOnce();
-                    Game1.Dialog.Say("Adam! You have been asleep for nearly 7 hours. You must rescue Eve from the Devil before it is too late.");
-                    conversationProgress++;
-                    break;
-                case 1:
-                    fx = new SoundFx("Voices/God/conversation2");
-                    fx.PlayOnce();
-                    Game1.Dialog.Say("At the top of the Tree of Knowledge there is a map of the world. You must find it if you wish to rescue Eve.");
-                    conversationProgress++;
-                    break;
-                case 2:
-                    fx = new SoundFx("Voices/God/happy");
-                    fx.PlayOnce();
-                     Game1.Dialog.Say("You did it! Well done. Now give it to me.");
-                    endOfStory = true;
+                case Level.Level1and1:
+                    switch (CurrentConversation)
+                    {
+                        case 0:
+                            fx = new SoundFx("Voices/God/conversation1");
+                            fx.PlayOnce();
+                            Game1.Dialog.Say("Adam! You have been asleep for nearly 7 hours. Tell me, what were you thinking?", this);
+                            break;
+                        case 1:
+                            fx = new SoundFx("Voices/God/conversation2");
+                            fx.PlayOnce();
+                            Game1.Dialog.Say("Pff... I should have known. Why did I make you sleep every day is the biggest question I suppose. Now all that I get is a sleepwalking, lazy, moronic, insensitive, piece of...", this);
+                            break;
+                        case 2:
+                            fx = new SoundFx("Voices/God/happy");
+                            fx.PlayOnce();
+                            Game1.Dialog.Say("Erm... I digress, where were we? Oh Yes, saving Eve.", this);
+                            break;
+                        case 3:
+                            fx = new SoundFx("Voices/God/conversation2");
+                            fx.PlayOnce();
+                            Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get it.", this);
+                            break;
+                        case 4:
+                            fx = new SoundFx("Voices/God/conversation2");
+                            fx.PlayOnce();
+                            Objective ob = new Objective();
+                            ob.Create("Find the map at the top of the Tree of Knowledge", 1);
+                            Game1.ObjectiveTracker.AddObjective(ob);
+                            Game1.Dialog.Say("You need a map. I think I have one, but I left it in my observation room at the top of the Tree of Knowledge. You should go get it, It's not too far.", this);
+                            EndConversation = true;
+                            StartingConversation = 5;
+                            break;
+                        case 5:
+                            fx = new SoundFx("Voices/God/conversation2");
+                            fx.PlayOnce();
+                            Game1.Dialog.Say("What are you waiting for? Go find the map!", this);
+                            EndConversation = true;                            
+                            break;
+                    }
                     break;
             }
         }
@@ -139,5 +140,27 @@ namespace Adam.Noobs
             base.Draw(spriteBatch);
             animation.Draw(spriteBatch);
         }
+
+        public int StartingConversation { get; set; }
+
+        public int CurrentConversation { get; set; }
+
+
+        public void OnNextDialog()
+        {
+            if (EndConversation)
+            {
+                //No more messages to show.
+                CurrentConversation = StartingConversation;
+            }
+            else
+            {
+                //The dialog is not over and there is more.
+                ShowMessage();
+            }
+        }
+
+
+        public bool EndConversation { get; set; }
     }
 }

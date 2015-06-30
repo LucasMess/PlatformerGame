@@ -1,5 +1,6 @@
 ﻿using Adam.Misc;
 using Adam.Misc.Helpers;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,6 +22,7 @@ namespace Adam.UI
         string text = "";
         StringBuilder sb;
         SoundFx popSound;
+        ITalkable CurrentSender;
 
         public delegate void EventHandler();
         public event EventHandler NextDialog;
@@ -35,7 +37,7 @@ namespace Adam.UI
         {
             texture = GameWorld.SpriteSheet;
             drawRectangle = new Rectangle(Game1.UserResWidth / 2, 40, 600, 200);
-            sourceRectangle = new Rectangle(16*16, 14*16, 16 * 3, 16);
+            sourceRectangle = new Rectangle(16 * 16, 14 * 16, 16 * 3, 16);
             origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
             drawRectangle.X -= (int)origin.X;
 
@@ -46,14 +48,22 @@ namespace Adam.UI
             popSound = new SoundFx("Sounds/message_show");
         }
 
-        public void Say(string text)
+        public void Say(string text, ITalkable sender)
         {
+            CurrentSender = sender;
+            sender.CurrentConversation++;
+
             isActive = true;
             this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 60);
             skipTimer = 0;
             opacity = 0;
             drawRectangle.Y -= 40;
             popSound.Reset();
+        }
+
+        public void Display(string text)
+        {
+
         }
 
         public void Cancel()
@@ -73,19 +83,14 @@ namespace Adam.UI
                     if (InputHelper.IsLeftMousePressed())
                     {
                         isActive = false;
-                        NextDialog();
-                    }
-                    if (InputHelper.IsAnyInputPressed() && InputHelper.IsLeftMouseReleased())
-                    {
-                        isActive = false;
-                        CancelDialog();
+                        CurrentSender.OnNextDialog();
                     }
                 }
             }
 
             if (isActive)
             {
-                float velocity =(originalY - drawRectangle.Y) / 10;
+                float velocity = (originalY - drawRectangle.Y) / 10;
                 drawRectangle.Y += (int)velocity;
                 opacity += deltaOpacity;
             }
@@ -106,7 +111,7 @@ namespace Adam.UI
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {            
+        {
             spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
             spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
         }

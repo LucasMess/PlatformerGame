@@ -145,7 +145,7 @@ namespace Adam
             graphics.PreferredBackBufferHeight = UserResHeight;
 
             //Change Game Settings Here
-            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.SynchronizeWithVerticalRetrace = true;
             graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
 
@@ -300,10 +300,6 @@ namespace Adam
 
             }
 
-            if (InputHelper.IsKeyDown(Keys.P))
-                Dialog.Say("Also, reading on the Jurassic park subreddit, there's a whole lot of nods and references to the first 3 movies");
-            if (InputHelper.IsKeyDown(Keys.O))
-                Dialog.Say("Doges, in a half hour I am being picked up by a taxi to go to my Project Graduation, a celebration of finishing high school that lasts from 8:45 PM to 5:15 AM. Hopefully I won't get kidnapped and harvested for organs.");
             if (InputHelper.IsKeyDown(Keys.I))
             {
                 Objective obj = new Objective();
@@ -611,6 +607,8 @@ namespace Adam
             drawTime = drawWatch.ElapsedMilliseconds;
             drawWatch.Reset();
         }
+
+
 
     }
 }
