@@ -19,6 +19,7 @@ namespace Adam
         //leave center for later
         public Vector2 centerPos;
         private Vector2 lastCenterPos;
+        Vector3 lastVelocity;
         private Viewport viewport;
         public int tileIndex;
 
@@ -45,7 +46,7 @@ namespace Adam
             centerPos = new Vector2(position.X, position.Y);
 
 
-            if (player.isPlayerDead == false)
+            if (player.isDead == false)
             {
                 lastCenterPos = centerPos;
                 translation = Matrix.CreateTranslation(new Vector3(-centerPos.X + ((int)defRes.X / 2), -centerPos.Y + (3 * (int)defRes.Y / 5), 0));
@@ -79,14 +80,18 @@ namespace Adam
             tileIndex = (int)((int)inverted.Y / Game1.Tilesize * map.worldData.mainMap.Width) + (int)((int)inverted.X / Game1.Tilesize);
            // tileIndex = player.playerTileIndex;
 
-            if (player.isPlayerDead == false)
+            if (player.isDead == false)
             {
                 lastCameraLeftCorner = cameraLeftCorner;
+                lastVelocity = velocity;
                 translation = Matrix.CreateTranslation(cameraLeftCorner);
             }
             else
+            {
+                lastCameraLeftCorner.Y += lastVelocity.Y /3;
+                lastCameraLeftCorner = new Vector3((int)lastCameraLeftCorner.X, (int)lastCameraLeftCorner.Y, 0);
                 translation = Matrix.CreateTranslation(lastCameraLeftCorner);
-
+            }
 
         }
 

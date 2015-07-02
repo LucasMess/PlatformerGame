@@ -17,11 +17,11 @@ namespace Adam
 {
     class Menu
     {
-        Vector2 first = new Vector2(550, 200);
-        Vector2 second = new Vector2(550, 240);
-        Vector2 third = new Vector2(550, 280);
-        Vector2 fourth = new Vector2(550, 320);
-        Vector2 fifth = new Vector2(550, 360);
+        Vector2 first = new Vector2(530, 200);
+        Vector2 second = new Vector2(530, 240);
+        Vector2 third = new Vector2(530, 280);
+        Vector2 fourth = new Vector2(530, 320);
+        Vector2 fifth = new Vector2(530, 360);
 
         //Main Menu
         NewButton play;
@@ -229,7 +229,7 @@ namespace Adam
 
         void quit_MouseClicked()
         {
-            game1.GameData.SaveGame();
+           // game1.GameData.SaveGame();
             game1.Exit();
         }
 
@@ -387,8 +387,8 @@ namespace Adam
             spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
             spriteBatch.Draw(apple, appleRect, appleSource, Color.White);
 
-            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), .3f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, 30), Color.White, 0, new Vector2(0, 0), .3f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), .5f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, 30), Color.White, 0, new Vector2(0, 0), .5f, SpriteEffects.None, 0);
 
             switch (CurrentMenuState)
             {

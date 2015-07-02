@@ -169,12 +169,13 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
+    <Compile Include="Particles\NewParticle.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
-    <Compile Include="Effects\ChestSparklesEffect.cs" />
-    <Compile Include="Effects\EnemyDesintegrationEffect.cs" />
-    <Compile Include="Effects\PlayerChronoshiftEffect.cs" />
-    <Compile Include="Effects\SnakeVenomEffect.cs" />
+    <Compile Include="Particles\ChestSparklesEffect.cs" />
+    <Compile Include="Particles\EnemyDesintegrationEffect.cs" />
+    <Compile Include="Particles\PlayerChronoshiftEffect.cs" />
+    <Compile Include="Particles\SnakeVenomEffect.cs" />
     <Compile Include="Characters\Enemies\BloodlessEnemy.cs" />
     <Compile Include="Characters\Enemies\DroneEnemy.cs" />
     <Compile Include="Characters\Enemies\SnakeEnemy.cs" />
@@ -186,7 +187,7 @@
     <Compile Include="Interactables\Chest.cs" />
     <Compile Include="Levels\Cloud.cs" />
     <Compile Include="Interactables\Door.cs" />
-    <Compile Include="Effects\Particle.cs" />
+    <Compile Include="Particles\Particle.cs" />
     <Compile Include="Characters\Enemies\Enemy.cs" />
     <Compile Include="Interactables\Gem.cs" />
     <Compile Include="Glows\Glow.cs" />

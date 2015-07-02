@@ -65,6 +65,14 @@ namespace Adam.Interactables
             //Sets respawn point;
             Player player = GameWorld.Instance.player;
             player.respawnPos = new Vector2(this.drawRectangle.X, this.drawRectangle.Y);
+
+            //Particle effects
+            for (int i = 0; i < 30; i++)
+            {
+                Particle par = new Particle();
+                par.CreateSparkles(this);
+                GameWorld.Instance.particles.Add(par);
+            }
           
         }
 

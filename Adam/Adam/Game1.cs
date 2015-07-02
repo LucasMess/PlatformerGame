@@ -211,7 +211,7 @@ namespace Adam
         {
             CurrentGameState = GameState.SplashScreen;
             loadingScreen = new LoadingScreen(monitorRes, Content);
-            splashDKD = Content.Load<Texture2D>("Backgrounds/Splash/DKD_white_1080");
+            splashDKD = Content.Load<Texture2D>("Backgrounds/Splash/DKD_new");
             quack = Content.Load<SoundEffect>("Backgrounds/Splash/quack");
             blackScreen = Content.Load<Texture2D>("Tiles/black");
 
@@ -300,16 +300,16 @@ namespace Adam
 
             }
 
-            if (InputHelper.IsKeyDown(Keys.I))
-            {
-                Objective obj = new Objective();
-                obj.Create("Test Objective", 0);
-                ObjectiveTracker.AddObjective(obj);
-            }
-            if (InputHelper.IsKeyDown(Keys.U))
-            {
-                ObjectiveTracker.CompleteObjective(0);
-            }
+            //if (InputHelper.IsKeyDown(Keys.I))
+            //{
+            //    Objective obj = new Objective();
+            //    obj.Create("Test Objective", 0);
+            //    ObjectiveTracker.AddObjective(obj);
+            //}
+            //if (InputHelper.IsKeyDown(Keys.U))
+            //{
+            //    ObjectiveTracker.CompleteObjective(0);
+            //}
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)

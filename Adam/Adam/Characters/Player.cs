@@ -75,11 +75,11 @@ namespace Adam
         double movementSoundTimer;
 
         //Booleans
+        public bool isDead;
         public bool isJumping;
         public bool isInvincible;
         public bool isSpaceBarPressed;
         public bool automatic_hasControl = true;
-        public bool isPlayerDead;
         public bool hasFiredWeapon;
         public bool isFacingRight = true;
         public bool isOnVines;
@@ -325,29 +325,11 @@ namespace Adam
             if (sleepTimer > 3 && !isOnVines)
                 CurrentAnimation = AnimationState.Sleeping;
 
-            //Play death animation when player dies.
-            if (isPlayerDead && !deathAnimationDone)
-            {
-                velocity.Y = -10f;
-                velocity.X = 0f;
-                deathAnimationDone = true;
-            }
-
-            //Wait a bit then respawn when the player dies.
-            if (isPlayerDead)
-            {
-                respawnTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (respawnTimer > 3)
-                {
-                    returnToMainMenu = true;
-                }
-            }
-
             //For debugging chronoshift.
-            //if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
-            //{
-            //    Chronoshift(Evolution.Modern);
-            //}
+            if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
+            {
+                Chronoshift(Evolution.Modern);
+            }
 
             previousPosition = position;
 
@@ -848,10 +830,6 @@ namespace Adam
 
         private void CheckDead()
         {
-            //If somewhere it is game over, do not let the player control
-            if (isPlayerDead)
-                automatic_hasControl = false;
-
             //If his health falls below 0, kill him.
             if (health <= 0)
             {
@@ -873,7 +851,7 @@ namespace Adam
             }
 
             //If player stopped taking damage and is back on the ground give him control of his character back
-            if (!isPlayerDead)
+            if (!isDead)
             {
                 controlTimer += gameTime.ElapsedGameTime.TotalSeconds;
                 if (controlTimer > .5)
@@ -1017,9 +995,8 @@ namespace Adam
             deathAnimationDone = false;
             gameOverSoundPlayed = false;
             fallSoundPlayed = false;
-            isPlayerDead = false;
             goreSoundPlayed = false;
-
+            isDead = false;
             manual_hasControl = true;
             isInvisible = false;
             isWaitingForRespawn = false;
@@ -1039,11 +1016,6 @@ namespace Adam
                 gameOverSound.Play();
                 gameOverSoundPlayed = true;
             }
-        }
-
-        public bool IsGameOver
-        {
-            get { return isPlayerDead; }
         }
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
@@ -1194,6 +1166,7 @@ namespace Adam
             TakeDamageAndKnockBack(health);
             manual_hasControl = false;
             isWaitingForRespawn = true;
+            isDead = true;
         }
 
         private int GetTextureNumber(Evolution ev)

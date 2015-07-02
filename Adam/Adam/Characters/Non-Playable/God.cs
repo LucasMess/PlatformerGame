@@ -112,7 +112,7 @@ namespace Adam.Noobs
                         case 3:
                             fx = new SoundFx("Voices/God/conversation1");
                             fx.PlayOnce();
-                            Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get it.", this);
+                            Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get her.", this);
                             break;
                         case 4:
                             fx = new SoundFx("Voices/God/conversation2");

@@ -37,6 +37,10 @@ namespace Adam.Levels
         string sign2 = "";
         string sign3 = "";
         string sign4 = "";
+        string sign5 = "";
+        string sign6 = "";
+        string sign7= "";
+        string sign8 = "";
 
         bool privTrig0;
 
@@ -65,6 +69,9 @@ namespace Adam.Levels
                     sign2 = "Hold space to jump higher. You can also hold SHIFT to run faster.";
                     sign3 = "Yes, this is a floating island. God can do whatever he wants.";
                     sign4 = "Caution: You are exiting God's backyard!";
+                    sign5 = "Take a leap of faith. The worst is over. == Love God <3";
+                    sign6 = "Oh, you lived? Well, we couldn't go around my pet mountain so I made this path for my followers. It might be a little fro... hop... I don't know. Hope you like it.";
+                    sign7 = "The Work of God ahead! Or maybe, just lazy developers. What is the difference? Take this gift. Use the left mouse button to activate it.";
                     break;
                 case Level.Level1and2:
                     break;
@@ -131,6 +138,14 @@ namespace Adam.Levels
                     return sign3;
                 case 4:
                     return sign4;
+                case 5:
+                    return sign5;
+                case 6:
+                    return sign6;
+                case 7:
+                    return sign7;
+                case 8:
+                    return sign8;
             }
             return "ERROR: Text not found.";
         }

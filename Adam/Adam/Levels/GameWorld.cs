@@ -334,6 +334,26 @@ namespace Adam
                     tile.ID = 36;
                     entities.Add(new Sign(Xcoor, Ycoor, 4));
                 }
+                else if (colorCode == new Vector3(213, 172, 35)) //Sign 5
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 5));
+                }
+                else if (colorCode == new Vector3(213, 172, 36)) //Sign 6
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 6));
+                }
+                else if (colorCode == new Vector3(213, 172, 37)) //Sign 7
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 7));
+                }
+                else if (colorCode == new Vector3(213, 172, 38)) //Sign 8
+                {
+                    tile.ID = 36;
+                    entities.Add(new Sign(Xcoor, Ycoor, 8));
+                }
                 else if (colorCode == new Vector3(30, 255, 245)) //CheckPoint
                 {
                     tile.ID = 37;
@@ -678,7 +698,7 @@ namespace Adam
                     if (chest.IsGolden)
                     {
                         entities.Add(new JetpackPowerUp(chest.rectangle.X, chest.rectangle.Y));
-                        entities.Add(new CDPlayer(new Vector2(chest.rectangle.X, chest.rectangle.Y)));
+                        //entities.Add(new CDPlayer(new Vector2(chest.rectangle.X, chest.rectangle.Y)));
                         max = RandGen.Next(6, 10);
                     }
                     else max = RandGen.Next(3, 6);
@@ -833,7 +853,7 @@ namespace Adam
 
         private void UpdateVisibleIndexes()
         {
-            if (player.isPlayerDead == false)
+            if (player.isDead == false)
             {
                 //defines which tiles are in range
                 int initial = camera.tileIndex - 17 * worldData.mainMap.Width - 25;
@@ -917,13 +937,13 @@ namespace Adam
             foreach (Key key in keyList)
             {
                 key.Draw(spriteBatch);
-            }
+            }            
+            for (int i = 0; i < entities.Count; i++)
+                entities[i].Draw(spriteBatch);
             for (int i = 0; i < particles.Count; i++)
             {
                 particles[i].Draw(spriteBatch);
             }
-            for (int i = 0; i < entities.Count; i++)
-                entities[i].Draw(spriteBatch);
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)

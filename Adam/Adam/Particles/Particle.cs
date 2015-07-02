@@ -52,6 +52,7 @@ namespace Adam
             Lava,
             TookDamage,
             DeathSmoke,
+            Sparkles,
         }
         public ParticleType CurrentParticle;
 
@@ -327,6 +328,19 @@ namespace Adam
             color = Color.Red;
         }
 
+        public void CreateSparkles(Entity entity)
+        {
+            CurrentParticle = ParticleType.Sparkles;
+            texture = ContentHelper.LoadTexture("Sparkles");
+            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
+            sourceRectangle = new Rectangle(0, 0, 8, 8);
+            velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
+            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 2;
+            color = Color.White;
+        }
+
         public void Update(GameTime gameTime)
         {
             gameWorld = GameWorld.Instance;
@@ -549,6 +563,19 @@ namespace Adam
                     drawRectangle.Y = (int)position.Y;
 
                     velocity.X = velocity.X * 0.95f;
+                    velocity.Y = velocity.Y * 0.99f;
+
+                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (opacity <= 0)
+                        toDelete = true;
+                    break;
+                case ParticleType.Sparkles:
+                    position += velocity;
+
+                    drawRectangle.X = (int)position.X;
+                    drawRectangle.Y = (int)position.Y;
+
+                    velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
 
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;

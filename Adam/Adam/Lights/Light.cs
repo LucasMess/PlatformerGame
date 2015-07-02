@@ -47,11 +47,12 @@ namespace Adam
         {
             this.Content = Content;
             this.intensity = intensity;
-            texture = Content.Load<Texture2D>("Tiles/red_dim_light");
+            texture = GameWorld.SpriteSheet;
             lightHere = true;
 
-            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, texture.Width * intensity, texture.Height * intensity);
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, 256 * intensity, 256 * intensity);
+            origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
+            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -64,17 +65,20 @@ namespace Adam
             switch (effect.CurrentParticle)
             {
                 case Adam.Particle.ParticleType.WeaponBurst:
-                    texture = Content.Load<Texture2D>("Tiles/red_dim_light");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Red;
                     break;
                 case Adam.Particle.ParticleType.ChestSparkles:
-                    texture = Content.Load<Texture2D>("Tiles/yellow_dim_light");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Yellow;
                     break;
             }
 
             lightHere = true;
 
-            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(texture.Width * intensity), (int)(texture.Height * intensity));
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
+            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -88,25 +92,32 @@ namespace Adam
             switch (type)
             {
                 case Gem.Type.sapphire:
-                    texture = Content.Load<Texture2D>("Tiles/blue_dim_light");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Blue;
                     break;
                 case Gem.Type.emerald:
-                    texture = Content.Load<Texture2D>("Tiles/green_dim_light");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Green;
                     break;
                 case Gem.Type.diamond:
-                    texture = Content.Load<Texture2D>("Tiles/aqua_dim_light");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Cyan;
                     break;
                 case Gem.Type.goldOre:
-                    texture = Content.Load<Texture2D>("Tiles/black");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Yellow;
                     lightHere = false;
                     break;
                 case Gem.Type.copperOre:
-                    texture = Content.Load<Texture2D>("Tiles/black");
+                    texture = GameWorld.SpriteSheet;
+                    color = Color.Brown;
                     lightHere = false;
                     break;
             }
-            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, texture.Width * intensity, texture.Height * intensity);
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, 256 * intensity, 256 * intensity);
+            origin = new Vector2(256* intensity / 2, 256 * intensity / 2);
+            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
         }
@@ -121,6 +132,7 @@ namespace Adam
                 lightHere = true;
                 rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
                 origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
+                sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
                 rectangle.X = rectangle.X - (int)origin.X;
                 rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -136,11 +148,11 @@ namespace Adam
                 {
                     case 11:
                         intensity = 3;
-                        texture = Content.Load<Texture2D>("Tiles/shadow10");
+                        texture = GameWorld.SpriteSheet;
                         shakyLight = true;
-                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
-                        origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
-                        sourceRectangle = new Rectangle(0, 0, 256, 256);
+                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+                        origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
+                        sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
                         rectangle.X = rectangle.X - (int)origin.X;
                         rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -149,10 +161,10 @@ namespace Adam
                         break;
                     case 12:
                         intensity = 4;
-                        texture = Content.Load<Texture2D>("Tiles/bright_light");
-                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
-                        origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 4);
-                        sourceRectangle = new Rectangle(0, 0, 256, 256);
+                        texture = GameWorld.SpriteSheet;
+                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
+                        origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
+                        sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
                         rectangle.X = rectangle.X - (int)origin.X;
                         rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -173,8 +185,8 @@ namespace Adam
         public void Update(Player player)
         {
             lightHere = true;
-            rectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, texture.Width * 3, texture.Height * 3);
-            origin = new Vector2(texture.Width * 3 / 2, texture.Height * 3 / 2);
+            rectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, 256 * 3, 256 * 3);
+            origin = new Vector2(256* 3 / 2, 256* 3 / 2);
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
         }
@@ -182,8 +194,8 @@ namespace Adam
         public void Update(Projectile proj)
         {
             lightHere = true;
-            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
+            origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
 
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -192,8 +204,8 @@ namespace Adam
         public void Update(Adam.Particle effect)
         {
             lightHere = true;
-            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
 
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
@@ -204,8 +216,8 @@ namespace Adam
         public void Update(Gem gem)
         {
             lightHere = true;
-            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(texture.Height * intensity), (int)(texture.Height * intensity));
-            origin = new Vector2(texture.Width * intensity / 2, texture.Height * intensity / 2);
+            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            origin = new Vector2(256* intensity / 2, 256* intensity / 2);
 
             rectangle.X = rectangle.X - (int)origin.X;
             rectangle.Y = rectangle.Y - (int)origin.Y;
