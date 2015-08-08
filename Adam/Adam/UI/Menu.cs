@@ -17,11 +17,11 @@ namespace Adam
 {
     class Menu
     {
-        Vector2 first = new Vector2(530, 200);
-        Vector2 second = new Vector2(530, 240);
-        Vector2 third = new Vector2(530, 280);
-        Vector2 fourth = new Vector2(530, 320);
-        Vector2 fifth = new Vector2(530, 360);
+        Vector2 first;
+        Vector2 second;
+        Vector2 third;
+        Vector2 fourth;
+        Vector2 fifth;
 
         //Main Menu
         NewButton play;
@@ -68,7 +68,16 @@ namespace Adam
         public Menu(Game1 game1)
         {
             this.game1 = game1;
-            
+
+            int width = (int)(530 / Game1.WidthRatio);
+            int height = (int)(200 / Game1.HeightRatio);
+            int diff = (int)(40 / Game1.HeightRatio);
+            first = new Vector2(width, height + (diff * 0));
+            second = new Vector2(width, height + (diff * 1));
+            third = new Vector2(width, height + (diff * 2));
+            fourth = new Vector2(width, height + (diff * 3));
+            fifth = new Vector2(width, height + (diff * 4));
+
             play = new NewButton(first, "Play");
             play.MouseClicked += play_MouseClicked;
             buttons.Add(play);
@@ -229,7 +238,7 @@ namespace Adam
 
         void quit_MouseClicked()
         {
-           // game1.GameData.SaveGame();
+            // game1.GameData.SaveGame();
             game1.Exit();
         }
 
@@ -253,12 +262,14 @@ namespace Adam
             theme = Content.Load<Song>("Music/Anguish");
             font = Content.Load<SpriteFont>("Fonts/button");
 
-            
 
-            int scale = 8;
-            appleRect = new Rectangle(5 * scale, 36 * scale, 16 * scale, 16 * scale);
+
+            double scaleWidth = 8 / Game1.WidthRatio;
+            double scaleHeight = 8 / Game1.HeightRatio;
+
+            appleRect = new Rectangle((int)(5 * scaleWidth), (int)(36 * scaleHeight), (int)(16 * scaleWidth), (int)(16 * scaleHeight));
             appleSource = new Rectangle(0, 0, 16, 16);
-            adamRect = new Rectangle(20 * scale, 16 * scale, (adam.Width / 4) * scale, adam.Height * scale);
+            adamRect = new Rectangle((int)(20 * scaleWidth), (int)(16 * scaleHeight), (int)(adam.Width*.25* scaleWidth), (int)(adam.Height * scaleHeight));
             sourceRect = new Rectangle(0, 0, 24, 36);
 
         }
@@ -382,13 +393,13 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
-            spriteBatch.Draw(foreground, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White);
+            spriteBatch.Draw(foreground, new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White);
             spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
             spriteBatch.Draw(apple, appleRect, appleSource, Color.White);
 
-            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, 5), Color.White, 0, new Vector2(0, 0), .5f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, 30), Color.White, 0, new Vector2(0, 0), .5f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, (float)(5 / Game1.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Game1.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, (float)(30/Game1.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Game1.HeightRatio), SpriteEffects.None, 0);
 
             switch (CurrentMenuState)
             {

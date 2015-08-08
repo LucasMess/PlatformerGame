@@ -27,7 +27,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <PublishUrl>C:\Users\Lucas\Google Drive\Duck Knight Duel\3 - Project Adam\_Development\Builds\</PublishUrl>
+    <PublishUrl>C:\Users\Lucas\Google Drive\Duck Knight Duel\3 - Project Adam\_Development\Builds\Adam 0.5.3\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -37,8 +37,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>19</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <TargetCulture>en</TargetCulture>
+    <ProductName>Adam</ProductName>
+    <PublisherName>Duck Knight Duel</PublisherName>
+    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationVersion>0.5.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>

@@ -51,14 +51,23 @@ namespace Adam
                 return true;
             else return false;
         }
+        public static Rectangle MouseRectangleRenderTarget
+        {
+            get
+            {
+                MouseState mouseState = Mouse.GetState();
+                double widthRatio = Game1.WidthRatio;
+                double heightRatio = Game1.HeightRatio;
+                Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio), (int)(mouseState.Y * heightRatio), 1, 1);
+                return mouseRect;
+            }
+        }
         public static Rectangle MouseRectangle
         {
             get
             {
                 MouseState mouseState = Mouse.GetState();
-                double widthRatio = ((double)Game1.DefaultResWidth / (double)Game1.UserResWidth);
-                double heightRatio = ((double)Game1.DefaultResHeight / (double)Game1.UserResHeight);
-                Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio), (int)(mouseState.Y * heightRatio), 1, 1);
+                Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
                 return mouseRect;
             }
         }

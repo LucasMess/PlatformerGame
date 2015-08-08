@@ -84,13 +84,13 @@ namespace Adam
         /// </summary>
         public const int DefaultResWidth = 960;
         /// <summary>
-        /// The resolution height the game is scale to.
+        /// The resolution height the game is scaled to.
         /// </summary>
         public const int DefaultResHeight = 540;
         /// <summary>
         /// Current version of the game.
         /// </summary>
-        public const string Version = "Version 0.5.3";
+        public const string Version = "Version 0.5.4";
         /// <summary>
         /// Producers of the game.
         /// </summary>
@@ -111,7 +111,14 @@ namespace Adam
         /// Default gravity.
         /// </summary>
         public const float Gravity = .5f;
-
+        /// <summary>
+        /// Ratio between user defined width and default.
+        /// </summary>
+        public static double WidthRatio;
+        /// <summary>
+        /// Ratio between user defined height and default.
+        /// </summary>
+        public static double HeightRatio;
         #endregion
 
         public bool wasPressed, debugOn, debugPressed;
@@ -141,6 +148,9 @@ namespace Adam
             monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             UserResWidth = (int)monitorRes.X;
             UserResHeight = (int)monitorRes.Y;
+            WidthRatio = ((double)Game1.DefaultResWidth / (double)Game1.UserResWidth);
+            HeightRatio = ((double)Game1.DefaultResHeight / (double)Game1.UserResHeight);
+
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
 
@@ -439,9 +449,9 @@ namespace Adam
                     gameSB.End();
                     break;
                 case GameState.MainMenu:
-                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    menu.Draw(backgroundSB);
-                    backgroundSB.End();
+                    //backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    //menu.Draw(backgroundSB);
+                    //backgroundSB.End();
                     break;
                 case GameState.GameWorld:
                     backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
@@ -515,10 +525,9 @@ namespace Adam
                     gameSB.End();
                     break;
                 case GameState.MainMenu:
-                    //Draw the MaxRenderTarget
-                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    backgroundSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
-                    backgroundSB.End();
+                    gameSB.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,SamplerState.PointClamp,DepthStencilState.None,RasterizerState.CullNone);
+                    menu.Draw(gameSB);
+                    gameSB.End();
                     break;
                 case GameState.GameWorld:
                     //Draw the rendertarget

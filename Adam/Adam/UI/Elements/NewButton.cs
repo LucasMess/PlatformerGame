@@ -37,20 +37,7 @@ namespace Adam.UI
         public NewButton(Vector2 position, string text)
         {
             Text = text;
-            collRectangle = new Rectangle((int)position.X, (int)position.Y, 300, 30);
-            Initialize();
-        }
-
-        /// <summary>
-        /// Creates a new default button.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="text"></param>
-        public NewButton(int x, int y, string text)
-        {
-            Text = text;
-            collRectangle = new Rectangle(x, y, 300, 30);
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(300/Game1.WidthRatio), (int)(30/Game1.HeightRatio));
             Initialize();
         }
 
@@ -116,7 +103,7 @@ namespace Adam.UI
         {
             spriteBatch.Draw(texture, collRectangle, color);
             spriteBatch.DrawString(font, Text, new Vector2(collRectangle.Center.X, collRectangle.Center.Y), 
-                Color.White, 0, font.MeasureString(Text) / 2, .5f, SpriteEffects.None, 0);
+                Color.White, 0, font.MeasureString(Text) / 2, (float)(.5/Game1.HeightRatio), SpriteEffects.None, 0);
         }
 
     }
