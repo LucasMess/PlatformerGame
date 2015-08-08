@@ -335,7 +335,7 @@ namespace Adam
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
-            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
+            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-7, 0));
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 2;
             color = Color.White;

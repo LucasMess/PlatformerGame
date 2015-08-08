@@ -67,7 +67,7 @@ namespace Adam.Interactables
             player.respawnPos = new Vector2(this.drawRectangle.X, this.drawRectangle.Y);
 
             //Particle effects
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Particle par = new Particle();
                 par.CreateSparkles(this);
