@@ -309,7 +309,7 @@ namespace Adam
             texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 16), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 16), 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
-            velocity.X =(float)(GameWorld.RandGen.NextDouble()* GameWorld.RandGen.Next(-2, 3));
+            velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-2, 3));
             velocity.Y = -.5f;
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 2;
@@ -341,7 +341,7 @@ namespace Adam
             color = Color.White;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             gameWorld = GameWorld.Instance;
             switch (CurrentParticle)
@@ -477,7 +477,7 @@ namespace Adam
                         }
                         else
                         {
-                           // velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
+                            // velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
                         }
                     }
                     else
@@ -557,7 +557,7 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.TookDamage:
-                     position += velocity;
+                    position += velocity;
 
                     drawRectangle.X = (int)position.X;
                     drawRectangle.Y = (int)position.Y;
@@ -585,7 +585,7 @@ namespace Adam
             }
         }
 
-        public void Animate(GameTime gameTime)
+        public virtual void Animate(GameTime gameTime)
         {
             int switchFrame = 10;
             frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -605,6 +605,24 @@ namespace Adam
             }
 
         }
+
+        protected void DefaultBehavior()
+        {
+            GameTime gameTime = GameWorld.Instance.gameTime;
+            position += velocity;
+
+            drawRectangle.X = (int)position.X;
+            drawRectangle.Y = (int)position.Y;
+
+            velocity.X = velocity.X * 0.99f;
+            velocity.Y = velocity.Y * 0.99f;
+
+            opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (opacity <= 0)
+                toDelete = true;
+        }
+
+
 
         public bool ToDelete()
         {
@@ -631,4 +649,50 @@ namespace Adam
         }
 
     }
+
+    class JumpSmokeParticle : Particle
+    {
+        public JumpSmokeParticle(Entity entity)
+        {
+            texture = ContentHelper.LoadTexture("Effects/smoke");
+            drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
+            sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
+            collRectangle = drawRectangle;
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+
+            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.velocity.X/2, 3 - (int)entity.velocity.X/2);
+            velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
+            opacity = 1f;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+        }
+
+    }
+
+    class StompSmokeParticle : Particle
+    {
+        public StompSmokeParticle(Entity entity)
+        {
+            texture = ContentHelper.LoadTexture("Effects/smoke");
+            drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
+            sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
+            collRectangle = drawRectangle;
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+
+            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 3);
+            velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
+
+            opacity = 1f;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+        }
+
+    }
+
 }

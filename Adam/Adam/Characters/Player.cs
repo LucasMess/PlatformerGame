@@ -105,7 +105,7 @@ namespace Adam
         bool gameOverSoundPlayed;
         bool deathAnimationDone;
         bool hasDeactiveSoundPlayed;
-        bool stompSoundPlayed;
+        bool hasStomped;
         bool fallSoundPlayed;
         bool goreSoundPlayed;
 
@@ -892,7 +892,7 @@ namespace Adam
                             isJumping = false;
                             isFlying = false;
                             PlayMovementSounds();
-                            PlayStompSound();
+                            Stomp();
                             break;
                         case CollisionLocation.Right:
                             position.X = ob.collRectangle.X - collRectangle.Width - 1;
@@ -1090,6 +1090,22 @@ namespace Adam
             }
         }
 
+        private void CreateJumpParticles()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                GameWorld.Instance.particles.Add(new JumpSmokeParticle(this));
+            }
+        }
+
+        private void CreateStompParticles()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
+            }
+        }
+
         public void Jump()
         {
             //Make his velocity increase once
@@ -1106,8 +1122,8 @@ namespace Adam
             sleepTimer = 0;
             //Change the animation
             CurrentAnimation = AnimationState.Jumping;
-
-            stompSoundPlayed = false;
+            CreateJumpParticles();
+            hasStomped = false;
         }
 
         public void Chronoshift(Evolution newEvolution)
@@ -1206,12 +1222,13 @@ namespace Adam
             return singleTextureArray[GetTextureNumber(CurrentEvolution)];
         }
 
-        public void PlayStompSound()
+        public void Stomp()
         {
-            if (!stompSoundPlayed)
+            if (!hasStomped)
             {
                 sounds[2].Play();
-                stompSoundPlayed = true;
+                CreateStompParticles();
+                hasStomped = true;
             }
         }
 
@@ -1265,7 +1282,7 @@ namespace Adam
             velocity.Y = 0f;
             isJumping = false;
             isFlying = false;
-            PlayStompSound();
+            Stomp();
         }
 
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
