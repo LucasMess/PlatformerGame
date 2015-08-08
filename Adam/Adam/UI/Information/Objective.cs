@@ -10,7 +10,7 @@ namespace Adam.UI.Information
 {
     public class Objective
     {
-        SpriteFont font;
+        SpriteFont textFont, headFont;
         Texture2D texture;
         Rectangle drawRectangle;
         float opacity = 0;
@@ -20,6 +20,7 @@ namespace Adam.UI.Information
         int newY;
         int goalX;
         public int ID;
+        double lifespan;
         Color color = Color.Black;
 
         string text = "";
@@ -27,14 +28,15 @@ namespace Adam.UI.Information
         public Objective()
         {
             texture = ContentHelper.LoadTexture("Tiles/white");
-            font = ContentHelper.LoadFont("Fonts/dialog");
+            textFont = ContentHelper.LoadFont("Fonts/objectiveText");
+            headFont = ContentHelper.LoadFont("Fonts/objectiveHead");
             drawRectangle = new Rectangle(Game1.UserResWidth, 0, 300, 125);
             goalX = Game1.UserResWidth - drawRectangle.Width;
         }
 
         public void Create(string text, int ID)
         {
-            this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 10);
+            this.text = FontHelper.WrapText(textFont, text, drawRectangle.Width - 10);
             this.ID = ID;
             isActive = true;
             drawRectangle.Y = (30);
@@ -59,19 +61,29 @@ namespace Adam.UI.Information
             {
                 if (!isComplete)
                 {
-                    color = Color.Black;
+                    color = Color.White;
                     opacity += deltaOpacity;
                     drawRectangle.Y += (newY - drawRectangle.Y) / 10;
                     drawRectangle.X += (goalX - drawRectangle.X) / 10;
                 }
                 else
                 {
-                    int completeX = goalX - 100;
-                    drawRectangle.X += (completeX - drawRectangle.X) / 10;
-                    color = Color.Green;
-                    opacity -= deltaOpacity / 3;
-                    if (opacity <= 0)
-                        isActive = false;
+                    drawRectangle.Width = 400;
+
+                    if (lifespan > 2)
+                    {
+                        int completeX = Game1.UserResWidth + 100;
+                        drawRectangle.X += (completeX - drawRectangle.X) / 10;
+                        if (drawRectangle.X >= Game1.UserResWidth)
+                            isActive = false;
+                    }
+                    else
+                    {
+                        int completeX = goalX - 100;
+                        drawRectangle.X += (completeX - drawRectangle.X) / 10;
+                        color = Color.Green;
+                        lifespan += gameTime.ElapsedGameTime.TotalSeconds;
+                    }
                 }
 
                 if (opacity > .8f)
@@ -83,9 +95,13 @@ namespace Adam.UI.Information
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, color * opacity);
-            spriteBatch.DrawString(font, "Objective:", new Vector2(drawRectangle.X + 5, drawRectangle.Y + 5), Color.Yellow * opacity);
-            spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 30), Color.White * opacity,0,new Vector2(0,0),1,SpriteEffects.None,0);
+            //spriteBatch.Draw(texture, drawRectangle, color * opacity);
+            //spriteBatch.DrawString(font, "Objective:", new Vector2(drawRectangle.X + 5, drawRectangle.Y + 5), Color.Yellow * opacity);
+            string headText = "Objective:";
+            if (isComplete) headText = "Objective Complete!";
+            FontHelper.DrawWithOutline(spriteBatch, headFont, headText, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 5), 2, Color.Yellow, Color.Black);
+            //spriteBatch.DrawString(textFont, text, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 60), Color.Black * opacity, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            FontHelper.DrawWithOutline(spriteBatch, textFont, text, new Vector2(drawRectangle.X + 5, drawRectangle.Y + 60), 2, new Color(240,240,240), Color.Black);
         }
     }
 }
