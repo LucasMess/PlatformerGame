@@ -1,4 +1,5 @@
-﻿using Adam.UI.Information;
+﻿using Adam.Misc;
+using Adam.UI.Information;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,6 +16,7 @@ namespace Adam.Levels
         public Texture2D mainMap;
         public Texture2D wallMap;
         public Song song;
+        private SoundFx ambience;
         public string levelName = "";
         public bool wantClouds;
         double gameTimer;
@@ -39,7 +41,7 @@ namespace Adam.Levels
         string sign4 = "";
         string sign5 = "";
         string sign6 = "";
-        string sign7= "";
+        string sign7 = "";
         string sign8 = "";
 
         bool privTrig0;
@@ -62,7 +64,8 @@ namespace Adam.Levels
                     levelName = "Garden of Eden";
                     mainMap = ContentHelper.LoadTexture("Levels/1-2_main");
                     wallMap = ContentHelper.LoadTexture("Levels/1-2_wall");
-                    song = ContentHelper.LoadSong("Music/Vivacity");
+                    song = ContentHelper.LoadSong("Music/Adventure Awaits (Adam 1)");
+                    ambience = new SoundFx("Ambience/eden");
                     wantClouds = true;
 
                     sign1 = "Press space to jump.";
@@ -104,6 +107,9 @@ namespace Adam.Levels
         public void Update(GameTime gameTime)
         {
             gameTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            ambience?.PlayIfStopped();
+
             switch (GameWorld.Instance.CurrentLevel)
             {
                 case Level.Level1and1:

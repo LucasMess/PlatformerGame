@@ -13,10 +13,12 @@ namespace Adam.UI.Information
         public List<Objective> objectives;
         double timer;
         SoundFx completeSound;
+        SoundFx newObjective;
 
         public ObjectiveTracker()
         {
             completeSound = new SoundFx("Sounds/Menu/quest_complete");
+            newObjective = new SoundFx("Sounds/Menu/quest_new");
             objectives = new List<Objective>();
         }
 
@@ -31,6 +33,8 @@ namespace Adam.UI.Information
 
             if (!found)
             {
+                //Add new objective and play the new objective sound.
+                newObjective.Play();
                 obj.SetPosition(objectives.Count);
                 objectives.Add(obj);
             }

@@ -1,5 +1,6 @@
 ﻿using Adam;
 using Adam.Interactables;
+using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
@@ -56,6 +57,7 @@ namespace Adam
         SoundEffect[] walkSounds, runSounds;
         SoundEffect[] sounds;
         SoundEffect[] goreSounds;
+        SoundFx levelFail;
 
         float blackScreenOpacity;
         float deltaTime;
@@ -258,6 +260,8 @@ namespace Adam
                 ContentHelper.LoadSound(path+"gore2"),
                 ContentHelper.LoadSound(path+"gore3"),
             };
+
+            levelFail = new SoundFx("Sounds/Menu/level_fail");
 
             //Returns textures based on the current evolution. At the beginning they are all the same.
             newSingleTexture = GetSingleTexture();
@@ -1167,6 +1171,7 @@ namespace Adam
             manual_hasControl = false;
             isWaitingForRespawn = true;
             isDead = true;
+            levelFail.PlayIfStopped();
         }
 
         private int GetTextureNumber(Evolution ev)

@@ -158,7 +158,7 @@ namespace Adam
 
             //MediaPlayer Settings
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.4f;
+            MediaPlayer.Volume = 1f;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
 
