@@ -92,7 +92,6 @@ namespace Adam
             //    lastCameraLeftCorner = new Vector3((int)lastCameraLeftCorner.X, (int)lastCameraLeftCorner.Y, 0);
             //    translation = Matrix.CreateTranslation(lastCameraLeftCorner);
             //}
-
         }
 
         public void UpdateWithZoom(Vector2 position)

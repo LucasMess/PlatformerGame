@@ -24,7 +24,9 @@ namespace Adam
         protected int tilesize;
         public bool isVoid;
         public bool sunlightPassesThrough;
+        public string name = "";
         Tile[] array;
+        public Color color = Color.White;
 
         #endregion
 
@@ -46,6 +48,7 @@ namespace Adam
             else
             {
                 sunlightPassesThrough = true;
+                texture = null;
                 return;
             }
 
@@ -55,6 +58,7 @@ namespace Adam
             switch (ID)
             {
                 case 1: //Grass
+                    name = "Dirt";
                     startingPoint = new Vector2(0, 0);
                     switch (subID)
                     {
@@ -129,6 +133,7 @@ namespace Adam
                     }
                     break;
                 case 2: //Stone
+                    name = "Stone";
                     startingPoint = new Vector2(4, 0);
                     switch (subID)
                     {
@@ -195,6 +200,7 @@ namespace Adam
                     }
                     break;
                 case 3: //Marble Floor
+                    name = "Marble Floor";
                     switch (subID)
                     {
                         case 0: //Foundation
@@ -209,6 +215,7 @@ namespace Adam
                     }
                     break;
                 case 4: //Hellrock
+                    name = "Hellrock";
                     startingPoint = new Vector2(4, 5);
                     switch (subID)
                     {
@@ -576,7 +583,7 @@ namespace Adam
         {
             if (!isVoid)
                 if (texture != null)
-                    spritebatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
+                    spritebatch.Draw(texture, drawRectangle, sourceRectangle, color);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)

@@ -692,7 +692,48 @@ namespace Adam
         {
             DefaultBehavior();
         }
+    }
 
+    class ConstructionSmokeParticle : Particle
+    {
+        public ConstructionSmokeParticle(Rectangle rect)
+        {
+            texture = ContentHelper.LoadTexture("Effects/smoke");
+            drawRectangle = new Rectangle(GameWorld.RandGen.Next(rect.X, rect.Right - 16), GameWorld.RandGen.Next(rect.Y, rect.Bottom - 16), 16, 16);
+            sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
+            velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
+            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 2;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+
+            velocity.Y += .3f;
+        }
+    }
+
+    class DestructionTileParticle :Particle
+    {
+        public DestructionTileParticle(Tile tile, Rectangle source)
+        {
+            texture = tile.texture;
+            drawRectangle = new Rectangle(tile.drawRectangle.Center.X, tile.drawRectangle.Center.Y, 8, 8);
+            sourceRectangle = source;
+            velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
+            velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = 2;
+
+        }
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+
+            velocity.Y += .3f;
+        }
     }
 
 }

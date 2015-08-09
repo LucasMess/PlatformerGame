@@ -37,6 +37,20 @@ namespace Adam
                 return true;
             else return false;
         }
+        public static bool IsRightMousePressed()
+        {
+            MouseState mouse = Mouse.GetState();
+            if (mouse.RightButton == ButtonState.Pressed)
+                return true;
+            else return false;
+        }
+        public static bool IsMiddleMousePressed()
+        {
+            MouseState mouse = Mouse.GetState();
+            if (mouse.MiddleButton == ButtonState.Pressed)
+                return true;
+            else return false;
+        }
         public static bool IsLeftMousePressed()
         {
             MouseState mouse = Mouse.GetState();
@@ -69,6 +83,16 @@ namespace Adam
                 MouseState mouseState = Mouse.GetState();
                 Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
                 return mouseRect;
+            }
+        }
+        public static Rectangle MouseRectangleGameWorld
+        {
+            get
+            {
+                Rectangle rect = MouseRectangleRenderTarget;
+                rect.X -= (int)GameWorld.Instance.camera.lastCameraLeftCorner.X;
+                rect.Y -= (int)GameWorld.Instance.camera.lastCameraLeftCorner.Y;
+                return rect;
             }
         }
 

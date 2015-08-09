@@ -236,6 +236,7 @@
     <Compile Include="Interactables\Climbables.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashDamage.cs" />
+    <Compile Include="UI\TileScroll.cs" />
     <Compile Include="UI\Timer.cs" />
     <Compile Include="Misc\TriggerZone.cs" />
     <Compile Include="Interactables\Weapon.cs" />

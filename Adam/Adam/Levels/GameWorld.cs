@@ -145,6 +145,7 @@ namespace Adam
             playerLight.Load(Content);
 
             background.Load(CurrentLevel, this);
+            levelEditor.Load();
 
             if (worldData.song != null)
                 MediaPlayer.Play(worldData.song);
@@ -668,6 +669,10 @@ namespace Adam
 
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
+            this.Content = Game1.Content;
+            this.gameTime = gameTime;
+            this.camera = camera;
+
             if (CurrentLevel == Level.Editor)
             {
                 levelEditor.Update(gameTime, CurrentLevel, camera);
@@ -679,11 +684,7 @@ namespace Adam
 
             TimesUpdated++;
             if (player.hasChronoshifted)
-                return;
-
-            this.Content = Game1.Content;
-            this.gameTime = gameTime;
-            this.camera = camera;
+                return;            
 
             popUp.Update(gameTime, player);
             background.Update(camera);
@@ -997,6 +998,7 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
             placeNotification.Draw(spriteBatch);
+            levelEditor.Draw(spriteBatch);
         }
 
         public void ResetWorld()
