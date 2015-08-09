@@ -147,6 +147,7 @@
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\Sign.cs" />
     <Compile Include="Levels\WorldData.cs" />
+    <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />

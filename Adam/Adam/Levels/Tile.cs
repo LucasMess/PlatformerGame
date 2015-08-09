@@ -23,7 +23,7 @@ namespace Adam
         private int mapWidth;
         protected int tilesize;
         public bool isVoid;
-        public bool emitsLight;
+        public bool sunlightPassesThrough;
         Tile[] array;
 
         #endregion
@@ -45,7 +45,7 @@ namespace Adam
             }
             else
             {
-                emitsLight = true;
+                sunlightPassesThrough = true;
                 return;
             }
 
@@ -343,7 +343,7 @@ namespace Adam
                 case 6: //vacant
                     break;
                 case 7: //ShortGrass
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     isVoid = true;
                     break;
                 case 8: //Metal
@@ -351,7 +351,7 @@ namespace Adam
                     break;
                 case 9://Tall Grass
                     isVoid = true;
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 10: //Gold
                     startingPoint = new Vector2(0, 5);
@@ -421,11 +421,11 @@ namespace Adam
                     break;
                 case 11: //torch
                     isVoid = true;
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 12: //Chandelier
                     isVoid = true;
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 13: //Door
                     isVoid = true;
@@ -525,7 +525,7 @@ namespace Adam
                     position = new Vector2(14, 8);
                     break;
                 case 103://Fences
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     switch (subID)
                     {
                         case 0://Plain

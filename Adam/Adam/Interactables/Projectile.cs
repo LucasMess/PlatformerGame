@@ -19,7 +19,7 @@ namespace Adam
     class Projectile : Entity
     {
         public Rectangle topMidBound, botMidBound;
-        protected PointLight light;
+        protected DynamicPointLight light;
         public int tileHit;
         protected bool IsInactive;
         public ProjectileSource CurrentProjectileSource;

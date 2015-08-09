@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Lights;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -26,6 +27,8 @@ namespace Adam
         {
             this.ID = ID;
             this.drawRectangle = rectangle;
+            if (GameWorld.Instance != null)
+                TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.mainMap.Width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
             this.tilesize = Game1.Tilesize / 2;
         }
 
@@ -39,12 +42,12 @@ namespace Adam
                 case 7: //short grass
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 16);
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 9: //tall Grass
                     frameCount = new Vector2(12, 0);
                     startingPosition = new Vector2(0, 16);
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 8: //Metal
                     frameCount = new Vector2(4, 0);
@@ -55,14 +58,18 @@ namespace Adam
                     startingPosition = new Vector2(12, 0);
                     size.Y = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
-                    emitsLight = true;
+
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 3));
+
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 17);
                     size.X = 2;
                     drawRectangle.Width = Game1.Tilesize * 2;
-                    emitsLight = true;
+
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 6));
+
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
@@ -70,7 +77,7 @@ namespace Adam
                     size.Y = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
                     drawRectangle.Y -= Game1.Tilesize;
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 23: //Water
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Water);
@@ -83,7 +90,7 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
-                    emitsLight = true;
+                    sunlightPassesThrough = true;
                     break;
                 case 25: //Poison
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Poison);
@@ -93,17 +100,18 @@ namespace Adam
                     break;
                 case 31: //Tree
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(16,0);
+                    startingPosition = new Vector2(16, 0);
                     size.X = 6;
                     size.Y = 7;
                     drawRectangle.Height = Game1.Tilesize * 7;
                     drawRectangle.Width = Game1.Tilesize * 6;
-                    drawRectangle.Y -= 16*6;
+                    drawRectangle.Y -= 16 * 6;
                     drawRectangle.X -= 8 * 5;
+                    sunlightPassesThrough = true;
                     break;
                 case 33: //Big Rock
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(14,17);
+                    startingPosition = new Vector2(14, 17);
                     size.X = 2;
                     size.Y = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
@@ -112,7 +120,7 @@ namespace Adam
                     break;
                 case 34: //Small Rock
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(11,18);
+                    startingPosition = new Vector2(11, 18);
                     size.X = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
                     break;
@@ -215,7 +223,7 @@ namespace Adam
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle= startingRectangle;
+                        sourceRectangle = startingRectangle;
                     }
                     break;
                 case 12: //chandelier
@@ -235,7 +243,7 @@ namespace Adam
                     if (currentFrame >= frameCount.X)
                     {
                         currentFrame = 0;
-                        sourceRectangle= startingRectangle;
+                        sourceRectangle = startingRectangle;
                     }
                     break;
                 case 17: //flowers

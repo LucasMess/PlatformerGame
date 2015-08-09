@@ -13,9 +13,10 @@ namespace Adam
     {
         public Rectangle drawRectangle;
         protected Rectangle sourceRectangle;
-        Rectangle original;
+        protected Rectangle original;
         public Texture2D texture;
         public int pos;
+        public int index;
         int tileSize;
         protected bool lightHere;
         bool shakyLight;
@@ -23,9 +24,12 @@ namespace Adam
         protected Color color = Color.White;
         protected ContentManager Content;
         protected Glow glow;
+        protected const int DefaultSize = 256;
+        protected int size = DefaultSize;
         Random randGen;
         public float intensity = 1f;
-        public const int DefaultSize = 256;
+        protected bool isShaky;
+
         protected float opacity = 1f;
 
         public Light()
@@ -54,7 +58,7 @@ namespace Adam
             lightHere = true;
 
             drawRectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, 256 * intensity, 256 * intensity);
-            origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
             drawRectangle.X = drawRectangle.X - (int)origin.X;
@@ -118,7 +122,7 @@ namespace Adam
                     break;
             }
             drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, 256 * intensity, 256 * intensity);
-            origin = new Vector2(256* intensity / 2, 256 * intensity / 2);
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
             drawRectangle.X = drawRectangle.X - (int)origin.X;
@@ -129,7 +133,7 @@ namespace Adam
         {
             int w = map.Width;
 
-            if (tile[pos].emitsLight == true && wall[pos].emitsLight == true)
+            if (tile[pos].sunlightPassesThrough == true && wall[pos].sunlightPassesThrough == true)
             {
                 //sky light
                 lightHere = true;
@@ -141,7 +145,7 @@ namespace Adam
                 drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
             }
 
-            if (tile[pos].emitsLight == true && tile[pos].ID != 0)
+            if (tile[pos].sunlightPassesThrough == true && tile[pos].ID != 0)
             {
                 //light sauce
                 lightHere = true;
@@ -165,7 +169,7 @@ namespace Adam
                     case 12:
                         intensity = 4;
                         texture = GameWorld.SpriteSheet;
-                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
+                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
                         origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
                         sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
@@ -178,6 +182,11 @@ namespace Adam
             }
         }
 
+        public virtual void Update(Entity source)
+        {
+
+        }
+
         public void Update(Vector2 source)
         {
             drawRectangle.X = (int)source.X;
@@ -185,11 +194,27 @@ namespace Adam
             glow.Update(drawRectangle);
         }
 
+        protected void SetPosition(Rectangle parentRectangle)
+        {
+            drawRectangle = new Rectangle(parentRectangle.Center.X, parentRectangle.Center.Y, size, size);
+            origin = new Vector2(size / 2, size / 2);
+
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+
+            original = drawRectangle;
+        }
+
+        public virtual void Update()
+        {
+
+        }
+
         public void Update(Player player)
         {
             lightHere = true;
             drawRectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, 256 * 3, 256 * 3);
-            origin = new Vector2(256* 3 / 2, 256* 3 / 2);
+            origin = new Vector2(256 * 3 / 2, 256 * 3 / 2);
             drawRectangle.X = drawRectangle.X - (int)origin.X;
             drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
@@ -197,8 +222,8 @@ namespace Adam
         public void Update(Projectile proj)
         {
             lightHere = true;
-            drawRectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
-            origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
+            drawRectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
 
             drawRectangle.X = drawRectangle.X - (int)origin.X;
             drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
@@ -220,7 +245,7 @@ namespace Adam
         {
             lightHere = true;
             drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
-            origin = new Vector2(256* intensity / 2, 256* intensity / 2);
+            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
 
             drawRectangle.X = drawRectangle.X - (int)origin.X;
             drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
@@ -228,13 +253,11 @@ namespace Adam
 
         public void Shake()
         {
-            if (shakyLight)
-            {
-                drawRectangle = original;
+            Random randGen = GameWorld.RandGen;
+            drawRectangle = original;
 
-                drawRectangle.X += randGen.Next(-6, 7);
-                drawRectangle.Y += randGen.Next(-6, 7);
-            }
+            drawRectangle.X += randGen.Next(-6, 7);
+            drawRectangle.Y += randGen.Next(-6, 7);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

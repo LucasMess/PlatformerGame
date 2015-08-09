@@ -11,16 +11,14 @@ namespace Adam.Lights
     /// <summary>
     /// Used to create a simple light that shines equally in all directions.
     /// </summary>
-    class PointLight : Light
+    class DynamicPointLight : Light
     {
-        int size = DefaultSize;
-
-        public PointLight(Entity source)
+        public DynamicPointLight(Entity source, Color color)
         {
-            new PointLight(source, null, false, null);
+            new DynamicPointLight(source, null, false, color);
         }
 
-        public PointLight(Entity source, float? scale, bool isShaky, Color? color)
+        public DynamicPointLight(Entity source, float? scale, bool isShaky, Color? color)
         {
             if (scale.HasValue)
                 size = (int)(DefaultSize * scale);
@@ -28,11 +26,44 @@ namespace Adam.Lights
             if (color.HasValue)
                 this.color = color.Value;
 
-            drawRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, size, size);
-            origin = new Vector2(size / 2, size / 2);
+            this.isShaky = isShaky;
 
-            drawRectangle.X = drawRectangle.X - (int)origin.X;
-            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+            SetPosition(source.collRectangle);
+     
+        }
+
+        public override void Update(Entity source)
+        {
+            SetPosition(source.collRectangle);
+
+            if (isShaky) Shake();
+        }
+    }
+
+    class FixedPointLight : Light
+    {
+        public FixedPointLight(Rectangle tileRectangle)
+        {
+            new FixedPointLight(tileRectangle, false, Color.White, null);
+        }
+
+
+        public FixedPointLight(Rectangle tileRectangle, bool isShaky, Color color, float? scale)
+        {
+            this.isShaky = isShaky;
+            this.color = color;
+
+            if (scale.HasValue)
+                size = (int)(DefaultSize * scale);
+
+            SetPosition(tileRectangle);
+
+            lightHere = true;
+        }
+
+        public override void Update()
+        {
+            if (isShaky) Shake();
         }
     }
 }

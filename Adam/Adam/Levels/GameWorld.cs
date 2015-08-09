@@ -68,8 +68,9 @@ namespace Adam
         bool hasUpdated;
         public static Random RandGen;
         public static Texture2D SpriteSheet;
+        public LightEngine lightEngine;
         Game1 game1;
-        Camera camera;
+        public Camera camera;
 
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
@@ -95,7 +96,7 @@ namespace Adam
             placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_11");
-
+            lightEngine = new LightEngine();
             //Thread thread = new Thread(new ThreadStart(UpdateInBackground));
             //thread.Priority = ThreadPriority.Lowest;
             //thread.IsBackground = true;
@@ -107,7 +108,6 @@ namespace Adam
             hasLoaded = false;
 
             worldData = new WorldData(CurrentLevel);
-
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
@@ -135,7 +135,7 @@ namespace Adam
             LoadGrid(tileArray, worldData.mainMap);
             LoadGrid(wallArray, worldData.wallMap);
 
-            lightArray = SunLight.CalculateFromGameWorld();
+            lightEngine.Load();
 
             playerLight = new Light();
             playerLight.Load(Content);
@@ -302,7 +302,7 @@ namespace Adam
                 {
                     tileArray[i] = new AnimatedTile(31, tile.drawRectangle);
                 }
-                else if (colorCode == new Vector3(127,169,186)) //Small Rock
+                else if (colorCode == new Vector3(127, 169, 186)) //Small Rock
                 {
                     tile.ID = 32;
                 }
@@ -362,7 +362,7 @@ namespace Adam
                 }
 
 
-      //CHARACTERS AND OTHERS
+                //CHARACTERS AND OTHERS
                 else if (colorCode == new Vector3(0, 255, 0)) //player
                 {
                     player.Initialize(Xcoor, Ycoor);
@@ -677,6 +677,7 @@ namespace Adam
             background.Update(camera);
             placeNotification.Update(gameTime);
             worldData.Update(gameTime);
+            lightEngine.Update();
             UpdateInBackground();
 
             if (apple != null)
@@ -788,13 +789,13 @@ namespace Adam
 
             playerLight.Update(player);
 
-            foreach (int tileNumber in visibleTileArray)
-            {
-                if (tileNumber >= 0 && tileNumber < lightArray.Length)
-                {
-                    lightArray[tileNumber].Shake();
-                }
-            }
+            //foreach (int tileNumber in visibleTileArray)
+            //{
+            //    if (tileNumber >= 0 && tileNumber < lightArray.Length)
+            //    {
+            //        lightArray[tileNumber].Shake();
+            //    }
+            //}
 
             foreach (Key key in keyList)
             {
@@ -825,31 +826,31 @@ namespace Adam
             //        {
             //            TimesBackgroundUpdated++;
 
-                        for (int i = 0; i < particles.Count; i++)
-                        {
-                            particles[i].Update(gameTime);
-                        }
+            for (int i = 0; i < particles.Count; i++)
+            {
+                particles[i].Update(gameTime);
+            }
 
 
-                        for (int i = entities.Count - 1; i >= 0; i--)
-                        {
-                            Entity entity = entities[i];
-                            if (entity.toDelete)
-                                entities.Remove(entity);
-                        }
+            for (int i = entities.Count - 1; i >= 0; i--)
+            {
+                Entity entity = entities[i];
+                if (entity.toDelete)
+                    entities.Remove(entity);
+            }
 
-                        for (int i = particles.Count - 1; i >= 0; i--)
-                        {
-                            Particle p = particles[i];
-                            if (p.ToDelete())
-                                particles.Remove(p);
-                        }
+            for (int i = particles.Count - 1; i >= 0; i--)
+            {
+                Particle p = particles[i];
+                if (p.ToDelete())
+                    particles.Remove(p);
+            }
 
-                        if (camera != null)
-                            UpdateVisibleIndexes();
+            if (camera != null)
+                UpdateVisibleIndexes();
 
-                
-            
+
+
         }
 
         private void UpdateVisibleIndexes()
@@ -891,20 +892,22 @@ namespace Adam
             //if (wallArray[player.TileIndex].ID != 0)
             //    playerLight.Draw(spriteBatch);
 
-            foreach (int tileNumber in visibleTileArray)
-            {
-                if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity <= 2)
-                {
-                    lightArray[tileNumber].Draw(spriteBatch);
-                }
-            }
-            foreach (int tileNumber in visibleLightArray)
-            {
-                if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity > 2)
-                {
-                    lightArray[tileNumber].Draw(spriteBatch);
-                }
-            }
+            //foreach (int tileNumber in visibleTileArray)
+            //{
+            //    if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity <= 2)
+            //    {
+            //        lightArray[tileNumber].Draw(spriteBatch);
+            //    }
+            //}
+            //foreach (int tileNumber in visibleLightArray)
+            //{
+            //    if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity > 2)
+            //    {
+            //        lightArray[tileNumber].Draw(spriteBatch);
+            //    }
+            //}
+
+            lightEngine.Draw(spriteBatch);
 
             if (player.weapon != null)
                 player.weapon.DrawLights(spriteBatch);
@@ -938,7 +941,7 @@ namespace Adam
             foreach (Key key in keyList)
             {
                 key.Draw(spriteBatch);
-            }            
+            }
             for (int i = 0; i < entities.Count; i++)
                 entities[i].Draw(spriteBatch);
             for (int i = 0; i < particles.Count; i++)
