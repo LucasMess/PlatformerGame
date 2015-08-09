@@ -43,7 +43,7 @@ namespace Adam
         //Basic tile grid and the visible tile grid
         public Tile[] tileArray;
         public Tile[] wallArray;
-        int[] visibleTileArray = new int[30 * 50];
+        public int[] visibleTileArray = new int[30 * 50];
         int[] visibleLightArray = new int[60 * 100];
         Light[] lightArray;
         Light playerLight;
@@ -71,6 +71,7 @@ namespace Adam
         public LightEngine lightEngine;
         Game1 game1;
         public Camera camera;
+        public LevelEditor levelEditor = new LevelEditor();
 
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
@@ -84,7 +85,7 @@ namespace Adam
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
-        public Rectangle editorRectangle;
+
 
         public GameWorld() { }
 
@@ -149,8 +150,6 @@ namespace Adam
                 MediaPlayer.Play(worldData.song);
 
             placeNotification.Show(worldData.levelName);
-            editorRectangle = new Rectangle(worldData.mainMap.Width / 2, worldData.mainMap.Height / 2, 1, 1);
-
             hasLoaded = true;
         }
 
@@ -671,11 +670,11 @@ namespace Adam
         {
             if (CurrentLevel == Level.Editor)
             {
-                UpdateEditor(gameTime, CurrentLevel, camera);
+                levelEditor.Update(gameTime, CurrentLevel, camera);
             }
             else
             {
-                camera.UpdateSmoothly(player.collRectangle, this);
+                camera.UpdateSmoothly(player.collRectangle, worldData.mainMap.Width, worldData.mainMap.Height);
             }
 
             TimesUpdated++;
@@ -868,46 +867,7 @@ namespace Adam
 
         private void UpdateEditor(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
-            camera.UpdateSmoothly(editorRectangle, this);
 
-            if (InputHelper.IsKeyDown(Keys.A))
-            {
-                editorRectangle.X -= 5;
-            }
-            if (InputHelper.IsKeyDown(Keys.D))
-            {
-                editorRectangle.X += 5;
-            }
-            if (InputHelper.IsKeyDown(Keys.W))
-            {
-                editorRectangle.Y -= 5;
-            }
-            if (InputHelper.IsKeyDown(Keys.S))
-            {
-                editorRectangle.Y += 5;
-            }
-
-            if (InputHelper.IsLeftMousePressed())
-            {
-
-            }
-
-            foreach (int index in visibleTileArray)
-            {
-                if (index >= 0 && index < tileArray.Length)
-                {
-                    Tile t = tileArray[index];
-                    if (tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleRenderTarget))
-                    {
-                        t.ID = 1;
-                    }
-
-                    t.DefineTexture();
-                    t.FindConnectedTextures(tileArray, worldData.mainMap.Width);
-                }
-
-
-            }
         }
 
         private void UpdateVisibleIndexes()

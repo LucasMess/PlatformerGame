@@ -171,12 +171,6 @@ namespace Adam
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 1f;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
-
-
-            //Creates ContentManager to be used by other classes
-
-
-
         }
 
 
@@ -594,7 +588,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Frames Per Second:" + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Tile Below Player: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
-                    debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.editorRectangle.X + "," + gameWorld.editorRectangle.Y, new Vector2(0, 60), Color.White);
+                    debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
                     debugSB.DrawString(debugFont, "Times Background Updated: " + gameWorld.TimesBackgroundUpdated, new Vector2(0, 120), Color.White);
