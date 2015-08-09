@@ -11,20 +11,21 @@ namespace Adam
 {
     class Light
     {
-        public Rectangle rectangle;
+        public Rectangle drawRectangle;
         protected Rectangle sourceRectangle;
         Rectangle original;
         public Texture2D texture;
         public int pos;
         int tileSize;
-        bool lightHere;
+        protected bool lightHere;
         bool shakyLight;
         protected Vector2 origin;
-        protected Color color;
+        protected Color color = Color.White;
         protected ContentManager Content;
         protected Glow glow;
         Random randGen;
         public float intensity = 1f;
+        public const int DefaultSize = 256;
         protected float opacity = 1f;
 
         public Light()
@@ -33,6 +34,8 @@ namespace Adam
             this.Content = Game1.Content;
             color = Color.White;
             opacity = 1;
+            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+            texture = GameWorld.SpriteSheet;
         }
 
         public void Load(ContentManager Content)
@@ -50,12 +53,12 @@ namespace Adam
             texture = GameWorld.SpriteSheet;
             lightHere = true;
 
-            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, 256 * intensity, 256 * intensity);
+            drawRectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, 256 * intensity, 256 * intensity);
             origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void EffectLight(float intensity, Adam.Particle effect, ContentManager Content)
@@ -76,12 +79,12 @@ namespace Adam
 
             lightHere = true;
 
-            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            drawRectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
             origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void GemLight(int intensity, Gem gem, ContentManager Content, Gem.Type type)
@@ -114,12 +117,12 @@ namespace Adam
                     lightHere = false;
                     break;
             }
-            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, 256 * intensity, 256 * intensity);
+            drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, 256 * intensity, 256 * intensity);
             origin = new Vector2(256* intensity / 2, 256 * intensity / 2);
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void CalculateLighting(Tile[] tile, Tile[] wall, Texture2D map)
@@ -130,12 +133,12 @@ namespace Adam
             {
                 //sky light
                 lightHere = true;
-                rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+                drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
                 origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
                 sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                rectangle.X = rectangle.X - (int)origin.X;
-                rectangle.Y = rectangle.Y - (int)origin.Y;
+                drawRectangle.X = drawRectangle.X - (int)origin.X;
+                drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
             }
 
             if (tile[pos].emitsLight == true && tile[pos].ID != 0)
@@ -150,26 +153,26 @@ namespace Adam
                         intensity = 3;
                         texture = GameWorld.SpriteSheet;
                         shakyLight = true;
-                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
                         origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
                         sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                        rectangle.X = rectangle.X - (int)origin.X;
-                        rectangle.Y = rectangle.Y - (int)origin.Y;
+                        drawRectangle.X = drawRectangle.X - (int)origin.X;
+                        drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
 
-                        original = rectangle;
+                        original = drawRectangle;
                         break;
                     case 12:
                         intensity = 4;
                         texture = GameWorld.SpriteSheet;
-                        rectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
+                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
                         origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
                         sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                        rectangle.X = rectangle.X - (int)origin.X;
-                        rectangle.Y = rectangle.Y - (int)origin.Y;
+                        drawRectangle.X = drawRectangle.X - (int)origin.X;
+                        drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
 
-                        original = rectangle;
+                        original = drawRectangle;
                         break;
                 }
             }
@@ -177,38 +180,38 @@ namespace Adam
 
         public void Update(Vector2 source)
         {
-            rectangle.X = (int)source.X;
-            rectangle.Y = (int)source.Y;
-            glow.Update(rectangle);
+            drawRectangle.X = (int)source.X;
+            drawRectangle.Y = (int)source.Y;
+            glow.Update(drawRectangle);
         }
 
         public void Update(Player player)
         {
             lightHere = true;
-            rectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, 256 * 3, 256 * 3);
+            drawRectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, 256 * 3, 256 * 3);
             origin = new Vector2(256* 3 / 2, 256* 3 / 2);
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void Update(Projectile proj)
         {
             lightHere = true;
-            rectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
+            drawRectangle = new Rectangle(proj.collRectangle.Center.X, proj.collRectangle.Center.Y, (int)(256* intensity), (int)(256 * intensity));
             origin = new Vector2(256 * intensity / 2,256 * intensity / 2);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void Update(Adam.Particle effect)
         {
             lightHere = true;
-            rectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            drawRectangle = new Rectangle(effect.drawRectangle.Center.X, effect.drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
             origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
 
             opacity = effect.Opacity;
         }
@@ -216,29 +219,28 @@ namespace Adam
         public void Update(Gem gem)
         {
             lightHere = true;
-            rectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
+            drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
             origin = new Vector2(256* intensity / 2, 256* intensity / 2);
 
-            rectangle.X = rectangle.X - (int)origin.X;
-            rectangle.Y = rectangle.Y - (int)origin.Y;
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void Shake()
         {
             if (shakyLight)
             {
-                rectangle = original;
+                drawRectangle = original;
 
-                rectangle.X += randGen.Next(-6, 7);
-                rectangle.Y += randGen.Next(-6, 7);
+                drawRectangle.X += randGen.Next(-6, 7);
+                drawRectangle.Y += randGen.Next(-6, 7);
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
             if (lightHere)
-                spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White * opacity);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)

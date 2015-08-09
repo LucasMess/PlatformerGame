@@ -22,6 +22,7 @@ using Adam.Levels;
 using Adam.Characters.Non_Playable;
 using Adam.Noobs;
 using System.ComponentModel;
+using Adam.Lights;
 
 namespace Adam
 {
@@ -134,7 +135,7 @@ namespace Adam
             LoadGrid(tileArray, worldData.mainMap);
             LoadGrid(wallArray, worldData.wallMap);
 
-            LoadLights();
+            lightArray = SunLight.CalculateFromGameWorld();
 
             playerLight = new Light();
             playerLight.Load(Content);

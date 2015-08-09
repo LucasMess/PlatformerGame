@@ -101,9 +101,9 @@ namespace Adam
                 case WeaponType.LaserGun:
                     texture = Content.Load<Texture2D>("Projectiles/laser");
 
-                    light = new PointLight();
-                    light.Create(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
-                    light.SetColor(Color.Red);
+                    //light = new PointLight();
+                    //light.Create(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
+                    //light.SetColor(Color.Red);
 
                     MouseState mouse = Mouse.GetState();
                     Vector2 center = new Vector2((Game1.UserResWidth / 2) + (player.collRectangle.Width / 2),

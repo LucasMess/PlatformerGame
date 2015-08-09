@@ -8,40 +8,31 @@ using System.Text;
 
 namespace Adam.Lights
 {
+    /// <summary>
+    /// Used to create a simple light that shines equally in all directions.
+    /// </summary>
     class PointLight : Light
     {
-        public void Create(Vector2 source)
+        int size = DefaultSize;
+
+        public PointLight(Entity source)
         {
-            texture = Content.Load<Texture2D>("Lighting/shadow10");
-            rectangle = new Rectangle((int)source.X, (int)source.Y, texture.Width, texture.Height);
-            this.origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            sourceRectangle = new Rectangle(0, 0, rectangle.Width, rectangle.Height);
-            glow = new Glow(this);
+            new PointLight(source, null, false, null);
         }
 
-        public void SetColor(Color color)
+        public PointLight(Entity source, float? scale, bool isShaky, Color? color)
         {
-            glow.Color = color;
+            if (scale.HasValue)
+                size = (int)(DefaultSize * scale);
+
+            if (color.HasValue)
+                this.color = color.Value;
+
+            drawRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, size, size);
+            origin = new Vector2(size / 2, size / 2);
+
+            drawRectangle.X = drawRectangle.X - (int)origin.X;
+            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
-
-        public void SetSize(Vector2 size)
-        {
-            rectangle.Width = (int)size.X;
-            rectangle.Height = (int)size.Y;
-        }
-
-        public void SetOpacity(float opacity)
-        {
-            glow.Opacity = opacity;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, rectangle, sourceRectangle, Color.White, 0, origin, SpriteEffects.None, 0);
-        }
-
-
-
-
     }
 }
