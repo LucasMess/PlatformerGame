@@ -28,6 +28,7 @@ namespace Adam
         Tile[] array;
         public Color color = Color.White;
 
+
         #endregion
 
         public Tile()

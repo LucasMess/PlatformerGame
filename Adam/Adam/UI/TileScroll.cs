@@ -11,11 +11,13 @@ namespace Adam.UI
 {
     class TileScroll
     {
+        Image blackSelectionBox;
         int maxHeight = Game1.UserResHeight;
         byte[] availableIDs;
         List<Tile> tiles = new List<Tile>();
         List<TileName> names = new List<TileName>();
         SpriteFont font;
+        float velocity;
         int lastScrollWheel;
 
         public delegate void TileSelectedHandler(TileSelectedArgs e);
@@ -25,6 +27,9 @@ namespace Adam.UI
         public TileScroll()
         {
             font = ContentHelper.LoadFont("Fonts/objectiveText");
+
+            blackSelectionBox.Texture = ContentHelper.LoadTexture("Level Editor/ui_selectionBlackFade");
+            blackSelectionBox.Rectangle = new Rectangle(0, 0, (int)(120 / Game1.WidthRatio), (int)(Game1.DefaultResHeight / Game1.HeightRatio));
         }
 
         public void Load()
@@ -69,31 +74,24 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (scrollWheel < lastScrollWheel)
-            {
-                foreach (Tile t in tiles)
-                    t.drawRectangle.Y += 50;
+            if (lastScrollWheel != scrollWheel)
+                velocity = (scrollWheel - lastScrollWheel) / 5;
 
-                foreach (TileName t in names)
-                {
-                    t.Position.Y += 50;
-                }
-            }
-            if (scrollWheel > lastScrollWheel)
-            {
-                foreach (Tile t in tiles)
-                    t.drawRectangle.Y -= 50;
-
-                foreach (TileName t in names)
-                {
-                    t.Position.Y -= 50;
-                }
-            }
             lastScrollWheel = scrollWheel;
+
+            for (int i =0; i < tiles.Count; i++)
+            {
+                tiles[i].drawRectangle.Y += (int)velocity;
+                names[i].Position.Y = tiles[i].drawRectangle.Center.Y - font.LineSpacing / 2;
+            }
+
+            velocity = velocity * .92f;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(blackSelectionBox.Texture, blackSelectionBox.Rectangle, Color.White);
+
             foreach (Tile t in tiles)
                 t.Draw(spriteBatch);
 

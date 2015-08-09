@@ -95,6 +95,9 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (GameWorld.Instance.CurrentLevel == Level.Editor)
+                goto Fade;
+
             spriteBatch.Draw(blackCorners.Texture, blackCorners.Rectangle, Color.White * .6f);
 
             heart.Draw(spriteBatch);
@@ -105,6 +108,7 @@ namespace Adam
                 spl.Draw(spriteBatch);
             }
 
+        Fade:
             if (fadeIn || fadeOut)
             spriteBatch.Draw(blackScreen.Texture, blackScreen.Rectangle, Color.White * blackOpacity);
         }

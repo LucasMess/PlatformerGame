@@ -675,7 +675,7 @@ namespace Adam
 
             if (CurrentLevel == Level.Editor)
             {
-                levelEditor.Update(gameTime, CurrentLevel, camera);
+                levelEditor.Update(gameTime, CurrentLevel);
             }
             else
             {
