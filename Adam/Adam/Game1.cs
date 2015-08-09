@@ -40,6 +40,7 @@ namespace Adam
         Level3and1,
         Level4and1,
         Level8and1,
+        Editor,
     }
 
     public class Game1 : Microsoft.Xna.Framework.Game
@@ -373,8 +374,7 @@ namespace Adam
                     //if (gameWorld.SimulationPaused)
                     //    break;
 
-                    gameWorld.Update(gameTime, CurrentLevel, camera);
-                    camera.UpdateSmoothly(player, gameWorld);
+                    gameWorld.Update(gameTime, CurrentLevel, camera);                    
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
 
@@ -593,8 +593,8 @@ namespace Adam
                     debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 280), Color.White * .3f);
                     debugSB.DrawString(debugFont, "Frames Per Second:" + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Tile Below Player: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
-                    debugSB.DrawString(debugFont, "Player Position:" + player.position.X + "," + player.position.Y, new Vector2(0, 40), Color.White);
-                    debugSB.DrawString(debugFont, "Player Rectangle Position:" + player.collRectangle.X + "," + player.collRectangle.Y, new Vector2(0, 60), Color.White);
+                    debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
+                    debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.editorRectangle.X + "," + gameWorld.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
                     debugSB.DrawString(debugFont, "Times Background Updated: " + gameWorld.TimesBackgroundUpdated, new Vector2(0, 120), Color.White);

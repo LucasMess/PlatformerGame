@@ -202,7 +202,7 @@ namespace Adam
 
             //Use this array to get each evolution texture.
             path = "Characters/adam_";
-            textureArray = new Texture2D[] 
+            textureArray = new Texture2D[]
             {
                 ContentHelper.LoadTexture(path+"eden_new"),
                 ContentHelper.LoadTexture(path+"prehistoric_s5"),
@@ -248,7 +248,7 @@ namespace Adam
             //Eventually all sounds will be in one array.
             sounds = new SoundEffect[]
             {
-                ContentHelper.LoadSound("Sounds/Chronoshift/startSound"),                
+                ContentHelper.LoadSound("Sounds/Chronoshift/startSound"),
                 ContentHelper.LoadSound("Sounds/Chronoshift/stopSound"),
                 ContentHelper.LoadSound("Sounds/Movement/walk2"),
             };
@@ -280,6 +280,12 @@ namespace Adam
         /// 
         public void Update(GameTime gameTime)
         {
+            if (GameWorld.Instance.CurrentLevel == Level.Editor)
+            {
+                ContainInGameWorld();
+                return;
+
+            }
             if (health < 0)
                 health = 0;
 
@@ -337,9 +343,9 @@ namespace Adam
 
             previousPosition = position;
 
-            //If player is chronoshifting the update method skips to here.
+        //If player is chronoshifting the update method skips to here.
 
-            UpdateChrono:
+        UpdateChrono:
             if (hasChronoshifted)
             {
                 if (!hasDeactiveSoundPlayed)
@@ -521,21 +527,8 @@ namespace Adam
         /// </summary>
         private void UpdatePlayerPosition()
         {
-            if (position.X < 0)
-                position.X = 0;
-            if (position.X > (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width))
-                position.X = (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width);
-            if (position.Y < 0)
-                position.Y = 0;
-            if (position.Y > (int)(gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Width) + 100)
-            {
-                KillAndRespawn();
-                if (!fallSoundPlayed)
-                {
-                    fallSound.Play();
-                    fallSoundPlayed = true;
-                }
-            }
+            ContainInGameWorld();
+
             //Update the main collision rectangle;
             position += velocity * (float)(gameTime.ElapsedGameTime.TotalSeconds) * 60f;
 
@@ -554,6 +547,30 @@ namespace Adam
             attackBox = new Rectangle(collRectangle.X - 8, collRectangle.Y + collRectangle.Height - 10, collRectangle.Width + 16, 20);
         }
 
+        private void ContainInGameWorld()
+        {
+            GameWorld gameWorld = GameWorld.Instance;
+            if (position.X < 0)
+                position.X = 0;
+            if (position.X > (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width))
+                position.X = (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width);
+            if (position.Y < 0)
+                position.Y = 0;
+            if (position.Y > (int)(gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Width) + 100)
+            {
+                if (gameWorld.CurrentLevel == Level.Editor)
+                    position.Y = gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Height;
+                else
+                {
+                    KillAndRespawn();
+                    if (!fallSoundPlayed)
+                    {
+                        fallSound.Play();
+                        fallSoundPlayed = true;
+                    }
+                }
+            }
+        }
         //This changes the abilities that Adam has available depending on his evolution
         private void SetEvolutionAttributes()
         {
@@ -821,7 +838,7 @@ namespace Adam
                     }
 
                     break;
-                #endregion
+                    #endregion
             }
 
 
@@ -915,6 +932,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (GameWorld.Instance.CurrentLevel == Level.Editor) return;
             //DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);
@@ -928,9 +946,9 @@ namespace Adam
             else spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
-        //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
 
-        DrawOtherThings:
+            DrawOtherThings:
             if (weapon != null)
                 weapon.Draw(spriteBatch);
         }
@@ -987,7 +1005,7 @@ namespace Adam
 
             Overlay.Instance.FadeIn();
 
-           // tadaSound.Play();
+            // tadaSound.Play();
 
             health = maxHealth;
             //reset player velocity

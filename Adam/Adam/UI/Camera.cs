@@ -55,9 +55,9 @@ namespace Adam
                 translation = Matrix.CreateTranslation(new Vector3(-lastCenterPos.X + ((int)defRes.X / 2), -lastCenterPos.Y + (3 * (int)defRes.Y / 5), 0));
         }
 
-        public void UpdateSmoothly(Player player, GameWorld map)
+        public void UpdateSmoothly(Rectangle rectangle, GameWorld map)
         {
-            Vector2 playerPos = new Vector2(player.position.X + player.collRectangle.Width / 2, player.position.Y + player.collRectangle.Height / 2);
+            Vector2 playerPos = new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
             Vector3 currentLeftCorner = new Vector3(-playerPos.X + defRes.X / 2, -playerPos.Y + (3 * defRes.Y / 5), 0);
 
             if (currentLeftCorner.X > 0)
@@ -80,18 +80,18 @@ namespace Adam
             tileIndex = (int)((int)inverted.Y / Game1.Tilesize * map.worldData.mainMap.Width) + (int)((int)inverted.X / Game1.Tilesize);
            // tileIndex = player.playerTileIndex;
 
-            if (player.isDead == false)
-            {
-                lastCameraLeftCorner = cameraLeftCorner;
+            //if (player.isDead == false)
+            //{
+               lastCameraLeftCorner = cameraLeftCorner;
                 lastVelocity = velocity;
                 translation = Matrix.CreateTranslation(cameraLeftCorner);
-            }
-            else
-            {
-                lastCameraLeftCorner.Y += lastVelocity.Y /3;
-                lastCameraLeftCorner = new Vector3((int)lastCameraLeftCorner.X, (int)lastCameraLeftCorner.Y, 0);
-                translation = Matrix.CreateTranslation(lastCameraLeftCorner);
-            }
+            //}
+            //else
+            //{
+            //    lastCameraLeftCorner.Y += lastVelocity.Y /3;
+            //    lastCameraLeftCorner = new Vector3((int)lastCameraLeftCorner.X, (int)lastCameraLeftCorner.Y, 0);
+            //    translation = Matrix.CreateTranslation(lastCameraLeftCorner);
+            //}
 
         }
 

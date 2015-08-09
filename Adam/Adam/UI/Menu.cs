@@ -28,6 +28,7 @@ namespace Adam
         NewButton options;
         NewButton quit;
         NewButton multiplayer;
+        NewButton levelEditor;
 
         //Level Selector
         NewButton save1;
@@ -94,6 +95,10 @@ namespace Adam
             multiplayer.MouseClicked += multiplayer_MouseClicked;
             buttons.Add(multiplayer);
 
+            levelEditor = new NewButton(fifth, "Level Editor");
+            levelEditor.MouseClicked += LevelEditor_MouseClicked;
+            buttons.Add(levelEditor);
+
             smoothPixels = new NewButton(first, "Smooth Pixels: ");
             smoothPixels.MouseClicked += smoothPixels_MouseClicked;
             buttons.Add(smoothPixels);
@@ -130,6 +135,11 @@ namespace Adam
             joinGame = new NewButton(second, "Join Game");
             joinGame.MouseClicked += joinGame_MouseClicked;
             buttons.Add(joinGame);
+        }
+
+        private void LevelEditor_MouseClicked()
+        {
+            game1.ChangeState(GameState.GameWorld, Level.Editor);
         }
 
         void joinGame_MouseClicked()
@@ -305,6 +315,7 @@ namespace Adam
                     quit.Update();
                     options.Update();
                     multiplayer.Update();
+                    levelEditor.Update();
                     break;
                 case MenuState.LevelSelector:
                     save1.Text = "Save 1: " + game1.GameData.saves[0].Completeness;
@@ -408,6 +419,7 @@ namespace Adam
                     quit.Draw(spriteBatch);
                     options.Draw(spriteBatch);
                     multiplayer.Draw(spriteBatch);
+                    levelEditor.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
                     save1.Draw(spriteBatch);

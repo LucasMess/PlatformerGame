@@ -16,6 +16,7 @@ namespace Adam
 
         public void Load(Level CurrentLevel, GameWorld gameWorld)
         {
+
             switch (CurrentLevel)
             {
                 case Level.Level1and1:
@@ -69,6 +70,19 @@ namespace Adam
                     }
 
                     background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
+                    break;
+                default:
+                    for (int i = 0; i < middlegrounds.Length; i++)
+                    {
+                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
+                    }
+
+                    for (int i = 0; i < foregrounds.Length; i++)
+                    {
+                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
+                    }
+
+                    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
                     break;
 
             }

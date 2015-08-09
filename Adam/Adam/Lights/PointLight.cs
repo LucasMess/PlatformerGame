@@ -9,7 +9,7 @@ using System.Text;
 namespace Adam.Lights
 {
     /// <summary>
-    /// Used to create a simple light that shines equally in all directions.
+    /// Used to create a simple light that shines equally in all directions and follows an entity.
     /// </summary>
     class DynamicPointLight : Light
     {
@@ -40,6 +40,9 @@ namespace Adam.Lights
         }
     }
 
+    /// <summary>
+    /// Used to create a simple light that shines equally in all directions and stays fixed.
+    /// </summary>
     class FixedPointLight : Light
     {
         public FixedPointLight(Rectangle tileRectangle)

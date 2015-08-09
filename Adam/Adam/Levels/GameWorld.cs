@@ -84,6 +84,7 @@ namespace Adam
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
+        public Rectangle editorRectangle;
 
         public GameWorld() { }
 
@@ -124,6 +125,8 @@ namespace Adam
             MediaPlayer.Volume = .2f;
 
             int maxClouds = worldData.mainMap.Width / 100;
+
+
             for (int i = 0; i < maxClouds; i++)
             {
                 cloudList.Add(new Cloud(Content, monitorResolution, maxClouds, i));
@@ -146,6 +149,7 @@ namespace Adam
                 MediaPlayer.Play(worldData.song);
 
             placeNotification.Show(worldData.levelName);
+            editorRectangle = new Rectangle(worldData.mainMap.Width / 2, worldData.mainMap.Height / 2, 1, 1);
 
             hasLoaded = true;
         }
@@ -665,6 +669,15 @@ namespace Adam
 
         public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
         {
+            if (CurrentLevel == Level.Editor)
+            {
+                UpdateEditor(gameTime, CurrentLevel, camera);
+            }
+            else
+            {
+                camera.UpdateSmoothly(player.collRectangle, this);
+            }
+
             TimesUpdated++;
             if (player.hasChronoshifted)
                 return;
@@ -851,6 +864,50 @@ namespace Adam
 
 
 
+        }
+
+        private void UpdateEditor(GameTime gameTime, Level CurrentLevel, Camera camera)
+        {
+            camera.UpdateSmoothly(editorRectangle, this);
+
+            if (InputHelper.IsKeyDown(Keys.A))
+            {
+                editorRectangle.X -= 5;
+            }
+            if (InputHelper.IsKeyDown(Keys.D))
+            {
+                editorRectangle.X += 5;
+            }
+            if (InputHelper.IsKeyDown(Keys.W))
+            {
+                editorRectangle.Y -= 5;
+            }
+            if (InputHelper.IsKeyDown(Keys.S))
+            {
+                editorRectangle.Y += 5;
+            }
+
+            if (InputHelper.IsLeftMousePressed())
+            {
+
+            }
+
+            foreach (int index in visibleTileArray)
+            {
+                if (index >= 0 && index < tileArray.Length)
+                {
+                    Tile t = tileArray[index];
+                    if (tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleRenderTarget))
+                    {
+                        t.ID = 1;
+                    }
+
+                    t.DefineTexture();
+                    t.FindConnectedTextures(tileArray, worldData.mainMap.Width);
+                }
+
+
+            }
         }
 
         private void UpdateVisibleIndexes()

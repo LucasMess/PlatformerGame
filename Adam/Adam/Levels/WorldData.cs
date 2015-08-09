@@ -49,12 +49,13 @@ namespace Adam.Levels
 
         public WorldData(Level CurrentLevel)
         {
-            //Default
             levelName = "Garden of Eden";
             mainMap = ContentHelper.LoadTexture("Levels/1-2_main");
             wallMap = ContentHelper.LoadTexture("Levels/1-2_wall");
-            song = ContentHelper.LoadSong("Music/Vivacity");
+            song = ContentHelper.LoadSong("Music/Adventure Awaits (Adam 1)");
+            ambience = new SoundFx("Ambience/eden");
             wantClouds = true;
+
 
             switch (CurrentLevel)
             {
@@ -98,7 +99,12 @@ namespace Adam.Levels
                     song = ContentHelper.LoadSong("Music/Heart of Nowhere");
                     wantClouds = true;
                     break;
-                default:
+                case Level.Editor:
+                    levelName = "Level Editor";
+                    mainMap = ContentHelper.LoadTexture("Levels/200x200");
+                    wallMap = ContentHelper.LoadTexture("Levels/200x200");
+                    //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
+                    wantClouds = true;
                     break;
             }
 
@@ -126,7 +132,7 @@ namespace Adam.Levels
                             obj.Create("Press 'A' and 'D' to move.", 0);
                             Game1.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
-                        }                        
+                        }
                     }
                     break;
             }
