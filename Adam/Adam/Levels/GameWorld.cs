@@ -59,14 +59,10 @@ namespace Adam
         int gemTilePos;
 
         public int TimesUpdated;
-        public int TimesBackgroundUpdated;
 
         public bool SimulationPaused;
         public bool isOnDebug;
         public bool levelComplete;
-        bool hasLoaded;
-        double timeStepTimer;
-        bool hasUpdated;
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         public LightEngine lightEngine;
@@ -98,18 +94,12 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_11");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_12");
             lightEngine = new LightEngine();
-            //Thread thread = new Thread(new ThreadStart(UpdateInBackground));
-            //thread.Priority = ThreadPriority.Lowest;
-            //thread.IsBackground = true;
-            //thread.Start();
         }
 
         public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
         {
-            hasLoaded = false;
-
             worldData = new WorldData(CurrentLevel);
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
@@ -152,7 +142,6 @@ namespace Adam
                 MediaPlayer.Play(worldData.song);
 
             placeNotification.Show(worldData.levelName);
-            hasLoaded = true;
         }
 
         private void LoadGrid(Tile[] array, Texture2D data)
@@ -364,6 +353,14 @@ namespace Adam
                 {
                     tile.ID = 37;
                     entities.Add(new CheckPoint(Xcoor, Ycoor));
+                }
+                else if (colorCode == new Vector3(141, 157, 181)) //Stone Bricks
+                {
+                    tile.ID = 38;
+                }
+                else if (colorCode == new Vector3(47, 205, 244)) //Snow
+                {
+                    tile.ID = 39;
                 }
 
 

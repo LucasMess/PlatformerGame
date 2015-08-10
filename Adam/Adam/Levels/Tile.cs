@@ -599,6 +599,140 @@ namespace Adam
                 case 37: //Checkpoint
                     isVoid = true;
                     break;
+                case 38: //Stone Brick
+                    isSolid = true;
+                    startingPoint = new Vector2(0, 10);
+                    switch (subID)
+                    {
+                        case 0: //Dirt
+                            position = startingPoint + new Vector2(0, 0);
+                            break;
+                        case 1: //Inner bot right corner
+                            position = startingPoint + new Vector2(1, 0);
+                            break;
+                        case 2: //Inner bot left corner
+                            position = startingPoint + new Vector2(2, 0);
+                            break;
+                        case 3: //Inner top left corner
+                            position = startingPoint + new Vector2(3, 0);
+                            break;
+                        case 4: //Top left corner
+                            position = startingPoint + new Vector2(0, 1);
+                            break;
+                        case 5: //Top
+                            position = startingPoint + new Vector2(1, 1);
+                            break;
+                        case 6: //Top right corner
+                            position = startingPoint + new Vector2(2, 1);
+                            break;
+                        case 7: //Inner top right corner
+                            position = startingPoint + new Vector2(3, 1);
+                            break;
+                        case 8: //Left
+                            position = startingPoint + new Vector2(0, 2);
+                            break;
+                        case 9: //Middle
+                            position = startingPoint + new Vector2(1, 2);
+                            break;
+                        case 10: //Right
+                            position = startingPoint + new Vector2(2, 2);
+                            break;
+                        case 11: //Top vertical
+                            position = startingPoint + new Vector2(3, 2);
+                            break;
+                        case 12: //Bot left corner
+                            position = startingPoint + new Vector2(0, 3);
+                            break;
+                        case 13: //Bot
+                            position = startingPoint + new Vector2(1, 3);
+                            break;
+                        case 14: //Bot right corner
+                            position = startingPoint + new Vector2(2, 3);
+                            break;
+                        case 15: //Middle vertical
+                            position = startingPoint + new Vector2(3, 3);
+                            break;
+                        case 16: //Left horizontal
+                            position = startingPoint + new Vector2(0, 4);
+                            break;
+                        case 17: //Middle horizontal
+                            position = startingPoint + new Vector2(1, 4);
+                            break;
+                        case 18: //Right horizontal
+                            position = startingPoint + new Vector2(2, 4);
+                            break;
+                        case 19: //Bot vertical
+                            position = startingPoint + new Vector2(3, 4);
+                            break;
+                    }
+                    break;
+                case 39: //Snow
+                    isSolid = true;
+                    startingPoint = new Vector2(4, 10);
+                    switch (subID)
+                    {
+                        case 0: //Dirt
+                            position = startingPoint + new Vector2(0, 0);
+                            break;
+                        case 1: //Inner bot right corner
+                            position = startingPoint + new Vector2(1, 0);
+                            break;
+                        case 2: //Inner bot left corner
+                            position = startingPoint + new Vector2(2, 0);
+                            break;
+                        case 3: //Inner top left corner
+                            position = startingPoint + new Vector2(3, 0);
+                            break;
+                        case 4: //Top left corner
+                            position = startingPoint + new Vector2(0, 1);
+                            break;
+                        case 5: //Top
+                            position = startingPoint + new Vector2(1, 1);
+                            break;
+                        case 6: //Top right corner
+                            position = startingPoint + new Vector2(2, 1);
+                            break;
+                        case 7: //Inner top right corner
+                            position = startingPoint + new Vector2(3, 1);
+                            break;
+                        case 8: //Left
+                            position = startingPoint + new Vector2(0, 2);
+                            break;
+                        case 9: //Middle
+                            position = startingPoint + new Vector2(1, 2);
+                            break;
+                        case 10: //Right
+                            position = startingPoint + new Vector2(2, 2);
+                            break;
+                        case 11: //Top vertical
+                            position = startingPoint + new Vector2(3, 2);
+                            break;
+                        case 12: //Bot left corner
+                            position = startingPoint + new Vector2(0, 3);
+                            break;
+                        case 13: //Bot
+                            position = startingPoint + new Vector2(1, 3);
+                            break;
+                        case 14: //Bot right corner
+                            position = startingPoint + new Vector2(2, 3);
+                            break;
+                        case 15: //Middle vertical
+                            position = startingPoint + new Vector2(3, 3);
+                            break;
+                        case 16: //Left horizontal
+                            position = startingPoint + new Vector2(0, 4);
+                            break;
+                        case 17: //Middle horizontal
+                            position = startingPoint + new Vector2(1, 4);
+                            break;
+                        case 18: //Right horizontal
+                            position = startingPoint + new Vector2(2, 4);
+                            break;
+                        case 19: //Bot vertical
+                            position = startingPoint + new Vector2(3, 4);
+                            break;
+                    }
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
@@ -1005,6 +1139,7 @@ namespace Adam
             {36,"Sign" },
             {37,"Checkpoint" },
             {38,"Stone Brick" },
+            {39,"Snow" },
         
         };
 
