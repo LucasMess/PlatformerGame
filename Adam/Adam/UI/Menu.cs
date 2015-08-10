@@ -95,7 +95,7 @@ namespace Adam
             multiplayer.MouseClicked += multiplayer_MouseClicked;
             buttons.Add(multiplayer);
 
-            levelEditor = new NewButton(fifth, "Level Editor");
+            levelEditor = new NewButton(fifth, "God Mode");
             levelEditor.MouseClicked += LevelEditor_MouseClicked;
             buttons.Add(levelEditor);
 

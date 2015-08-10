@@ -14,6 +14,7 @@ namespace Adam.Levels
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
+        bool onInventory;
 
         public Rectangle editorRectangle;
         byte selectedID = 1;
@@ -46,8 +47,22 @@ namespace Adam.Levels
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
 
-            CheckForCameraMovement();
-            CheckForInput();
+            CheckIfOnInventory();
+
+            if (!onInventory)
+            {
+                CheckForCameraMovement();
+                CheckForInput();
+            }
+        }
+
+        private void CheckIfOnInventory()
+        {
+            if (InputHelper.IsKeyDown(Keys.Tab))
+            {
+                onInventory = true;
+            }
+            else onInventory = false;
         }
 
         private void CheckForCameraMovement()
@@ -105,7 +120,6 @@ namespace Adam.Levels
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID == 0)
                         {
                             t.ID = selectedID;
-                            t.isSolid = true;
                             UpdateTilesAround(t.TileIndex);
                             construction[GameWorld.RandGen.Next(0, 3)].Play();
                             CreateConstructionParticles(t.drawRectangle);
@@ -159,6 +173,7 @@ namespace Adam.Levels
                     t.DefineTexture();                    
                 }
             }
+
             GameWorld.Instance.lightEngine.UpdateSunLight(index);
 
         }

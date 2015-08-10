@@ -11,13 +11,15 @@ namespace Adam.UI
 {
     class TileScroll
     {
+        bool isActive;
         Image blackSelectionBox;
         int maxHeight = Game1.UserResHeight;
         byte[] availableIDs;
         List<Tile> tiles = new List<Tile>();
         List<TileName> names = new List<TileName>();
         SpriteFont font;
-        float velocity;
+        float velocityY;
+        float velocityX;
         int lastScrollWheel;
 
         public delegate void TileSelectedHandler(TileSelectedArgs e);
@@ -50,7 +52,7 @@ namespace Adam.UI
                 tiles.Add(tile);
 
                 TileName tileName = new TileName();
-                Tile.TileNames.TryGetValue(tile.ID,out tileName.Name);
+                Tile.TileNames.TryGetValue(tile.ID, out tileName.Name);
                 if (tileName.Name == null) tileName.Name = "*";
                 tileName.Position = new Vector2((float)(Game1.Tilesize / Game1.WidthRatio) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
                 names.Add(tileName);
@@ -59,6 +61,88 @@ namespace Adam.UI
 
         public void Update()
         {
+
+            CheckIfActive();
+            CheckIfScrolling();
+            CheckIfTileIsHovered();
+        }
+
+        private void CheckIfActive()
+        {
+            if (InputHelper.IsKeyDown(Keys.Tab))
+            {
+                isActive = true;
+            }
+            else isActive = false;
+
+            blackSelectionBox.Rectangle = new Rectangle(tiles[0].drawRectangle.X,0,blackSelectionBox.Rectangle.Width,blackSelectionBox.Rectangle.Height);
+
+            if (isActive)
+            {
+                if (tiles[0].drawRectangle.X < 0)
+                {
+                    velocityX = -tiles[0].drawRectangle.X / 5;
+                }
+                if (tiles[0].drawRectangle.X > 0)
+                {
+                    for (int i = 0; i < tiles.Count; i++)
+                    {
+                        tiles[i].drawRectangle.X = 0;
+                    }
+                        velocityX = 0;
+                }
+
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    tiles[i].drawRectangle.X += (int)velocityX;
+                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Game1.Tilesize / Game1.WidthRatio) + 5;
+                }
+            }
+            else
+            {
+                if (tiles[0].drawRectangle.X < -300)
+                {
+                    velocityX = 0;
+                    for (int i = 0; i < tiles.Count; i++)
+                    {
+                        tiles[i].drawRectangle.X = -300;
+                    }
+                }
+                else
+                {
+                    velocityX = (-300 - tiles[0].drawRectangle.X) / 5;
+                }
+
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    tiles[i].drawRectangle.X += (int)velocityX;
+                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Game1.Tilesize / Game1.WidthRatio) + 5;
+                }
+            }
+        }
+
+        private void CheckIfScrolling()
+        {
+            MouseState mouse = Mouse.GetState();
+            int scrollWheel = mouse.ScrollWheelValue;
+
+            if (lastScrollWheel != scrollWheel)
+                velocityY = (scrollWheel - lastScrollWheel) / 5;
+
+            lastScrollWheel = scrollWheel;
+
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                tiles[i].drawRectangle.Y += (int)velocityY;
+                names[i].Position.Y = tiles[i].drawRectangle.Center.Y - font.LineSpacing / 2;
+            }
+
+            velocityY = velocityY * .92f;
+        }
+
+        private void CheckIfTileIsHovered()
+        {
+
             foreach (Tile t in tiles)
             {
                 if (InputHelper.MouseRectangle.Intersects(t.drawRectangle))
@@ -71,22 +155,6 @@ namespace Adam.UI
                 }
                 else t.color = Color.White;
             }
-
-            MouseState mouse = Mouse.GetState();
-            int scrollWheel = mouse.ScrollWheelValue;
-
-            if (lastScrollWheel != scrollWheel)
-                velocity = (scrollWheel - lastScrollWheel) / 5;
-
-            lastScrollWheel = scrollWheel;
-
-            for (int i =0; i < tiles.Count; i++)
-            {
-                tiles[i].drawRectangle.Y += (int)velocity;
-                names[i].Position.Y = tiles[i].drawRectangle.Center.Y - font.LineSpacing / 2;
-            }
-
-            velocity = velocity * .92f;
         }
 
         public void Draw(SpriteBatch spriteBatch)
