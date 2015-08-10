@@ -25,18 +25,20 @@ namespace Adam
 
         public AnimatedTile(byte ID, Rectangle rectangle)
         {
+            texture = GameWorld.SpriteSheet;
             this.ID = ID;
             this.drawRectangle = rectangle;
             if (GameWorld.Instance != null)
                 TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.mainMap.Width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
-            this.tilesize = Game1.Tilesize / 2;
+            this.smallTileSize = Game1.Tilesize / 2;
+            DefineTexture();
         }
 
         public override void DefineTexture()
         {
             startingPosition = new Vector2(0, 0);
             Vector2 size = new Vector2(1, 1);
-            texture = GameWorld.SpriteSheet;
+
             switch (ID)
             {
                 case 7: //short grass
@@ -126,19 +128,19 @@ namespace Adam
                     break;
 
             }
-            sourceRectangle = new Rectangle((int)(startingPosition.X * tilesize), (int)(startingPosition.Y * tilesize), (int)(tilesize * size.X), (int)(tilesize * size.Y));
+            sourceRectangle = new Rectangle((int)(startingPosition.X * smallTileSize), (int)(startingPosition.Y * smallTileSize), (int)(smallTileSize * size.X), (int)(smallTileSize * size.Y));
             startingRectangle = sourceRectangle;
 
             if (hasRandomStartingPoint)
             {
                 int randX = GameWorld.RandGen.Next(0, (int)frameCount.X);
-                sourceRectangle.X += randX * tilesize;
+                sourceRectangle.X += randX * smallTileSize;
                 currentFrame += randX;
             }
 
         }
 
-        public override void Update(GameTime gameTime)
+        public void Animate(GameTime gameTime)
         {
             if (liquid != null) liquid.Update(gameTime);
 
@@ -170,7 +172,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += smallTileSize;
                             currentFrame++;
                         }
                     }
@@ -194,7 +196,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += smallTileSize;
                             currentFrame++;
                         }
                     }
@@ -272,7 +274,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += smallTileSize;
                             currentFrame++;
                         }
                     }
@@ -292,7 +294,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += smallTileSize;
                             currentFrame++;
                         }
                     }
@@ -312,7 +314,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += tilesize;
+                            sourceRectangle.X += smallTileSize;
                             currentFrame++;
                         }
                     }

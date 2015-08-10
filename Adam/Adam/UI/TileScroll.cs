@@ -50,7 +50,8 @@ namespace Adam.UI
                 tiles.Add(tile);
 
                 TileName tileName = new TileName();
-                tileName.Name = tile.name;
+                Tile.TileNames.TryGetValue(tile.ID,out tileName.Name);
+                if (tileName.Name == null) tileName.Name = "*";
                 tileName.Position = new Vector2((float)(Game1.Tilesize / Game1.WidthRatio) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
                 names.Add(tileName);
             }
@@ -93,7 +94,7 @@ namespace Adam.UI
             spriteBatch.Draw(blackSelectionBox.Texture, blackSelectionBox.Rectangle, Color.White);
 
             foreach (Tile t in tiles)
-                t.Draw(spriteBatch);
+                t.DrawByForce(spriteBatch);
 
             foreach (TileName t in names)
             {

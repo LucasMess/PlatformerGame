@@ -15,13 +15,14 @@ namespace Adam
         public Texture2D texture;
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
+        AnimatedTile animatedTile;
 
         public bool isSolid = false;
         public byte ID = 0;
         public byte subID = 0;
         public int TileIndex { get; set; }
         private int mapWidth;
-        protected int tilesize;
+        protected int smallTileSize = 16;
         public bool isVoid;
         public bool sunlightPassesThrough;
         public string name = "";
@@ -33,7 +34,6 @@ namespace Adam
 
         public Tile()
         {
-            tilesize = Game1.Tilesize / 2;
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Adam
                     }
                     break;
                 case 5: //Sand
-                    startingPoint = new Vector2(8, 5);
+                    startingPoint = new Vector2(8, 0);
                     switch (subID)
                     {
                         case 0: //Dirt
@@ -348,16 +348,83 @@ namespace Adam
                             break;
                     }
                     break;
-                case 6: //vacant
-                    break;
+                case 6: //Mesa
+                    startingPoint = new Vector2(8, 5);
+                    switch (subID)
+                    {
+                        case 0: //Dirt
+                            position = startingPoint + new Vector2(0, 0);
+                            break;
+                        case 1: //Inner bot right corner
+                            position = startingPoint + new Vector2(1, 0);
+                            break;
+                        case 2: //Inner bot left corner
+                            position = startingPoint + new Vector2(2, 0);
+                            break;
+                        case 3: //Inner top left corner
+                            position = startingPoint + new Vector2(3, 0);
+                            break;
+                        case 4: //Top left corner
+                            position = startingPoint + new Vector2(0, 1);
+                            break;
+                        case 5: //Top
+                            position = startingPoint + new Vector2(1, 1);
+                            break;
+                        case 6: //Top right corner
+                            position = startingPoint + new Vector2(2, 1);
+                            break;
+                        case 7: //Inner top right corner
+                            position = startingPoint + new Vector2(3, 1);
+                            break;
+                        case 8: //Left
+                            position = startingPoint + new Vector2(0, 2);
+                            break;
+                        case 9: //Middle
+                            position = startingPoint + new Vector2(1, 2);
+                            break;
+                        case 10: //Right
+                            position = startingPoint + new Vector2(2, 2);
+                            break;
+                        case 11: //Top vertical
+                            position = startingPoint + new Vector2(3, 2);
+                            break;
+                        case 12: //Bot left corner
+                            position = startingPoint + new Vector2(0, 3);
+                            break;
+                        case 13: //Bot
+                            position = startingPoint + new Vector2(1, 3);
+                            break;
+                        case 14: //Bot right corner
+                            position = startingPoint + new Vector2(2, 3);
+                            break;
+                        case 15: //Middle vertical
+                            position = startingPoint + new Vector2(3, 3);
+                            break;
+                        case 16: //Left horizontal
+                            position = startingPoint + new Vector2(0, 4);
+                            break;
+                        case 17: //Middle horizontal
+                            position = startingPoint + new Vector2(1, 4);
+                            break;
+                        case 18: //Right horizontal
+                            position = startingPoint + new Vector2(2, 4);
+                            break;
+                        case 19: //Bot vertical
+                            position = startingPoint + new Vector2(3, 4);
+                            break;
+                    }
+                            break;
                 case 7: //ShortGrass
+                    position = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     isVoid = true;
                     break;
                 case 8: //Metal
+                    position = new Vector2(12, 2);
                     isVoid = true;
                     break;
                 case 9://Tall Grass
+                    position = new Vector2(0, 16);
                     isVoid = true;
                     sunlightPassesThrough = true;
                     break;
@@ -428,10 +495,13 @@ namespace Adam
                     }
                     break;
                 case 11: //torch
+                    position = new Vector2(12, 0);
                     isVoid = true;
                     sunlightPassesThrough = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 12: //Chandelier
+                    position = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
                     break;
@@ -448,6 +518,7 @@ namespace Adam
                     position = new Vector2(14, 7);
                     break;
                 case 17: //Daffodyls
+                    position = new Vector2(12, 10);
                     isVoid = true;
                     break;
                 case 18://Marble Column
@@ -477,6 +548,7 @@ namespace Adam
                     isVoid = true;
                     break;
                 case 24: //lava
+                    position = new Vector2(0, 15);
                     isVoid = true;
                     break;
                 case 26: //apple
@@ -504,15 +576,18 @@ namespace Adam
                     position = new Vector2(13, 4);
                     break;
                 case 31: //Tree
+                    position = new Vector2(18, 4);
                     isVoid = true;
                     break;
                 case 32: //Small Rock
                     position = new Vector2(13, 18);
                     break;
                 case 33: //Big Rock
+                    position = new Vector2(14, 18);
                     isVoid = true;
                     break;
                 case 34: //Medium Rock
+                    position = new Vector2(11, 18);
                     isVoid = true;
                     break;
                 case 36: //Sign
@@ -562,11 +637,11 @@ namespace Adam
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
                     break;
-                #endregion
+                    #endregion
             }
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
-            sourceRectangle = new Rectangle((int)(position.X * tilesize), (int)(position.Y * tilesize), tilesize, tilesize);
+            sourceRectangle = new Rectangle((int)(position.X * smallTileSize), (int)(position.Y * smallTileSize), smallTileSize, smallTileSize);
 
 
         }
@@ -577,14 +652,28 @@ namespace Adam
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
+            animatedTile?.Animate(gameTime);
             //Not used for normal textures, only animated textures.
         }
 
-        public virtual void Draw(SpriteBatch spritebatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (!isVoid)
+            if (animatedTile == null)
+            {
                 if (texture != null)
-                    spritebatch.Draw(texture, drawRectangle, sourceRectangle, color);
+                    spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
+            }
+            else
+            {
+                if (texture != null)
+                    animatedTile.Draw(spriteBatch);
+            }
+        }
+
+        public void DrawByForce(SpriteBatch spriteBatch)
+        {
+            if (texture != null)
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)
@@ -843,7 +932,7 @@ namespace Adam
                     subID = 2;
             }
 
-                //Marble Ceiling
+            //Marble Ceiling
             else if (ID == 29)
             {
                 if (array[TileIndex + 1].ID != 29)
@@ -852,6 +941,69 @@ namespace Adam
                     subID = 2;
             }
         }
+
+        public static Dictionary<int, Color> ColorCodes = new Dictionary<int, Color>()
+        {
+            {1,new Color(0,189,31) },
+            {2,new Color(220,220,220) },
+            {3,new Color(255,255,255) },
+            {4,new Color(0,189,31) },
+            {5,new Color(0,189,31) },
+            {6,new Color(0,189,31) },
+            {7,new Color(0,189,31) },
+            {8,new Color(0,189,31) },
+            {9,new Color(0,189,31) },
+            {10,new Color(0,189,31) },
+            {11,new Color(0,189,31) },
+            {12,new Color(0,189,31) },
+            {13,new Color(0,189,31) },
+            {14,new Color(0,189,31) },
+            {15,new Color(0,189,31) },
+            {16,new Color(0,189,31) },
+        };
+
+        public static Dictionary<int, string> TileNames = new Dictionary<int, string>()
+        {
+            {1,"Grass" },
+            {2,"Stone" },
+            {3,"Marble Floor" },
+            {4,"Hellrock" },
+            {5,"Sand" },
+            {6,"*" },
+            {7,"Short Grass" },
+            {8,"Metal" },
+            {9,"Tall Grass" },
+            {10,"Gold Brick" },
+            {11,"Torch" },
+            {12,"Chandelier" },
+            {13,"Door" },
+            {14,"Vine" },
+            {15,"Ladder" },
+            {16,"Chain" },
+            {17,"Flower" },
+            {18,"Marble Column" },
+            {19,"Chest" },
+            {20,"Tech" },
+            {21,"Scaffolding" },
+            {22,"Spikes" },
+            {23,"Water" },
+            {24,"Lava" },
+            {25,"Poison" },
+            {26,"Golden Apple" },
+            {27,"Golden Chest" },
+            {28,"Health Apple" },
+            {29,"Marble Ceiling" },
+            {30,"Marble Ceiling Support" },
+            {31,"Tree" },
+            {32,"Small Rock" },
+            {33,"Big Rock" },
+            {34,"Medium Rock" },
+            {35,"Pebbles" },
+            {36,"Sign" },
+            {37,"Checkpoint" },
+            {38,"Stone Brick" },
+        
+        };
 
     }
 }

@@ -16,7 +16,6 @@ namespace Adam.Levels
         TileScroll tileScroll = new TileScroll();
 
         public Rectangle editorRectangle;
-        double updateTimer;
         byte selectedID = 1;
 
         SoundFx[] construction = new SoundFx[3];
@@ -49,7 +48,6 @@ namespace Adam.Levels
 
             CheckForCameraMovement();
             CheckForInput();
-            CheckForNewTiles();
         }
 
         private void CheckForCameraMovement()
@@ -74,6 +72,8 @@ namespace Adam.Levels
                 editorRectangle.Y += speed;
             }
 
+
+            //Prevent camera box from moving out of screen
             if (editorRectangle.X < 0)
             {
                 editorRectangle.X = 0;
@@ -105,6 +105,7 @@ namespace Adam.Levels
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID == 0)
                         {
                             t.ID = selectedID;
+                            UpdateTilesAround(t.TileIndex);
                             construction[GameWorld.RandGen.Next(0, 3)].Play();
                             CreateConstructionParticles(t.drawRectangle);
                         }
@@ -134,24 +135,28 @@ namespace Adam.Levels
             }
         }
 
-        private void CheckForNewTiles()
+        private void UpdateTilesAround(int index)
         {
-            updateTimer += gameWorld.gameTime.ElapsedGameTime.TotalSeconds;
-            if (updateTimer > .1)
+            List<int> indexes = new List<int>();
+            for (int h = 0; h < 4; h++)
             {
-                foreach (int index in gameWorld.visibleTileArray)
+                for (int w = 0; w < 4; w++)
                 {
-                    if (index >= 0 && index < gameWorld.tileArray.Length)
-                    {
-                        Tile t = gameWorld.tileArray[index];
-                        t.DefineTexture();
-                        t.FindConnectedTextures(gameWorld.tileArray,
-                        gameWorld.worldData.mainMap.Width);
-                        //t.AddRandomlyGeneratedDecoration(gameWorld.tileArray, gameWorld.worldData.mainMap.Width);
-                    }
+                    int i = index - 1 - gameWorld.worldData.mainMap.Width + (h * gameWorld.worldData.mainMap.Width) + w;
+                    indexes.Add(i);
                 }
-                updateTimer = 0;
+            }
 
+            foreach (int ind in indexes)
+            {
+                if (ind >= 0 && ind < gameWorld.tileArray.Length)
+                {
+                    Tile t = gameWorld.tileArray[ind];
+                    t.FindConnectedTextures(gameWorld.tileArray,
+                    gameWorld.worldData.mainMap.Width);
+                    t.DefineTexture();
+                    
+                }
             }
         }
 

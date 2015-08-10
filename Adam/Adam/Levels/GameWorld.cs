@@ -866,11 +866,6 @@ namespace Adam
 
         }
 
-        private void UpdateEditor(GameTime gameTime, Level CurrentLevel, Camera camera)
-        {
-
-        }
-
         private void UpdateVisibleIndexes()
         {
             if (player.isDead == false)
