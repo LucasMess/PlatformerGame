@@ -14,9 +14,11 @@ namespace Adam.Levels
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
+        Brush brush = new Brush();
         bool onInventory;
 
         public Rectangle editorRectangle;
+        public int IndexOfMouse;
         byte selectedID = 1;
 
         SoundFx[] construction = new SoundFx[3];
@@ -46,6 +48,7 @@ namespace Adam.Levels
         {
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
+            brush.Update();
 
             CheckIfOnInventory();
             CheckIfWantsToSave();
@@ -132,26 +135,28 @@ namespace Adam.Levels
             {
                 if (index >= 0 && index < gameWorld.tileArray.Length)
                 {
+                    //Check index of mouse
+                    if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                    {
+                        IndexOfMouse = index;
+                    }
+
+                    //Check input
                     Tile t = gameWorld.tileArray[index];
                     if (InputHelper.IsLeftMousePressed())
                     {
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID == 0)
+                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
-                            t.ID = selectedID;
-                            UpdateTilesAround(t.TileIndex);
-                            construction[GameWorld.RandGen.Next(0, 3)].Play();
-                            CreateConstructionParticles(t.drawRectangle);
+                            UpdateSelectedTiles(selectedID);                            
                         }
                     }
 
                     if (InputHelper.IsRightMousePressed())
                     {
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID != 0)
+                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
-                            t.ID = 0;
-                            destruction.Play();
-                            CreateDestructionParticles(t);
-                            UpdateTilesAround(t.TileIndex);
+                            UpdateSelectedTiles(0);
+                            
                         }
                     }
 
@@ -163,20 +168,67 @@ namespace Adam.Levels
                         }
                     }
 
-
-
                 }
             }
+        }
+
+        private void UpdateSelectedTiles(int desiredID)
+        {
+            foreach (int i in brush.selectedIndexes)
+            {
+                int tileID = gameWorld.tileArray[i].ID;
+
+                //Wants to destroy. Any block can be destroyed.
+                if (desiredID == 0)
+                {
+                    //Check to see if block is already air.
+                    if (tileID == 0)
+                        continue;
+                    else
+                    {
+                        gameWorld.tileArray[i].ID = (byte)desiredID;
+                        Destroy(gameWorld.tileArray[i]);
+                    }
+                }
+
+                //Wants to build, but only if there is air.
+                else
+                {
+                    if (tileID == 0)
+                    {
+                        gameWorld.tileArray[i].ID = (byte)desiredID;
+                        Construct(gameWorld.tileArray[i]);
+                    }
+                    else continue;
+                }
+            }
+        }
+
+        private void Construct(Tile t)
+        {
+            UpdateTilesAround(t.TileIndex);
+            construction[GameWorld.RandGen.Next(0, 3)].Play();
+            CreateConstructionParticles(t.drawRectangle);
+        }
+
+        private void Destroy(Tile t)
+        {
+            destruction.Play();
+            CreateDestructionParticles(t);
+            UpdateTilesAround(t.TileIndex);
         }
 
         private void UpdateTilesAround(int index)
         {
             List<int> indexes = new List<int>();
-            for (int h = 0; h < 4; h++)
+            int diameterOfSquare = 2 + brush.size;
+            for (int h = 0; h < diameterOfSquare; h++)
             {
-                for (int w = 0; w < 4; w++)
+                for (int w = 0; w < diameterOfSquare; w++)
                 {
-                    int i = index - 1 - gameWorld.worldData.mainMap.Width + (h * gameWorld.worldData.mainMap.Width) + w;
+                    int brushSize = brush.size;
+                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * gameWorld.worldData.width);
+                    int i = startingIndex - 1 - gameWorld.worldData.mainMap.Width + (h * gameWorld.worldData.mainMap.Width) + w;
                     indexes.Add(i);
                 }
             }
@@ -188,7 +240,7 @@ namespace Adam.Levels
                     Tile t = gameWorld.tileArray[ind];
                     t.FindConnectedTextures(gameWorld.tileArray,
                     gameWorld.worldData.mainMap.Width);
-                    t.DefineTexture();                    
+                    t.DefineTexture();
                 }
             }
 
@@ -224,6 +276,11 @@ namespace Adam.Levels
         }
 
         public void Draw(SpriteBatch spriteBatch)
+        {
+            brush.Draw(spriteBatch);
+        }
+
+        public void DrawUI(SpriteBatch spriteBatch)
         {
             tileScroll.Draw(spriteBatch);
         }

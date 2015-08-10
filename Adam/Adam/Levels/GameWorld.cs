@@ -880,14 +880,6 @@ namespace Adam
 
         public void UpdateInBackground()
         {
-            //while (true)
-            //{
-            //    if (hasLoaded && gameTime != null)
-            //    {
-            //        if (TimesBackgroundUpdated < TimesUpdated)
-            //        {
-            //            TimesBackgroundUpdated++;
-
             for (int i = 0; i < particles.Count; i++)
             {
                 particles[i].Update(gameTime);
@@ -910,9 +902,6 @@ namespace Adam
 
             if (camera != null)
                 UpdateVisibleIndexes();
-
-
-
         }
 
         private void UpdateVisibleIndexes()
@@ -991,6 +980,8 @@ namespace Adam
             {
                 particles[i].Draw(spriteBatch);
             }
+
+            levelEditor.Draw(spriteBatch);
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -1023,7 +1014,7 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
             placeNotification.Draw(spriteBatch);
-            levelEditor.Draw(spriteBatch);
+            levelEditor.DrawUI(spriteBatch);
         }
 
         public void ResetWorld()

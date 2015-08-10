@@ -9,7 +9,7 @@ namespace Adam.Lights
 {
     class LightEngine
     {
-        Light[] lights;
+                Light[] lights;
         int[] visibleLights = new int[60 * 100];
         List<Light> dynamicLights = new List<Light>();
         List<Light> newLights = new List<Light>();

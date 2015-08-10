@@ -176,6 +176,7 @@
     <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="Particles\NewParticle.cs" />
+    <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
     <Compile Include="Particles\ChestSparklesEffect.cs" />
