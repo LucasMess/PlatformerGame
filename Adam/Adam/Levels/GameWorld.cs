@@ -901,25 +901,6 @@ namespace Adam
 
         public void DrawLights(SpriteBatch spriteBatch)
         {
-
-            //if (wallArray[player.TileIndex].ID != 0)
-            //    playerLight.Draw(spriteBatch);
-
-            //foreach (int tileNumber in visibleTileArray)
-            //{
-            //    if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity <= 2)
-            //    {
-            //        lightArray[tileNumber].Draw(spriteBatch);
-            //    }
-            //}
-            //foreach (int tileNumber in visibleLightArray)
-            //{
-            //    if (tileNumber >= 0 && tileNumber < lightArray.Length && lightArray[tileNumber].intensity > 2)
-            //    {
-            //        lightArray[tileNumber].Draw(spriteBatch);
-            //    }
-            //}
-
             lightEngine.Draw(spriteBatch);
 
             if (player.weapon != null)

@@ -105,6 +105,7 @@ namespace Adam.Levels
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID == 0)
                         {
                             t.ID = selectedID;
+                            t.isSolid = true;
                             UpdateTilesAround(t.TileIndex);
                             construction[GameWorld.RandGen.Next(0, 3)].Play();
                             CreateConstructionParticles(t.drawRectangle);
@@ -118,6 +119,7 @@ namespace Adam.Levels
                             t.ID = 0;
                             destruction.Play();
                             CreateDestructionParticles(t);
+                            UpdateTilesAround(t.TileIndex);
                         }
                     }
 
@@ -154,10 +156,11 @@ namespace Adam.Levels
                     Tile t = gameWorld.tileArray[ind];
                     t.FindConnectedTextures(gameWorld.tileArray,
                     gameWorld.worldData.mainMap.Width);
-                    t.DefineTexture();
-                    
+                    t.DefineTexture();                    
                 }
             }
+            GameWorld.Instance.lightEngine.UpdateSunLight(index);
+
         }
 
         private void CreateConstructionParticles(Rectangle rect)

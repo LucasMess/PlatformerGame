@@ -45,6 +45,7 @@ namespace Adam
             if (ID != 0)
             {
                 texture = GameWorld.SpriteSheet;
+                sunlightPassesThrough = false;
             }
             else
             {
@@ -60,6 +61,7 @@ namespace Adam
             {
                 case 1: //Grass
                     name = "Dirt";
+                    isSolid = true;
                     startingPoint = new Vector2(0, 0);
                     switch (subID)
                     {
@@ -135,6 +137,7 @@ namespace Adam
                     break;
                 case 2: //Stone
                     name = "Stone";
+                    isSolid = true;
                     startingPoint = new Vector2(4, 0);
                     switch (subID)
                     {

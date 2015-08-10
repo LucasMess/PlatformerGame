@@ -18,7 +18,7 @@ namespace Adam
         public int pos;
         public int index;
         int tileSize;
-        protected bool lightHere;
+        public bool lightHere;
         bool shakyLight;
         protected Vector2 origin;
         protected Color color = Color.White;

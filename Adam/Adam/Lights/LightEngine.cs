@@ -61,6 +61,7 @@ namespace Adam.Lights
                     lights[i] = new SunLight(tiles[i].drawRectangle);
                 }
             }
+            
         }
 
         private void TransferNewLights()
@@ -70,6 +71,16 @@ namespace Adam.Lights
                 lights[l.index] = l;
             }
         }
+
+        public void UpdateSunLight(int index)
+        {
+            if (tiles[index].sunlightPassesThrough && walls[index].sunlightPassesThrough)
+            {
+                lights[index] = new SunLight(tiles[index].drawRectangle);
+            }
+            else lights[index] = new Light();
+        }
+
 
         public void AddFixedLightSource(Tile tile, Light light)
         {
