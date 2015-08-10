@@ -48,11 +48,29 @@ namespace Adam.Levels
             tileScroll.Update();
 
             CheckIfOnInventory();
+            CheckIfWantsToSave();
+            CheckIfWantsToOpen();
 
             if (!onInventory)
             {
                 CheckForCameraMovement();
                 CheckForInput();
+            }
+        }
+
+        private void CheckIfWantsToSave()
+        {
+            if (InputHelper.IsKeyDown(Keys.F8))
+            {
+                GameWorld.Instance.worldData.SaveLevelLocally();
+            }
+        }
+
+        private void CheckIfWantsToOpen()
+        {
+            if (InputHelper.IsKeyDown(Keys.F9))
+            {
+                GameWorld.Instance.worldData.OpenLevelLocally();
             }
         }
 

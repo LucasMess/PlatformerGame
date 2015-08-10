@@ -26,6 +26,7 @@ using Adam.Lights;
 
 namespace Adam
 {
+    [Serializable]
     sealed class GameWorld
     {
         private static GameWorld instance;

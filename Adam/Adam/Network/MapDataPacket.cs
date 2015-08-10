@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Lights;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +15,6 @@ namespace Adam.Network
     {
         public Player player;
         public Apple apple;
-        public GameTimer timer;
         public bool isPaused;
         public bool levelComplete;
 
@@ -34,12 +34,51 @@ namespace Adam.Network
 
         public MapDataPacket(GameWorld map)
         {
-            apple = map.apple;
-            isPaused = map.isOnDebug;
-            levelComplete = map.levelComplete;
 
+        }
+    }
 
-            gameTime = map.gameTime;
+    [Serializable]
+    class GameWorldData
+    {
+        //public Apple apple;
+        //public Tile[] tiles, walls;
+        //public List<Chest> chestList = new List<Chest>();
+        //public List<Climbables> climbablesList = new List<Climbables>();
+        //public List<Key> keyList = new List<Key>();
+        //public List<Entity> entities = new List<Entity>();
+        public int[] tileIDs;
+
+        public GameWorldData(GameWorld gw)
+        {
+            int size = gw.tileArray.Length;
+            tileIDs = new int[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                tileIDs[i] = gw.tileArray[i].ID;
+            }
+
+            //apple = gw.apple;
+            //tiles = gw.tileArray;
+            //walls = gw.wallArray;
+            //chestList = gw.chestList;
+            //climbablesList = gw.climbablesList;
+            //keyList = gw.keyList;
+            //entities = gw.entities;
+        }
+
+        public void Load()
+        {
+            GameWorld gw = GameWorld.Instance;
+            gw.tileArray = new Tile[tileIDs.Length];
+
+            for (int i = 0; i < tileIDs.Length; i++)
+            {
+                gw.tileArray[i] = new Tile();
+                //gw.tileArray[i].ID = (byte)tileIDs[i];
+                //gw.tileArray[i].DefineTexture();
+            }
         }
     }
 }

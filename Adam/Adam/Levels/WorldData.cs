@@ -1,4 +1,5 @@
 ﻿using Adam.Misc;
+using Adam.Network;
 using Adam.UI.Information;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,8 +7,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Adam.Levels
 {
@@ -45,6 +50,8 @@ namespace Adam.Levels
         string sign8 = "";
 
         bool privTrig0;
+
+        bool dealingWithData;
 
 
         public WorldData(Level CurrentLevel)
@@ -100,7 +107,7 @@ namespace Adam.Levels
                     wantClouds = true;
                     break;
                 case Level.Editor:
-                    levelName = "Level Editor";
+                    levelName = "Unnamed Creation";
                     mainMap = ContentHelper.LoadTexture("Levels/200x200");
                     wallMap = ContentHelper.LoadTexture("Levels/200x200");
                     //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
@@ -119,7 +126,7 @@ namespace Adam.Levels
             switch (GameWorld.Instance.CurrentLevel)
             {
                 case Level.Level1and1:
-                    if (InputHelper.IsKeyDown(Keys.A) || InputHelper.IsKeyDown(Keys.D))
+                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
                     {
                         privTrig0 = true;
                         Game1.ObjectiveTracker.CompleteObjective(0);
@@ -130,6 +137,23 @@ namespace Adam.Levels
                         {
                             Objective obj = new Objective();
                             obj.Create("Press 'A' and 'D' to move.", 0);
+                            Game1.ObjectiveTracker.AddObjective(obj);
+                            obj0 = true;
+                        }
+                    }
+                    break;
+                case Level.Editor:
+                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
+                    {
+                        Game1.ObjectiveTracker.CompleteObjective(0);
+                    }
+
+                    if (gameTimer > 0)
+                    {
+                        if (!obj0)
+                        {
+                            Objective obj = new Objective();
+                            obj.Create("Press 'TAB' to open inventory.", 0);
                             Game1.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
                         }
@@ -160,6 +184,71 @@ namespace Adam.Levels
                     return sign8;
             }
             return "ERROR: Text not found.";
+        }
+
+        public void OpenLevelLocally()
+        {
+            if (!dealingWithData)
+            {
+                Thread thread = new Thread(new ThreadStart(ThreadOpen));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                dealingWithData = true;
+            }
+        }
+
+        private void ThreadOpen()
+        {
+            GameWorldData data;
+            OpenFileDialog op = new OpenFileDialog();
+            DialogResult dr = op.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                    using (FileStream fs = new FileStream(op.FileName,FileMode.Open))
+                    {
+                        data = (GameWorldData)bf.Deserialize(fs);
+                    }  data.Load();              
+            }
+            
+            dealingWithData = false;
+        }
+
+        public void SaveLevelLocally()
+        {
+            if (!dealingWithData)
+            {
+                Thread thread = new Thread(new ThreadStart(ThreadSave));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                dealingWithData = true;
+            }
+        }
+        private void ThreadSave()
+        {
+            SaveFileDialog sv = new SaveFileDialog();
+            DialogResult dr = sv.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                using (var ms = new MemoryStream())
+                {
+                    bf.Serialize(ms, new GameWorldData(GameWorld.Instance));
+                    byte[] data = ms.ToArray();
+
+                    using (BinaryWriter b = new BinaryWriter(File.Open(sv.FileName, FileMode.Create)))
+                    {
+                        foreach (byte i in data)
+                        {
+                            b.Write(i);
+                        }
+                    }
+                }
+
+
+            }
+
+            dealingWithData = false;
         }
     }
 }
