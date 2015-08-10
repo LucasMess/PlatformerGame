@@ -43,7 +43,7 @@ namespace Adam
         Editor,
     }
 
-    public class Game1 : Microsoft.Xna.Framework.Game
+    class Game1 : Microsoft.Xna.Framework.Game
     {
         #region Variables
         Color sunny = new Color(255, 238, 186);
@@ -136,7 +136,7 @@ namespace Adam
         Session session;
         public static ObjectiveTracker ObjectiveTracker;
         public GameDataManager GameData;
-        Player player;
+        public Player player;
         LoadingScreen loadingScreen;
         public static ContentManager Content;
         #endregion
@@ -172,7 +172,6 @@ namespace Adam
             MediaPlayer.Volume = 1f;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
-
 
         protected override void Initialize()
         {
@@ -211,7 +210,6 @@ namespace Adam
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
             CurrentGameState = GameState.SplashScreen;
@@ -241,7 +239,28 @@ namespace Adam
             reloadThread = new Thread(new ThreadStart(BackgroundMapLoad));
             reloadThread.IsBackground = true;
             reloadThread.Start();
+        }
 
+        public void LoadFileIntoWorld()
+        {
+            CurrentGameState = GameState.LoadingScreen;
+            CurrentLevel = Level.Editor;
+            desiredGameState = GameState.GameWorld;
+            hasLoadedContent = false;
+            loadingScreen.Restart();
+
+            reloadThread = new Thread(new ThreadStart(BackgroundFileLoad));
+            reloadThread.IsBackground = true;
+            reloadThread.Start();
+        }
+
+        private void BackgroundFileLoad()
+        {            
+            hasLoadedContent = false;
+            gameWorld.LoadFromFile();
+            ObjectiveTracker = GameData.CurrentSave.ObjTracker;
+            hasLoadedContent = true;
+            wasPressed = false;
         }
 
         protected void BackgroundMapLoad()
@@ -263,6 +282,8 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
+            if (!IsActive) return;
+
             updateWatch.Start();
 
             frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;

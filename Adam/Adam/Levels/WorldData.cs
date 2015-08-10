@@ -52,7 +52,9 @@ namespace Adam.Levels
         bool privTrig0;
 
         bool dealingWithData;
-
+        public int[] IDs;
+        public int width = 200;
+        public int height = 200;
 
         public WorldData(Level CurrentLevel)
         {

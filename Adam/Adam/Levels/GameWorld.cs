@@ -66,7 +66,7 @@ namespace Adam
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         public LightEngine lightEngine;
-        Game1 game1;
+        public Game1 game1;
         public Camera camera;
         public LevelEditor levelEditor = new LevelEditor();
 
@@ -114,7 +114,6 @@ namespace Adam
             popUp.Load(Content);
 
             this.CurrentLevel = CurrentLevel;
-            MediaPlayer.Volume = .2f;
 
             int maxClouds = worldData.mainMap.Width / 100;
 
@@ -143,6 +142,79 @@ namespace Adam
 
             placeNotification.Show(worldData.levelName);
         }
+
+        public void LoadFromFile()
+        {
+            int[] IDs = worldData.IDs;
+            this.Content = Game1.Content;
+
+            CurrentLevel = Level.Editor;
+            worldData = new WorldData(CurrentLevel);
+            cloudList = new List<Cloud>();
+            gemList = new List<Gem>();
+            chestList = new List<Chest>();
+            climbablesList = new List<Climbables>();
+            keyList = new List<Key>();
+            entities = new List<Entity>();
+            particles = new List<Particle>();
+
+            player = game1.player;
+            popUp.Load(Content);
+
+            int width = 200;
+            int height = 200;
+
+            int maxClouds = width / 100;
+            for (int i = 0; i < maxClouds; i++)
+            {
+                cloudList.Add(new Cloud(Content, new Vector2(Game1.UserResWidth, Game1.UserResHeight), maxClouds, i));
+            }
+
+            tileArray = new Tile[IDs.Length];
+            
+            ConvertToTiles(tileArray, IDs);
+            //ConvertToTiles(wallArray, new int[IDs.Length]);
+
+            lightEngine.Load();
+
+            playerLight = new Light();
+            playerLight.Load(Content);
+
+            background.Load(CurrentLevel, this);
+            levelEditor.Load();
+
+            if (worldData.song != null)
+                MediaPlayer.Play(worldData.song);
+
+            placeNotification.Show(worldData.levelName);
+        }
+
+        private void ConvertToTiles(Tile[] array, int[] IDs)
+        {
+            int width = worldData.width;
+            int height = worldData.height;
+
+            for (int i = 0; i < IDs.Length; i++)
+            {
+                int Xcoor = (i % width) * Game1.Tilesize;
+                int Ycoor = ((i - (i % width)) / width) * Game1.Tilesize;
+                
+
+                array[i] = new Tile();
+                Tile t = array[i];
+                t.ID = (byte)IDs[i];
+                t.TileIndex = i;
+                t.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
+            }
+
+            foreach(Tile t in array)
+            {
+                t.FindConnectedTextures(array, width);
+                t.DefineTexture();
+            }
+
+        }
+
 
         private void LoadGrid(Tile[] array, Texture2D data)
         {
@@ -506,27 +578,6 @@ namespace Adam
 
         }
 
-        public void LoadLights()
-        {
-            lightArray = new Light[worldData.mainMap.Width * worldData.mainMap.Height];
-
-            for (int i = 0; i < tileArray.Length; i++)
-            {
-                lightArray[i] = new Light();
-                lightArray[i].pos = i;
-            }
-
-            foreach (var li in lightArray)
-            {
-                li.Load(Content);
-            }
-
-            foreach (var li in lightArray)
-            {
-                li.CalculateLighting(tileArray, wallArray, worldData.mainMap);
-            }
-        }
-
         public void GemCollision(Gem gem)
         {
             if (gem.velocity.X == 0 && gem.velocity.Y == 0) { }
@@ -606,7 +657,7 @@ namespace Adam
                     enemy.BeMean();
                 }
 
-            SkipDamage:
+                SkipDamage:
                 enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[12];
@@ -682,7 +733,7 @@ namespace Adam
 
             TimesUpdated++;
             if (player.hasChronoshifted)
-                return;            
+                return;
 
             popUp.Update(gameTime, player);
             background.Update(camera);

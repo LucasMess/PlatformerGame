@@ -71,14 +71,8 @@ namespace Adam.Network
         public void Load()
         {
             GameWorld gw = GameWorld.Instance;
-            gw.tileArray = new Tile[tileIDs.Length];
-
-            for (int i = 0; i < tileIDs.Length; i++)
-            {
-                gw.tileArray[i] = new Tile();
-                //gw.tileArray[i].ID = (byte)tileIDs[i];
-                //gw.tileArray[i].DefineTexture();
-            }
+            gw.worldData.IDs = tileIDs;
+            gw.game1.LoadFileIntoWorld();            
         }
     }
 }
