@@ -56,6 +56,8 @@ namespace Adam.Levels
         public int width = 200;
         public int height = 200;
 
+        public Vector2 SpawnPoint { get; set; }
+
         public WorldData(Level CurrentLevel)
         {
             levelName = "Garden of Eden";
@@ -114,9 +116,16 @@ namespace Adam.Levels
                     wallMap = ContentHelper.LoadTexture("Levels/200x200");
                     //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
                     wantClouds = true;
+
+                    GameWorld.Instance.levelEditor.brush.SizeChanged += Brush_SizeChanged;
                     break;
             }
 
+        }
+
+        private void Brush_SizeChanged()
+        {
+            privTrig0 = true;
         }
 
         public void Update(GameTime gameTime)
@@ -150,6 +159,11 @@ namespace Adam.Levels
                         Game1.ObjectiveTracker.CompleteObjective(0);
                     }
 
+                    if (privTrig0)
+                    {
+                        Game1.ObjectiveTracker.CompleteObjective(1);
+                    }
+
                     if (gameTimer > 0)
                     {
                         if (!obj0)
@@ -158,6 +172,13 @@ namespace Adam.Levels
                             obj.Create("Press 'TAB' to open inventory.", 0);
                             Game1.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
+                        }
+                        if (!obj1)
+                        {
+                            Objective obj = new Objective();
+                            obj.Create("Use the scroll wheel to change brush size.", 1);
+                            Game1.ObjectiveTracker.AddObjective(obj);
+                            obj1 = true;
                         }
                     }
                     break;

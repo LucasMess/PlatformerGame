@@ -14,7 +14,7 @@ namespace Adam.Levels
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
-        Brush brush = new Brush();
+        public Brush brush = new Brush();
         bool onInventory;
 
         public Rectangle editorRectangle;
@@ -172,6 +172,25 @@ namespace Adam.Levels
             }
         }
 
+        private void CheckIfPositioningPlayer()
+        {
+            if (InputHelper.IsKeyDown(Keys.P))
+            {
+                foreach (int index in gameWorld.visibleTileArray)
+                {
+                    if (index >= 0 && index < gameWorld.tileArray.Length)
+                    {
+                        //Check index of mouse
+                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                        {
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+
         private void UpdateSelectedTiles(int desiredID)
         {
             foreach (int i in brush.selectedIndexes)
@@ -238,6 +257,7 @@ namespace Adam.Levels
                 if (ind >= 0 && ind < gameWorld.tileArray.Length)
                 {
                     Tile t = gameWorld.tileArray[ind];
+                    t.DefineTexture();
                     t.FindConnectedTextures(gameWorld.tileArray,
                     gameWorld.worldData.mainMap.Width);
                     t.DefineTexture();

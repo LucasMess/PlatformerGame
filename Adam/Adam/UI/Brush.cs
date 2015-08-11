@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace Adam.UI
         Image[] selectionSquares = new Image[1];
         public int[] selectedIndexes;
 
-        bool increased, decreased;
+        int lastScrollWheel;
+
+        public delegate void EventHandler();
+        public event EventHandler SizeChanged;
 
         public void Update()
         {
@@ -27,32 +31,30 @@ namespace Adam.UI
 
         private void CheckIfSizeChanged()
         {
-            if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemPlus) && !increased)
+            MouseState mouse = Mouse.GetState();
+            int scrollWheel = mouse.ScrollWheelValue;
+
+            if (scrollWheel > lastScrollWheel)
             {
-                increased = true;               
                 size++;
-                selectionSquares = new Image[size * size];
+                if (size > MaxSize) size = MaxSize;
+                else
+                {
+                    selectionSquares = new Image[size * size];
+                    SizeChanged();
+                }
             }
-            if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemMinus) && !decreased)
+            if (scrollWheel < lastScrollWheel)
             {
-                decreased = true;               
                 size--;
-                selectionSquares = new Image[size * size];
+                if (size < MinSize) size = MinSize;
+                else
+                {
+                    selectionSquares = new Image[size * size];
+                    SizeChanged();
+                }
             }
-
-            if (InputHelper.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.OemPlus))
-            {
-                increased = false;
-            }
-            if (InputHelper.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.OemMinus))
-            {
-                decreased = false;
-            }
-
-            if (size > MaxSize) size = MaxSize;
-            if (size < MinSize) size = MinSize;
-
-
+            lastScrollWheel = scrollWheel;
         }
 
         private void CreateBrush()

@@ -36,7 +36,7 @@ namespace Adam.UI.Information
 
         public void Create(string text, int ID)
         {
-            this.text = FontHelper.WrapText(textFont, text, drawRectangle.Width - 10);
+            this.text = FontHelper.WrapText(textFont, text, drawRectangle.Width - 20);
             this.ID = ID;
             isActive = true;
             drawRectangle.Y = (30);

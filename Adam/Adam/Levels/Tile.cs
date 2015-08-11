@@ -28,6 +28,7 @@ namespace Adam
         public string name = "";
         Tile[] array;
         public Color color = Color.White;
+        bool hasConnectPattern;
 
 
         #endregion
@@ -60,7 +61,7 @@ namespace Adam
             switch (ID)
             {
                 case 1: //Grass
-                    name = "Dirt";
+                    hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 0);
                     switch (subID)
@@ -136,7 +137,7 @@ namespace Adam
                     }
                     break;
                 case 2: //Stone
-                    name = "Stone";
+                    hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(4, 0);
                     switch (subID)
@@ -204,7 +205,6 @@ namespace Adam
                     }
                     break;
                 case 3: //Marble Floor
-                    name = "Marble Floor";
                     switch (subID)
                     {
                         case 0: //Foundation
@@ -219,7 +219,7 @@ namespace Adam
                     }
                     break;
                 case 4: //Hellrock
-                    name = "Hellrock";
+                    hasConnectPattern = true;
                     startingPoint = new Vector2(4, 5);
                     switch (subID)
                     {
@@ -286,6 +286,8 @@ namespace Adam
                     }
                     break;
                 case 5: //Sand
+                    hasConnectPattern = true;
+                    isSolid = true;
                     startingPoint = new Vector2(8, 0);
                     switch (subID)
                     {
@@ -352,6 +354,8 @@ namespace Adam
                     }
                     break;
                 case 6: //Mesa
+                    hasConnectPattern = true;
+                    isSolid = true;
                     startingPoint = new Vector2(8, 5);
                     switch (subID)
                     {
@@ -421,17 +425,22 @@ namespace Adam
                     position = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 8: //Metal
                     position = new Vector2(12, 2);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 9://Tall Grass
                     position = new Vector2(0, 16);
                     isVoid = true;
                     sunlightPassesThrough = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 10: //Gold
+                    hasConnectPattern = true;
+                    isSolid = true;
                     startingPoint = new Vector2(0, 5);
                     switch (subID)
                     {
@@ -507,6 +516,7 @@ namespace Adam
                     position = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 13: //Door
                     isVoid = true;
@@ -521,6 +531,7 @@ namespace Adam
                     position = new Vector2(14, 7);
                     break;
                 case 17: //Daffodyls
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     position = new Vector2(12, 10);
                     isVoid = true;
                     break;
@@ -553,6 +564,7 @@ namespace Adam
                 case 24: //lava
                     position = new Vector2(0, 15);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 26: //apple
                     isVoid = true;
@@ -581,6 +593,7 @@ namespace Adam
                 case 31: //Tree
                     position = new Vector2(18, 4);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 32: //Small Rock
                     position = new Vector2(13, 18);
@@ -588,10 +601,12 @@ namespace Adam
                 case 33: //Big Rock
                     position = new Vector2(14, 18);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 34: //Medium Rock
                     position = new Vector2(11, 18);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 36: //Sign
                     position = new Vector2(12, 4);
@@ -602,6 +617,7 @@ namespace Adam
                 case 38: //Stone Brick
                     isSolid = true;
                     startingPoint = new Vector2(0, 10);
+                    hasConnectPattern = true;
                     switch (subID)
                     {
                         case 0: //Dirt
@@ -668,6 +684,7 @@ namespace Adam
                     break;
                 case 39: //Snow
                     isSolid = true;
+                    hasConnectPattern = true;
                     startingPoint = new Vector2(4, 10);
                     switch (subID)
                     {
@@ -826,7 +843,64 @@ namespace Adam
         /// <param name="mapWidth">The width of the map in tiles.</param>
         public void FindConnectedTextures(Tile[] array, int mapWidth)
         {
+            //Marble columns
+            if (ID == 18)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                int indexBelow = TileIndex + mapWidth;
+                if (array[indexAbove].ID != 18 && array[indexAbove].ID != 0)
+                {
+                    subID = 1;
+                }
+                else if (array[indexBelow].ID != 18 && array[indexBelow].ID != 0)
+                {
+                    subID = 2;
+                }
+                else subID = 0;
+            }
+
+            //Marble Floor
+            else if (ID == 3 && subID == 0)
+            {
+                if (array[TileIndex - 1].ID != 3)
+                    subID = 2;
+                else if (array[TileIndex + 1].ID != 3)
+                    subID = 1;
+                else subID = 0;
+            }
+
+            //Fences
+            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
+            {
+                subID = 1;
+            }
+
+            //Marble wall
+            else if (ID == 104)
+            {
+                if (array[TileIndex + 1].ID != 104)
+                    subID = 1;
+                if (array[TileIndex - 1].ID != 104)
+                    subID = 2;
+            }
+
+            //Marble Ceiling
+            else if (ID == 29)
+            {
+                if (array[TileIndex + 1].ID != 29)
+                    subID = 1;
+                if (array[TileIndex - 1].ID != 29)
+                    subID = 2;
+            }
+
+
+            //Default Connected Textures Pattern
             //Please don't change this was a headache to make. -Lucas 2015
+
+            if (!hasConnectPattern)
+                return;
+
+
             this.mapWidth = mapWidth;
             this.array = array;
 
@@ -1027,56 +1101,7 @@ namespace Adam
 
                     array[indexAbove].DefineTexture();
                 }
-            }
-
-            //Marble columns
-            else if (ID == 18 && subID == 0)
-            {
-                int indexAbove = TileIndex - mapWidth;
-                int indexBelow = TileIndex + mapWidth;
-                if (array[indexAbove].ID != 18)
-                {
-                    subID = 1;
-                }
-                if (array[indexBelow].ID != 18)
-                {
-                    subID = 2;
-                }
-            }
-
-            //Marble Floor
-            else if (ID == 3 && subID == 0)
-            {
-                if (array[TileIndex - 1].ID != 3)
-                    subID = 2;
-                if (array[TileIndex + 1].ID != 3)
-                    subID = 1;
-                DefineTexture();
-            }
-
-            //Fences
-            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
-            {
-                subID = 1;
-            }
-
-            //Marble wall
-            else if (ID == 104)
-            {
-                if (array[TileIndex + 1].ID != 104)
-                    subID = 1;
-                if (array[TileIndex - 1].ID != 104)
-                    subID = 2;
-            }
-
-            //Marble Ceiling
-            else if (ID == 29)
-            {
-                if (array[TileIndex + 1].ID != 29)
-                    subID = 1;
-                if (array[TileIndex - 1].ID != 29)
-                    subID = 2;
-            }
+            }            
         }
 
         public static Dictionary<int, Color> ColorCodes = new Dictionary<int, Color>()

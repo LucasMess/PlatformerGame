@@ -148,6 +148,7 @@
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\Sign.cs" />
     <Compile Include="Levels\LevelEditor.cs" />
+    <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
