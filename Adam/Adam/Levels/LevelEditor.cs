@@ -17,7 +17,9 @@ namespace Adam.Levels
         ActionBar actionBar = new ActionBar();
         public Brush brush = new Brush();
         public bool onInventory;
+        public bool onWallMode;
         float blackScreenOpacity;
+        bool recentlyChanged;
 
         public Rectangle editorRectangle;
         public int IndexOfMouse;
@@ -57,6 +59,7 @@ namespace Adam.Levels
             CheckIfWantsToSave();
             CheckIfWantsToOpen();
             CheckIfPositioningPlayer();
+            CheckIfChangedToWallMode();
 
             float deltaOpacity = .05f;
 
@@ -74,6 +77,20 @@ namespace Adam.Levels
 
             if (blackScreenOpacity > .7) blackScreenOpacity = .7f;
             if (blackScreenOpacity < 0) blackScreenOpacity = 0;
+        }
+
+        private void CheckIfChangedToWallMode()
+        {
+            if (InputHelper.IsKeyDown(Keys.L) && !recentlyChanged)
+            {
+                onWallMode = !onWallMode;
+                recentlyChanged = true;
+                tileScroll.Load();
+            }
+            if (InputHelper.IsKeyUp(Keys.L))
+            {
+                recentlyChanged = false;
+            }
         }
 
         private void CheckIfWantsToSave()
@@ -145,7 +162,6 @@ namespace Adam.Levels
 
         private void CheckForInput()
         {
-
             foreach (int index in gameWorld.visibleTileArray)
             {
                 if (index >= 0 && index < gameWorld.tileArray.Length)
@@ -210,7 +226,7 @@ namespace Adam.Levels
         {
             foreach (int i in brush.selectedIndexes)
             {
-                int tileID = gameWorld.tileArray[i].ID;
+                int tileID = CurrentArray[i].ID;
 
                 //Wants to destroy. Any block can be destroyed.
                 if (desiredID == 0)
@@ -220,8 +236,8 @@ namespace Adam.Levels
                         continue;
                     else
                     {
-                        gameWorld.tileArray[i].ID = (byte)desiredID;
-                        Destroy(gameWorld.tileArray[i]);
+                        CurrentArray[i].ID = (byte)desiredID;
+                        Destroy(CurrentArray[i]);
                     }
                 }
 
@@ -230,8 +246,8 @@ namespace Adam.Levels
                 {
                     if (tileID == 0)
                     {
-                        gameWorld.tileArray[i].ID = (byte)desiredID;
-                        Construct(gameWorld.tileArray[i]);
+                        CurrentArray[i].ID = (byte)desiredID;
+                        Construct(CurrentArray[i]);
                     }
                     else continue;
                 }
@@ -271,9 +287,9 @@ namespace Adam.Levels
             {
                 if (ind >= 0 && ind < gameWorld.tileArray.Length)
                 {
-                    Tile t = gameWorld.tileArray[ind];
+                    Tile t = CurrentArray[ind];
                     t.DefineTexture();
-                    t.FindConnectedTextures(gameWorld.tileArray,
+                    t.FindConnectedTextures(CurrentArray,
                     gameWorld.worldData.width);
                     t.DefineTexture();
                 }
@@ -323,10 +339,27 @@ namespace Adam.Levels
         public void DrawUI(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White * blackScreenOpacity);
-
             tileScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
+
+            spriteBatch.DrawString(ContentHelper.LoadFont("Fonts/objectiveHead"), onWallMode.ToString(), new Vector2(0, 0), Color.Red);
         }
+
+        public Tile[] CurrentArray
+        {
+            get
+            {
+                if (onWallMode)
+                {
+                    return gameWorld.wallArray;
+                }
+                else
+                {
+                    return gameWorld.tileArray;
+                }
+
+            }
+    }
     }
 
 }

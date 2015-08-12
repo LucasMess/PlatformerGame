@@ -15,7 +15,6 @@ namespace Adam.UI
         bool isActive;
         Image blackSelectionBox;
         int maxHeight = Game1.UserResHeight;
-        byte[] availableIDs;
         List<Tile> tiles = new List<Tile>();
         List<TileName> names = new List<TileName>();
         SpriteFont font;
@@ -38,13 +37,10 @@ namespace Adam.UI
 
         public void Load()
         {
-            availableIDs = new byte[50];
-            for (byte i = 1; i < availableIDs.Length; i++)
-            {
-                availableIDs[i - 1] = i;
-            }
+            tiles = new List<Tile>();
+            names = new List<TileName>();
 
-            foreach (byte ID in availableIDs)
+            foreach (byte ID in CurrentAvailableTileSet)
             {
                 Tile tile = new Tile();
                 tile.ID = ID;
@@ -152,7 +148,7 @@ namespace Adam.UI
                 {
                     if (i != lastHitTileOnScroll)
                     {
-                       // scrollSound.Play();
+                        // scrollSound.Play();
                         lastHitTileOnScroll = i;
                     }
                 }
@@ -188,6 +184,27 @@ namespace Adam.UI
                 FontHelper.DrawWithOutline(spriteBatch, font, t.Name, t.Position, 2, Color.White, Color.Black);
             }
         }
+
+        private byte[] CurrentAvailableTileSet
+        {
+            get
+            {
+                if (GameWorld.Instance.levelEditor.onWallMode)
+                    return AvailableWalls;
+                else return AvailableTiles;
+            }
+        }
+
+        static byte[] AvailableTiles = new byte[]
+        {
+            1,2,5,6,4,39,40,38,10,8,21,3,18,29,30,14,15,16,23,24,25,11,12,22,31,32,34,33,19,27
+        };
+
+        static byte[] AvailableWalls = new byte[]
+        {
+            100,101,102,103,104,105,106
+        };
+            
     }
 
     class TileName
@@ -212,4 +229,5 @@ namespace Adam.UI
             }
         }
     }
+
 }

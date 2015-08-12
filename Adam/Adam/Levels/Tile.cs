@@ -64,147 +64,16 @@ namespace Adam
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 0);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            int rand = GameWorld.RandGen.Next(0, 100);
-                            if (rand < 95)
-                                position = startingPoint + new Vector2(0, 0);
-                            else
-                            {
-                                rand = GameWorld.RandGen.Next(0, 6);
-                                startingPoint = new Vector2(8, 17);
-                                position = startingPoint + new Vector2(rand, 0);
-                            }
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 2: //Stone
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(4, 0);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 3: //Marble Floor
+                    isSolid = true;
                     switch (subID)
                     {
                         case 0: //Foundation
@@ -219,207 +88,22 @@ namespace Adam
                     }
                     break;
                 case 4: //Hellrock
+                    isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 5);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 5: //Sand
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(8, 0);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 6: //Mesa
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(8, 5);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 7: //ShortGrass
                     position = new Vector2(12, 16);
@@ -430,6 +114,7 @@ namespace Adam
                 case 8: //Metal
                     position = new Vector2(12, 2);
                     isVoid = true;
+                    isSolid = true;
                     animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 9://Tall Grass
@@ -442,69 +127,7 @@ namespace Adam
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 5);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 11: //torch
                     position = new Vector2(12, 0);
@@ -519,6 +142,7 @@ namespace Adam
                     animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 13: //Door
+                    isSolid = true;
                     isVoid = true;
                     break;
                 case 14: //Vines
@@ -557,6 +181,7 @@ namespace Adam
                     break;
                 case 21://scaffolding
                     position = new Vector2(13, 6);
+                    isSolid = true;
                     break;
                 case 22: //spikes
                     isVoid = true;
@@ -564,6 +189,7 @@ namespace Adam
                 case 24: //lava
                     position = new Vector2(0, 15);
                     isVoid = true;
+                    isSolid = true;
                     animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 26: //apple
@@ -573,6 +199,7 @@ namespace Adam
                     isVoid = true;
                     break;
                 case 29: //Marble ceiling
+                    isSolid = true;
                     switch (subID)
                     {
                         case 0: //Plain
@@ -589,6 +216,7 @@ namespace Adam
                     break;
                 case 30: //Marble ceiling support
                     position = new Vector2(13, 4);
+                    isSolid = true;
                     break;
                 case 31: //Tree
                     position = new Vector2(18, 4);
@@ -618,137 +246,19 @@ namespace Adam
                     isSolid = true;
                     startingPoint = new Vector2(0, 10);
                     hasConnectPattern = true;
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 39: //Snow
+                case 39: //Ice
                     isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 10);
-                    switch (subID)
-                    {
-                        case 0: //Dirt
-                            position = startingPoint + new Vector2(0, 0);
-                            break;
-                        case 1: //Inner bot right corner
-                            position = startingPoint + new Vector2(1, 0);
-                            break;
-                        case 2: //Inner bot left corner
-                            position = startingPoint + new Vector2(2, 0);
-                            break;
-                        case 3: //Inner top left corner
-                            position = startingPoint + new Vector2(3, 0);
-                            break;
-                        case 4: //Top left corner
-                            position = startingPoint + new Vector2(0, 1);
-                            break;
-                        case 5: //Top
-                            position = startingPoint + new Vector2(1, 1);
-                            break;
-                        case 6: //Top right corner
-                            position = startingPoint + new Vector2(2, 1);
-                            break;
-                        case 7: //Inner top right corner
-                            position = startingPoint + new Vector2(3, 1);
-                            break;
-                        case 8: //Left
-                            position = startingPoint + new Vector2(0, 2);
-                            break;
-                        case 9: //Middle
-                            position = startingPoint + new Vector2(1, 2);
-                            break;
-                        case 10: //Right
-                            position = startingPoint + new Vector2(2, 2);
-                            break;
-                        case 11: //Top vertical
-                            position = startingPoint + new Vector2(3, 2);
-                            break;
-                        case 12: //Bot left corner
-                            position = startingPoint + new Vector2(0, 3);
-                            break;
-                        case 13: //Bot
-                            position = startingPoint + new Vector2(1, 3);
-                            break;
-                        case 14: //Bot right corner
-                            position = startingPoint + new Vector2(2, 3);
-                            break;
-                        case 15: //Middle vertical
-                            position = startingPoint + new Vector2(3, 3);
-                            break;
-                        case 16: //Left horizontal
-                            position = startingPoint + new Vector2(0, 4);
-                            break;
-                        case 17: //Middle horizontal
-                            position = startingPoint + new Vector2(1, 4);
-                            break;
-                        case 18: //Right horizontal
-                            position = startingPoint + new Vector2(2, 4);
-                            break;
-                        case 19: //Bot vertical
-                            position = startingPoint + new Vector2(3, 4);
-                            break;
-                    }
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case 40: //Snow Covered Grass
+                    isSolid = true;
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(8, 10);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
                 #region Wall Textures
@@ -1113,6 +623,75 @@ namespace Adam
             }
         }
 
+        private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
+        {
+            Vector2 position = new Vector2();
+            switch (subID)
+            {
+                case 0: //Dirt
+                    position = startingPoint + new Vector2(0, 0);
+                    break;
+                case 1: //Inner bot right corner
+                    position = startingPoint + new Vector2(1, 0);
+                    break;
+                case 2: //Inner bot left corner
+                    position = startingPoint + new Vector2(2, 0);
+                    break;
+                case 3: //Inner top left corner
+                    position = startingPoint + new Vector2(3, 0);
+                    break;
+                case 4: //Top left corner
+                    position = startingPoint + new Vector2(0, 1);
+                    break;
+                case 5: //Top
+                    position = startingPoint + new Vector2(1, 1);
+                    break;
+                case 6: //Top right corner
+                    position = startingPoint + new Vector2(2, 1);
+                    break;
+                case 7: //Inner top right corner
+                    position = startingPoint + new Vector2(3, 1);
+                    break;
+                case 8: //Left
+                    position = startingPoint + new Vector2(0, 2);
+                    break;
+                case 9: //Middle
+                    position = startingPoint + new Vector2(1, 2);
+                    break;
+                case 10: //Right
+                    position = startingPoint + new Vector2(2, 2);
+                    break;
+                case 11: //Top vertical
+                    position = startingPoint + new Vector2(3, 2);
+                    break;
+                case 12: //Bot left corner
+                    position = startingPoint + new Vector2(0, 3);
+                    break;
+                case 13: //Bot
+                    position = startingPoint + new Vector2(1, 3);
+                    break;
+                case 14: //Bot right corner
+                    position = startingPoint + new Vector2(2, 3);
+                    break;
+                case 15: //Middle vertical
+                    position = startingPoint + new Vector2(3, 3);
+                    break;
+                case 16: //Left horizontal
+                    position = startingPoint + new Vector2(0, 4);
+                    break;
+                case 17: //Middle horizontal
+                    position = startingPoint + new Vector2(1, 4);
+                    break;
+                case 18: //Right horizontal
+                    position = startingPoint + new Vector2(2, 4);
+                    break;
+                case 19: //Bot vertical
+                    position = startingPoint + new Vector2(3, 4);
+                    break;
+            }
+            return position;
+        }
+
         public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
         {
             {1,new Vector2(0,0) },
@@ -1218,7 +797,8 @@ namespace Adam
             {36,"Sign" },
             {37,"Checkpoint" },
             {38,"Stone Brick" },
-            {39,"Snow" },
+            {39,"Ice" },
+            {40,"Snow" },
 
         };
 
