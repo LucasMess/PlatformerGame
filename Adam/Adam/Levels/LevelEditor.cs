@@ -19,7 +19,7 @@ namespace Adam.Levels
 
         public Rectangle editorRectangle;
         public int IndexOfMouse;
-        byte selectedID = 1;
+        public byte selectedID = 1;
 
         SoundFx[] construction = new SoundFx[3];
         SoundFx destruction;
@@ -293,6 +293,11 @@ namespace Adam.Levels
             {
                 gameWorld.particles.Add(new DestructionTileParticle(tile, r));
             }
+        }
+
+        public void DrawBehindTiles(SpriteBatch spriteBatch)
+        {
+            brush.DrawBehind(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)

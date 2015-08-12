@@ -16,6 +16,7 @@ namespace Adam.UI
         public int size = 1;
         int index;
         Image[] selectionSquares = new Image[1];
+        Tile[] selectedBrushTiles = new Tile[1];
         public int[] selectedIndexes;
 
         int lastScrollWheel;
@@ -41,6 +42,7 @@ namespace Adam.UI
                 else
                 {
                     selectionSquares = new Image[size * size];
+                    selectedBrushTiles = new Tile[size * size];
                     SizeChanged();
                 }
             }
@@ -51,6 +53,7 @@ namespace Adam.UI
                 else
                 {
                     selectionSquares = new Image[size * size];
+                    selectedBrushTiles = new Tile[size * size];
                     SizeChanged();
                 }
             }
@@ -66,11 +69,21 @@ namespace Adam.UI
             {
                 if (selectedIndexes[i] >= 0 && selectedIndexes[i] < gameWorld.tileArray.Length)
                 {
+                    //Create grid
                     selectionSquares[i] = new Image();
                     Tile hovered = gameWorld.tileArray[selectedIndexes[i]];
                     selectionSquares[i].Rectangle = hovered.drawRectangle;
                     selectionSquares[i].SourceRectangle = new Microsoft.Xna.Framework.Rectangle(21 * 16, 7 * 16, 16, 16);
                     selectionSquares[i].Texture = GameWorld.SpriteSheet;
+
+                    //Create transparent tiles to show selected tile
+                    Tile fakeTile = new Tile(); 
+                    fakeTile.ID = gameWorld.levelEditor.selectedID;
+                    fakeTile.drawRectangle = hovered.drawRectangle;
+                    fakeTile.DefineTexture();
+                    fakeTile.texture = GameWorld.SpriteSheet;
+                    selectedBrushTiles[i] = fakeTile;
+                   
                 }
             }
 
@@ -97,6 +110,16 @@ namespace Adam.UI
             return indexes.ToArray();
         }
 
+        public void DrawBehind(SpriteBatch spriteBatch)
+        {
+            if (selectedBrushTiles == null) return;
+            foreach(Tile t in selectedBrushTiles)
+            {
+                if (t != null)
+                spriteBatch.Draw(t.texture, t.drawRectangle, t.sourceRectangle, t.color * .5f);
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             if (selectionSquares == null) return;
@@ -105,6 +128,7 @@ namespace Adam.UI
                 if (i.Texture != null)
                 spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);
             }
+
         }
     }
 

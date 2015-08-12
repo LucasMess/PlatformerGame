@@ -952,6 +952,8 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            levelEditor.DrawBehindTiles(spriteBatch);
+
             if (apple != null)
                 apple.Draw(spriteBatch);
             foreach (Chest chest in chestList)
@@ -981,6 +983,7 @@ namespace Adam
                 particles[i].Draw(spriteBatch);
             }
 
+            
             levelEditor.Draw(spriteBatch);
         }
 
