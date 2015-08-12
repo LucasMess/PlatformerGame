@@ -177,6 +177,7 @@
     <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="Particles\NewParticle.cs" />
+    <Compile Include="UI\ActionBar.cs" />
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
@@ -189,7 +190,6 @@
     <Compile Include="Characters\Enemies\SnakeEnemy.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Camera.cs" />
     <Compile Include="Interactables\CDPlayer.cs" />
     <Compile Include="Interactables\Chest.cs" />
@@ -206,6 +206,8 @@
     <Compile Include="Interactables\PowerUp.cs" />
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
+    <Compile Include="UI\Elements\Container.cs" />
+    <Compile Include="UI\Elements\FunctionButton.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
@@ -214,7 +216,7 @@
     <Compile Include="Obstacles\FallingBoulder.cs" />
     <Compile Include="Obstacles\Obstacle.cs" />
     <Compile Include="Obstacles\Spikes.cs" />
-    <Compile Include="UI\Elements\NewButton.cs" />
+    <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="UI\Overlay Elements\Coin.cs" />
     <Compile Include="UI\Overlay Elements\Heart.cs" />

@@ -14,8 +14,10 @@ namespace Adam.Levels
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
+        ActionBar actionBar = new ActionBar();
         public Brush brush = new Brush();
-        bool onInventory;
+        public bool onInventory;
+        float blackScreenOpacity;
 
         public Rectangle editorRectangle;
         public int IndexOfMouse;
@@ -48,17 +50,29 @@ namespace Adam.Levels
         {
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
+            actionBar.Update();
             brush.Update();
 
             CheckIfOnInventory();
             CheckIfWantsToSave();
             CheckIfWantsToOpen();
 
+            float deltaOpacity = .05f;
+
             if (!onInventory)
             {
                 CheckForCameraMovement();
                 CheckForInput();
+
+                blackScreenOpacity -= deltaOpacity;
             }
+            else
+            {
+                blackScreenOpacity += deltaOpacity;
+            }
+
+            if (blackScreenOpacity > .7) blackScreenOpacity = .7f;
+            if (blackScreenOpacity < 0) blackScreenOpacity = 0;
         }
 
         private void CheckIfWantsToSave()
@@ -147,7 +161,7 @@ namespace Adam.Levels
                     {
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
-                            UpdateSelectedTiles(selectedID);                            
+                            UpdateSelectedTiles(selectedID);
                         }
                     }
 
@@ -156,7 +170,7 @@ namespace Adam.Levels
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
                             UpdateSelectedTiles(0);
-                            
+
                         }
                     }
 
@@ -183,13 +197,12 @@ namespace Adam.Levels
                         //Check index of mouse
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
-                            
+
                         }
                     }
                 }
             }
         }
-        
 
         private void UpdateSelectedTiles(int desiredID)
         {
@@ -307,7 +320,10 @@ namespace Adam.Levels
 
         public void DrawUI(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White * blackScreenOpacity);
+
             tileScroll.Draw(spriteBatch);
+            actionBar.Draw(spriteBatch);
         }
     }
 

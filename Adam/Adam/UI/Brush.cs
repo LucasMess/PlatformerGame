@@ -26,6 +26,7 @@ namespace Adam.UI
 
         public void Update()
         {
+            if (GameWorld.Instance.levelEditor.onInventory) return;
             CreateBrush();
             CheckIfSizeChanged();
         }

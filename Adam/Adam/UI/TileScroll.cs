@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Misc;
+using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,6 +19,8 @@ namespace Adam.UI
         List<Tile> tiles = new List<Tile>();
         List<TileName> names = new List<TileName>();
         SpriteFont font;
+        SoundFx scrollSound;
+        int lastHitTileOnScroll;
         float velocityY;
         float velocityX;
         int lastScrollWheel;
@@ -29,9 +32,8 @@ namespace Adam.UI
         public TileScroll()
         {
             font = ContentHelper.LoadFont("Fonts/objectiveText");
-
-            blackSelectionBox.Texture = ContentHelper.LoadTexture("Level Editor/ui_selectionBlackFade");
-            blackSelectionBox.Rectangle = new Rectangle(0, 0, (int)(120 / Game1.WidthRatio), (int)(Game1.DefaultResHeight / Game1.HeightRatio));
+            scrollSound = new SoundFx("Sounds/Level Editor/scroll");
+            blackSelectionBox.Rectangle = new Rectangle(0, 0, (int)(180 / Game1.WidthRatio), (int)(Game1.DefaultResHeight / Game1.HeightRatio));
         }
 
         public void Load()
@@ -75,7 +77,7 @@ namespace Adam.UI
             }
             else isActive = false;
 
-            blackSelectionBox.Rectangle = new Rectangle(tiles[0].drawRectangle.X,0,blackSelectionBox.Rectangle.Width,blackSelectionBox.Rectangle.Height);
+            blackSelectionBox.Rectangle = new Rectangle(tiles[0].drawRectangle.X, 0, blackSelectionBox.Rectangle.Width, blackSelectionBox.Rectangle.Height);
 
             if (isActive)
             {
@@ -89,7 +91,7 @@ namespace Adam.UI
                     {
                         tiles[i].drawRectangle.X = 0;
                     }
-                        velocityX = 0;
+                    velocityX = 0;
                 }
 
                 for (int i = 0; i < tiles.Count; i++)
@@ -100,17 +102,17 @@ namespace Adam.UI
             }
             else
             {
-                if (tiles[0].drawRectangle.X < -300)
+                if (tiles[0].drawRectangle.X < -400)
                 {
                     velocityX = 0;
                     for (int i = 0; i < tiles.Count; i++)
                     {
-                        tiles[i].drawRectangle.X = -300;
+                        tiles[i].drawRectangle.X = -400;
                     }
                 }
                 else
                 {
-                    velocityX = (-300 - tiles[0].drawRectangle.X) / 5;
+                    velocityX -= .6f;
                 }
 
                 for (int i = 0; i < tiles.Count; i++)
@@ -126,10 +128,14 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (lastScrollWheel != scrollWheel)
-                velocityY = (scrollWheel - lastScrollWheel) / 5;
-
-            lastScrollWheel = scrollWheel;
+            if (InputHelper.MouseRectangleRenderTarget.Intersects(blackSelectionBox.Rectangle))
+            {
+                if (lastScrollWheel != scrollWheel)
+                {
+                    velocityY = (scrollWheel - lastScrollWheel) / 5;
+                }
+                lastScrollWheel = scrollWheel;
+            }
 
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -138,6 +144,20 @@ namespace Adam.UI
             }
 
             velocityY = velocityY * .92f;
+
+            //scroll sound
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                Tile t = tiles[i];
+                if (t.drawRectangle.Intersects(new Rectangle(0, 0, 32, 32)))
+                {
+                    if (i != lastHitTileOnScroll)
+                    {
+                       // scrollSound.Play();
+                        lastHitTileOnScroll = i;
+                    }
+                }
+            }
         }
 
         private void CheckIfTileIsHovered()
@@ -159,7 +179,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(blackSelectionBox.Texture, blackSelectionBox.Rectangle, Color.White);
+            spriteBatch.Draw(GameWorld.UI_SpriteSheet, blackSelectionBox.Rectangle, new Rectangle(0, 96, 180, Game1.DefaultResHeight), Color.White * .5f);
 
             foreach (Tile t in tiles)
                 t.DrawByForce(spriteBatch);

@@ -24,29 +24,29 @@ namespace Adam
         Vector2 fifth;
 
         //Main Menu
-        NewButton play;
-        NewButton options;
-        NewButton quit;
-        NewButton multiplayer;
-        NewButton levelEditor;
+        Button play;
+        Button options;
+        Button quit;
+        Button multiplayer;
+        Button levelEditor;
 
         //Level Selector
-        NewButton save1;
-        NewButton save2;
-        NewButton save3;
+        Button save1;
+        Button save2;
+        Button save3;
 
         //Options
-        NewButton smoothPixels;
-        NewButton lighting;
-        NewButton fullscreen;
+        Button smoothPixels;
+        Button lighting;
+        Button fullscreen;
 
         //Multiplayer
-        NewButton hostGame;
-        NewButton joinGame;
-        NewButton connect;
+        Button hostGame;
+        Button joinGame;
+        Button connect;
 
-        NewButton backButton;
-        List<NewButton> buttons = new List<NewButton>();
+        Button backButton;
+        List<Button> buttons = new List<Button>();
 
         Texture2D background, foreground, adam, apple;
         Song theme;
@@ -79,60 +79,60 @@ namespace Adam
             fourth = new Vector2(width, height + (diff * 3));
             fifth = new Vector2(width, height + (diff * 4));
 
-            play = new NewButton(first, "Play");
+            play = new Button(first, "Play");
             play.MouseClicked += play_MouseClicked;
             buttons.Add(play);
 
-            quit = new NewButton(second, "Quit");
+            quit = new Button(second, "Quit");
             quit.MouseClicked += quit_MouseClicked;
             buttons.Add(quit);
 
-            options = new NewButton(third, "Options");
+            options = new Button(third, "Options");
             options.MouseClicked += options_MouseClicked;
             buttons.Add(options);
 
-            multiplayer = new NewButton(fourth, "Multiplayer");
+            multiplayer = new Button(fourth, "Multiplayer");
             multiplayer.MouseClicked += multiplayer_MouseClicked;
             buttons.Add(multiplayer);
 
-            levelEditor = new NewButton(fifth, "God Mode");
+            levelEditor = new Button(fifth, "God Mode");
             levelEditor.MouseClicked += LevelEditor_MouseClicked;
             buttons.Add(levelEditor);
 
-            smoothPixels = new NewButton(first, "Smooth Pixels: ");
+            smoothPixels = new Button(first, "Smooth Pixels: ");
             smoothPixels.MouseClicked += smoothPixels_MouseClicked;
             buttons.Add(smoothPixels);
 
-            lighting = new NewButton(second, "Lighting: ");
+            lighting = new Button(second, "Lighting: ");
             lighting.MouseClicked += lighting_MouseClicked;
             buttons.Add(lighting);
 
-            fullscreen = new NewButton(third, "Fullscreen: ");
+            fullscreen = new Button(third, "Fullscreen: ");
             fullscreen.MouseClicked += fullscreen_MouseClicked;
             fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
             buttons.Add(fullscreen);
 
-            backButton = new NewButton(fifth, "Back");
+            backButton = new Button(fifth, "Back");
             backButton.MouseClicked += backButton_MouseClicked;
             buttons.Add(backButton);
 
-            save1 = new NewButton(first, "Save 1");
+            save1 = new Button(first, "Save 1");
             save1.MouseClicked += level1_MouseClicked;
             buttons.Add(save1);
 
-            save2 = new NewButton(second, "Save 2");
+            save2 = new Button(second, "Save 2");
             save2.MouseClicked += level2_MouseClicked;
             buttons.Add(save2);
 
-            save3 = new NewButton(third, "Save 3");
+            save3 = new Button(third, "Save 3");
             save3.MouseClicked += level3_MouseClicked;
             buttons.Add(save3);
 
-            hostGame = new NewButton(first, "Host Game");
+            hostGame = new Button(first, "Host Game");
             hostGame.MouseClicked += hostGame_MouseClicked;
             buttons.Add(hostGame);
 
-            joinGame = new NewButton(second, "Join Game");
+            joinGame = new Button(second, "Join Game");
             joinGame.MouseClicked += joinGame_MouseClicked;
             buttons.Add(joinGame);
         }

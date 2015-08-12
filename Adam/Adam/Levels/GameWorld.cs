@@ -65,6 +65,7 @@ namespace Adam
         public bool levelComplete;
         public static Random RandGen;
         public static Texture2D SpriteSheet;
+        public static Texture2D UI_SpriteSheet;
         public LightEngine lightEngine;
         public Game1 game1;
         public Camera camera;
@@ -95,6 +96,7 @@ namespace Adam
             placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_12");
+            UI_SpriteSheet = ContentHelper.LoadTexture("Level Editor/ui_spritemap");
             lightEngine = new LightEngine();
         }
 
