@@ -39,7 +39,7 @@ namespace Adam.Network
     }
 
     [Serializable]
-    class GameWorldData
+    class WorldConfigFile
     {
         //public Apple apple;
         //public Tile[] tiles, walls;
@@ -48,15 +48,19 @@ namespace Adam.Network
         //public List<Key> keyList = new List<Key>();
         //public List<Entity> entities = new List<Entity>();
         public int[] tileIDs;
+        public int[] wallIDs;
+        //public string levelName;
 
-        public GameWorldData(GameWorld gw)
+        public WorldConfigFile(GameWorld gw)
         {
             int size = gw.tileArray.Length;
             tileIDs = new int[size];
+            wallIDs = new int[size];
 
             for (int i = 0; i < size; i++)
             {
                 tileIDs[i] = gw.tileArray[i].ID;
+                wallIDs[i] = gw.wallArray[i].ID;
             }
 
             //apple = gw.apple;
@@ -70,16 +74,21 @@ namespace Adam.Network
 
         public void LoadIntoEditor()
         {
-            GameWorld gw = GameWorld.Instance;
-            gw.worldData.IDs = tileIDs;
-            gw.game1.LoadFileIntoWorld(GameMode.Editor);            
+            Load();
+            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Editor);
         }
 
         public void LoadIntoPlay()
         {
+            Load();   
+            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Play);
+        }
+
+        private void Load()
+        {
             GameWorld gw = GameWorld.Instance;
-            gw.worldData.IDs = tileIDs;
-            gw.game1.LoadFileIntoWorld(GameMode.Play);
+            gw.worldData.tileIDs = tileIDs;
+            gw.worldData.wallIDs = wallIDs;
         }
     }
 }

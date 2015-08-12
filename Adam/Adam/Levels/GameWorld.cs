@@ -103,7 +103,7 @@ namespace Adam
 
         public void LoadFromFile(GameMode CurrentGameMode)
         {
-            int[] IDs = worldData.IDs;
+            int[] IDs = worldData.tileIDs;
             this.Content = Game1.Content;
 
             CurrentLevel = CurrentGameMode;

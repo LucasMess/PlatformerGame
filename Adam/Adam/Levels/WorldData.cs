@@ -13,6 +13,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Adam.Levels
 {
@@ -50,7 +51,8 @@ namespace Adam.Levels
         bool privTrig0;
 
         bool dealingWithData;
-        public int[] IDs = new int[200*200];
+        public int[] tileIDs = new int[200 * 200];
+        public int[] wallIDs = new int[200 * 200];
         public int width = 200;
         public int height = 200;
 
@@ -176,18 +178,19 @@ namespace Adam.Levels
 
         private void ThreadOpen()
         {
-            GameWorldData data;
+            WorldConfigFile data;
             OpenFileDialog op = new OpenFileDialog();
             DialogResult dr = op.ShowDialog();
             if (dr == DialogResult.OK)
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                    using (FileStream fs = new FileStream(op.FileName,FileMode.Open))
-                    {
-                        data = (GameWorldData)bf.Deserialize(fs);
-                    }  data.LoadIntoEditor();              
+                using (FileStream fs = new FileStream(op.FileName, FileMode.Open))
+                {
+                    data = (WorldConfigFile)bf.Deserialize(fs);
+                }
+                data.LoadIntoEditor();
             }
-            
+
             dealingWithData = false;
         }
 
@@ -204,13 +207,17 @@ namespace Adam.Levels
         private void ThreadSave()
         {
             SaveFileDialog sv = new SaveFileDialog();
+            sv.AddExtension = true;
+            sv.DefaultExt = "lvl";
+            sv.Title = "Save level as:";
+
             DialogResult dr = sv.ShowDialog();
             if (dr == DialogResult.OK)
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 using (var ms = new MemoryStream())
                 {
-                    bf.Serialize(ms, new GameWorldData(GameWorld.Instance));
+                    bf.Serialize(ms, new WorldConfigFile(GameWorld.Instance));
                     byte[] data = ms.ToArray();
 
                     using (BinaryWriter b = new BinaryWriter(File.Open(sv.FileName, FileMode.Create)))

@@ -56,7 +56,7 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
-            GameWorldData data = new GameWorldData(GameWorld.Instance);
+            WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
             data.LoadIntoPlay();
         }
 

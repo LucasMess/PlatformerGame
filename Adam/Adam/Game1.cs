@@ -230,7 +230,7 @@ namespace Adam
 
             if (desiredGameState == GameState.GameWorld)
             {
-                LoadFileIntoWorld(mode);
+                LoadWorldFromFile(mode);
             }
             else
             {
@@ -239,7 +239,7 @@ namespace Adam
 
         }
 
-        public void LoadFileIntoWorld(GameMode mode)
+        public void LoadWorldFromFile(GameMode mode)
         {
             CurrentGameState = GameState.LoadingScreen;
             CurrentLevel = mode;
