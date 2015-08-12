@@ -285,7 +285,7 @@ namespace Adam
         /// 
         public void Update(GameTime gameTime)
         {
-            if (GameWorld.Instance.CurrentLevel == Level.Editor)
+            if (GameWorld.Instance.CurrentLevel == GameMode.Editor)
             {
                 ContainInGameWorld();
                 return;
@@ -559,14 +559,14 @@ namespace Adam
             GameWorld gameWorld = GameWorld.Instance;
             if (position.X < 0)
                 position.X = 0;
-            if (position.X > (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width))
-                position.X = (int)(gameWorld.worldData.mainMap.Width * Game1.Tilesize - collRectangle.Width);
+            if (position.X > (int)(gameWorld.worldData.width * Game1.Tilesize - collRectangle.Width))
+                position.X = (int)(gameWorld.worldData.width * Game1.Tilesize - collRectangle.Width);
             if (position.Y < 0)
                 position.Y = 0;
-            if (position.Y > (int)(gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Width) + 100)
+            if (position.Y > (int)(gameWorld.worldData.height * Game1.Tilesize - collRectangle.Width) + 100)
             {
-                if (gameWorld.CurrentLevel == Level.Editor)
-                    position.Y = gameWorld.worldData.mainMap.Height * Game1.Tilesize - collRectangle.Height;
+                if (gameWorld.CurrentLevel == GameMode.Editor)
+                    position.Y = gameWorld.worldData.height * Game1.Tilesize - collRectangle.Height;
                 else
                 {
                     KillAndRespawn();
@@ -980,7 +980,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentLevel == Level.Editor) return;
+            if (GameWorld.Instance.CurrentLevel == GameMode.Editor) return;
             //DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);
@@ -1119,7 +1119,7 @@ namespace Adam
             if (tileParticleTimer < Math.Abs(350 / velocity.X))
                 return;
             Tile tile = new Tile();
-            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.mainMap.Width * 2);
+            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.width * 2);
             if (tileIndexBelow < gameWorld.tileArray.Length)
                 tile = gameWorld.tileArray[tileIndexBelow];
             //If the player is above air skip.
@@ -1141,7 +1141,7 @@ namespace Adam
             movementSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             Tile tile = new Tile();
-            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.mainMap.Width * 2)];
+            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.width * 2)];
 
             if (tile.ID != 0 && movementSoundTimer > Math.Abs(500 / velocity.X))
             {

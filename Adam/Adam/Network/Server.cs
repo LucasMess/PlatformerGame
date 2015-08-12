@@ -57,7 +57,7 @@ namespace Adam.Network
             }
         }
 
-        public void SendCurrentLevel(Level CurrentLevel)
+        public void SendCurrentLevel(GameMode CurrentLevel)
         {
             foreach (var cl in clients)
             {

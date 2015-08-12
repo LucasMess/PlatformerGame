@@ -91,47 +91,47 @@ namespace Adam.Noobs
             SoundFx fx;
             switch (GameWorld.Instance.CurrentLevel)
             {
-                case Level.Level1and1:
-                    switch (CurrentConversation)
-                    {
-                        case 0:
-                            fx = new SoundFx("Voices/God/conversation1");
-                            fx.PlayOnce();
-                            Game1.Dialog.Say("Adam! You have been asleep for nearly 7 hours. Tell me, what were you thinking?", this);
-                            break;
-                        case 1:
-                            fx = new SoundFx("Voices/God/conversation2");
-                            fx.PlayOnce();
-                            Game1.Dialog.Say("Pff... I should have known. Why did I make you sleep every day is the biggest question I suppose. Now all that I get is a sleepwalking, lazy, moronic, insensitive, piece of...", this);
-                            break;
-                        case 2:
-                            fx = new SoundFx("Voices/God/conversation1");
-                            fx.PlayOnce();
-                            Game1.Dialog.Say("Erm... I digress, where were we? Oh Yes, saving Eve.", this);
-                            break;
-                        case 3:
-                            fx = new SoundFx("Voices/God/conversation1");
-                            fx.PlayOnce();
-                            Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get her.", this);
-                            break;
-                        case 4:
-                            fx = new SoundFx("Voices/God/conversation2");
-                            fx.PlayOnce();
-                            Objective ob = new Objective();
-                            ob.Create("Find the map at the top of the Tree of Knowledge", 1);
-                            Game1.ObjectiveTracker.AddObjective(ob);
-                            Game1.Dialog.Say("You need a map. I think I have one, but I left it in my observation room at the top of the Tree of Knowledge. You should go get it, It's not too far.", this);
-                            EndConversation = true;
-                            StartingConversation = 5;
-                            break;
-                        case 5:
-                            fx = new SoundFx("Voices/God/conversation2");
-                            fx.PlayOnce();
-                            Game1.Dialog.Say("What are you waiting for? Go find the map!", this);
-                            EndConversation = true;                            
-                            break;
-                    }
-                    break;
+                //case GameMode.Level1and1:
+                //    switch (CurrentConversation)
+                //    {
+                //        case 0:
+                //            fx = new SoundFx("Voices/God/conversation1");
+                //            fx.PlayOnce();
+                //            Game1.Dialog.Say("Adam! You have been asleep for nearly 7 hours. Tell me, what were you thinking?", this);
+                //            break;
+                //        case 1:
+                //            fx = new SoundFx("Voices/God/conversation2");
+                //            fx.PlayOnce();
+                //            Game1.Dialog.Say("Pff... I should have known. Why did I make you sleep every day is the biggest question I suppose. Now all that I get is a sleepwalking, lazy, moronic, insensitive, piece of...", this);
+                //            break;
+                //        case 2:
+                //            fx = new SoundFx("Voices/God/conversation1");
+                //            fx.PlayOnce();
+                //            Game1.Dialog.Say("Erm... I digress, where were we? Oh Yes, saving Eve.", this);
+                //            break;
+                //        case 3:
+                //            fx = new SoundFx("Voices/God/conversation1");
+                //            fx.PlayOnce();
+                //            Game1.Dialog.Say("No, Adam. You cannot just walk into Satan's Palace and get her.", this);
+                //            break;
+                //        case 4:
+                //            fx = new SoundFx("Voices/God/conversation2");
+                //            fx.PlayOnce();
+                //            Objective ob = new Objective();
+                //            ob.Create("Find the map at the top of the Tree of Knowledge", 1);
+                //            Game1.ObjectiveTracker.AddObjective(ob);
+                //            Game1.Dialog.Say("You need a map. I think I have one, but I left it in my observation room at the top of the Tree of Knowledge. You should go get it, It's not too far.", this);
+                //            EndConversation = true;
+                //            StartingConversation = 5;
+                //            break;
+                //        case 5:
+                //            fx = new SoundFx("Voices/God/conversation2");
+                //            fx.PlayOnce();
+                //            Game1.Dialog.Say("What are you waiting for? Go find the map!", this);
+                //            EndConversation = true;                            
+                //            break;
+                //    }
+                //    break;
             }
         }
 

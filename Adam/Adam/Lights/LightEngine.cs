@@ -30,8 +30,8 @@ namespace Adam.Lights
             tiles = GameWorld.Instance.tileArray;
             walls = GameWorld.Instance.wallArray;
 
-            width = GameWorld.Instance.worldData.mainMap.Width;
-            height = GameWorld.Instance.worldData.mainMap.Height;
+            width = GameWorld.Instance.worldData.width;
+            height = GameWorld.Instance.worldData.height;
 
             CreateArray();
             GenerateSunLight();
@@ -92,7 +92,7 @@ namespace Adam.Lights
         {
             Camera camera = GameWorld.Instance.camera;
             WorldData worldData = GameWorld.Instance.worldData;
-            int initial = camera.tileIndex - 17 * 2 * worldData.mainMap.Width - 25 * 2;
+            int initial = camera.tileIndex - 17 * 2 * worldData.width - 25 * 2;
             int maxHoriz = 100;
             int maxVert = 60;
             int i = 0;
@@ -100,7 +100,7 @@ namespace Adam.Lights
             {
                 for (int h = 0; h < maxHoriz; h++)
                 {
-                    visibleLights[i] = initial + worldData.mainMap.Width * v + h;
+                    visibleLights[i] = initial + worldData.width * v + h;
                     i++;
                 }
             }

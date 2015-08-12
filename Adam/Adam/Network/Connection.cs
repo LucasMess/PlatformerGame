@@ -22,7 +22,7 @@ namespace Adam.Network
         BinaryWriter bw;
         BinaryReader br;
 
-        Level CurrentLevel;
+        GameMode CurrentLevel;
 
         public const int DKD_Hello = 1996;
         public const byte DKD_OK = 0;
@@ -96,7 +96,7 @@ namespace Adam.Network
                 byte request = br.ReadByte();
                 if (request == DKD_Level)
                 {
-                    CurrentLevel = (Level)br.ReadByte();
+                    CurrentLevel = (GameMode)br.ReadByte();
                     bw.Write(DKD_OK);
                     bw.Flush();
                 }

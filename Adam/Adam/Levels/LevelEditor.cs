@@ -38,7 +38,7 @@ namespace Adam.Levels
             destruction = new SoundFx("Sounds/Level Editor/destroy1");
 
 
-            editorRectangle = new Rectangle(GameWorld.Instance.worldData.mainMap.Width * Game1.Tilesize / 2, GameWorld.Instance.worldData.mainMap.Height * Game1.Tilesize / 2, Game1.DefaultResWidth, Game1.DefaultResHeight);
+            editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Game1.Tilesize / 2, GameWorld.Instance.worldData.height * Game1.Tilesize / 2, Game1.DefaultResWidth, Game1.DefaultResHeight);
         }
 
         private void TileScroll_TileSelected(TileSelectedArgs e)
@@ -46,7 +46,7 @@ namespace Adam.Levels
             selectedID = (byte)e.ID;
         }
 
-        public void Update(GameTime gameTime, Level CurrentLevel)
+        public void Update(GameTime gameTime, GameMode CurrentLevel)
         {
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
@@ -56,6 +56,7 @@ namespace Adam.Levels
             CheckIfOnInventory();
             CheckIfWantsToSave();
             CheckIfWantsToOpen();
+            CheckIfPositioningPlayer();
 
             float deltaOpacity = .05f;
 
@@ -102,7 +103,7 @@ namespace Adam.Levels
 
         private void CheckForCameraMovement()
         {
-            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.mainMap.Width, GameWorld.Instance.worldData.mainMap.Height);
+            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.width, GameWorld.Instance.worldData.height);
             int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
@@ -128,17 +129,17 @@ namespace Adam.Levels
             {
                 editorRectangle.X = 0;
             }
-            if (editorRectangle.X > (GameWorld.Instance.worldData.mainMap.Width * Game1.Tilesize) - editorRectangle.Width)
+            if (editorRectangle.X > (GameWorld.Instance.worldData.width * Game1.Tilesize) - editorRectangle.Width)
             {
-                editorRectangle.X = (GameWorld.Instance.worldData.mainMap.Width * Game1.Tilesize) - editorRectangle.Width;
+                editorRectangle.X = (GameWorld.Instance.worldData.width * Game1.Tilesize) - editorRectangle.Width;
             }
             if (editorRectangle.Y < 0)
             {
                 editorRectangle.Y = 0;
             }
-            if (editorRectangle.Y > (GameWorld.Instance.worldData.mainMap.Height * Game1.Tilesize) - editorRectangle.Height)
+            if (editorRectangle.Y > (GameWorld.Instance.worldData.height * Game1.Tilesize) - editorRectangle.Height)
             {
-                editorRectangle.Y = (GameWorld.Instance.worldData.mainMap.Height * Game1.Tilesize) - editorRectangle.Height;
+                editorRectangle.Y = (GameWorld.Instance.worldData.height * Game1.Tilesize) - editorRectangle.Height;
             }
         }
 
@@ -197,7 +198,8 @@ namespace Adam.Levels
                         //Check index of mouse
                         if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
-
+                            gameWorld.tileArray[index].ID = 200;
+                            gameWorld.tileArray[index].DefineTexture();
                         }
                     }
                 }
@@ -260,7 +262,7 @@ namespace Adam.Levels
                 {
                     int brushSize = brush.size;
                     int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * gameWorld.worldData.width);
-                    int i = startingIndex - 1 - gameWorld.worldData.mainMap.Width + (h * gameWorld.worldData.mainMap.Width) + w;
+                    int i = startingIndex - 1 - gameWorld.worldData.width + (h * gameWorld.worldData.width) + w;
                     indexes.Add(i);
                 }
             }
@@ -272,7 +274,7 @@ namespace Adam.Levels
                     Tile t = gameWorld.tileArray[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(gameWorld.tileArray,
-                    gameWorld.worldData.mainMap.Width);
+                    gameWorld.worldData.width);
                     t.DefineTexture();
                 }
             }

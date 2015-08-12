@@ -89,7 +89,7 @@ namespace Adam.Network
             catch { }
         }
 
-        public void SendCurrentLevel(Level CurrentLevel)
+        public void SendCurrentLevel(GameMode CurrentLevel)
         {
             bw.Write(DKD_Level);
             bw.Write((byte)CurrentLevel);

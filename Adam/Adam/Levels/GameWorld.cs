@@ -49,7 +49,7 @@ namespace Adam
         Light[] lightArray;
         Light playerLight;
 
-        public Level CurrentLevel;
+        public GameMode CurrentLevel;
         public Player player;
         public Apple apple;
         Background background = new Background();
@@ -98,59 +98,15 @@ namespace Adam
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_12");
             UI_SpriteSheet = ContentHelper.LoadTexture("Level Editor/ui_spritemap");
             lightEngine = new LightEngine();
+            worldData = new WorldData(GameMode.None);
         }
 
-        public void Load(ContentManager Content, Vector2 monitorResolution, Player player, Level CurrentLevel)
-        {
-            worldData = new WorldData(CurrentLevel);
-            cloudList = new List<Cloud>();
-            gemList = new List<Gem>();
-            chestList = new List<Chest>();
-            climbablesList = new List<Climbables>();
-            keyList = new List<Key>();
-            entities = new List<Entity>();
-            particles = new List<Particle>();
-
-            this.Content = Content;
-            this.player = player;
-            popUp.Load(Content);
-
-            this.CurrentLevel = CurrentLevel;
-
-            int maxClouds = worldData.mainMap.Width / 100;
-
-
-            for (int i = 0; i < maxClouds; i++)
-            {
-                cloudList.Add(new Cloud(Content, monitorResolution, maxClouds, i));
-            }
-
-            tileArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
-            wallArray = new Tile[worldData.mainMap.Width * worldData.mainMap.Height];
-
-            LoadGrid(tileArray, worldData.mainMap);
-            LoadGrid(wallArray, worldData.wallMap);
-
-            lightEngine.Load();
-
-            playerLight = new Light();
-            playerLight.Load(Content);
-
-            background.Load(CurrentLevel, this);
-            levelEditor.Load();
-
-            if (worldData.song != null)
-                MediaPlayer.Play(worldData.song);
-
-            placeNotification.Show(worldData.levelName);
-        }
-
-        public void LoadFromFile()
+        public void LoadFromFile(GameMode CurrentGameMode)
         {
             int[] IDs = worldData.IDs;
             this.Content = Game1.Content;
 
-            CurrentLevel = Level.Editor;
+            CurrentLevel = CurrentGameMode;
             worldData = new WorldData(CurrentLevel);
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
@@ -163,8 +119,8 @@ namespace Adam
             player = game1.player;
             popUp.Load(Content);
 
-            int width = 200;
-            int height = 200;
+            int width = worldData.width;
+            int height = worldData.height;
 
             int maxClouds = width / 100;
             for (int i = 0; i < maxClouds; i++)
@@ -173,9 +129,12 @@ namespace Adam
             }
 
             tileArray = new Tile[IDs.Length];
-            
+            wallArray = new Tile[IDs.Length];
+
             ConvertToTiles(tileArray, IDs);
-            //ConvertToTiles(wallArray, new int[IDs.Length]);
+            ConvertToTiles(wallArray, new int[IDs.Length]);
+
+            Thread.MemoryBarrier();
 
             lightEngine.Load();
 
@@ -200,7 +159,7 @@ namespace Adam
             {
                 int Xcoor = (i % width) * Game1.Tilesize;
                 int Ycoor = ((i - (i % width)) / width) * Game1.Tilesize;
-                
+
 
                 array[i] = new Tile();
                 Tile t = array[i];
@@ -209,374 +168,375 @@ namespace Adam
                 t.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
             }
 
-            foreach(Tile t in array)
+            foreach (Tile t in array)
             {
+                t.DefineTexture();
                 t.FindConnectedTextures(array, width);
                 t.DefineTexture();
             }
 
         }
 
-
-        private void LoadGrid(Tile[] array, Texture2D data)
+        private void LoadGrid(Tile[] array)
         {
-            int currentTileNumber = 0;
+            //int currentTileNumber = 0;
 
-            //Create basic grid where all block are transparent and not differentiated
-            for (int r = 1; r <= worldData.mainMap.Height; r++)
-            {
-                for (int c = 1; c <= worldData.mainMap.Width; c++)
-                {
-                    array[currentTileNumber] = new Tile();
-                    array[currentTileNumber].TileIndex = currentTileNumber;
-                    currentTileNumber++;
-                }
-            }
+            ////Create basic grid where all block are transparent and not differentiated
+            //for (int r = 1; r <= worldData.height; r++)
+            //{
+            //    for (int c = 1; c <= worldData.width; c++)
+            //    {
+            //        array[currentTileNumber] = new Tile();
+            //        array[currentTileNumber].TileIndex = currentTileNumber;
+            //        currentTileNumber++;
+            //    }
+            //}
 
-            //Check the pixels and differentiate tiles based off their color
-            int totalPixelCount = worldData.mainMap.Width * worldData.mainMap.Height;
-            Color[] tilePixels = new Color[totalPixelCount];
-            data.GetData<Color>(tilePixels);
+            ////Check the pixels and differentiate tiles based off their color
+            //int totalPixelCount = worldData.width * worldData.height;
+            ////Color[] tilePixels = new Color[totalPixelCount];
+            ////data.GetData<Color>(tilePixels);
 
-            for (int i = 0; i < totalPixelCount; i++)
-            {
-                Tile tile = array[i];
-                Color pixel = tilePixels[i];
-                Vector3 colorCode = new Vector3(pixel.R, pixel.G, pixel.B);
-                int Xcoor = (i % worldData.mainMap.Width) * Game1.Tilesize;
-                int Ycoor = ((i - (i % worldData.mainMap.Width)) / worldData.mainMap.Width) * Game1.Tilesize;
+            //for (int i = 0; i < totalPixelCount; i++)
+            //{
+            //    Tile tile = array[i];
+            //    // Color pixel = tilePixels[i];
+            //    // Vector3 colorCode = new Vector3(pixel.R, pixel.G, pixel.B);
+            //    int Xcoor = (i % worldData.width) * Game1.Tilesize;
+            //    int Ycoor = ((i - (i % worldData.width)) / worldData.width) * Game1.Tilesize;
 
-                tile.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
+            //    tile.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
+            //}
 
-                if (colorCode == new Vector3(0, 189, 31)) //grass
-                {
-                    tile.ID = 1;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(220, 220, 220)) //Stone
-                {
-                    tile.ID = 2;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(255, 255, 255)) //marble
-                {
-                    tile.ID = 3;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(189, 13, 13)) //hellrock
-                {
-                    tile.ID = 4;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(255, 222, 180)) //sand
-                {
-                    tile.ID = 5;
-                    tile.isSolid = true;
-                }
-                //6 vacant
-                //7 shortgrass
-                else if (colorCode == new Vector3(78, 78, 78)) //metaltile
-                {
-                    tileArray[i] = new AnimatedTile(8, tile.drawRectangle);
-                    tileArray[i].isSolid = true;
-                }
-                //9 tallgrass
-                else if (colorCode == new Vector3(225, 127, 0)) //goldBricks
-                {
-                    tile.ID = 10;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(249, 64, 45))//torch
-                {
-                    tileArray[i] = new AnimatedTile(11, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(191, 129, 9)) //chandelier
-                {
-                    tileArray[i] = new AnimatedTile(12, tile.drawRectangle);
-                }
-                //13 see doors
-                else if (colorCode == new Vector3(35, 138, 52)) //vines
-                {
-                    tile.ID = 14;
-                    climbablesList.Add(new Climbables(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(166, 135, 90)) //ladders
-                {
-                    tile.ID = 15;
-                    climbablesList.Add(new Climbables(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(103, 112, 118)) //chains
-                {
-                    tile.ID = 16;
-                    climbablesList.Add(new Climbables(Xcoor, Ycoor));
-                }
-                //17 daffodyls
-                else if (colorCode == new Vector3(239, 239, 239)) //marbleworldData.mainMap.Width
-                {
-                    tile.ID = 18;
-                }
-                else if (colorCode == new Vector3(243, 220, 28)) //chest
-                {
-                    tile.ID = 19;
-                    chestList.Add(new Chest(new Vector2(Xcoor, Ycoor), Content, false));
-                }
-                else if (colorCode == new Vector3(16, 52, 207)) //tech
-                {
-                    //REMOVED
-                }
-                else if (colorCode == new Vector3(217, 97, 9)) //scaffolding
-                {
-                    tile.ID = 21;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(224, 58, 0)) // Spikes
-                {
-                    tile.ID = 22;
-                    entities.Add(new Spikes(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(0, 100, 255)) // Water
-                {
-                    tileArray[i] = new AnimatedTile(23, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(244, 121, 0)) // Lava
-                {
-                    tileArray[i] = new AnimatedTile(24, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(0, 255, 255)) // Poisoned Water
-                {
-                    tileArray[i] = new AnimatedTile(25, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(255, 255, 0)) // Golden Apple
-                {
-                    tile.ID = 26;
-                    apple = new Apple(Xcoor, Ycoor);
-                }
-                else if (colorCode == new Vector3(255, 244, 147)) // Golden Apple
-                {
-                    tile.ID = 27;
-                    chestList.Add(new Chest(new Vector2(Xcoor, Ycoor), Content, true));
-                }
-                else if (colorCode == new Vector3(255, 255, 250)) // Marble ceiling
-                {
-                    tile.ID = 29;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(255, 255, 241)) // Marble ceiling support
-                {
-                    tile.ID = 30;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(0, 138, 50)) //Tree
-                {
-                    tileArray[i] = new AnimatedTile(31, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(127, 169, 186)) //Small Rock
-                {
-                    tile.ID = 32;
-                }
-                else if (colorCode == new Vector3(127, 169, 187)) //Big Rock
-                {
-                    tileArray[i] = new AnimatedTile(33, tile.drawRectangle);
-                }
-                else if (colorCode == new Vector3(127, 169, 188)) //Medium Rock
-                {
-                    tileArray[i] = new AnimatedTile(34, tile.drawRectangle);
-                }
-                //35 Small pebbles - automatic
-                else if (colorCode == new Vector3(213, 172, 31)) //Sign 1
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 1));
-                }
-                else if (colorCode == new Vector3(213, 172, 32)) //Sign 2
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 2));
-                }
-                else if (colorCode == new Vector3(213, 172, 33)) //Sign 3
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 3));
-                }
-                else if (colorCode == new Vector3(213, 172, 34)) //Sign 4
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 4));
-                }
-                else if (colorCode == new Vector3(213, 172, 35)) //Sign 5
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 5));
-                }
-                else if (colorCode == new Vector3(213, 172, 36)) //Sign 6
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 6));
-                }
-                else if (colorCode == new Vector3(213, 172, 37)) //Sign 7
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 7));
-                }
-                else if (colorCode == new Vector3(213, 172, 38)) //Sign 8
-                {
-                    tile.ID = 36;
-                    entities.Add(new Sign(Xcoor, Ycoor, 8));
-                }
-                else if (colorCode == new Vector3(30, 255, 245)) //CheckPoint
-                {
-                    tile.ID = 37;
-                    entities.Add(new CheckPoint(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(141, 157, 181)) //Stone Bricks
-                {
-                    tile.ID = 38;
-                }
-                else if (colorCode == new Vector3(47, 205, 244)) //Snow
-                {
-                    tile.ID = 39;
-                }
-
-
-                //CHARACTERS AND OTHERS
-                else if (colorCode == new Vector3(0, 255, 0)) //player
-                {
-                    player.Initialize(Xcoor, Ycoor);
-                }
-                else if (colorCode == new Vector3(81, 103, 34)) //snake
-                {
-                    entities.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
-                }
-                else if (colorCode == new Vector3(143, 148, 0)) //potato
-                {
-                    entities.Add(new PotatoEnemy(Xcoor, Ycoor, Content));
-                }
-                else if (colorCode == new Vector3(177, 0, 203)) //God
-                {
-                    entities.Add(new God(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(0, 82, 0))
-                {
-                    entities.Add(new Frog(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
-                {
-                    entities.Add(new FallingBoulder(Xcoor, Ycoor));
-                }
-                else if (colorCode == new Vector3(116, 143, 220)) //Platform Wide Slow Up
-                {
-                    bool found = false;
-                    foreach (WidePlatformUp wi in entities.OfType<WidePlatformUp>())
-                    {
-                        found = true;
-                        wi.SetStartPoint(Xcoor, Ycoor);
-                        break;
-                    }
-                    if (!found)
-                    {
-                        WidePlatformUp wi = new WidePlatformUp(player);
-                        wi.SetStartPoint(Xcoor, Ycoor);
-                        entities.Add(wi);
-                    }
-                }
-                else if (colorCode == new Vector3(116, 143, 221)) //Platform Wide Slow Up END
-                {
-                    bool found = false;
-                    foreach (WidePlatformUp wi in entities.OfType<WidePlatformUp>())
-                    {
-                        found = true;
-                        wi.SetEndPoint(Xcoor, Ycoor);
-                        break;
-                    }
-                    if (!found)
-                    {
-                        WidePlatformUp wi = new WidePlatformUp(player);
-                        wi.SetEndPoint(Xcoor, Ycoor);
-                        entities.Add(wi);
-                    }
-                }
+            //    if (colorCode == new Vector3(0, 189, 31)) //grass
+            //    {
+            //        tile.ID = 1;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(220, 220, 220)) //Stone
+            //    {
+            //        tile.ID = 2;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(255, 255, 255)) //marble
+            //    {
+            //        tile.ID = 3;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(189, 13, 13)) //hellrock
+            //    {
+            //        tile.ID = 4;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(255, 222, 180)) //sand
+            //    {
+            //        tile.ID = 5;
+            //        tile.isSolid = true;
+            //    }
+            //    6 vacant
+            //    7 shortgrass
+            //    else if (colorCode == new Vector3(78, 78, 78)) //metaltile
+            //    {
+            //        tileArray[i] = new AnimatedTile(8, tile.drawRectangle);
+            //        tileArray[i].isSolid = true;
+            //    }
+            //    9 tallgrass
+            //    else if (colorCode == new Vector3(225, 127, 0)) //goldBricks
+            //    {
+            //        tile.ID = 10;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(249, 64, 45))//torch
+            //    {
+            //        tileArray[i] = new AnimatedTile(11, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(191, 129, 9)) //chandelier
+            //    {
+            //        tileArray[i] = new AnimatedTile(12, tile.drawRectangle);
+            //    }
+            //    13 see doors
+            //    else if (colorCode == new Vector3(35, 138, 52)) //vines
+            //    {
+            //        tile.ID = 14;
+            //        climbablesList.Add(new Climbables(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(166, 135, 90)) //ladders
+            //    {
+            //        tile.ID = 15;
+            //        climbablesList.Add(new Climbables(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(103, 112, 118)) //chains
+            //    {
+            //        tile.ID = 16;
+            //        climbablesList.Add(new Climbables(Xcoor, Ycoor));
+            //    }
+            //    17 daffodyls
+            //    else if (colorCode == new Vector3(239, 239, 239)) //marbleworldData.width
+            //    {
+            //        tile.ID = 18;
+            //    }
+            //    else if (colorCode == new Vector3(243, 220, 28)) //chest
+            //    {
+            //        tile.ID = 19;
+            //        chestList.Add(new Chest(new Vector2(Xcoor, Ycoor), Content, false));
+            //    }
+            //    else if (colorCode == new Vector3(16, 52, 207)) //tech
+            //    {
+            //        REMOVED
+            //    }
+            //    else if (colorCode == new Vector3(217, 97, 9)) //scaffolding
+            //    {
+            //        tile.ID = 21;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(224, 58, 0)) // Spikes
+            //    {
+            //        tile.ID = 22;
+            //        entities.Add(new Spikes(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(0, 100, 255)) // Water
+            //    {
+            //        tileArray[i] = new AnimatedTile(23, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(244, 121, 0)) // Lava
+            //    {
+            //        tileArray[i] = new AnimatedTile(24, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(0, 255, 255)) // Poisoned Water
+            //    {
+            //        tileArray[i] = new AnimatedTile(25, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(255, 255, 0)) // Golden Apple
+            //    {
+            //        tile.ID = 26;
+            //        apple = new Apple(Xcoor, Ycoor);
+            //    }
+            //    else if (colorCode == new Vector3(255, 244, 147)) // Golden Apple
+            //    {
+            //        tile.ID = 27;
+            //        chestList.Add(new Chest(new Vector2(Xcoor, Ycoor), Content, true));
+            //    }
+            //    else if (colorCode == new Vector3(255, 255, 250)) // Marble ceiling
+            //    {
+            //        tile.ID = 29;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(255, 255, 241)) // Marble ceiling support
+            //    {
+            //        tile.ID = 30;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(0, 138, 50)) //Tree
+            //    {
+            //        tileArray[i] = new AnimatedTile(31, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(127, 169, 186)) //Small Rock
+            //    {
+            //        tile.ID = 32;
+            //    }
+            //    else if (colorCode == new Vector3(127, 169, 187)) //Big Rock
+            //    {
+            //        tileArray[i] = new AnimatedTile(33, tile.drawRectangle);
+            //    }
+            //    else if (colorCode == new Vector3(127, 169, 188)) //Medium Rock
+            //    {
+            //        tileArray[i] = new AnimatedTile(34, tile.drawRectangle);
+            //    }
+            //    35 Small pebbles -automatic
+            //    else if (colorCode == new Vector3(213, 172, 31)) //Sign 1
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 1));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 32)) //Sign 2
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 2));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 33)) //Sign 3
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 3));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 34)) //Sign 4
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 4));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 35)) //Sign 5
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 5));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 36)) //Sign 6
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 6));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 37)) //Sign 7
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 7));
+            //    }
+            //    else if (colorCode == new Vector3(213, 172, 38)) //Sign 8
+            //    {
+            //        tile.ID = 36;
+            //        entities.Add(new Sign(Xcoor, Ycoor, 8));
+            //    }
+            //    else if (colorCode == new Vector3(30, 255, 245)) //CheckPoint
+            //    {
+            //        tile.ID = 37;
+            //        entities.Add(new CheckPoint(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(141, 157, 181)) //Stone Bricks
+            //    {
+            //        tile.ID = 38;
+            //    }
+            //    else if (colorCode == new Vector3(47, 205, 244)) //Snow
+            //    {
+            //        tile.ID = 39;
+            //    }
 
 
-                //WALLS
-                else if (colorCode == new Vector3(174, 98, 0)) //goldBricks Wall
-                {
-                    tile.ID = 100;
-                }
-                else if (colorCode == new Vector3(174, 174, 174)) //stonewall
-                {
-                    tile.ID = 101;
-                }
-                else if (colorCode == new Vector3(131, 68, 0)) //dirtwall
-                {
-                    tile.ID = 102;
-                }
-                else if (colorCode == new Vector3(107, 145, 171)) //fences
-                {
-                    tile.ID = 103;
-                }
-                else if (colorCode == new Vector3(225, 225, 225)) //marblewall
-                {
-                    tile.ID = 104;
-                }
-                else if (colorCode == new Vector3(154, 105, 11)) //sandwall
-                {
-                    tile.ID = 105;
-                }
+            //    CHARACTERS AND OTHERS
+            //    else if (colorCode == new Vector3(0, 255, 0)) //player
+            //    {
+            //        player.Initialize(Xcoor, Ycoor);
+            //    }
+            //    else if (colorCode == new Vector3(81, 103, 34)) //snake
+            //    {
+            //        entities.Add(new SnakeEnemy(Xcoor, Ycoor, Content, this));
+            //    }
+            //    else if (colorCode == new Vector3(143, 148, 0)) //potato
+            //    {
+            //        entities.Add(new PotatoEnemy(Xcoor, Ycoor, Content));
+            //    }
+            //    else if (colorCode == new Vector3(177, 0, 203)) //God
+            //    {
+            //        entities.Add(new God(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(0, 82, 0))
+            //    {
+            //        entities.Add(new Frog(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(241, 22, 233)) //falling boulder
+            //    {
+            //        entities.Add(new FallingBoulder(Xcoor, Ycoor));
+            //    }
+            //    else if (colorCode == new Vector3(116, 143, 220)) //Platform Wide Slow Up
+            //    {
+            //        bool found = false;
+            //        foreach (WidePlatformUp wi in entities.OfType<WidePlatformUp>())
+            //        {
+            //            found = true;
+            //            wi.SetStartPoint(Xcoor, Ycoor);
+            //            break;
+            //        }
+            //        if (!found)
+            //        {
+            //            WidePlatformUp wi = new WidePlatformUp(player);
+            //            wi.SetStartPoint(Xcoor, Ycoor);
+            //            entities.Add(wi);
+            //        }
+            //    }
+            //    else if (colorCode == new Vector3(116, 143, 221)) //Platform Wide Slow Up END
+            //    {
+            //        bool found = false;
+            //        foreach (WidePlatformUp wi in entities.OfType<WidePlatformUp>())
+            //        {
+            //            found = true;
+            //            wi.SetEndPoint(Xcoor, Ycoor);
+            //            break;
+            //        }
+            //        if (!found)
+            //        {
+            //            WidePlatformUp wi = new WidePlatformUp(player);
+            //            wi.SetEndPoint(Xcoor, Ycoor);
+            //            entities.Add(wi);
+            //        }
+            //    }
 
-                else if (colorCode == new Vector3(191, 81, 0)) //door secret 1
-                {
-                    entities.Add(new Door(Xcoor, Ycoor, Content, 1, i));
-                    tile.ID = 13;
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(191, 81, 1)) //door secret 2
-                {
-                    tile.ID = 13;
-                    entities.Add(new Door(Xcoor, Ycoor, Content, 2, i));
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(191, 81, 2)) //door secret 3
-                {
-                    tile.ID = 13;
-                    entities.Add(new Door(Xcoor, Ycoor, Content, 3, i));
-                    tile.isSolid = true;
-                }
-                else if (colorCode == new Vector3(246, 255, 0)) //key secret 1
-                {
-                    keyList.Add(new Key(Xcoor, Ycoor, Content, 1));
-                }
-                else if (colorCode == new Vector3(246, 255, 1)) //key secret 2
-                {
-                    keyList.Add(new Key(Xcoor, Ycoor, Content, 2));
-                }
-                else if (colorCode == new Vector3(246, 255, 2)) //key secret 3
-                {
-                    keyList.Add(new Key(Xcoor, Ycoor, Content, 3));
-                }
-            }
+
+            //    WALLS
+            //    else if (colorCode == new Vector3(174, 98, 0)) //goldBricks Wall
+            //    {
+            //        tile.ID = 100;
+            //    }
+            //    else if (colorCode == new Vector3(174, 174, 174)) //stonewall
+            //    {
+            //        tile.ID = 101;
+            //    }
+            //    else if (colorCode == new Vector3(131, 68, 0)) //dirtwall
+            //    {
+            //        tile.ID = 102;
+            //    }
+            //    else if (colorCode == new Vector3(107, 145, 171)) //fences
+            //    {
+            //        tile.ID = 103;
+            //    }
+            //    else if (colorCode == new Vector3(225, 225, 225)) //marblewall
+            //    {
+            //        tile.ID = 104;
+            //    }
+            //    else if (colorCode == new Vector3(154, 105, 11)) //sandwall
+            //    {
+            //        tile.ID = 105;
+            //    }
+
+            //    else if (colorCode == new Vector3(191, 81, 0)) //door secret 1
+            //    {
+            //        entities.Add(new Door(Xcoor, Ycoor, Content, 1, i));
+            //        tile.ID = 13;
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(191, 81, 1)) //door secret 2
+            //    {
+            //        tile.ID = 13;
+            //        entities.Add(new Door(Xcoor, Ycoor, Content, 2, i));
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(191, 81, 2)) //door secret 3
+            //    {
+            //        tile.ID = 13;
+            //        entities.Add(new Door(Xcoor, Ycoor, Content, 3, i));
+            //        tile.isSolid = true;
+            //    }
+            //    else if (colorCode == new Vector3(246, 255, 0)) //key secret 1
+            //    {
+            //        keyList.Add(new Key(Xcoor, Ycoor, Content, 1));
+            //    }
+            //    else if (colorCode == new Vector3(246, 255, 1)) //key secret 2
+            //    {
+            //        keyList.Add(new Key(Xcoor, Ycoor, Content, 2));
+            //    }
+            //    else if (colorCode == new Vector3(246, 255, 2)) //key secret 3
+            //    {
+            //        keyList.Add(new Key(Xcoor, Ycoor, Content, 3));
+            //    }
+            //}
 
             //Connected Textures
-            foreach (Tile tile in array)
-            {
-                if (tile.ID == 1 || tile.ID == 2 || tile.ID == 4 || tile.ID == 5 || tile.ID == 10)
-                {
-                    tile.FindConnectedTextures(array, worldData.mainMap.Width);
-                }
-            }
+            //foreach (Tile tile in array)
+            //{
+            //    if (tile.ID == 1 || tile.ID == 2 || tile.ID == 4 || tile.ID == 5 || tile.ID == 10)
+            //    {
+            //        tile.FindConnectedTextures(array, worldData.width);
+            //    }
+            //}
 
             //Now that all IDs have been given, define all textures for the tiles.
-            foreach (Tile tile in array)
-            {
-                tile.DefineTexture();
-                tile.AddRandomlyGeneratedDecoration(array, worldData.mainMap.Width);
-                tile.DefineTexture();
-            }
+            //foreach (Tile tile in array)
+            //    {
+            //        tile.DefineTexture();
+            //        tile.AddRandomlyGeneratedDecoration(array, worldData.width);
+            //        tile.DefineTexture();
+            //    }
 
             //Check lava to see if it is on top for lava effects.
-            foreach (Liquid lava in entities.OfType<Liquid>())
-            {
-                lava.CheckOnTop(array, this);
-            }
+            //foreach (Liquid lava in entities.OfType<Liquid>())
+            //    {
+            //        lava.CheckOnTop(array, this);
+            //    }
 
         }
 
@@ -585,18 +545,18 @@ namespace Adam
             if (gem.velocity.X == 0 && gem.velocity.Y == 0) { }
             else
             {
-                gemTilePos = (int)(gem.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(gem.topMidBound.X / Game1.Tilesize);
+                gemTilePos = (int)(gem.topMidBound.Y / Game1.Tilesize * worldData.width) + (int)(gem.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = gemTilePos - worldData.mainMap.Width - 1;
-                q[1] = gemTilePos - worldData.mainMap.Width;
-                q[2] = gemTilePos - worldData.mainMap.Width + 1;
+                q[0] = gemTilePos - worldData.width - 1;
+                q[1] = gemTilePos - worldData.width;
+                q[2] = gemTilePos - worldData.width + 1;
                 q[3] = gemTilePos - 1;
                 q[4] = gemTilePos;
                 q[5] = gemTilePos + 1;
-                q[6] = gemTilePos + worldData.mainMap.Width - 1;
-                q[7] = gemTilePos + worldData.mainMap.Width;
-                q[8] = gemTilePos + worldData.mainMap.Width + 1;
+                q[6] = gemTilePos + worldData.width - 1;
+                q[7] = gemTilePos + worldData.width;
+                q[8] = gemTilePos + worldData.width + 1;
 
                 //test = q;
 
@@ -660,21 +620,21 @@ namespace Adam
                 }
 
                 SkipDamage:
-                enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.mainMap.Width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
+                enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
 
                 int[] q = new int[12];
-                q[0] = enemyTilePos - worldData.mainMap.Width - 1;
-                q[1] = enemyTilePos - worldData.mainMap.Width;
-                q[2] = enemyTilePos - worldData.mainMap.Width + 1;
+                q[0] = enemyTilePos - worldData.width - 1;
+                q[1] = enemyTilePos - worldData.width;
+                q[2] = enemyTilePos - worldData.width + 1;
                 q[3] = enemyTilePos - 1;
                 q[4] = enemyTilePos;
                 q[5] = enemyTilePos + 1;
-                q[6] = enemyTilePos + worldData.mainMap.Width - 1;
-                q[7] = enemyTilePos + worldData.mainMap.Width;
-                q[8] = enemyTilePos + worldData.mainMap.Width + 1;
-                q[9] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width - 1;
-                q[10] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width;
-                q[11] = enemyTilePos + worldData.mainMap.Width + worldData.mainMap.Width + 1;
+                q[6] = enemyTilePos + worldData.width - 1;
+                q[7] = enemyTilePos + worldData.width;
+                q[8] = enemyTilePos + worldData.width + 1;
+                q[9] = enemyTilePos + worldData.width + worldData.width - 1;
+                q[10] = enemyTilePos + worldData.width + worldData.width;
+                q[11] = enemyTilePos + worldData.width + worldData.width + 1;
 
                 //test = q;
 
@@ -718,19 +678,19 @@ namespace Adam
 
         }
 
-        public void Update(GameTime gameTime, Level CurrentLevel, Camera camera)
+        public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
             this.Content = Game1.Content;
             this.gameTime = gameTime;
             this.camera = camera;
 
-            if (CurrentLevel == Level.Editor)
+            if (CurrentLevel == GameMode.Editor)
             {
                 levelEditor.Update(gameTime, CurrentLevel);
             }
             else
             {
-                camera.UpdateSmoothly(player.collRectangle, worldData.mainMap.Width, worldData.mainMap.Height);
+                camera.UpdateSmoothly(player.collRectangle, worldData.width, worldData.height);
             }
 
             TimesUpdated++;
@@ -911,7 +871,7 @@ namespace Adam
             if (player.isDead == false)
             {
                 //defines which tiles are in range
-                int initial = camera.tileIndex - 17 * worldData.mainMap.Width - 25;
+                int initial = camera.tileIndex - 17 * worldData.width - 25;
                 int maxHoriz = 50;
                 int maxVert = 30;
                 int i = 0;
@@ -920,11 +880,11 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleTileArray[i] = initial + worldData.mainMap.Width * v + h;
+                        visibleTileArray[i] = initial + worldData.width * v + h;
                         i++;
                     }
                 }
-                initial = camera.tileIndex - 17 * 2 * worldData.mainMap.Width - 25 * 2;
+                initial = camera.tileIndex - 17 * 2 * worldData.width - 25 * 2;
                 maxHoriz = 100;
                 maxVert = 60;
                 i = 0;
@@ -932,7 +892,7 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleLightArray[i] = initial + worldData.mainMap.Width * v + h;
+                        visibleLightArray[i] = initial + worldData.width * v + h;
                         i++;
                     }
                 }
@@ -954,6 +914,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (CurrentLevel == GameMode.Editor)
             levelEditor.DrawBehindTiles(spriteBatch);
 
             if (apple != null)
@@ -985,8 +946,8 @@ namespace Adam
                 particles[i].Draw(spriteBatch);
             }
 
-            
-            levelEditor.Draw(spriteBatch);
+            if (CurrentLevel == GameMode.Editor)
+                levelEditor.Draw(spriteBatch);
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -1019,7 +980,9 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
             placeNotification.Draw(spriteBatch);
-            levelEditor.DrawUI(spriteBatch);
+
+            if (CurrentLevel == GameMode.Editor)
+                levelEditor.DrawUI(spriteBatch);
         }
 
         public void ResetWorld()

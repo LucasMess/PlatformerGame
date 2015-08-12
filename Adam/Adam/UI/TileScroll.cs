@@ -63,7 +63,6 @@ namespace Adam.UI
 
         public void Update()
         {
-
             CheckIfActive();
             CheckIfScrolling();
             CheckIfTileIsHovered();

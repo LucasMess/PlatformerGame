@@ -11,7 +11,7 @@ namespace Adam.GameData
     {
         double progress;
         double maxprogress = 1000;
-        Level currentLevel;
+        GameMode currentLevel;
         PlayerStats playerStats;
         ObjectiveTracker objTracker;
 
@@ -20,7 +20,7 @@ namespace Adam.GameData
             objTracker = new ObjectiveTracker();
             playerStats = new PlayerStats();
             playerStats.SetToDefault();
-            currentLevel = Level.Level1and1;
+            currentLevel = GameMode.None;
             progress = 0;
         }
 
@@ -30,7 +30,7 @@ namespace Adam.GameData
             set { playerStats = value; }
         }
 
-        public Level CurrentLevel
+        public GameMode CurrentLevel
         {
             get { return currentLevel; }
             set { currentLevel = value; }

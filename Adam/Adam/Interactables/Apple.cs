@@ -49,7 +49,7 @@ namespace Adam
                 winTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (winTimer > 2000)
                 {
-                    game1.ChangeState(GameState.GameWorld, GetNextLevel());
+                    game1.ChangeState(GameState.MainMenu,GameMode.None);
                 }
             }
 
@@ -69,31 +69,5 @@ namespace Adam
             }
         }
 
-        private Level GetNextLevel()
-        {
-            switch (game1.CurrentLevel)
-            {
-                case Level.Level0:
-                    return Level.Level0;
-
-                case Level.Level1and1:
-                    return Level.Level2and1;
-                case Level.Level1and2:
-                    return Level.Level1and3;
-                case Level.Level1and3:
-                    return Level.Level2and1;
-                    
-                case Level.Level2and1:
-                    break;
-                case Level.Level3and1:
-                    break;
-                case Level.Level4and1:
-                    break;
-                default:
-                    break;
-            }
-
-            return Level.Level0;
-        }
     }
 }

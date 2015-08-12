@@ -131,22 +131,22 @@ namespace Adam
         /// <returns>The location of the collision.</returns>
         public CollisionLocation CheckTerrainCollision(GameWorld map, out Tile tile)
         {
-            Texture2D mapTexture = map.worldData.mainMap;
+            int width = map.worldData.width;
 
             //Gets all the tile indexes of the tiles surrounding the entity.
             int[] q = new int[12];
-            q[0] = TileIndex - mapTexture.Width - 1;
-            q[1] = TileIndex - mapTexture.Width;
-            q[2] = TileIndex - mapTexture.Width + 1;
+            q[0] = TileIndex - width - 1;
+            q[1] = TileIndex - width;
+            q[2] = TileIndex - width + 1;
             q[3] = TileIndex - 1;
             q[4] = TileIndex;
             q[5] = TileIndex + 1;
-            q[6] = TileIndex + mapTexture.Width - 1;
-            q[7] = TileIndex + mapTexture.Width;
-            q[8] = TileIndex + mapTexture.Width + 1;
-            q[9] = TileIndex + mapTexture.Width + mapTexture.Width - 1;
-            q[10] = TileIndex + mapTexture.Width + mapTexture.Width;
-            q[11] = TileIndex + mapTexture.Width + mapTexture.Width + 1;
+            q[6] = TileIndex + width - 1;
+            q[7] = TileIndex + width;
+            q[8] = TileIndex + width + 1;
+            q[9] = TileIndex + width + width - 1;
+            q[10] = TileIndex + width + width;
+            q[11] = TileIndex + width + width + 1;
 
             //check the tiles around the entity for collision
             foreach (int quadrant in q)
@@ -256,7 +256,7 @@ namespace Adam
         public int GetTileIndex()
         {
             if (gameWorld != null)
-                return (int)(collRectangle.Center.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)(collRectangle.Center.X / Game1.Tilesize);
+                return (int)(collRectangle.Center.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(collRectangle.Center.X / Game1.Tilesize);
             else return 0;
         }
 
@@ -268,7 +268,7 @@ namespace Adam
         public int GetTileIndex(Vector2 coord)
         {
             if (gameWorld != null)
-                return (int)((int)coord.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)((int)coord.X / Game1.Tilesize);
+                return (int)((int)coord.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)((int)coord.X / Game1.Tilesize);
             else throw new Exception("Map is null");
         }
 
@@ -279,7 +279,7 @@ namespace Adam
         /// <returns></returns>
         public int[] GetNearbyTileIndexes(GameWorld map)
         {
-            int width = map.worldData.mainMap.Width;
+            int width = map.worldData.width;
             int startingIndex = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) - width - 1;
             int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
@@ -403,7 +403,7 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
-            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (gameWorld.worldData.mainMap.Width * (collRectangle.Height / Game1.Tilesize));
+            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (gameWorld.worldData.width * (collRectangle.Height / Game1.Tilesize));
             if (indexBelowEntity >= 0 && indexBelowEntity < gameWorld.tileArray.Length)
                 if (!gameWorld.tileArray[indexBelowEntity].isSolid)
                 {

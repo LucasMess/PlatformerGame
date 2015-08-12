@@ -116,17 +116,17 @@ namespace Adam
             backButton.MouseClicked += backButton_MouseClicked;
             buttons.Add(backButton);
 
-            save1 = new Button(first, "Save 1");
-            save1.MouseClicked += level1_MouseClicked;
-            buttons.Add(save1);
+            //save1 = new Button(first, "Save 1");
+            //save1.MouseClicked += level1_MouseClicked;
+            //buttons.Add(save1);
 
-            save2 = new Button(second, "Save 2");
-            save2.MouseClicked += level2_MouseClicked;
-            buttons.Add(save2);
+            //save2 = new Button(second, "Save 2");
+            //save2.MouseClicked += level2_MouseClicked;
+            //buttons.Add(save2);
 
-            save3 = new Button(third, "Save 3");
-            save3.MouseClicked += level3_MouseClicked;
-            buttons.Add(save3);
+            //save3 = new Button(third, "Save 3");
+            //save3.MouseClicked += level3_MouseClicked;
+            //buttons.Add(save3);
 
             hostGame = new Button(first, "Host Game");
             hostGame.MouseClicked += hostGame_MouseClicked;
@@ -139,7 +139,7 @@ namespace Adam
 
         private void LevelEditor_MouseClicked()
         {
-            game1.ChangeState(GameState.GameWorld, Level.Editor);
+            game1.ChangeState(GameState.GameWorld, GameMode.Editor);
         }
 
         void joinGame_MouseClicked()
@@ -152,26 +152,26 @@ namespace Adam
             throw new NotImplementedException();
         }
 
-        void level4_MouseClicked()
-        {
-            game1.ChangeState(GameState.GameWorld, Level.Level4and1);
-        }
+        //void level4_MouseClicked()
+        //{
+        //    game1.ChangeState(GameState.GameWorld);
+        //}
 
-        void level3_MouseClicked()
-        {
-            game1.ChangeState(GameState.GameWorld, Level.Level3and1);
-        }
+        //void level3_MouseClicked()
+        //{
+        //    game1.ChangeState(GameState.GameWorld);
+        //}
 
-        void level2_MouseClicked()
-        {
-            game1.ChangeState(GameState.GameWorld, Level.Level2and1);
-        }
+        //void level2_MouseClicked()
+        //{
+        //    game1.ChangeState(GameState.GameWorld);
+        //}
 
-        void level1_MouseClicked()
-        {
-            game1.GameData.SelectedSave = 0;
-            game1.ChangeState(GameState.GameWorld, game1.GameData.CurrentSave.CurrentLevel);
-        }
+        //void level1_MouseClicked()
+        //{
+        //    game1.GameData.SelectedSave = 0;
+        //    game1.ChangeState(GameState.GameWorld);
+        //}
 
         void backButton_MouseClicked()
         {

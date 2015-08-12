@@ -14,63 +14,63 @@ namespace Adam
         Image[] middlegrounds = new Image[6];
         Image[] foregrounds = new Image[12];
 
-        public void Load(Level CurrentLevel, GameWorld gameWorld)
+        public void Load(GameMode CurrentLevel, GameWorld gameWorld)
         {
 
             switch (CurrentLevel)
             {
-                case Level.Level1and1:
-                    for (int i = 0; i < middlegrounds.Length; i++)
-                    {
-                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
-                    }
+                //case GameMode.Level1and1:
+                //    for (int i = 0; i < middlegrounds.Length; i++)
+                //    {
+                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
+                //    }
 
-                    for (int i = 0; i < foregrounds.Length; i++)
-                    {
-                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
-                    }
+                //    for (int i = 0; i < foregrounds.Length; i++)
+                //    {
+                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
+                //    }
 
-                    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
-                    break;
-                case Level.Level2and1:                   
-                    for (int i = 0; i < middlegrounds.Length; i++)
-                    {
-                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                    }
+                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
+                //    break;
+                //case GameMode.Level2and1:                   
+                //    for (int i = 0; i < middlegrounds.Length; i++)
+                //    {
+                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
+                //    }
 
-                    for (int i = 0; i < foregrounds.Length; i++)
-                    {
-                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                    }
+                //    for (int i = 0; i < foregrounds.Length; i++)
+                //    {
+                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
+                //    }
 
-                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                    break;
-                case Level.Level3and1:
-                    for (int i = 0; i < middlegrounds.Length; i++)
-                    {
-                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                    }
+                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
+                //    break;
+                //case GameMode.Level3and1:
+                //    for (int i = 0; i < middlegrounds.Length; i++)
+                //    {
+                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
+                //    }
 
-                    for (int i = 0; i < foregrounds.Length; i++)
-                    {
-                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                    }
+                //    for (int i = 0; i < foregrounds.Length; i++)
+                //    {
+                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
+                //    }
 
-                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                    break;
-                case Level.Level4and1:
-                    for (int i = 0; i < middlegrounds.Length; i++)
-                    {
-                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                    }
+                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
+                //    break;
+                //case GameMode.Level4and1:
+                //    for (int i = 0; i < middlegrounds.Length; i++)
+                //    {
+                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
+                //    }
 
-                    for (int i = 0; i < foregrounds.Length; i++)
-                    {
-                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                    }
+                //    for (int i = 0; i < foregrounds.Length; i++)
+                //    {
+                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
+                //    }
 
-                    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                    break;
+                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
+                //    break;
                 default:
                     for (int i = 0; i < middlegrounds.Length; i++)
                     {

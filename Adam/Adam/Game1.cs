@@ -28,19 +28,12 @@ namespace Adam
         MainMenu,
         LoadingScreen,
         GameWorld,
-        GameOver,
-        LevelGen,
-        Multiplayer,
     }
-    public enum Level
+    public enum GameMode
     {
-        Level0,
-        Level1and1, Level1and2, Level1and3,
-        Level2and1,
-        Level3and1,
-        Level4and1,
-        Level8and1,
+        None,
         Editor,
+        Play,
     }
 
     class Game1 : Microsoft.Xna.Framework.Game
@@ -129,7 +122,7 @@ namespace Adam
         //Defines the initial GameState ----- Use this variable to change the GameState
         public GameState CurrentGameState;
         GameState desiredGameState;
-        public Level CurrentLevel;
+        public GameMode CurrentLevel;
 
         //Game Variables
         GameWorld gameWorld;
@@ -224,27 +217,32 @@ namespace Adam
 
             debug = new GameDebug(debugFont, monitorRes, blackScreen);
 
-            CurrentLevel = Level.Level0;
+            CurrentLevel = GameMode.None;
 
         }
 
-        public void ChangeState(GameState desiredGameState, Level desiredLevel)
+        public void ChangeState(GameState desiredGameState, GameMode mode)
         {
             CurrentGameState = GameState.LoadingScreen;
-            CurrentLevel = desiredLevel;
             this.desiredGameState = desiredGameState;
             hasLoadedContent = false;
             loadingScreen.Restart();
 
-            reloadThread = new Thread(new ThreadStart(BackgroundMapLoad));
-            reloadThread.IsBackground = true;
-            reloadThread.Start();
+            if (desiredGameState == GameState.GameWorld)
+            {
+                LoadFileIntoWorld(mode);
+            }
+            else
+            {
+                hasLoadedContent = true;
+            }
+
         }
 
-        public void LoadFileIntoWorld()
+        public void LoadFileIntoWorld(GameMode mode)
         {
             CurrentGameState = GameState.LoadingScreen;
-            CurrentLevel = Level.Editor;
+            CurrentLevel = mode;
             desiredGameState = GameState.GameWorld;
             hasLoadedContent = false;
             loadingScreen.Restart();
@@ -257,22 +255,10 @@ namespace Adam
         private void BackgroundFileLoad()
         {            
             hasLoadedContent = false;
-            gameWorld.LoadFromFile();
+            gameWorld.LoadFromFile(CurrentLevel);
             ObjectiveTracker = GameData.CurrentSave.ObjTracker;
             hasLoadedContent = true;
             wasPressed = false;
-        }
-
-        protected void BackgroundMapLoad()
-        {
-            loadWatch.Reset();
-            loadWatch.Start();
-            hasLoadedContent = false;
-            gameWorld.Load(Content, monitorRes, player, CurrentLevel);
-            ObjectiveTracker = GameData.CurrentSave.ObjTracker;
-            hasLoadedContent = true;
-            wasPressed = false;
-            loadWatch.Stop();
         }
 
         protected override void UnloadContent()
@@ -322,7 +308,7 @@ namespace Adam
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
             {
                 GameData.SaveGame();
-                ChangeState(GameState.MainMenu, Level.Level0);
+                ChangeState(GameState.MainMenu, GameMode.None);
 
             }
 
@@ -380,6 +366,7 @@ namespace Adam
                     }
                     break;
                 case GameState.GameWorld:
+                    if (!hasLoadedContent) return;
                     if (gameWorld.isOnDebug)
                         break;
 
@@ -394,10 +381,7 @@ namespace Adam
                     ObjectiveTracker.Update(gameTime);
 
                     if (player.returnToMainMenu)
-                        ChangeState(GameState.MainMenu, Level.Level0);
-                    break;
-                case GameState.Multiplayer:
-
+                        ChangeState(GameState.MainMenu, GameMode.None);
                     break;
             }
 
@@ -437,9 +421,6 @@ namespace Adam
                     DrawToMainRenderTarget(mainRenderTarget);
                     break;
                 case GameState.MainMenu:
-                    DrawToMainRenderTarget(mainRenderTarget);
-                    break;
-                case GameState.LevelGen:
                     DrawToMainRenderTarget(mainRenderTarget);
                     break;
             }
@@ -570,17 +551,6 @@ namespace Adam
                     UiSB.End();
 
                     break;
-                case GameState.LevelGen:
-                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
-                    mainSB.End();
-
-                    UiSB.Begin();
-                    overlay.Draw(UiSB);
-                    gameWorld.DrawUI(UiSB);
-                    UiSB.End();
-
-                    break;
             }
             base.Draw(gameTime);
 
@@ -616,7 +586,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
-                    debugSB.DrawString(debugFont, "Load time: " + loadWatch.ElapsedMilliseconds, new Vector2(0, 200), Color.White);
+                    debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[0], new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
                     debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles.Count, new Vector2(0, 240), Color.White);
                     debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities.Count, new Vector2(0, 260), Color.White);

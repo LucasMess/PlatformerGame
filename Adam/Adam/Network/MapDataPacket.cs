@@ -68,11 +68,18 @@ namespace Adam.Network
             //entities = gw.entities;
         }
 
-        public void Load()
+        public void LoadIntoEditor()
         {
             GameWorld gw = GameWorld.Instance;
             gw.worldData.IDs = tileIDs;
-            gw.game1.LoadFileIntoWorld();            
+            gw.game1.LoadFileIntoWorld(GameMode.Editor);            
+        }
+
+        public void LoadIntoPlay()
+        {
+            GameWorld gw = GameWorld.Instance;
+            gw.worldData.IDs = tileIDs;
+            gw.game1.LoadFileIntoWorld(GameMode.Play);
         }
     }
 }

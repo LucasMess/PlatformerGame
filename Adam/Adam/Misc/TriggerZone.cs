@@ -26,21 +26,8 @@ namespace Adam
 
         }
 
-        public void Update(Player player, Level CurrentLevel)
+        public void Update(Player player, GameMode CurrentLevel)
         {
-            switch (CurrentLevel)
-            {
-                case Level.Level0:
-                    break;
-                case Level.Level1and1:
-                    break;
-                case Level.Level2and1:
-                    break;
-                case Level.Level3and1:
-                    break;
-                default:
-                    break;
-            }
         }
 
 

@@ -18,8 +18,6 @@ namespace Adam.Levels
 {
     class WorldData
     {
-        public Texture2D mainMap;
-        public Texture2D wallMap;
         public Song song;
         private SoundFx ambience;
         public string levelName = "";
@@ -52,17 +50,15 @@ namespace Adam.Levels
         bool privTrig0;
 
         bool dealingWithData;
-        public int[] IDs;
+        public int[] IDs = new int[200*200];
         public int width = 200;
         public int height = 200;
 
         public Vector2 SpawnPoint { get; set; }
 
-        public WorldData(Level CurrentLevel)
+        public WorldData(GameMode CurrentLevel)
         {
             levelName = "Garden of Eden";
-            mainMap = ContentHelper.LoadTexture("Levels/1-2_main");
-            wallMap = ContentHelper.LoadTexture("Levels/1-2_wall");
             song = ContentHelper.LoadSong("Music/Adventure Awaits (Adam 1)");
             ambience = new SoundFx("Ambience/eden");
             wantClouds = true;
@@ -70,50 +66,8 @@ namespace Adam.Levels
 
             switch (CurrentLevel)
             {
-                case Level.Level0:
-                    break;
-                case Level.Level1and1:
-                    levelName = "Garden of Eden";
-                    mainMap = ContentHelper.LoadTexture("Levels/1-2_main");
-                    wallMap = ContentHelper.LoadTexture("Levels/1-2_wall");
-                    song = ContentHelper.LoadSong("Music/Adventure Awaits (Adam 1)");
-                    ambience = new SoundFx("Ambience/eden");
-                    wantClouds = true;
-
-                    sign1 = "Press space to jump.";
-                    sign2 = "Hold space to jump higher. You can also hold SHIFT to run faster.";
-                    sign3 = "Yes, this is a floating island. God can do whatever he wants.";
-                    sign4 = "Caution: You are exiting God's backyard!";
-                    sign5 = "Take a leap of faith. The worst is over. == Love God <3";
-                    sign6 = "Oh, you lived? Well, we couldn't go around my pet mountain so I made this path for my followers. It might be a little fro... hop... I don't know. Hope you like it.";
-                    sign7 = "The Work of God ahead! Or maybe, just lazy developers. What is the difference? Take this gift. Use the left mouse button to activate it.";
-                    break;
-                case Level.Level1and2:
-                    break;
-                case Level.Level1and3:
-                    break;
-                case Level.Level2and1:
-                    levelName = "Desolate Desert";
-                    mainMap = ContentHelper.LoadTexture("Levels/2-1_main");
-                    wallMap = ContentHelper.LoadTexture("Levels/2-1_wall");
-                    song = ContentHelper.LoadSong("Music/Desert City");
-                    wantClouds = true;
-                    break;
-                case Level.Level3and1:
-                    break;
-                case Level.Level4and1:
-                    break;
-                case Level.Level8and1:
-                    levelName = "Entrance to Hell";
-                    mainMap = ContentHelper.LoadTexture("Levels/debug_main");
-                    wallMap = ContentHelper.LoadTexture("Levels/debug_wall");
-                    song = ContentHelper.LoadSong("Music/Heart of Nowhere");
-                    wantClouds = true;
-                    break;
-                case Level.Editor:
+                case GameMode.Editor:
                     levelName = "Unnamed Creation";
-                    mainMap = ContentHelper.LoadTexture("Levels/200x200");
-                    wallMap = ContentHelper.LoadTexture("Levels/200x200");
                     //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
                     wantClouds = true;
 
@@ -136,24 +90,24 @@ namespace Adam.Levels
 
             switch (GameWorld.Instance.CurrentLevel)
             {
-                case Level.Level1and1:
-                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
-                    {
-                        privTrig0 = true;
-                        Game1.ObjectiveTracker.CompleteObjective(0);
-                    }
-                    if (gameTimer > 5 && !privTrig0)
-                    {
-                        if (!obj0)
-                        {
-                            Objective obj = new Objective();
-                            obj.Create("Press 'A' and 'D' to move.", 0);
-                            Game1.ObjectiveTracker.AddObjective(obj);
-                            obj0 = true;
-                        }
-                    }
-                    break;
-                case Level.Editor:
+                //case GameMode.Level1and1:
+                //    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
+                //    {
+                //        privTrig0 = true;
+                //        Game1.ObjectiveTracker.CompleteObjective(0);
+                //    }
+                //    if (gameTimer > 5 && !privTrig0)
+                //    {
+                //        if (!obj0)
+                //        {
+                //            Objective obj = new Objective();
+                //            obj.Create("Press 'A' and 'D' to move.", 0);
+                //            Game1.ObjectiveTracker.AddObjective(obj);
+                //            obj0 = true;
+                //        }
+                //    }
+                //    break;
+                case GameMode.Editor:
                     if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
                     {
                         Game1.ObjectiveTracker.CompleteObjective(0);
@@ -231,7 +185,7 @@ namespace Adam.Levels
                     using (FileStream fs = new FileStream(op.FileName,FileMode.Open))
                     {
                         data = (GameWorldData)bf.Deserialize(fs);
-                    }  data.Load();              
+                    }  data.LoadIntoEditor();              
             }
             
             dealingWithData = false;

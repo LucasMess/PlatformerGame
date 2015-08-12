@@ -1,4 +1,5 @@
 ﻿using Adam.Levels;
+using Adam.Network;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,7 +56,8 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
-            throw new NotImplementedException();
+            GameWorldData data = new GameWorldData(GameWorld.Instance);
+            data.LoadIntoPlay();
         }
 
         public void Update()

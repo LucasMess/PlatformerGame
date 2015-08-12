@@ -420,7 +420,7 @@ namespace Adam
                             position = startingPoint + new Vector2(3, 4);
                             break;
                     }
-                            break;
+                    break;
                 case 7: //ShortGrass
                     position = new Vector2(12, 16);
                     sunlightPassesThrough = true;
@@ -791,7 +791,16 @@ namespace Adam
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
                     break;
-                    #endregion
+                #endregion
+
+                case 200: //Player Spawn
+                    if (GameWorld.Instance.CurrentLevel == GameMode.Editor)
+                        position = new Vector2(17, 12);
+                    else
+                    {
+                        GameWorld.Instance.game1.player.Initialize(drawRectangle.X, drawRectangle.Y);
+                    }
+                    break;
             }
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
@@ -1101,7 +1110,7 @@ namespace Adam
 
                     array[indexAbove].DefineTexture();
                 }
-            }            
+            }
         }
 
         public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
@@ -1210,7 +1219,7 @@ namespace Adam
             {37,"Checkpoint" },
             {38,"Stone Brick" },
             {39,"Snow" },
-        
+
         };
 
     }

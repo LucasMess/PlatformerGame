@@ -25,7 +25,7 @@ namespace Adam.Projectiles
             {
                 rects.Add(rect);
 
-                int index = (int)(rect.Y / Game1.Tilesize * gameWorld.worldData.mainMap.Width) + (int)(rect.X / Game1.Tilesize);
+                int index = (int)(rect.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(rect.X / Game1.Tilesize);
 
                 if (rect.Intersects(player.collRectangle))
                     return true;

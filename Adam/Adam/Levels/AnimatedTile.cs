@@ -29,7 +29,7 @@ namespace Adam
             this.ID = ID;
             this.drawRectangle = rectangle;
             if (GameWorld.Instance != null)
-                TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.mainMap.Width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
+                TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
             this.smallTileSize = Game1.Tilesize / 2;
             DefineTexture();
         }

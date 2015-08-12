@@ -14,7 +14,7 @@ namespace Adam.Network
         Server server;
         Connection connection;
         IPEndPoint serverIP;
-        Level CurrentLevel = Level.Level0;
+        GameMode CurrentLevel = GameMode.None;
 
         GameWorld map;
 
@@ -43,7 +43,7 @@ namespace Adam.Network
             connection = new Connection(address, port, playerName);
         }
 
-        public void Start(Level Currentlevel)
+        public void Start(GameMode Currentlevel)
         {
             this.CurrentLevel = Currentlevel;
             inSession = true;
