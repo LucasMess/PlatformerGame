@@ -49,6 +49,8 @@ namespace Adam.Network
         //public List<Entity> entities = new List<Entity>();
         public int[] tileIDs;
         public int[] wallIDs;
+        public int width = 200;
+        public int height = 200;
         //public string levelName;
 
         public WorldConfigFile()
@@ -61,6 +63,8 @@ namespace Adam.Network
             int size = gw.tileArray.Length;
             tileIDs = new int[size];
             wallIDs = new int[size];
+            width = gw.worldData.width;
+            height = gw.worldData.height;
 
             for (int i = 0; i < size; i++)
             {
@@ -94,6 +98,8 @@ namespace Adam.Network
             GameWorld gw = GameWorld.Instance;
             gw.worldData.tileIDs = tileIDs;
             gw.worldData.wallIDs = wallIDs;
+            gw.worldData.width = width;
+            gw.worldData.height = height;
         }
     }
 }

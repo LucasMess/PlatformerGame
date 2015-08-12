@@ -226,6 +226,8 @@ namespace Adam.Levels
         {
             foreach (int i in brush.selectedIndexes)
             {
+                if (i < 0 || i > CurrentArray.Length)
+                    continue;
                 int tileID = CurrentArray[i].ID;
 
                 //Wants to destroy. Any block can be destroyed.
