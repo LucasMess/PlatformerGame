@@ -91,7 +91,7 @@ namespace Adam
         /// <summary>
         /// Current version of the game.
         /// </summary>
-        public const string Version = "Version 0.5.4";
+        public const string Version = "Version 0.6.0";
         /// <summary>
         /// Producers of the game.
         /// </summary>
