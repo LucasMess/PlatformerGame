@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class Food : PowerUp, ICollidable, INewtonian
+    public class Food : PowerUp, ICollidable, INewtonian
     {
         int healAmount;
         bool hasHealed;

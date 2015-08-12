@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adam.Lights
 {
-    class SunLight : Light
+    public class SunLight : Light
     {
         public SunLight(Rectangle tileDrawRectangle)
         {

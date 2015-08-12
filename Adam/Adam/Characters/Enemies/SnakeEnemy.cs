@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Enemies
 {
-    class SnakeEnemy : Enemy
+    public class SnakeEnemy : Enemy
     {
         public SnakeEnemy(int x, int y, ContentManager Content, GameWorld map)
         {

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.UI.Overlay_Elements
 {
-    class Hourglass
+    public class Hourglass
     {
         Texture2D texture;
         Rectangle drawRectangle, sourceRectangle;

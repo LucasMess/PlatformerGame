@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adam.Misc
 {
-    class SoundFx
+    public class SoundFx
     {
         SoundEffect soundEffect;
         SoundEffectInstance instance;

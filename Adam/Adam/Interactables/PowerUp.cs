@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class PowerUp : Entity
+    public class PowerUp : Entity
     {
         public bool wasPickedUp;
         protected Rectangle topMidBound;
@@ -75,7 +75,7 @@ namespace Adam.Interactables
 
         private void CheckCollisionWithTerrain()
         {
-            //Simple collision check with terrain that I am too lazy to put into a collision class
+            //Simple collision check with terrain that I am too lazy to put into a collision public class
             if (velocity.X == 0 && velocity.Y == 0) { }
             else
             {

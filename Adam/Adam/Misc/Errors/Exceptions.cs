@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Misc.Errors
 {
-    class NotCollidableException : Exception
+    public class NotCollidableException : Exception
     {
         public NotCollidableException() { }
         public NotCollidableException(string message) { }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class CheckPoint : Entity
+    public class CheckPoint : Entity
     {
         AnimationData opening;
         SoundFx quack, openSound;

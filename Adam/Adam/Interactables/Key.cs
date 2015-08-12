@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Key
+    public class Key
     {
         Texture2D texture;
         Rectangle rectangle;

@@ -12,7 +12,7 @@ using System.Text;
 namespace Adam
 {
 
-    class AnimatedTile : Tile
+    public class AnimatedTile : Tile
     {
         double frameTimer, restartTimer;
         int restartWait;

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam
 {
-    class GameDebug
+    public class GameDebug
     {
         Texture2D black;
         Rectangle rect;

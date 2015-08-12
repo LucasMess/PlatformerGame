@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.UI
 {
-    class TileScroll
+    public class TileScroll
     {
         bool isActive;
         Image blackSelectionBox;
@@ -207,13 +207,13 @@ namespace Adam.UI
             
     }
 
-    class TileName
+    public class TileName
     {
         public string Name;
         public Vector2 Position;
     }
 
-    class TileSelectedArgs : EventArgs
+    public class TileSelectedArgs : EventArgs
     {
         int id;
         public TileSelectedArgs(int ID)

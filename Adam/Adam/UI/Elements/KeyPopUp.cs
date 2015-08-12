@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adam.UI.Elements
 {
-    class KeyPopUp : Entity
+    public class KeyPopUp : Entity
     {
         /// <summary>
         /// To display the 'W' key above the object.

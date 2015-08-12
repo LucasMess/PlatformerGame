@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Adam.Network
 {
-    class Connection
+    public class Connection
     {
         TcpClient tcpClient;
         UdpClient udpClient;

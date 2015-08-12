@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Network
 {
-    class PlayerDataPacket
+    public class PlayerDataPacket
     {
         Vector2 position;
         Vector2 velocity;

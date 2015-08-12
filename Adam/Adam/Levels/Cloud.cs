@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Adam
 {
-    class Cloud
+    public class Cloud
     {
         public Texture2D texture1, texture2, texture3, texture4, currentTexture;
         Vector2 velocity;

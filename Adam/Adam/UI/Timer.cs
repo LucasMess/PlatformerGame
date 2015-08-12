@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adam
 {
-    class GameTimer
+    public class GameTimer
     {
         //This will countdown the time left for a level
         public double totalTime;

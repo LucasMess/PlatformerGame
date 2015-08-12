@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Climbables : Entity
+    public class Climbables : Entity
     {   
 
         public Climbables(int x, int y)

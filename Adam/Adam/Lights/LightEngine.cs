@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Lights
 {
-    class LightEngine
+    public class LightEngine
     {
                 Light[] lights;
         int[] visibleLights = new int[60 * 100];

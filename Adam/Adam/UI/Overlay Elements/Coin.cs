@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.UI.Overlay_Elements
 {
-    class Coin
+    public class Coin
     {
         Texture2D texture;
         Rectangle drawRectangle, sourceRectangle;

@@ -36,7 +36,7 @@ namespace Adam
         Play,
     }
 
-    class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Microsoft.Xna.Framework.Game
     {
         #region Variables
         Color sunny = new Color(255, 238, 186);

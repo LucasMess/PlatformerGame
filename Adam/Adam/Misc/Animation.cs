@@ -9,7 +9,7 @@ namespace Adam
 {
     public enum AnimationType { Loop, PlayOnce, PlayInIntervals, SlowPanVertical }
 
-    class Animation
+    public class Animation
     {
         public Texture2D texture;
         public Rectangle drawRectangle, sourceRectangle;
@@ -185,7 +185,7 @@ namespace Adam
 
     }
 
-    class AnimationData
+    public class AnimationData
     {
         public AnimationData(int switchFrame, int frames, int startingY, AnimationType type)
         {

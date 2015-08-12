@@ -11,7 +11,7 @@ using Adam;
 
 namespace Adam
 {
-    class Chest
+    public class Chest
     {
         Texture2D texture;
         public Rectangle rectangle, sourceRectangle;

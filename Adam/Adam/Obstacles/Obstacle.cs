@@ -16,7 +16,7 @@ namespace Adam.Obstacles
         Bottom,
     }
 
-    class Obstacle : Entity
+    public class Obstacle : Entity
     {
         public bool IsTouching { get; set; }
         public bool IsCollidable { get; set; }

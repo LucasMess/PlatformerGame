@@ -10,7 +10,7 @@ using Adam;
 
 namespace Adam
 {
-    class Gem : Entity
+    public class Gem : Entity
     {
         public Rectangle rectangle, topMidBound;
         Random randGen;

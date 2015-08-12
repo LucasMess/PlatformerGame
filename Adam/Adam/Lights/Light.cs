@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Light
+    public class Light
     {
         public Rectangle drawRectangle;
         protected Rectangle sourceRectangle;

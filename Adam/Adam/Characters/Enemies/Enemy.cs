@@ -18,7 +18,7 @@ namespace Adam
         Snake, Potato, Shade, Drone, Bloodless, Hellboar, Frog
     }
 
-    class Enemy : Entity
+    public class Enemy : Entity
     {
         public Texture2D singleTexture;
         protected Rectangle radiusRect;
@@ -76,7 +76,7 @@ namespace Adam
 
             if (tookDamage) goto BeingHit;
 
-            //Each class implements their own update logic.
+            //Each public class implements their own update logic.
             //Call base.Update for the basic update logic.
 
             //See if player in range

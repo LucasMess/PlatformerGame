@@ -16,7 +16,7 @@ namespace Adam
         Player, Snake,
     }
 
-    class Projectile : Entity
+    public class Projectile : Entity
     {
         public Rectangle topMidBound, botMidBound;
         protected DynamicPointLight light;
@@ -80,7 +80,7 @@ namespace Adam
         }
     }
 
-    class PlayerWeaponProjectile : Projectile
+    public class PlayerWeaponProjectile : Projectile
     {
         public PlayerWeaponProjectile(Player player, ContentManager Content)
         {
@@ -169,7 +169,7 @@ namespace Adam
     }
 
     //Only use this with enemies
-    class LinearProjectile : Projectile
+    public class LinearProjectile : Projectile
     {
 
         public LinearProjectile()
@@ -184,7 +184,7 @@ namespace Adam
     }
 
     //Only use this with enemies
-    class ParabolicProjectile : Projectile
+    public class ParabolicProjectile : Projectile
     {
         public ParabolicProjectile(Enemy enemy, GameWorld map, ContentManager Content, ProjectileSource CurrentProjectileSource)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Particles
 {
-    class NewParticle
+    public class NewParticle
     {
 
         public NewParticle()

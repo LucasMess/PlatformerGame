@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Levels
 {
-    class PlayerSpawn
+    public class PlayerSpawn
     {
         Texture2D texture;
         SoundFx error;

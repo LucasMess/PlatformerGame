@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Door : Entity
+    public class Door : Entity
     {
         Rectangle radiusRect;
         public bool isOpen;

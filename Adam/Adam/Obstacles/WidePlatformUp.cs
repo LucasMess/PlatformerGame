@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class WidePlatformUp : Obstacle
+    public class WidePlatformUp : Obstacle
     {
         bool hasStartedMoving;
         bool hasReachedDestination;

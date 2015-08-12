@@ -12,7 +12,7 @@ using Adam.Obstacles;
 
 namespace Adam
 {
-    class Particle : Entity
+    public class Particle : Entity
     {
         Texture2D nextTexture;
         Vector2 originalPosition, originalVelocity;
@@ -650,7 +650,7 @@ namespace Adam
 
     }
 
-    class JumpSmokeParticle : Particle
+    public class JumpSmokeParticle : Particle
     {
         public JumpSmokeParticle(Entity entity)
         {
@@ -672,7 +672,7 @@ namespace Adam
 
     }
 
-    class StompSmokeParticle : Particle
+    public class StompSmokeParticle : Particle
     {
         public StompSmokeParticle(Entity entity)
         {
@@ -694,7 +694,7 @@ namespace Adam
         }
     }
 
-    class ConstructionSmokeParticle : Particle
+    public class ConstructionSmokeParticle : Particle
     {
         public ConstructionSmokeParticle(Rectangle rect)
         {
@@ -715,7 +715,7 @@ namespace Adam
         }
     }
 
-    class DestructionTileParticle :Particle
+    public class DestructionTileParticle :Particle
     {
         public DestructionTileParticle(Tile tile, Rectangle source)
         {

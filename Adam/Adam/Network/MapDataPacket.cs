@@ -11,7 +11,7 @@ using System.Text;
 namespace Adam.Network
 {
     [Serializable]
-    class MapDataPacket
+    public class MapDataPacket
     {
         public Player player;
         public Apple apple;
@@ -39,7 +39,7 @@ namespace Adam.Network
     }
 
     [Serializable]
-    class WorldConfigFile
+    public class WorldConfigFile
     {
         //public Apple apple;
         //public Tile[] tiles, walls;
@@ -50,6 +50,11 @@ namespace Adam.Network
         public int[] tileIDs;
         public int[] wallIDs;
         //public string levelName;
+
+        public WorldConfigFile()
+        {
+
+        }
 
         public WorldConfigFile(GameWorld gw)
         {
@@ -80,7 +85,7 @@ namespace Adam.Network
 
         public void LoadIntoPlay()
         {
-            Load();   
+            Load();
             GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Play);
         }
 

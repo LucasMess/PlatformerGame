@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Noobs
 {
-    class God : NonPlayableCharacter, ITalkable
+    public class God : NonPlayableCharacter, ITalkable
     {
         enum AnimationState
         {

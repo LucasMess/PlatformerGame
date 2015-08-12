@@ -14,7 +14,7 @@ namespace Adam
         None, Stick, Bow, Sword, Shotgun, LaserGun
     }
 
-    class Weapon
+    public class Weapon
     {
         public WeaponType CurrentWeaponType;
         public Texture2D texture;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Adam
 {
-    class Background
+    public class Background
     {
         Image background;
         Image[] middlegrounds = new Image[6];

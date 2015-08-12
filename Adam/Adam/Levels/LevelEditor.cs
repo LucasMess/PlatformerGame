@@ -10,7 +10,7 @@ using Adam.Misc;
 
 namespace Adam.Levels
 {
-    class LevelEditor
+    public class LevelEditor
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class FallingBoulder : Obstacle, ICollidable
+    public class FallingBoulder : Obstacle, ICollidable
     {
         bool hasFallen;
         Vector2 velocity;

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Adam.Network
 {
-    class Session
+    public class Session
     {
         Server server;
         Connection connection;

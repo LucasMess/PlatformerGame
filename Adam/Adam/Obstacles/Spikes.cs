@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class Spikes : Obstacle
+    public class Spikes : Obstacle
     {
         public Spikes(int x, int y)
         {

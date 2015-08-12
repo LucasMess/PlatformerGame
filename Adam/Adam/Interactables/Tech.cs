@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Tech
+    public class Tech
     {
         public Rectangle rectangle;
         Rectangle radius;

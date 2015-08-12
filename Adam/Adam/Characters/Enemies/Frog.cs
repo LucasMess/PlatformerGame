@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    class Frog : Enemy, ICollidable, INewtonian
+    public class Frog : Enemy, ICollidable, INewtonian
     {
 
         enum AnimationState

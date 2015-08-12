@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Effects
 {
-    class SnakeVenomEffect
+    public class SnakeVenomEffect
     {
     }
 }

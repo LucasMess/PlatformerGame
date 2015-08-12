@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam
 {
-    class PopUp
+    public class PopUp
     {
         Texture2D fill;
         Texture2D outline;

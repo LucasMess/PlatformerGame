@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Adam
 {
-    class Apple
+    public class Apple
     {
         Texture2D texture;
         Rectangle rectangle;

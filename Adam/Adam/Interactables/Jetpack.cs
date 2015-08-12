@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class Jetpack
+    public class Jetpack
     {
         int currentFuel;
         int maxFuel = 10000;

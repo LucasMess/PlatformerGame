@@ -25,7 +25,7 @@ namespace Adam.Misc.Interfaces
 
     }
 
-    class TerrainCollisionEventArgs : EventArgs
+    public class TerrainCollisionEventArgs : EventArgs
     {
         Tile tile;
         public TerrainCollisionEventArgs(Tile tile)

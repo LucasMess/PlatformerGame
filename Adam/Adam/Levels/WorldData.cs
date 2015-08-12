@@ -17,7 +17,7 @@ using System.Xml.Serialization;
 
 namespace Adam.Levels
 {
-    class WorldData
+    public class WorldData
     {
         public Song song;
         private SoundFx ambience;
@@ -180,13 +180,15 @@ namespace Adam.Levels
         {
             WorldConfigFile data;
             OpenFileDialog op = new OpenFileDialog();
+            op.DefaultExt = "lvl";
+            op.Title = "Choose level to open:";
             DialogResult dr = op.ShowDialog();
             if (dr == DialogResult.OK)
             {
-                BinaryFormatter bf = new BinaryFormatter();
+                XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
                 using (FileStream fs = new FileStream(op.FileName, FileMode.Open))
                 {
-                    data = (WorldConfigFile)bf.Deserialize(fs);
+                    data = (WorldConfigFile)xs.Deserialize(fs);
                 }
                 data.LoadIntoEditor();
             }
@@ -214,21 +216,11 @@ namespace Adam.Levels
             DialogResult dr = sv.ShowDialog();
             if (dr == DialogResult.OK)
             {
-                BinaryFormatter bf = new BinaryFormatter();
-                using (var ms = new MemoryStream())
+                XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
+                using (FileStream fs = new FileStream(sv.FileName, FileMode.OpenOrCreate))
                 {
-                    bf.Serialize(ms, new WorldConfigFile(GameWorld.Instance));
-                    byte[] data = ms.ToArray();
-
-                    using (BinaryWriter b = new BinaryWriter(File.Open(sv.FileName, FileMode.Create)))
-                    {
-                        foreach (byte i in data)
-                        {
-                            b.Write(i);
-                        }
-                    }
+                    xs.Serialize(fs, new WorldConfigFile(GameWorld.Instance));
                 }
-
 
             }
 

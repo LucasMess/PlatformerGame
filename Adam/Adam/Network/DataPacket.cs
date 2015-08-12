@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Network
 {
-    class DataPacket
+    public class DataPacket
     {
     }
 }

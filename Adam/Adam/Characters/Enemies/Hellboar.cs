@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    class Hellboar : Enemy, ICollidable, INewtonian
+    public class Hellboar : Enemy, ICollidable, INewtonian
     {
         bool isAngry;
         List<Rectangle> rects;

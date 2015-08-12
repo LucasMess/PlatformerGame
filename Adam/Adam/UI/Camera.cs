@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Adam
 {
-    class Camera
+    public class Camera
     {
         private Matrix translation;
         public Matrix Translate

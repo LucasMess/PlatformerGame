@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.UI.Overlay_Elements
 {
-    class Heart
+    public class Heart
     {
         Texture2D aliveTexture, deadTexture, currentTexture;
         Rectangle drawRectangle, sourceRectangle;

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class Sign : Entity
+    public class Sign : Entity
     {
         KeyPopUp key;
         int ID;

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Cutscene
+    public class Cutscene
     {
         Video video;
         VideoPlayer videoPlayer;

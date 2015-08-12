@@ -43,7 +43,7 @@ namespace Adam
         }
 
         /// <summary>
-        /// Returns an instance of a class as a byte array.
+        /// Returns an instance of a public class as a byte array.
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>

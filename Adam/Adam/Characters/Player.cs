@@ -15,7 +15,7 @@ using System.Text;
 
 namespace Adam
 {
-    enum Evolution
+    public enum Evolution
     {
         Eden,
         Prehistoric,
@@ -28,7 +28,7 @@ namespace Adam
         InProgress,
     }
 
-    class Player : Entity, ICollidable, INewtonian
+    public class Player : Entity, ICollidable, INewtonian
     {
 
         public delegate void PlayerRespawnHandler();

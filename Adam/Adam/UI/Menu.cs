@@ -15,7 +15,7 @@ using Adam.GameData;
 
 namespace Adam
 {
-    class Menu
+    public class Menu
     {
         Vector2 first;
         Vector2 second;

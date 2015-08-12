@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam
 {
-    class LoadingScreen
+    public class LoadingScreen
     {
         Texture2D background, customObject, circle;
         Rectangle rectangle, customRect, circleRect;

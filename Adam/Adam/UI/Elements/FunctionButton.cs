@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.UI.Elements
 {
-    class FunctionButton : Button
+    public class FunctionButton : Button
     {
         protected Vector2 relativePosition;
 
@@ -33,7 +33,7 @@ namespace Adam.UI.Elements
         }
     }
 
-    class PlayButton : FunctionButton
+    public class PlayButton : FunctionButton
     {
         public PlayButton(Vector2 position, Rectangle box)
         {
@@ -46,7 +46,7 @@ namespace Adam.UI.Elements
         }
     }
 
-    class SaveButton : FunctionButton
+    public class SaveButton : FunctionButton
     {
         public SaveButton(Vector2 position, Rectangle box)
         {
@@ -59,7 +59,7 @@ namespace Adam.UI.Elements
         }
     }
 
-    class OpenButton : FunctionButton
+    public class OpenButton : FunctionButton
     {
         public OpenButton(Vector2 position, Rectangle box)
         {

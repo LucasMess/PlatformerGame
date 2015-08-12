@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Adam
 {
-    class Cursor
+    public class Cursor
     {
         public Texture2D texture;
         public Rectangle rectangle, sourceRectangle;

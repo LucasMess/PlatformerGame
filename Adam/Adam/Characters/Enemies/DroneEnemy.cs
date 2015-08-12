@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam.Enemies
 {
-    class DroneEnemy : Enemy
+    public class DroneEnemy : Enemy
     {
         enum AnimationState
         {

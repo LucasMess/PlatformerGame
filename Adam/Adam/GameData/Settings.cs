@@ -8,7 +8,7 @@ using System.Text;
 namespace Adam
 {
     /// <summary>
-    /// This class stores the settings of the game.
+    /// This public class stores the settings of the game.
     /// </summary>
     public class Settings
     {
@@ -43,7 +43,7 @@ namespace Adam
         public bool NeedsRestart { get; set; }
 
         /// <summary>
-        /// This is the class that is saved to the user's computer and is retrieved when the game starts. If no file is found, then a new instance will be created.
+        /// This is the public class that is saved to the user's computer and is retrieved when the game starts. If no file is found, then a new instance will be created.
         /// </summary>
         public Settings()
         {

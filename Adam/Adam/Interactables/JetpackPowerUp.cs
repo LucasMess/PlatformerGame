@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class JetpackPowerUp : PowerUp
+    public class JetpackPowerUp : PowerUp
     {
         GameTime gameTime;
         bool isHovering;

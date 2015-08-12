@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    class Liquid : Tile
+    public class Liquid : Tile
     {
         double particleTimer;
         double restartTime;

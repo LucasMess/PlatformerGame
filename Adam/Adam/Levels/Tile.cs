@@ -9,7 +9,7 @@ using Adam.Obstacles;
 
 namespace Adam
 {
-    class Tile
+    public class Tile
     {
         #region Variables
         public Texture2D texture;

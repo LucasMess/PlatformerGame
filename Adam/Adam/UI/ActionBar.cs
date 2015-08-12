@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.UI
 {
-    class ActionBar
+    public class ActionBar
     {
         Rectangle box;
         PlayButton playButton;

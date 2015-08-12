@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam
 {
-    class PotatoEnemy : Enemy
+    public class PotatoEnemy : Enemy
     {
         enum AnimationState
         {

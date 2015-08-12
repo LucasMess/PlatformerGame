@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Adam.Network
 {
-    class Client
+    public class Client
     {
         Server server;
         TcpClient tcpClient;

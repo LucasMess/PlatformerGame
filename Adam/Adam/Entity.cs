@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam
 {
-    enum CollisionLocation
+     public enum CollisionLocation
     {
         Bottom,
         Right,
@@ -20,7 +20,7 @@ namespace Adam
         Null,
     }
 
-    class Entity
+    public class Entity
     {
 
         public Texture2D texture = Game1.DefaultTexture;
@@ -46,7 +46,7 @@ namespace Adam
         protected float opacity = 1f;
 
         /// <summary>
-        /// All things that move or can collide with other things inherit the Entity class.
+        /// All things that move or can collide with other things inherit the Entity public class.
         /// </summary>
         public Entity()
         {

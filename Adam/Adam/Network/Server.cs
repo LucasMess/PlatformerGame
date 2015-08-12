@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Adam.Network
 {
-    class Server
+    public class Server
     {
         UdpClient udpServer;
         TcpListener tcpListener;

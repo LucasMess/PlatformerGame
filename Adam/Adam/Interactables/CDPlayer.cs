@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    class CDPlayer : PowerUp
+    public class CDPlayer : PowerUp
     {
         public CDPlayer(Vector2 position)
         {

@@ -11,7 +11,7 @@ namespace Adam.Lights
     /// <summary>
     /// Used to create a simple light that shines equally in all directions and follows an entity.
     /// </summary>
-    class DynamicPointLight : Light
+    public class DynamicPointLight : Light
     {
         public DynamicPointLight(Entity source, Color color)
         {
@@ -43,7 +43,7 @@ namespace Adam.Lights
     /// <summary>
     /// Used to create a simple light that shines equally in all directions and stays fixed.
     /// </summary>
-    class FixedPointLight : Light
+    public class FixedPointLight : Light
     {
         public FixedPointLight(Rectangle tileRectangle)
         {

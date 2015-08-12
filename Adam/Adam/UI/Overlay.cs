@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Overlay
+    public class Overlay
     {
         private static Overlay instance;
         public static Overlay Instance { get { return instance; } }

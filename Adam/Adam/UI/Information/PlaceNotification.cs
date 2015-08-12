@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.UI
 {
-    class PlaceNotification
+    public class PlaceNotification
     {
 
         SpriteFont font;

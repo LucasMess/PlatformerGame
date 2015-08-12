@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam
 {
-    class TriggerZone
+    public class TriggerZone
     {
         Rectangle rectangle;
         GameWorld map;

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam
 {
-    class Glow : Entity
+    public class Glow : Entity
     {
         public Color Color { get; set; }
 

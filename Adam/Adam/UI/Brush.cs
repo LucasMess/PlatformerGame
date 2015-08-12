@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.UI
 {
-    class Brush
+    public class Brush
     {
         const int MaxSize = 6;
         const int MinSize = 1;

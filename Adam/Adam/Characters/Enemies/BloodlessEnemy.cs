@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Enemies
 {
-    class BloodlessEnemy
+    public class BloodlessEnemy
     {
     }
 }
