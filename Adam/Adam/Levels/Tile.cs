@@ -1104,6 +1104,51 @@ namespace Adam
             }            
         }
 
+        public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
+        {
+            {1,new Vector2(0,0) },
+            {2,new Vector2(4,0) },
+            {3,new Vector2(0,0) },
+            {4,new Vector2(0,0) },
+            {5,new Vector2(0,0) },
+            {6,new Vector2(0,0) },
+            {7,new Vector2(0,0) },
+            {8,new Vector2(0,0) },
+            {9,new Vector2(0,0) },
+            {10,new Vector2(0,0) },
+            {11,new Vector2(0,0) },
+            {12,new Vector2(0,0) },
+            {13,new Vector2(0,0) },
+            {14,new Vector2(0,0) },
+            {15,new Vector2(0,0) },
+            {16,new Vector2(0,0) },
+            {17,new Vector2(0,0) },
+            {18,new Vector2(0,0) },
+            {19,new Vector2(0,0) },
+            {20,new Vector2(0,0) },
+            {21,new Vector2(0,0) },
+            {22,new Vector2(0,0) },
+            {23,new Vector2(0,0) },
+            {24,new Vector2(0,0) },
+            {25,new Vector2(0,0) },
+            {26,new Vector2(0,0) },
+            {27,new Vector2(0,0) },
+            {28,new Vector2(0,0) },
+            {29,new Vector2(0,0) },
+            {30,new Vector2(0,0) },
+            {31,new Vector2(0,0) },
+            {32,new Vector2(0,0) },
+            {33,new Vector2(0,0) },
+            {34,new Vector2(0,0) },
+            {35,new Vector2(0,0) },
+            {36,new Vector2(0,0) },
+            {37,new Vector2(0,0) },
+            {38,new Vector2(0,0) },
+            {39,new Vector2(0,0) },
+
+
+        };
+
         public static Dictionary<int, Color> ColorCodes = new Dictionary<int, Color>()
         {
             {1,new Color(0,189,31) },

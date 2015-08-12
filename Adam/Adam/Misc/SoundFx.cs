@@ -34,6 +34,16 @@ namespace Adam.Misc
             instance.Play();
         }
 
+        public void PlayNewInstanceOnce()
+        {
+            if (!isPlaying)
+            {
+                if (isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
+                soundEffect.Play();
+                isPlaying = true;
+            }
+        }
+
         public void PlayOnce()
         {
             if (!isPlaying)

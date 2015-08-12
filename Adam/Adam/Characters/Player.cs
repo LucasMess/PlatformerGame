@@ -58,6 +58,8 @@ namespace Adam
         SoundEffect[] sounds;
         SoundEffect[] goreSounds;
         SoundFx levelFail;
+        SoundFx climb1;
+        SoundFx climb2;
 
         float blackScreenOpacity;
         float deltaTime;
@@ -155,7 +157,8 @@ namespace Adam
             Jumping,
             Falling,
             JumpWalking,
-            Sleeping
+            Sleeping,
+            Climbing,
         }
 
         public AnimationState CurrentAnimation = AnimationState.Still;
@@ -183,7 +186,7 @@ namespace Adam
             weapon = new Weapon();
 
             //Animation information
-            frameCount = new Vector2(4, 6);
+            frameCount = new Vector2(4, 0);
             collRectangle.Width = 32;
             collRectangle.Height = 64;
             sourceRectangle = new Rectangle(0, 0, 24, 40);
@@ -262,6 +265,8 @@ namespace Adam
             };
 
             levelFail = new SoundFx("Sounds/Menu/level_fail");
+            climb1 = new SoundFx("Sounds/Player/climbing1");
+            climb2 = new SoundFx("Sounds/Player/climbing2");
 
             //Returns textures based on the current evolution. At the beginning they are all the same.
             newSingleTexture = GetSingleTexture();
@@ -343,9 +348,9 @@ namespace Adam
 
             previousPosition = position;
 
-        //If player is chronoshifting the update method skips to here.
+            //If player is chronoshifting the update method skips to here.
 
-        UpdateChrono:
+            UpdateChrono:
             if (hasChronoshifted)
             {
                 if (!hasDeactiveSoundPlayed)
@@ -433,7 +438,6 @@ namespace Adam
             {
                 velocity.Y = 10f;
                 sleepTimer = 0;
-                CurrentAnimation = AnimationState.Falling;
             }
 
             //Slows down y velocity if he is on op mode
@@ -449,15 +453,18 @@ namespace Adam
                 {
                     velocity.Y = -5f;
                     grabbedVine = true;
+                    CurrentAnimation = AnimationState.Climbing;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.S) && manual_hasControl)
                 {
                     velocity.Y = 5f;
                     grabbedVine = true;
+                    CurrentAnimation = AnimationState.Climbing;
                 }
-                else if (grabbedVine) //&& Keyboard.GetState().IsKeyUp(Keys.W)&& Keyboard.GetState().IsKeyUp(Keys.S))
+                else if (grabbedVine)
                 {
                     velocity.Y = 0;
+                    CurrentAnimation = AnimationState.Climbing;
                 }
             }
             else grabbedVine = false;
@@ -479,7 +486,7 @@ namespace Adam
             }
 
             //If the player is not doing anything, change his Animation State
-            if (velocity.X == 0 && isJumping == false && CurrentAnimation != AnimationState.Sleeping)
+            if (velocity.X == 0 && isJumping == false && CurrentAnimation != AnimationState.Sleeping && CurrentAnimation != AnimationState.Climbing)
                 CurrentAnimation = AnimationState.Still;
 
             //Check if the spacebar is pressed so that high jump mechanics can be activated
@@ -499,11 +506,11 @@ namespace Adam
 
 
             //if the player falls off a ledge without jumping, do not allow him to jump, but give him some room to jump if he is fast enough.
-            if (velocity.Y > 2f)
+            if (velocity.Y > 2f && !grabbedVine)
                 isJumping = true;
 
             //If the player is falling from a ledge, start the jump animation
-            if (velocity.Y > 2 && (CurrentAnimation != AnimationState.Jumping && CurrentAnimation != AnimationState.Falling))
+            if (velocity.Y > 2 && (CurrentAnimation != AnimationState.Jumping && CurrentAnimation != AnimationState.Falling) && !grabbedVine)
                 CurrentAnimation = AnimationState.Jumping;
 
             //If player is trying to fly using his jetpack
@@ -650,6 +657,8 @@ namespace Adam
 
         private void Animate()
         {
+            currentFrame = sourceRectangle.X / sourceRectangle.Width;
+
             if (currentFrame >= frameCount.X)
             {
                 currentFrame = 0;
@@ -835,6 +844,45 @@ namespace Adam
                     {
                         GameWorld.Instance.particles.Add(new Particle(this));
                         zzzTimer = 0;
+                    }
+
+                    break;
+                #endregion
+                #region Climbing Animation
+                case AnimationState.Climbing:
+                    //define where in the spritesheet the still sequence is
+                    sourceRectangle.Y = sourceRectangle.Height * 4;
+                    //defines the speed of the animation
+                    switchFrame = 250;
+                    //starts timer
+                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    //if the time is up, moves on to the next frame
+                    if (frameTimer >= switchFrame && Math.Abs((double)(velocity.Y)) > 2)
+                    {
+                        if (frameCount.X != 0)
+                        {
+                            frameTimer = 0;
+                            sourceRectangle.X += sourceRectangle.Width;
+                            currentFrame++;
+                        }
+                    }
+
+                    if (currentFrame >= frameCount.X)
+                    {
+                        currentFrame = 0;
+                        sourceRectangle.X = 0;
+                    }
+
+                    if (currentFrame == 0 || currentFrame == 2)
+                    {
+                        climb1.PlayNewInstanceOnce();
+                        climb2.Reset();
+                    }
+                    if (currentFrame == 1 || currentFrame == 3)
+                    {
+                        climb2.PlayNewInstanceOnce();
+                        climb1.Reset();
                     }
 
                     break;

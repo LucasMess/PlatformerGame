@@ -612,7 +612,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
-                    debugSB.DrawString(debugFont, "", new Vector2(0, 120), Color.White);
+                    debugSB.DrawString(debugFont, "Player Source Rectangle: "+ player.sourceRectangle, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);

@@ -28,7 +28,7 @@ namespace Adam
         protected Vector2 origin;
         public Rectangle drawRectangle;
         public Rectangle collRectangle;
-        protected Rectangle sourceRectangle;
+        public Rectangle sourceRectangle;
         protected Animation animation;
         protected GameWorld gameWorld;
         public bool toDelete;
