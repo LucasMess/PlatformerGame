@@ -818,20 +818,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_4.png">
-      <Name>spritemap_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\white_spritemap.png">
-      <Name>white_spritemap</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Characters\adam_prehistoric_s5.png">
       <Name>adam_prehistoric_s5</Name>
       <Importer>TextureImporter</Importer>
@@ -897,13 +883,6 @@
   <ItemGroup>
     <Compile Include="Effects\laser_burst.png">
       <Name>laser_burst</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_5.png">
-      <Name>spritemap_5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1314,13 +1293,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_7.png">
-      <Name>spritemap_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\adam_fall.wav">
       <Name>adam_fall</Name>
       <Importer>WavImporter</Importer>
@@ -1328,22 +1300,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_8.png">
-      <Name>spritemap_8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Characters\adam_eden_new.png">
       <Name>adam_eden_new</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_9.png">
-      <Name>spritemap_9</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1523,13 +1481,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_10.png">
-      <Name>spritemap_10</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tiles\shadow_small.png">
       <Name>shadow_small</Name>
       <Importer>TextureImporter</Importer>
@@ -1675,13 +1626,6 @@
     </Compile>
     <Compile Include="Menu\Keys\%27WASD%27 Keys.png">
       <Name>%27WASD%27 Keys</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_11.png">
-      <Name>spritemap_11</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1883,13 +1827,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_12.png">
-      <Name>spritemap_12</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Level Editor\character_spritemap.png">
       <Name>character_spritemap</Name>
       <Importer>TextureImporter</Importer>
@@ -1920,6 +1857,13 @@
       <Name>scroll</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\Spritemaps\spritemap_13.png">
+      <Name>spritemap_13</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

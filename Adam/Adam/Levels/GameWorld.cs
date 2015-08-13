@@ -96,7 +96,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_12");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_13");
             UI_SpriteSheet = ContentHelper.LoadTexture("Level Editor/ui_spritemap");
             lightEngine = new LightEngine();
             worldData = new WorldData(GameMode.None);

@@ -32,6 +32,8 @@ namespace Adam
         static Color transparent;
         bool hasConnectPattern;
 
+        List<Tile> cornerPieces = new List<Tile>();
+
 
         #endregion
 
@@ -342,11 +344,18 @@ namespace Adam
             {
                 if (texture != null)
                     spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
+                if (hasConnectPattern)
+                {
+                    foreach (Tile c in cornerPieces)
+                    {
+                        c.Draw(spriteBatch);
+                    }
+                }
             }
             else
             {
                 if (texture != null)
-                    animatedTile.Draw(spriteBatch);
+                    animatedTile.Draw(spriteBatch);                
             }
         }
 
@@ -369,6 +378,8 @@ namespace Adam
         /// <param name="mapWidth">The width of the map in tiles.</param>
         public void FindConnectedTextures(Tile[] array, int mapWidth)
         {
+            cornerPieces = new List<Tile>();
+
             //Marble columns
             if (ID == 18)
             {
@@ -426,7 +437,6 @@ namespace Adam
             if (!hasConnectPattern)
                 return;
 
-
             this.mapWidth = mapWidth;
             this.array = array;
 
@@ -471,7 +481,7 @@ namespace Adam
                 botLeft.ID == mid.ID &&
                 bot.ID == mid.ID &&
                 botRight.ID != mid.ID)
-                subID = 1;
+                subID = 0;
 
             if (topLeft.ID == mid.ID &&
                top.ID == mid.ID &&
@@ -481,7 +491,7 @@ namespace Adam
                botLeft.ID != mid.ID &&
                bot.ID == mid.ID &&
                botRight.ID == mid.ID)
-                subID = 2;
+                subID = 0;
 
             if (topLeft.ID != mid.ID &&
                top.ID == mid.ID &&
@@ -491,10 +501,9 @@ namespace Adam
                botLeft.ID == mid.ID &&
                bot.ID == mid.ID &&
                botRight.ID == mid.ID)
-                subID = 3;
+                subID = 0;
 
-            if (topLeft.ID != mid.ID &&
-               top.ID != mid.ID &&
+            if (top.ID != mid.ID &&
                midLeft.ID != mid.ID &&
                midRight.ID == mid.ID &&
                bot.ID == mid.ID)
@@ -507,7 +516,6 @@ namespace Adam
                 subID = 5;
 
             if (top.ID != mid.ID &&
-               topRight.ID != mid.ID &&
                midLeft.ID == mid.ID &&
                midRight.ID != mid.ID &&
                bot.ID == mid.ID)
@@ -521,7 +529,7 @@ namespace Adam
                botLeft.ID == mid.ID &&
                bot.ID == mid.ID &&
                botRight.ID == mid.ID)
-                subID = 7;
+                subID = 0;
 
             if (top.ID == mid.ID &&
                midLeft.ID != mid.ID &&
@@ -529,14 +537,10 @@ namespace Adam
                bot.ID == mid.ID)
                 subID = 8;
 
-            if (topLeft.ID != mid.ID &&
-               top.ID != mid.ID &&
-               topRight.ID != mid.ID &&
+            if (top.ID != mid.ID &&
                midLeft.ID != mid.ID &&
                midRight.ID != mid.ID &&
-               botLeft.ID != mid.ID &&
-               bot.ID != mid.ID &&
-               botRight.ID != mid.ID)
+               bot.ID != mid.ID)
                 subID = 9;
 
             if (top.ID == mid.ID &&
@@ -554,7 +558,6 @@ namespace Adam
             if (top.ID == mid.ID &&
                midLeft.ID != mid.ID &&
                midRight.ID == mid.ID &&
-               botLeft.ID != mid.ID &&
                bot.ID != mid.ID)
                 subID = 12;
 
@@ -599,6 +602,61 @@ namespace Adam
                midRight.ID != mid.ID &&
                bot.ID != mid.ID)
                 subID = 19;
+
+            //Special
+            if (botRight.ID != mid.ID &&
+               midRight.ID == mid.ID &&
+               bot.ID == mid.ID)
+            {
+                Tile corner = new Tile();
+                corner.ID = mid.ID;
+                corner.drawRectangle = drawRectangle;
+                corner.texture = texture;
+                corner.subID = 1;
+                cornerPieces.Add(corner);
+            }
+
+            if (botLeft.ID != mid.ID &&
+               midLeft.ID == mid.ID &&
+               bot.ID == mid.ID)
+            {
+                Tile corner = new Tile();
+                corner.ID = mid.ID;
+                corner.drawRectangle = drawRectangle;
+                corner.texture = texture;
+                corner.subID = 2;
+                cornerPieces.Add(corner);
+            }
+
+            if (topLeft.ID != mid.ID &&
+                midLeft.ID == mid.ID &&
+                top.ID == mid.ID)
+            {
+                Tile corner = new Tile();
+                corner.ID = mid.ID;
+                corner.drawRectangle = drawRectangle;
+                corner.texture = texture;
+                corner.subID = 3;
+                cornerPieces.Add(corner);
+            }
+
+            if (topRight.ID != mid.ID &&
+               midRight.ID == mid.ID &&
+               top.ID == mid.ID)
+            {
+                Tile corner = new Tile();
+                corner.ID = mid.ID;
+                corner.drawRectangle = drawRectangle;
+                corner.texture = texture;
+                corner.subID = 7;
+                cornerPieces.Add(corner);
+            }
+
+            foreach (Tile corners in cornerPieces)
+            {
+                corners.DefineTexture();
+            }
+
 
         }
 
@@ -744,26 +802,6 @@ namespace Adam
 
         };
 
-        public static Dictionary<int, Color> ColorCodes = new Dictionary<int, Color>()
-        {
-            {1,new Color(0,189,31) },
-            {2,new Color(220,220,220) },
-            {3,new Color(255,255,255) },
-            {4,new Color(0,189,31) },
-            {5,new Color(0,189,31) },
-            {6,new Color(0,189,31) },
-            {7,new Color(0,189,31) },
-            {8,new Color(0,189,31) },
-            {9,new Color(0,189,31) },
-            {10,new Color(0,189,31) },
-            {11,new Color(0,189,31) },
-            {12,new Color(0,189,31) },
-            {13,new Color(0,189,31) },
-            {14,new Color(0,189,31) },
-            {15,new Color(0,189,31) },
-            {16,new Color(0,189,31) },
-        };
-
         public static Dictionary<int, string> TileNames = new Dictionary<int, string>()
         {
             {1,"Grass" },
@@ -771,7 +809,7 @@ namespace Adam
             {3,"Marble Floor" },
             {4,"Hellrock" },
             {5,"Sand" },
-            {6,"*" },
+            {6,"Mesa" },
             {7,"Short Grass" },
             {8,"Metal" },
             {9,"Tall Grass" },
