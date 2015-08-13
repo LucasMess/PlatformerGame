@@ -26,7 +26,6 @@ namespace Adam.UI
 
         public void Update()
         {
-            if (GameWorld.Instance.levelEditor.onInventory) return;
             CreateBrush();
             CheckIfSizeChanged();
         }
@@ -36,28 +35,32 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (scrollWheel > lastScrollWheel)
+            if (!GameWorld.Instance.levelEditor.onInventory)
             {
-                size++;
-                if (size > MaxSize) size = MaxSize;
-                else
+                if (scrollWheel > lastScrollWheel)
                 {
-                    selectionSquares = new Image[size * size];
-                    selectedBrushTiles = new Tile[size * size];
-                    SizeChanged();
+                    size++;
+                    if (size > MaxSize) size = MaxSize;
+                    else
+                    {
+                        selectionSquares = new Image[size * size];
+                        selectedBrushTiles = new Tile[size * size];
+                        SizeChanged();
+                    }
+                }
+                if (scrollWheel < lastScrollWheel)
+                {
+                    size--;
+                    if (size < MinSize) size = MinSize;
+                    else
+                    {
+                        selectionSquares = new Image[size * size];
+                        selectedBrushTiles = new Tile[size * size];
+                        SizeChanged();
+                    }
                 }
             }
-            if (scrollWheel < lastScrollWheel)
-            {
-                size--;
-                if (size < MinSize) size = MinSize;
-                else
-                {
-                    selectionSquares = new Image[size * size];
-                    selectedBrushTiles = new Tile[size * size];
-                    SizeChanged();
-                }
-            }
+
             lastScrollWheel = scrollWheel;
         }
 

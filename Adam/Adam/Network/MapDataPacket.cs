@@ -84,7 +84,7 @@ namespace Adam.Network
         public void LoadIntoEditor()
         {
             Load();
-            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Editor);
+            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Edit);
         }
 
         public void LoadIntoPlay()

@@ -139,7 +139,7 @@ namespace Adam
 
         private void LevelEditor_MouseClicked()
         {
-            game1.ChangeState(GameState.GameWorld, GameMode.Editor);
+            game1.ChangeState(GameState.GameWorld, GameMode.Edit);
         }
 
         void joinGame_MouseClicked()

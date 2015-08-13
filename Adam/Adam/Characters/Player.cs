@@ -285,7 +285,7 @@ namespace Adam
         /// 
         public void Update(GameTime gameTime)
         {
-            if (GameWorld.Instance.CurrentLevel == GameMode.Editor)
+            if (GameWorld.Instance.CurrentLevel == GameMode.Edit)
             {
                 ContainInGameWorld();
                 return;
@@ -565,7 +565,7 @@ namespace Adam
                 position.Y = 0;
             if (position.Y > (int)(gameWorld.worldData.height * Game1.Tilesize - collRectangle.Width) + 100)
             {
-                if (gameWorld.CurrentLevel == GameMode.Editor)
+                if (gameWorld.CurrentLevel == GameMode.Edit)
                     position.Y = gameWorld.worldData.height * Game1.Tilesize - collRectangle.Height;
                 else
                 {
@@ -980,7 +980,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentLevel == GameMode.Editor) return;
+            if (GameWorld.Instance.CurrentLevel == GameMode.Edit) return;
             //DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);

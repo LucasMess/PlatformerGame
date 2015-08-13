@@ -16,6 +16,8 @@ namespace Adam.UI
         PlayButton playButton;
         OpenButton openButton;
         SaveButton saveButton;
+        NewButton newButton;
+        DeleteButton deleteButton;
         List<FunctionButton> buttons = new List<FunctionButton>();
 
         LevelEditor levelEditor;
@@ -30,18 +32,35 @@ namespace Adam.UI
             box.X -= box.Width / 2;
             box.Y -= box.Height;
             originalY = box.Y;
+            box.Y = Game1.UserResHeight + 300;
 
             playButton = new PlayButton(new Vector2(12 + 64, 4), box);
-            openButton = new OpenButton(new Vector2(8 + 32, 4),box);
-            saveButton = new SaveButton(new Vector2(16 + 96, 4),box);
+            openButton = new OpenButton(new Vector2(8 + 32, 4), box);
+            saveButton = new SaveButton(new Vector2(16 + 96, 4), box);
+            newButton = new NewButton(new Vector2(4, 4), box);
+            deleteButton = new DeleteButton(new Vector2(20 + 128, 4), box);
 
             playButton.MouseClicked += PlayButton_MouseClicked;
             openButton.MouseClicked += OpenButton_MouseClicked;
             saveButton.MouseClicked += SaveButton_MouseClicked;
+            newButton.MouseClicked += NewButton_MouseClicked;
+            deleteButton.MouseClicked += DeleteButton_MouseClicked;
 
             buttons.Add(playButton);
             buttons.Add(openButton);
             buttons.Add(saveButton);
+            buttons.Add(newButton);
+            buttons.Add(deleteButton);
+        }
+
+        private void DeleteButton_MouseClicked()
+        {
+
+        }
+
+        private void NewButton_MouseClicked()
+        {
+
         }
 
         private void SaveButton_MouseClicked()
@@ -56,6 +75,8 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
+            gameWorld.debuggingMode = true;
+            gameWorld.worldData.SaveLevelLocally();
             WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
             data.LoadIntoPlay();
         }
@@ -65,14 +86,16 @@ namespace Adam.UI
             gameWorld = GameWorld.Instance;
             levelEditor = gameWorld.levelEditor;
 
+            if (box.Y < originalY)
+            {
+                box.Y = originalY;
+                velocityY = 0;
+            }
+
             if (levelEditor.onInventory)
             {
-                velocityY = (originalY - box.Y)/5;
-                if (box.Y < originalY)
-                {
-                    box.Y = originalY;
-                    velocityY = 0;
-                }
+                velocityY = (originalY - box.Y) / 5;
+                
             }
             else
             {
@@ -95,9 +118,14 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.UI_SpriteSheet, box, new Rectangle(0,48,184,40),Color.White * .5f);
+            spriteBatch.Draw(GameWorld.UI_SpriteSheet, box, new Rectangle(0, 48, 184, 40), Color.White * .5f);
 
-            foreach(FunctionButton b in buttons)
+            if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F5))
+            {
+                PlayButton_MouseClicked();
+            }
+
+            foreach (FunctionButton b in buttons)
             {
                 b.Draw(spriteBatch);
             }

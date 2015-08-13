@@ -25,9 +25,11 @@ namespace Adam
         protected int smallTileSize = 16;
         public bool isVoid;
         public bool sunlightPassesThrough;
+        public bool levelEditorTransparency;
         public string name = "";
         Tile[] array;
         public Color color = Color.White;
+        static Color transparent;
         bool hasConnectPattern;
 
 
@@ -35,6 +37,7 @@ namespace Adam
 
         public Tile()
         {
+            transparent = color * .5f;
         }
 
         /// <summary>
@@ -304,7 +307,7 @@ namespace Adam
                 #endregion
 
                 case 200: //Player Spawn
-                    if (GameWorld.Instance.CurrentLevel == GameMode.Editor)
+                    if (GameWorld.Instance.CurrentLevel == GameMode.Edit)
                         position = new Vector2(17, 12);
                     else
                     {
@@ -327,6 +330,10 @@ namespace Adam
         {
             animatedTile?.Animate(gameTime);
             //Not used for normal textures, only animated textures.
+
+            if (levelEditorTransparency)
+            {
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -68,7 +68,7 @@ namespace Adam.Levels
 
             switch (CurrentLevel)
             {
-                case GameMode.Editor:
+                case GameMode.Edit:
                     levelName = "Unnamed Creation";
                     //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
                     wantClouds = true;
@@ -109,7 +109,7 @@ namespace Adam.Levels
                 //        }
                 //    }
                 //    break;
-                case GameMode.Editor:
+                case GameMode.Edit:
                     if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
                     {
                         Game1.ObjectiveTracker.CompleteObjective(0);
@@ -225,6 +225,16 @@ namespace Adam.Levels
             }
 
             dealingWithData = false;
+        }
+
+        public void CreateNewWorld()
+        {
+            
+        }
+
+        public void WipeWorld()
+        {
+
         }
     }
 }

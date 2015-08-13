@@ -32,28 +32,27 @@ namespace Adam
     public enum GameMode
     {
         None,
-        Editor,
+        Edit,
         Play,
     }
 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         #region Variables
-        Color sunny = new Color(255, 238, 186);
-        Color hell = new Color(255, 129, 116);
-        Color winter = new Color(200, 243, 255);
-        Color night = new Color(120, 127, 183);
-        Color sunset = new Color(255, 155, 13);
+        static Color SunnyPreset = new Color(255, 238, 186);
+        static Color HellPreset = new Color(255, 129, 116);
+        static Color WinterPreset = new Color(200, 243, 255);
+        static Color NightPreset = new Color(120, 127, 183);
+        static Color SunsetPreset = new Color(255, 155, 13);
 
         GraphicsDeviceManager graphics;
         SpriteBatch gameSB, debugSB, mainSB, UiSB, backgroundSB, lightingSB, mainLightSB;
-        SpriteFont debugFont, UIFont;
+        SpriteFont debugFont;
         Camera camera;
         public Vector2 monitorRes;
         RenderTarget2D mainRenderTarget, lightingRenderTarget;
         Menu menu;
         Thread reloadThread;
-        Thread backgroundUpdateThread;
         Overlay overlay;
         public static Dialog Dialog;
         Texture2D splashDKD, blackScreen;
@@ -68,52 +67,17 @@ namespace Adam
         int fps, totalFrames;
         int updateCount, drawCount;
 
-        #region Constants
-        /// <summary>
-        /// The default tilesize.
-        /// </summary>
         public const int Tilesize = 32;
-        /// <summary>
-        /// The resolution width the game is scaled to.
-        /// </summary>
         public const int DefaultResWidth = 960;
-        /// <summary>
-        /// The resolution height the game is scaled to.
-        /// </summary>
         public const int DefaultResHeight = 540;
-        /// <summary>
-        /// Current version of the game.
-        /// </summary>
         public const string Version = "Version 0.6.0";
-        /// <summary>
-        /// Producers of the game.
-        /// </summary>
         public const string Producers = "Duck Knight Duel Games";
-        /// <summary>
-        /// The current monitor resolution of the user.
-        /// </summary>
         public static int UserResWidth;
-        /// <summary>
-        /// The current monitor resolution height of the user.
-        /// </summary>
         public static int UserResHeight;
-        /// <summary>
-        /// The default texture.
-        /// </summary>
         public static Texture2D DefaultTexture;
-        /// <summary>
-        /// Default gravity.
-        /// </summary>
         public const float Gravity = .5f;
-        /// <summary>
-        /// Ratio between user defined width and default.
-        /// </summary>
         public static double WidthRatio;
-        /// <summary>
-        /// Ratio between user defined height and default.
-        /// </summary>
         public static double HeightRatio;
-        #endregion
 
         public bool wasPressed, debugOn, debugPressed;
 
@@ -534,12 +498,12 @@ namespace Adam
                     if (GameData.Settings.DesiredLight)
                     {
 
-                        BlendState WHATTHEFUCK = new BlendState();
-                        WHATTHEFUCK.AlphaSourceBlend = Blend.DestinationColor;
-                        WHATTHEFUCK.ColorSourceBlend = Blend.DestinationColor;
-                        WHATTHEFUCK.ColorDestinationBlend = Blend.Zero;
-                        mainLightSB.Begin(SpriteSortMode.Immediate, WHATTHEFUCK, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), sunny);
+                        BlendState LightBlendState = new BlendState();
+                        LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
+                        LightBlendState.ColorSourceBlend = Blend.DestinationColor;
+                        LightBlendState.ColorDestinationBlend = Blend.Zero;
+                        mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
                         mainLightSB.End();
                     }
 

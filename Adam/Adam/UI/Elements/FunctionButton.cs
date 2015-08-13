@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Adam.Misc.Helpers;
 
 namespace Adam.UI.Elements
 {
     public class FunctionButton : Button
     {
         protected Vector2 relativePosition;
+        protected string hoverText="";
+        bool showHoverText;
+        SpriteFont font;
 
         protected void Initialize()
         {
@@ -17,6 +21,7 @@ namespace Adam.UI.Elements
             MouseOut += OnMouseOut;
             collRectangle = new Rectangle(0, 0, (int)(Game1.Tilesize / Game1.WidthRatio), (int)(Game1.Tilesize / Game1.HeightRatio));
             sourceRectangle = new Rectangle(0, 0, 16, 16);
+            font = ContentHelper.LoadFont("Fonts/objectiveText");
         }
 
         public void Update(Rectangle box)
@@ -30,6 +35,26 @@ namespace Adam.UI.Elements
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(GameWorld.UI_SpriteSheet, collRectangle, sourceRectangle, color);
+
+            if (showHoverText)
+            {
+                Rectangle mouse = InputHelper.MouseRectangle;
+                FontHelper.DrawWithOutline(spriteBatch, font, hoverText, new Vector2(mouse.X, mouse.Y - 50), 1, Color.White, Color.Black);
+            }
+        }
+
+        protected override void OnMouseOver()
+        {
+            base.OnMouseOver();
+
+            showHoverText = true;
+        }
+
+        protected override void OnMouseOut()
+        {
+            base.OnMouseOut();
+
+            showHoverText = false;
         }
     }
 
@@ -43,6 +68,7 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "Test level [F5]";
         }
     }
 
@@ -56,6 +82,7 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "Save level [Ctrl + S]";
         }
     }
 
@@ -69,6 +96,35 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "Open level [Ctrl + O]";
+        }
+    }
+
+    public class NewButton : FunctionButton
+    {
+        public NewButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 16;
+            sourceRectangle.Y = 0;
+            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "New level [Ctrl + N]";
+        }
+    }
+
+    public class DeleteButton : FunctionButton
+    {
+        public DeleteButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 64;
+            sourceRectangle.Y = 0;
+            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "Erase level [Ctrl + W]";
         }
     }
 }

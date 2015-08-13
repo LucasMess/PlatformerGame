@@ -52,6 +52,7 @@ namespace Adam
         public GameMode CurrentLevel;
         public Player player;
         public Apple apple;
+        public bool debuggingMode;
         Background background = new Background();
         PopUp popUp = new PopUp();
         PlaceNotification placeNotification;
@@ -684,7 +685,7 @@ namespace Adam
             this.gameTime = gameTime;
             this.camera = camera;
 
-            if (CurrentLevel == GameMode.Editor)
+            if (CurrentLevel == GameMode.Edit)
             {
                 levelEditor.Update(gameTime, CurrentLevel);
             }
@@ -914,7 +915,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (CurrentLevel == GameMode.Editor)
+            if (CurrentLevel == GameMode.Edit)
             levelEditor.DrawBehindTiles(spriteBatch);
 
             if (apple != null)
@@ -946,7 +947,7 @@ namespace Adam
                 particles[i].Draw(spriteBatch);
             }
 
-            if (CurrentLevel == GameMode.Editor)
+            if (CurrentLevel == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
         }
 
@@ -981,7 +982,7 @@ namespace Adam
         {
             placeNotification.Draw(spriteBatch);
 
-            if (CurrentLevel == GameMode.Editor)
+            if (CurrentLevel == GameMode.Edit)
                 levelEditor.DrawUI(spriteBatch);
         }
 

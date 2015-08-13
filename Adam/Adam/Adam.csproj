@@ -152,6 +152,7 @@
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
+    <Compile Include="Misc\Databases\InputDB.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\ICollidable.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="UI\Elements\Container.cs" />
     <Compile Include="UI\Elements\FunctionButton.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
+    <Compile Include="UI\EntityScroll.cs" />
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\LoadingScreen.cs" />
