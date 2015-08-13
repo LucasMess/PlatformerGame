@@ -104,7 +104,8 @@ namespace Adam
 
         public void LoadFromFile(GameMode CurrentGameMode)
         {
-            int[] IDs = worldData.tileIDs;
+            byte[] tileIDs = worldData.tileIDs;
+            byte[] wallIDs = worldData.wallIDs;
             this.Content = Game1.Content;
 
             CurrentLevel = CurrentGameMode;
@@ -129,11 +130,11 @@ namespace Adam
                 cloudList.Add(new Cloud(Content, new Vector2(Game1.UserResWidth, Game1.UserResHeight), maxClouds, i));
             }
 
-            tileArray = new Tile[IDs.Length];
-            wallArray = new Tile[IDs.Length];
+            tileArray = new Tile[tileIDs.Length];
+            wallArray = new Tile[tileIDs.Length];
 
-            ConvertToTiles(tileArray, IDs);
-            ConvertToTiles(wallArray, new int[IDs.Length]);
+            ConvertToTiles(tileArray, tileIDs);
+            ConvertToTiles(wallArray, wallIDs);
 
             Thread.MemoryBarrier();
 
@@ -151,7 +152,7 @@ namespace Adam
             placeNotification.Show(worldData.levelName);
         }
 
-        private void ConvertToTiles(Tile[] array, int[] IDs)
+        private void ConvertToTiles(Tile[] array, byte[] IDs)
         {
             int width = worldData.width;
             int height = worldData.height;

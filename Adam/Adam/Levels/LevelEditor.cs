@@ -7,12 +7,14 @@ using Microsoft.Xna.Framework.Input;
 using Adam.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
+using Adam.UI.Elements;
 
 namespace Adam.Levels
 {
     public class LevelEditor
     {
         GameWorld gameWorld;
+        WallButton wallButton;
         TileScroll tileScroll = new TileScroll();
         ActionBar actionBar = new ActionBar();
         public Brush brush = new Brush();
@@ -38,7 +40,6 @@ namespace Adam.Levels
                 construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
             destruction = new SoundFx("Sounds/Level Editor/destroy1");
-
 
             editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Game1.Tilesize / 2, GameWorld.Instance.worldData.height * Game1.Tilesize / 2, Game1.DefaultResWidth, Game1.DefaultResHeight);
         }
@@ -79,13 +80,19 @@ namespace Adam.Levels
             if (blackScreenOpacity < 0) blackScreenOpacity = 0;
         }
 
+        public void ChangeToWallMode()
+        {
+            onWallMode = !onWallMode;
+            tileScroll.Load();
+        }
+
         private void CheckIfChangedToWallMode()
         {
             if (InputHelper.IsKeyDown(Keys.L) && !recentlyChanged)
             {
-                onWallMode = !onWallMode;
+                ChangeToWallMode();
                 recentlyChanged = true;
-                tileScroll.Load();
+
             }
             if (InputHelper.IsKeyUp(Keys.L))
             {
@@ -361,7 +368,7 @@ namespace Adam.Levels
                 }
 
             }
-    }
+        }
     }
 
 }

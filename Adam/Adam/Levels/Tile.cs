@@ -845,6 +845,22 @@ namespace Adam
             {39,"Ice" },
             {40,"Snow" },
 
+            {100,"Gold Brick Wall" },
+            {101,"Stone Wall" },
+            {102,"Dirt Wall" },
+            {103,"Fence" },
+            {104,"Marble Wall" },
+            {105,"Sand Wall" },
+            {106,"Hellstone Wall" },
+            {107,"" },
+            {108,"" },
+
+            {200,"" },
+            {201,"" },
+            {202,"" },
+            {203,"" },
+            {204,"" },
+
         };
 
     }

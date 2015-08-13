@@ -127,4 +127,22 @@ namespace Adam.UI.Elements
             hoverText = "Erase level [Ctrl + W]";
         }
     }
+
+    public class WallButton : FunctionButton
+    {
+        bool isActive;
+        Rectangle active;
+        Rectangle inactive;
+
+        public WallButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 64;
+            sourceRectangle.Y = 16;
+            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            hoverText = "Switch to Wall Mode [L]";
+        }
+    }
 }

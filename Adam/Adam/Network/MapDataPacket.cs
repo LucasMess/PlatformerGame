@@ -47,10 +47,10 @@ namespace Adam.Network
         //public List<Climbables> climbablesList = new List<Climbables>();
         //public List<Key> keyList = new List<Key>();
         //public List<Entity> entities = new List<Entity>();
-        public int[] tileIDs;
-        public int[] wallIDs;
-        public int width = 200;
-        public int height = 200;
+        public byte[] tileIDs;
+        public byte[] wallIDs;
+        public short width = 200;
+        public short height = 200;
         //public string levelName;
 
         public WorldConfigFile()
@@ -61,10 +61,10 @@ namespace Adam.Network
         public WorldConfigFile(GameWorld gw)
         {
             int size = gw.tileArray.Length;
-            tileIDs = new int[size];
-            wallIDs = new int[size];
-            width = gw.worldData.width;
-            height = gw.worldData.height;
+            tileIDs = new byte[size];
+            wallIDs = new byte[size];
+            width = (short)gw.worldData.width;
+            height = (short)gw.worldData.height;
 
             for (int i = 0; i < size; i++)
             {

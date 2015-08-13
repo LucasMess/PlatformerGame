@@ -51,8 +51,8 @@ namespace Adam.Levels
         bool privTrig0;
 
         bool dealingWithData;
-        public int[] tileIDs = new int[200 * 200];
-        public int[] wallIDs = new int[200 * 200];
+        public byte[] tileIDs = new byte[200 * 200];
+        public byte[] wallIDs = new byte[200 * 200];
         public int width = 200;
         public int height = 200;
 

@@ -17,7 +17,7 @@ namespace Adam.UI
         OpenButton openButton;
         SaveButton saveButton;
         NewButton newButton;
-        DeleteButton deleteButton;
+        WallButton wallButton;
         List<FunctionButton> buttons = new List<FunctionButton>();
 
         LevelEditor levelEditor;
@@ -38,24 +38,24 @@ namespace Adam.UI
             openButton = new OpenButton(new Vector2(8 + 32, 4), box);
             saveButton = new SaveButton(new Vector2(16 + 96, 4), box);
             newButton = new NewButton(new Vector2(4, 4), box);
-            deleteButton = new DeleteButton(new Vector2(20 + 128, 4), box);
+            wallButton = new WallButton(new Vector2(20 + 128, 4), box);
 
             playButton.MouseClicked += PlayButton_MouseClicked;
             openButton.MouseClicked += OpenButton_MouseClicked;
             saveButton.MouseClicked += SaveButton_MouseClicked;
             newButton.MouseClicked += NewButton_MouseClicked;
-            deleteButton.MouseClicked += DeleteButton_MouseClicked;
+            wallButton.MouseClicked += WallButton_MouseClicked;
 
             buttons.Add(playButton);
             buttons.Add(openButton);
             buttons.Add(saveButton);
             buttons.Add(newButton);
-            buttons.Add(deleteButton);
+            buttons.Add(wallButton);
         }
 
-        private void DeleteButton_MouseClicked()
+        private void WallButton_MouseClicked()
         {
-
+            gameWorld.levelEditor.ChangeToWallMode();
         }
 
         private void NewButton_MouseClicked()
@@ -76,7 +76,6 @@ namespace Adam.UI
         private void PlayButton_MouseClicked()
         {
             gameWorld.debuggingMode = true;
-            gameWorld.worldData.SaveLevelLocally();
             WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
             data.LoadIntoPlay();
         }
