@@ -39,7 +39,7 @@ namespace Adam.GameData
                 int saveNumber = s + 1;
                 try
                 {
-                    FileStream fs = new FileStream("save" + saveNumber + ".xml", FileMode.Open, FileAccess.Read);
+                    FileStream fs = new FileStream("save" + saveNumber + ".xml", FileMode.OpenOrCreate);
                     XmlSerializer xs = new XmlSerializer(typeof(Save));
                     saves[s] = (Save)xs.Deserialize(fs);
                     fs.Flush();
@@ -47,11 +47,6 @@ namespace Adam.GameData
                 }
                 catch
                 {
-                    FileStream fs = new FileStream("save" + saveNumber + ".xml", FileMode.Create);
-                    XmlSerializer xs = new XmlSerializer(typeof(Save));
-                    xs.Serialize(fs, saves[s]);
-                    fs.Flush();
-                    fs.Close();
                 }
             }
         }

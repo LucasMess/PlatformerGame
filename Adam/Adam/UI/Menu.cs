@@ -27,12 +27,10 @@ namespace Adam
         NewButton play;
         NewButton options;
         NewButton quit;
-        NewButton multiplayer;
 
         //Level Selector
         NewButton save1;
         NewButton save2;
-        NewButton save3;
 
         //Options
         NewButton smoothPixels;
@@ -90,10 +88,6 @@ namespace Adam
             options.MouseClicked += options_MouseClicked;
             buttons.Add(options);
 
-            multiplayer = new NewButton(fourth, "Multiplayer");
-            multiplayer.MouseClicked += multiplayer_MouseClicked;
-            buttons.Add(multiplayer);
-
             smoothPixels = new NewButton(first, "Smooth Pixels: ");
             smoothPixels.MouseClicked += smoothPixels_MouseClicked;
             buttons.Add(smoothPixels);
@@ -118,10 +112,6 @@ namespace Adam
             save2 = new NewButton(second, "Save 2");
             save2.MouseClicked += level2_MouseClicked;
             buttons.Add(save2);
-
-            save3 = new NewButton(third, "Save 3");
-            save3.MouseClicked += level3_MouseClicked;
-            buttons.Add(save3);
 
             hostGame = new NewButton(first, "Host Game");
             hostGame.MouseClicked += hostGame_MouseClicked;
@@ -149,7 +139,7 @@ namespace Adam
 
         void level3_MouseClicked()
         {
-            game1.ChangeState(GameState.GameWorld, Level.Level3and1);
+            game1.ChangeState(GameState.GameWorld, Level.Level8and1);
         }
 
         void level2_MouseClicked()
@@ -304,16 +294,13 @@ namespace Adam
                     play.Update();
                     quit.Update();
                     options.Update();
-                    multiplayer.Update();
                     break;
                 case MenuState.LevelSelector:
-                    save1.Text = "Save 1: " + game1.GameData.saves[0].Completeness;
-                    save2.Text = "Save 2: " + game1.GameData.saves[1].Completeness;
-                    save3.Text = "Save 3: " + game1.GameData.saves[2].Completeness;
+                    save1.Text = "Level 1 (Finished)";
+                    save2.Text = "Level 2 (No end)";
 
                     save1.Update();
                     save2.Update();
-                    save3.Update();
                     backButton.Update();
                     break;
                 case MenuState.Options:
@@ -407,12 +394,10 @@ namespace Adam
                     play.Draw(spriteBatch);
                     quit.Draw(spriteBatch);
                     options.Draw(spriteBatch);
-                    multiplayer.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
                     save1.Draw(spriteBatch);
                     save2.Draw(spriteBatch);
-                    save3.Draw(spriteBatch);
                     backButton.Draw(spriteBatch);
                     break;
                 case MenuState.Options:

@@ -118,16 +118,16 @@ namespace Adam.Noobs
                             fx = new SoundFx("Voices/God/conversation2");
                             fx.PlayOnce();
                             Objective ob = new Objective();
-                            ob.Create("Find the map at the top of the Tree of Knowledge", 1);
+                            ob.Create("Find the golden apple in God's Floating Island Zoo", 1);
                             Game1.ObjectiveTracker.AddObjective(ob);
-                            Game1.Dialog.Say("You need a map. I think I have one, but I left it in my observation room at the top of the Tree of Knowledge. You should go get it, It's not too far.", this);
+                            Game1.Dialog.Say("You need a golden apple! I think I have one, but I left it in my Floating Island Zoo. You should go get it, It's not too far.", this);
                             EndConversation = true;
                             StartingConversation = 5;
                             break;
                         case 5:
                             fx = new SoundFx("Voices/God/conversation2");
                             fx.PlayOnce();
-                            Game1.Dialog.Say("What are you waiting for? Go find the map!", this);
+                            Game1.Dialog.Say("What are you waiting for? Go find the apple!", this);
                             EndConversation = true;                            
                             break;
                     }

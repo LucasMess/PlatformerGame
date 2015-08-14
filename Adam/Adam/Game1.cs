@@ -67,7 +67,7 @@ namespace Adam
         GameDebug debug;
         Cutscene cutscene;
         bool hasLoadedContent, hasQuacked;
-        bool isDebug = true;
+        bool isDebug = false;
         Stopwatch updateWatch, drawWatch, renderWatch, lightWatch, loadWatch;
         double splashTimer, updateTime, drawTime, lightTime, renderTime;
         double frameRateTimer;
@@ -90,7 +90,7 @@ namespace Adam
         /// <summary>
         /// Current version of the game.
         /// </summary>
-        public const string Version = "Version 0.5.4";
+        public const string Version = "Version 0.5.5 - itch.io";
         /// <summary>
         /// Producers of the game.
         /// </summary>
@@ -511,7 +511,7 @@ namespace Adam
             {
                 case GameState.SplashScreen:
                     gameSB.Begin();
-                    gameSB.Draw(splashDKD, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
+                    gameSB.Draw(splashDKD, new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White);
                     gameSB.End();
                     break;
                 case GameState.Cutscene:
@@ -603,8 +603,8 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
                     debugSB.DrawString(debugFont, "Load time: " + loadWatch.ElapsedMilliseconds, new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
-                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles.Count, new Vector2(0, 240), Color.White);
-                    debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities.Count, new Vector2(0, 260), Color.White);
+                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
+                    debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     debug.Draw(debugSB);
                     debugSB.End();
                 }

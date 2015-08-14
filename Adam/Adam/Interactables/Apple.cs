@@ -49,7 +49,7 @@ namespace Adam
                 winTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (winTimer > 2000)
                 {
-                    game1.ChangeState(GameState.GameWorld, GetNextLevel());
+                    game1.ChangeState(GameState.MainMenu, Level.Level0);
                 }
             }
 
