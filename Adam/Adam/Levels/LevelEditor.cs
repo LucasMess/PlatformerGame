@@ -8,6 +8,7 @@ using Adam.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
 using Adam.UI.Elements;
+using Adam.Misc.Helpers;
 
 namespace Adam.Levels
 {
@@ -27,8 +28,12 @@ namespace Adam.Levels
         public int IndexOfMouse;
         public byte selectedID = 1;
 
+        byte lastUsedTile = 1;
+        byte lastUsedWall = 100;
+
         SoundFx[] construction = new SoundFx[3];
         SoundFx destruction;
+        SoundFx wallMode;
 
         public void Load()
         {
@@ -43,6 +48,8 @@ namespace Adam.Levels
                 construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
             destruction = new SoundFx("Sounds/Level Editor/destroy1");
+
+            wallMode = new SoundFx("Sounds/Level Editor/changeMode");
 
             editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Main.Tilesize / 2, GameWorld.Instance.worldData.height * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
@@ -92,6 +99,21 @@ namespace Adam.Levels
         public void ChangeToWallMode()
         {
             onWallMode = !onWallMode;
+            wallMode.PlayNewInstanceOnce();
+            wallMode.Reset();
+
+            if (onWallMode)
+            {
+                lastUsedTile = selectedID;
+                selectedID = lastUsedWall;
+            }
+            else
+            {
+                lastUsedWall = selectedID;
+                selectedID = lastUsedTile;
+            }
+            
+
             tileScroll.Load();
         }
 
@@ -183,16 +205,16 @@ namespace Adam.Levels
                 if (index >= 0 && index < gameWorld.tileArray.Length)
                 {
                     //Check index of mouse
-                    if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                    if (CurrentArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                     {
                         IndexOfMouse = index;
                     }
 
                     //Check input
-                    Tile t = gameWorld.tileArray[index];
+                    Tile t = CurrentArray[index];
                     if (InputHelper.IsLeftMousePressed())
                     {
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
                             UpdateSelectedTiles(selectedID);
                         }
@@ -200,7 +222,7 @@ namespace Adam.Levels
 
                     if (InputHelper.IsRightMousePressed())
                     {
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                         {
                             UpdateSelectedTiles(0);
 
@@ -209,7 +231,7 @@ namespace Adam.Levels
 
                     if (InputHelper.IsMiddleMousePressed())
                     {
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID != 0)
+                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID != 0)
                         {
                             selectedID = t.ID;
                         }
@@ -255,6 +277,13 @@ namespace Adam.Levels
                     else
                     {
                         CurrentArray[i].ID = (byte)desiredID;
+                        if (onWallMode)
+                        {
+                            CurrentArray[i].isWall = true;
+                        }
+                        else
+                            CurrentArray[i].isWall = false;
+
                         Destroy(CurrentArray[i]);
                     }
                 }
@@ -265,6 +294,12 @@ namespace Adam.Levels
                     if (tileID == 0)
                     {
                         CurrentArray[i].ID = (byte)desiredID;
+                        if (onWallMode)
+                        {
+                            CurrentArray[i].isWall = true;
+                        }
+                        else
+                            CurrentArray[i].isWall = false;
                         Construct(CurrentArray[i]);
                     }
                     else continue;
@@ -360,7 +395,8 @@ namespace Adam.Levels
             entityScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
 
-            spriteBatch.DrawString(ContentHelper.LoadFont("Fonts/objectiveHead"), onWallMode.ToString(), new Vector2(0, 0), Color.Red);
+            FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
+
         }
 
         public Tile[] CurrentArray

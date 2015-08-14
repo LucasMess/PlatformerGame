@@ -36,7 +36,9 @@ namespace Adam
         public string name = "";
         Tile[] array;
         public Color color = Color.White;
-        static Color transparent;
+        float opacity = 1;
+        const float defaultOpacity = 1;
+        const float maxOpacity = .5f;
         bool hasConnectPattern;
         bool hasAddedEntity;
 
@@ -47,7 +49,6 @@ namespace Adam
 
         public Tile()
         {
-            transparent = color * .5f;
         }
 
         /// <summary>
@@ -448,8 +449,30 @@ namespace Adam
             obstacle?.Update(gameTime, GameWorld.Instance.player, GameWorld.Instance);
             //Not used for normal textures, only animated textures.
 
-            if (levelEditorTransparency)
+            ChangeOpacity();
+        }
+
+        private void ChangeOpacity()
+        {
+            if (GameWorld.Instance.levelEditor.onWallMode)
             {
+                if (!isWall)
+                {
+                    opacity -= .05f;
+
+                    if (opacity < maxOpacity)
+                    {
+                        opacity = maxOpacity;
+                    }
+                }
+            }
+            else
+            {
+                opacity += .05f;
+                if (opacity > defaultOpacity)
+                {
+                    opacity = defaultOpacity;
+                }
             }
         }
 
@@ -460,7 +483,7 @@ namespace Adam
                 if (!isVoid)
                 {
                     if (texture != null)
-                        spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
+                        spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
                     if (hasConnectPattern)
                     {
                         foreach (Tile c in cornerPieces)

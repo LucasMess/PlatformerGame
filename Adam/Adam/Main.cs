@@ -509,10 +509,13 @@ namespace Adam
 
                     UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     overlay.Draw(UiSB);
-                    gameWorld.DrawUI(UiSB);
-                    Dialog.Draw(UiSB);
+
                     if (!gameWorld.levelEditor.onInventory)
                         ObjectiveTracker.Draw(UiSB);
+
+                    gameWorld.DrawUI(UiSB);
+                    Dialog.Draw(UiSB);
+
                     UiSB.End();
 
                     break;
