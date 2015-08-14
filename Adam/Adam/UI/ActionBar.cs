@@ -28,11 +28,11 @@ namespace Adam.UI
 
         public ActionBar()
         {
-            box = new Rectangle((int)((Game1.DefaultResWidth / 2) / Game1.WidthRatio), (int)(Game1.DefaultResHeight / Game1.HeightRatio), (int)(184 / Game1.WidthRatio), (int)(40 / Game1.HeightRatio));
+            box = new Rectangle((int)((Main.DefaultResWidth / 2) / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
             box.X -= box.Width / 2;
             box.Y -= box.Height;
             originalY = box.Y;
-            box.Y = Game1.UserResHeight + 300;
+            box.Y = Main.UserResHeight + 300;
 
             playButton = new PlayButton(new Vector2(12 + 64, 4), box);
             openButton = new OpenButton(new Vector2(8 + 32, 4), box);
@@ -98,7 +98,7 @@ namespace Adam.UI
             }
             else
             {
-                int hidingPlace = Game1.UserResHeight + 200;
+                int hidingPlace = Main.UserResHeight + 200;
                 velocityY += .3f;
                 if (box.Y > hidingPlace)
                 {

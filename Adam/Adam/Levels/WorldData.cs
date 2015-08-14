@@ -112,12 +112,12 @@ namespace Adam.Levels
                 case GameMode.Edit:
                     if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
                     {
-                        Game1.ObjectiveTracker.CompleteObjective(0);
+                        Main.ObjectiveTracker.CompleteObjective(0);
                     }
 
                     if (privTrig0)
                     {
-                        Game1.ObjectiveTracker.CompleteObjective(1);
+                        Main.ObjectiveTracker.CompleteObjective(1);
                     }
 
                     if (gameTimer > 0)
@@ -126,14 +126,14 @@ namespace Adam.Levels
                         {
                             Objective obj = new Objective();
                             obj.Create("Press 'TAB' to open inventory.", 0);
-                            Game1.ObjectiveTracker.AddObjective(obj);
+                            Main.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
                         }
                         if (!obj1)
                         {
                             Objective obj = new Objective();
                             obj.Create("Use the scroll wheel to change brush size.", 1);
-                            Game1.ObjectiveTracker.AddObjective(obj);
+                            Main.ObjectiveTracker.AddObjective(obj);
                             obj1 = true;
                         }
                     }

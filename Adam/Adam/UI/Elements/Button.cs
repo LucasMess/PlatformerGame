@@ -38,7 +38,7 @@ namespace Adam.UI
         public Button(Vector2 position, string text)
         {
             Text = text;
-            collRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(300/Game1.WidthRatio), (int)(30/Game1.HeightRatio));
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(300/Main.WidthRatio), (int)(30/Main.HeightRatio));
             Initialize();
         }
 
@@ -106,7 +106,7 @@ namespace Adam.UI
         {
             spriteBatch.Draw(texture, collRectangle, color);
             spriteBatch.DrawString(font, Text, new Vector2(collRectangle.Center.X, collRectangle.Center.Y), 
-                Color.White, 0, font.MeasureString(Text) / 2, (float)(.5/Game1.HeightRatio), SpriteEffects.None, 0);
+                Color.White, 0, font.MeasureString(Text) / 2, (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
         }
 
     }

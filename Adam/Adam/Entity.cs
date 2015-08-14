@@ -23,7 +23,7 @@ namespace Adam
     public class Entity
     {
 
-        public Texture2D texture = Game1.DefaultTexture;
+        public Texture2D texture = Main.DefaultTexture;
         public Vector2 position;
         protected Vector2 origin;
         public Rectangle drawRectangle;
@@ -50,7 +50,7 @@ namespace Adam
         /// </summary>
         public Entity()
         {
-            Content = Game1.Content;
+            Content = Main.Content;
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace Adam
         public int GetTileIndex()
         {
             if (gameWorld != null)
-                return (int)(collRectangle.Center.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(collRectangle.Center.X / Game1.Tilesize);
+                return (int)(collRectangle.Center.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(collRectangle.Center.X / Main.Tilesize);
             else return 0;
         }
 
@@ -268,7 +268,7 @@ namespace Adam
         public int GetTileIndex(Vector2 coord)
         {
             if (gameWorld != null)
-                return (int)((int)coord.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)((int)coord.X / Game1.Tilesize);
+                return (int)((int)coord.Y / Main.Tilesize * gameWorld.worldData.width) + (int)((int)coord.X / Main.Tilesize);
             else throw new Exception("Map is null");
         }
 
@@ -281,8 +281,8 @@ namespace Adam
         {
             int width = map.worldData.width;
             int startingIndex = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) - width - 1;
-            int heightInTiles = (collRectangle.Height / Game1.Tilesize) + 2;
-            int widthInTiles = (collRectangle.Width / Game1.Tilesize) + 2;
+            int heightInTiles = (collRectangle.Height / Main.Tilesize) + 2;
+            int widthInTiles = (collRectangle.Width / Main.Tilesize) + 2;
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)
@@ -387,7 +387,7 @@ namespace Adam
                 if (i < gameWorld.tileArray.Length && i >= 0)
                 {
                     Tile t = gameWorld.tileArray[i];
-                    spriteBatch.Draw(Game1.DefaultTexture, t.drawRectangle, t.sourceRectangle, Color.Red);
+                    spriteBatch.Draw(Main.DefaultTexture, t.drawRectangle, t.sourceRectangle, Color.Red);
                 }
             }
         }
@@ -403,7 +403,7 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
-            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (gameWorld.worldData.width * (collRectangle.Height / Game1.Tilesize));
+            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (gameWorld.worldData.width * (collRectangle.Height / Main.Tilesize));
             if (indexBelowEntity >= 0 && indexBelowEntity < gameWorld.tileArray.Length)
                 if (!gameWorld.tileArray[indexBelowEntity].isSolid)
                 {

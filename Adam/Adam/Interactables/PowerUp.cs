@@ -79,7 +79,7 @@ namespace Adam.Interactables
             if (velocity.X == 0 && velocity.Y == 0) { }
             else
             {
-                tileIndex = (int)(topMidBound.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(topMidBound.X / Game1.Tilesize);
+                tileIndex = (int)(topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[9];
                 q[0] = tileIndex - gameWorld.worldData.width - 1;
@@ -136,7 +136,7 @@ namespace Adam.Interactables
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (texture == null) texture = Game1.DefaultTexture;
+            if (texture == null) texture = Main.DefaultTexture;
             spriteBatch.Draw(texture, drawRectangle, Color.White);
         }
     }

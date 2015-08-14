@@ -30,9 +30,9 @@ namespace Adam
         public void Load(ContentManager Content)
         {
             texture = Content.Load<Texture2D>("Tiles/spritemap_3");
-            rectangle = new Rectangle(0, 0, Game1.Tilesize, Game1.Tilesize);
+            rectangle = new Rectangle(0, 0, Main.Tilesize, Main.Tilesize);
             sourceRectangle = rectangle;
-            origin = new Vector2(Game1.Tilesize / 2, Game1.Tilesize / 2);
+            origin = new Vector2(Main.Tilesize / 2, Main.Tilesize / 2);
         }
 
         public void Update(GameTime gameTime, Vector2 cameraPos)
@@ -41,7 +41,7 @@ namespace Adam
             positionOnScreen.X = mouseState.X;
             positionOnScreen.Y = mouseState.Y;
 
-            positionOnGame = new Vector2(cameraPos.X - Game1.DefaultResWidth / 2 + positionOnScreen.X, cameraPos.Y - Game1.DefaultResHeight + positionOnScreen.Y);
+            positionOnGame = new Vector2(cameraPos.X - Main.DefaultResWidth / 2 + positionOnScreen.X, cameraPos.Y - Main.DefaultResHeight + positionOnScreen.Y);
 
             scrollWheel = mouseState.ScrollWheelValue;
 
@@ -58,22 +58,22 @@ namespace Adam
             int scrollBuffer = 20;
             if (Keyboard.GetState().IsKeyDown(Keys.Q) && scrollTimer > scrollBuffer)
             {
-                sourceRectangle.X += Game1.Tilesize;
+                sourceRectangle.X += Main.Tilesize;
                 scrollTimer = 0;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.E) && scrollTimer > scrollBuffer)
             {
-                sourceRectangle.X -= Game1.Tilesize;
+                sourceRectangle.X -= Main.Tilesize;
                 scrollTimer = 0;
             }
 
 
             if (sourceRectangle.X < 0)
-                sourceRectangle = new Rectangle(texture.Width - Game1.Tilesize, texture.Height - Game1.Tilesize, Game1.Tilesize, Game1.Tilesize);
+                sourceRectangle = new Rectangle(texture.Width - Main.Tilesize, texture.Height - Main.Tilesize, Main.Tilesize, Main.Tilesize);
             if (sourceRectangle.X > texture.Width)
             {
                 sourceRectangle.X = 0;
-                sourceRectangle.Y += Game1.Tilesize;
+                sourceRectangle.Y += Main.Tilesize;
             }
             if (sourceRectangle.Y > texture.Height)
                 sourceRectangle.Y = 0;

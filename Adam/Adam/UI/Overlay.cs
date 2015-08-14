@@ -41,10 +41,10 @@ namespace Adam
 
             //Black corners of the screen
             blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
-            blackCorners.Rectangle = new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight);
+            blackCorners.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
 
             blackScreen.Texture = ContentHelper.LoadTexture("Tiles/black");
-            blackScreen.Rectangle = new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight);
+            blackScreen.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
         }
 
         public void Update(GameTime gameTime, Player player, GameWorld map)

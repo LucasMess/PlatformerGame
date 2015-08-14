@@ -22,7 +22,7 @@ namespace Adam.Characters.Non_Playable
         KeyPopUp key;
         public NonPlayableCharacter()
         {
-            texture = Game1.DefaultTexture;
+            texture = Main.DefaultTexture;
 
             key = new KeyPopUp();
         }
@@ -75,7 +75,7 @@ namespace Adam.Characters.Non_Playable
                 {
                     destinationTimer = 0;
                     destinationX = GameWorld.RandGen.Next(-3, 4);
-                    destinationX *= Game1.Tilesize;
+                    destinationX *= Main.Tilesize;
                     destinationX += spawnX;
                     destinationFound = true;
 

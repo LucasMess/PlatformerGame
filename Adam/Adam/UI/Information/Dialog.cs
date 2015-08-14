@@ -36,7 +36,7 @@ namespace Adam.UI
         public Dialog()
         {
             texture = GameWorld.SpriteSheet;
-            drawRectangle = new Rectangle(Game1.UserResWidth / 2, 40, 600, 200);
+            drawRectangle = new Rectangle(Main.UserResWidth / 2, 40, 600, 200);
             sourceRectangle = new Rectangle(16 * 16, 14 * 16, 16 * 3, 16);
             origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
             drawRectangle.X -= (int)origin.X;

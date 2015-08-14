@@ -167,7 +167,7 @@ namespace Adam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(drawRectangle.Width / Game1.Tilesize, drawRectangle.Height / Game1.Tilesize);
+            Vector2 size = new Vector2(drawRectangle.Width / Main.Tilesize, drawRectangle.Height / Main.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
             int width = sourceRectangle.Width / xSize;

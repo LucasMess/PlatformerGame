@@ -34,8 +34,8 @@ namespace Adam
 
         public Light()
         {
-            this.tileSize = Game1.Tilesize;
-            this.Content = Game1.Content;
+            this.tileSize = Main.Tilesize;
+            this.Content = Main.Content;
             color = Color.White;
             opacity = 1;
             sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);

@@ -42,7 +42,7 @@ namespace Adam
         Texture2D maxTexture;
         Texture2D[] textureArray;
         Texture2D[] singleTextureArray;
-        Game1 game1;
+        Main game1;
 
         public Weapon weapon;
 
@@ -164,7 +164,7 @@ namespace Adam
         public AnimationState CurrentAnimation = AnimationState.Still;
         public Evolution CurrentEvolution = Evolution.Eden;
 
-        public Player(Game1 game1)
+        public Player(Main game1)
         {
             this.game1 = game1;
             Initialize(0, 0);
@@ -565,14 +565,14 @@ namespace Adam
             GameWorld gameWorld = GameWorld.Instance;
             if (position.X < 0)
                 position.X = 0;
-            if (position.X > (int)(gameWorld.worldData.width * Game1.Tilesize - collRectangle.Width))
-                position.X = (int)(gameWorld.worldData.width * Game1.Tilesize - collRectangle.Width);
+            if (position.X > (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width))
+                position.X = (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width);
             if (position.Y < 0)
                 position.Y = 0;
-            if (position.Y > (int)(gameWorld.worldData.height * Game1.Tilesize - collRectangle.Width) + 100)
+            if (position.Y > (int)(gameWorld.worldData.height * Main.Tilesize - collRectangle.Width) + 100)
             {
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    position.Y = gameWorld.worldData.height * Game1.Tilesize - collRectangle.Height;
+                    position.Y = gameWorld.worldData.height * Main.Tilesize - collRectangle.Height;
                 else
                 {
                     KillAndRespawn();
@@ -1096,7 +1096,7 @@ namespace Adam
 
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(previousSingleTexture.Width / Game1.Tilesize, previousSingleTexture.Height / Game1.Tilesize);
+            Vector2 size = new Vector2(previousSingleTexture.Width / Main.Tilesize, previousSingleTexture.Height / Main.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
             int width = previousSingleTexture.Width / xSize;

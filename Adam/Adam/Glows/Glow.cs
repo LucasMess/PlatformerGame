@@ -17,7 +17,7 @@ namespace Adam
         public Glow(Light light)
         {
             //All glows come from light sources.
-            texture = Game1.Content.Load<Texture2D>("Lighting/glow_200x200");
+            texture = Main.Content.Load<Texture2D>("Lighting/glow_200x200");
             drawRectangle = light.drawRectangle;
             origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);

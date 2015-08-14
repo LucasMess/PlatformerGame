@@ -39,7 +39,7 @@ namespace Adam
 
         public void Load()
         {
-            this.Content = Game1.Content;
+            this.Content = Main.Content;
             texture = Content.Load<Texture2D>("Weapon");
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             rectangle.Width = texture.Width;
@@ -124,8 +124,8 @@ namespace Adam
             CheckCollisions();
 
             MouseState mouse = Mouse.GetState();
-            Vector2 center = new Vector2((Game1.UserResWidth / 2) + (player.collRectangle.Width / 2),
-                (Game1.UserResHeight * 3 / 5) + (player.collRectangle.Height / 2));
+            Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.collRectangle.Width / 2),
+                (Main.UserResHeight * 3 / 5) + (player.collRectangle.Height / 2));
 
             //Find the unit vector according to where the mouse is
             double xDiff = (mouse.X - center.X);
@@ -175,7 +175,7 @@ namespace Adam
 
         private bool HasHitTerrain(Projectile projectile)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Main.Tilesize);
 
             int[] q = new int[9];
             q[0] = projectileTilePos - gameWorld.worldData.width - 1;
@@ -207,7 +207,7 @@ namespace Adam
 
         public bool HasHitEnemy(Projectile projectile, Enemy enemy)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Game1.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Game1.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Main.Tilesize);
 
             int[] q = new int[9];
             q[0] = projectileTilePos - gameWorld.worldData.width - 1;

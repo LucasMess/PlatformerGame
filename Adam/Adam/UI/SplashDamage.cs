@@ -25,7 +25,7 @@ namespace Adam.UI
         {
             this.damage = damage;
             text = damage.ToString();
-            position = new Vector2(Game1.UserResWidth / 2, Game1.UserResHeight / 2);
+            position = new Vector2(Main.UserResWidth / 2, Main.UserResHeight / 2);
 
             if (damage < 0)
                 isNegative = true;

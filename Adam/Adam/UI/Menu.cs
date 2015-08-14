@@ -58,7 +58,7 @@ namespace Adam
         int switchFrame, currentFrame;
         bool isSongPlaying;
         SpriteFont font;
-        Game1 game1;
+        Main game1;
 
         List<Particle> zzzList = new List<Particle>();
         double zzzTimer;
@@ -66,13 +66,13 @@ namespace Adam
         enum MenuState { Main, Options, LevelSelector, MultiplayerSession }
         MenuState CurrentMenuState = MenuState.Main;
 
-        public Menu(Game1 game1)
+        public Menu(Main game1)
         {
             this.game1 = game1;
 
-            int width = (int)(530 / Game1.WidthRatio);
-            int height = (int)(200 / Game1.HeightRatio);
-            int diff = (int)(40 / Game1.HeightRatio);
+            int width = (int)(530 / Main.WidthRatio);
+            int height = (int)(200 / Main.HeightRatio);
+            int diff = (int)(40 / Main.HeightRatio);
             first = new Vector2(width, height + (diff * 0));
             second = new Vector2(width, height + (diff * 1));
             third = new Vector2(width, height + (diff * 2));
@@ -274,8 +274,8 @@ namespace Adam
 
 
 
-            double scaleWidth = 8 / Game1.WidthRatio;
-            double scaleHeight = 8 / Game1.HeightRatio;
+            double scaleWidth = 8 / Main.WidthRatio;
+            double scaleHeight = 8 / Main.HeightRatio;
 
             appleRect = new Rectangle((int)(5 * scaleWidth), (int)(36 * scaleHeight), (int)(16 * scaleWidth), (int)(16 * scaleHeight));
             appleSource = new Rectangle(0, 0, 16, 16);
@@ -284,7 +284,7 @@ namespace Adam
 
         }
 
-        public void Update(Game1 game1, GameTime gameTime, Settings settings)
+        public void Update(Main game1, GameTime gameTime, Settings settings)
         {
             zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (zzzTimer > 1)
@@ -404,13 +404,13 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White);
-            spriteBatch.Draw(foreground, new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
+            spriteBatch.Draw(foreground, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
             spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
             spriteBatch.Draw(apple, appleRect, appleSource, Color.White);
 
-            spriteBatch.DrawString(font, Game1.Producers, new Vector2(5, (float)(5 / Game1.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Game1.HeightRatio), SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Game1.Version, new Vector2(5, (float)(30/Game1.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Game1.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Main.Producers, new Vector2(5, (float)(5 / Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Main.Version, new Vector2(5, (float)(30/Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
 
             switch (CurrentMenuState)
             {

@@ -27,7 +27,7 @@ namespace Adam.Obstacles
 
         public Liquid(int x, int y, Type type)
         {
-            collRectangle = new Rectangle(x + 8, y + 8, Game1.Tilesize / 2, Game1.Tilesize / 2);
+            collRectangle = new Rectangle(x + 8, y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
             particleTimer = GameWorld.RandGen.Next(0, 8);
             restartTime = GameWorld.RandGen.Next(5, 8);
             CurrentType = type;

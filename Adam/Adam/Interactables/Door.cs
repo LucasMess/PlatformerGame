@@ -28,9 +28,9 @@ namespace Adam
             this.secret = secret;
             this.tilePos = tilePos;
             this.Content = Content;
-            this.monitorRes = new Vector2(Game1.DefaultResWidth,Game1.DefaultResHeight);
+            this.monitorRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
 
-            animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Game1.Tilesize, Game1.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
+            animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Main.Tilesize, Main.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
             lockedSound = Content.Load<SoundEffect>("Sounds/lock_closed");
             openSound = Content.Load<SoundEffect>("Sounds/lock_open");
             radiusRect = new Rectangle(x - 100, y - 100, 200, 200);

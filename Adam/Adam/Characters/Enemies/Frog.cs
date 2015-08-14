@@ -155,7 +155,7 @@ namespace Adam.Characters.Enemies
 
         public float GravityStrength
         {
-            get { return Game1.Gravity; }
+            get { return Main.Gravity; }
         }
 
         public bool IsFlying { get; set; }

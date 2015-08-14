@@ -236,7 +236,7 @@
     <Compile Include="Projectiles\CollisionRay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="GameData\Settings.cs" />
     <Compile Include="Characters\Enemies\ShadeEnemy.cs" />
     <Compile Include="Interactables\Tech.cs" />

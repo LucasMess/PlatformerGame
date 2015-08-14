@@ -48,12 +48,12 @@ namespace Adam
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;
-            if (currentLeftCorner.X < -(width * Game1.Tilesize - defRes.X))
-                currentLeftCorner.X = -(width * Game1.Tilesize - defRes.X);
+            if (currentLeftCorner.X < -(width * Main.Tilesize - defRes.X))
+                currentLeftCorner.X = -(width * Main.Tilesize - defRes.X);
             if (currentLeftCorner.Y > 0)
                 currentLeftCorner.Y = 0;
-            if (currentLeftCorner.Y < -(height * Game1.Tilesize - defRes.Y))
-                currentLeftCorner.Y = -(height * Game1.Tilesize - defRes.Y);
+            if (currentLeftCorner.Y < -(height * Main.Tilesize - defRes.Y))
+                currentLeftCorner.Y = -(height * Main.Tilesize - defRes.Y);
 
             velocity = (currentLeftCorner - lastCameraLeftCorner) / 10;
             Vector3 cameraLeftCorner = lastCameraLeftCorner;
@@ -61,9 +61,9 @@ namespace Adam
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
 
             inverted = new Vector2(-currentLeftCorner.X,- currentLeftCorner.Y);
-            inverted.X += Game1.DefaultResWidth / 2;
-            inverted.Y += Game1.DefaultResHeight * 2 / 3;
-            tileIndex = (int)((int)inverted.Y / Game1.Tilesize * GameWorld.Instance.worldData.width) + (int)((int)inverted.X / Game1.Tilesize);
+            inverted.X += Main.DefaultResWidth / 2;
+            inverted.Y += Main.DefaultResHeight * 2 / 3;
+            tileIndex = (int)((int)inverted.Y / Main.Tilesize * GameWorld.Instance.worldData.width) + (int)((int)inverted.X / Main.Tilesize);
            // tileIndex = player.playerTileIndex;
 
             //if (player.isDead == false)

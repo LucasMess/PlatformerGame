@@ -68,7 +68,7 @@ namespace Adam
         public static Texture2D SpriteSheet;
         public static Texture2D UI_SpriteSheet;
         public LightEngine lightEngine;
-        public Game1 game1;
+        public Main game1;
         public Camera camera;
         public LevelEditor levelEditor = new LevelEditor();
 
@@ -87,7 +87,7 @@ namespace Adam
 
         public GameWorld() { }
 
-        public GameWorld(Game1 game1)
+        public GameWorld(Main game1)
         {
             instance = this;
 
@@ -105,7 +105,7 @@ namespace Adam
         {
             byte[] tileIDs = worldData.tileIDs;
             byte[] wallIDs = worldData.wallIDs;
-            this.Content = Game1.Content;
+            this.Content = Main.Content;
 
             this.CurrentGameMode = CurrentGameMode;
             worldData = new WorldData(this.CurrentGameMode);
@@ -125,7 +125,7 @@ namespace Adam
             int maxClouds = width / 100;
             for (int i = 0; i < maxClouds; i++)
             {
-                cloudList.Add(new Cloud(Content, new Vector2(Game1.UserResWidth, Game1.UserResHeight), maxClouds, i));
+                cloudList.Add(new Cloud(Content, new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
             }
 
             tileArray = new Tile[tileIDs.Length];
@@ -142,7 +142,9 @@ namespace Adam
             playerLight.Load(Content);
 
             background.Load(this.CurrentGameMode, this);
-            levelEditor.Load();
+
+            if (CurrentGameMode == GameMode.Edit)
+                levelEditor.Load();
 
             if (worldData.song != null)
                 MediaPlayer.Play(worldData.song);
@@ -157,15 +159,15 @@ namespace Adam
 
             for (int i = 0; i < IDs.Length; i++)
             {
-                int Xcoor = (i % width) * Game1.Tilesize;
-                int Ycoor = ((i - (i % width)) / width) * Game1.Tilesize;
+                int Xcoor = (i % width) * Main.Tilesize;
+                int Ycoor = ((i - (i % width)) / width) * Main.Tilesize;
 
 
                 array[i] = new Tile();
                 Tile t = array[i];
                 t.ID = (byte)IDs[i];
                 t.TileIndex = i;
-                t.drawRectangle = new Rectangle(Xcoor, Ycoor, Game1.Tilesize, Game1.Tilesize);
+                t.drawRectangle = new Rectangle(Xcoor, Ycoor, Main.Tilesize, Main.Tilesize);
             }
 
             foreach (Tile t in array)
@@ -545,7 +547,7 @@ namespace Adam
             if (gem.velocity.X == 0 && gem.velocity.Y == 0) { }
             else
             {
-                gemTilePos = (int)(gem.topMidBound.Y / Game1.Tilesize * worldData.width) + (int)(gem.topMidBound.X / Game1.Tilesize);
+                gemTilePos = (int)(gem.topMidBound.Y / Main.Tilesize * worldData.width) + (int)(gem.topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[9];
                 q[0] = gemTilePos - worldData.width - 1;
@@ -620,7 +622,7 @@ namespace Adam
                 }
 
                 SkipDamage:
-                enemyTilePos = (int)(enemy.topMidBound.Y / Game1.Tilesize * worldData.width) + (int)(enemy.topMidBound.X / Game1.Tilesize);
+                enemyTilePos = (int)(enemy.topMidBound.Y / Main.Tilesize * worldData.width) + (int)(enemy.topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[12];
                 q[0] = enemyTilePos - worldData.width - 1;
@@ -680,7 +682,7 @@ namespace Adam
 
         public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
-            this.Content = Game1.Content;
+            this.Content = Main.Content;
             this.gameTime = gameTime;
             this.camera = camera;
 
@@ -897,7 +899,7 @@ namespace Adam
         public void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentGameMode == GameMode.Edit)
-            levelEditor.DrawBehindTiles(spriteBatch);
+                levelEditor.DrawBehindTiles(spriteBatch);
 
             if (apple != null)
                 apple.Draw(spriteBatch);

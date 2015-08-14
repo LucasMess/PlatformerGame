@@ -70,8 +70,8 @@ namespace Adam
             get
             {
                 MouseState mouseState = Mouse.GetState();
-                double widthRatio = Game1.WidthRatio;
-                double heightRatio = Game1.HeightRatio;
+                double widthRatio = Main.WidthRatio;
+                double heightRatio = Main.HeightRatio;
                 Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio), (int)(mouseState.Y * heightRatio), 1, 1);
                 return mouseRect;
             }

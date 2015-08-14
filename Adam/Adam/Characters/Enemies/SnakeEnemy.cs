@@ -14,7 +14,7 @@ namespace Adam.Enemies
     {
         public SnakeEnemy(int x, int y)
         {
-            Content = Game1.Content;
+            Content = Main.Content;
             gameWorld = GameWorld.Instance;
 
             //Sets up specific variables for the snake

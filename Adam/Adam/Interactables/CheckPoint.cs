@@ -16,7 +16,7 @@ namespace Adam.Interactables
         public CheckPoint(int x, int y)
         {
             texture = ContentHelper.LoadTexture("Objects/checkPoint");
-            drawRectangle = new Rectangle(x, y - Game1.Tilesize * 2, 32, 96);
+            drawRectangle = new Rectangle(x, y - Main.Tilesize * 2, 32, 96);
             sourceRectangle = new Rectangle(0, 0, 16, 48);
             collRectangle = new Rectangle(drawRectangle.Center.X - 50, drawRectangle.Y, 100,drawRectangle.Height);
 

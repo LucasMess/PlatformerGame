@@ -75,7 +75,7 @@ namespace Adam
         {
             this.Content = Content;
 
-            Vector2 monitorResolution = new Vector2(Game1.UserResWidth, Game1.UserResHeight);
+            Vector2 monitorResolution = new Vector2(Main.UserResWidth, Main.UserResHeight);
             dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
 
             fill = Content.Load<Texture2D>("Menu/Star Fill");

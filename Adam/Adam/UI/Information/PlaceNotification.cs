@@ -23,7 +23,7 @@ namespace Adam.UI
         {
             texture = ContentHelper.LoadTexture("Tiles/black");
             font = ContentHelper.LoadFont("Fonts/placeNotification");
-            drawRectangle = new Rectangle(0, Game1.UserResHeight - 180, Game1.UserResWidth, 105);
+            drawRectangle = new Rectangle(0, Main.UserResHeight - 180, Main.UserResWidth, 105);
         }
 
         public void Show(string text)
@@ -31,7 +31,7 @@ namespace Adam.UI
             this.text = text;
             isActive = true;
             timer = 0;
-            textPos = new Vector2(Game1.UserResWidth - font.MeasureString(text).X - 30, drawRectangle.Y);
+            textPos = new Vector2(Main.UserResWidth - font.MeasureString(text).X - 30, drawRectangle.Y);
             original = textPos;
             textPos.X += font.MeasureString(text).X / 2;
         }

@@ -30,7 +30,7 @@ namespace Adam.Obstacles
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
-            drawRectangle = new Rectangle(x, y, Game1.Tilesize * 2, Game1.Tilesize * 2);
+            drawRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
             collRectangle = drawRectangle;
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;

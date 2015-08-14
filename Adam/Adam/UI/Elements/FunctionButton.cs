@@ -19,7 +19,7 @@ namespace Adam.UI.Elements
         {
             MouseOver += OnMouseOver;
             MouseOut += OnMouseOut;
-            collRectangle = new Rectangle(0, 0, (int)(Game1.Tilesize / Game1.WidthRatio), (int)(Game1.Tilesize / Game1.HeightRatio));
+            collRectangle = new Rectangle(0, 0, (int)(Main.Tilesize / Main.WidthRatio), (int)(Main.Tilesize / Main.HeightRatio));
             sourceRectangle = new Rectangle(0, 0, 16, 16);
             font = ContentHelper.LoadFont("Fonts/objectiveText");
         }
@@ -65,9 +65,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 0;
             sourceRectangle.Y = 0;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Test level [F5]";
         }
     }
@@ -79,9 +79,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 32;
             sourceRectangle.Y = 0;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Save level [Ctrl + S]";
         }
     }
@@ -93,9 +93,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 48;
             sourceRectangle.Y = 0;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Open level [Ctrl + O]";
         }
     }
@@ -107,9 +107,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 16;
             sourceRectangle.Y = 0;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "New level [Ctrl + N]";
         }
     }
@@ -121,9 +121,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 64;
             sourceRectangle.Y = 0;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Erase level [Ctrl + W]";
         }
     }
@@ -139,9 +139,9 @@ namespace Adam.UI.Elements
             Initialize();
             sourceRectangle.X = 64;
             sourceRectangle.Y = 16;
-            collRectangle.X = (int)(position.X / Game1.WidthRatio) + box.X;
-            collRectangle.Y = (int)(position.Y / Game1.HeightRatio) + box.Y;
-            relativePosition = new Vector2((float)(position.X / Game1.WidthRatio), (float)(position.Y / Game1.HeightRatio));
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Switch to Wall Mode [L]";
         }
     }

@@ -31,8 +31,8 @@ namespace Adam
             drawRectangle = rectangle;
             originalPosition = drawRectangle;
             if (GameWorld.Instance != null)
-                TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
-            smallTileSize = Game1.Tilesize / 2;
+                TileIndex = (int)(drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.width) + (int)(drawRectangle.Center.X / Main.Tilesize);
+            smallTileSize = Main.Tilesize / 2;
             DefineTexture();
         }
 
@@ -61,20 +61,20 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 0);
                     size.Y = 2;
-                    drawRectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Height = Main.Tilesize * 2;
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 17);
                     size.X = 2;
-                    drawRectangle.Width = Game1.Tilesize * 2;
+                    drawRectangle.Width = Main.Tilesize * 2;
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(12, 10 + (2 * GameWorld.RandGen.Next(0, 2)));
                     size.Y = 2;
-                    drawRectangle.Height = Game1.Tilesize * 2;
-                    drawRectangle.Y -= Game1.Tilesize;
+                    drawRectangle.Height = Main.Tilesize * 2;
+                    drawRectangle.Y -= Main.Tilesize;
                     sunlightPassesThrough = true;
                     break;
                 case 23: //Water
@@ -101,8 +101,8 @@ namespace Adam
                     startingPosition = new Vector2(16, 0);
                     size.X = 6;
                     size.Y = 7;
-                    drawRectangle.Height = Game1.Tilesize * 7;
-                    drawRectangle.Width = Game1.Tilesize * 6;
+                    drawRectangle.Height = Main.Tilesize * 7;
+                    drawRectangle.Width = Main.Tilesize * 6;
                     drawRectangle.Y = originalPosition.Y - (32 * 6);
                     drawRectangle.X = originalPosition.X - (16 * 5);
                     sunlightPassesThrough = true;
@@ -112,15 +112,15 @@ namespace Adam
                     startingPosition = new Vector2(14, 17);
                     size.X = 2;
                     size.Y = 2;
-                    drawRectangle.Height = Game1.Tilesize * 2;
-                    drawRectangle.Width = Game1.Tilesize * 2;
+                    drawRectangle.Height = Main.Tilesize * 2;
+                    drawRectangle.Width = Main.Tilesize * 2;
                     drawRectangle.Y = originalPosition.Y - 32;
                     break;
                 case 34: //Small Rock
                     frameCount = new Vector2(0, 0);
                     startingPosition = new Vector2(11, 18);
                     size.X = 2;
-                    drawRectangle.Width = Game1.Tilesize * 2;
+                    drawRectangle.Width = Main.Tilesize * 2;
                     break;
 
             }

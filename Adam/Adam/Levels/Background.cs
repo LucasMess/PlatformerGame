@@ -87,14 +87,14 @@ namespace Adam
 
             }
 
-            background.Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
+            background.Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             for (int i = 0; i < middlegrounds.Length; i++)
             {
-                middlegrounds[i].Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
+                middlegrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             }
             for (int i = 0; i < foregrounds.Length; i++)
             {
-                foregrounds[i].Rectangle = new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight);
+                foregrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             }
         }
 

@@ -20,7 +20,7 @@ namespace Adam
         SpriteFont font;
         Vector2 monitorRes;
         Vector2 position;
-        Game1 game1;
+        Main game1;
         Player player;
         bool definitionFound;
 
@@ -34,7 +34,7 @@ namespace Adam
             rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
-        public void Update(Game1 game1, Player player, GameWorld map, bool isOnDebug)
+        public void Update(Main game1, Player player, GameWorld map, bool isOnDebug)
         {
             if (!isOnDebug)
             {

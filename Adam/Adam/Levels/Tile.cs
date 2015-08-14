@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using Adam.Obstacles;
 using Adam.Lights;
 using Adam.Enemies;
+using Adam.Characters.Enemies;
+using Adam.Noobs;
 
 namespace Adam
 {
@@ -36,6 +38,7 @@ namespace Adam
         public Color color = Color.White;
         static Color transparent;
         bool hasConnectPattern;
+        bool hasAddedEntity;
 
         List<Tile> cornerPieces = new List<Tile>();
 
@@ -334,22 +337,97 @@ namespace Adam
                     break;
                 #endregion
 
-                case 200: //Player Spawn
+                case 200: //Player
+                    sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                         position = new Vector2(17, 12);
                     else
                     {
-                        GameWorld.Instance.game1.player.Initialize(drawRectangle.X, drawRectangle.Y);
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.game1.player.Initialize(drawRectangle.X, drawRectangle.Y);
+                            hasAddedEntity = true;
+                        }
                     }
                     break;
                 case 201: //Snake
+                    sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
                         position = new Vector2(18, 12);
                     }
                     else
                     {
-                        GameWorld.Instance.entities.Add(new SnakeEnemy(drawRectangle.X, drawRectangle.Y));
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new SnakeEnemy(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 202: //Frog
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(21, 12);
+                    }
+                    else
+                    {
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new Frog(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 203: //God
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(18, 13);
+                    }
+                    else
+                    {
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new God(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 204: //Lost
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(19, 12);
+                    }
+                    else
+                    {
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 205: //Hellboar
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(20, 12);
+                    }
+                    else
+                    {
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
                     }
                     break;
             }
@@ -379,20 +457,23 @@ namespace Adam
         {
             if (animatedTile == null)
             {
-                if (texture != null)
-                    spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
-                if (hasConnectPattern)
+                if (!isVoid)
                 {
-                    foreach (Tile c in cornerPieces)
+                    if (texture != null)
+                        spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color);
+                    if (hasConnectPattern)
                     {
-                        c.Draw(spriteBatch);
+                        foreach (Tile c in cornerPieces)
+                        {
+                            c.Draw(spriteBatch);
+                        }
                     }
                 }
             }
             else
             {
                 if (texture != null)
-                    animatedTile.Draw(spriteBatch);                
+                    animatedTile.Draw(spriteBatch);
             }
         }
 
@@ -892,11 +973,12 @@ namespace Adam
             {107,"" },
             {108,"" },
 
-            {200,"" },
-            {201,"" },
-            {202,"" },
-            {203,"" },
-            {204,"" },
+            {200,"Player" },
+            {201,"Snake" },
+            {202,"Frog" },
+            {203,"God" },
+            {204,"Lost" },
+            {205,"Hellboar" },
 
         };
 

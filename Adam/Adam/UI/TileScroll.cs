@@ -12,17 +12,22 @@ namespace Adam.UI
 {
     public class TileScroll
     {
-        bool isActive;
-        Rectangle box;
-        int maxHeight = Game1.UserResHeight;
-        List<Tile> tiles = new List<Tile>();
-        List<TileName> names = new List<TileName>();
-        SpriteFont font;
-        SoundFx scrollSound;
-        int lastHitTileOnScroll;
-        float velocityY;
-        float velocityX;
-        int lastScrollWheel;
+        protected bool isActive;
+        protected Rectangle box;
+        protected int maxHeight = Main.UserResHeight;
+        protected List<Tile> tiles = new List<Tile>();
+        protected List<TileName> names = new List<TileName>();
+        protected SpriteFont font;
+        protected SoundFx scrollSound;
+        protected int lastHitTileOnScroll;
+        protected float velocityY;
+        protected float velocityX;
+        protected int lastScrollWheel;
+
+        protected int activeX;
+        protected int inactiveX;
+
+        protected const int Width = 180;
 
         public delegate void TileSelectedHandler(TileSelectedArgs e);
 
@@ -30,9 +35,17 @@ namespace Adam.UI
 
         public TileScroll()
         {
+            activeX = 0;
+            inactiveX = -400;
+
+            box = new Rectangle(0, 0, (int)(180 / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio));
+            Initialize();
+        }
+
+        protected void Initialize()
+        {
             font = ContentHelper.LoadFont("Fonts/objectiveText");
             scrollSound = new SoundFx("Sounds/Level Editor/scroll");
-            box = new Rectangle(0, 0, (int)(180 / Game1.WidthRatio), (int)(Game1.DefaultResHeight / Game1.HeightRatio));
         }
 
         public void Load()
@@ -46,23 +59,28 @@ namespace Adam.UI
                 tile.ID = ID;
                 tile.DefineTexture();
 
-                tile.drawRectangle = new Rectangle(0, (int)((Game1.Tilesize / Game1.HeightRatio) * tiles.Count), (int)(Game1.Tilesize / Game1.HeightRatio), (int)(Game1.Tilesize / Game1.HeightRatio));
+                tile.drawRectangle = new Rectangle(activeX, (int)((Main.Tilesize / Main.HeightRatio) * tiles.Count), (int)(Main.Tilesize / Main.HeightRatio), (int)(Main.Tilesize / Main.HeightRatio));
                 tiles.Add(tile);
 
                 TileName tileName = new TileName();
                 Tile.TileNames.TryGetValue(tile.ID, out tileName.Name);
                 if (tileName.Name == null) tileName.Name = "*";
-                tileName.Position = new Vector2((float)(Game1.Tilesize / Game1.WidthRatio) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
+                tileName.Position = new Vector2((float)(Main.Tilesize / Main.WidthRatio) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
                 names.Add(tileName);
             }
 
+            Hide();
+        }
+
+        protected virtual void Hide()
+        {
             //Start off screen
-            foreach(Tile t in tiles)
+            foreach (Tile t in tiles)
             {
                 t.drawRectangle.X -= 400;
             }
             box.X -= 400;
-            foreach(TileName s in names)
+            foreach (TileName s in names)
             {
                 s.Position.X -= 400;
             }
@@ -75,7 +93,7 @@ namespace Adam.UI
             CheckIfTileIsHovered();
         }
 
-        private void CheckIfActive()
+        protected virtual void CheckIfActive()
         {
             if (InputHelper.IsKeyDown(Keys.Tab))
             {
@@ -85,11 +103,12 @@ namespace Adam.UI
 
             box = new Rectangle(tiles[0].drawRectangle.X, 0, box.Width, box.Height);
 
-            if (tiles[0].drawRectangle.X > 0)
+            //Prevent super fast jumping
+            if (tiles[0].drawRectangle.X > activeX)
             {
                 for (int i = 0; i < tiles.Count; i++)
                 {
-                    tiles[i].drawRectangle.X = 0;
+                    tiles[i].drawRectangle.X = activeX;
                 }
                 velocityX = 0;
             }
@@ -97,25 +116,25 @@ namespace Adam.UI
 
             if (isActive)
             {
-                if (tiles[0].drawRectangle.X < 0)
+                if (tiles[0].drawRectangle.X < activeX)
                 {
                     velocityX = -tiles[0].drawRectangle.X / 5;
                 }
-               
+
                 for (int i = 0; i < tiles.Count; i++)
                 {
                     tiles[i].drawRectangle.X += (int)velocityX;
-                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Game1.Tilesize / Game1.WidthRatio) + 5;
+                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
                 }
             }
             else
             {
-                if (tiles[0].drawRectangle.X < -400)
+                if (tiles[0].drawRectangle.X < inactiveX)
                 {
                     velocityX = 0;
                     for (int i = 0; i < tiles.Count; i++)
                     {
-                        tiles[i].drawRectangle.X = -400;
+                        tiles[i].drawRectangle.X = inactiveX;
                     }
                 }
                 else
@@ -126,7 +145,7 @@ namespace Adam.UI
                 for (int i = 0; i < tiles.Count; i++)
                 {
                     tiles[i].drawRectangle.X += (int)velocityX;
-                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Game1.Tilesize / Game1.WidthRatio) + 5;
+                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
                 }
             }
         }
@@ -142,7 +161,7 @@ namespace Adam.UI
                 {
                     velocityY = (scrollWheel - lastScrollWheel) / 5;
                 }
-                
+
             }
             lastScrollWheel = scrollWheel;
 
@@ -188,7 +207,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.UI_SpriteSheet, box, new Rectangle(0, 96, 180, Game1.DefaultResHeight), Color.White * .5f);
+            spriteBatch.Draw(GameWorld.UI_SpriteSheet, box, new Rectangle(0, 96, 180, Main.DefaultResHeight), Color.White * .5f);
 
             foreach (Tile t in tiles)
                 t.DrawByForce(spriteBatch);
@@ -199,7 +218,7 @@ namespace Adam.UI
             }
         }
 
-        private byte[] CurrentAvailableTileSet
+        protected virtual byte[] CurrentAvailableTileSet
         {
             get
             {
@@ -209,16 +228,23 @@ namespace Adam.UI
             }
         }
 
-        static byte[] AvailableTiles = new byte[]
+        protected virtual byte[] AvailableTiles
         {
-            1,2,5,6,4,39,40,38,10,8,21,3,18,29,30,14,15,16,23,24,25,11,12,22,31,32,34,33,19,27
-        };
+            get
+            {
+                byte[] IDs = new byte[]
+                {
+               1,2,5,6,4,39,40,38,10,8,21,3,18,29,30,14,15,16,23,24,25,11,12,22,31,32,34,33,19,27
+                };
+                return IDs;
+            }
+        }
 
         static byte[] AvailableWalls = new byte[]
         {
             100,101,102,103,104,105,106
         };
-            
+
     }
 
     public class TileName

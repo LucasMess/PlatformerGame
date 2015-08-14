@@ -30,8 +30,8 @@ namespace Adam.UI.Information
             texture = ContentHelper.LoadTexture("Tiles/white");
             textFont = ContentHelper.LoadFont("Fonts/objectiveText");
             headFont = ContentHelper.LoadFont("Fonts/objectiveHead");
-            drawRectangle = new Rectangle(Game1.UserResWidth, 0, 300, 125);
-            goalX = Game1.UserResWidth - drawRectangle.Width;
+            drawRectangle = new Rectangle(Main.UserResWidth, 0, 300, 125);
+            goalX = Main.UserResWidth - drawRectangle.Width;
         }
 
         public void Create(string text, int ID)
@@ -72,9 +72,9 @@ namespace Adam.UI.Information
 
                     if (lifespan > 2)
                     {
-                        int completeX = Game1.UserResWidth + 100;
+                        int completeX = Main.UserResWidth + 100;
                         drawRectangle.X += (completeX - drawRectangle.X) / 10;
-                        if (drawRectangle.X >= Game1.UserResWidth)
+                        if (drawRectangle.X >= Main.UserResWidth)
                             isActive = false;
                     }
                     else

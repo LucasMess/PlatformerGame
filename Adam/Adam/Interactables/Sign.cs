@@ -19,7 +19,7 @@ namespace Adam.Interactables
         public Sign(int xCoor, int yCoor, int ID)
         {
             key = new KeyPopUp();
-            collRectangle = new Rectangle(xCoor, yCoor, Game1.Tilesize, Game1.Tilesize);
+            collRectangle = new Rectangle(xCoor, yCoor, Main.Tilesize, Main.Tilesize);
             this.ID = ID;
         }
 
@@ -37,7 +37,7 @@ namespace Adam.Interactables
 
         private void ShowMessage()
         {
-            Game1.Dialog.Show(GameWorld.Instance.worldData.GetSignMessage(ID));
+            Main.Dialog.Show(GameWorld.Instance.worldData.GetSignMessage(ID));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

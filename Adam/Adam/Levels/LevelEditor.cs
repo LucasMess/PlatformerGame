@@ -15,6 +15,7 @@ namespace Adam.Levels
     {
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
+        EntityScroll entityScroll = new EntityScroll();
         ActionBar actionBar = new ActionBar();
         public Brush brush = new Brush();
         public bool onInventory;
@@ -34,13 +35,21 @@ namespace Adam.Levels
             tileScroll.Load();
             tileScroll.TileSelected += TileScroll_TileSelected;
 
+            entityScroll.Load();
+            entityScroll.TileSelected += EntityScroll_TileSelected;
+
             for (int i = 1; i <= construction.Length; i++)
             {
                 construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
             destruction = new SoundFx("Sounds/Level Editor/destroy1");
 
-            editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Game1.Tilesize / 2, GameWorld.Instance.worldData.height * Game1.Tilesize / 2, Game1.DefaultResWidth, Game1.DefaultResHeight);
+            editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Main.Tilesize / 2, GameWorld.Instance.worldData.height * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+        }
+
+        private void EntityScroll_TileSelected(TileSelectedArgs e)
+        {
+            selectedID = (byte)e.ID;
         }
 
         private void TileScroll_TileSelected(TileSelectedArgs e)
@@ -52,6 +61,7 @@ namespace Adam.Levels
         {
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
+            entityScroll.Update();
             actionBar.Update();
             brush.Update();
 
@@ -152,17 +162,17 @@ namespace Adam.Levels
             {
                 editorRectangle.X = 0;
             }
-            if (editorRectangle.X > (GameWorld.Instance.worldData.width * Game1.Tilesize) - editorRectangle.Width)
+            if (editorRectangle.X > (GameWorld.Instance.worldData.width * Main.Tilesize) - editorRectangle.Width)
             {
-                editorRectangle.X = (GameWorld.Instance.worldData.width * Game1.Tilesize) - editorRectangle.Width;
+                editorRectangle.X = (GameWorld.Instance.worldData.width * Main.Tilesize) - editorRectangle.Width;
             }
             if (editorRectangle.Y < 0)
             {
                 editorRectangle.Y = 0;
             }
-            if (editorRectangle.Y > (GameWorld.Instance.worldData.height * Game1.Tilesize) - editorRectangle.Height)
+            if (editorRectangle.Y > (GameWorld.Instance.worldData.height * Main.Tilesize) - editorRectangle.Height)
             {
-                editorRectangle.Y = (GameWorld.Instance.worldData.height * Game1.Tilesize) - editorRectangle.Height;
+                editorRectangle.Y = (GameWorld.Instance.worldData.height * Main.Tilesize) - editorRectangle.Height;
             }
         }
 
@@ -345,8 +355,9 @@ namespace Adam.Levels
 
         public void DrawUI(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Game1.UserResWidth, Game1.UserResHeight), Color.White * blackScreenOpacity);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);
             tileScroll.Draw(spriteBatch);
+            entityScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
 
             spriteBatch.DrawString(ContentHelper.LoadFont("Fonts/objectiveHead"), onWallMode.ToString(), new Vector2(0, 0), Color.Red);

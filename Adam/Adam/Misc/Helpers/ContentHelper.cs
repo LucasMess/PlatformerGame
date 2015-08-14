@@ -13,19 +13,19 @@ namespace Adam
     {
         public static Texture2D LoadTexture(string file)
         {
-            return Game1.Content.Load<Texture2D>(file);
+            return Main.Content.Load<Texture2D>(file);
         }
         public static SoundEffect LoadSound(string file)
         {
-            return Game1.Content.Load<SoundEffect>(file);
+            return Main.Content.Load<SoundEffect>(file);
         }
         public static Song LoadSong(string file)
         {
-            return Game1.Content.Load<Song>(file);
+            return Main.Content.Load<Song>(file);
         }
         public static SpriteFont LoadFont(string file)
         {
-            return Game1.Content.Load<SpriteFont>(file);
+            return Main.Content.Load<SpriteFont>(file);
         }
 
 

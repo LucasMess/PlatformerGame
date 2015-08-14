@@ -53,7 +53,7 @@ namespace Adam
         {
             if (videoTexture != null)
             {
-                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
         }
 

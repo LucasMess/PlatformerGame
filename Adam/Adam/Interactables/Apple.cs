@@ -17,12 +17,12 @@ namespace Adam
         bool wasPicked;
         double winTimer;
         Animation animation;
-        Game1 game1;
+        Main game1;
 
         public Apple(int x, int y)
         {
             rectangle = new Rectangle(x, y, 0, 0);
-            Load(Game1.Content);
+            Load(Main.Content);
         }
 
         public void Load(ContentManager Content)
@@ -34,7 +34,7 @@ namespace Adam
             animation = new Animation(texture, rectangle, 200, 100, AnimationType.PlayInIntervals);
         }
 
-        public void Update(Player player, GameTime gameTime, GameWorld map, Game1 game1)
+        public void Update(Player player, GameTime gameTime, GameWorld map, Main game1)
         {
             this.game1 = game1;
 

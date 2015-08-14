@@ -221,7 +221,7 @@ namespace Adam
                 AnimatedTile t = (AnimatedTile)tile;
                 sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
             }
-            sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Game1.Tilesize / 4);
+            sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Main.Tilesize / 4);
             velocity.X = (-player.velocity.X / 2) * (float)GameWorld.RandGen.NextDouble();
             velocity.Y = GameWorld.RandGen.Next(-1, 1);
             opacity = 1;
@@ -294,7 +294,7 @@ namespace Adam
         {
             CurrentParticle = ParticleType.Lava;
             //texture = ContentHelper.LoadTexture("Effects/lava");
-            texture = Game1.DefaultTexture;
+            texture = Main.DefaultTexture;
             drawRectangle = new Rectangle(lava.collRectangle.Center.X, lava.collRectangle.Y + 16, 16, 16);
             velocity.Y = -10f;
             velocity.X = GameWorld.RandGen.Next(-2, 3);

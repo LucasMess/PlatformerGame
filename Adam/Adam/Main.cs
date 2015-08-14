@@ -36,7 +36,7 @@ namespace Adam
         Play,
     }
 
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Main : Microsoft.Xna.Framework.Game
     {
         #region Variables
         static Color SunnyPreset = new Color(255, 238, 186);
@@ -98,7 +98,7 @@ namespace Adam
         public static ContentManager Content;
         #endregion
 
-        public Game1()
+        public Main()
         {
             graphics = new GraphicsDeviceManager(this);
 
@@ -106,8 +106,8 @@ namespace Adam
             monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             UserResWidth = (int)monitorRes.X;
             UserResHeight = (int)monitorRes.Y;
-            WidthRatio = ((double)Game1.DefaultResWidth / (double)Game1.UserResWidth);
-            HeightRatio = ((double)Game1.DefaultResHeight / (double)Game1.UserResHeight);
+            WidthRatio = ((double)Main.DefaultResWidth / (double)Main.UserResWidth);
+            HeightRatio = ((double)Main.DefaultResHeight / (double)Main.UserResHeight);
 
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
@@ -217,7 +217,7 @@ namespace Adam
         }
 
         private void BackgroundFileLoad()
-        {            
+        {
             hasLoadedContent = false;
             gameWorld.LoadFromFile(CurrentLevel);
             ObjectiveTracker = GameData.CurrentSave.ObjTracker;
@@ -340,7 +340,7 @@ namespace Adam
                     //if (gameWorld.SimulationPaused)
                     //    break;
 
-                    gameWorld.Update(gameTime, CurrentLevel, camera);                    
+                    gameWorld.Update(gameTime, CurrentLevel, camera);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
 
@@ -444,7 +444,7 @@ namespace Adam
             {
                 case GameState.GameWorld:
                     lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
-                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Game1.DefaultResWidth, Game1.DefaultResHeight), Color.White);
+                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
                     lightingSB.End();
 
                     lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
@@ -485,7 +485,7 @@ namespace Adam
                     gameSB.End();
                     break;
                 case GameState.MainMenu:
-                    gameSB.Begin(SpriteSortMode.Deferred,BlendState.AlphaBlend,SamplerState.PointClamp,DepthStencilState.None,RasterizerState.CullNone);
+                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     menu.Draw(gameSB);
                     gameSB.End();
                     break;
@@ -511,7 +511,8 @@ namespace Adam
                     overlay.Draw(UiSB);
                     gameWorld.DrawUI(UiSB);
                     Dialog.Draw(UiSB);
-                    ObjectiveTracker.Draw(UiSB);
+                    if (!gameWorld.levelEditor.onInventory)
+                        ObjectiveTracker.Draw(UiSB);
                     UiSB.End();
 
                     break;
@@ -546,7 +547,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
-                    debugSB.DrawString(debugFont, "Player Source Rectangle: "+ player.sourceRectangle, new Vector2(0, 120), Color.White);
+                    debugSB.DrawString(debugFont, "Player Source Rectangle: " + player.sourceRectangle, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
