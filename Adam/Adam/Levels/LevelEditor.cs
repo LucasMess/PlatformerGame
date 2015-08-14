@@ -210,6 +210,10 @@ namespace Adam.Levels
                         IndexOfMouse = index;
                     }
 
+                    //Prevent building and destroying fast bug
+                    if (InputHelper.IsRightMousePressed() && InputHelper.IsLeftMousePressed())
+                        continue;
+
                     //Check input
                     Tile t = CurrentArray[index];
                     if (InputHelper.IsLeftMousePressed())
