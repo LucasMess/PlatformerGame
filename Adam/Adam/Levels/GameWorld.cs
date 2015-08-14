@@ -49,7 +49,7 @@ namespace Adam
         Light[] lightArray;
         Light playerLight;
 
-        public GameMode CurrentLevel;
+        public GameMode CurrentGameMode;
         public Player player;
         public Apple apple;
         public bool debuggingMode;
@@ -77,7 +77,6 @@ namespace Adam
         public List<Cloud> cloudList;
         public List<Gem> gemList; //can be moved to entities
         public List<Chest> chestList; //can be moved to entities
-        public List<Climbables> climbablesList; //could be moved to entities
         public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
         public List<Entity> entities;
         public List<Particle> particles;
@@ -108,12 +107,11 @@ namespace Adam
             byte[] wallIDs = worldData.wallIDs;
             this.Content = Game1.Content;
 
-            CurrentLevel = CurrentGameMode;
-            worldData = new WorldData(CurrentLevel);
+            this.CurrentGameMode = CurrentGameMode;
+            worldData = new WorldData(this.CurrentGameMode);
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
-            climbablesList = new List<Climbables>();
             keyList = new List<Key>();
             entities = new List<Entity>();
             particles = new List<Particle>();
@@ -143,7 +141,7 @@ namespace Adam
             playerLight = new Light();
             playerLight.Load(Content);
 
-            background.Load(CurrentLevel, this);
+            background.Load(this.CurrentGameMode, this);
             levelEditor.Load();
 
             if (worldData.song != null)
@@ -803,25 +801,7 @@ namespace Adam
                 }
             }
 
-            foreach (var vine in climbablesList)
-            {
-                if (vine.IsOnPlayer(player))
-                {
-                    player.isOnVines = true;
-                    break;
-                }
-                else player.isOnVines = false;
-            }
-
             playerLight.Update(player);
-
-            //foreach (int tileNumber in visibleTileArray)
-            //{
-            //    if (tileNumber >= 0 && tileNumber < lightArray.Length)
-            //    {
-            //        lightArray[tileNumber].Shake();
-            //    }
-            //}
 
             foreach (Key key in keyList)
             {
@@ -916,7 +896,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (CurrentLevel == GameMode.Edit)
+            if (CurrentGameMode == GameMode.Edit)
             levelEditor.DrawBehindTiles(spriteBatch);
 
             if (apple != null)
@@ -948,7 +928,7 @@ namespace Adam
                 particles[i].Draw(spriteBatch);
             }
 
-            if (CurrentLevel == GameMode.Edit)
+            if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
         }
 
@@ -983,7 +963,7 @@ namespace Adam
         {
             placeNotification.Draw(spriteBatch);
 
-            if (CurrentLevel == GameMode.Edit)
+            if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawUI(spriteBatch);
         }
 

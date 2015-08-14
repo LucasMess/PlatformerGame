@@ -9,7 +9,7 @@ namespace Adam.Lights
 {
     public class LightEngine
     {
-                Light[] lights;
+        Light[] lights;
         int[] visibleLights = new int[60 * 100];
         List<Light> dynamicLights = new List<Light>();
         List<Light> newLights = new List<Light>();
@@ -61,14 +61,15 @@ namespace Adam.Lights
                     lights[i] = new SunLight(tiles[i].drawRectangle);
                 }
             }
-            
+
         }
 
         private void TransferNewLights()
         {
-            foreach (Light l in newLights)
+            for (int i = newLights.Count - 1; i >= 0; i--)
             {
-                lights[l.index] = l;
+                lights[newLights[i].index] = newLights[i];
+                newLights.Remove(newLights[i]);
             }
         }
 
@@ -90,6 +91,11 @@ namespace Adam.Lights
 
         public void Update()
         {
+            if (newLights.Count > 0)
+            {
+                TransferNewLights();
+            }
+
             Camera camera = GameWorld.Instance.camera;
             WorldData worldData = GameWorld.Instance.worldData;
             int initial = camera.tileIndex - 17 * 2 * worldData.width - 25 * 2;

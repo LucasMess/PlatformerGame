@@ -90,7 +90,7 @@ namespace Adam.Levels
 
             ambience?.PlayIfStopped();
 
-            switch (GameWorld.Instance.CurrentLevel)
+            switch (GameWorld.Instance.CurrentGameMode)
             {
                 //case GameMode.Level1and1:
                 //    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))

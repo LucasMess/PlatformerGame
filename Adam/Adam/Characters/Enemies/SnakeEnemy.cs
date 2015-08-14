@@ -12,10 +12,10 @@ namespace Adam.Enemies
 {
     public class SnakeEnemy : Enemy
     {
-        public SnakeEnemy(int x, int y, ContentManager Content, GameWorld map)
+        public SnakeEnemy(int x, int y)
         {
-            this.Content = Content;
-            this.gameWorld = map;
+            Content = Game1.Content;
+            gameWorld = GameWorld.Instance;
 
             //Sets up specific variables for the snake
             CurrentEnemyType = EnemyType.Snake;
@@ -46,7 +46,7 @@ namespace Adam.Enemies
             base.Update(player, gameTime);
 
             collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
-            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width  + 10, collRectangle.Height/2);
+            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width + 10, collRectangle.Height / 2);
 
             if (!isInRange)
                 return;

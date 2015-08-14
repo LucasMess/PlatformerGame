@@ -14,7 +14,6 @@ namespace Adam.Levels
     public class LevelEditor
     {
         GameWorld gameWorld;
-        WallButton wallButton;
         TileScroll tileScroll = new TileScroll();
         ActionBar actionBar = new ActionBar();
         public Brush brush = new Brush();
@@ -301,10 +300,9 @@ namespace Adam.Levels
                     t.FindConnectedTextures(CurrentArray,
                     gameWorld.worldData.width);
                     t.DefineTexture();
+                    GameWorld.Instance.lightEngine.UpdateSunLight(ind);
                 }
             }
-
-            GameWorld.Instance.lightEngine.UpdateSunLight(index);
 
         }
 

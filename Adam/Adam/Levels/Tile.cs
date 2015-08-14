@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Adam.Obstacles;
+using Adam.Lights;
+using Adam.Enemies;
 
 namespace Adam
 {
@@ -16,8 +18,11 @@ namespace Adam
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
         AnimatedTile animatedTile;
+        Obstacle obstacle;
 
-        public bool isSolid = false;
+        public bool isSolid;
+        public bool isClimbable;
+        public bool isWall;
         public byte ID = 0;
         public byte subID = 0;
         public int TileIndex { get; set; }
@@ -47,6 +52,9 @@ namespace Adam
         /// </summary>
         public virtual void DefineTexture()
         {
+            animatedTile = null;
+            obstacle = null;
+
             //Air ID is 0, so it can emit sunlight.
             if (ID != 0)
             {
@@ -139,12 +147,14 @@ namespace Adam
                     isVoid = true;
                     sunlightPassesThrough = true;
                     animatedTile = new AnimatedTile(ID, drawRectangle);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, null));
                     break;
                 case 12: //Chandelier
                     position = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
                     animatedTile = new AnimatedTile(ID, drawRectangle);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4));
                     break;
                 case 13: //Door
                     isSolid = true;
@@ -152,12 +162,15 @@ namespace Adam
                     break;
                 case 14: //Vines
                     position = new Vector2(15, 7);
+                    isClimbable = true;
                     break;
                 case 15: //Ladders
                     position = new Vector2(13, 7);
+                    isClimbable = true;
                     break;
                 case 16: //Chains
                     position = new Vector2(14, 7);
+                    isClimbable = true;
                     break;
                 case 17: //Daffodyls
                     animatedTile = new AnimatedTile(ID, drawRectangle);
@@ -189,12 +202,22 @@ namespace Adam
                     isSolid = true;
                     break;
                 case 22: //spikes
+                    position = new Vector2(17, 13);
+                    obstacle = new Spikes(drawRectangle.X, drawRectangle.Y);
+                    break;
+                case 23://water
+                    position = new Vector2(4, 15);
                     isVoid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 24: //lava
                     position = new Vector2(0, 15);
                     isVoid = true;
-                    isSolid = true;
+                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    break;
+                case 25:
+                    position = new Vector2(8, 15);
+                    isVoid = true;
                     animatedTile = new AnimatedTile(ID, drawRectangle);
                     break;
                 case 26: //apple
@@ -306,14 +329,27 @@ namespace Adam
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
                     break;
+                case 106: //Hellstone Wall
+                    position = new Vector2(14, 9);
+                    break;
                 #endregion
 
                 case 200: //Player Spawn
-                    if (GameWorld.Instance.CurrentLevel == GameMode.Edit)
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                         position = new Vector2(17, 12);
                     else
                     {
                         GameWorld.Instance.game1.player.Initialize(drawRectangle.X, drawRectangle.Y);
+                    }
+                    break;
+                case 201: //Snake
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(18, 12);
+                    }
+                    else
+                    {
+                        GameWorld.Instance.entities.Add(new SnakeEnemy(drawRectangle.X, drawRectangle.Y));
                     }
                     break;
             }
@@ -331,6 +367,7 @@ namespace Adam
         public virtual void Update(GameTime gameTime)
         {
             animatedTile?.Animate(gameTime);
+            obstacle?.Update(gameTime, GameWorld.Instance.player, GameWorld.Instance);
             //Not used for normal textures, only animated textures.
 
             if (levelEditorTransparency)

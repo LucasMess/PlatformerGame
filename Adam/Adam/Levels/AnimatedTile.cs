@@ -21,16 +21,18 @@ namespace Adam
         Vector2 frameCount;
         Vector2 startingPosition;
         Rectangle startingRectangle;
+        Rectangle originalPosition;
         Liquid liquid;
 
         public AnimatedTile(byte ID, Rectangle rectangle)
         {
             texture = GameWorld.SpriteSheet;
             this.ID = ID;
-            this.drawRectangle = rectangle;
+            drawRectangle = rectangle;
+            originalPosition = drawRectangle;
             if (GameWorld.Instance != null)
                 TileIndex = (int)(drawRectangle.Center.Y / Game1.Tilesize * GameWorld.Instance.worldData.width) + (int)(drawRectangle.Center.X / Game1.Tilesize);
-            this.smallTileSize = Game1.Tilesize / 2;
+            smallTileSize = Game1.Tilesize / 2;
             DefineTexture();
         }
 
@@ -60,18 +62,12 @@ namespace Adam
                     startingPosition = new Vector2(12, 0);
                     size.Y = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
-
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 3));
-
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(4, 0);
                     startingPosition = new Vector2(0, 17);
                     size.X = 2;
                     drawRectangle.Width = Game1.Tilesize * 2;
-
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 6));
-
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
@@ -107,8 +103,8 @@ namespace Adam
                     size.Y = 7;
                     drawRectangle.Height = Game1.Tilesize * 7;
                     drawRectangle.Width = Game1.Tilesize * 6;
-                    drawRectangle.Y -= 16 * 6;
-                    drawRectangle.X -= 8 * 5;
+                    drawRectangle.Y = originalPosition.Y - (32 * 6);
+                    drawRectangle.X = originalPosition.X - (16 * 5);
                     sunlightPassesThrough = true;
                     break;
                 case 33: //Big Rock
@@ -118,13 +114,13 @@ namespace Adam
                     size.Y = 2;
                     drawRectangle.Height = Game1.Tilesize * 2;
                     drawRectangle.Width = Game1.Tilesize * 2;
-                    drawRectangle.Y -= 16;
+                    drawRectangle.Y = originalPosition.Y - 32;
                     break;
                 case 34: //Small Rock
                     frameCount = new Vector2(0, 0);
                     startingPosition = new Vector2(11, 18);
                     size.X = 2;
-                    drawRectangle.Height = Game1.Tilesize * 2;
+                    drawRectangle.Width = Game1.Tilesize * 2;
                     break;
 
             }

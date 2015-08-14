@@ -24,7 +24,6 @@ namespace Adam.Network
         public List<Enemy> enemyList = new List<Enemy>();
         public List<Particle> effectList = new List<Particle>();
         public List<PlayerWeaponProjectile> projectileList = new List<PlayerWeaponProjectile>();
-        public List<Climbables> climbablesList = new List<Climbables>();
         public List<Tech> techList = new List<Tech>();
         public List<Door> doorList = new List<Door>();
         public List<Key> keyList = new List<Key>();

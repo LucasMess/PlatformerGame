@@ -95,7 +95,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentLevel == GameMode.Edit)
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                 goto Fade;
 
             spriteBatch.Draw(blackCorners.Texture, blackCorners.Rectangle, Color.White * .6f);

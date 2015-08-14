@@ -285,7 +285,7 @@ namespace Adam
         /// 
         public void Update(GameTime gameTime)
         {
-            if (GameWorld.Instance.CurrentLevel == GameMode.Edit)
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
             {
                 ContainInGameWorld();
                 return;
@@ -386,6 +386,12 @@ namespace Adam
         /// </summary>
         private void UpdateInput()
         {
+            //Check if player is currently on top of vines
+            if (gameWorld.tileArray[TileIndex].isClimbable)
+                isOnVines = true;
+            else isOnVines = false;
+
+
             //These variables define how fast the player will accelerate based on whether he is walking or runnning.
             //There is no need to put a max limit because after a certain speed, the friction is neough to maintain a const. vel.
             float walkingAcc = .5f;
@@ -565,7 +571,7 @@ namespace Adam
                 position.Y = 0;
             if (position.Y > (int)(gameWorld.worldData.height * Game1.Tilesize - collRectangle.Width) + 100)
             {
-                if (gameWorld.CurrentLevel == GameMode.Edit)
+                if (gameWorld.CurrentGameMode == GameMode.Edit)
                     position.Y = gameWorld.worldData.height * Game1.Tilesize - collRectangle.Height;
                 else
                 {
@@ -980,7 +986,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentLevel == GameMode.Edit) return;
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
             //DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);

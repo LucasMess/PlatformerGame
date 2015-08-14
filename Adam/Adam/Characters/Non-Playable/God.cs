@@ -89,7 +89,7 @@ namespace Adam.Noobs
         protected override void ShowMessage()
         {
             SoundFx fx;
-            switch (GameWorld.Instance.CurrentLevel)
+            switch (GameWorld.Instance.CurrentGameMode)
             {
                 //case GameMode.Level1and1:
                 //    switch (CurrentConversation)

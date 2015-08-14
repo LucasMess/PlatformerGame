@@ -240,7 +240,6 @@
     <Compile Include="GameData\Settings.cs" />
     <Compile Include="Characters\Enemies\ShadeEnemy.cs" />
     <Compile Include="Interactables\Tech.cs" />
-    <Compile Include="Interactables\Climbables.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashDamage.cs" />
     <Compile Include="UI\TileScroll.cs" />
