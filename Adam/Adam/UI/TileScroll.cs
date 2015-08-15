@@ -63,9 +63,9 @@ namespace Adam.UI
                 tiles.Add(tile);
 
                 TileName tileName = new TileName();
-                Tile.TileNames.TryGetValue(tile.ID, out tileName.Name);
+                Tile.Names.TryGetValue(tile.ID, out tileName.Name);
                 if (tileName.Name == null) tileName.Name = "*";
-                tileName.Position = new Vector2((float)(Main.Tilesize / Main.WidthRatio) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
+                tileName.Position = new Vector2((float)(activeX) + 5, tile.drawRectangle.Center.Y - font.LineSpacing / 2);
                 names.Add(tileName);
             }
 

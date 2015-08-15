@@ -27,7 +27,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <PublishUrl>C:\Users\Lucas\Desktop\Adam 0.6.0\</PublishUrl>
+    <PublishUrl>C:\Users\Lucas\Google Drive\Duck Knight Duel\3 - Project Adam\_Development\Builds\Adam 0.6.0.0\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -242,6 +242,7 @@
     <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashDamage.cs" />
+    <Compile Include="UI\TileDescription.cs" />
     <Compile Include="UI\TileScroll.cs" />
     <Compile Include="UI\Timer.cs" />
     <Compile Include="Misc\TriggerZone.cs" />

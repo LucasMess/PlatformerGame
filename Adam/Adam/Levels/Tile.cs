@@ -426,8 +426,8 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
-                            GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
-                            hasAddedEntity = true;
+                            //GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
+                            //hasAddedEntity = true;
                         }
                     }
                     break;
@@ -943,7 +943,7 @@ namespace Adam
 
         };
 
-        public static Dictionary<int, string> TileNames = new Dictionary<int, string>()
+        public static Dictionary<int, string> Names = new Dictionary<int, string>()
         {
             {1,"Grass" },
             {2,"Stone" },

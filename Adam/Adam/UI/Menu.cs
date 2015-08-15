@@ -254,7 +254,8 @@ namespace Adam
 
         void play_MouseClicked()
         {
-            GameWorld.Instance.worldData.OpenLevelLocally();
+            game1.CurrentLevel = GameMode.Play;
+            GameWorld.Instance.worldData.OpenLevelLocally(false);
         }
 
         void options_MouseClicked()

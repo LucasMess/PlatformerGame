@@ -144,5 +144,16 @@ namespace Adam.UI.Elements
             relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             hoverText = "Switch to Wall Mode [L]";
         }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (GameWorld.Instance.levelEditor.onWallMode)
+            {
+                hoverText = "Switch to Tile Mode [L]";
+            }
+            else hoverText = "Switch to Wall Mode [L]";
+
+            base.Draw(spriteBatch);
+        }
     }
 }

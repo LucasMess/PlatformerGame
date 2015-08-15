@@ -38,7 +38,7 @@ namespace Adam.Misc.Helpers
 
             foreach (string word in words)
             {
-                Vector2 size = spriteFont.MeasureString(word);
+            Vector2 size = spriteFont.MeasureString(word);
 
                 if (lineWidth + size.X < maxLineWidth)
                 {

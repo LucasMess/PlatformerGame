@@ -18,6 +18,7 @@ namespace Adam.Levels
         TileScroll tileScroll = new TileScroll();
         EntityScroll entityScroll = new EntityScroll();
         ActionBar actionBar = new ActionBar();
+        TileDescription tileDescription = new TileDescription();
         public Brush brush = new Brush();
         public bool onInventory;
         public bool onWallMode;
@@ -71,6 +72,7 @@ namespace Adam.Levels
             entityScroll.Update();
             actionBar.Update();
             brush.Update();
+            tileDescription.Update();
 
             CheckIfOnInventory();
             CheckIfWantsToSave();
@@ -143,7 +145,7 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.F9))
             {
-                GameWorld.Instance.worldData.OpenLevelLocally();
+                GameWorld.Instance.worldData.OpenLevelLocally(true);
             }
         }
 
@@ -394,13 +396,17 @@ namespace Adam.Levels
 
         public void DrawUI(SpriteBatch spriteBatch)
         {
+            if (!onInventory)
+            FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
+
+
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);
+            tileDescription.Draw(spriteBatch);
             tileScroll.Draw(spriteBatch);
             entityScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
-
-            FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
-
+            
+           
         }
 
         public Tile[] CurrentArray

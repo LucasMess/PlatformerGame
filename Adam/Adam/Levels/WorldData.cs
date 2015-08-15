@@ -50,6 +50,7 @@ namespace Adam.Levels
 
         bool privTrig0;
 
+        bool editMode;
         bool dealingWithData;
         public byte[] tileIDs = new byte[200 * 200];
         public byte[] wallIDs = new byte[200 * 200];
@@ -165,7 +166,7 @@ namespace Adam.Levels
             return "ERROR: Text not found.";
         }
 
-        public void OpenLevelLocally()
+        public void OpenLevelLocally(bool editMode)
         {
             if (!dealingWithData)
             {
@@ -173,6 +174,7 @@ namespace Adam.Levels
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
                 dealingWithData = true;
+                this.editMode = editMode;
             }
         }
 
@@ -190,7 +192,16 @@ namespace Adam.Levels
                 {
                     data = (WorldConfigFile)xs.Deserialize(fs);
                 }
-                data.LoadIntoEditor();
+
+                if (editMode)
+                {
+                    data.LoadIntoEditor();
+                }
+                else
+                {
+                    data.LoadIntoPlay();
+                }
+
             }
 
             dealingWithData = false;
@@ -229,7 +240,7 @@ namespace Adam.Levels
 
         public void CreateNewWorld()
         {
-            
+
         }
 
         public void WipeWorld()

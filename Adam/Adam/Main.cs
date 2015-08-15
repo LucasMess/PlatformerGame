@@ -70,7 +70,7 @@ namespace Adam
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960;
         public const int DefaultResHeight = 540;
-        public const string Version = "Version 0.6.0";
+        public const string Version = "Version 0.6.0 (Pre-Release)";
         public const string Producers = "Duck Knight Duel Games";
         public static int UserResWidth;
         public static int UserResHeight;
