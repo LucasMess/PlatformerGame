@@ -819,7 +819,7 @@ namespace Adam
             {
                 if (tileNumber >= 0 && tileNumber < tileArray.Length)
                 {
-                    tileArray[tileNumber].Update(gameTime);
+                    tileArray[tileNumber]?.Update(gameTime);
                 }
             }
         }

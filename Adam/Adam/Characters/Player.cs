@@ -387,9 +387,10 @@ namespace Adam
         private void UpdateInput()
         {
             //Check if player is currently on top of vines
-            if (gameWorld.tileArray[TileIndex].isClimbable)
-                isOnVines = true;
-            else isOnVines = false;
+            if (TileIndex >= 0 && TileIndex < GameWorld.Instance.tileArray.Length)
+                if (gameWorld.tileArray[TileIndex].isClimbable)
+                    isOnVines = true;
+                else isOnVines = false;
 
 
             //These variables define how fast the player will accelerate based on whether he is walking or runnning.

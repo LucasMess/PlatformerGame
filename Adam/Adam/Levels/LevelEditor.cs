@@ -38,6 +38,7 @@ namespace Adam.Levels
 
         public void Load()
         {
+
             tileScroll.Load();
             tileScroll.TileSelected += TileScroll_TileSelected;
 
@@ -206,6 +207,8 @@ namespace Adam.Levels
             {
                 if (index >= 0 && index < gameWorld.tileArray.Length)
                 {
+                    if (CurrentArray[index] == null) return;
+
                     //Check index of mouse
                     if (CurrentArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
                     {

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Adam.UI
 {
@@ -26,6 +27,9 @@ namespace Adam.UI
 
         float velocityY;
         int originalY;
+
+        Dialog askSave;
+        WorldProperties properties;
 
         public ActionBar()
         {
@@ -52,6 +56,29 @@ namespace Adam.UI
             buttons.Add(saveButton);
             buttons.Add(newButton);
             buttons.Add(wallButton);
+
+            askSave = new Dialog();
+            askSave.YesResult += AskSave_YesResult;
+            askSave.NoResult += AskSave_NoResult;
+
+            properties = new WorldProperties();
+        }
+
+        private void AskSave_NoResult()
+        {
+            //gameWorld.debuggingMode = true;
+            //WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
+            //data.LoadIntoPlay();
+        }
+
+        private void AskSave_YesResult()
+        {
+            //SaveButton_MouseClicked();
+            //while (GameWorld.Instance.worldData.dealingWithData)
+            //{
+            //    Thread.Sleep(250);
+            //}
+            //AskSave_NoResult();
         }
 
         private void WallButton_MouseClicked()
@@ -61,7 +88,14 @@ namespace Adam.UI
 
         private void NewButton_MouseClicked()
         {
+            Thread thread = new Thread(new ThreadStart(ShowProperties));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
 
+        private void ShowProperties()
+        {
+            properties.Show();
         }
 
         private void SaveButton_MouseClicked()
@@ -71,20 +105,97 @@ namespace Adam.UI
 
         private void OpenButton_MouseClicked()
         {
-            gameWorld.worldData.OpenLevelLocally(true);
+            if (AskSaveDialog())
+            {
+                SaveButton_MouseClicked();
+                while (GameWorld.Instance.worldData.dealingWithData)
+                {
+                    Thread.Sleep(250);
+                }
+                gameWorld.worldData.OpenLevelLocally(true);
+            }
+            else
+            {
+                gameWorld.worldData.OpenLevelLocally(true);
+            }
+            
+        }
+
+        private bool IsWorldEmpty()
+        {
+            foreach (Tile t in gameWorld.tileArray)
+            {
+                if (t.ID != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool IsPlayerInWorld()
+        {
+            foreach (Tile t in gameWorld.tileArray)
+            {
+                //check if there is a player tile
+                if (t.ID == 200)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void PlayButton_MouseClicked()
+        {
+            if (!IsPlayerInWorld())
+                MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
+            else
+            {
+                if (AskSaveDialog())
+                {
+                    SaveButton_MouseClicked();
+                    while (GameWorld.Instance.worldData.dealingWithData)
+                    {
+                        Thread.Sleep(250);
+                    }
+                    TestLevel();
+                }
+                else
+                {
+                    TestLevel();
+                }
+            }
+
+        }
+
+        private void TestLevel()
         {
             gameWorld.debuggingMode = true;
             WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
             data.LoadIntoPlay();
         }
 
+        private bool AskSaveDialog()
+        {
+            DialogResult dialogResult = MessageBox.Show("Would you like to save your level first? All progress will be lost otherwise.", "Save?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                return true;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return false;
+            }
+            return false;
+        }
+
         public void Update()
         {
             gameWorld = GameWorld.Instance;
             levelEditor = gameWorld.levelEditor;
+
+            askSave.Update(GameWorld.Instance.gameTime);
 
             if (box.Y < originalY)
             {
@@ -95,7 +206,7 @@ namespace Adam.UI
             if (levelEditor.onInventory)
             {
                 velocityY = (originalY - box.Y) / 5;
-                
+
             }
             else
             {
@@ -129,6 +240,8 @@ namespace Adam.UI
             {
                 b.Draw(spriteBatch);
             }
+
+            askSave.Draw(spriteBatch);
         }
 
     }

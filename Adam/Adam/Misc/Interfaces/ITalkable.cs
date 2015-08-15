@@ -13,4 +13,5 @@ namespace Adam.Misc.Interfaces
 
         void OnNextDialog();
     }
+
 }

@@ -18,7 +18,8 @@ namespace Adam.UI
         Rectangle sourceRectangle;
         Vector2 origin;
 
-        bool isActive = false;
+        bool isActive;
+        bool isQuestion;
         string text = "";
         StringBuilder sb;
         SoundFx popSound;
@@ -28,10 +29,19 @@ namespace Adam.UI
         public event EventHandler NextDialog;
         public event EventHandler CancelDialog;
 
+        public event EventHandler YesResult;
+        public event EventHandler NoResult;
+        public event EventHandler OKResult;
+        public event EventHandler CancelResult;
+
+
         float opacity = 0;
         double skipTimer;
 
         int originalY;
+
+        Rectangle yesBox;
+        Rectangle noBox;
 
         public Dialog()
         {
@@ -46,6 +56,9 @@ namespace Adam.UI
 
             font = ContentHelper.LoadFont("Fonts/dialog");
             popSound = new SoundFx("Sounds/message_show");
+
+            yesBox = new Rectangle(drawRectangle.X, drawRectangle.Bottom, drawRectangle.Width/2, 20);
+            noBox = new Rectangle(drawRectangle.X + drawRectangle.Width/2, drawRectangle.Bottom, drawRectangle.Width/2, 20);
         }
 
         public void Say(string text, ITalkable sender)
@@ -61,6 +74,13 @@ namespace Adam.UI
             CurrentSender = null;
 
             Prepare(text);
+        }
+
+        public void AskQuestion(string question)
+        {
+            CurrentSender = null;
+            isQuestion = true;
+            Prepare(question);
         }
 
         private void Prepare(string text)
@@ -83,12 +103,29 @@ namespace Adam.UI
                 GameWorld.Instance.player.manual_hasControl = false;
                 if (skipTimer > .5)
                 {
+                    
                     if (InputHelper.IsLeftMousePressed())
                     {
-                        isActive = false;
-                        GameWorld.Instance.player.manual_hasControl = true;
-                        if (CurrentSender != null)
-                            CurrentSender.OnNextDialog();
+                        if (isQuestion)
+                        {
+                            if (InputHelper.MouseRectangle.Intersects(yesBox))
+                            {
+                                isActive = false;
+                                YesResult();
+                            }
+                            else if (InputHelper.MouseRectangle.Intersects(noBox))
+                            {
+                                isActive = false;
+                                NoResult();
+                            }
+                        }
+                        else
+                        {
+                            isActive = false;
+                            GameWorld.Instance.player.manual_hasControl = true;
+                            if (CurrentSender != null)
+                                CurrentSender.OnNextDialog();
+                        }
                     }
                 }
             }
@@ -117,10 +154,16 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (texture != null)
             spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
             spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
             if (isActive && skipTimer > .5)
             {
+                if (isQuestion)
+                {
+                    FontHelper.DrawWithOutline(spriteBatch, font, "Yes", new Vector2(yesBox.X, yesBox.Y), 2, Color.White, Color.Black);
+                    FontHelper.DrawWithOutline(spriteBatch, font, "No", new Vector2(noBox.X, noBox.Y), 2, Color.White, Color.Black);
+                }
                 string mousebutton = "Press left mouse button to continue";
                 FontHelper.DrawWithOutline(spriteBatch, font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X - 20, drawRectangle.Bottom), 2, Color.White, Color.Black);
             }
