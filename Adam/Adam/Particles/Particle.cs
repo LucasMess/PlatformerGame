@@ -23,6 +23,7 @@ namespace Adam
         double travelTimer;
         double respawnTimer;
         Vector2 frameCount;
+        protected Vector2 position;
         int currentFrame;
         bool toDelete;
         public bool isComplete;
@@ -238,7 +239,7 @@ namespace Adam
             int maxTanSpeed = 5;
             velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
             originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
-            differenceInPosition = new Vector2(player.respawnPos.X - player.position.X, player.respawnPos.Y - player.position.Y);
+            differenceInPosition = new Vector2(player.respawnPos.X - player.collRectangle.X, player.respawnPos.Y - player.collRectangle.Y);
             endPosition = originalPosition + differenceInPosition;
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
         }

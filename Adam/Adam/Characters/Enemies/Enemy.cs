@@ -57,7 +57,6 @@ namespace Adam
         protected void Initialize()
         {
             radiusRect = new Rectangle(collRectangle.X, collRectangle.Y, 2000, 2000);
-            position = new Vector2(collRectangle.X, collRectangle.Y);
             maxHealth = health;
 
             killedByPlayerSound = new SoundFx("Sounds/Player/enemy_kill");

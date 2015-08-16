@@ -46,7 +46,6 @@ namespace Adam
 
         public Weapon weapon;
 
-        public Vector2 previousPosition;
 
         public Rectangle attackBox;
 
@@ -85,7 +84,6 @@ namespace Adam
         public bool isSpaceBarPressed;
         public bool automatic_hasControl = true;
         public bool hasFiredWeapon;
-        public bool isFacingRight = true;
         public bool isOnVines;
         public bool grabbedVine;
         public bool manual_hasControl = true;
@@ -181,7 +179,6 @@ namespace Adam
             //Set the player position according to where in the map he is supposed to be
             collRectangle.X = setX;
             collRectangle.Y = setY;
-            position = new Vector2(collRectangle.X, collRectangle.Y);
             respawnPos = new Vector2(setX, setY);
             weapon = new Weapon();
 
@@ -346,7 +343,6 @@ namespace Adam
                 Chronoshift(Evolution.Modern);
             }
 
-            previousPosition = position;
 
             //If player is chronoshifting the update method skips to here.
 
@@ -543,12 +539,6 @@ namespace Adam
         {
             ContainInGameWorld();
 
-            //Update the main collision rectangle;
-            position += velocity * (float)(gameTime.ElapsedGameTime.TotalSeconds) * 60f;
-
-            collRectangle.X = (int)(position.X);
-            collRectangle.Y = (int)(position.Y);
-
             //Update the drawRectangle
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 16;
@@ -564,16 +554,16 @@ namespace Adam
         private void ContainInGameWorld()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            if (position.X < 0)
-                position.X = 0;
-            if (position.X > (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width))
-                position.X = (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width);
-            if (position.Y < 0)
-                position.Y = 0;
-            if (position.Y > (int)(gameWorld.worldData.height * Main.Tilesize - collRectangle.Width) + 100)
+            if (collRectangle.X < 0)
+                collRectangle.X = 0;
+            if (collRectangle.X > (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width))
+                collRectangle.X = (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width);
+            if (collRectangle.Y < 0)
+                collRectangle.Y = 0;
+            if (collRectangle.Y > (int)(gameWorld.worldData.height * Main.Tilesize - collRectangle.Width) + 100)
             {
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    position.Y = gameWorld.worldData.height * Main.Tilesize - collRectangle.Height;
+                    collRectangle.Y = gameWorld.worldData.height * Main.Tilesize - collRectangle.Height;
                 else
                 {
                     KillAndRespawn();
@@ -959,7 +949,7 @@ namespace Adam
                     switch (co)
                     {
                         case CollisionLocation.Bottom:
-                            position.Y = ob.collRectangle.Y - collRectangle.Height;
+                            collRectangle.Y = ob.collRectangle.Y - collRectangle.Height;
                             velocity.Y = 0f;
                             isJumping = false;
                             isFlying = false;
@@ -967,11 +957,11 @@ namespace Adam
                             Stomp();
                             break;
                         case CollisionLocation.Right:
-                            position.X = ob.collRectangle.X - collRectangle.Width - 1;
+                            collRectangle.X = ob.collRectangle.X - collRectangle.Width - 1;
                             velocity.X = 0f;
                             break;
                         case CollisionLocation.Left:
-                            position.X = ob.collRectangle.X + ob.collRectangle.Width + 1;
+                            collRectangle.X = ob.collRectangle.X + ob.collRectangle.Width + 1;
                             velocity.X = 0f;
                             break;
                         case CollisionLocation.Top:
@@ -988,7 +978,7 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
-            DrawSurroundIndexes(spriteBatch);
+            //DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);
 
@@ -1066,8 +1056,8 @@ namespace Adam
             //reset player velocity
             velocity = new Vector2(0, 0);
             //Take him back to the spawn point
-            position.X = (int)respawnPos.X;
-            position.Y = (int)respawnPos.Y;
+            collRectangle.X = (int)respawnPos.X;
+            collRectangle.Y = (int)respawnPos.Y;
             //Reset the death animation sequence so that the player can die again
             deathAnimationDone = false;
             gameOverSoundPlayed = false;
@@ -1341,17 +1331,11 @@ namespace Adam
 
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            //if (velocity.Y <= -.5f)
-            position.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
-            //else position.Y = previousPosition.Y;
             velocity.Y = 0f;
         }
 
         void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            //if (velocity.Y >= .5f)
-            position.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
-            //else position.Y = previousPosition.Y;
             velocity.Y = 0f;
             isJumping = false;
             isFlying = false;
@@ -1360,21 +1344,12 @@ namespace Adam
 
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            //if (velocity.X >= .5f)
-            position.X = e.Tile.drawRectangle.X - collRectangle.Width;
-            //else position.X = previousPosition.X;
-            //velocity.X = 0f;
-
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            //if (velocity.X <= -.5f)
-            position.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
-            //else position.X = previousPosition.X;
-            //velocity.X = 0f;
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
         }

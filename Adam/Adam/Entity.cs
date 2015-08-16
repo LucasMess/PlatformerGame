@@ -24,7 +24,6 @@ namespace Adam
     {
 
         public Texture2D texture = Main.DefaultTexture;
-        public Vector2 position;
         protected Vector2 origin;
         public Rectangle drawRectangle;
         public Rectangle collRectangle;
@@ -33,6 +32,7 @@ namespace Adam
         protected GameWorld gameWorld;
         public bool toDelete;
         public Vector2 velocity;
+        public bool isFacingRight;
 
         public Rectangle yRect, xRect;
 
@@ -77,9 +77,7 @@ namespace Adam
 
             if (this is ICollidable)
             {
-                xRect = new Rectangle(collRectangle.X, collRectangle.Y + 10, collRectangle.Width, collRectangle.Height - 20);
-                yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
-
+                UpdateXYRects();
                 CheckTerrainCollision();
             }
 
@@ -123,68 +121,13 @@ namespace Adam
             drawRectangle.Y = (int)(position.Y + origin.Y);
         }
 
-        /// <summary>
-        /// If the entity is colliding with the terrain, it will return the collision location and the tile that it is colliding with.
-        /// </summary>
-        /// <param name="map">The map the entity is in.</param>
-        /// <param name="tile">Tile that entity collided with.</param>
-        /// <returns>The location of the collision.</returns>
-        public CollisionLocation CheckTerrainCollision(GameWorld map, out Tile tile)
+
+        protected void UpdateXYRects()
         {
-            int width = map.worldData.width;
-
-            //Gets all the tile indexes of the tiles surrounding the entity.
-            int[] q = new int[12];
-            q[0] = TileIndex - width - 1;
-            q[1] = TileIndex - width;
-            q[2] = TileIndex - width + 1;
-            q[3] = TileIndex - 1;
-            q[4] = TileIndex;
-            q[5] = TileIndex + 1;
-            q[6] = TileIndex + width - 1;
-            q[7] = TileIndex + width;
-            q[8] = TileIndex + width + 1;
-            q[9] = TileIndex + width + width - 1;
-            q[10] = TileIndex + width + width;
-            q[11] = TileIndex + width + width + 1;
-
-            //check the tiles around the entity for collision
-            foreach (int quadrant in q)
-            {
-                if (quadrant >= 0 && quadrant < map.tileArray.Length)
-                {
-                    tile = map.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
-                    {
-                        if (yRect.Intersects(map.tileArray[quadrant].drawRectangle))
-                        {
-                            if (position.Y < map.tileArray[quadrant].drawRectangle.Y) //hits bot
-                            {
-                                return CollisionLocation.Bottom;
-                            }
-                            else  //hits top
-                            {
-                                return CollisionLocation.Top;
-                            }
-                        }
-                        else if (xRect.Intersects(map.tileArray[quadrant].drawRectangle))
-                        {
-                            if (position.X < map.tileArray[quadrant].drawRectangle.X) //hits right
-                            {
-                                return CollisionLocation.Right;
-                            }
-                            else //hits left
-                            {
-                                return CollisionLocation.Left;
-                            }
-                        }
-                    }
-                }
-            }
-            tile = new Tile();
-            //If no collision was detected return null collision.
-            return CollisionLocation.Null;
+            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 10, collRectangle.Width, collRectangle.Height - 20);
+            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
         }
+
 
         /// <summary>
         /// Checks for collision with other entity and returns the location of said collision.
@@ -310,12 +253,14 @@ namespace Adam
         /// </summary>
         private void CheckTerrainCollision()
         {
-            if (this is ICollidable) { } else throw new Exception("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
+            if (this is ICollidable) { } else throw new InvalidOperationException("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
 
             ICollidable ent = (ICollidable)this;
 
             int[] q = GetNearbyTileIndexes(gameWorld);
 
+            //Solve Y collisions
+            collRectangle.Y += (int)velocity.Y;
             foreach (int quadrant in q)
             {
                 if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length)
@@ -323,26 +268,61 @@ namespace Adam
                     Tile tile = gameWorld.tileArray[quadrant];
                     if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
                     {
-
-                        if (yRect.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
+                        Rectangle tileRect = tile.drawRectangle;
+                        if (collRectangle.Intersects(tileRect))
                         {
-                            if (position.Y <= gameWorld.tileArray[quadrant].drawRectangle.Y) //hits bot
+                            if (velocity.Y > 0)
                             {
+                                velocity.Y = 0;
+                                while (collRectangle.Intersects(tileRect))
+                                {
+                                    collRectangle.Y--;
+                                }
                                 ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
                             }
-                            else  //hits top
+                            else if (velocity.Y < 0)
                             {
+                                velocity.Y = 0;
+                                while (collRectangle.Intersects(tileRect))
+                                {
+                                    collRectangle.Y++;
+                                }
                                 ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
                             }
                         }
-                        if (xRect.Intersects(tile.drawRectangle))
+                    }
+                }
+            }
+
+            //Solve X Collisions
+            collRectangle.X += (int)velocity.X;
+            foreach (int quadrant in q)
+            {
+                if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length)
+                {
+                    Tile tile = gameWorld.tileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
+                    {
+                        Rectangle tileRect = tile.drawRectangle;
+                        if (collRectangle.Intersects(tile.drawRectangle))
                         {
-                            if (position.X <= gameWorld.tileArray[quadrant].drawRectangle.X) //hits right
+                            if (velocity.X > 0)
                             {
+                                velocity.X = 0;
+                                while (collRectangle.Intersects(tileRect))
+                                {
+                                    collRectangle.X--;
+                                }
                                 ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
                             }
-                            else //hits left
+                            else if (velocity.X < 0)
                             {
+                                velocity.X = 0;
+                                while (collRectangle.Intersects(tileRect))
+                                {
+                                    collRectangle.X++;
+                                    UpdateXYRects();
+                                }
                                 ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
                             }
 
@@ -412,15 +392,23 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
-            int indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) + (gameWorld.worldData.width * (collRectangle.Height / Main.Tilesize));
+
+            int indexBelowEntity;
+            if (isFacingRight)
+            {
+                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.width;
+            }
+            else
+            {
+                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.width;
+            }
+
             if (indexBelowEntity >= 0 && indexBelowEntity < gameWorld.tileArray.Length)
                 if (!gameWorld.tileArray[indexBelowEntity].isSolid)
                 {
                     newt.IsAboveTile = false;
                 }
                 else newt.IsAboveTile = true;
-
-            // Console.WriteLine(this.GetType() +""+newt.IsAboveTile);
 
             if (!newt.IsAboveTile || newt.IsJumping)
             {

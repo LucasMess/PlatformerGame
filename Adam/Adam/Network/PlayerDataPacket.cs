@@ -16,10 +16,6 @@ namespace Adam.Network
 
         public void Update(Player player)
         {
-            CurrentEvolution = player.CurrentEvolution;
-            velocity = player.velocity;
-            position = player.position;
-            CurrentAnimationState = player.CurrentAnimation;
         }
     }
 }

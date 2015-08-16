@@ -110,7 +110,7 @@ namespace Adam.Characters.Enemies
                 else animation.Color = Color.White;
                 animation.Draw(spriteBatch);
 
-                DrawSurroundIndexes(spriteBatch);
+               // DrawSurroundIndexes(spriteBatch);
                // spriteBatch.Draw(Game1.DefaultTexture, collRectangle, Color.Red);
                 //spriteBatch.Draw(Game1.DefaultTexture, xRect, Color.Red);
                 //spriteBatch.Draw(Game1.DefaultTexture, yRect, Color.Blue);
@@ -119,14 +119,12 @@ namespace Adam.Characters.Enemies
 
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
             velocity.Y = 0f;
             velocity.X = 0;
         }
 
         void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
             velocity.Y = 0f;
             IsJumping = false;
             IsFlying = false;
@@ -136,15 +134,12 @@ namespace Adam.Characters.Enemies
 
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
-
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
         }
