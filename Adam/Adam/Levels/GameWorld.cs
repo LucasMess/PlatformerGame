@@ -696,7 +696,16 @@ namespace Adam
             }
             else
             {
-                camera.UpdateSmoothly(player.collRectangle, worldData.width, worldData.height);
+                camera.UpdateSmoothly(player.collRectangle, worldData.width, worldData.height, !player.isDead);
+
+                if (player.isDead)
+                {
+                    camera.ZoomIn();
+                }
+                else
+                {
+                    camera.ZoomOut();
+                }
             }
 
             TimesUpdated++;

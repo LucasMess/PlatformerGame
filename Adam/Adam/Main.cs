@@ -112,9 +112,10 @@ namespace Adam
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
 
+
             //Change Game Settings Here
             graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.PreferMultiSampling = true;
+            graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
 
             Content = new ContentManager(Services, "Content");
@@ -172,6 +173,7 @@ namespace Adam
             loadWatch = new Stopwatch();
 
             base.Initialize();
+
         }
 
         protected override void LoadContent()
@@ -425,7 +427,7 @@ namespace Adam
                     gameWorld.DrawBackground(backgroundSB);
                     gameWorld.DrawClouds(backgroundSB);
                     backgroundSB.End();
-
+                    
                     gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawInBack(gameSB);
                     gameSB.End();

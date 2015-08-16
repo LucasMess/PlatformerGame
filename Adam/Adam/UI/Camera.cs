@@ -41,10 +41,10 @@ namespace Adam
             tileIndex = 100;
         }
 
-        public void UpdateSmoothly(Rectangle rectangle, int width , int height)
+        public void UpdateSmoothly(Rectangle rectangle, int width, int height, bool active)
         {
             Vector2 playerPos = new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
-            Vector3 currentLeftCorner = new Vector3(-playerPos.X + defRes.X / 2, -playerPos.Y + (3 * defRes.Y / 5), 0);
+            Vector3 currentLeftCorner = new Vector3(-playerPos.X + defRes.X / zoom / 2, -playerPos.Y + (3 * defRes.Y / zoom / 5), 0);
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;
@@ -55,29 +55,41 @@ namespace Adam
             if (currentLeftCorner.Y < -(height * Main.Tilesize - defRes.Y))
                 currentLeftCorner.Y = -(height * Main.Tilesize - defRes.Y);
 
-            velocity = (currentLeftCorner - lastCameraLeftCorner) / 10;
+            //if (zoom > 1)
+            //{
+            //    translation = Matrix.CreateTranslation(new Vector3(-playerPos.X + ((int)defRes.X /zoom/ 2), -playerPos.Y + (3 * (int)defRes.Y /zoom/ 5), 0))
+            //        * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
+
+            //    return;
+            //}
+
+            velocity = (currentLeftCorner - lastCameraLeftCorner) / 8;
             Vector3 cameraLeftCorner = lastCameraLeftCorner;
             cameraLeftCorner += velocity;
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
 
-            inverted = new Vector2(-currentLeftCorner.X,- currentLeftCorner.Y);
+            inverted = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
             inverted.X += Main.DefaultResWidth / 2;
             inverted.Y += Main.DefaultResHeight * 2 / 3;
             tileIndex = (int)((int)inverted.Y / Main.Tilesize * GameWorld.Instance.worldData.width) + (int)((int)inverted.X / Main.Tilesize);
-           // tileIndex = player.playerTileIndex;
 
-            //if (player.isDead == false)
-            //{
-               lastCameraLeftCorner = cameraLeftCorner;
-                lastVelocity = velocity;
-                translation = Matrix.CreateTranslation(cameraLeftCorner);
-            //}
-            //else
-            //{
-            //    lastCameraLeftCorner.Y += lastVelocity.Y /3;
-            //    lastCameraLeftCorner = new Vector3((int)lastCameraLeftCorner.X, (int)lastCameraLeftCorner.Y, 0);
-            //    translation = Matrix.CreateTranslation(lastCameraLeftCorner);
-            //}
+            lastCameraLeftCorner = cameraLeftCorner;
+            lastVelocity = velocity;
+
+
+            translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
+        }
+
+        public void ZoomIn()
+        {
+            zoom += .005f;
+            if (zoom > 2)
+                zoom = 2;
+        }
+
+        public void ZoomOut()
+        {
+            zoom = 1;
         }
 
         public void UpdateWithZoom(Vector2 position)

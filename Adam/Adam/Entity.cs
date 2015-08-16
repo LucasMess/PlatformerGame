@@ -33,6 +33,7 @@ namespace Adam
         public bool toDelete;
         public Vector2 velocity;
         public bool isFacingRight;
+        public bool isDead;
 
         public Rectangle yRect, xRect;
 
@@ -253,6 +254,7 @@ namespace Adam
         /// </summary>
         private void CheckTerrainCollision()
         {
+            if (isDead) return;
             if (this is ICollidable) { } else throw new InvalidOperationException("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
 
             ICollidable ent = (ICollidable)this;

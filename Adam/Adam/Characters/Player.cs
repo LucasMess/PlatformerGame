@@ -302,10 +302,16 @@ namespace Adam
 
             //Update Method is spread out!
             //Check the following things
+            if (isDead)
+            {
+                UpdateTimers();
+                return;
+            } 
+
             UpdateStats();
             CheckDead();
-            UpdateTimers();
             UpdateInput();
+            UpdateTimers();
             UpdatePlayerPosition();
             if (!isGhost)
                 base.Update();
@@ -1217,13 +1223,20 @@ namespace Adam
 
         public void KillAndRespawn()
         {
+            if (health == 0)
+                goto SkipChecks;
+
             if (isInvulnerable)
                 return;
             if (isInvincible)
                 return;
 
+            SkipChecks:
+
             if (isWaitingForRespawn)
                 return;
+
+
 
             GameWorld.Instance.SimulationPaused = true;
 

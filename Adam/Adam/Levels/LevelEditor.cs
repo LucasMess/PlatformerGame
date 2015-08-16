@@ -161,7 +161,7 @@ namespace Adam.Levels
 
         private void CheckForCameraMovement()
         {
-            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.width, GameWorld.Instance.worldData.height);
+            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.width, GameWorld.Instance.worldData.height, true);
             int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
