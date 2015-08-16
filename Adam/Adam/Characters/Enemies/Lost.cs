@@ -1,5 +1,7 @@
 ﻿using Adam;
+using Adam.Misc;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,7 +20,9 @@ namespace Adam
         }
         AnimationState CurrentAnimationState = AnimationState.Hiding;
         AnimationData still;
-        Animation animation;
+        SoundFx ghost, ghost2;
+        double ghostTimer;
+        int timerEnd;
 
         public Lost(int x, int y)
         {
@@ -26,6 +30,10 @@ namespace Adam
             maxVelocity = new Vector2(1, 1);
 
             texture = Content.Load<Texture2D>("Enemies/lost");
+            ghost = new SoundFx("Lost/ghost");
+            ghost2 = new SoundFx("Lost/ghost2");
+            deathSound = ContentHelper.LoadSound("Lost/scream");
+            deathSoundInstance = deathSound.CreateInstance();
 
             collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
             drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
@@ -33,6 +41,8 @@ namespace Adam
 
             still = new AnimationData(200, 4, 0, AnimationType.Loop);
             animation = new Animation(texture, drawRectangle, sourceRectangle);
+
+            timerEnd = GameWorld.RandGen.Next(3, 8);
 
             Initialize();
         }
@@ -44,6 +54,8 @@ namespace Adam
             DetectCollision();
 
             if (!isInRange)
+                return;
+            if (isDead)
                 return;
 
             //Calculating unit vector for velocity of shade
@@ -101,6 +113,17 @@ namespace Adam
             }
 
             isFacingRight = isPlayerToTheRight;
+
+            ghostTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (ghostTimer > timerEnd)
+            {
+                ghostTimer = 0;
+                if (GameWorld.RandGen.Next(0, 2) == 0)
+                {
+                    ghost.PlayIfStopped();
+                }
+                else ghost2.PlayIfStopped();
+            }
 
         }
 

@@ -26,7 +26,6 @@ namespace Adam.Enemies
 
             //Textures and sound effects, single is for rectangle pieces explosion
             texture = Content.Load<Texture2D>("Enemies/Snake");
-            singleTexture = Content.Load<Texture2D>("Enemies/snake_single");
 
             meanSound = Content.Load<SoundEffect>("Sounds/SnakeHit");
             meanSoundInstance = meanSound.CreateInstance();

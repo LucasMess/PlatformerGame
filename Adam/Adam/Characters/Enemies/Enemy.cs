@@ -20,7 +20,6 @@ namespace Adam
 
     public class Enemy : Entity
     {
-        public Texture2D singleTexture;
         protected Rectangle radiusRect;
         public Rectangle topMidBound;
         public Rectangle damageBox;
@@ -223,7 +222,7 @@ namespace Adam
             return 0;
         }
 
-        public void BeMean()
+        public virtual void BeMean()
         {
             if (!wasMean && meanSound != null)
             {
