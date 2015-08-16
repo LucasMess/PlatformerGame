@@ -172,6 +172,8 @@
     <Compile Include="Misc\Helpers\CalcHelper.cs" />
     <Compile Include="Misc\Interfaces\INewtonian.cs" />
     <Compile Include="Misc\Interfaces\ITalkable.cs" />
+    <Compile Include="Misc\KeyboardDispatcher.cs" />
+    <Compile Include="Misc\KeyboardLayout.cs" />
     <Compile Include="Misc\SoundFx.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />

@@ -211,6 +211,11 @@ namespace Adam
             }
         }
 
+        private void CheckKeyboardInput()
+        {
+
+        }
+
         public void AnalyzeText()
         {
             switch (textString)
