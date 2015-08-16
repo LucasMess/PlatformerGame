@@ -17,17 +17,22 @@ namespace Adam
             Flying,
         }
         AnimationState CurrentAnimationState = AnimationState.Hiding;
+        AnimationData still;
+        Animation animation;
 
         public Lost(int x, int y)
         {
             health = EnemyDB.Shade_MaxHealth;
-            maxVelocity = new Vector2(2, 2);
+            maxVelocity = new Vector2(1, 1);
 
-            texture = Content.Load<Texture2D>("Enemies/BlueShade_Single");
+            texture = Content.Load<Texture2D>("Enemies/lost");
 
-            drawRectangle = new Rectangle(x, y, 48, 80);
-            collRectangle = new Rectangle(x, y, 48, 80);
-            sourceRectangle = new Rectangle(0, 0, 48, 80);
+            collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
+            drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
+            sourceRectangle = new Rectangle(0, 0, 24, 40);
+
+            still = new AnimationData(200, 4, 0, AnimationType.Loop);
+            animation = new Animation(texture, drawRectangle, sourceRectangle);
 
             Initialize();
         }
@@ -42,16 +47,42 @@ namespace Adam
                 return;
 
             //Calculating unit vector for velocity of shade
-            double xVector = (double)(player.collRectangle.Center.X - collRectangle.Center.X);
-            double yVector = (double)(player.collRectangle.Center.Y - collRectangle.Center.Y);
+            //double xVector = (double)(player.collRectangle.Center.X - collRectangle.Center.X);
+            //double yVector = (double)(player.collRectangle.Center.Y - collRectangle.Center.Y);
 
-            double magnitude = Math.Sqrt((Math.Pow(xVector, 2.0)) + (Math.Pow(yVector, 2.0)));
-            Vector2 newVelocity = new Vector2(maxVelocity.X * (float)(xVector / magnitude), maxVelocity.Y * (float)(yVector / magnitude));
-            //newVelocity = new Vector2(1, 1);
-            
-            velocity = newVelocity;
+            //double magnitude = Math.Sqrt((Math.Pow(xVector, 2.0)) + (Math.Pow(yVector, 2.0)));
+            //Vector2 newVelocity = new Vector2(maxVelocity.X * (float)(xVector / magnitude), maxVelocity.Y * (float)(yVector / magnitude));
 
-            drawRectangle = collRectangle;
+            //velocity = newVelocity;
+
+            int buffer = 5;
+            if (collRectangle.Y < player.collRectangle.Y - buffer)
+            {
+                velocity.Y = maxVelocity.Y;
+            }
+            else if (collRectangle.Y > player.collRectangle.Y + buffer)
+            {
+                velocity.Y = -maxVelocity.Y;
+            }
+            else
+            {
+                velocity.Y = 0;
+            }
+
+            if (collRectangle.X < player.collRectangle.X - buffer)
+            {
+                velocity.X = maxVelocity.X;
+            }
+            else if (collRectangle.X > player.collRectangle.X + buffer)
+            {
+                velocity.X = -maxVelocity.X;
+            }
+            else
+            {
+                velocity.X = 0;
+            }
+
+            drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
 
             opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
@@ -75,15 +106,7 @@ namespace Adam
 
         private void Animate(GameTime gameTime)
         {
-            switch (CurrentAnimationState)
-            {
-                case AnimationState.Flying:
-
-                    break;
-                case AnimationState.Hiding:
-
-                    break;
-            }
+            animation.Update(gameTime, drawRectangle, still);
         }
 
         private void DetectCollision()
@@ -101,12 +124,20 @@ namespace Adam
                 return;
             if (isDead)
                 return;
+            Color color = Color.White * opacity;
+            animation.Color = color;
+            animation.Draw(spriteBatch);
 
             if (isFacingRight)
             {
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                animation.isFlipped = false;
+                //spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
             }
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            else
+            {
+                animation.isFlipped = true;
+                // spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            }
         }
     }
 }
