@@ -53,7 +53,7 @@ namespace Adam
         public Player player;
         public Apple apple;
         public bool debuggingMode;
-        Background background = new Background();
+        public Background background = new Background();
         PopUp popUp = new PopUp();
         PlaceNotification placeNotification;
         int enemyTilePos;
@@ -141,7 +141,7 @@ namespace Adam
             playerLight = new Light();
             playerLight.Load(Content);
 
-            background.Load(this.CurrentGameMode, this);
+            background.Load();
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Load();

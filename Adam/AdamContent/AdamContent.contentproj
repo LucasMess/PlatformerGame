@@ -1251,18 +1251,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backgrounds\eden_background.png">
-      <Name>eden_background</Name>
+    <Compile Include="Backgrounds\1_background.png">
+      <Name>1_background</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Backgrounds\eden_foreground.png">
-      <Name>eden_foreground</Name>
+    <Compile Include="Backgrounds\1_foreground.png">
+      <Name>1_foreground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Backgrounds\eden_middleground.png">
-      <Name>eden_middleground</Name>
+    <Compile Include="Backgrounds\1_middleground.png">
+      <Name>1_middleground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1784,6 +1784,40 @@
     </Compile>
     <Compile Include="Example Tile Images\missing.png">
       <Name>missing</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Backgrounds\5_background.png">
+      <Name>5_background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Backgrounds\5_foreground.png">
+      <Name>5_foreground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Backgrounds\5_middleground.png">
+      <Name>5_middleground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Backgrounds\hell_background.png">
+      <Name>hell_background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Backgrounds\hell_foreground.png">
+      <Name>hell_foreground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Backgrounds\hell_middleground.png">
+      <Name>hell_middleground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

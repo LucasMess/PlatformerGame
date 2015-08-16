@@ -8,84 +8,30 @@ using Microsoft.Xna.Framework;
 
 namespace Adam
 {
+
+
     public class Background
     {
         Image background;
         Image[] middlegrounds = new Image[6];
         Image[] foregrounds = new Image[12];
+        public int BackgroundType = 1;
+        int lastBackgroundType;
 
-        public void Load(GameMode CurrentLevel, GameWorld gameWorld)
+        public void Load()
         {
-
-            switch (CurrentLevel)
+            for (int i = 0; i < middlegrounds.Length; i++)
             {
-                //case GameMode.Level1and1:
-                //    for (int i = 0; i < middlegrounds.Length; i++)
-                //    {
-                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
-                //    }
-
-                //    for (int i = 0; i < foregrounds.Length; i++)
-                //    {
-                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
-                //    }
-
-                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
-                //    break;
-                //case GameMode.Level2and1:                   
-                //    for (int i = 0; i < middlegrounds.Length; i++)
-                //    {
-                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                //    }
-
-                //    for (int i = 0; i < foregrounds.Length; i++)
-                //    {
-                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                //    }
-
-                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                //    break;
-                //case GameMode.Level3and1:
-                //    for (int i = 0; i < middlegrounds.Length; i++)
-                //    {
-                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                //    }
-
-                //    for (int i = 0; i < foregrounds.Length; i++)
-                //    {
-                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                //    }
-
-                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                //    break;
-                //case GameMode.Level4and1:
-                //    for (int i = 0; i < middlegrounds.Length; i++)
-                //    {
-                //        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_middleground");
-                //    }
-
-                //    for (int i = 0; i < foregrounds.Length; i++)
-                //    {
-                //        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/mesa_foreground");
-                //    }
-
-                //    background.Texture = ContentHelper.LoadTexture("Backgrounds/mesa_background");
-                //    break;
-                default:
-                    for (int i = 0; i < middlegrounds.Length; i++)
-                    {
-                        middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_middleground");
-                    }
-
-                    for (int i = 0; i < foregrounds.Length; i++)
-                    {
-                        foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/eden_foreground");
-                    }
-
-                    background.Texture = ContentHelper.LoadTexture("Backgrounds/eden_background");
-                    break;
-
+                middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_middleground");
             }
+
+            for (int i = 0; i < foregrounds.Length; i++)
+            {
+                foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_foreground");
+            }
+
+            background.Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_background");
+
 
             background.Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             for (int i = 0; i < middlegrounds.Length; i++)
@@ -96,23 +42,31 @@ namespace Adam
             {
                 foregrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             }
+
+            lastBackgroundType = BackgroundType;
         }
 
 
         public void Update(Camera camera)
         {
+            if (lastBackgroundType != BackgroundType)
+            {
+                Load();
+            }
+
+
             middlegrounds[0].Rectangle = new Rectangle((int)(camera.lastCameraLeftCorner.X / 10), middlegrounds[0].Rectangle.Y, middlegrounds[0].Rectangle.Width, middlegrounds[0].Rectangle.Height);
 
             for (int i = 1; i < middlegrounds.Length; i++)
             {
-                middlegrounds[i].Rectangle = new Rectangle(middlegrounds[i - 1].Rectangle.X + (middlegrounds[i - 1].Rectangle.Width), middlegrounds[i-1].Rectangle.Y, middlegrounds[i-1].Rectangle.Width, middlegrounds[i-1].Rectangle.Height);
+                middlegrounds[i].Rectangle = new Rectangle(middlegrounds[i - 1].Rectangle.X + (middlegrounds[i - 1].Rectangle.Width), middlegrounds[i - 1].Rectangle.Y, middlegrounds[i - 1].Rectangle.Width, middlegrounds[i - 1].Rectangle.Height);
             }
 
-            foregrounds[0].Rectangle =  new Rectangle((int)(camera.lastCameraLeftCorner.X / 5), foregrounds[0].Rectangle.Y, foregrounds[0].Rectangle.Width, foregrounds[0].Rectangle.Height);
+            foregrounds[0].Rectangle = new Rectangle((int)(camera.lastCameraLeftCorner.X / 5), foregrounds[0].Rectangle.Y, foregrounds[0].Rectangle.Width, foregrounds[0].Rectangle.Height);
 
             for (int i = 1; i < foregrounds.Length; i++)
             {
-                foregrounds[i].Rectangle = new Rectangle(foregrounds[i - 1].Rectangle.X + (foregrounds[i - 1].Rectangle.Width), foregrounds[i-1].Rectangle.Y, foregrounds[i-1].Rectangle.Width, foregrounds[i-1].Rectangle.Height);
+                foregrounds[i].Rectangle = new Rectangle(foregrounds[i - 1].Rectangle.X + (foregrounds[i - 1].Rectangle.Width), foregrounds[i - 1].Rectangle.Y, foregrounds[i - 1].Rectangle.Width, foregrounds[i - 1].Rectangle.Height);
             }
         }
 

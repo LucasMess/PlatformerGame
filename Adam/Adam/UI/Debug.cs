@@ -173,6 +173,36 @@ namespace Adam
                         case Keys.Space:
                             textString = textString.Insert(textString.Length, " ");
                             return;
+                        case Keys.NumPad0:
+                            textString = textString.Insert(textString.Length, "0");
+                            break;
+                        case Keys.NumPad1:
+                            textString = textString.Insert(textString.Length, "1");
+                            return;
+                        case Keys.NumPad2:
+                            textString = textString.Insert(textString.Length, "2");
+                            return;
+                        case Keys.NumPad3:
+                            textString = textString.Insert(textString.Length, "3");
+                            return;
+                        case Keys.NumPad4:
+                            textString = textString.Insert(textString.Length, "4");
+                            return;
+                        case Keys.NumPad5:
+                            textString = textString.Insert(textString.Length, "5");
+                            return;
+                        case Keys.NumPad6:
+                            textString = textString.Insert(textString.Length, "6");
+                            return;
+                        case Keys.NumPad7:
+                            textString = textString.Insert(textString.Length, "7");
+                            return;
+                        case Keys.NumPad8:
+                            textString = textString.Insert(textString.Length, "8");
+                            return;
+                        case Keys.NumPad9:
+                            textString = textString.Insert(textString.Length, "9");
+                            return;
                         case Keys.Enter:
                             AnalyzeText();
                             return;
@@ -209,6 +239,16 @@ namespace Adam
                     break;
                 case "set level":
                     break;
+            }
+
+            String text = textString;
+            string keyword = "set background ";
+            if (text.StartsWith(keyword))
+            {
+                string newString = text.Remove(0, keyword.Length);
+                int number;
+                Int32.TryParse(newString, out number);
+                GameWorld.Instance.background.BackgroundType = number;
             }
 
             if (definitionFound)
