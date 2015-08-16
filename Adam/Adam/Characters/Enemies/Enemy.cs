@@ -153,7 +153,6 @@ namespace Adam
             Color color;
             if (tookDamage) color = Color.Red;
             else color = Color.White;
-
             if (isDead) return;
             if (isFacingRight)
                 spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);

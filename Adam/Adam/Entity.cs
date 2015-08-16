@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam
 {
-     public enum CollisionLocation
+    public enum CollisionLocation
     {
         Bottom,
         Right,
@@ -280,7 +280,7 @@ namespace Adam
         public int[] GetNearbyTileIndexes(GameWorld map)
         {
             int width = map.worldData.width;
-            int startingIndex = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) - width - 1;
+            int startingIndex = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) - width - 1;
             int heightInTiles = (collRectangle.Height / Main.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Main.Tilesize) + 2;
 
@@ -293,6 +293,15 @@ namespace Adam
                     indexes.Add(i);
                 }
             }
+
+            //Remove corner indexes
+            int lastItem = indexes.Count - 1;
+            int[] copy = indexes.ToArray();
+            indexes.Remove(copy[lastItem]);
+            indexes.Remove(copy[lastItem - widthInTiles + 1]);
+            indexes.Remove(copy[widthInTiles - 1]);
+            indexes.Remove(copy[0]);
+
             return indexes.ToArray();
         }
 

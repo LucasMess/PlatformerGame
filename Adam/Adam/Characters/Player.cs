@@ -988,7 +988,7 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
-            //DrawSurroundIndexes(spriteBatch);
+            DrawSurroundIndexes(spriteBatch);
 
             jetpack.Draw(spriteBatch);
 

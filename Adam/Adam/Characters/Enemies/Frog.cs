@@ -110,6 +110,7 @@ namespace Adam.Characters.Enemies
                 else animation.Color = Color.White;
                 animation.Draw(spriteBatch);
 
+                DrawSurroundIndexes(spriteBatch);
                // spriteBatch.Draw(Game1.DefaultTexture, collRectangle, Color.Red);
                 //spriteBatch.Draw(Game1.DefaultTexture, xRect, Color.Red);
                 //spriteBatch.Draw(Game1.DefaultTexture, yRect, Color.Blue);
