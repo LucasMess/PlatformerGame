@@ -20,7 +20,7 @@ namespace Adam.Characters.Enemies
 
         enum AnimationState
         {
-            Idle, Walking,
+            Idle, Walking, Transforming,
         }
 
         AnimationState CurrentAnimation = AnimationState.Idle;
@@ -73,6 +73,13 @@ namespace Adam.Characters.Enemies
 
         private void WalkRandomly()
         {
+            if (isAngry)
+            {
+                CurrentAnimation = AnimationState.Transforming;
+                velocity.X = 0;
+            }
+            else
+            {
             idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (idleTimer > 5000 && !isWalking)
             {
@@ -99,6 +106,7 @@ namespace Adam.Characters.Enemies
                 CurrentAnimation = AnimationState.Idle;
                 velocity.X = 0;
             }
+        }
         }
 
         private void Animate()
@@ -139,6 +147,24 @@ namespace Adam.Characters.Enemies
                     {
                         animationData.CurrentFrame = 0;
                         sourceRectangle.X = 0;
+                    }
+                    break;
+                case AnimationState.Transforming:
+                    sourceRectangle.Y = sourceRectangle.Height * 2;
+                    animationData.SwitchFrame = 125;
+                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (animationData.FrameTimer >= animationData.SwitchFrame)
+                    {
+                        animationData.FrameTimer = 0;
+                        sourceRectangle.X += sourceRectangle.Width;
+                        animationData.CurrentFrame++;
+                    }
+
+                    if (animationData.CurrentFrame > animationData.FrameCount.X)
+                    {
+                        animationData.CurrentFrame = 3;
+                        sourceRectangle.X = sourceRectangle.Width * 3;
                     }
                     break;
             }
