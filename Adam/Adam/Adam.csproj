@@ -245,7 +245,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GameData\Settings.cs" />
-    <Compile Include="Characters\Enemies\ShadeEnemy.cs" />
+    <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashDamage.cs" />

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam
 {
-    public class ShadeEnemy : Enemy
+    public class Lost : Enemy
     {
         enum AnimationState
         {
@@ -18,12 +18,10 @@ namespace Adam
         }
         AnimationState CurrentAnimationState = AnimationState.Hiding;
 
-        public ShadeEnemy(int x, int y, ContentManager Content)
+        public Lost(int x, int y)
         {
-            CurrentEnemyType = EnemyType.Shade;
-            canPassThroughWalls = true;
             health = EnemyDB.Shade_MaxHealth;
-            maxVelocity = new Vector2(1, 1);
+            maxVelocity = new Vector2(2, 2);
 
             texture = Content.Load<Texture2D>("Enemies/BlueShade_Single");
 
@@ -53,6 +51,8 @@ namespace Adam
             
             velocity = newVelocity;
 
+            drawRectangle = collRectangle;
+
             opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
 
@@ -68,6 +68,8 @@ namespace Adam
                 velocity = new Vector2(0, 0);
                 opacity = .5f;
             }
+
+            isFacingRight = isPlayerToTheRight;
 
         }
 
@@ -105,8 +107,6 @@ namespace Adam
                 spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
             }
             else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-
-            base.Draw(spriteBatch);
         }
     }
 }

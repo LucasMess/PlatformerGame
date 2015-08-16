@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Interfaces;
+﻿using Adam.Misc;
+using Adam.Misc.Interfaces;
 using Adam.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,17 @@ namespace Adam.Characters.Enemies
         AnimationData animationData;
 
         double idleTimer;
+        double chargingTimer;
         bool isWalking;
+        bool destinationSet;
+        bool isCharging;
+        bool isStunned;
+        int countTilCharge;
+
+        SoundFx playerSeen;
+        SoundFx fire;
+        SoundFx breath;
+        SoundFx charging;
 
         enum AnimationState
         {
@@ -34,7 +45,11 @@ namespace Adam.Characters.Enemies
             texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
             singleTexture = ContentHelper.LoadTexture("Enemies/hellboar_single");
             CurrentEnemyType = EnemyType.Hellboar;
+            animationData = new AnimationData(0, 4, 0, AnimationType.Loop);
             animationData.FrameCount = new Vector2(3, 0);
+
+            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen");
+            fire = new SoundFx("Sounds/Hellboar/fire");
 
             base.Initialize();
         }
@@ -58,8 +73,53 @@ namespace Adam.Characters.Enemies
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             CheckForPlayer();
+            CheckIfCharging();
             WalkRandomly();
             Animate();
+        }
+
+        private void CheckIfCharging()
+        {
+            if (!isAngry)
+            {
+                countTilCharge = 0;
+                return;
+            }
+            else
+            {
+                chargingTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (chargingTimer > 1)
+                {
+                    //play sound
+                    countTilCharge++;
+                    chargingTimer = 0;
+                }
+
+                if (countTilCharge > 2)
+                {
+                    isCharging = true;
+                }
+            }
+
+            if (isCharging)
+            {
+                if (!destinationSet)
+                {
+                    int fastSpeed = 5;
+                    if (isPlayerToTheRight)
+                    {
+                        velocity.X = fastSpeed;
+                        isFacingRight = true;
+                    }
+                    else
+                    {
+                        velocity.X = -fastSpeed;
+                        isFacingRight = false;
+                    }
+                    destinationSet = true;
+                }
+            }
+
         }
 
         private void CheckForPlayer()
@@ -67,46 +127,65 @@ namespace Adam.Characters.Enemies
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
             {
                 isAngry = true;
+                playerSeen.PlayOnce();
+                fire.PlayIfStopped();
+                if (!isCharging)
+                isFacingRight = isPlayerToTheRight;
             }
-            else isAngry = false;
+            else
+            {
+                isAngry = false;
+                playerSeen.Reset();
+            }
         }
 
         private void WalkRandomly()
         {
-            if (isAngry)
+            if (isAngry && !isCharging)
             {
                 CurrentAnimation = AnimationState.Transforming;
                 velocity.X = 0;
             }
             else
             {
-            idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (idleTimer > 5000 && !isWalking)
-            {
-                idleTimer = 0;
-                isWalking = true;
-                CurrentAnimation = AnimationState.Walking;
-                velocity.X = 2f;
-
-                if (GameWorld.RandGen.Next(0, 2) == 0)
+                idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (idleTimer > 5000 && !isWalking)
                 {
-                    velocity.X = -velocity.X;
-                    isFacingRight = false;
-                }
-                else
-                {
-                    isFacingRight = true;
-                }
-            }
+                    idleTimer = 0;
+                    isWalking = true;
+                    CurrentAnimation = AnimationState.Walking;
+                    velocity.X = 2f;
 
-            if (idleTimer > 1000 && isWalking)
-            {
-                idleTimer = 0;
-                isWalking = false;
-                CurrentAnimation = AnimationState.Idle;
-                velocity.X = 0;
+                    if (GameWorld.RandGen.Next(0, 2) == 0)
+                    {
+                        velocity.X = -velocity.X;
+                        isFacingRight = false;
+                    }
+                    else
+                    {
+                        isFacingRight = true;
+                    }
+                }
+
+                if (idleTimer > 1000 && isWalking)
+                {
+                    idleTimer = 0;
+                    isWalking = false;
+                    CurrentAnimation = AnimationState.Idle;
+                    velocity.X = 0;
+                }
             }
         }
+
+        private void Stun()
+        {
+            //Change animation to stun
+            velocity.X = 0;
+            isCharging = false;
+            destinationSet = false;
+            countTilCharge = 0;
+            isAngry = false;
+            isStunned = true;
         }
 
         private void Animate()
@@ -202,6 +281,10 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
+            if (isCharging)
+            {
+                Kill();
+            }
             collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
             velocity.X = 0;
             CurrentAnimation = AnimationState.Idle;
@@ -211,6 +294,10 @@ namespace Adam.Characters.Enemies
         {
             collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
             velocity.X = 0;
+            if (isCharging)
+            {
+                Kill();
+            }
             CurrentAnimation = AnimationState.Idle;
         }
 

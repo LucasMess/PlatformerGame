@@ -416,6 +416,7 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
+                            GameWorld.Instance.entities.Add(new Lost(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
                     }
@@ -431,8 +432,8 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
-                            //GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
-                            //hasAddedEntity = true;
+                            GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
                         }
                     }
                     break;
