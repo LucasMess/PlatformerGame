@@ -120,6 +120,7 @@ namespace Adam.UI
             {38,"For when your majesty just came out of college and could only afford a cheap castle." },
             {39,"Don't worry, this ice is thick enough it won't break.  However, you can still slip and fall on your butt." },
             {40,"Coated in cloud-shavings, the grass here does not require maintenance.  God is a bit inconsiderate when it comes to cleaning up his mess." },
+            {41, "Void tile" },
 
             {100,"Gold Brick Wall" },
             {101,"Stone Wall" },
@@ -128,7 +129,7 @@ namespace Adam.UI
             {104,"Marble Wall" },
             {105,"Sand Wall" },
             {106,"Hellstone Wall" },
-            {107,"" },
+            {107,"Stone brick Wall" },
             {108,"" },
 
             {200,"Player" },

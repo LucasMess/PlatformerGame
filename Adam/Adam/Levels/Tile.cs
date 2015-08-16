@@ -292,16 +292,26 @@ namespace Adam
                     startingPoint = new Vector2(8, 10);
                     position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case 41: //Void tile
+                    isSolid = true;
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(16, 19);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
-                    position = new Vector2(12, 8);
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(4, 19);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 101://Stone Wall
                     position = new Vector2(13, 8);
                     break;
                 case 102://Dirt Wall
-                    position = new Vector2(14, 8);
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(0, 19);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 103://Fences
                     sunlightPassesThrough = true;
@@ -316,25 +326,20 @@ namespace Adam
                     }
                     break;
                 case 104://Marble wall
-                    switch (subID)
-                    {
-                        case 0: //Plain
-                            position = new Vector2(13, 9);
-                            break;
-                        case 1: //Right Edge
-                            position = new Vector2(12, 9);
-                            break;
-                        case 2: //Left Edge
-                            position = new Vector2(14, 4);
-                            break;
-                    }
-
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(12, 19);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 105://Sand Wall
                     position = new Vector2(15, 9);
                     break;
                 case 106: //Hellstone Wall
                     position = new Vector2(14, 9);
+                    break;
+                case 107: //Stone Brick Wall
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(8, 19);
+                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 #endregion
 
@@ -551,15 +556,6 @@ namespace Adam
             else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
             {
                 subID = 1;
-            }
-
-            //Marble wall
-            else if (ID == 104)
-            {
-                if (array[TileIndex + 1].ID != 104)
-                    subID = 1;
-                if (array[TileIndex - 1].ID != 104)
-                    subID = 2;
             }
 
             //Marble Ceiling
@@ -985,6 +981,7 @@ namespace Adam
             {38,"Stone Brick" },
             {39,"Ice" },
             {40,"Snow" },
+            {41,"Void Tile" } ,  
 
             {100,"Gold Brick Wall" },
             {101,"Stone Wall" },
@@ -993,7 +990,7 @@ namespace Adam
             {104,"Marble Wall" },
             {105,"Sand Wall" },
             {106,"Hellstone Wall" },
-            {107,"" },
+            {107,"Stone Brick Wall" },
             {108,"" },
 
             {200,"Player" },

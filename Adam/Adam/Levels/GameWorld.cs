@@ -175,6 +175,10 @@ namespace Adam
                 t.DefineTexture();
                 t.FindConnectedTextures(array, width);
                 t.DefineTexture();
+                if(CurrentGameMode == GameMode.Play)
+                {
+                    t.AddRandomlyGeneratedDecoration(array, worldData.width);
+                }
             }
 
         }

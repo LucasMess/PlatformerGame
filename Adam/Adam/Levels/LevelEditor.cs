@@ -136,7 +136,7 @@ namespace Adam.Levels
 
         private void CheckIfWantsToSave()
         {
-            if (InputHelper.IsKeyDown(Keys.F8))
+            if (InputHelper.IsKeyDown(Keys.F2))
             {
                 GameWorld.Instance.worldData.SaveLevelLocally();
             }
@@ -144,7 +144,7 @@ namespace Adam.Levels
 
         private void CheckIfWantsToOpen()
         {
-            if (InputHelper.IsKeyDown(Keys.F9))
+            if (InputHelper.IsKeyDown(Keys.F1))
             {
                 GameWorld.Instance.worldData.OpenLevelLocally(true);
             }
