@@ -105,8 +105,8 @@ namespace Adam.UI
             {
                 for (int w = 0; w < size; w++)
                 {
-                    int startingIndex = index - (int)(Math.Truncate((double)(size / 2))) - (int)(Math.Truncate((double)(size / 2)) * gameWorld.worldData.width);
-                    int i = startingIndex + (h * gameWorld.worldData.height) + w;
+                    int startingIndex = index - (int)(Math.Truncate((double)(size / 2))) - (int)(Math.Truncate((double)(size / 2)) * gameWorld.worldData.LevelWidth);
+                    int i = startingIndex + (h * gameWorld.worldData.LevelHeight) + w;
                     indexes.Add(i);
                 }
             }

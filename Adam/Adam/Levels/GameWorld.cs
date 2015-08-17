@@ -98,17 +98,16 @@ namespace Adam
             SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_13");
             UI_SpriteSheet = ContentHelper.LoadTexture("Level Editor/ui_spritemap");
             lightEngine = new LightEngine();
-            worldData = new WorldData(GameMode.None);
+            worldData = new WorldData();
         }
 
         public void LoadFromFile(GameMode CurrentGameMode)
         {
-            byte[] tileIDs = worldData.tileIDs;
-            byte[] wallIDs = worldData.wallIDs;
+            byte[] tileIDs = worldData.TileIDs;
+            byte[] wallIDs = worldData.WallIDs;
             this.Content = Main.Content;
 
             this.CurrentGameMode = CurrentGameMode;
-            worldData = new WorldData(this.CurrentGameMode);
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();
@@ -119,8 +118,8 @@ namespace Adam
             player = game1.player;
             popUp.Load(Content);
 
-            int width = worldData.width;
-            int height = worldData.height;
+            int width = worldData.LevelWidth;
+            int height = worldData.LevelHeight;
 
             int maxClouds = width / 100;
             for (int i = 0; i < maxClouds; i++)
@@ -154,8 +153,8 @@ namespace Adam
 
         private void ConvertToTiles(Tile[] array, byte[] IDs)
         {
-            int width = worldData.width;
-            int height = worldData.height;
+            int width = worldData.LevelWidth;
+            int height = worldData.LevelHeight;
 
             for (int i = 0; i < IDs.Length; i++)
             {
@@ -177,7 +176,7 @@ namespace Adam
                 t.DefineTexture();
                 if(CurrentGameMode == GameMode.Play)
                 {
-                    t.AddRandomlyGeneratedDecoration(array, worldData.width);
+                    t.AddRandomlyGeneratedDecoration(array, worldData.LevelWidth);
                 }
             }
 
@@ -551,18 +550,18 @@ namespace Adam
             if (gem.velocity.X == 0 && gem.velocity.Y == 0) { }
             else
             {
-                gemTilePos = (int)(gem.topMidBound.Y / Main.Tilesize * worldData.width) + (int)(gem.topMidBound.X / Main.Tilesize);
+                gemTilePos = (int)(gem.topMidBound.Y / Main.Tilesize * worldData.LevelWidth) + (int)(gem.topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = gemTilePos - worldData.width - 1;
-                q[1] = gemTilePos - worldData.width;
-                q[2] = gemTilePos - worldData.width + 1;
+                q[0] = gemTilePos - worldData.LevelWidth - 1;
+                q[1] = gemTilePos - worldData.LevelWidth;
+                q[2] = gemTilePos - worldData.LevelWidth + 1;
                 q[3] = gemTilePos - 1;
                 q[4] = gemTilePos;
                 q[5] = gemTilePos + 1;
-                q[6] = gemTilePos + worldData.width - 1;
-                q[7] = gemTilePos + worldData.width;
-                q[8] = gemTilePos + worldData.width + 1;
+                q[6] = gemTilePos + worldData.LevelWidth - 1;
+                q[7] = gemTilePos + worldData.LevelWidth;
+                q[8] = gemTilePos + worldData.LevelWidth + 1;
 
                 //test = q;
 
@@ -626,21 +625,21 @@ namespace Adam
                 }
 
                 SkipDamage:
-                enemyTilePos = (int)(enemy.topMidBound.Y / Main.Tilesize * worldData.width) + (int)(enemy.topMidBound.X / Main.Tilesize);
+                enemyTilePos = (int)(enemy.topMidBound.Y / Main.Tilesize * worldData.LevelWidth) + (int)(enemy.topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[12];
-                q[0] = enemyTilePos - worldData.width - 1;
-                q[1] = enemyTilePos - worldData.width;
-                q[2] = enemyTilePos - worldData.width + 1;
+                q[0] = enemyTilePos - worldData.LevelWidth - 1;
+                q[1] = enemyTilePos - worldData.LevelWidth;
+                q[2] = enemyTilePos - worldData.LevelWidth + 1;
                 q[3] = enemyTilePos - 1;
                 q[4] = enemyTilePos;
                 q[5] = enemyTilePos + 1;
-                q[6] = enemyTilePos + worldData.width - 1;
-                q[7] = enemyTilePos + worldData.width;
-                q[8] = enemyTilePos + worldData.width + 1;
-                q[9] = enemyTilePos + worldData.width + worldData.width - 1;
-                q[10] = enemyTilePos + worldData.width + worldData.width;
-                q[11] = enemyTilePos + worldData.width + worldData.width + 1;
+                q[6] = enemyTilePos + worldData.LevelWidth - 1;
+                q[7] = enemyTilePos + worldData.LevelWidth;
+                q[8] = enemyTilePos + worldData.LevelWidth + 1;
+                q[9] = enemyTilePos + worldData.LevelWidth + worldData.LevelWidth - 1;
+                q[10] = enemyTilePos + worldData.LevelWidth + worldData.LevelWidth;
+                q[11] = enemyTilePos + worldData.LevelWidth + worldData.LevelWidth + 1;
 
                 //test = q;
 
@@ -696,7 +695,7 @@ namespace Adam
             }
             else
             {
-                camera.UpdateSmoothly(player.collRectangle, worldData.width, worldData.height, !player.isDead);
+                camera.UpdateSmoothly(player.collRectangle, worldData.LevelWidth, worldData.LevelHeight, !player.isDead);
 
                 if (player.isDead)
                 {
@@ -868,7 +867,7 @@ namespace Adam
             if (player.isDead == false)
             {
                 //defines which tiles are in range
-                int initial = camera.tileIndex - 17 * worldData.width - 25;
+                int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
                 int maxHoriz = 50;
                 int maxVert = 30;
                 int i = 0;
@@ -877,11 +876,11 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleTileArray[i] = initial + worldData.width * v + h;
+                        visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
                         i++;
                     }
                 }
-                initial = camera.tileIndex - 17 * 2 * worldData.width - 25 * 2;
+                initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
                 maxHoriz = 100;
                 maxVert = 60;
                 i = 0;
@@ -889,7 +888,7 @@ namespace Adam
                 {
                     for (int h = 0; h < maxHoriz; h++)
                     {
-                        visibleLightArray[i] = initial + worldData.width * v + h;
+                        visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
                         i++;
                     }
                 }
@@ -951,7 +950,7 @@ namespace Adam
         {
             foreach (Cloud c in cloudList)
             {
-                if (worldData.wantClouds == true)
+                if (worldData.HasClouds == true)
                     c.Draw(spriteBatch);
             }
         }

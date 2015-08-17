@@ -79,18 +79,18 @@ namespace Adam.Interactables
             if (velocity.X == 0 && velocity.Y == 0) { }
             else
             {
-                tileIndex = (int)(topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(topMidBound.X / Main.Tilesize);
+                tileIndex = (int)(topMidBound.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(topMidBound.X / Main.Tilesize);
 
                 int[] q = new int[9];
-                q[0] = tileIndex - gameWorld.worldData.width - 1;
-                q[1] = tileIndex - gameWorld.worldData.width;
-                q[2] = tileIndex - gameWorld.worldData.width + 1;
+                q[0] = tileIndex - gameWorld.worldData.LevelWidth - 1;
+                q[1] = tileIndex - gameWorld.worldData.LevelWidth;
+                q[2] = tileIndex - gameWorld.worldData.LevelWidth + 1;
                 q[3] = tileIndex - 1;
                 q[4] = tileIndex;
                 q[5] = tileIndex + 1;
-                q[6] = tileIndex + gameWorld.worldData.width - 1;
-                q[7] = tileIndex + gameWorld.worldData.width;
-                q[8] = tileIndex + gameWorld.worldData.width + 1;
+                q[6] = tileIndex + gameWorld.worldData.LevelWidth - 1;
+                q[7] = tileIndex + gameWorld.worldData.LevelWidth;
+                q[8] = tileIndex + gameWorld.worldData.LevelWidth + 1;
 
                 //test = q;
 

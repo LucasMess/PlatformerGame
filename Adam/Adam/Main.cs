@@ -86,7 +86,7 @@ namespace Adam
         //Defines the initial GameState ----- Use this variable to change the GameState
         public GameState CurrentGameState;
         GameState desiredGameState;
-        public GameMode CurrentLevel;
+        public GameMode CurrentGameMode;
 
         //Game Variables
         GameWorld gameWorld;
@@ -190,7 +190,7 @@ namespace Adam
 
             debug = new GameDebug(debugFont, monitorRes, blackScreen);
 
-            CurrentLevel = GameMode.None;
+            CurrentGameMode = GameMode.None;
 
         }
 
@@ -215,20 +215,20 @@ namespace Adam
         public void LoadWorldFromFile(GameMode mode)
         {
             CurrentGameState = GameState.LoadingScreen;
-            CurrentLevel = mode;
+            CurrentGameMode = mode;
             desiredGameState = GameState.GameWorld;
             hasLoadedContent = false;
             loadingScreen.Restart();
 
-            reloadThread = new Thread(new ThreadStart(BackgroundFileLoad));
+            reloadThread = new Thread(new ThreadStart(BackgroundThread_FileLoad));
             reloadThread.IsBackground = true;
             reloadThread.Start();
         }
 
-        private void BackgroundFileLoad()
+        private void BackgroundThread_FileLoad()
         {
             hasLoadedContent = false;
-            gameWorld.LoadFromFile(CurrentLevel);
+            gameWorld.LoadFromFile(CurrentGameMode);
             ObjectiveTracker = GameData.CurrentSave.ObjTracker;
             hasLoadedContent = true;
             wasPressed = false;
@@ -349,7 +349,7 @@ namespace Adam
                     //if (gameWorld.SimulationPaused)
                     //    break;
 
-                    gameWorld.Update(gameTime, CurrentLevel, camera);
+                    gameWorld.Update(gameTime, CurrentGameMode, camera);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
 
@@ -561,7 +561,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
                     debugSB.DrawString(debugFont, "Player Source Rectangle: " + player.sourceRectangle, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
-                    debugSB.DrawString(debugFont, "Level:" + CurrentLevel, new Vector2(0, 160), Color.White);
+                    debugSB.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[0], new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);

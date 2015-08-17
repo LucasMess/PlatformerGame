@@ -53,7 +53,7 @@ namespace Adam.Levels
 
             wallMode = new SoundFx("Sounds/Level Editor/changeMode");
 
-            editorRectangle = new Rectangle(GameWorld.Instance.worldData.width * Main.Tilesize / 2, GameWorld.Instance.worldData.height * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+            editorRectangle = new Rectangle(GameWorld.Instance.worldData.LevelWidth * Main.Tilesize / 2, GameWorld.Instance.worldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
 
         private void EntityScroll_TileSelected(TileSelectedArgs e)
@@ -161,7 +161,7 @@ namespace Adam.Levels
 
         private void CheckForCameraMovement()
         {
-            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.width, GameWorld.Instance.worldData.height, true);
+            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.LevelWidth, GameWorld.Instance.worldData.LevelHeight, true);
             int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
@@ -187,17 +187,17 @@ namespace Adam.Levels
             {
                 editorRectangle.X = 0;
             }
-            if (editorRectangle.X > (GameWorld.Instance.worldData.width * Main.Tilesize) - editorRectangle.Width)
+            if (editorRectangle.X > (GameWorld.Instance.worldData.LevelWidth * Main.Tilesize) - editorRectangle.Width)
             {
-                editorRectangle.X = (GameWorld.Instance.worldData.width * Main.Tilesize) - editorRectangle.Width;
+                editorRectangle.X = (GameWorld.Instance.worldData.LevelWidth * Main.Tilesize) - editorRectangle.Width;
             }
             if (editorRectangle.Y < 0)
             {
                 editorRectangle.Y = 0;
             }
-            if (editorRectangle.Y > (GameWorld.Instance.worldData.height * Main.Tilesize) - editorRectangle.Height)
+            if (editorRectangle.Y > (GameWorld.Instance.worldData.LevelHeight * Main.Tilesize) - editorRectangle.Height)
             {
-                editorRectangle.Y = (GameWorld.Instance.worldData.height * Main.Tilesize) - editorRectangle.Height;
+                editorRectangle.Y = (GameWorld.Instance.worldData.LevelHeight * Main.Tilesize) - editorRectangle.Height;
             }
         }
 
@@ -339,8 +339,8 @@ namespace Adam.Levels
                 for (int w = 0; w < diameterOfSquare; w++)
                 {
                     int brushSize = brush.size;
-                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * gameWorld.worldData.width);
-                    int i = startingIndex - 1 - gameWorld.worldData.width + (h * gameWorld.worldData.width) + w;
+                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * gameWorld.worldData.LevelWidth);
+                    int i = startingIndex - 1 - gameWorld.worldData.LevelWidth + (h * gameWorld.worldData.LevelWidth) + w;
                     indexes.Add(i);
                 }
             }
@@ -352,7 +352,7 @@ namespace Adam.Levels
                     Tile t = CurrentArray[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(CurrentArray,
-                    gameWorld.worldData.width);
+                    gameWorld.worldData.LevelWidth);
                     t.DefineTexture();
                     GameWorld.Instance.lightEngine.UpdateSunLight(ind);
                 }

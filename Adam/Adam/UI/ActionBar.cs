@@ -1,4 +1,5 @@
-﻿using Adam.Levels;
+﻿using Adam.GameData;
+using Adam.Levels;
 using Adam.Network;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -108,7 +109,7 @@ namespace Adam.UI
             if (AskSaveDialog())
             {
                 SaveButton_MouseClicked();
-                while (GameWorld.Instance.worldData.dealingWithData)
+                while (GameWorld.Instance.worldData.IsDealingWithData)
                 {
                     Thread.Sleep(250);
                 }
@@ -155,7 +156,7 @@ namespace Adam.UI
                 if (AskSaveDialog())
                 {
                     SaveButton_MouseClicked();
-                    while (GameWorld.Instance.worldData.dealingWithData)
+                    while (GameWorld.Instance.worldData.IsDealingWithData)
                     {
                         Thread.Sleep(250);
                     }

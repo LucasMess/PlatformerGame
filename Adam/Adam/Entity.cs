@@ -200,7 +200,7 @@ namespace Adam
         public int GetTileIndex()
         {
             if (gameWorld != null)
-                return (int)(collRectangle.Center.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(collRectangle.Center.X / Main.Tilesize);
+                return (int)(collRectangle.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(collRectangle.Center.X / Main.Tilesize);
             else return 0;
         }
 
@@ -212,7 +212,7 @@ namespace Adam
         public int GetTileIndex(Vector2 coord)
         {
             if (gameWorld != null)
-                return (int)((int)coord.Y / Main.Tilesize * gameWorld.worldData.width) + (int)((int)coord.X / Main.Tilesize);
+                return (int)((int)coord.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
             else throw new Exception("Map is null");
         }
 
@@ -223,7 +223,7 @@ namespace Adam
         /// <returns></returns>
         public int[] GetNearbyTileIndexes(GameWorld map)
         {
-            int width = map.worldData.width;
+            int width = map.worldData.LevelWidth;
             int startingIndex = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) - width - 1;
             int heightInTiles = (collRectangle.Height / Main.Tilesize) + 2;
             int widthInTiles = (collRectangle.Width / Main.Tilesize) + 2;
@@ -398,11 +398,11 @@ namespace Adam
             int indexBelowEntity;
             if (isFacingRight)
             {
-                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.width;
+                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
             }
             else
             {
-                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.width;
+                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.LevelWidth;
             }
 
             if (indexBelowEntity >= 0 && indexBelowEntity < gameWorld.tileArray.Length)

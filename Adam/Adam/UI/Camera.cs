@@ -71,7 +71,7 @@ namespace Adam
             inverted = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
             inverted.X += Main.DefaultResWidth / 2;
             inverted.Y += Main.DefaultResHeight * 2 / 3;
-            tileIndex = (int)((int)inverted.Y / Main.Tilesize * GameWorld.Instance.worldData.width) + (int)((int)inverted.X / Main.Tilesize);
+            tileIndex = (int)((int)inverted.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)inverted.X / Main.Tilesize);
 
             lastCameraLeftCorner = cameraLeftCorner;
             lastVelocity = velocity;

@@ -1,4 +1,5 @@
-﻿using Adam.Misc;
+﻿using Adam.GameData;
+using Adam.Misc;
 using Adam.Network;
 using Adam.UI.Information;
 using Microsoft.Xna.Framework;
@@ -22,7 +23,9 @@ namespace Adam.Levels
         public Song song;
         private SoundFx ambience;
         public string levelName = "";
-        public bool wantClouds;
+        public bool HasClouds;
+        public bool IsRaining;
+        public bool IsSnowing;
         double gameTimer;
 
         bool obj0;
@@ -39,45 +42,32 @@ namespace Adam.Levels
         public bool trigger5;
         public bool trigger6;
 
-        string sign1 = "";
-        string sign2 = "";
-        string sign3 = "";
-        string sign4 = "";
-        string sign5 = "";
-        string sign6 = "";
-        string sign7 = "";
-        string sign8 = "";
-
         bool privTrig0;
 
         bool editMode;
-        public bool dealingWithData;
-        public byte[] tileIDs = new byte[200 * 200];
-        public byte[] wallIDs = new byte[200 * 200];
-        public int width = 200;
-        public int height = 200;
+        public bool IsDealingWithData { get; set; }
+
+        public byte[] TileIDs { get; set; }
+        public byte[] WallIDs { get; set; }
+
+        public int LevelWidth { get; set; }
+        public int LevelHeight { get; set; }
+        public byte BackgroundID { get; set; }
+        public byte SoundtrackID { get; set; } 
 
         public Vector2 SpawnPoint { get; set; }
 
-        public WorldData(GameMode CurrentLevel)
+        public Dictionary<int, string> SignMessages { get; set; } = new Dictionary<int, string>();
+        public Dictionary<int, int> PortalLinks { get; set; } = new Dictionary<int, int>();
+
+        public WorldData()
         {
-            levelName = "Garden of Eden";
-            song = ContentHelper.LoadSong("Music/Adventure Awaits (Adam 1)");
-            ambience = new SoundFx("Ambience/eden");
-            wantClouds = true;
-
-
-            switch (CurrentLevel)
-            {
-                case GameMode.Edit:
-                    levelName = "Unnamed Creation";
-                    //song = ContentHelper.LoadSong("Music/Heart of Nowhere");
-                    wantClouds = true;
-
-                    GameWorld.Instance.levelEditor.brush.SizeChanged += Brush_SizeChanged;
-                    break;
-            }
-
+            GameWorld.Instance.levelEditor.brush.SizeChanged += Brush_SizeChanged;
+        }
+        public void Initialize()
+        {
+            WorldConfigFile config = new WorldConfigFile(300,300);
+            config.TransferDataToWorldData();
         }
 
         private void Brush_SizeChanged()
@@ -142,43 +132,19 @@ namespace Adam.Levels
             }
         }
 
-        public string GetSignMessage(int ID)
-        {
-            switch (ID)
-            {
-                case 1:
-                    return sign1;
-                case 2:
-                    return sign2;
-                case 3:
-                    return sign3;
-                case 4:
-                    return sign4;
-                case 5:
-                    return sign5;
-                case 6:
-                    return sign6;
-                case 7:
-                    return sign7;
-                case 8:
-                    return sign8;
-            }
-            return "ERROR: Text not found.";
-        }
-
         public void OpenLevelLocally(bool editMode)
         {
-            if (!dealingWithData)
+            if (!IsDealingWithData)
             {
-                Thread thread = new Thread(new ThreadStart(ThreadOpen));
+                Thread thread = new Thread(new ThreadStart(BackgroundThread_Open));
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
-                dealingWithData = true;
+                IsDealingWithData = true;
                 this.editMode = editMode;
             }
         }
 
-        private void ThreadOpen()
+        private void BackgroundThread_Open()
         {
             WorldConfigFile data;
             OpenFileDialog op = new OpenFileDialog();
@@ -204,20 +170,21 @@ namespace Adam.Levels
 
             }
 
-            dealingWithData = false;
+            IsDealingWithData = false;
         }
 
         public void SaveLevelLocally()
         {
-            if (!dealingWithData)
+            if (!IsDealingWithData)
             {
-                Thread thread = new Thread(new ThreadStart(ThreadSave));
+                Thread thread = new Thread(new ThreadStart(BackgroundThread_Save));
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
-                dealingWithData = true;
+                IsDealingWithData = true;
             }
         }
-        private void ThreadSave()
+
+        private void BackgroundThread_Save()
         {
             SaveFileDialog sv = new SaveFileDialog();
             sv.AddExtension = true;
@@ -235,12 +202,15 @@ namespace Adam.Levels
 
             }
 
-            dealingWithData = false;
+            IsDealingWithData = false;
         }
 
         public void CreateNewWorld()
         {
-
+            WorldConfigFile config = new WorldConfigFile();
+            config.LevelWidth = 300;
+            config.LevelHeight = 300;
+            config.LoadIntoEditor();
         }
 
         public void WipeWorld()

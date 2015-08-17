@@ -16,7 +16,7 @@ namespace Adam.Levels
         {
             WorldData data = GameWorld.Instance.worldData;
             Tile[] tiles = GameWorld.Instance.tileArray;
-            int width = data.width;
+            int width = data.LevelWidth;
 
             //if (tiles[index].isSolid)
 

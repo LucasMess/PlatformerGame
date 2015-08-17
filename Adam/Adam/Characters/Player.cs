@@ -562,14 +562,14 @@ namespace Adam
             GameWorld gameWorld = GameWorld.Instance;
             if (collRectangle.X < 0)
                 collRectangle.X = 0;
-            if (collRectangle.X > (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width))
-                collRectangle.X = (int)(gameWorld.worldData.width * Main.Tilesize - collRectangle.Width);
+            if (collRectangle.X > (int)(gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width))
+                collRectangle.X = (int)(gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width);
             if (collRectangle.Y < 0)
                 collRectangle.Y = 0;
-            if (collRectangle.Y > (int)(gameWorld.worldData.height * Main.Tilesize - collRectangle.Width) + 100)
+            if (collRectangle.Y > (int)(gameWorld.worldData.LevelHeight * Main.Tilesize - collRectangle.Width) + 100)
             {
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    collRectangle.Y = gameWorld.worldData.height * Main.Tilesize - collRectangle.Height;
+                    collRectangle.Y = gameWorld.worldData.LevelHeight * Main.Tilesize - collRectangle.Height;
                 else
                 {
                     KillAndRespawn();
@@ -1122,7 +1122,7 @@ namespace Adam
             if (tileParticleTimer < Math.Abs(350 / velocity.X))
                 return;
             Tile tile = new Tile();
-            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.width * 2);
+            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.LevelWidth * 2);
             if (tileIndexBelow < gameWorld.tileArray.Length)
                 tile = gameWorld.tileArray[tileIndexBelow];
             //If the player is above air skip.
@@ -1144,7 +1144,7 @@ namespace Adam
             movementSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             Tile tile = new Tile();
-            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.width * 2)];
+            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.LevelWidth * 2)];
 
             if (tile.ID != 0 && movementSoundTimer > Math.Abs(500 / velocity.X))
             {

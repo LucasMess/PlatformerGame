@@ -31,7 +31,7 @@ namespace Adam
             drawRectangle = rectangle;
             originalPosition = drawRectangle;
             if (GameWorld.Instance != null)
-                TileIndex = (int)(drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.width) + (int)(drawRectangle.Center.X / Main.Tilesize);
+                TileIndex = (int)(drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(drawRectangle.Center.X / Main.Tilesize);
             smallTileSize = Main.Tilesize / 2;
             DefineTexture();
         }

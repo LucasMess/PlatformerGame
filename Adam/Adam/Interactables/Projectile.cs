@@ -254,7 +254,7 @@ namespace Adam
 
         private void CheckIfOutsideBoundaries()
         {
-            if (collRectangle.Y > gameWorld.worldData.height * Main.Tilesize)
+            if (collRectangle.Y > gameWorld.worldData.LevelHeight * Main.Tilesize)
                 IsInactive = true;
         }
     }

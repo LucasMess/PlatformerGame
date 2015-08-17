@@ -139,7 +139,8 @@ namespace Adam
 
         private void LevelEditor_MouseClicked()
         {
-            game1.ChangeState(GameState.GameWorld, GameMode.Edit);
+            game1.CurrentGameMode = GameMode.Edit;
+            GameWorld.Instance.worldData.CreateNewWorld();
         }
 
         void joinGame_MouseClicked()
@@ -254,7 +255,7 @@ namespace Adam
 
         void play_MouseClicked()
         {
-            game1.CurrentLevel = GameMode.Play;
+            game1.CurrentGameMode = GameMode.Play;
             GameWorld.Instance.worldData.OpenLevelLocally(false);
         }
 

@@ -175,18 +175,18 @@ namespace Adam
 
         private bool HasHitTerrain(Projectile projectile)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Main.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(projectile.topMidBound.X / Main.Tilesize);
 
             int[] q = new int[9];
-            q[0] = projectileTilePos - gameWorld.worldData.width - 1;
-            q[1] = projectileTilePos - gameWorld.worldData.width;
-            q[2] = projectileTilePos - gameWorld.worldData.width + 1;
+            q[0] = projectileTilePos - gameWorld.worldData.LevelWidth - 1;
+            q[1] = projectileTilePos - gameWorld.worldData.LevelWidth;
+            q[2] = projectileTilePos - gameWorld.worldData.LevelWidth + 1;
             q[3] = projectileTilePos - 1;
             q[4] = projectileTilePos;
             q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + gameWorld.worldData.width - 1;
-            q[7] = projectileTilePos + gameWorld.worldData.width;
-            q[8] = projectileTilePos + gameWorld.worldData.width + 1;
+            q[6] = projectileTilePos + gameWorld.worldData.LevelWidth - 1;
+            q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
+            q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
 
             //test = q;
 
@@ -207,18 +207,18 @@ namespace Adam
 
         public bool HasHitEnemy(Projectile projectile, Enemy enemy)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.width) + (int)(projectile.topMidBound.X / Main.Tilesize);
+            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(projectile.topMidBound.X / Main.Tilesize);
 
             int[] q = new int[9];
-            q[0] = projectileTilePos - gameWorld.worldData.width - 1;
-            q[1] = projectileTilePos - gameWorld.worldData.width;
-            q[2] = projectileTilePos - gameWorld.worldData.width + 1;
+            q[0] = projectileTilePos - gameWorld.worldData.LevelWidth - 1;
+            q[1] = projectileTilePos - gameWorld.worldData.LevelWidth;
+            q[2] = projectileTilePos - gameWorld.worldData.LevelWidth + 1;
             q[3] = projectileTilePos - 1;
             q[4] = projectileTilePos;
             q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + gameWorld.worldData.width - 1;
-            q[7] = projectileTilePos + gameWorld.worldData.width;
-            q[8] = projectileTilePos + gameWorld.worldData.width + 1;
+            q[6] = projectileTilePos + gameWorld.worldData.LevelWidth - 1;
+            q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
+            q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
 
             if (projectile.collRectangle.Intersects(enemy.drawRectangle) && enemy.isDead == false)
                 return true;
