@@ -22,6 +22,7 @@ namespace Adam
 
         public Chest(Tile tile)
         {
+            //hello
             openSound = new SoundFx("Sounds/Chest/open");
             collRectangle = new Rectangle(tile.drawRectangle.X, tile.drawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
         }
