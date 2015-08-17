@@ -133,8 +133,6 @@ namespace Adam
             ConvertToTiles(tileArray, tileIDs);
             ConvertToTiles(wallArray, wallIDs);
 
-            Thread.MemoryBarrier();
-
             lightEngine.Load();
 
             playerLight = new Light();
@@ -148,7 +146,7 @@ namespace Adam
             if (worldData.song != null)
                 MediaPlayer.Play(worldData.song);
 
-            placeNotification.Show(worldData.levelName);
+            placeNotification.Show(worldData.LevelName);
         }
 
         private void ConvertToTiles(Tile[] array, byte[] IDs)

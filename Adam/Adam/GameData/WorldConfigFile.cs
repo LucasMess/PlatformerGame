@@ -24,8 +24,8 @@ namespace Adam.GameData
         public bool IsRaining { get; set; }
         public bool IsSnowing { get; set; }
 
-        public Dictionary<int, string> SignMessages { get; set; }
-        public Dictionary<int, int> PortalLinks { get; set; }
+        public AdamDictionary SignMessages { get; set; }
+        public AdamDictionary PortalLinks { get; set; }
 
         public WorldConfigFile() { }
 
@@ -37,8 +37,8 @@ namespace Adam.GameData
             BackgroundID = 1;
             SoundtrackID = 1;
 
-            SignMessages = new Dictionary<int, string>();
-            PortalLinks = new Dictionary<int, int>();
+            SignMessages = new AdamDictionary();
+            PortalLinks = new AdamDictionary();
 
             TileIDs = new byte[LevelWidth * LevelHeight];
             WallIDs = new byte[LevelWidth * LevelHeight];
@@ -58,6 +58,7 @@ namespace Adam.GameData
             //Sets the dimensions of the level.
             LevelWidth = (short)gw.worldData.LevelWidth;
             LevelHeight = (short)gw.worldData.LevelHeight;
+            LevelName = gw.worldData.LevelName;
 
             //Sets soundtrack and background.
             BackgroundID = gw.worldData.BackgroundID;
@@ -72,6 +73,12 @@ namespace Adam.GameData
 
             //Gets sign texts
             SignMessages = gw.worldData.SignMessages;
+            PortalLinks = gw.worldData.PortalLinks;
+
+            //Level conditions
+            IsRaining = gw.worldData.IsRaining;
+            IsSnowing = gw.worldData.IsSnowing;
+            HasClouds = gw.worldData.HasClouds;
         }
 
         public void LoadIntoEditor()
@@ -101,11 +108,79 @@ namespace Adam.GameData
 
             gw.worldData.SignMessages = SignMessages;
             gw.worldData.PortalLinks = PortalLinks;
-
-            gw.worldData.levelName = LevelName;
+            
+            gw.worldData.LevelName = LevelName;
             gw.worldData.HasClouds = HasClouds;
             gw.worldData.IsRaining = IsRaining;
             gw.worldData.IsSnowing = IsSnowing;
+        }
+    }
+
+    public class AdamDictionary
+    {
+        List<KeyValue> keyValues = new List<KeyValue>();
+        public AdamDictionary()
+        {
+
+        }
+
+        /// <summary>
+        /// Add a new entry to the dictionary.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="keyword"></param>
+        public void Add(int key, object keyword)
+        {
+            KeyValue newKey = new KeyValue(key, keyword);
+            keyValues.Add(newKey);
+        }
+
+        /// <summary>
+        /// Try retrieving a value.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public object TryGetValue(int key)
+        {
+            foreach (KeyValue kv in keyValues)
+            {
+                if (kv.Key == key)
+                {
+                    return kv.Value;
+                }
+            }
+
+            throw new KeyNotFoundException();
+        }
+
+        /// <summary>
+        /// Remove specified key.
+        /// </summary>
+        /// <param name="key"></param>
+        public void Remove(int key)
+        {
+            foreach (KeyValue kv in keyValues)
+            {
+                if (kv.Key == key)
+                {
+                    keyValues.Remove(kv);
+                    return;
+                }
+            }
+
+            throw new KeyNotFoundException();
+        }
+    }
+
+    public struct KeyValue
+    {
+        public int Key { get; set; }
+        public object Value { get; set; }
+
+        public KeyValue(int key, object value)
+        {
+            Key = key;
+            Value = value;
         }
     }
 }

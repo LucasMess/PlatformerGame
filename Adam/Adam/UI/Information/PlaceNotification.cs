@@ -29,6 +29,7 @@ namespace Adam.UI
         public void Show(string text)
         {
             this.text = text;
+            if (text == null) return;
             isActive = true;
             timer = 0;
             textPos = new Vector2(Main.UserResWidth - font.MeasureString(text).X - 30, drawRectangle.Y);
@@ -71,6 +72,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (text == null) return;
             spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
             spriteBatch.DrawString(font, text, textPos,
                 Color.White * opacity);

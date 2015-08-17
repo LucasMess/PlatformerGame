@@ -22,7 +22,7 @@ namespace Adam.Levels
     {
         public Song song;
         private SoundFx ambience;
-        public string levelName = "";
+        public string LevelName = "";
         public bool HasClouds;
         public bool IsRaining;
         public bool IsSnowing;
@@ -57,17 +57,12 @@ namespace Adam.Levels
 
         public Vector2 SpawnPoint { get; set; }
 
-        public Dictionary<int, string> SignMessages { get; set; } = new Dictionary<int, string>();
-        public Dictionary<int, int> PortalLinks { get; set; } = new Dictionary<int, int>();
+        public AdamDictionary SignMessages { get; set; }
+        public AdamDictionary PortalLinks { get; set; }
 
         public WorldData()
         {
             GameWorld.Instance.levelEditor.brush.SizeChanged += Brush_SizeChanged;
-        }
-        public void Initialize()
-        {
-            WorldConfigFile config = new WorldConfigFile(300,300);
-            config.TransferDataToWorldData();
         }
 
         private void Brush_SizeChanged()
@@ -207,9 +202,7 @@ namespace Adam.Levels
 
         public void CreateNewWorld()
         {
-            WorldConfigFile config = new WorldConfigFile();
-            config.LevelWidth = 300;
-            config.LevelHeight = 300;
+            WorldConfigFile config = new WorldConfigFile(300, 300);
             config.LoadIntoEditor();
         }
 

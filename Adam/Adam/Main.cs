@@ -512,7 +512,7 @@ namespace Adam
                         LightBlendState.ColorSourceBlend = Blend.DestinationColor;
                         LightBlendState.ColorDestinationBlend = Blend.Zero;
                         mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
+                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), WinterPreset);
                         mainLightSB.End();
                     }
 

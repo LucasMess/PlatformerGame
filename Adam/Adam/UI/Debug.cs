@@ -253,7 +253,7 @@ namespace Adam
                 string newString = text.Remove(0, keyword.Length);
                 int number;
                 Int32.TryParse(newString, out number);
-                GameWorld.Instance.background.BackgroundType = number;
+                GameWorld.Instance.worldData.BackgroundID = (byte)number;
             }
 
             if (definitionFound)

@@ -15,22 +15,24 @@ namespace Adam
         Image background;
         Image[] middlegrounds = new Image[6];
         Image[] foregrounds = new Image[12];
-        public int BackgroundType = 1;
-        int lastBackgroundType;
+        public int backgroundID = 1;
+        int lastBackgroundID;
 
         public void Load()
         {
+            backgroundID = GameWorld.Instance.worldData.BackgroundID;
+
             for (int i = 0; i < middlegrounds.Length; i++)
             {
-                middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_middleground");
+                middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_middleground");
             }
 
             for (int i = 0; i < foregrounds.Length; i++)
             {
-                foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_foreground");
+                foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_foreground");
             }
 
-            background.Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundType + "_background");
+            background.Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_background");
 
 
             background.Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
@@ -43,13 +45,15 @@ namespace Adam
                 foregrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
             }
 
-            lastBackgroundType = BackgroundType;
+            lastBackgroundID = backgroundID;
         }
 
 
         public void Update(Camera camera)
         {
-            if (lastBackgroundType != BackgroundType)
+            backgroundID = GameWorld.Instance.worldData.BackgroundID;
+
+            if (lastBackgroundID != backgroundID)
             {
                 Load();
             }
