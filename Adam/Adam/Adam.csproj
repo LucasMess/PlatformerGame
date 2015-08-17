@@ -212,7 +212,7 @@
     <Compile Include="Interactables\JetpackPowerUp.cs" />
     <Compile Include="Interactables\Key.cs" />
     <Compile Include="Misc\Helpers\InputHelper.cs" />
-    <Compile Include="Interactables\PowerUp.cs" />
+    <Compile Include="Interactables\Item.cs" />
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
     <Compile Include="UI\Elements\Container.cs" />
@@ -294,6 +294,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="CodenameAdam_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>

@@ -91,44 +91,6 @@ namespace Adam
             drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
-        public void GemLight(int intensity, Gem gem, ContentManager Content, Gem.Type type)
-        {
-            this.Content = Content;
-            this.intensity = intensity;
-            lightHere = true;
-            switch (type)
-            {
-                case Gem.Type.sapphire:
-                    texture = GameWorld.SpriteSheet;
-                    color = Color.Blue;
-                    break;
-                case Gem.Type.emerald:
-                    texture = GameWorld.SpriteSheet;
-                    color = Color.Green;
-                    break;
-                case Gem.Type.diamond:
-                    texture = GameWorld.SpriteSheet;
-                    color = Color.Cyan;
-                    break;
-                case Gem.Type.goldOre:
-                    texture = GameWorld.SpriteSheet;
-                    color = Color.Yellow;
-                    lightHere = false;
-                    break;
-                case Gem.Type.copperOre:
-                    texture = GameWorld.SpriteSheet;
-                    color = Color.Brown;
-                    lightHere = false;
-                    break;
-            }
-            drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, 256 * intensity, 256 * intensity);
-            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
-            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
-
-            drawRectangle.X = drawRectangle.X - (int)origin.X;
-            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
-        }
-
         public void CalculateLighting(Tile[] tile, Tile[] wall, Texture2D map)
         {
             int w = map.Width;
@@ -239,16 +201,6 @@ namespace Adam
             drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
 
             opacity = effect.Opacity;
-        }
-
-        public void Update(Gem gem)
-        {
-            lightHere = true;
-            drawRectangle = new Rectangle(gem.rectangle.Center.X, gem.rectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
-            origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
-
-            drawRectangle.X = drawRectangle.X - (int)origin.X;
-            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
         }
 
         public void Shake()

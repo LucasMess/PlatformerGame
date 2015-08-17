@@ -8,75 +8,43 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
+using Adam.Misc;
 
 namespace Adam
 {
-    public class Chest
+    public class Chest 
     {
-        Texture2D texture;
-        public Rectangle rectangle, sourceRectangle;
         bool isOpen;
-        SoundEffect chestOpen;
+        SoundFx openSound;
+        Rectangle collRectangle;
 
-        Vector2 frameCounter;
-        int switchframe, currentFrame;
-        double frameTimer;
-        bool animationStopped = true;
         public bool IsGolden { get; set; }
 
-        public Chest(Vector2 position, ContentManager Content, bool golden)
+        public Chest(Tile tile)
         {
-            texture = Content.Load<Texture2D>("Objects/chest_updated");
-            rectangle = new Rectangle((int)position.X + 8, (int)position.Y, 48, 32);
-            sourceRectangle = new Rectangle(0, 0, 48, 32);
-            frameCounter = new Vector2(5, 0);
-            chestOpen = Content.Load<SoundEffect>("Sounds/ChestOpenDB");
-
-            if (golden)
-            {
-                IsGolden = true;
-                texture = ContentHelper.LoadTexture("Objects/golden_chest");
-            }
+            openSound = new SoundFx("Sounds/Chest/open");
+            collRectangle = new Rectangle(tile.drawRectangle.X, tile.drawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
         }
 
-        public void Animate(GameTime gameTime)
+        public void Update()
         {
-            if (!animationStopped && currentFrame <frameCounter.X)
-            {
-                switchframe = 20;
-                frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                if (frameTimer > switchframe)
-                {
-                    sourceRectangle.X += sourceRectangle.Width;
-                    currentFrame++;
-                    frameTimer = 0;
-                }
-
-                
-            }
-        }
-
-        public bool CheckOpened(GameTime gameTime, Player player)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && rectangle.Intersects(player.collRectangle) && isOpen == false)
-            {
+            Player player = GameWorld.Instance.player;
+            if (player.collRectangle.Intersects(collRectangle)&& !isOpen)
+            {               
                 Open();
-                return true;
             }
-            else return false;
         }
 
         void Open()
         {
+            openSound.PlayOnce();
             isOpen = true;
-            animationStopped = false;
-            chestOpen.Play();
-        }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, rectangle,sourceRectangle, Color.White);
+            int maxGems = GameWorld.RandGen.Next(10, 20);
+            for (int i = 0; i < maxGems; i++)
+            {
+                GameWorld.Instance.entities.Add(new Gem(collRectangle.Center.X, collRectangle.Center.Y));
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class JetpackPowerUp : PowerUp
+    public class JetpackPowerUp : Item
     {
         GameTime gameTime;
         bool isHovering;
@@ -18,17 +18,16 @@ namespace Adam.Interactables
         public JetpackPowerUp(int x, int y)
         {
             texture = ContentHelper.LoadTexture("Objects/jetpack");
-            loop = ContentHelper.LoadSound("Sounds/jetpack_engine");
-            loopInstance = loop.CreateInstance();
+            loopSound = new Misc.SoundFx("Sounds/jetpack_engine");
             drawRectangle = new Rectangle(x, y, 32, 32);
             animation = new Animation(texture, drawRectangle, 100, 0, AnimationType.Loop);
             velocity.Y = -10f;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            base.Update(gameTime, player, map);
-            this.gameTime = gameTime;
+            GameWorld gameWorld = GameWorld.Instance;
+            gameTime = gameWorld.gameTime;
 
             animation.UpdateRectangle(drawRectangle);
             animation.Update(gameTime);
@@ -40,33 +39,11 @@ namespace Adam.Interactables
             {
                 Particle eff = new Particle();
                 eff.CreateJetPackSmokeParticle(this);
-                effects.Add(eff);
+                GameWorld.Instance.particles.Add(eff);
                 effectTimer = 0;
             }
 
-            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (player.collRectangle.Intersects(drawRectangle) && elapsedTime > 500)
-            {
-                wasPickedUp = true;
-                toDelete = true;
-            }
-
-            if (wasPickedUp)
-            {
-                player.Chronoshift(Evolution.Future);
-                loopInstance.Stop();
-            }
-
-            if (loopInstance.State == SoundState.Stopped)
-                loopInstance.Play();
-
-            float xDist = player.collRectangle.Center.X - drawRectangle.Center.X;
-            float yDist = player.collRectangle.Center.Y - drawRectangle.Center.Y;
-            float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
-            if (distanceTo > 1000)
-                loopInstance.Volume = 0;
-            else loopInstance.Volume = .5f - (distanceTo / 1000) / 2;
+            base.Update();
         }
 
         private void Hover()
@@ -97,9 +74,6 @@ namespace Adam.Interactables
         public override void Draw(SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
-
-            foreach (var eff in effects)
-                eff.Draw(spriteBatch);
         }
     }
 }

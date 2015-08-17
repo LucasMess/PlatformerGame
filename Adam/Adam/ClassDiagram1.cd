@@ -1,0 +1,1032 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Adam.Enemies.BloodlessEnemy" Collapsed="true">
+    <Position X="74.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Characters\Enemies\BloodlessEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Enemies.DroneEnemy" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAQAAAgAABAACAAQEAABAAQAAIAABAAAAAAA=</HashCode>
+      <FileName>Characters\Enemies\DroneEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Enemies.SnakeEnemy" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Characters\Enemies\SnakeEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Enemy" Collapsed="true">
+    <Position X="11.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQBAAQIgEQICwyBARUAAhAIQFJABAEVABACywAARBg=</HashCode>
+      <FileName>Characters\Enemies\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Lost" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAQAAAAAUAQAMAAAAAAIAAA=</HashCode>
+      <FileName>Characters\Enemies\Lost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.PotatoEnemy" Collapsed="true">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAgAAAAAAAAQAAAAAAAAAIAAAEAAAAAA=</HashCode>
+      <FileName>Characters\Enemies\PotatoEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Player" Collapsed="true">
+    <Position X="43.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UC8Gs+JKlmsFKyiyBIkYNjSJbRjOEcETPyAF2BgQZjg=</HashCode>
+      <FileName>Characters\Player.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Entity" Collapsed="true">
+    <Position X="32.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBwBEgAABgBAAhEAACBAgIDAATIAAgCAAoQRAAAABDA=</HashCode>
+      <FileName>Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Settings" Collapsed="true">
+    <Position X="78.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAIgAAAAAAAAIAAAAAAAAAACAAAAg=</HashCode>
+      <FileName>GameData\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Glow" Collapsed="true">
+    <Position X="61.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Glows\Glow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Apple" Collapsed="true">
+    <Position X="71.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAgAAAAAAAKgAQQBAAgAAAIAAAAAAAAA=</HashCode>
+      <FileName>Interactables\Apple.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Chest" Collapsed="true">
+    <Position X="67.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAAIgAAAAAAAAAAAAIAAAAAAIAAACAAAAA=</HashCode>
+      <FileName>Interactables\Chest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Door" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAAAAAAgAAAQAIAAAAAAAAABgQgAAAACAAACE=</HashCode>
+      <FileName>Interactables\Door.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Gem" Collapsed="true">
+    <Position X="46" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interactables\Gem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Key" Collapsed="true">
+    <Position X="66" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAAAAAAAAgAAAAAAACAAAAAAAgAAAIAAAAEAACA=</HashCode>
+      <FileName>Interactables\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Projectile" Collapsed="true">
+    <Position X="21.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAQggAAECAAABCQAIAAAABAAAAgAAAEAI=</HashCode>
+      <FileName>Interactables\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.PlayerWeaponProjectile" Collapsed="true">
+    <Position X="19" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Interactables\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.LinearProjectile" Collapsed="true">
+    <Position X="21.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interactables\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.ParabolicProjectile" Collapsed="true">
+    <Position X="23.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interactables\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Tech" Collapsed="true">
+    <Position X="69.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAQAAAAACUAAAggAAAABAKAAAAEAAgAAAAAAAACAAAA=</HashCode>
+      <FileName>Interactables\Tech.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Weapon" Collapsed="true">
+    <Position X="66" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAgAAQAgAQQggAAIDAACAAEQAIIgSBQAQAgAAAAAA=</HashCode>
+      <FileName>Interactables\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.SpecialTile" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAQoAAAAgAAAAEAIgQAAAAAAAGACAEAAAACAAA=</HashCode>
+      <FileName>Levels\AnimatedTile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Background" Collapsed="true">
+    <Position X="73" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAkAAAAAAQAgAAAAAAQAAAAACAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Levels\Background.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Cloud" Collapsed="true">
+    <Position X="73" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIGAAAAAAEgAAAAAQKKQAAEQAAEAAAAQAAAAAAAA=</HashCode>
+      <FileName>Levels\Cloud.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameWorld" Collapsed="true">
+    <Position X="71.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAwgBAAgAMAhkhSYgCFUQgiRRBAQABaQAEokAAsAA=</HashCode>
+      <FileName>Levels\GameWorld.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Tile" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAhAAAAAAAggEAAwpAIBRGIAAEAhDwCIQEEgoAABA=</HashCode>
+      <FileName>Levels\Tile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Light" Collapsed="true">
+    <Position X="3" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CFQAhAICA0AAAoEAAIAQAIAAABAACgCACAQAAQABABg=</HashCode>
+      <FileName>Lights\Light.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Main" Collapsed="true">
+    <Position X="78.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>OAcElARAEoKJhwN1AA2E6VgCAQ0QgwkjkBECkAKggEQ=</HashCode>
+      <FileName>Main.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Animation" Collapsed="true">
+    <Position X="67.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAADAAAAAAQgAACAEQAiAAAAABAgEAAAQAgAAAAAA=</HashCode>
+      <FileName>Misc\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.AnimationData" Collapsed="true">
+    <Position X="69.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADAAAAAEAAABAAiAAAAAAABAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Misc\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.EnemyDB" Collapsed="true">
+    <Position X="74.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QoAAAIAAACDAIAAEAAAAAAAAEgAQIAAAgMAAAAAEAQA=</HashCode>
+      <FileName>Misc\Databases\EnemyDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.TextDB" Collapsed="true">
+    <Position X="73" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Misc\Databases\TextDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.CalcHelper" Collapsed="true">
+    <Position X="78.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAEAAAAAAAAAAAAAAABAAABAAA=</HashCode>
+      <FileName>Misc\Helpers\CalcHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.ContentHelper" Collapsed="true">
+    <Position X="66" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAg=</HashCode>
+      <FileName>Misc\Helpers\ContentHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.InputHelper" Collapsed="true">
+    <Position X="78.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAEAAAABAAABAAAQAAAAAAIAQBAEAAE=</HashCode>
+      <FileName>Misc\Helpers\InputHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.TriggerZone" Collapsed="true">
+    <Position X="64.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAEAAAgAAAEAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Misc\TriggerZone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Particle" Collapsed="true">
+    <Position X="29.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFRAQAQAgAAAAiggQCGQMQwQBAIAAIWJAIRAkEGQAgA=</HashCode>
+      <FileName>Particles\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.JumpSmokeParticle" Collapsed="true">
+    <Position X="25.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.StompSmokeParticle" Collapsed="true">
+    <Position X="28" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.ConstructionSmokeParticle" Collapsed="true">
+    <Position X="30.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.DestructionTileParticle" Collapsed="true">
+    <Position X="32.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Program" Collapsed="true">
+    <Position X="71.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Camera" Collapsed="true">
+    <Position X="64.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAgAIAAYIQAAAADAAAARAAAADAAACAIBQEAAAAAAA=</HashCode>
+      <FileName>UI\Camera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Cursor" Collapsed="true">
+    <Position X="67.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAQAgAAAAAAABgEAAAAAASAAAAAAggAAAgQACAAAAAA=</HashCode>
+      <FileName>UI\Cursor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Cutscene" Collapsed="true">
+    <Position X="69.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAgAAAAAgAAAIAAAAAAAAAQAAAAIAAECAAAAAA=</HashCode>
+      <FileName>UI\Cutscene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameDebug" Collapsed="true">
+    <Position X="67.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAYEAEAABAAAAgAAAAAAIEAAAQAAAAABBAAAASCABAA=</HashCode>
+      <FileName>UI\Debug.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.LoadingScreen" Collapsed="true">
+    <Position X="76.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAYBAABAAAAAEgwABIDQCCAAAAAoAEIABAQAoIEAIBA=</HashCode>
+      <FileName>UI\LoadingScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Menu" Collapsed="true">
+    <Position X="66" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EGYBlBAAiHAgRkgA8hkggyAggUmUMAEAABADQIAAIAY=</HashCode>
+      <FileName>UI\Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Overlay" Collapsed="true">
+    <Position X="74.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgWAAAAAgQCAAgEAgAAAAAABAARAAAAAQAAAIAACAAA=</HashCode>
+      <FileName>UI\Overlay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.PopUp" Collapsed="true">
+    <Position X="69.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAaAgBAAAgCBIgBAABAAACRACAAAAEAAAAiAAAAAABA=</HashCode>
+      <FileName>UI\PopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameTimer" Collapsed="true">
+    <Position X="69.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Timer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Characters.Enemies.Frog" Collapsed="true">
+    <Position X="14.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QASEgAAAAgIAAgAQAAgAAAQAABAAAEAAAAAgAAAIAiA=</HashCode>
+      <FileName>Characters\Enemies\Frog.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Characters.Enemies.Hellboar" Collapsed="true">
+    <Position X="16.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQBADAAAQYAAgCQBAgAAIQAAFAAEGgBBAEAQACQAiA=</HashCode>
+      <FileName>Characters\Enemies\Hellboar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Noobs.God" Collapsed="true">
+    <Position X="57.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgAAUACAggAAAEAAAQQAAAAAAAAIAAAAAAIAAQ=</HashCode>
+      <FileName>Characters\Non-Playable\God.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Characters.Non_Playable.NonPlayableCharacter" Collapsed="true">
+    <Position X="57.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAgAAAQAAggAABAEAQAAAAAAAAQBAAEABAAAAAA=</HashCode>
+      <FileName>Characters\Non-Playable\NonPlayableCharacter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameData.GameDataManager" Collapsed="true">
+    <Position X="66" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAQAIAkAAAAAIAAAACgAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>GameData\GameDataManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameData.Save" Collapsed="true">
+    <Position X="73" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAIAAAAAAAAAAAAgEAACIBIAAAACAAAA=</HashCode>
+      <FileName>GameData\Save.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameData.PlayerStats" Collapsed="true">
+    <Position X="67.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAICQAAAAgAAAAIAAAAAAIAAEACAAAIAAAAAAA=</HashCode>
+      <FileName>GameData\Save.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameData.WorldConfigFile" Collapsed="true">
+    <Position X="67.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAIAAAACDAAAAAAAAAFABEIAAAAIAEAACABAhAA=</HashCode>
+      <FileName>GameData\WorldConfigFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.GameData.AdamDictionary" Collapsed="true">
+    <Position X="66" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAAAAAAAAAAgAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameData\WorldConfigFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.CDPlayer" Collapsed="true">
+    <Position X="48.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interactables\CDPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.CheckPoint" Collapsed="true">
+    <Position X="34.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAIgAAAAAAAACAAAAAAAAAgAAAACCAAEA=</HashCode>
+      <FileName>Interactables\CheckPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.Food" Collapsed="true">
+    <Position X="50.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAIAAgAQAAgAAAAAAFAAAEAACAAAYASAAgA=</HashCode>
+      <FileName>Interactables\Food.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Interactables.Item" Collapsed="true">
+    <Position X="49.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAAgAAABAAAAAAAAgAAAABAAAAgAAAAAA=</HashCode>
+      <FileName>Interactables\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.Jetpack" Collapsed="true">
+    <Position X="64.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAABAAAAACgAAAQjEAAAAABgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interactables\Jetpack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.JetpackPowerUp" Collapsed="true">
+    <Position X="52.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAggAAAAAIAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Interactables\JetpackPowerUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Interactables.Sign" Collapsed="true">
+    <Position X="59.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgAAAAAggAAAAAEAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Interactables\Sign.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Levels.LevelEditor" Collapsed="true">
+    <Position X="73" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQEhCAAAggCigAQATQEAAAIgQTBDAgACAMgMCIAFAA=</HashCode>
+      <FileName>Levels\LevelEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Levels.PlayerSpawn" Collapsed="true">
+    <Position X="66" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAAAEA=</HashCode>
+      <FileName>Levels\PlayerSpawn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Levels.WorldData" Collapsed="true">
+    <Position X="69.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgSAQAIAAAACSBgAAAAAIBFEAEIIEQh4BkBAAAwBiAA=</HashCode>
+      <FileName>Levels\WorldData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Lights.LightEngine" Collapsed="true">
+    <Position X="74.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCgAAAACABAgQAQAAAAAAgAgIAAAAQAIgCQAEAAAA=</HashCode>
+      <FileName>Lights\LightEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Lights.DynamicPointLight" Collapsed="true">
+    <Position X="0.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lights\PointLight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Lights.FixedPointLight" Collapsed="true">
+    <Position X="3" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lights\PointLight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Lights.SunLight" Collapsed="true">
+    <Position X="5.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lights\SunLight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.Databases.InputDB" Collapsed="true">
+    <Position X="76.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Misc\Databases\InputDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.Errors.NotCollidableException" Collapsed="true">
+    <Position X="69.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Misc\Errors\Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.Helpers.FontHelper" Collapsed="true">
+    <Position X="64.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Misc\Helpers\FontHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.Interfaces.TerrainCollisionEventArgs" Collapsed="true">
+    <Position X="71.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Misc\Interfaces\ICollidable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.KeyboardDispatcher" Collapsed="true">
+    <Position X="67.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACIACAAAAAAAAAQAAAAAAQAACAAAAA=</HashCode>
+      <FileName>Misc\KeyboardDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.KeyboardLayout" Collapsed="true">
+    <Position X="69.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAACAAAIAAAQAICAEAAAAAAA=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.CharacterEventArgs" Collapsed="true">
+    <Position X="66" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAIAAIAAAAAAAAAAAgAAAAEAAAAAAAACAAgAAAACAA=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.KeyEventArgs" Collapsed="true">
+    <Position X="71.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.EventInput" Collapsed="true">
+    <Position X="78.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAhIAgQQAKEgAAAKAAQAIAEAASAAAAAwAADQ=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Misc.SoundFx" Collapsed="true">
+    <Position X="66" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgCAAAAAAEAABAIAAAQAAAAAAABCAAAEoAAAAAAAAAA=</HashCode>
+      <FileName>Misc\SoundFx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.Client" Collapsed="true">
+    <Position X="71.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAAABAkAAAAAAAAAAAAAAAAAIARGAAAQQAEAEEAAAAI=</HashCode>
+      <FileName>Network\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.Connection" Collapsed="true">
+    <Position X="78.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAEABQgAAEAAAABAIAAAAAAAIARGAAAQQAEAEAAABAA=</HashCode>
+      <FileName>Network\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.DataPacket" Collapsed="true">
+    <Position X="71.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Network\DataPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.MapDataPacket" Collapsed="true">
+    <Position X="64.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAARAAAAAAAkAAABAAUQAEAAAAQABAAAAIgAAIAA=</HashCode>
+      <FileName>Network\MapDataPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.PlayerDataPacket" Collapsed="true">
+    <Position X="64.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAABAAAIAAAAAAAAAAAIAQAAAAAAAA=</HashCode>
+      <FileName>Network\PlayerDataPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.Server" Collapsed="true">
+    <Position X="74.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEEAAAAIQAAAACAAAAAgAAAACAAAAAAAEEAABEA=</HashCode>
+      <FileName>Network\Server.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Network.Session" Collapsed="true">
+    <Position X="76.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAACAAAAEAAAEBABAAACAEAAAAAAAIAAAABAI=</HashCode>
+      <FileName>Network\Session.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Obstacles.FallingBoulder" Collapsed="true">
+    <Position X="37" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQADAAgAAAAAgAQAAgAAAAAAEAAAAAAAAQAQACAAAI=</HashCode>
+      <FileName>Obstacles\FallingBoulder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adam.Obstacles.Liquid" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAACAAAAACAAAEAAAAAAAAQIAAAABAAAAEAAAAAA=</HashCode>
+      <FileName>Obstacles\Liquid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Obstacles.Obstacle" Collapsed="true">
+    <Position X="39.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAAAAAIAAAAAAgAAAAAAEAAAAABAAAAQAAAAAA=</HashCode>
+      <FileName>Obstacles\Obstacle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Obstacles.Spikes" Collapsed="true">
+    <Position X="39.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Obstacles\Spikes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Obstacles.WidePlatformUp" Collapsed="true">
+    <Position X="41.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAhAAAAAAAAAAAAEQAAgAAAAAAAAAAAAQAAAAgAAA=</HashCode>
+      <FileName>Obstacles\WidePlatformUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Effects.ChestSparklesEffect" Collapsed="true">
+    <Position X="69.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\ChestSparklesEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Effects.EnemyDesintegrationEffect" Collapsed="true">
+    <Position X="76.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\EnemyDesintegrationEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Effects.PlayerChronoshiftEffect" Collapsed="true">
+    <Position X="78.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\PlayerChronoshiftEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Effects.SnakeVenomEffect" Collapsed="true">
+    <Position X="64.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\SnakeVenomEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Particles.NewParticle" Collapsed="true">
+    <Position X="67.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Particles\NewParticle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.Projectiles.CollisionRay" Collapsed="true">
+    <Position X="76.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Projectiles\CollisionRay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.ActionBar" Collapsed="true">
+    <Position X="64.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIYARAEAAAAAAgAAYAAAAiFAIUAIAAIAAAQCggAACAA=</HashCode>
+      <FileName>UI\ActionBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Brush" Collapsed="true">
+    <Position X="76.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASCBACgAAAAAgEAAIAAAUAAAEQAAAAAAgAAAAABAAA=</HashCode>
+      <FileName>UI\Brush.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Button" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYEgAAYAAAAEwAAEAAQAABAQAIAAgCAAAwACAASAAI=</HashCode>
+      <FileName>UI\Elements\Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.EntityScroll" Collapsed="true">
+    <Position X="8.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAACAAAAEAAAAABAAA=</HashCode>
+      <FileName>UI\EntityScroll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Dialog" Collapsed="true">
+    <Position X="73" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBYABAAAAUEARgACQAAACBAAAIAEAgAIQCSBAEAAADA=</HashCode>
+      <FileName>UI\Information\Dialog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.PlaceNotification" Collapsed="true">
+    <Position X="76.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABYABAAAAAAAAgAAAAAAABAAAAAEAgAIAAAABAAAABA=</HashCode>
+      <FileName>UI\Information\PlaceNotification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.SplashDamage" Collapsed="true">
+    <Position X="67.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAYAAAAAAAAAggEAQAAAIAACAAAAAAAIAIQAAAAAARA=</HashCode>
+      <FileName>UI\SplashDamage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.TileDescription" Collapsed="true">
+    <Position X="74.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQUAAAAAAAgggAAIAAAAABAEAAEQABAAAAAAAAAAAg=</HashCode>
+      <FileName>UI\TileDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.TileScroll" Collapsed="true">
+    <Position X="8.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYQgIAAgAAgAwAAUAAAA3AAAgAACAACAEQAAAABAIg=</HashCode>
+      <FileName>UI\TileScroll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.TileName" Collapsed="true">
+    <Position X="76.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\TileScroll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.TileSelectedArgs" Collapsed="true">
+    <Position X="78.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>UI\TileScroll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.WorldProperties" Collapsed="true">
+    <Position X="71.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAACAAAACAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\WorldProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.Container" Collapsed="true">
+    <Position X="64.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>UI\Elements\Container.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.FunctionButton" Collapsed="true">
+    <Position X="6.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABYAAAAAAAAAAwAAACAAAAAAAAAAAAAAAAABAAASAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.PlayButton" Collapsed="true">
+    <Position X="1" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.SaveButton" Collapsed="true">
+    <Position X="3.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.OpenButton" Collapsed="true">
+    <Position X="5.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.NewButton" Collapsed="true">
+    <Position X="7.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.DeleteButton" Collapsed="true">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.WallButton" Collapsed="true">
+    <Position X="12.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAIAAAAAg=</HashCode>
+      <FileName>UI\Elements\FunctionButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Elements.KeyPopUp" Collapsed="true">
+    <Position X="55" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Elements\KeyPopUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Information.Objective" Collapsed="true">
+    <Position X="71.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBQAAAAAAAEAggAACAAAABAAAIAAAkCIAEAAAAEAAJg=</HashCode>
+      <FileName>UI\Information\Objective.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Information.ObjectiveTracker" Collapsed="true">
+    <Position X="73" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAKAAAAggAAAAAAAAAAAAgAIAAAAAAAAAAIAAA=</HashCode>
+      <FileName>UI\Information\ObjectiveTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Overlay_Elements.Coin" Collapsed="true">
+    <Position X="74.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBQAAAAAgAAAAggAAAEIAoQAAAAAAgAAAAQABAAAAAA=</HashCode>
+      <FileName>UI\Overlay Elements\Coin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Overlay_Elements.Heart" Collapsed="true">
+    <Position X="73" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CDRABEAYwAACCgwAQBAACQCQAQAFAAIBAIYAJAACAAA=</HashCode>
+      <FileName>UI\Overlay Elements\Heart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adam.UI.Overlay_Elements.Hourglass" Collapsed="true">
+    <Position X="74.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBQAAAAAAAAAAgAAAAAAIIAAAAAAAgCAAAQAAAAAAAA=</HashCode>
+      <FileName>UI\Overlay Elements\Hourglass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Adam.Image" Collapsed="true">
+    <Position X="64.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgBAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Levels\Background.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Adam.GameData.KeyValue" Collapsed="true">
+    <Position X="66" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>GameData\WorldConfigFile.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Adam.Misc.Interfaces.ICollidable" Collapsed="true">
+    <Position X="64.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAgAAAAAAEAAAAAAAAAAQACAAAA=</HashCode>
+      <FileName>Misc\Interfaces\ICollidable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adam.Misc.Interfaces.INewtonian" Collapsed="true">
+    <Position X="67.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAABAAAEAAAAAAAAAAAgA=</HashCode>
+      <FileName>Misc\Interfaces\INewtonian.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adam.Misc.Interfaces.ITalkable" Collapsed="true">
+    <Position X="69.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAUAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Misc\Interfaces\ITalkable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adam.Misc.IKeyboardSubscriber" Collapsed="true">
+    <Position X="66" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAABAAEAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Misc\KeyboardDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Adam.EnemyType" Collapsed="true">
+    <Position X="69.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAEAAAAAAAAAAAAAIAIAAAAABAAgAgAA=</HashCode>
+      <FileName>Characters\Enemies\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.Evolution" Collapsed="true">
+    <Position X="71.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAICAAAAAAAAAACAAAAAAAAEIBAAAgAAAAAABEAAAA=</HashCode>
+      <FileName>Characters\Player.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.CollisionLocation" Collapsed="true">
+    <Position X="66" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACAKAAAAAAAA=</HashCode>
+      <FileName>Entity.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.ProjectileSource" Collapsed="true">
+    <Position X="76.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Interactables\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.WeaponType" Collapsed="true">
+    <Position X="78.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAggIEAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Interactables\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.GameState" Collapsed="true">
+    <Position X="74.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAABAAAQAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Main.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.GameMode" Collapsed="true">
+    <Position X="73" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAEAAAA=</HashCode>
+      <FileName>Main.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.AnimationType" Collapsed="true">
+    <Position X="64.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Misc\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Adam.Obstacles.DamageType" Collapsed="true">
+    <Position X="67.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAIAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Obstacles\Obstacle.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Adam.Misc.Interfaces.TerrainCollisionHandler" Collapsed="true">
+    <Position X="67.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Misc\Interfaces\ICollidable.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Adam.Misc.CharEnteredHandler" Collapsed="true">
+    <Position X="64.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Adam.Misc.KeyEventHandler" Collapsed="true">
+    <Position X="66" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Misc\KeyboardLayout.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -12,7 +12,7 @@ using System.Text;
 namespace Adam
 {
 
-    public class AnimatedTile : Tile
+    public class SpecialTile : Tile
     {
         double frameTimer, restartTimer;
         int restartWait;
@@ -23,15 +23,16 @@ namespace Adam
         Rectangle startingRectangle;
         Rectangle originalPosition;
         Liquid liquid;
+        Chest chest;
 
-        public AnimatedTile(byte ID, Rectangle rectangle)
+        public SpecialTile(byte ID, Rectangle drawRectangle)
         {
             texture = GameWorld.SpriteSheet;
             this.ID = ID;
-            drawRectangle = rectangle;
-            originalPosition = drawRectangle;
+            base.drawRectangle = drawRectangle;
+            originalPosition = base.drawRectangle;
             if (GameWorld.Instance != null)
-                TileIndex = (int)(drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(drawRectangle.Center.X / Main.Tilesize);
+                TileIndex = (int)(base.drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(base.drawRectangle.Center.X / Main.Tilesize);
             smallTileSize = Main.Tilesize / 2;
             DefineTexture();
         }
@@ -76,6 +77,13 @@ namespace Adam
                     drawRectangle.Height = Main.Tilesize * 2;
                     drawRectangle.Y -= Main.Tilesize;
                     sunlightPassesThrough = true;
+                    break;
+                case 19: //Chest
+                    chest = new Chest(this);               
+                    frameCount = new Vector2(4, 0);
+                    startingPosition = new Vector2(12, 24);
+                    size.X = 1.5f;
+                    drawRectangle.Width = (int)(Main.Tilesize * size.X);
                     break;
                 case 23: //Water
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Water);
@@ -138,7 +146,8 @@ namespace Adam
 
         public void Animate(GameTime gameTime)
         {
-            if (liquid != null) liquid.Update(gameTime);
+            liquid?.Update(gameTime);
+            chest?.Update();
 
             switch (ID)
             {

@@ -225,8 +225,8 @@ namespace Adam
         {
             int width = map.worldData.LevelWidth;
             int startingIndex = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) - width - 1;
-            int heightInTiles = (collRectangle.Height / Main.Tilesize) + 2;
-            int widthInTiles = (collRectangle.Width / Main.Tilesize) + 2;
+            int heightInTiles = (int)(Math.Ceiling((double)collRectangle.Height / Main.Tilesize) + 2);
+            int widthInTiles = (int)(Math.Ceiling((double)collRectangle.Width / Main.Tilesize) + 2);
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)
@@ -238,13 +238,13 @@ namespace Adam
                 }
             }
 
-            //Remove corner indexes
-            int lastItem = indexes.Count - 1;
-            int[] copy = indexes.ToArray();
-            indexes.Remove(copy[lastItem]);
-            indexes.Remove(copy[lastItem - widthInTiles + 1]);
-            indexes.Remove(copy[widthInTiles - 1]);
-            indexes.Remove(copy[0]);
+            ////Remove corner indexes
+            //int lastItem = indexes.Count - 1;
+            //int[] copy = indexes.ToArray();
+            //indexes.Remove(copy[lastItem]);
+            //indexes.Remove(copy[lastItem - widthInTiles + 1]);
+            //indexes.Remove(copy[widthInTiles - 1]);
+            //indexes.Remove(copy[0]);
 
             return indexes.ToArray();
         }
@@ -275,7 +275,6 @@ namespace Adam
                         {
                             if (velocity.Y > 0)
                             {
-                                velocity.Y = 0;
                                 while (collRectangle.Intersects(tileRect))
                                 {
                                     collRectangle.Y--;
@@ -284,7 +283,6 @@ namespace Adam
                             }
                             else if (velocity.Y < 0)
                             {
-                                velocity.Y = 0;
                                 while (collRectangle.Intersects(tileRect))
                                 {
                                     collRectangle.Y++;
@@ -310,7 +308,6 @@ namespace Adam
                         {
                             if (velocity.X > 0)
                             {
-                                velocity.X = 0;
                                 while (collRectangle.Intersects(tileRect))
                                 {
                                     collRectangle.X--;
@@ -319,7 +316,6 @@ namespace Adam
                             }
                             else if (velocity.X < 0)
                             {
-                                velocity.X = 0;
                                 while (collRectangle.Intersects(tileRect))
                                 {
                                     collRectangle.X++;

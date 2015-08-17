@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class Food : PowerUp, ICollidable, INewtonian
+    public class Food : Item, ICollidable, INewtonian
     {
         int healAmount;
         bool hasHealed;
@@ -56,8 +56,9 @@ namespace Adam.Interactables
 
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
+            Player player = GameWorld.Instance.player;
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
             drawRectangle = collRectangle;

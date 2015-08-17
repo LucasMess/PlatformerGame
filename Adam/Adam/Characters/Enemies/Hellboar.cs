@@ -39,8 +39,8 @@ namespace Adam.Characters.Enemies
         public Hellboar(int x, int y)
         {
             health = 100;
-            collRectangle = new Rectangle(x, y, 50 * 2, 38 * 2);
-            drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
+            collRectangle = new Rectangle(x, y, 50 * 2, 120);
+            drawRectangle = new Rectangle(x - 18, y, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
             CurrentEnemyType = EnemyType.Hellboar;
@@ -62,14 +62,11 @@ namespace Adam.Characters.Enemies
             if (isDead) return;
 
             drawRectangle.X = collRectangle.X - 18;
-            drawRectangle.Y = collRectangle.Y - 44;
+            drawRectangle.Y = collRectangle.Y - 20;
             damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2);
 
             int t = GetTileIndex();
             int[] i = GetNearbyTileIndexes(GameWorld.Instance);
-
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             CheckForPlayer();
             CheckIfCharging();
@@ -251,6 +248,7 @@ namespace Adam.Characters.Enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             //DrawSurroundIndexes(spriteBatch);
+            //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Blue);
 
             Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
@@ -268,13 +266,11 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
             velocity.Y = 0;
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
             velocity.Y = 0;
         }
 
@@ -284,14 +280,12 @@ namespace Adam.Characters.Enemies
             {
                 Kill();
             }
-            collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
             velocity.X = 0;
             CurrentAnimation = AnimationState.Idle;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
             velocity.X = 0;
             if (isCharging)
             {
@@ -307,7 +301,7 @@ namespace Adam.Characters.Enemies
 
         public float GravityStrength
         {
-            get { return 0; }
+            get { return Main.Gravity; }
         }
 
 

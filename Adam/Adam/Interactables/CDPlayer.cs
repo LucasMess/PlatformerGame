@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class CDPlayer : PowerUp
+    public class CDPlayer : Item
     {
         public CDPlayer(Vector2 position)
         {
@@ -17,15 +17,15 @@ namespace Adam.Interactables
             sourceRectangle = new Rectangle(0, 0, 32, 32);
 
             animation = new Animation(texture, drawRectangle, 70, 0, AnimationType.Loop);
-            loop = ContentHelper.LoadSound("Sounds/loop");
-            loopInstance = loop.CreateInstance();
+            loopSound = new Misc.SoundFx("Sounds/loop");
             velocity.Y = -10f;
-            IsCollidable = true;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            base.Update(gameTime, player, map);
+            GameWorld gameWorld = GameWorld.Instance;
+            GameTime gameTime = gameWorld.gameTime;
+
 
             animation.Update(gameTime);
             animation.UpdateRectangle(drawRectangle);
@@ -39,25 +39,16 @@ namespace Adam.Interactables
             {
                 Particle eff = new Particle();
                 eff.CreateMusicNotesEffect(this);
-                effects.Add(eff);
+                GameWorld.Instance.particles.Add(eff);
                 effectTimer = 0;
             }
 
-
-
-            if (wasPickedUp)
-            {
-                player.Chronoshift(Evolution.Modern);
-            }           
+            base.Update();
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
-
-
-            foreach (var eff in effects)
-                eff.Draw(spriteBatch);
         }
     }
 }

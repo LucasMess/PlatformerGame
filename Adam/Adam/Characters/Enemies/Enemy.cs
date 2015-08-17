@@ -103,10 +103,6 @@ namespace Adam
 
             //Velocity
 
-            collRectangle.X += (int)(velocity.X);
-            collRectangle.Y += (int)(velocity.Y);
-
-
             //Random chance of being mean.
             int shouldIShowDominace = GameWorld.RandGen.Next(0, 100);
             if (shouldIShowDominace == 1)

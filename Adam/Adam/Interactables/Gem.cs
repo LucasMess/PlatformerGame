@@ -7,138 +7,134 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
+using Adam.Interactables;
+using Adam.Misc;
+using Adam.Misc.Interfaces;
 
 namespace Adam
 {
-    public class Gem : Entity
+    public class Gem : Item, ICollidable, INewtonian
     {
-        public Rectangle rectangle, topMidBound;
-        Random randGen;
-        public Vector2 velocity;
-        SoundEffect goldHit, addGold;
-        double elapsedTime;
-        Light light;
+        byte gemID;
 
-        public enum Type { goldOre, copperOre, diamond, sapphire, emerald }
-        Type type = Type.copperOre;
-
-        public Gem(Chest chest, int randomSeed, ContentManager Content)
+        public float GravityStrength
         {
-            randGen = new Random(randomSeed);
-            velocity = new Vector2(randGen.Next(-3, 3), randGen.Next(-10, -5));
-            goldHit = Content.Load<SoundEffect>("Sounds/PickUpGem");
-            addGold = Content.Load<SoundEffect>("Sounds/PickUpGem");
-            DefineGem(Content);
-            rectangle = new Rectangle(chest.rectangle.Center.X, chest.rectangle.Center.Y, texture.Width, texture.Height);
-            light = new Light();
-            light.GemLight(1, this, Content, type);
+            get
+            {
+                return Main.Gravity;
+            }
         }
 
-        void DefineGem(ContentManager Content)
+        public bool IsFlying { get; set; }
+
+        public bool IsJumping { get; set; }
+
+        public bool IsAboveTile { get; set; }
+
+        public Gem(int centerX, int centerY)
         {
-            int prob = randGen.Next(1, 100);
+            gemID = GenerateID();
+            texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(centerX, centerY, 16, 16);
+            drawRectangle = collRectangle;
+            sourceRectangle = GetSourceRectangle();
+            velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
 
-            if (prob <= 30)//gold
-            {
-                type = Type.goldOre;
-                texture = Content.Load<Texture2D>("Objects/Gold Ore Chunk");
-            }
-
-            if (prob > 30 && prob <= 60)//copper
-            {
-                type = Type.copperOre;
-                texture = Content.Load<Texture2D>("Objects/Copper Ore Chunk");
-            }
-
-            if (prob > 60 && prob <= 80)//emerald
-            {
-                type = Type.emerald;
-                texture = Content.Load<Texture2D>("Objects/emerald");
-            }
-
-            if (prob > 80 && prob <= 90)//sapphire
-            {
-                type = Type.sapphire;
-                texture = Content.Load<Texture2D>("Objects/Sapphire Gem");
-            }
-            if (prob > 90 && prob <= 100)//diamond
-            {
-                type = Type.diamond;
-                texture = Content.Load<Texture2D>("Objects/Diamond gem Cut");
-            }
-
-
+            pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update()
         {
-            rectangle.X += (int)velocity.X;
-            rectangle.Y += (int)velocity.Y;
+            drawRectangle = collRectangle;
 
-            velocity.Y += .3f;
-            if (velocity.Y > 5f)
-                velocity.Y = 5f;
-
-            topMidBound = new Rectangle(rectangle.X + texture.Width / 2, rectangle.Y + texture.Height / 2, 1, 1);
-            xRect = new Rectangle(rectangle.X, rectangle.Y + 5, texture.Width, texture.Height - 10);
-            yRect = new Rectangle(rectangle.X + 10, rectangle.Y, texture.Width - 20, texture.Height);
-            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-
-            light.Update(this);
-
+            base.Update();
         }
 
-        public bool WasPickedUp(Player player)
+        private byte GenerateID()
         {
-
-            if (elapsedTime > 1 && player.collRectangle.Intersects(rectangle))
-                return true;
-            else return false;
-        }
-
-        public void AddScore(Player player)
-        {
-            switch (type)
+            int rand = GameWorld.RandGen.Next(0, 100);
+            if (rand > 95) //5% - Diamond
             {
-                case Type.copperOre:
-                    player.Score += 1;
+                return 5;
+            }
+            if (rand > 85) //10% - Ruby
+            {
+                return 4;
+            }
+            if (rand > 70) //15% - Sapphire
+            {
+                return 3;
+            }
+            if (rand > 50) //20% - Emerald
+            {
+                return 2;
+            }
+            if (rand > 25) //25% - Gold
+            {
+                return 1;
+            }
+            else return 0; //25% - Copper
+        }
+
+        private Rectangle GetSourceRectangle()
+        {
+            Rectangle source = new Rectangle();
+            switch (gemID)
+            {
+                case 0:
+                    source = new Rectangle(21 * 16, 9 * 16, 16, 16);
                     break;
-                case Type.goldOre:
-                    player.Score += 5;
+                case 1:
+                    source = new Rectangle(20 * 16, 9 * 16, 16, 16);
                     break;
-                case Type.emerald:
-                    player.Score += 10;
+                case 2:
+                    source = new Rectangle(21 * 16, 8 * 16, 16, 16);
                     break;
-                case Type.sapphire:
-                    player.Score += 20;
+                case 3:
+                    source = new Rectangle(20 * 16, 8 * 16, 16, 16);
                     break;
-                case Type.diamond:
-                    player.Score += 30;
+                case 4:
+                    source = new Rectangle(21 * 16, 8 * 16, 16, 16);
+                    break;
+                case 5:
+                    source = new Rectangle(20 * 16, 10 * 16, 16, 16);
                     break;
             }
+            return source;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, rectangle, Color.White);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);        
+
         }
 
-        public void DrawLights(SpriteBatch spriteBatch)
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            light.Draw(spriteBatch);
+            
         }
 
-        public void SoundHit()
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            if (Math.Abs(velocity.Y) > 2)
-                goldHit.Play();
+            velocity.Y = -3f;
+            velocity.X *= .5f;
+            bounceSound.PlayNewInstanceOnce();
+            bounceSound.Reset();            
         }
 
-        public void SoundAdd()
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            addGold.Play();
+
         }
 
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
 
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+
+        }
     }
 }

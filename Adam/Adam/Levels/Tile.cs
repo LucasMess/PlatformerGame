@@ -19,8 +19,9 @@ namespace Adam
         public Texture2D texture;
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
-        AnimatedTile animatedTile;
+        SpecialTile animatedTile;
         Obstacle obstacle;
+        Chest chest;
 
         public bool isSolid;
         public bool isClimbable;
@@ -126,19 +127,19 @@ namespace Adam
                     position = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 8: //Metal
                     position = new Vector2(12, 2);
                     isVoid = true;
                     isSolid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 9://Tall Grass
                     position = new Vector2(0, 16);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 10: //Gold
                     hasConnectPattern = true;
@@ -150,14 +151,14 @@ namespace Adam
                     position = new Vector2(12, 0);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, null));
                     break;
                 case 12: //Chandelier
                     position = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4));
                     break;
                 case 13: //Door
@@ -177,7 +178,7 @@ namespace Adam
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     position = new Vector2(12, 10);
                     isVoid = true;
                     break;
@@ -196,6 +197,8 @@ namespace Adam
                     }
                     break;
                 case 19://chest
+                    position = new Vector2(12,24);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     isVoid = true;
                     break;
                 case 20://tech
@@ -212,17 +215,17 @@ namespace Adam
                 case 23://water
                     position = new Vector2(4, 15);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 24: //lava
                     position = new Vector2(0, 15);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 25:
                     position = new Vector2(8, 15);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 26: //apple
                     isVoid = true;
@@ -253,7 +256,7 @@ namespace Adam
                 case 31: //Tree
                     position = new Vector2(18, 4);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 32: //Small Rock
                     position = new Vector2(13, 18);
@@ -261,12 +264,12 @@ namespace Adam
                 case 33: //Big Rock
                     position = new Vector2(14, 18);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 34: //Medium Rock
                     position = new Vector2(11, 18);
                     isVoid = true;
-                    animatedTile = new AnimatedTile(ID, drawRectangle);
+                    animatedTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 36: //Sign
                     position = new Vector2(12, 4);
@@ -810,15 +813,15 @@ namespace Adam
                     int rand = GameWorld.RandGen.Next(0, 10);
                     if (rand == 0) //flower
                     {
-                        array[indexAbove] = new AnimatedTile(17, array[indexAbove].drawRectangle);
+                        array[indexAbove] = new SpecialTile(17, array[indexAbove].drawRectangle);
                     }
                     else if (rand == 1 || rand == 2) //tall grass
                     {
-                        array[indexAbove] = new AnimatedTile(9, array[indexAbove].drawRectangle);
+                        array[indexAbove] = new SpecialTile(9, array[indexAbove].drawRectangle);
                     }
                     else //short grass
                     {
-                        array[indexAbove] = new AnimatedTile(7, array[indexAbove].drawRectangle);
+                        array[indexAbove] = new SpecialTile(7, array[indexAbove].drawRectangle);
                     }
 
                     array[indexAbove].DefineTexture();

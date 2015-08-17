@@ -62,23 +62,6 @@ namespace Adam
             gameWorld = GameWorld.Instance;
         }
 
-        public Particle(Chest chest, int seed)
-        {
-            CurrentParticle = ParticleType.ChestSparkles;
-            randGen = new Random(seed);
-            velocity = new Vector2(randGen.Next(-7, 7), randGen.Next(-10, -1));
-            texture = ContentHelper.LoadTexture("Sparkles");
-            int size = randGen.Next(texture.Width, texture.Width * 2);
-            drawRectangle = new Rectangle(chest.rectangle.X + texture.Width / 2, chest.rectangle.Y + texture.Height / 2, size, size);
-            sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-            light = new Light();
-            light.EffectLight(1, this, Content);
-
-            //rectangle.Width = texture.Width;
-            //rectangle.Height = texture.Height;
-
-        }
-
         public Particle(Projectile projectile, Tile[] tileArray)
         {
             sourceRectangle = new Rectangle(0, 0, 32, 32);
@@ -217,9 +200,9 @@ namespace Adam
             texture = tile.texture;
             drawRectangle = new Rectangle(player.collRectangle.Center.X - 2, player.collRectangle.Y + player.collRectangle.Height, 8, 8);
             sourceRectangle = new Rectangle(tile.sourceRectangle.X, tile.sourceRectangle.Y, 4, 4);
-            if (tile is AnimatedTile)
+            if (tile is SpecialTile)
             {
-                AnimatedTile t = (AnimatedTile)tile;
+                SpecialTile t = (SpecialTile)tile;
                 sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
             }
             sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Main.Tilesize / 4);
