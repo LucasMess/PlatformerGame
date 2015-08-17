@@ -354,7 +354,7 @@ namespace Adam
 
         public void DrawLights(SpriteBatch spriteBatch)
         {
-            lightEngine.Draw(spriteBatch);
+            lightEngine.DrawLights(spriteBatch);
 
             if (player.weapon != null)
                 player.weapon.DrawLights(spriteBatch);
@@ -394,6 +394,7 @@ namespace Adam
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
+
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -416,6 +417,11 @@ namespace Adam
                         wallArray[tileNumber].Draw(spriteBatch);
                 }
             }
+        }
+
+        public void DrawInFront(SpriteBatch spriteBatch)
+        {
+            lightEngine.DrawGlows(spriteBatch);
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)

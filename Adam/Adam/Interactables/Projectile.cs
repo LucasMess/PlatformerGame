@@ -154,9 +154,6 @@ namespace Adam
             xRect = new Rectangle(collRectangle.X, collRectangle.Y + 5, texture.Width, texture.Height - 10);
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, texture.Width - 20, texture.Height);
 
-            if (light != null)
-                light.Update(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
-
             CreateTrailEffect();
         }
 

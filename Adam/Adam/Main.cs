@@ -430,11 +430,9 @@ namespace Adam
                     
                     gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawInBack(gameSB);
-                    gameSB.End();
-
-                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.Draw(gameSB);
                     player.Draw(gameSB);
+                    gameWorld.DrawInFront(gameSB);
                     gameSB.End();
                     break;
             }

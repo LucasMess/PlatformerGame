@@ -139,8 +139,6 @@ namespace Adam
             drawRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             opacity = 1;
-            light = new Light();
-            light.EffectLight(.5f, this, Content);
         }
 
         public void CreateEnemyDisintegrationEffect(Enemy enemy, Rectangle sourceRectangle, Projectile proj)

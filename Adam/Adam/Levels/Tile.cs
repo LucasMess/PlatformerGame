@@ -152,7 +152,7 @@ namespace Adam
                     isVoid = true;
                     sunlightPassesThrough = true;
                     animatedTile = new SpecialTile(ID, drawRectangle);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, null));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, null));
                     break;
                 case 12: //Chandelier
                     position = new Vector2(0, 17);

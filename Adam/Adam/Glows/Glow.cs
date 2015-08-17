@@ -9,28 +9,29 @@ using System.Text;
 
 namespace Adam
 {
-    public class Glow : Entity
+    public class Glow
     {
         public Color Color { get; set; }
-
+        Texture2D texture;
+        Rectangle drawRectangle;
+        Rectangle sourceRectangle;
 
         public Glow(Light light)
         {
-            //All glows come from light sources.
-            texture = Main.Content.Load<Texture2D>("Lighting/glow_200x200");
+            texture = GameWorld.SpriteSheet;
             drawRectangle = light.drawRectangle;
-            origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
-            sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+            sourceRectangle = new Rectangle(20* 16, 15 * 16, 64, 64);
+            Color = light.color;
         }
 
-        public void Update(Rectangle rectangle)
+        public void Update(Light light)
         {
-            this.drawRectangle = rectangle;
+            this.drawRectangle = light.drawRectangle;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * opacity, 0, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * .5f);
         }
     }
 }

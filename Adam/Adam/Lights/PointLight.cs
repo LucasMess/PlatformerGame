@@ -37,6 +37,8 @@ namespace Adam.Lights
             SetPosition(source.collRectangle);
 
             if (isShaky) Shake();
+
+            base.Update();
         }
     }
 
@@ -60,6 +62,7 @@ namespace Adam.Lights
                 size = (int)(DefaultSize * scale);
 
             SetPosition(tileRectangle);
+            glow = new Glow(this);
 
             lightHere = true;
         }
@@ -67,6 +70,8 @@ namespace Adam.Lights
         public override void Update()
         {
             if (isShaky) Shake();
+
+            base.Update();
         }
     }
 }

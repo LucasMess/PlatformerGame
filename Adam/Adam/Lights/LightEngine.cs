@@ -125,13 +125,24 @@ namespace Adam.Lights
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawLights(SpriteBatch spriteBatch)
         {
             foreach (int index in visibleLights)
             {
                 if (index >= 0 && index < lights.Length)
                 {
                     lights[index].Draw(spriteBatch);
+                }
+            }
+        }
+
+        public void DrawGlows(SpriteBatch spriteBatch)
+        {
+            foreach (int index in visibleLights)
+            {
+                if (index >= 0 && index < lights.Length)
+                {
+                    lights[index].DrawGlow(spriteBatch);
                 }
             }
         }

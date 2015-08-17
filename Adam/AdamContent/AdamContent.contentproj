@@ -770,13 +770,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lighting\glow_200x200.png">
-      <Name>glow_200x200</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\laserunNew.wav">
       <Name>laserunNew</Name>
       <Importer>WavImporter</Importer>
@@ -1608,6 +1601,13 @@
       <Name>gold4</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Lighting\glow_pixel.png">
+      <Name>glow_pixel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
