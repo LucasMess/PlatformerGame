@@ -118,8 +118,8 @@ namespace Adam
         {
             velocity.Y = -3f;
             velocity.X *= .5f;
-            bounceSound.PlayNewInstanceOnce();
-            bounceSound.Reset();
+            bounceSound?.PlayNewInstanceOnce();
+            bounceSound?.Reset();
             for (int i = 0; i < 5; i++)
             {
                 GameWorld.Instance.particles.Add(new StompSmokeParticle(this));

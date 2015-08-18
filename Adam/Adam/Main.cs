@@ -70,7 +70,7 @@ namespace Adam
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960;
         public const int DefaultResHeight = 540;
-        public const string Version = "Version 0.6.0.1 (Pre-Release)";
+        public const string Version = "Version 0.6.0.1 Beta";
         public const string Producers = "Duck Knight Duel Games";
         public static int UserResWidth;
         public static int UserResHeight;
@@ -280,6 +280,13 @@ namespace Adam
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
             {
+                if (CurrentGameMode == GameMode.Edit)
+                {
+                    if(GameWorld.Instance.levelEditor.actionBar.AskSaveDialog())
+                    {
+                        GameWorld.Instance.levelEditor.actionBar.SaveButton_MouseClicked();
+                    }
+                }
                 GameData.SaveGame();
                 ChangeState(GameState.MainMenu, GameMode.None);
 
@@ -551,7 +558,7 @@ namespace Adam
                 {
                     debugSB.Begin();
                     debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 280), Color.White * .3f);
-                    debugSB.DrawString(debugFont, "Frames Per Second:" + fps, new Vector2(0, 0), Color.White);
+                    debugSB.DrawString(debugFont, Main.Version+" FPS: " + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
                     debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
@@ -563,8 +570,8 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[0], new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
-                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles.Count, new Vector2(0, 240), Color.White);
-                    debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities.Count, new Vector2(0, 260), Color.White);
+                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
+                    debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     debug.Draw(debugSB);
                     debugSB.End();
                 }

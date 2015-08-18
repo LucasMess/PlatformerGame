@@ -1,6 +1,7 @@
 ﻿using Adam.GameData;
 using Adam.Misc;
 using Adam.Network;
+using Adam.UI;
 using Adam.UI.Information;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -53,7 +54,7 @@ namespace Adam.Levels
         public int LevelWidth { get; set; }
         public int LevelHeight { get; set; }
         public byte BackgroundID { get; set; }
-        public byte SoundtrackID { get; set; } 
+        public byte SoundtrackID { get; set; }
 
         public Vector2 SpawnPoint { get; set; }
 

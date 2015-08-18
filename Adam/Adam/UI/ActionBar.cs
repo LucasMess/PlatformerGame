@@ -99,7 +99,7 @@ namespace Adam.UI
             properties.Show();
         }
 
-        private void SaveButton_MouseClicked()
+        public void SaveButton_MouseClicked()
         {
             gameWorld.worldData.SaveLevelLocally();
         }
@@ -134,7 +134,7 @@ namespace Adam.UI
             return true;
         }
 
-        private bool IsPlayerInWorld()
+        public bool IsPlayerInWorld()
         {
             foreach (Tile t in gameWorld.tileArray)
             {
@@ -177,7 +177,7 @@ namespace Adam.UI
             data.LoadIntoPlay();
         }
 
-        private bool AskSaveDialog()
+        public bool AskSaveDialog()
         {
             DialogResult dialogResult = MessageBox.Show("Would you like to save your level first? All progress will be lost otherwise.", "Save?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)

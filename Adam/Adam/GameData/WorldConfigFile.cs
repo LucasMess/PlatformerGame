@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Adam.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Windows;
 
 namespace Adam.GameData
 {
@@ -108,7 +111,7 @@ namespace Adam.GameData
 
             gw.worldData.SignMessages = SignMessages;
             gw.worldData.PortalLinks = PortalLinks;
-            
+
             gw.worldData.LevelName = LevelName;
             gw.worldData.HasClouds = HasClouds;
             gw.worldData.IsRaining = IsRaining;

@@ -95,7 +95,7 @@ namespace Adam.UI
 
         protected virtual void CheckIfActive()
         {
-            if (InputHelper.IsKeyDown(Keys.Tab))
+            if (GameWorld.Instance.levelEditor.onInventory)
             {
                 isActive = true;
             }
@@ -164,6 +164,19 @@ namespace Adam.UI
 
             }
             lastScrollWheel = scrollWheel;
+
+            //Check Boundaries
+            if (tiles[0].drawRectangle.Y > 0)
+            {
+                velocityY = -1;
+            }
+            if (tiles[tiles.Count - 1].drawRectangle.Y + tiles[tiles.Count - 1].drawRectangle.Height< Main.UserResHeight)
+            {
+                velocityY = 1;
+            }
+
+            if (tiles.Count < 10)
+                return;
 
             for (int i = 0; i < tiles.Count; i++)
             {

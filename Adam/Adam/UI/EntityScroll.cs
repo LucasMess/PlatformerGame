@@ -36,7 +36,7 @@ namespace Adam.UI
 
         protected override void CheckIfActive()
         {
-            if (InputHelper.IsKeyDown(Keys.Tab))
+            if (GameWorld.Instance.levelEditor.onInventory)
             {
                 isActive = true;
             }

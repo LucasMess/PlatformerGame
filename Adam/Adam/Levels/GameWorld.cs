@@ -315,6 +315,11 @@ namespace Adam
                     particles.Remove(p);
             }
 
+            while (particles.Count > 1000)
+            {
+                particles.Remove(particles.ElementAt<Particle>(0));
+            }
+
             if (camera != null)
                 UpdateVisibleIndexes();
         }

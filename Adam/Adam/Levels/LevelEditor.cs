@@ -17,11 +17,12 @@ namespace Adam.Levels
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
         EntityScroll entityScroll = new EntityScroll();
-        ActionBar actionBar = new ActionBar();
+        public ActionBar actionBar = new ActionBar();
         TileDescription tileDescription = new TileDescription();
         public Brush brush = new Brush();
         public bool onInventory;
         public bool onWallMode;
+        bool inventoryKeyPressed;
         float blackScreenOpacity;
         bool recentlyChanged;
 
@@ -35,10 +36,11 @@ namespace Adam.Levels
         SoundFx[] construction = new SoundFx[3];
         SoundFx destruction;
         SoundFx wallMode;
+        SoundFx close, open, select;
 
         public void Load()
         {
-
+            onInventory = false;
             tileScroll.Load();
             tileScroll.TileSelected += TileScroll_TileSelected;
 
@@ -52,18 +54,32 @@ namespace Adam.Levels
             destruction = new SoundFx("Sounds/Level Editor/destroy1");
 
             wallMode = new SoundFx("Sounds/Level Editor/changeMode");
+            close = new SoundFx("Sounds/Level Editor/open");
+            open = new SoundFx("Sounds/Level Editor/close");
+            select = new SoundFx("Sounds/Level Editor/select");
 
             editorRectangle = new Rectangle(GameWorld.Instance.worldData.LevelWidth * Main.Tilesize / 2, GameWorld.Instance.worldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
 
         private void EntityScroll_TileSelected(TileSelectedArgs e)
         {
-            selectedID = (byte)e.ID;
+            if(e.ID != selectedID)
+            {
+                select.Reset();
+                select.PlayNewInstanceOnce();
+                selectedID = (byte)e.ID;
+            }
+
         }
 
         private void TileScroll_TileSelected(TileSelectedArgs e)
         {
-            selectedID = (byte)e.ID;
+            if (e.ID != selectedID)
+            {
+                select.Reset();
+                select.PlayNewInstanceOnce();
+                selectedID = (byte)e.ID;
+            }
         }
 
         public void Update(GameTime gameTime, GameMode CurrentLevel)
@@ -115,7 +131,7 @@ namespace Adam.Levels
                 lastUsedWall = selectedID;
                 selectedID = lastUsedTile;
             }
-            
+
 
             tileScroll.Load();
         }
@@ -152,11 +168,28 @@ namespace Adam.Levels
 
         private void CheckIfOnInventory()
         {
-            if (InputHelper.IsKeyDown(Keys.Tab))
+            if (InputHelper.IsKeyDown(Keys.E))
             {
-                onInventory = true;
+                if (!inventoryKeyPressed)
+                {
+                    if (!onInventory)
+                    {
+                        open.PlayNewInstanceOnce();
+                        open.Reset();
+                    }
+                    else
+                    {
+                        close.PlayNewInstanceOnce();
+                        close.Reset();
+                    }
+                    onInventory = !onInventory;
+                    inventoryKeyPressed = true;
+                }
             }
-            else onInventory = false;
+            if (InputHelper.IsKeyUp(Keys.E))
+            {
+                inventoryKeyPressed = false;
+            }
         }
 
         private void CheckForCameraMovement()
@@ -216,8 +249,8 @@ namespace Adam.Levels
                     }
 
                     //Prevent building and destroying fast bug
-                    if (InputHelper.IsRightMousePressed() && InputHelper.IsLeftMousePressed())
-                        continue;
+                    //if (InputHelper.IsRightMousePressed() && InputHelper.IsLeftMousePressed())
+                    //    continue;
 
                     //Check input
                     Tile t = CurrentArray[index];
@@ -400,7 +433,7 @@ namespace Adam.Levels
         public void DrawUI(SpriteBatch spriteBatch)
         {
             if (!onInventory)
-            FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
+                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
 
 
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);
@@ -408,8 +441,8 @@ namespace Adam.Levels
             tileScroll.Draw(spriteBatch);
             entityScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
-            
-           
+
+
         }
 
         public Tile[] CurrentArray
