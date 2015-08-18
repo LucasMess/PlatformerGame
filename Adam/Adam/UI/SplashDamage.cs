@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Misc.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -78,9 +79,9 @@ namespace Adam.UI
         {
             if (isNegative)
             {
-                spriteBatch.DrawString(font, text, position, Color.OrangeRed * opacity, 0, origin, scale, SpriteEffects.None, 0);
+                FontHelper.DrawWithOutline(spriteBatch, font, damage.ToString(), position, 2, Color.Red* opacity, Color.Black * opacity);
             }
-            else spriteBatch.DrawString(font, "+" + text, position, Color.ForestGreen * opacity, 0, origin, scale, SpriteEffects.None, 0);
+            else FontHelper.DrawWithOutline(spriteBatch, font, "+" + damage, position, 2, Color.Green * opacity, Color.Black * opacity);
         }
     }
 }
