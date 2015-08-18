@@ -306,7 +306,7 @@ namespace Adam
             {
                 UpdateTimers();
                 return;
-            } 
+            }
 
             UpdateStats();
             CheckDead();
@@ -1339,6 +1339,12 @@ namespace Adam
             health += amount;
             if (health > maxHealth)
                 health = maxHealth;
+        }
+
+        public void DealDamage(Enemy enemy)
+        {
+            Jump();
+            enemy.TakeDamage(20);
         }
 
 

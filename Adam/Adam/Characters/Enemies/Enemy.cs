@@ -68,6 +68,8 @@ namespace Adam
 
         public virtual void Update(Player player, GameTime gameTime)
         {
+            if (isDead) return;
+
             this.player = player;
             this.gameTime = gameTime;
             this.gameWorld = GameWorld.Instance;
@@ -108,6 +110,16 @@ namespace Adam
             if (shouldIShowDominace == 1)
             {
                 BeMean();
+            }
+                    
+            //Check if youching player
+            if (damageBox.Intersects(player.attackBox))
+            {
+                player.DealDamage(this);
+            }
+            else if (collRectangle.Intersects(player.collRectangle))
+            {
+                player.TakeDamageAndKnockBack(GetTouchDamage());
             }
 
             //If 

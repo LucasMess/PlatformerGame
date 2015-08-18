@@ -353,6 +353,7 @@ namespace Adam
                         position = new Vector2(17, 12);
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
@@ -369,6 +370,7 @@ namespace Adam
                     }
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
@@ -385,6 +387,7 @@ namespace Adam
                     }
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
@@ -401,9 +404,9 @@ namespace Adam
                     }
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new God(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -417,6 +420,7 @@ namespace Adam
                     }
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
@@ -433,6 +437,7 @@ namespace Adam
                     }
                     else
                     {
+                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             isVoid = true;

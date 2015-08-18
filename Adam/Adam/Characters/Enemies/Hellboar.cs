@@ -28,6 +28,8 @@ namespace Adam.Characters.Enemies
         SoundFx fire;
         SoundFx breath;
         SoundFx charging;
+        SoundFx crash;
+        SoundFx tweet;
 
         enum AnimationState
         {
@@ -39,16 +41,19 @@ namespace Adam.Characters.Enemies
         public Hellboar(int x, int y)
         {
             health = 100;
-            collRectangle = new Rectangle(x, y, 50 * 2, 120);
-            drawRectangle = new Rectangle(x - 18, y, 68 * 2, 60 * 2);
+            collRectangle = new Rectangle(x, y, 50 * 2, 76);
+            drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
             CurrentEnemyType = EnemyType.Hellboar;
             animationData = new AnimationData(0, 4, 0, AnimationType.Loop);
             animationData.FrameCount = new Vector2(3, 0);
 
-            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen");
-            fire = new SoundFx("Sounds/Hellboar/fire");
+            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen",this);
+            fire = new SoundFx("Sounds/Hellboar/fire", this);
+            crash = new SoundFx("Sounds/Hellboar/crash",this);
+            breath = new SoundFx("Sounds/Hellboar/breath",this);
+            tweet = new SoundFx("Sounds/Hellboar/tweet",this);
 
             base.Initialize();
         }
@@ -70,8 +75,17 @@ namespace Adam.Characters.Enemies
 
             CheckForPlayer();
             CheckIfCharging();
+            CheckIfStunned();
             WalkRandomly();
             Animate();
+        }
+
+        private void CheckIfStunned()
+        {
+            if (isStunned)
+            {
+                tweet.PlayIfStopped();
+            }
         }
 
         private void CheckIfCharging()
@@ -86,8 +100,9 @@ namespace Adam.Characters.Enemies
                 chargingTimer += gameTime.ElapsedGameTime.TotalSeconds;
                 if (chargingTimer > 1)
                 {
-                    //play sound
                     countTilCharge++;
+                    breath.PlayNewInstanceOnce();
+                    breath.Reset();
                     chargingTimer = 0;
                 }
 
@@ -120,13 +135,14 @@ namespace Adam.Characters.Enemies
 
         private void CheckForPlayer()
         {
+            if (isCharging) return;
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
             {
                 isAngry = true;
                 playerSeen.PlayOnce();
                 fire.PlayIfStopped();
                 if (!isCharging)
-                isFacingRight = isPlayerToTheRight;
+                    isFacingRight = isPlayerToTheRight;
             }
             else
             {
@@ -134,6 +150,7 @@ namespace Adam.Characters.Enemies
                 playerSeen.Reset();
             }
         }
+
 
         private void WalkRandomly()
         {
@@ -182,6 +199,8 @@ namespace Adam.Characters.Enemies
             countTilCharge = 0;
             isAngry = false;
             isStunned = true;
+            crash.PlayOnce();
+            crash.Reset();
         }
 
         private void Animate()
@@ -248,7 +267,8 @@ namespace Adam.Characters.Enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             //DrawSurroundIndexes(spriteBatch);
-            //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Blue);
+            spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Blue * .5f);
+            spriteBatch.Draw(Main.DefaultTexture, drawRectangle, Color.Green * .5f);
 
             Color color = Color.White;
             //if (isAngry) color = Color.Blue; else color = Color.White;
@@ -278,7 +298,7 @@ namespace Adam.Characters.Enemies
         {
             if (isCharging)
             {
-                Kill();
+                Stun();
             }
             velocity.X = 0;
             CurrentAnimation = AnimationState.Idle;
@@ -289,7 +309,7 @@ namespace Adam.Characters.Enemies
             velocity.X = 0;
             if (isCharging)
             {
-                Kill();
+                Stun();
             }
             CurrentAnimation = AnimationState.Idle;
         }

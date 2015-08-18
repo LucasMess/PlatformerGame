@@ -37,7 +37,7 @@ namespace Adam.Interactables
 
             if (player.collRectangle.Intersects(drawRectangle) && elapsedTime > 500)
             {
-                pickUpSound.PlayOnce();
+                pickUpSound?.PlayOnce();
                 toDelete = true;
                 loopSound?.Stop();
             }
