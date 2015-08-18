@@ -59,6 +59,7 @@ namespace Adam
         {
             animatedTile = null;
             obstacle = null;
+            isVoid = false;
 
             //Air ID is 0, so it can emit sunlight.
             if (ID != 0)

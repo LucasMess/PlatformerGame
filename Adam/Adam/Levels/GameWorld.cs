@@ -395,6 +395,8 @@ namespace Adam
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
 
+            lightEngine.DrawGlows(spriteBatch);
+
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
@@ -421,7 +423,7 @@ namespace Adam
 
         public void DrawInFront(SpriteBatch spriteBatch)
         {
-            lightEngine.DrawGlows(spriteBatch);
+           
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)
