@@ -49,9 +49,10 @@ namespace Adam
 
         public override void Update(Player player, GameTime gameTime)
         {
+            DetectCollision();
             base.Update(player, gameTime);
             Animate(gameTime);
-            DetectCollision();
+
 
             if (!isInRange)
                 return;
@@ -66,6 +67,9 @@ namespace Adam
             //Vector2 newVelocity = new Vector2(maxVelocity.X * (float)(xVector / magnitude), maxVelocity.Y * (float)(yVector / magnitude));
 
             //velocity = newVelocity;
+
+            collRectangle.X += (int)velocity.X;
+            collRectangle.Y += (int)velocity.Y;
 
             int buffer = 5;
             if (collRectangle.Y < player.collRectangle.Y - buffer)
@@ -137,7 +141,7 @@ namespace Adam
             if (player.collRectangle.Intersects(drawRectangle) && !isDead && !player.isInvincible && !player.isInvulnerable && !player.isGhost)
             {
                 player.TakeDamageAndKnockBack(EnemyDB.Shade_TouchDamage);
-                this.Kill();
+                Kill();
             }
         }
 

@@ -75,7 +75,7 @@ namespace Adam
                     startingPosition = new Vector2(12, 10 + (2 * GameWorld.RandGen.Next(0, 2)));
                     size.Y = 2;
                     drawRectangle.Height = Main.Tilesize * 2;
-                    drawRectangle.Y -= Main.Tilesize;
+                    drawRectangle.Y = originalPosition.Y - Main.Tilesize;
                     sunlightPassesThrough = true;
                     break;
                 case 19: //Chest

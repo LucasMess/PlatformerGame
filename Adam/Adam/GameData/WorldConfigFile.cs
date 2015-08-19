@@ -116,6 +116,8 @@ namespace Adam.GameData
             gw.worldData.HasClouds = HasClouds;
             gw.worldData.IsRaining = IsRaining;
             gw.worldData.IsSnowing = IsSnowing;
+
+            gw.worldData.song = ContentHelper.LoadSong("Music/Adam" + SoundtrackID);
         }
     }
 

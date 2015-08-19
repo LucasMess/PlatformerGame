@@ -82,7 +82,7 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            hoverText = "Save level [Ctrl + S]";
+            hoverText = "Save level [F2]";
         }
     }
 
@@ -96,7 +96,7 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            hoverText = "Open level [Ctrl + O]";
+            hoverText = "Open level [F1]";
         }
     }
 
@@ -110,7 +110,7 @@ namespace Adam.UI.Elements
             collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            hoverText = "New level [Ctrl + N]";
+            hoverText = "New level";
         }
     }
 

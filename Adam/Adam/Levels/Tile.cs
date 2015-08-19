@@ -819,15 +819,15 @@ namespace Adam
                     int rand = GameWorld.RandGen.Next(0, 10);
                     if (rand == 0) //flower
                     {
-                        array[indexAbove] = new SpecialTile(17, array[indexAbove].drawRectangle);
+                        array[indexAbove].ID = 17;
                     }
                     else if (rand == 1 || rand == 2) //tall grass
                     {
-                        array[indexAbove] = new SpecialTile(9, array[indexAbove].drawRectangle);
+                        array[indexAbove].ID = 9;
                     }
                     else //short grass
                     {
-                        array[indexAbove] = new SpecialTile(7, array[indexAbove].drawRectangle);
+                        array[indexAbove].ID = 7;
                     }
 
                     array[indexAbove].DefineTexture();

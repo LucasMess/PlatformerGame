@@ -1354,8 +1354,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\Adventure Awaits %28Adam 1%29.mp3">
-      <Name>Adventure Awaits %28Adam 1%29</Name>
+    <Compile Include="Music\Adam1.mp3">
+      <Name>Adam1</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>

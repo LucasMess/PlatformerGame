@@ -350,13 +350,14 @@ namespace Adam
                     if (gameWorld.isOnDebug)
                         break;
 
-                    player.Update(gameTime);
-                    overlay.Update(gameTime, player, gameWorld);
+                    
 
                     //if (gameWorld.SimulationPaused)
                     //    break;
 
                     gameWorld.Update(gameTime, CurrentGameMode, camera);
+                    player.Update(gameTime);
+                    overlay.Update(gameTime, player, gameWorld);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
 
