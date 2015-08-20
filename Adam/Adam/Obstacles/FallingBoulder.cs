@@ -9,79 +9,49 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    public class FallingBoulder : Obstacle, ICollidable
+    public class FallingBoulder : Obstacle, ICollidable, INewtonian
     {
         bool hasFallen;
-        Vector2 velocity;
         Vector2 original;
 
         SoundEffect fallingSound;
         SoundEffectInstance fallingSoundInstance;
 
-        /// <summary>
-        /// This will add a boulder that has spikes that falls from its original heights until it reaches the floor. The boulder will then return to its
-        /// starting position slowly.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        public float GravityStrength { get; set; }
+
+        public bool IsFlying { get; set; }
+
+        public bool IsJumping
+        {
+            get; set;
+        }
+
+        public bool IsAboveTile
+        {
+            get; set;
+        }
+
         public FallingBoulder(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Tiles/Obstacles/mesa_boulder");
+            GravityStrength = Main.Gravity ;
+            texture = GameWorld.SpriteSheet;
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
             drawRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
             collRectangle = drawRectangle;
+            sourceRectangle = new Rectangle(12 * 16, 26 * 16, 32, 32);
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
             original = new Vector2(drawRectangle.X, drawRectangle.Y);
-
-            // CollidedWithTerrainBelow += FallingBoulderObstacle_CollidedWithTerrainBelow;
-
-        }
-
-        void FallingBoulderObstacle_CollidedWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-            drawRectangle.Y = e.Tile.drawRectangle.Y - drawRectangle.Height - 1;
-            hasFallen = true;
-            fallingSoundInstance.Play();
-
-            float xDist = player.collRectangle.Center.X - drawRectangle.Center.X;
-            float yDist = player.collRectangle.Center.Y - drawRectangle.Center.Y;
-            float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
-
-            if (distanceTo > 1000)
-                fallingSoundInstance.Volume = 0;
-            else fallingSoundInstance.Volume = .5f - (distanceTo / 1000) / 2;
         }
 
         public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
 
-            drawRectangle.X += (int)velocity.X;
-            drawRectangle.Y += (int)velocity.Y;
+            drawRectangle = collRectangle;
 
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
-
-            collRectangle = drawRectangle;
-
-            if (!hasFallen)
-            {
-                velocity.Y += .3f;
-            }
-            else
-            {
-                velocity.Y = -1f;
-                if (drawRectangle.Y <= original.Y)
-                {
-                    hasFallen = false;
-                    drawRectangle.Y = (int)original.Y + 1;
-                    velocity.Y = 0;
-                }
-            }
 
             if (IsTouching)
             {
@@ -92,30 +62,22 @@ namespace Adam.Obstacles
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
 
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }
 
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
+            velocity.Y = 0;
+            GravityStrength = Main.Gravity;
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            velocity.Y = 0;
-            drawRectangle.Y = e.Tile.drawRectangle.Y - drawRectangle.Height - 1;
-            hasFallen = true;
-            fallingSoundInstance.Play();
-
-            float xDist = player.collRectangle.Center.X - drawRectangle.Center.X;
-            float yDist = player.collRectangle.Center.Y - drawRectangle.Center.Y;
-            float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
-
-            if (distanceTo > 1000)
-                fallingSoundInstance.Volume = 0;
-            else fallingSoundInstance.Volume = .5f - (distanceTo / 1000) / 2;
+            velocity.Y =-0;
+            GravityStrength = -Main.Gravity;
         }
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)

@@ -83,7 +83,7 @@ namespace Adam
             play.MouseClicked += play_MouseClicked;
             buttons.Add(play);
 
-            quit = new Button(second, "Quit");
+            quit = new Button(fifth, "Quit");
             quit.MouseClicked += quit_MouseClicked;
             buttons.Add(quit);
 
@@ -91,23 +91,23 @@ namespace Adam
             options.MouseClicked += options_MouseClicked;
             buttons.Add(options);
 
-            multiplayer = new Button(fourth, "Multiplayer");
-            multiplayer.MouseClicked += multiplayer_MouseClicked;
-            buttons.Add(multiplayer);
+            //multiplayer = new Button(fourth, "Multiplayer");
+            //multiplayer.MouseClicked += multiplayer_MouseClicked;
+            //buttons.Add(multiplayer);
 
-            levelEditor = new Button(fifth, "God Mode");
+            levelEditor = new Button(second, "God Mode");
             levelEditor.MouseClicked += LevelEditor_MouseClicked;
             buttons.Add(levelEditor);
 
-            smoothPixels = new Button(first, "Smooth Pixels: ");
-            smoothPixels.MouseClicked += smoothPixels_MouseClicked;
-            buttons.Add(smoothPixels);
+            //smoothPixels = new Button(first, "Smooth Pixels: ");
+            //smoothPixels.MouseClicked += smoothPixels_MouseClicked;
+            //buttons.Add(smoothPixels);
 
-            lighting = new Button(second, "Lighting: ");
-            lighting.MouseClicked += lighting_MouseClicked;
-            buttons.Add(lighting);
+            //lighting = new Button(second, "Lighting: ");
+            //lighting.MouseClicked += lighting_MouseClicked;
+            //buttons.Add(lighting);
 
-            fullscreen = new Button(third, "Fullscreen: ");
+            fullscreen = new Button(first, "Fullscreen: ");
             fullscreen.MouseClicked += fullscreen_MouseClicked;
             fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
             buttons.Add(fullscreen);
@@ -316,7 +316,7 @@ namespace Adam
                     play.Update();
                     quit.Update();
                     options.Update();
-                    multiplayer.Update();
+                    //multiplayer.Update();
                     levelEditor.Update();
                     break;
                 case MenuState.LevelSelector:
@@ -330,12 +330,12 @@ namespace Adam
                     backButton.Update();
                     break;
                 case MenuState.Options:
-                    smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
-                    lighting.Text = "Lighting: " + lighting.IsActive;
+                    //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
+                    //lighting.Text = "Lighting: " + lighting.IsActive;
                     fullscreen.Text = "Fullscreen: " + fullscreen.IsActive;
 
-                    smoothPixels.Update();
-                    lighting.Update();
+                    //smoothPixels.Update();
+                    //lighting.Update();
                     fullscreen.Update();
 
                     backButton.Update();
@@ -420,7 +420,7 @@ namespace Adam
                     play.Draw(spriteBatch);
                     quit.Draw(spriteBatch);
                     options.Draw(spriteBatch);
-                    multiplayer.Draw(spriteBatch);
+                   // multiplayer.Draw(spriteBatch);
                     levelEditor.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
@@ -430,8 +430,8 @@ namespace Adam
                     backButton.Draw(spriteBatch);
                     break;
                 case MenuState.Options:
-                    smoothPixels.Draw(spriteBatch);
-                    lighting.Draw(spriteBatch);
+                    //smoothPixels.Draw(spriteBatch);
+                    //lighting.Draw(spriteBatch);
                     fullscreen.Draw(spriteBatch);
                     backButton.Draw(spriteBatch);
                     break;

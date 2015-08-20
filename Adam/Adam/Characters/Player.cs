@@ -1391,6 +1391,11 @@ namespace Adam
                 }
                 return gravity;
             }
+
+            set
+            {
+                GravityStrength = value;
+            }
         }
 
 

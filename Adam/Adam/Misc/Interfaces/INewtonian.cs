@@ -13,7 +13,7 @@ namespace Adam.Misc.Interfaces
         /// <summary>
         /// The value of gravity. Set it to 0 for default.
         /// </summary>
-        float GravityStrength { get; }
+        float GravityStrength { get; set; }
         bool IsFlying { get; set; }
         bool IsJumping { get; set; }
         bool IsAboveTile { get; set; }

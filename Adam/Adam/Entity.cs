@@ -390,19 +390,34 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
+            int indexAboveOrBelowEntity;
 
-            int indexBelowEntity;
-            if (isFacingRight)
+            if (gravity > 0)
             {
-                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
+                if (isFacingRight)
+                {
+                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
+                }
+                else
+                {
+                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.LevelWidth;
+                }
+
             }
             else
             {
-                indexBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.LevelWidth;
+                if (isFacingRight)
+                {
+                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Top - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
+                }
+                else
+                {
+                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Top - 1)) + gameWorld.worldData.LevelWidth;
+                }
             }
 
-            if (indexBelowEntity >= 0 && indexBelowEntity < gameWorld.tileArray.Length)
-                if (!gameWorld.tileArray[indexBelowEntity].isSolid)
+            if (indexAboveOrBelowEntity >= 0 && indexAboveOrBelowEntity < gameWorld.tileArray.Length)
+                if (!gameWorld.tileArray[indexAboveOrBelowEntity].isSolid)
                 {
                     newt.IsAboveTile = false;
                 }

@@ -48,7 +48,7 @@ namespace Adam
         public Settings()
         {
             DesiredSamplerState = SamplerState.PointClamp;
-            DesiredLight = false;
+            DesiredLight = true;
             IsFullscreen = false;
         }
 

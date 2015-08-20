@@ -64,13 +64,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\AddGold.wav">
-      <Name>AddGold</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Objects\Diamond Gem Cut.png">
       <Name>Diamond Gem Cut</Name>
       <Importer>TextureImporter</Importer>
@@ -378,18 +371,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\level4_main.png">
-      <Name>level4_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\level4_wall.png">
-      <Name>level4_wall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Backgrounds\Loading Screen\loading_background.png">
       <Name>loading_background</Name>
       <Importer>TextureImporter</Importer>
@@ -533,18 +514,6 @@
       <Name>key_get</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\stepehen_main.png">
-      <Name>stepehen_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\stepehen_wall.png">
-      <Name>stepehen_wall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -716,20 +685,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\stepehen_desert_main.png">
-      <Name>stepehen_desert_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\stepehen_desert_wall.png">
-      <Name>stepehen_desert_wall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Objects\tech_items.png">
       <Name>tech_items</Name>
       <Importer>TextureImporter</Importer>
@@ -851,18 +806,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\1-1_main.png">
-      <Name>1-1_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\1-1_wall.png">
-      <Name>1-1_wall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\hurryUp.wav">
       <Name>hurryUp</Name>
       <Importer>WavImporter</Importer>
@@ -921,18 +864,6 @@
   <ItemGroup>
     <Compile Include="Effects\smoke.png">
       <Name>smoke</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\2-1_main.png">
-      <Name>2-1_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\2-1_wall.png">
-      <Name>2-1_wall</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1031,18 +962,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\debug_main.png">
-      <Name>debug_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\debug_wall.png">
-      <Name>debug_wall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tiles\Obstacles\goldbrick_platform_wide.png">
       <Name>goldbrick_platform_wide</Name>
       <Importer>TextureImporter</Importer>
@@ -1121,20 +1040,6 @@
     </Compile>
     <Compile Include="Tiles\Obstacles\sand_boulder_.png">
       <Name>sand_boulder_</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\1-2_main.png">
-      <Name>1-2_main</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\1-2_wall.png">
-      <Name>1-2_wall</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -1401,13 +1306,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\200x200.png">
-      <Name>200x200</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\Level Editor\construct1.wav">
       <Name>construct1</Name>
       <Importer>WavImporter</Importer>
@@ -1558,19 +1456,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lost\ghost.wav">
+    <Compile Include="Sounds\Lost\ghost.wav">
       <Name>ghost</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="Lost\ghost2.wav">
+    <Compile Include="Sounds\Lost\ghost2.wav">
       <Name>ghost2</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lost\scream.wav">
+    <Compile Include="Sounds\Lost\scream.wav">
       <Name>scream</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>

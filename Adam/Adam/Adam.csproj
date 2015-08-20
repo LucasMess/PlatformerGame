@@ -147,6 +147,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Enemies\Bat.cs" />
     <Compile Include="Characters\Enemies\Frog.cs" />
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />

@@ -322,6 +322,10 @@ namespace Adam.Characters.Enemies
         public float GravityStrength
         {
             get { return Main.Gravity; }
+            set
+            {
+                GravityStrength = value;
+            }
         }
 
 

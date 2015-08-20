@@ -30,9 +30,9 @@ namespace Adam
             maxVelocity = new Vector2(1, 1);
 
             texture = Content.Load<Texture2D>("Enemies/lost");
-            ghost = new SoundFx("Lost/ghost");
-            ghost2 = new SoundFx("Lost/ghost2");
-            deathSound = ContentHelper.LoadSound("Lost/scream");
+            ghost = new SoundFx("Sounds/Lost/ghost");
+            ghost2 = new SoundFx("Sounds/Lost/ghost2");
+            deathSound = ContentHelper.LoadSound("Sounds/Lost/scream");
             deathSoundInstance = deathSound.CreateInstance();
 
             collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);

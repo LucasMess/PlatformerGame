@@ -97,7 +97,7 @@ namespace Adam.Levels
                 //    }
                 //    break;
                 case GameMode.Edit:
-                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Tab))
+                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
                     {
                         Main.ObjectiveTracker.CompleteObjective(0);
                     }
@@ -112,7 +112,7 @@ namespace Adam.Levels
                         if (!obj0)
                         {
                             Objective obj = new Objective();
-                            obj.Create("Press 'TAB' to open inventory.", 0);
+                            obj.Create("Press 'E' to open inventory.", 0);
                             Main.ObjectiveTracker.AddObjective(obj);
                             obj0 = true;
                         }

@@ -23,6 +23,10 @@ namespace Adam
             {
                 return Main.Gravity;
             }
+            set
+            {
+                GravityStrength = value;
+            }
         }
 
         public bool IsFlying { get; set; }

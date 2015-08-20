@@ -91,6 +91,11 @@ namespace Adam.UI.Information
             }
         }
 
+        public void Clear()
+        {
+            objectives = new List<Objective>();
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Objective ob in objectives)

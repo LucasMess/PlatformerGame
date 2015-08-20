@@ -105,7 +105,7 @@ namespace Adam.UI
             {
                 byte[] IDs = new byte[]
                 {
-               200,201,202,203,204,205
+               200,201,202,203,204,205,206
                 };
                 return IDs;
             }

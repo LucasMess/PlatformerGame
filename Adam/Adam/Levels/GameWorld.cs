@@ -108,6 +108,7 @@ namespace Adam
             this.Content = Main.Content;
 
             this.CurrentGameMode = CurrentGameMode;
+            Main.ObjectiveTracker.Clear();
             cloudList = new List<Cloud>();
             gemList = new List<Gem>();
             chestList = new List<Chest>();

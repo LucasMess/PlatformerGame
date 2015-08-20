@@ -446,6 +446,23 @@ namespace Adam
                         }
                     }
                     break;
+                case 206://Falling Boulder
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(12, 26);
+                    }
+                    else
+                    {
+                        isVoid = true;
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new FallingBoulder(drawRectangle.X,drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
             }
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
@@ -1009,6 +1026,7 @@ namespace Adam
             {203,"God" },
             {204,"Lost" },
             {205,"Hellboar" },
+            {206,"Falling Boulder (Desert)" }
 
         };
 
