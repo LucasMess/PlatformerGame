@@ -13,10 +13,6 @@ namespace Adam.Lights
     /// </summary>
     public class DynamicPointLight : Light
     {
-        public DynamicPointLight(Entity source, Color color)
-        {
-            new DynamicPointLight(source, null, false, color);
-        }
 
         public DynamicPointLight(Entity source, float? scale, bool isShaky, Color? color)
         {
@@ -29,7 +25,9 @@ namespace Adam.Lights
             this.isShaky = isShaky;
 
             SetPosition(source.collRectangle);
-     
+            glow = new Glow(this);
+            this.source = source;
+
         }
 
         public override void Update(Entity source)

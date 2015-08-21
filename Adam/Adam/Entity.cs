@@ -450,5 +450,10 @@ namespace Adam
             velocity.X = 0;
         }
 
+        public Entity GetUpdated()
+        {
+            return this;
+        }
+
     }
 }

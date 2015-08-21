@@ -11,6 +11,7 @@ namespace Adam
 {
     public class Light
     {
+        public Entity source;
         public Rectangle drawRectangle;
         protected Rectangle sourceRectangle;
         protected Rectangle original;
@@ -105,7 +106,7 @@ namespace Adam
 
         public virtual void Update(Entity source)
         {
-
+            glow?.Update(this);
         }
 
         protected void SetPosition(Rectangle parentRectangle)

@@ -70,7 +70,7 @@ namespace Adam
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960;
         public const int DefaultResHeight = 540;
-        public const string Version = "Version 0.6.0.2 Beta";
+        public const string Version = "Version 0.6.1.0 Beta";
         public const string Producers = "Duck Knight Duel Games";
         public static int UserResWidth;
         public static int UserResHeight;
@@ -440,7 +440,9 @@ namespace Adam
                     gameWorld.DrawInBack(gameSB);
                     gameWorld.Draw(gameSB);
                     player.Draw(gameSB);
-                    gameWorld.DrawInFront(gameSB);
+                    gameSB.End();
+                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawGlows(gameSB);
                     gameSB.End();
                     break;
             }

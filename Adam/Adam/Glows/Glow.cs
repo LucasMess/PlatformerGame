@@ -20,26 +20,30 @@ namespace Adam
         {
             texture = GameWorld.SpriteSheet;
             drawRectangle = light.drawRectangle;
-            drawRectangle.X += 96;
-            drawRectangle.Y += 96;
-            drawRectangle.Width = 64;
-            drawRectangle.Height = 64;
-            sourceRectangle = new Rectangle(20* 16, 15 * 16, 64, 64);
+            int width = light.drawRectangle.Width - 64;
+            int height = light.drawRectangle.Height - 64;
+            drawRectangle.X += (light.drawRectangle.Width - width) / 2;
+            drawRectangle.Y += (light.drawRectangle.Height - height) / 2;
+            drawRectangle.Width = width;
+            drawRectangle.Height = height;
+            sourceRectangle = new Rectangle(20 * 16, 15 * 16, 64, 64);
             Color = light.color;
         }
 
         public void Update(Light light)
         {
             drawRectangle = light.drawRectangle;
-            drawRectangle.X += 96;
-            drawRectangle.Y += 96;
-            drawRectangle.Width = 64;
-            drawRectangle.Height = 64;
+            int width = light.drawRectangle.Width - 64;
+            int height = light.drawRectangle.Height - 64;
+            drawRectangle.X += (light.drawRectangle.Width - width) / 2;
+            drawRectangle.Y += (light.drawRectangle.Height - height) / 2;
+            drawRectangle.Width = width;
+            drawRectangle.Height = height;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color );
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * .3f);
         }
     }
 }

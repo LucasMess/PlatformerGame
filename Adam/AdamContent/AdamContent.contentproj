@@ -1335,13 +1335,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Level Editor\character_spritemap.png">
-      <Name>character_spritemap</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\Player\climbing1.wav">
       <Name>climbing1</Name>
       <Importer>WavImporter</Importer>
@@ -1354,7 +1347,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Level Editor\ui_spritemap.png">
+    <Compile Include="Tiles\ui_spritemap.png">
       <Name>ui_spritemap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -1368,7 +1361,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\Spritemaps\spritemap_13.png">
+    <Compile Include="Tiles\spritemap_13.png">
       <Name>spritemap_13</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -1544,6 +1537,13 @@
       <Name>select</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\particles_spritemap.png">
+      <Name>particles_spritemap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

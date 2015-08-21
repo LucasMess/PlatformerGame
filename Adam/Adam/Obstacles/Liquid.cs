@@ -8,16 +8,13 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    public class Liquid : Tile
+    public class Liquid : Entity
     {
         double particleTimer;
         double restartTime;
         bool isOnTop;
-        public Rectangle collRectangle;
-
-        GameWorld gameWorld;
         Player player;
-        
+
 
         public enum Type
         {
@@ -28,12 +25,14 @@ namespace Adam.Obstacles
         public Liquid(int x, int y, Type type)
         {
             collRectangle = new Rectangle(x + 8, y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
-            particleTimer = GameWorld.RandGen.Next(0, 8);
-            restartTime = GameWorld.RandGen.Next(5, 8);
+            particleTimer = GameWorld.RandGen.Next(0, 8) * GameWorld.RandGen.NextDouble();
+            restartTime = GameWorld.RandGen.Next(5, 8) * GameWorld.RandGen.NextDouble();
+            if (restartTime < 1)
+                restartTime = 1;
             CurrentType = type;
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             this.gameWorld = GameWorld.Instance;
             this.player = gameWorld.player;
@@ -43,30 +42,33 @@ namespace Adam.Obstacles
                 player.KillAndRespawn();
             }
 
-            if (!isOnTop)
-                return;
+            //if (!isOnTop)
+            //    return;
 
             if (CurrentType == Type.Lava)
             {
-                particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (particleTimer > restartTime)
+                if (GameWorld.Instance.tileArray[GetTileIndex() - GameWorld.Instance.worldData.LevelWidth].ID == 0)
                 {
-                    Particle par = new Particle();
-                    par.CreateLavaParticle(this, gameWorld);
-                    gameWorld.particles.Add(par);
-                    particleTimer = 0;
+                    particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                    if (particleTimer > restartTime)
+                    {
+                        Particle par = new Particle();
+                        par.CreateLavaParticle(this, gameWorld);
+                        gameWorld.particles.Add(par);
+                        particleTimer = 0;
+                    }
                 }
             }
         }
 
         public void CheckOnTop(Tile[] array, GameWorld gameWorld)
         {
-            this.gameWorld = gameWorld;
-            int indexAbove = TileIndex - gameWorld.worldData.LevelWidth;
-            if (array[indexAbove].ID == 0)
-            {
-                this.isOnTop = true;
-            }
+            //    this.gameWorld = gameWorld;
+            //    int indexAbove = TileIndex - gameWorld.worldData.LevelWidth;
+            //    if (array[indexAbove].ID == 0)
+            //    {
+            //        this.isOnTop = true;
+            //    }
         }
     }
 }

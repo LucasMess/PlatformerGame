@@ -31,7 +31,7 @@ namespace Adam
         bool dead;
         float rotation, rotationSpeed, rotationDelta;
         Color color = Color.White;
-        Light light;
+        public Light light;
         Player player;
 
         public enum ParticleType
@@ -276,12 +276,14 @@ namespace Adam
         {
             CurrentParticle = ParticleType.Lava;
             //texture = ContentHelper.LoadTexture("Effects/lava");
-            texture = Main.DefaultTexture;
-            drawRectangle = new Rectangle(lava.collRectangle.Center.X, lava.collRectangle.Y + 16, 16, 16);
+            texture = GameWorld.Particle_SpriteSheet;
+            drawRectangle = new Rectangle(lava.collRectangle.Center.X - 8, lava.collRectangle.Center.Y - 8, 8, 8);
+            sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.Y = -10f;
-            velocity.X = GameWorld.RandGen.Next(-2, 3);
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
-            opacity = 10f;
+            opacity = 1f;
+            light = new Lights.DynamicPointLight(this,1,true, Color.Orange);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
             this.gameWorld = map;
         }
 

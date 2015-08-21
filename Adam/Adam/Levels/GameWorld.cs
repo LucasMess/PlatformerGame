@@ -67,6 +67,7 @@ namespace Adam
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         public static Texture2D UI_SpriteSheet;
+        public static Texture2D Particle_SpriteSheet;
         public LightEngine lightEngine;
         public Main game1;
         public Camera camera;
@@ -95,8 +96,10 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/Spritemaps/spritemap_13");
-            UI_SpriteSheet = ContentHelper.LoadTexture("Level Editor/ui_spritemap");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_13");
+            UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
+            Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
+
             lightEngine = new LightEngine();
             worldData = new WorldData();
         }
@@ -306,14 +309,20 @@ namespace Adam
             {
                 Entity entity = entities[i];
                 if (entity.toDelete)
-                    entities.Remove(entity);
+                {
+                    entities.Remove(entity);                   
+                }
+
             }
 
             for (int i = particles.Count - 1; i >= 0; i--)
             {
                 Particle p = particles[i];
                 if (p.ToDelete())
+                {
+                    lightEngine.RemoveDynamicLight(p.light);
                     particles.Remove(p);
+                }
             }
 
             while (particles.Count > 1000)
@@ -401,7 +410,7 @@ namespace Adam
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
 
-            lightEngine.DrawGlows(spriteBatch);
+
 
         }
 
@@ -427,9 +436,9 @@ namespace Adam
             }
         }
 
-        public void DrawInFront(SpriteBatch spriteBatch)
+        public void DrawGlows(SpriteBatch spriteBatch)
         {
-           
+            lightEngine.DrawGlows(spriteBatch);
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)

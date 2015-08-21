@@ -118,11 +118,20 @@ namespace Adam.Lights
                     lights[index].Update();
                 }
             }
+
+            foreach (Light l in dynamicLights)
+            {
+                l.Update(l.source.GetUpdated());
+            }
         }
 
-        public void AddLuminousEntity()
+        public void AddDynamicLight(Light light)
         {
-
+            dynamicLights.Add(light);
+        }
+        public void RemoveDynamicLight(Light light)
+        {
+            dynamicLights.Remove(light);
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
@@ -133,6 +142,11 @@ namespace Adam.Lights
                 {
                     lights[index].Draw(spriteBatch);
                 }
+            }
+
+            foreach (Light l in dynamicLights)
+            {
+                l.Draw(spriteBatch);
             }
         }
 
@@ -145,6 +159,11 @@ namespace Adam.Lights
                     lights[index].DrawGlow(spriteBatch);
                 }
             }
+            foreach (Light l in dynamicLights)
+            {
+                l.DrawGlow(spriteBatch);
+            }
+
         }
     }
 }
