@@ -43,6 +43,8 @@ namespace Adam
             drawRectangle = collRectangle;
             sourceRectangle = GetSourceRectangle();
             velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
 
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
         }
@@ -105,6 +107,26 @@ namespace Adam
                     break;
             }
             return source;
+        }
+
+        public Color GetGemColor()
+        {
+            switch (gemID)
+            {
+                case 0:
+                    return Color.Brown;
+                case 1:
+                    return Color.Gold;
+                case 2:
+                    return Color.Green;
+                case 3:
+                    return Color.Blue;
+                case 4:
+                    return Color.Red;
+                case 5:
+                    return Color.Cyan;
+            }
+            return Color.White;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

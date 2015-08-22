@@ -310,6 +310,10 @@ namespace Adam
                 Entity entity = entities[i];
                 if (entity.toDelete)
                 {
+                    if (entity.light != null)
+                    {
+                        lightEngine.RemoveDynamicLight(entity.light);
+                    }
                     entities.Remove(entity);                   
                 }
 

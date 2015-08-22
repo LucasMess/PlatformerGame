@@ -34,6 +34,7 @@ namespace Adam
         public Vector2 velocity;
         public bool isFacingRight;
         public bool isDead;
+        public Light light;
 
         public Rectangle yRect, xRect;
 
