@@ -282,7 +282,7 @@ namespace Adam
             velocity.Y = -10f;
             position = new Vector2(drawRectangle.X, drawRectangle.Y);
             opacity = 1f;
-            light = new Lights.DynamicPointLight(this,1,true, Color.Orange);
+            light = new Lights.DynamicPointLight(this,1,true, Color.Orange, .3f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
             this.gameWorld = map;
         }
@@ -598,6 +598,8 @@ namespace Adam
             drawRectangle.X = (int)position.X;
             drawRectangle.Y = (int)position.Y;
 
+            collRectangle = drawRectangle;
+
             velocity.X = velocity.X * 0.99f;
             velocity.Y = velocity.Y * 0.99f;
 
@@ -717,6 +719,30 @@ namespace Adam
             DefaultBehavior();
 
             velocity.Y += .3f;
+        }
+    }
+
+    public class TrailParticle : Particle
+    {
+        public TrailParticle(Entity source, Color color)
+        {
+            texture = GameWorld.Particle_SpriteSheet;
+            drawRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, 8, 8);
+            collRectangle = drawRectangle;
+            sourceRectangle = new Rectangle(8, 0, 8, 8);
+            int buffer = 1;
+            velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer,(int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
+            velocity.Y = GameWorld.RandGen.Next((int)-source.velocity.Y - buffer, (int)-source.velocity.Y + buffer + 1);
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            opacity = .5f;
+
+            light = new Lights.DynamicPointLight(this, .5f, false, color, 1);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
         }
     }
 

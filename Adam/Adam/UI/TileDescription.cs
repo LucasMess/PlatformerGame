@@ -138,7 +138,10 @@ namespace Adam.UI
             {203,"God" },
             {204,"Lost" },
             {205,"Hellboar" },
-            { 206,"Falling Boulder (Desert)" }
+            {206,"Falling Boulder (Desert)" },
+            {207,"Bat" },
+            {208, "Duck" },
+            {209,"Flying Wheel" },
         };
     }
 }

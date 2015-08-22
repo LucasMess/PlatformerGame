@@ -16,6 +16,7 @@ namespace Adam
         protected Rectangle sourceRectangle;
         protected Rectangle original;
         public Texture2D texture;
+        public float glowIntensity;
         public int pos;
         public int index;
         int tileSize;

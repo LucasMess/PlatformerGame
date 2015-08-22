@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Adam;
 using Microsoft.Xna.Framework.Input;
 using Adam.Lights;
+using Adam.Misc.Interfaces;
 
 namespace Adam
 {
@@ -49,7 +50,7 @@ namespace Adam
 
         public virtual void Update(Player player, GameTime gameTime)
         {
-
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -64,6 +65,9 @@ namespace Adam
                     if (light != null)
                         light.DrawGlow(spriteBatch);
                     break;
+                default:
+                    base.Draw(spriteBatch);
+                    break;
             }
         }
 
@@ -77,6 +81,13 @@ namespace Adam
                     break;
             }
 
+        }
+
+        protected void Destroy()
+        {
+            if (light != null)
+                GameWorld.Instance.lightEngine.RemoveDynamicLight(light);
+            GameWorld.Instance.entities.Remove(this);
         }
     }
 
@@ -168,15 +179,57 @@ namespace Adam
     //Only use this with enemies
     public class LinearProjectile : Projectile
     {
-
         public LinearProjectile()
         {
 
         }
+    }
 
-        public override void Update()
+    public class FlyingWheelProjectile : LinearProjectile, ICollidable
+    {
+        public FlyingWheelProjectile(int x, int y, int xVel, int yVel)
+        {
+            texture = Main.DefaultTexture;
+            collRectangle = new Rectangle(x, y, 16, 16);
+            drawRectangle = collRectangle;
+            velocity = new Vector2(xVel, yVel);
+            light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+
+        }
+
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
 
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+            Destroy();
+        }
+
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+
+        }
+
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+
+        }
+
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+
+        }
+
+        public override void Update(Player player, GameTime gameTime)
+        {
+            drawRectangle = collRectangle;
+            GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
+            GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
+
+            base.Update(player, gameTime);
         }
     }
 

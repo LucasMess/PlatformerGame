@@ -280,6 +280,7 @@ namespace Adam
                                     collRectangle.Y--;
                                 }
                                 ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
                             }
                             else if (velocity.Y < 0)
                             {
@@ -288,6 +289,7 @@ namespace Adam
                                     collRectangle.Y++;
                                 }
                                 ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
                             }
                         }
                     }
@@ -313,6 +315,7 @@ namespace Adam
                                     collRectangle.X--;
                                 }
                                 ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
                             }
                             else if (velocity.X < 0)
                             {
@@ -322,6 +325,7 @@ namespace Adam
                                     UpdateXYRects();
                                 }
                                 ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
+                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
                             }
 
                         }

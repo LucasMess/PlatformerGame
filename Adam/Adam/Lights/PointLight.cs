@@ -14,7 +14,7 @@ namespace Adam.Lights
     public class DynamicPointLight : Light
     {
 
-        public DynamicPointLight(Entity source, float? scale, bool isShaky, Color? color)
+        public DynamicPointLight(Entity source, float? scale, bool isShaky, Color? color, float glowIntensity)
         {
             if (scale.HasValue)
                 size = (int)(DefaultSize * scale);
@@ -22,6 +22,7 @@ namespace Adam.Lights
             if (color.HasValue)
                 this.color = color.Value;
 
+            this.glowIntensity = glowIntensity;
             this.isShaky = isShaky;
 
             SetPosition(source.collRectangle);
@@ -45,13 +46,7 @@ namespace Adam.Lights
     /// </summary>
     public class FixedPointLight : Light
     {
-        public FixedPointLight(Rectangle tileRectangle)
-        {
-            new FixedPointLight(tileRectangle, false, Color.White, null);
-        }
-
-
-        public FixedPointLight(Rectangle tileRectangle, bool isShaky, Color color, float? scale)
+        public FixedPointLight(Rectangle tileRectangle, bool isShaky, Color color, float? scale, float glowIntensity)
         {
             this.isShaky = isShaky;
             this.color = color;
@@ -60,6 +55,7 @@ namespace Adam.Lights
                 size = (int)(DefaultSize * scale);
 
             SetPosition(tileRectangle);
+            this.glowIntensity = glowIntensity;
             glow = new Glow(this);
 
             lightHere = true;

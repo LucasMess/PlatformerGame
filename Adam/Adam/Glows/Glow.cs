@@ -15,6 +15,7 @@ namespace Adam
         Texture2D texture;
         Rectangle drawRectangle;
         Rectangle sourceRectangle;
+        Light source;
 
         public Glow(Light light)
         {
@@ -28,10 +29,12 @@ namespace Adam
             drawRectangle.Height = height;
             sourceRectangle = new Rectangle(20 * 16, 15 * 16, 64, 64);
             Color = light.color;
+            source = light;
         }
 
         public void Update(Light light)
         {
+            source = light;
             drawRectangle = light.drawRectangle;
             int width = light.drawRectangle.Width - 64;
             int height = light.drawRectangle.Height - 64;
@@ -43,7 +46,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * .3f);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * source.glowIntensity);
         }
     }
 }

@@ -572,7 +572,7 @@ namespace Adam
                     debugSB.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
                     debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[0], new Vector2(0, 200), Color.White);
-                    debugSB.DrawString(debugFont, "Tile Index Camera:" + camera.tileIndex, new Vector2(0, 220), Color.White);
+                    debugSB.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
                     debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
                     debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     debug.Draw(debugSB);

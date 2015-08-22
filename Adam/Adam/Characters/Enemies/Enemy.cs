@@ -280,7 +280,7 @@ namespace Adam
             }
 
             CreateDeathEffect();
-            killedByPlayerSound.Play();
+            killedByPlayerSound?.Play();
             PlayDeathSound();
             isDead = true;
             health = 0;

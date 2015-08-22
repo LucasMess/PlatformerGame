@@ -11,7 +11,7 @@ namespace Adam.Lights
     {
         Light[] lights;
         int[] visibleLights = new int[60 * 100];
-        List<Light> dynamicLights = new List<Light>();
+        public List<Light> dynamicLights = new List<Light>();
         List<Light> newLights = new List<Light>();
 
         Tile[] tiles;
@@ -19,6 +19,8 @@ namespace Adam.Lights
 
         int width;
         int height;
+
+        
 
         public LightEngine()
         {
@@ -129,6 +131,7 @@ namespace Adam.Lights
         {
             dynamicLights.Add(light);
         }
+
         public void RemoveDynamicLight(Light light)
         {
             dynamicLights.Remove(light);

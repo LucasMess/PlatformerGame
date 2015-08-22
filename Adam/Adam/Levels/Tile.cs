@@ -153,14 +153,14 @@ namespace Adam
                     isVoid = true;
                     sunlightPassesThrough = true;
                     animatedTile = new SpecialTile(ID, drawRectangle);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2,1));
                     break;
                 case 12: //Chandelier
                     position = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
                     animatedTile = new SpecialTile(ID, drawRectangle);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,1));
                     break;
                 case 13: //Door
                     isSolid = true;
@@ -198,7 +198,7 @@ namespace Adam
                     }
                     break;
                 case 19://chest
-                    position = new Vector2(12,24);
+                    position = new Vector2(12, 24);
                     animatedTile = new SpecialTile(ID, drawRectangle);
                     isVoid = true;
                     break;
@@ -222,7 +222,7 @@ namespace Adam
                     position = new Vector2(0, 15);
                     isVoid = true;
                     animatedTile = new SpecialTile(ID, drawRectangle);
-                    FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3);
+                    FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3,.3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
                 case 25:
@@ -460,7 +460,58 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
-                            GameWorld.Instance.entities.Add(new FallingBoulder(drawRectangle.X,drawRectangle.Y));
+                            GameWorld.Instance.entities.Add(new FallingBoulder(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 207: //Bat
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(19, 12);
+                    }
+                    else
+                    {
+                        isVoid = true;
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new Bat(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 208: //Duck
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(19, 12);
+                    }
+                    else
+                    {
+                        isVoid = true;
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new Duck(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                        }
+                    }
+                    break;
+                case 209: //Flying Wheel
+                    sunlightPassesThrough = true;
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        position = new Vector2(19, 12);
+                    }
+                    else
+                    {
+                        isVoid = true;
+                        if (!hasAddedEntity)
+                        {
+                            isVoid = true;
+                            GameWorld.Instance.entities.Add(new FlyingWheel(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
                     }
@@ -1010,7 +1061,7 @@ namespace Adam
             {38,"Stone Brick" },
             {39,"Ice" },
             {40,"Snow" },
-            {41,"Void Tile" } ,  
+            {41,"Void Tile" } ,
 
             {100,"Gold Brick Wall" },
             {101,"Stone Wall" },
@@ -1028,7 +1079,10 @@ namespace Adam
             {203,"God" },
             {204,"Lost" },
             {205,"Hellboar" },
-            {206,"Falling Boulder (Desert)" }
+            {206,"Falling Boulder (Desert)" },
+            {207,"Bat" },
+            {208, "Duck" },
+            {209,"Flying Wheel" },
 
         };
 
