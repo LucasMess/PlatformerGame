@@ -102,6 +102,9 @@ namespace Adam
         public bool isInvisible;
         public bool isRunningFast;
         public bool isWaitingForRespawn;
+        public bool hasStoppedTime;
+
+        double timeStopTimer;
 
         bool gameOverSoundPlayed;
         bool deathAnimationDone;
@@ -906,6 +909,25 @@ namespace Adam
                 {
                     respawnTimer = 0;
                     Respawn();
+                }
+            }
+
+            if (InputHelper.IsKeyDown(Keys.I))
+            {
+                hasStoppedTime = true;
+            }
+
+            if (hasStoppedTime)
+            {
+                TrailParticle particle = new TrailParticle(this, Color.White);
+                GameWorld.Instance.particles.Add(particle);
+
+
+                timeStopTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if(timeStopTimer > 5)
+                {
+                    timeStopTimer = 0;
+                    hasStoppedTime = false;
                 }
             }
         }

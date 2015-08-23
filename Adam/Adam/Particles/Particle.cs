@@ -26,7 +26,6 @@ namespace Adam
         Vector2 frameCount;
         protected Vector2 position;
         int currentFrame;
-        bool toDelete;
         public bool isComplete;
         bool hasChangedDirection;
         bool dead;
