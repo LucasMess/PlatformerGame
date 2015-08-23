@@ -85,6 +85,8 @@ namespace Adam.Characters.Enemies
             if (isStunned)
             {
                 tweet.PlayIfStopped();
+                isAngry = false;
+
             }
         }
 

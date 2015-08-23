@@ -9,6 +9,7 @@ using Adam;
 using Adam.Interactables;
 using Adam.Misc.Interfaces;
 using Adam.Obstacles;
+using Adam.Lights;
 
 namespace Adam
 {
@@ -179,17 +180,7 @@ namespace Adam
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
         {
             CurrentParticle = ParticleType.PlayerChronoshift;
-            texture = player.previousSingleTexture;
-            nextTexture = player.newSingleTexture;
-            drawRectangle = new Rectangle(player.collRectangle.X + sourceRectangle.X, player.collRectangle.Y + sourceRectangle.Y,
-                sourceRectangle.Width, sourceRectangle.Height);
-            this.sourceRectangle = sourceRectangle;
-            int maxSpeed = 8;
-            velocity.X = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
-            velocity.Y = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
-            originalVelocity = velocity;
-            originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
-            rotationDelta = .02f;
+           
         }
 
         public void CreateTileParticleEffect(Tile tile, Player player)
@@ -396,44 +387,7 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.PlayerChronoshift:
-                    travelTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
-
-                    float velocityFriction = .96f;
-                    if (!hasChangedDirection)
-                    {
-                        velocity.X = velocity.X * velocityFriction;
-                        velocity.Y = velocity.Y * velocityFriction;
-                        rotation += rotationSpeed;
-                        rotationSpeed += rotationDelta;
-                        if (color.A > 0)
-                            color.A -= 5;
-                    }
-                    if (travelTimer > 1000 && !hasChangedDirection)
-                    {
-                        hasChangedDirection = true;
-                        texture = nextTexture;
-                        travelTimer = 0;
-                        velocity = -velocity;
-                        color.A = 0;
-                    }
-                    if (hasChangedDirection)
-                    {
-                        velocity.X = velocity.X * (2 - velocityFriction);
-                        velocity.Y = velocity.Y * (2 - velocityFriction);
-                        rotation += rotationSpeed;
-                        rotationSpeed -= rotationDelta;
-                        if (travelTimer > 1000)
-                        {
-                            velocity = new Vector2(0, 0);
-                            drawRectangle.X = (int)originalPosition.X;
-                            drawRectangle.Y = (int)originalPosition.Y;
-                            isComplete = true;
-                        }
-                        if (color.A < 255)
-                            color.A += 5;
-                    }
+                    
                     break;
                 case ParticleType.TileParticle:
                     drawRectangle.X += (int)velocity.X;
@@ -567,6 +521,7 @@ namespace Adam
                         toDelete = true;
                     break;
             }
+            collRectangle = drawRectangle;
         }
 
         public virtual void Animate(GameTime gameTime)
@@ -620,9 +575,7 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
-            else if (CurrentParticle == ParticleType.PlayerChronoshift)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity, rotation, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2), SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);                
             else
                 spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
 
@@ -743,6 +696,85 @@ namespace Adam
         public override void Update(GameTime gameTime)
         {
             DefaultBehavior();
+        }
+    }
+
+    public class ChronoshiftParticle : Particle
+    {
+        Texture2D nextTexture;
+        Vector2 originalPosition;
+        Vector2 originalVelocity;
+        float rotationDelta;
+        bool hasChangedDirection;
+        double travelTimer;
+        float rotation;
+        float rotationSpeed;
+        Color color;
+
+        public ChronoshiftParticle(Player player, Rectangle sourceRectangle)
+        {
+            texture = player.previousSingleTexture;
+            nextTexture = player.newSingleTexture;
+            drawRectangle = new Rectangle(player.collRectangle.X + sourceRectangle.X, player.collRectangle.Y + sourceRectangle.Y,
+                sourceRectangle.Width, sourceRectangle.Height);
+            this.sourceRectangle = sourceRectangle;
+            collRectangle = drawRectangle;
+            int maxSpeed = 8;
+            velocity.X = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
+            velocity.Y = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
+            originalVelocity = velocity;
+            originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
+            rotationDelta = .02f;
+            light = new DynamicPointLight(this, .5f, false, Color.White, .6f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            travelTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            drawRectangle.X += (int)velocity.X;
+            drawRectangle.Y += (int)velocity.Y;
+
+            collRectangle = drawRectangle;
+
+            float velocityFriction = .96f;
+            if (!hasChangedDirection)
+            {
+                velocity.X = velocity.X * velocityFriction;
+                velocity.Y = velocity.Y * velocityFriction;
+                rotation += rotationSpeed;
+                rotationSpeed += rotationDelta;
+                if (color.A > 0)
+                    color.A -= 5;
+            }
+            if (travelTimer > 1000 && !hasChangedDirection)
+            {
+                hasChangedDirection = true;
+                texture = nextTexture;
+                travelTimer = 0;
+                velocity = -velocity;
+                color.A = 0;
+            }
+            if (hasChangedDirection)
+            {
+                velocity.X = velocity.X * (2 - velocityFriction);
+                velocity.Y = velocity.Y * (2 - velocityFriction);
+                rotation += rotationSpeed;
+                rotationSpeed -= rotationDelta;
+                if (travelTimer > 1000)
+                {
+                    velocity = new Vector2(0, 0);
+                    drawRectangle.X = (int)originalPosition.X;
+                    drawRectangle.Y = (int)originalPosition.Y;
+                    toDelete = true;
+                }
+                if (color.A < 255)
+                    color.A += 5;
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity, rotation, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2), SpriteEffects.None, 0);
         }
     }
 

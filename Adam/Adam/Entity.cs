@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Lights;
 using Adam.Misc.Errors;
 using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
@@ -34,7 +35,7 @@ namespace Adam
         public Vector2 velocity;
         public bool isFacingRight;
         public bool isDead;
-        public Light light;
+        public DynamicPointLight light;
 
         public Rectangle yRect, xRect;
 

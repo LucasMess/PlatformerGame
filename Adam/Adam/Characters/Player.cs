@@ -293,7 +293,7 @@ namespace Adam
 
             //If the player is currently chronoshifting, most of the update method is skipped.
             if (hasChronoshifted)
-                goto UpdateChrono;
+                UpdateChrono();
 
             this.gameTime = gameTime;
             this.gameWorld = GameWorld.Instance;
@@ -347,13 +347,14 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
             {
                 Chronoshift(Evolution.Modern);
+                hasChronoshifted = true;
+                isChronoshifting = true;
             }
+        }
 
-
-            //If player is chronoshifting the update method skips to here.
-
-            UpdateChrono:
-            if (hasChronoshifted)
+        private void UpdateChrono()
+        {
+            if (isChronoshifting)
             {
                 if (!hasDeactiveSoundPlayed)
                     chronoSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -364,21 +365,22 @@ namespace Adam
                     hasDeactiveSoundPlayed = true;
                     chronoSoundTimer = 0;
                 }
-                bool processing = false;
+                bool processingChronoshift = false;
                 for (int i = 0; i < GameWorld.Instance.particles.Count; i++)
                 {
                     Particle particle = GameWorld.Instance.particles[i];
-                    if (particle.CurrentParticle == Particle.ParticleType.PlayerChronoshift)
+                    if (particle is ChronoshiftParticle)
                     {
                         if (particle.isComplete)
-                            processing = true;
+                            processingChronoshift = true;
                     }
                 }
-                if (!processing)
+                if (!processingChronoshift)
                 {
                     currentTexture = textureArray[GetTextureNumber(CurrentEvolution)];
                     hasChronoshifted = false;
                     hasDeactiveSoundPlayed = false;
+                    isChronoshifting = false;
                 }
             }
         }
@@ -1201,23 +1203,19 @@ namespace Adam
             CurrentEvolution = newEvolution;
             newSingleTexture = singleTextureArray[GetTextureNumber(CurrentEvolution)];
 
-            if (!hasChronoshifted)
+            hasChronoshifted = true;
+            isChronoshifting = true;
+            Rectangle[] rectangles;
+            GetDisintegratedRectangles(out rectangles);
+            chronoActivateSound.Play();
+
+
+            sounds[0].Play();
+
+            foreach (var rec in rectangles)
             {
-                hasChronoshifted = true;
-                isChronoshifting = true;
-                Rectangle[] rectangles;
-                GetDisintegratedRectangles(out rectangles);
-                chronoActivateSound.Play();
-
-
-                sounds[0].Play();
-
-                foreach (var rec in rectangles)
-                {
-                    Particle eff = new Particle();
-                    eff.CreatePlayerChronoshiftEffect(this, rec);
-                    GameWorld.Instance.particles.Add(eff);
-                }
+                ChronoshiftParticle particle = new ChronoshiftParticle(this,rec);
+                GameWorld.Instance.particles.Add(particle);
             }
         }
 
