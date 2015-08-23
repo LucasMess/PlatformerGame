@@ -65,7 +65,7 @@ namespace Adam.Interactables
             foreach (var eff in particles)
             {
                 eff.Update(gameTime);
-                if (eff.ToDelete())
+                if (eff.toDelete)
                 {
                     particles.Remove(eff);
                     break;

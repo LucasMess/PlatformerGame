@@ -210,8 +210,6 @@ namespace Adam
             }
 
             TimesUpdated++;
-            if (player.hasChronoshifted)
-                return;
 
             popUp.Update(gameTime, player);
             background.Update(camera);
@@ -322,7 +320,7 @@ namespace Adam
             for (int i = particles.Count - 1; i >= 0; i--)
             {
                 Particle p = particles[i];
-                if (p.ToDelete())
+                if (p.toDelete)
                 {
                     lightEngine.RemoveDynamicLight(p.light);
                     particles.Remove(p);

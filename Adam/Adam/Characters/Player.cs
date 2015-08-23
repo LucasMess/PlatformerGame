@@ -52,7 +52,8 @@ namespace Adam
         Jetpack jetpack = new Jetpack();
 
         SoundEffect jumpSound, takeDamageSound, attackSound, gameOverSound, tadaSound, fallSound;
-        SoundEffect chronoActivateSound, chronoDeactivateSound;
+        SoundEffect chronoActivateSound;
+        public SoundFx chronoDeactivateSound;
         SoundEffect[] walkSounds, runSounds;
         SoundEffect[] sounds;
         SoundEffect[] goreSounds;
@@ -229,7 +230,7 @@ namespace Adam
 
             //Load sound effects
             chronoActivateSound = ContentHelper.LoadSound("Sounds/chronoshift_activate");
-            chronoDeactivateSound = ContentHelper.LoadSound("Sounds/chronoshift_deactivate");
+            chronoDeactivateSound = new SoundFx("Sounds/chronoshift_deactivate");
             jumpSound = ContentHelper.LoadSound("Sounds/JumpSound");
             takeDamageSound = ContentHelper.LoadSound("Sounds/PlayerHit");
             attackSound = ContentHelper.LoadSound("Sounds/laserunNew");
@@ -291,10 +292,6 @@ namespace Adam
             if (health < 0)
                 health = 0;
 
-            //If the player is currently chronoshifting, most of the update method is skipped.
-            if (hasChronoshifted)
-                UpdateChrono();
-
             this.gameTime = gameTime;
             this.gameWorld = GameWorld.Instance;
 
@@ -344,44 +341,10 @@ namespace Adam
                 CurrentAnimation = AnimationState.Sleeping;
 
             //For debugging chronoshift.
-            if (InputHelper.IsKeyDown(Keys.Q) && !hasChronoshifted)
+            if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
             {
                 Chronoshift(Evolution.Modern);
-                hasChronoshifted = true;
                 isChronoshifting = true;
-            }
-        }
-
-        private void UpdateChrono()
-        {
-            if (isChronoshifting)
-            {
-                if (!hasDeactiveSoundPlayed)
-                    chronoSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (chronoSoundTimer > 1000 && !hasDeactiveSoundPlayed)
-                {
-                    chronoDeactivateSound.Play();
-                    sounds[1].Play();
-                    hasDeactiveSoundPlayed = true;
-                    chronoSoundTimer = 0;
-                }
-                bool processingChronoshift = false;
-                for (int i = 0; i < GameWorld.Instance.particles.Count; i++)
-                {
-                    Particle particle = GameWorld.Instance.particles[i];
-                    if (particle is ChronoshiftParticle)
-                    {
-                        if (particle.isComplete)
-                            processingChronoshift = true;
-                    }
-                }
-                if (!processingChronoshift)
-                {
-                    currentTexture = textureArray[GetTextureNumber(CurrentEvolution)];
-                    hasChronoshifted = false;
-                    hasDeactiveSoundPlayed = false;
-                    isChronoshifting = false;
-                }
             }
         }
 
@@ -990,9 +953,7 @@ namespace Adam
 
             jetpack.Draw(spriteBatch);
 
-            //Draw the player facing the direction he is supposed to be facing
-            if (hasChronoshifted || isInvisible || isWaitingForRespawn)
-                goto DrawOtherThings;
+            if (isChronoshifting) return;
 
             if (isFacingRight == true)
                 spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White);
@@ -1000,10 +961,6 @@ namespace Adam
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
-
-            DrawOtherThings:
-            if (weapon != null)
-                weapon.Draw(spriteBatch);
         }
 
         public void TakeDamage(int damage)
@@ -1199,23 +1156,13 @@ namespace Adam
 
         public void Chronoshift(Evolution newEvolution)
         {
-            previousSingleTexture = singleTextureArray[GetTextureNumber(CurrentEvolution)];
-            CurrentEvolution = newEvolution;
-            newSingleTexture = singleTextureArray[GetTextureNumber(CurrentEvolution)];
-
-            hasChronoshifted = true;
             isChronoshifting = true;
-            Rectangle[] rectangles;
-            GetDisintegratedRectangles(out rectangles);
+            hasChronoshifted = true;
             chronoActivateSound.Play();
 
-
-            sounds[0].Play();
-
-            foreach (var rec in rectangles)
+            for (int i = 0; i < 50; i++)
             {
-                ChronoshiftParticle particle = new ChronoshiftParticle(this,rec);
-                GameWorld.Instance.particles.Add(particle);
+                GameWorld.Instance.particles.Add(new ChronoshiftParticle(this));
             }
         }
 
@@ -1233,8 +1180,6 @@ namespace Adam
 
             if (isWaitingForRespawn)
                 return;
-
-
 
             GameWorld.Instance.SimulationPaused = true;
 

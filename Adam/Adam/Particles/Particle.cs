@@ -563,15 +563,6 @@ namespace Adam
                 toDelete = true;
         }
 
-
-
-        public bool ToDelete()
-        {
-            if (toDelete)
-                return true;
-            else return false;
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
@@ -701,80 +692,64 @@ namespace Adam
 
     public class ChronoshiftParticle : Particle
     {
-        Texture2D nextTexture;
-        Vector2 originalPosition;
-        Vector2 originalVelocity;
-        float rotationDelta;
+        double changeDirectionTimer;
         bool hasChangedDirection;
-        double travelTimer;
-        float rotation;
-        float rotationSpeed;
-        Color color;
 
-        public ChronoshiftParticle(Player player, Rectangle sourceRectangle)
+        public ChronoshiftParticle(Entity entity)
         {
-            texture = player.previousSingleTexture;
-            nextTexture = player.newSingleTexture;
-            drawRectangle = new Rectangle(player.collRectangle.X + sourceRectangle.X, player.collRectangle.Y + sourceRectangle.Y,
-                sourceRectangle.Width, sourceRectangle.Height);
-            this.sourceRectangle = sourceRectangle;
+            int maxVel = 10;
+            velocity = new Vector2(GameWorld.RandGen.Next(-maxVel, maxVel+1), GameWorld.RandGen.Next(-maxVel, maxVel+1));
+            drawRectangle = new Rectangle(entity.collRectangle.Center.X, entity.collRectangle.Center.Y, 8, 8);
             collRectangle = drawRectangle;
-            int maxSpeed = 8;
-            velocity.X = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
-            velocity.Y = (float)(GameWorld.RandGen.Next(-maxSpeed, maxSpeed + 1));
-            originalVelocity = velocity;
-            originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
-            rotationDelta = .02f;
-            light = new DynamicPointLight(this, .5f, false, Color.White, .6f);
+            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+
+            Color colorful = new Color(GameWorld.RandGen.Next(0,256), GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), 255);
+            light = new Lights.DynamicPointLight(this, .5f, false, colorful, 1f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
         {
-            travelTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            drawRectangle.X += (int)velocity.X;
-            drawRectangle.Y += (int)velocity.Y;
+            position += velocity;
+
+            drawRectangle.X = (int)position.X;
+            drawRectangle.Y = (int)position.Y;
 
             collRectangle = drawRectangle;
 
-            float velocityFriction = .96f;
-            if (!hasChangedDirection)
+            velocity.X = velocity.X * 0.95f;
+            velocity.Y = velocity.Y * 0.95f;
+
+            changeDirectionTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (changeDirectionTimer > 1000)
             {
-                velocity.X = velocity.X * velocityFriction;
-                velocity.Y = velocity.Y * velocityFriction;
-                rotation += rotationSpeed;
-                rotationSpeed += rotationDelta;
-                if (color.A > 0)
-                    color.A -= 5;
-            }
-            if (travelTimer > 1000 && !hasChangedDirection)
-            {
-                hasChangedDirection = true;
-                texture = nextTexture;
-                travelTimer = 0;
-                velocity = -velocity;
-                color.A = 0;
-            }
-            if (hasChangedDirection)
-            {
-                velocity.X = velocity.X * (2 - velocityFriction);
-                velocity.Y = velocity.Y * (2 - velocityFriction);
-                rotation += rotationSpeed;
-                rotationSpeed -= rotationDelta;
-                if (travelTimer > 1000)
+                if (!hasChangedDirection)
                 {
-                    velocity = new Vector2(0, 0);
-                    drawRectangle.X = (int)originalPosition.X;
-                    drawRectangle.Y = (int)originalPosition.Y;
-                    toDelete = true;
+                    hasChangedDirection = true;
+                    velocity = -velocity;
+
+                    if (velocity == new Vector2(0, 0))
+                    {
+                        //velocity = new Vector2(1, 1);
+                    }
                 }
-                if (color.A < 255)
-                    color.A += 5;
+                GameWorld.Instance.player.chronoDeactivateSound.PlayIfStopped();
+                velocity.X = velocity.X * 1/.95f;
+                velocity.Y = velocity.Y * 1/.95f;
+            }
+
+            if (changeDirectionTimer > 1200)
+            {
+                GameWorld.Instance.player.isChronoshifting = false;
+               
+                toDelete = true;
             }
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity, rotation, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2), SpriteEffects.None, 0);
+    //DO NOTHING
         }
     }
 

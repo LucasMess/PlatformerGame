@@ -167,7 +167,7 @@ namespace Adam
             {
                 for (int i = effectList.Count - 1; i >= 0; i--)
                 {
-                    if (effectList.ElementAt(i).ToDelete())
+                    if (effectList.ElementAt(i).toDelete)
                         effectList.Remove(effectList.ElementAt(i));
                 }
             }

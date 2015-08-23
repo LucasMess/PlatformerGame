@@ -301,7 +301,7 @@ namespace Adam
             }
             foreach (var z in zzzList)
             {
-                if (z.ToDelete())
+                if (z.toDelete)
                 {
                     zzzList.Remove(z);
                     break;
