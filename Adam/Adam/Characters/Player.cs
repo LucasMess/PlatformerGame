@@ -346,8 +346,8 @@ namespace Adam
             //For debugging chronoshift.
             if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
             {
-                Chronoshift(Evolution.Modern);
-                isChronoshifting = true;
+                //Chronoshift(Evolution.Modern);
+                //isChronoshifting = true;
             }
         }
 
@@ -914,7 +914,7 @@ namespace Adam
 
             if (InputHelper.IsKeyDown(Keys.I))
             {
-                hasStoppedTime = true;
+               // hasStoppedTime = true;
             }
 
             if (hasStoppedTime)
