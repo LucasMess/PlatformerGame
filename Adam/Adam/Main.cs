@@ -140,7 +140,7 @@ namespace Adam
 
         protected override void Initialize()
         {
-            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp");
+            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp tile");
             //Initialize all instances
             camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
             menu = new Menu(this);

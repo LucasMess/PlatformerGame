@@ -221,13 +221,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\temp.png">
-      <Name>temp</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Effects\new_Z.png">
       <Name>new_Z</Name>
       <Importer>TextureImporter</Importer>
@@ -1556,6 +1549,13 @@
   <ItemGroup>
     <Compile Include="Enemies\duck.png">
       <Name>duck</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\temp tile.png">
+      <Name>temp tile</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

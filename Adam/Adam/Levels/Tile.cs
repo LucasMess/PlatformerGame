@@ -469,7 +469,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(19, 12);
+                        position = new Vector2(12, 8);
                     }
                     else
                     {
@@ -486,7 +486,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(19, 12);
+                        position = new Vector2(12, 8);
                     }
                     else
                     {
@@ -503,7 +503,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(19, 12);
+                        position = new Vector2(12, 8);
                     }
                     else
                     {

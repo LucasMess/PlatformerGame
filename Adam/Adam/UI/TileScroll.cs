@@ -175,7 +175,7 @@ namespace Adam.UI
                 velocityY = 1;
             }
 
-            if (tiles.Count < 10)
+            if (tiles.Count < 16)
                 return;
 
             for (int i = 0; i < tiles.Count; i++)
@@ -247,7 +247,7 @@ namespace Adam.UI
             {
                 byte[] IDs = new byte[]
                 {
-               1,2,5,6,4,39,40,38,10,41,8,21,3,18,29,30,14,15,16,23,24,25,11,12,22,31,32,34,33,19,27
+               1,2,5,6,4,39,40,38,10,41,8,21,3,18,29,30,14,15,16,23,24,25,11,12,22,31,32,34,33,19,
                 };
                 return IDs;
             }
