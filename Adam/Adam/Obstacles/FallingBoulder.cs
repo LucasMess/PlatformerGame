@@ -34,7 +34,7 @@ namespace Adam.Obstacles
         public FallingBoulder(int x, int y)
         {
             GravityStrength = Main.Gravity ;
-            texture = GameWorld.SpriteSheet;
+            Texture = GameWorld.SpriteSheet;
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
@@ -62,7 +62,7 @@ namespace Adam.Obstacles
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White);
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }

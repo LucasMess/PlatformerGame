@@ -22,7 +22,7 @@ namespace Adam.Characters.Enemies
 
         public Frog(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Enemies/frog");
+            Texture = ContentHelper.LoadTexture("Enemies/frog");
             collRectangle = new Rectangle(x, y, 32, 32);
             drawRectangle = new Rectangle(x - 8, y - 32, 48, 64);
             sourceRectangle = new Rectangle(0, 0, 24, 32);
@@ -31,7 +31,7 @@ namespace Adam.Characters.Enemies
 
             still = new AnimationData(250, 4, 0, AnimationType.Loop);
             jumping = new AnimationData(125, 4, 1, AnimationType.PlayOnce);
-            animation = new Animation(texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, drawRectangle, sourceRectangle);
 
             jumpSound = new SoundFx("Sounds/Frog/frog_jump", this);
             meanSound = ContentHelper.LoadSound("Sounds/Frog/frog_croak");

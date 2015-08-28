@@ -8,35 +8,73 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Misc;
 
 namespace Adam.Enemies
 {
     public class Snake : Enemy
     {
+        public override byte ID
+        {
+            get
+            {
+                return 201;
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                return EnemyDB.Snake_MaxHealth;
+            }
+        }
+
+        SoundFx meanSound;
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                if (meanSound == null)
+                    meanSound = new SoundFx("Sounds/Snake/mean");
+                return meanSound;
+            }
+        }
+
+        SoundFx attackSound;
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                if (attackSound == null)
+                    attackSound = new SoundFx("Sounds/Snake/attack");
+                return attackSound;
+            }
+        }
+
+        SoundFx deathSound;
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                if (deathSound == null)
+                    deathSound = new SoundFx("Sounds/Snake/death");
+                return deathSound;
+            }
+        }
+
         public Snake(int x, int y)
         {
-            Content = Main.Content;
-            gameWorld = GameWorld.Instance;
-
             //Sets up specific variables for the snake
-            CurrentEnemyType = EnemyType.Snake;
-            health = EnemyDB.Snake_MaxHealth;
             frameCount = new Vector2(8, 0);
             sourceRectangle = new Rectangle(0, 0, 64, 96);
             drawRectangle = new Rectangle(x, y - 64, 64, 96);
 
             //Textures and sound effects, single is for rectangle pieces explosion
-            texture = Content.Load<Texture2D>("Enemies/Snake");
-
-            meanSound = Content.Load<SoundEffect>("Sounds/SnakeHit");
-            meanSoundInstance = meanSound.CreateInstance();
-            attackSound = Content.Load<SoundEffect>("Sounds/snake_spit");
-            attackSoundInstance = attackSound.CreateInstance();
-            deathSound = Content.Load<SoundEffect>("Sounds/snake_death");
-            deathSoundInstance = deathSound.CreateInstance();
+            Texture = Content.Load<Texture2D>("Enemies/Snake");
 
             //Creates animation
-            animation = new Animation(texture, drawRectangle, 240, 0, AnimationType.Loop);
+            animation = new Animation(Texture, drawRectangle, 240, 0, AnimationType.Loop);
 
             base.Initialize();
         }

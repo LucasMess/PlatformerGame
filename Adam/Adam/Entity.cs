@@ -24,7 +24,6 @@ namespace Adam
     public class Entity
     {
 
-        public Texture2D texture = Main.DefaultTexture;
         protected Vector2 origin;
         public Rectangle drawRectangle;
         public Rectangle collRectangle;
@@ -54,6 +53,21 @@ namespace Adam
         public Entity()
         {
             Content = Main.Content;
+        }
+
+        Texture2D texture;
+        /// <summary>
+        /// The texture of the entity.
+        /// </summary>
+        public Texture2D Texture
+        {
+            get
+            {
+                if (texture == null)
+                    texture = Main.DefaultTexture;
+                return texture;
+            }
+            set { texture = value; }
         }
 
         /// <summary>
@@ -123,7 +137,7 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
+            spriteBatch.Draw(Texture, drawRectangle, Color.White * opacity);
         }
 
         /// <summary>
@@ -132,7 +146,7 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void DrawFromCenter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, drawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
         }
 
         /// <summary>

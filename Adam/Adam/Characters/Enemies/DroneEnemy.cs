@@ -36,7 +36,7 @@ namespace Adam.Enemies
             this.Content = Content;
             this.gameWorld = map;
 
-            texture = Content.Load<Texture2D>("Enemies/Drone_Single");
+            Texture = Content.Load<Texture2D>("Enemies/Drone_Single");
             chargeSound = Content.Load<SoundEffect>("Sounds/Drone/Drone_Charging");
             fireSound = Content.Load<SoundEffect>("Sounds/Drone/Drone_Fire");
 
@@ -104,8 +104,8 @@ namespace Adam.Enemies
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             if (isFacingRight)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, tempCo, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, tempCo, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, tempCo, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            else spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, tempCo, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
             //foreach (Rectangle r in rects)
             //    spriteBatch.Draw(Content.Load<Texture2D>("Projectiles/laser"), r, Color.White);

@@ -49,8 +49,8 @@ namespace Adam.Interactables
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (texture == null) texture = Main.DefaultTexture;
-            spriteBatch.Draw(texture, drawRectangle, Color.White);
+            if (Texture == null) Texture = Main.DefaultTexture;
+            spriteBatch.Draw(Texture, drawRectangle, Color.White);
         }
     }
 }

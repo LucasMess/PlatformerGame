@@ -28,7 +28,7 @@ namespace Adam.Noobs
         public God(int x, int y)
         {
             canTalk = true;
-            texture = ContentHelper.LoadTexture("Characters/NPCs/god");
+            Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
             collRectangle = new Rectangle(x, y, 48, 80);
             drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 24, 40);
@@ -40,7 +40,7 @@ namespace Adam.Noobs
             still = new AnimationData(300, 4, 0, AnimationType.Loop);
             walking = new AnimationData(150, 4, 1, AnimationType.Loop);
 
-            animation = new Animation(texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, drawRectangle, sourceRectangle);
         }
 
         public override void Update(GameTime gameTime, Player player)

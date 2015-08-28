@@ -15,7 +15,7 @@ namespace Adam.UI.Elements
         bool playerOn;
         public KeyPopUp()
         {
-            texture = GameWorld.SpriteSheet;
+            Texture = GameWorld.SpriteSheet;
             sourceRectangle = new Rectangle(16 * 20, 16 * 7, 16, 16);
         }
 
@@ -32,7 +32,7 @@ namespace Adam.UI.Elements
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             if (playerOn)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, origin, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
+                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White, 0, origin, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
         }
     }
 

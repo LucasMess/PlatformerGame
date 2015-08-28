@@ -30,7 +30,7 @@ namespace Adam
             health = EnemyDB.Shade_MaxHealth;
             maxVelocity = new Vector2(1, 1);
 
-            texture = Content.Load<Texture2D>("Enemies/lost");
+            Texture = Content.Load<Texture2D>("Enemies/lost");
             ghost = new SoundFx("Sounds/Lost/ghost");
             ghost2 = new SoundFx("Sounds/Lost/ghost2");
             deathSound = ContentHelper.LoadSound("Sounds/Lost/scream");
@@ -41,7 +41,7 @@ namespace Adam
             sourceRectangle = new Rectangle(0, 0, 24, 40);
 
             still = new AnimationData(200, 4, 0, AnimationType.Loop);
-            animation = new Animation(texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, drawRectangle, sourceRectangle);
 
             timerEnd = GameWorld.RandGen.Next(3, 8);
 

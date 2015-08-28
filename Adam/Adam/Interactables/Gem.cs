@@ -38,7 +38,7 @@ namespace Adam
         public Gem(int centerX, int centerY)
         {
             gemID = GenerateID();
-            texture = GameWorld.SpriteSheet;
+            Texture = GameWorld.SpriteSheet;
             collRectangle = new Rectangle(centerX, centerY, 16, 16);
             drawRectangle = collRectangle;
             sourceRectangle = GetSourceRectangle();
@@ -131,7 +131,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);        
+            spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White);        
 
         }
 

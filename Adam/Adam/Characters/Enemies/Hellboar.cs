@@ -44,7 +44,7 @@ namespace Adam.Characters.Enemies
             collRectangle = new Rectangle(x, y, 50 * 2, 76);
             drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
-            texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
+            Texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
             CurrentEnemyType = EnemyType.Hellboar;
             animationData = new AnimationData(0, 4, 0, AnimationType.Loop);
             animationData.FrameCount = new Vector2(3, 0);

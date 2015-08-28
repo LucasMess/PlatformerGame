@@ -15,13 +15,13 @@ namespace Adam.Interactables
 
         public CheckPoint(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Objects/checkPoint");
+            Texture = ContentHelper.LoadTexture("Objects/checkPoint");
             drawRectangle = new Rectangle(x, y - Main.Tilesize * 2, 32, 96);
             sourceRectangle = new Rectangle(0, 0, 16, 48);
             collRectangle = new Rectangle(drawRectangle.Center.X - 50, drawRectangle.Y, 100,drawRectangle.Height);
 
             opening = new AnimationData(32, 4, 0, AnimationType.PlayOnce);
-            animation = new Animation(texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, drawRectangle, sourceRectangle);
 
             quack = new SoundFx("Backgrounds/Splash/quack");
             openSound = new SoundFx("Sounds/Menu/checkPoint");
@@ -80,7 +80,7 @@ namespace Adam.Interactables
         {
             isOpen = false;
             opening.Reset();
-            animation = new Animation(texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, drawRectangle, sourceRectangle);
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)

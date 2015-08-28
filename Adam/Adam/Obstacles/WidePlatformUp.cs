@@ -19,7 +19,7 @@ namespace Adam.Obstacles
         public WidePlatformUp(Player player)
         {            
             player.PlayerRespawned += player_PlayerRespawned;
-            texture = ContentHelper.LoadTexture("Tiles/Obstacles/goldbrick_platform_wide");
+            Texture = ContentHelper.LoadTexture("Tiles/Obstacles/goldbrick_platform_wide");
 
             IsCollidable = true;
         }

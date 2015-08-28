@@ -17,10 +17,10 @@ namespace Adam.Interactables
 
         public JetpackPowerUp(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Objects/jetpack");
+            Texture = ContentHelper.LoadTexture("Objects/jetpack");
             loopSound = new Misc.SoundFx("Sounds/jetpack_engine");
             drawRectangle = new Rectangle(x, y, 32, 32);
-            animation = new Animation(texture, drawRectangle, 100, 0, AnimationType.Loop);
+            animation = new Animation(Texture, drawRectangle, 100, 0, AnimationType.Loop);
             velocity.Y = -10f;
         }
 

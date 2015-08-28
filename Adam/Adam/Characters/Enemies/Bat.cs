@@ -20,7 +20,7 @@ namespace Adam.Characters.Enemies
             collRectangle = new Rectangle(x, y, 32, 64);
             drawRectangle = new Rectangle(x, y, 32, 64);
             sourceRectangle = new Rectangle(0, 0, 16, 32);
-            texture = Main.DefaultTexture;
+            Texture = Main.DefaultTexture;
             maxVelocity = new Vector2(3, 3);
             health = 100;
             // texture = ContentHelper.LoadTexture("Bat/bat");
@@ -123,7 +123,7 @@ namespace Adam.Characters.Enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Main.DefaultTexture, rangeRect, Color.Red * .5f);
-            spriteBatch.Draw(texture, drawRectangle, Color.White);
+            spriteBatch.Draw(Texture, drawRectangle, Color.White);
         }
     }
 }

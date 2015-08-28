@@ -13,7 +13,7 @@ namespace Adam.Characters.Enemies
 
         public Duck(int x, int y)
         {
-            texture = ContentHelper.LoadTexture("Enemies/duck");
+            Texture = ContentHelper.LoadTexture("Enemies/duck");
             collRectangle = new Rectangle(x, y, 32, 32);
             drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 16, 16);

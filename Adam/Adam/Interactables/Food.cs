@@ -36,7 +36,7 @@ namespace Adam.Interactables
             {
                 case EnemyType.Snake:
                     healAmount = 10;
-                    texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
+                    Texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
                     break;
                 case EnemyType.Potato:
                     break;
@@ -48,7 +48,7 @@ namespace Adam.Interactables
                     break;
                 case EnemyType.Frog:
                     healAmount = 5;
-                    texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
+                    Texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
                     break;
                 default:
                     break;
@@ -76,7 +76,7 @@ namespace Adam.Interactables
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!hasHealed)
-                spriteBatch.Draw(texture, drawRectangle, Color.White);
+                spriteBatch.Draw(Texture, drawRectangle, Color.White);
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)

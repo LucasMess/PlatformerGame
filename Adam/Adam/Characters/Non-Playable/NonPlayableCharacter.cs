@@ -22,7 +22,7 @@ namespace Adam.Characters.Non_Playable
         KeyPopUp key;
         public NonPlayableCharacter()
         {
-            texture = Main.DefaultTexture;
+            Texture = Main.DefaultTexture;
 
             key = new KeyPopUp();
         }

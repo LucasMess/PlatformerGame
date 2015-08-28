@@ -12,11 +12,11 @@ namespace Adam.Interactables
     {
         public CDPlayer(Vector2 position)
         {
-            texture = ContentHelper.LoadTexture("Objects/CDplayer_new");
+            Texture = ContentHelper.LoadTexture("Objects/CDplayer_new");
             drawRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
             sourceRectangle = new Rectangle(0, 0, 32, 32);
 
-            animation = new Animation(texture, drawRectangle, 70, 0, AnimationType.Loop);
+            animation = new Animation(Texture, drawRectangle, 70, 0, AnimationType.Loop);
             loopSound = new Misc.SoundFx("Sounds/loop");
             velocity.Y = -10f;
         }

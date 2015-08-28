@@ -61,7 +61,7 @@ namespace Adam
                     animation.Draw(spriteBatch);
                     break;
                 case ProjectileSource.Player:
-                    spriteBatch.Draw(texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(Texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                     if (light != null)
                         light.DrawGlow(spriteBatch);
                     break;
@@ -110,7 +110,7 @@ namespace Adam
                 case WeaponType.Shotgun:
                     break;
                 case WeaponType.LaserGun:
-                    texture = Content.Load<Texture2D>("Projectiles/laser");
+                    Texture = Content.Load<Texture2D>("Projectiles/laser");
 
                     //light = new PointLight();
                     //light.Create(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
@@ -146,11 +146,11 @@ namespace Adam
                     break;
             }
 
-            if (texture == null) return;
+            if (Texture == null) return;
             collRectangle = new Rectangle(player.weapon.rectangle.X + player.weapon.texture.Width, player.weapon.rectangle.Y
-                + player.weapon.texture.Height / 2, texture.Width, texture.Height);
+                + player.weapon.texture.Height / 2, Texture.Width, Texture.Height);
 
-            collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), texture.Width, texture.Height);
+            collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), Texture.Width, Texture.Height);
         }
 
         public override void Update(Player player, GameTime gameTime)
@@ -159,11 +159,11 @@ namespace Adam
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
 
-            topMidBound = new Rectangle(collRectangle.X + texture.Width / 2, collRectangle.Y + texture.Height / 4, 1, 1);
-            botMidBound = new Rectangle(collRectangle.X + texture.Width / 2, collRectangle.Y + (3 * texture.Height / 4), 1, 1);
+            topMidBound = new Rectangle(collRectangle.X + Texture.Width / 2, collRectangle.Y + Texture.Height / 4, 1, 1);
+            botMidBound = new Rectangle(collRectangle.X + Texture.Width / 2, collRectangle.Y + (3 * Texture.Height / 4), 1, 1);
 
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 5, texture.Width, texture.Height - 10);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, texture.Width - 20, texture.Height);
+            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 5, Texture.Width, Texture.Height - 10);
+            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, Texture.Width - 20, Texture.Height);
 
             CreateTrailEffect();
         }
@@ -189,7 +189,7 @@ namespace Adam
     {
         public FlyingWheelProjectile(int x, int y, int xVel, int yVel)
         {
-            texture = Main.DefaultTexture;
+            Texture = Main.DefaultTexture;
             collRectangle = new Rectangle(x, y, 16, 16);
             drawRectangle = collRectangle;
             velocity = new Vector2(xVel, yVel);
@@ -246,9 +246,9 @@ namespace Adam
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Snake:
-                    texture = Content.Load<Texture2D>("Projectiles/venom_dark");
+                    Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
                     collRectangle = new Rectangle(enemy.drawRectangle.X, enemy.drawRectangle.Y, 32, 32);
-                    animation = new Animation(texture, collRectangle, 200, 0, AnimationType.Loop);
+                    animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
                     if (!enemy.isPlayerToTheRight)
                     {
                         velocity = new Vector2(-10, -15);

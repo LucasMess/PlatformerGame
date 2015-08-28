@@ -67,29 +67,29 @@ namespace Adam
         {
             sourceRectangle = new Rectangle(0, 0, 32, 32);
             CurrentParticle = ParticleType.Impact;
-            texture = ContentHelper.LoadTexture("Explosion");
+            Texture = ContentHelper.LoadTexture("Explosion");
             if (projectile.velocity.X > 0)
                 drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X - 32, projectile.collRectangle.Center.Y - 32, 64, 64);
             else drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X + 32, projectile.collRectangle.Center.Y - 32, 64, 64);
-            frameCount = new Vector2(texture.Width / 32, texture.Height / 32);
+            frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
         }
 
         public Particle(Enemy enemy, Projectile projectile)
         {
             sourceRectangle = new Rectangle(0, 0, 32, 32);
             CurrentParticle = ParticleType.Impact;
-            texture = ContentHelper.LoadTexture("Explosion");
+            Texture = ContentHelper.LoadTexture("Explosion");
 
             if (projectile.velocity.X > 0)
                 drawRectangle = new Rectangle(enemy.drawRectangle.X - enemy.drawRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
             else drawRectangle = new Rectangle(enemy.drawRectangle.X + enemy.drawRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
-            frameCount = new Vector2(texture.Width / 32, texture.Height / 32);
+            frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
         }
 
         public Particle(Projectile proj)
         {
             CurrentParticle = ParticleType.SnakeVenom;
-            texture = ContentHelper.LoadTexture("Effects/venom_blob");
+            Texture = ContentHelper.LoadTexture("Effects/venom_blob");
             randGen = new Random();
             drawRectangle = new Rectangle(proj.collRectangle.X + proj.collRectangle.Width / 2, proj.collRectangle.Y, 8, 8);
             if (proj.velocity.X > 0)
@@ -98,7 +98,7 @@ namespace Adam
             velocity.Y = GameWorld.RandGen.Next(1, 4);
             if (GameWorld.RandGen.Next(0, 2) == 0)
                 velocity.Y = -velocity.Y;
-            sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+            sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             opacity = 1f;
         }
 
@@ -107,7 +107,7 @@ namespace Adam
             randGen = new Random();
             sourceRectangle = new Rectangle(0, 0, 14, 14);
             CurrentParticle = ParticleType.GameZZZ;
-            texture = ContentHelper.LoadTexture("Effects/new_Z");
+            Texture = ContentHelper.LoadTexture("Effects/new_Z");
             color = new Color(255, 255, 255, 255);
             if (player.isFacingRight)
                 position = new Vector2(player.collRectangle.X + randGen.Next(-5, 5) + player.collRectangle.Width - 8, player.collRectangle.Y + randGen.Next(-5, 5));
@@ -121,7 +121,7 @@ namespace Adam
             randGen = new Random();
             sourceRectangle = new Rectangle(0, 0, 14, 14);
             CurrentParticle = ParticleType.MenuZZZ;
-            texture = ContentHelper.LoadTexture("Effects/new_Z");
+            Texture = ContentHelper.LoadTexture("Effects/new_Z");
             color = new Color(255, 255, 255, 255);
             position = new Vector2(rectangle.X + randGen.Next(-5, 5) + rectangle.Width - 8, rectangle.Y + randGen.Next(-5, 5));
             this.drawRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
@@ -135,17 +135,17 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
             velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
             CurrentParticle = ParticleType.WeaponBurst;
-            texture = ContentHelper.LoadTexture("Effects/laser_burst");
+            Texture = ContentHelper.LoadTexture("Effects/laser_burst");
             int randSize = GameWorld.RandGen.Next(2, 5);
             drawRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
-            sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+            sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             opacity = 1;
         }
 
         public void CreateEnemyDisintegrationEffect(Enemy enemy, Rectangle sourceRectangle, Projectile proj)
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
-            texture = enemy.texture;
+            Texture = enemy.Texture;
             drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
@@ -157,7 +157,7 @@ namespace Adam
         public void CreateEnemyDeathEffect(Enemy enemy, Rectangle sourceRectangle)
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
-            texture = enemy.texture;
+            Texture = enemy.Texture;
             drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
@@ -168,7 +168,7 @@ namespace Adam
         public void CreateBloodEffect(Player player, GameWorld map)
         {
             CurrentParticle = ParticleType.Blood;
-            texture = ContentHelper.LoadTexture("Effects/blood");
+            Texture = ContentHelper.LoadTexture("Effects/blood");
             drawRectangle = new Rectangle(player.drawRectangle.Center.X, player.drawRectangle.Center.Y, 8, 8);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 8, 0, 8, 8);
             collRectangle = drawRectangle;
@@ -186,7 +186,7 @@ namespace Adam
         public void CreateTileParticleEffect(Tile tile, Player player)
         {
             CurrentParticle = ParticleType.TileParticle;
-            texture = tile.texture;
+            Texture = tile.texture;
             drawRectangle = new Rectangle(player.collRectangle.Center.X - 2, player.collRectangle.Y + player.collRectangle.Height, 8, 8);
             sourceRectangle = new Rectangle(tile.sourceRectangle.X, tile.sourceRectangle.Y, 4, 4);
             if (tile is SpecialTile)
@@ -204,7 +204,7 @@ namespace Adam
         {
             this.player = player;
             CurrentParticle = ParticleType.PlayerDesintegration;
-            texture = player.GetSingleTexture();
+            Texture = player.GetSingleTexture();
             drawRectangle = new Rectangle(player.drawRectangle.X + sourceRectangle.X, player.drawRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
@@ -219,7 +219,7 @@ namespace Adam
         public void CreateMusicNotesEffect(CDPlayer cd)
         {
             CurrentParticle = ParticleType.MusicNotes;
-            texture = ContentHelper.LoadTexture("Effects/music_notes");
+            Texture = ContentHelper.LoadTexture("Effects/music_notes");
             drawRectangle = new Rectangle(cd.drawRectangle.X, cd.drawRectangle.Y, 16, 16);
             sourceRectangle = new Rectangle(32 * GameWorld.RandGen.Next(0, 2), 0, 32, 32);
             int randX = GameWorld.RandGen.Next(0, 2);
@@ -242,7 +242,7 @@ namespace Adam
         public void CreateJetPackSmokeParticle(JetpackPowerUp jet)
         {
             CurrentParticle = ParticleType.JetpackSmoke;
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(jet.drawRectangle.Center.X - 8, jet.drawRectangle.Y + jet.drawRectangle.Height, 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
@@ -254,7 +254,7 @@ namespace Adam
         public void CreateJetPackSmokeParticle(Player player)
         {
             CurrentParticle = ParticleType.JetpackSmoke;
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(player.drawRectangle.Center.X - 8, player.drawRectangle.Y + player.drawRectangle.Height, 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
@@ -267,7 +267,7 @@ namespace Adam
         {
             CurrentParticle = ParticleType.Lava;
             //texture = ContentHelper.LoadTexture("Effects/lava");
-            texture = GameWorld.Particle_SpriteSheet;
+            Texture = GameWorld.Particle_SpriteSheet;
             drawRectangle = new Rectangle(lava.collRectangle.Center.X - 8, lava.collRectangle.Center.Y - 8, 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.Y = -10f;
@@ -281,7 +281,7 @@ namespace Adam
         public void CreateDeathSmoke(Entity entity)
         {
             CurrentParticle = ParticleType.DeathSmoke;
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 16), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 16), 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-2, 3));
@@ -293,7 +293,7 @@ namespace Adam
         public void CreateTookDamage(Entity entity)
         {
             CurrentParticle = ParticleType.TookDamage;
-            texture = ContentHelper.LoadTexture("Sparkles");
+            Texture = ContentHelper.LoadTexture("Sparkles");
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
@@ -306,7 +306,7 @@ namespace Adam
         public void CreateSparkles(Entity entity)
         {
             CurrentParticle = ParticleType.Sparkles;
-            texture = ContentHelper.LoadTexture("Sparkles");
+            Texture = ContentHelper.LoadTexture("Sparkles");
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
@@ -534,7 +534,7 @@ namespace Adam
                 if (frameCount.X != 0)
                 {
                     frameTimer = 0;
-                    sourceRectangle.X += texture.Width / (int)frameCount.X;
+                    sourceRectangle.X += Texture.Width / (int)frameCount.X;
                     currentFrame++;
                 }
             }
@@ -566,9 +566,9 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);                
+                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, color * opacity);                
             else
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
+                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, color * opacity);
 
         }
 
@@ -584,7 +584,7 @@ namespace Adam
     {
         public JumpSmokeParticle(Entity entity)
         {
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
             collRectangle = drawRectangle;
@@ -606,7 +606,7 @@ namespace Adam
     {
         public StompSmokeParticle(Entity entity)
         {
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
             collRectangle = drawRectangle;
@@ -628,7 +628,7 @@ namespace Adam
     {
         public ConstructionSmokeParticle(Rectangle rect)
         {
-            texture = ContentHelper.LoadTexture("Effects/smoke");
+            Texture = ContentHelper.LoadTexture("Effects/smoke");
             drawRectangle = new Rectangle(GameWorld.RandGen.Next(rect.X, rect.Right - 16), GameWorld.RandGen.Next(rect.Y, rect.Bottom - 16), 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
@@ -649,7 +649,7 @@ namespace Adam
     {
         public DestructionTileParticle(Tile tile, Rectangle source)
         {
-            texture = tile.texture;
+            Texture = tile.texture;
             drawRectangle = new Rectangle(tile.drawRectangle.Center.X, tile.drawRectangle.Center.Y, 8, 8);
             sourceRectangle = source;
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
@@ -670,7 +670,7 @@ namespace Adam
     {
         public TrailParticle(Entity source, Color color)
         {
-            texture = GameWorld.Particle_SpriteSheet;
+            Texture = GameWorld.Particle_SpriteSheet;
             drawRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, 8, 8);
             collRectangle = drawRectangle;
             sourceRectangle = new Rectangle(8, 0, 8, 8);
