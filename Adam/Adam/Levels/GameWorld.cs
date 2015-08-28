@@ -47,7 +47,6 @@ namespace Adam
         public int[] visibleTileArray = new int[30 * 50];
         int[] visibleLightArray = new int[60 * 100];
         Light[] lightArray;
-        Light playerLight;
 
         public GameMode CurrentGameMode;
         public Player player;
@@ -138,9 +137,6 @@ namespace Adam
             ConvertToTiles(wallArray, wallIDs);
 
             lightEngine.Load();
-
-            playerLight = new Light();
-            playerLight.Load(Content);
 
             background.Load();
 
@@ -274,7 +270,6 @@ namespace Adam
                 }
             }
 
-            playerLight.Update(player);
 
             foreach (Key key in keyList)
             {

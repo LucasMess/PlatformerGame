@@ -282,7 +282,7 @@ namespace Adam
             {
                 if (CurrentGameMode == GameMode.Edit)
                 {
-                    if(GameWorld.Instance.levelEditor.actionBar.AskSaveDialog())
+                    if (GameWorld.Instance.levelEditor.actionBar.AskSaveDialog())
                     {
                         GameWorld.Instance.levelEditor.actionBar.SaveButton_MouseClicked();
                     }
@@ -292,16 +292,8 @@ namespace Adam
 
             }
 
-            //if (InputHelper.IsKeyDown(Keys.I))
-            //{
-            //    Objective obj = new Objective();
-            //    obj.Create("Test Objective", 0);
-            //    ObjectiveTracker.AddObjective(obj);
-            //}
-            //if (InputHelper.IsKeyDown(Keys.U))
-            //{
-            //    ObjectiveTracker.CompleteObjective(0);
-            //}
+
+
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)
@@ -350,7 +342,7 @@ namespace Adam
                     if (gameWorld.isOnDebug)
                         break;
 
-                    
+
 
                     //if (gameWorld.SimulationPaused)
                     //    break;
@@ -435,7 +427,7 @@ namespace Adam
                     gameWorld.DrawBackground(backgroundSB);
                     gameWorld.DrawClouds(backgroundSB);
                     backgroundSB.End();
-                    
+
                     gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawInBack(gameSB);
                     gameWorld.Draw(gameSB);
@@ -561,7 +553,7 @@ namespace Adam
                 {
                     debugSB.Begin();
                     debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 280), Color.White * .3f);
-                    debugSB.DrawString(debugFont, Main.Version+" FPS: " + fps, new Vector2(0, 0), Color.White);
+                    debugSB.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
                     debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);

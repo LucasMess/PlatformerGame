@@ -64,7 +64,6 @@ namespace Adam.Lights
         public override void Update()
         {
             if (isShaky) Shake();
-
             base.Update();
         }
     }
