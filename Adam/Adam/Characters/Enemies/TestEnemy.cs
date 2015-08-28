@@ -39,5 +39,6 @@ namespace Adam.Characters.Enemies
                 throw new NotImplementedException();
             }
         }
+
     }
 }

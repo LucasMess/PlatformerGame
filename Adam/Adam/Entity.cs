@@ -65,6 +65,25 @@ namespace Adam
             set { value = opacity; }
         }
 
+        Color color;
+        /// <summary>
+        /// The color that the entity will be drawn in.
+        /// </summary>
+        public virtual Color Color
+        {
+            get
+            {
+                if (color == null)
+                    color = Color.White;
+
+                return color;
+            }
+            set
+            {
+                color = value;
+            }
+        }
+
         /// <summary>
         /// Base update that provides basic logic.
         /// </summary>
@@ -485,6 +504,5 @@ namespace Adam
             }
             else return false;
         }
-
     }
 }

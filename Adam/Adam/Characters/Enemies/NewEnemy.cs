@@ -13,6 +13,10 @@ namespace Adam.Characters.Enemies
     public abstract partial class NewEnemy : Entity
     {
         const short RangeRadius = 2000;
+        const short MeanResetTime = 5000;
+
+        Timer hitByPlayerTimer;
+        Timer wasMeanTimer;
 
         /// <summary>
         /// The box on the enemy that defines where it can take damage from the player jumping on it.
@@ -32,7 +36,7 @@ namespace Adam.Characters.Enemies
             {
                 if (rangeRect == null)
                 {
-                    rangeRect = new Rectangle(0,0,RangeRadius,RangeRadius);
+                    rangeRect = new Rectangle(0, 0, RangeRadius, RangeRadius);
                 }
 
                 rangeRect.X = collRectangle.X - rangeRect.Width / 2;
@@ -110,7 +114,7 @@ namespace Adam.Characters.Enemies
                     disappearSound = new SoundFx("Sounds/Player/enemy_kill");
                 }
                 return disappearSound;
-            }            
+            }
         }
 
         SoundFx jumpedOnSound;
@@ -139,7 +143,31 @@ namespace Adam.Characters.Enemies
             return (RangeRect.Intersects(player.collRectangle));
         }
 
-       
+        /// <summary>
+        /// Checks to see if the enemy has recently taken damage.
+        /// </summary>
+        /// <returns></returns>
+        protected bool HasTakenDamageRecently()
+        {
+            return (hitByPlayerTimer.TimeElapsedInSeconds < 2);
+        }
 
+
+        int startTimeOfBeingMean;
+        /// <summary>
+        /// Checks to see if enemy should make mean sound.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsTimeToBeMean()
+        {
+            //Starts the timer at a random position.
+            if (startTimeOfBeingMean == 0)
+            {
+                startTimeOfBeingMean = GameWorld.RandGen.Next(0, MeanResetTime);
+                wasMeanTimer.SetToInMilliseconds(startTimeOfBeingMean);
+            }
+
+            return (wasMeanTimer.TimeElapsedInMilliSeconds > MeanResetTime);
+        }
     }
 }

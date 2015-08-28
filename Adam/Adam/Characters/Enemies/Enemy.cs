@@ -74,13 +74,6 @@ namespace Adam
 
             if (tookDamage) goto BeingHit;
 
-            //Each public class implements their own update logic.
-            //Call base.Update for the basic update logic.
-
-            //See if player in range
-            radiusRect.X = collRectangle.X - radiusRect.Width / 2;
-            radiusRect.Y = collRectangle.Y - radiusRect.Height / 2;
-
             if (radiusRect.Intersects(player.collRectangle) == false)
             {
                 isInRange = false;
@@ -101,14 +94,7 @@ namespace Adam
                 isPlayerAbove = true;
             else isPlayerAbove = false;
 
-            //Velocity
 
-            //Random chance of being mean.
-            int shouldIShowDominace = GameWorld.RandGen.Next(0, 100);
-            if (shouldIShowDominace == 1)
-            {
-                BeMean();
-            }
                     
             //Check if youching player
             if (damageBox.Intersects(player.attackBox))
@@ -136,18 +122,7 @@ namespace Adam
                 Kill();
             }
         
-            base.Update();
-
-
-            BeingHit:
-            if (tookDamage)
-            {
-                damagedIncapableTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (damagedIncapableTimer > 300)
-                {
-                    damagedIncapableTimer = 0;
-                    tookDamage = false;
-                }
+            base.Update();}
             }           
            
 
