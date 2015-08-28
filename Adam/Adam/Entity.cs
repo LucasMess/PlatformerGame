@@ -72,16 +72,28 @@ namespace Adam
         {
             gameWorld = GameWorld.Instance;
 
+            //Check for physics, if applicable.
             if (this is INewtonian)
             {
                 ApplyGravity();
             }
 
-
+            //Check for collision, if applicable.
             if (this is ICollidable)
             {
                 UpdateXYRects();
                 CheckTerrainCollision();
+            }
+
+            //Animate entity if applicable.
+            if (this is IAnimated)
+            {
+                IAnimated ian = (IAnimated)this;
+                if (ian.Animation == null || ian.AnimationData == null)
+                {
+                    throw new NullReferenceException("No animation data or animation found for object:" + GetType());
+                }
+                ian.Animate();
             }
 
         }
@@ -459,6 +471,19 @@ namespace Adam
         public Entity GetUpdated()
         {
             return this;
+        }
+
+        /// <summary>
+        /// Checks if the entity has an animation.
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsAnimated()
+        {
+            if (animation != null)
+            {
+                return true;
+            }
+            else return false;
         }
 
     }

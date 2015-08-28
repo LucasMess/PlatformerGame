@@ -24,8 +24,6 @@ namespace Adam
         public Rectangle topMidBound;
         public Rectangle damageBox;
         protected Vector2 maxVelocity;
-        public bool isFacingRight;
-        public bool isDead;
         public bool wasMean;
         public bool isPlayerToTheRight;
         public bool isPlayerAbove;
