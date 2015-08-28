@@ -10,7 +10,7 @@ namespace Adam.Characters.Enemies
     /// <summary>
     /// Class inherited by all enemies that contains basic functionality
     /// </summary>
-    public abstract partial class NewEnemy : Entity
+    public abstract partial class Enemy : Entity
     {
         const short RangeRadius = 2000;
         const short MeanResetTime = 5000;
@@ -19,6 +19,14 @@ namespace Adam.Characters.Enemies
         Timer wasMeanTimer;
 
         /// <summary>
+        /// The ID that identifies the enemy type.
+        /// </summary>
+        public abstract byte ID
+        {
+            get;
+        }
+
+        /// <summar
         /// The box on the enemy that defines where it can take damage from the player jumping on it.
         /// </summary>
         protected virtual Rectangle DamageBox
@@ -169,5 +177,90 @@ namespace Adam.Characters.Enemies
 
             return (wasMeanTimer.TimeElapsedInMilliSeconds > MeanResetTime);
         }
+
+        /// <summary>
+        /// Returns true is the player is to the right of the enemy.
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsPlayerToTheRight()
+        {
+            Player player = GameWorld.Instance.player;
+            if (player.collRectangle.X > collRectangle.X)
+                return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Returns true if the player is above the enemy.
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsPlayerAbove()
+        {
+            Player player = GameWorld.Instance.player;
+            if (player.collRectangle.Y < collRectangle.Y)
+                return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Returns true if the player is intersecting the enemy's collision rectangle.
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsIntersectingPlayer()
+        {
+            Player player = GameWorld.Instance.player;
+            return (player.collRectangle.Intersects(collRectangle));
+        }
+
+        /// <summary>
+        /// Returns true if the player is intersecting the enemy's damage box.
+        /// </summary>
+        /// <returns></returns>
+        protected bool IsBeingAttacked()
+        {
+            Player player = GameWorld.Instance.player;
+            return (player.collRectangle.Intersects(DamageBox));
+        }
+
+        /// <summary>
+        /// Returns the amount of damage this enemy deals when being touched.
+        /// </summary>
+        /// <returns></returns>
+        protected int GetTouchDamage()
+        {
+            switch (ID)
+            {
+                case 201:
+                    return EnemyDB.Snake_TouchDamage;
+                default:
+                    return 0;
+            }
+
+        }
+
+        /// <summary>
+        /// Returns the amount of damage this enemy deals when it hits something with its projectile.
+        /// </summary>
+        /// <returns></returns>
+        protected int GetProjectileDamage()
+        {
+            switch (ID)
+            {
+                case 0:
+                    return EnemyDB.Snake_ProjectileDamage;
+                default:
+                    return 0;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the enemy's health is equal to or below zero.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsDead()
+        {
+            return (health <= 0);
+        }
+
     }
 }

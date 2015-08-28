@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Characters.Enemies;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;

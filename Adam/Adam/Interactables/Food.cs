@@ -1,4 +1,5 @@
-﻿using Adam.Misc;
+﻿using Adam.Characters.Enemies;
+using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;

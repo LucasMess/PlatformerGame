@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Characters.Enemies;
 using Adam.Lights;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

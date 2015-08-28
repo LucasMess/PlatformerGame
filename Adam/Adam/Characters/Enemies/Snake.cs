@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Characters.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,9 +11,9 @@ using System.Text;
 
 namespace Adam.Enemies
 {
-    public class SnakeEnemy : Enemy
+    public class Snake : Enemy
     {
-        public SnakeEnemy(int x, int y)
+        public Snake(int x, int y)
         {
             Content = Main.Content;
             gameWorld = GameWorld.Instance;
@@ -40,9 +41,9 @@ namespace Adam.Enemies
             base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
-            base.Update(player, gameTime);
+            base.Update();
 
             collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
             damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width + 10, collRectangle.Height / 2);

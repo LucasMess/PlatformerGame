@@ -9,6 +9,7 @@ using Adam;
 using Microsoft.Xna.Framework.Input;
 using Adam.Lights;
 using Adam.Misc.Interfaces;
+using Adam.Characters.Enemies;
 
 namespace Adam
 {

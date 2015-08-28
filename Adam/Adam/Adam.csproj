@@ -154,7 +154,6 @@
     <Compile Include="Characters\Enemies\Frog.cs" />
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\NewEnemy.cs" />
-    <Compile Include="Characters\Enemies\TestEnemy.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
@@ -204,7 +203,7 @@
     <Compile Include="Particles\SnakeVenomEffect.cs" />
     <Compile Include="Characters\Enemies\BloodlessEnemy.cs" />
     <Compile Include="Characters\Enemies\DroneEnemy.cs" />
-    <Compile Include="Characters\Enemies\SnakeEnemy.cs" />
+    <Compile Include="Characters\Enemies\Snake.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="UI\Camera.cs" />
@@ -213,7 +212,6 @@
     <Compile Include="Levels\Cloud.cs" />
     <Compile Include="Interactables\Door.cs" />
     <Compile Include="Particles\Particle.cs" />
-    <Compile Include="Characters\Enemies\Enemy.cs" />
     <Compile Include="Interactables\Gem.cs" />
     <Compile Include="Glows\Glow.cs" />
     <Compile Include="Interactables\Jetpack.cs" />
@@ -247,7 +245,6 @@
     <Compile Include="Characters\Player.cs" />
     <Compile Include="UI\Information\PlaceNotification.cs" />
     <Compile Include="UI\PopUp.cs" />
-    <Compile Include="Characters\Enemies\PotatoEnemy.cs" />
     <Compile Include="Interactables\Projectile.cs" />
     <Compile Include="Projectiles\CollisionRay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

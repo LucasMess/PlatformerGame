@@ -376,7 +376,7 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
-                            GameWorld.Instance.entities.Add(new SnakeEnemy(drawRectangle.X, drawRectangle.Y));
+                            GameWorld.Instance.entities.Add(new Snake(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
                     }

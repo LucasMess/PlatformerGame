@@ -10,6 +10,7 @@ using Adam.Interactables;
 using Adam.Misc.Interfaces;
 using Adam.Obstacles;
 using Adam.Lights;
+using Adam.Characters.Enemies;
 
 namespace Adam
 {

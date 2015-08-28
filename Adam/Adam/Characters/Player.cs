@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Characters.Enemies;
 using Adam.Interactables;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
