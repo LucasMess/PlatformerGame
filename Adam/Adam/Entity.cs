@@ -89,7 +89,7 @@ namespace Adam
                 if (color == null)
                     color = Color.White;
 
-                return color;
+                return color * Opacity;
             }
             set
             {
@@ -140,6 +140,14 @@ namespace Adam
             if (this is IAnimated)
             {
                 IAnimated ian = (IAnimated)this;
+
+                //Flip sprite if facing other way.
+                if (isFacingRight)
+                {
+                    ian.Animation.isFlipped = true;
+                }
+                else ian.Animation.isFlipped = false;
+
                 ian.Animation.Draw(spriteBatch);
             }
 
@@ -522,19 +530,6 @@ namespace Adam
         public Entity GetUpdated()
         {
             return this;
-        }
-
-        /// <summary>
-        /// Checks if the entity has an animation.
-        /// </summary>
-        /// <returns></returns>
-        protected bool IsAnimated()
-        {
-            if (animation != null)
-            {
-                return true;
-            }
-            else return false;
         }
     }
 }

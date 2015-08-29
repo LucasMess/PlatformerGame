@@ -10,18 +10,8 @@ using System.Text;
 
 namespace Adam.Noobs
 {
-    public class God : NonPlayableCharacter, ITalkable
+    public class God : NonPlayableCharacter, ITalkable, IAnimated
     {
-        enum AnimationState
-        {
-            Still,
-            Walking,
-            Sleeping,
-            Talking,
-        }
-        AnimationState CurrentAnimationState = AnimationState.Still;
-        AnimationData walking;
-        AnimationData still;
         GameTime gameTime;
         int spawnPoint;
 
@@ -37,9 +27,6 @@ namespace Adam.Noobs
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 16;
 
-            still = new AnimationData(300, 4, 0, AnimationType.Loop);
-            walking = new AnimationData(150, 4, 1, AnimationType.Loop);
-
             animation = new Animation(Texture, drawRectangle, sourceRectangle);
         }
 
@@ -52,7 +39,6 @@ namespace Adam.Noobs
             base.Update(gameTime, player);
 
             WalkAroundSpawnPoint(spawnPoint);
-            Animate();
 
             if (velocity.X != 0)
             {
@@ -65,25 +51,6 @@ namespace Adam.Noobs
             if (velocity.X < 0)
                 animation.isFlipped = true;
 
-        }
-
-        private void Animate()
-        {
-            switch (CurrentAnimationState)
-            {
-                case AnimationState.Still:
-                    animation.Update(gameTime, drawRectangle, still);
-                    break;
-                case AnimationState.Walking:
-                    animation.Update(gameTime, drawRectangle, walking);
-                    break;
-                case AnimationState.Sleeping:
-                    break;
-                case AnimationState.Talking:
-                    break;
-                default:
-                    break;
-            }
         }
 
         protected override void ShowMessage()
@@ -162,7 +129,57 @@ namespace Adam.Noobs
             }
         }
 
+        void IAnimated.Animate()
+        {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            switch (CurrentAnimationState)
+            {
+                case AnimationState.Still:
+                    animation.Update(gameTime, drawRectangle, animationData[0]);
+                    break;
+                case AnimationState.Walking:
+                    animation.Update(gameTime, drawRectangle, animationData[1]);
+                    break;
+                case AnimationState.Sleeping:
+                    break;
+                case AnimationState.Talking:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public bool EndConversation { get; set; }
+
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new Adam.AnimationData[]
+                    {
+                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
+                        new Adam.AnimationData(250,4,1,AnimationType.Loop),
+                    };
+                return animationData;
+            }
+        }
+
+        public Adam.Misc.Interfaces.AnimationState CurrentAnimationState
+        {
+            get; set;
+        }
     }
 }

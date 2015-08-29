@@ -14,12 +14,42 @@ namespace Adam.Interactables
         SoundFx quack, openSound;
         bool isOpen;
 
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new AnimationData[]
+                    {
+                        new AnimationData(250,4,0,AnimationType.PlayOnce),
+                    };
+                return animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get; set;
+        }
+
         public CheckPoint(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Objects/checkPoint");
             drawRectangle = new Rectangle(x, y - Main.Tilesize * 2, 32, 96);
             sourceRectangle = new Rectangle(0, 0, 16, 48);
-            collRectangle = new Rectangle(drawRectangle.Center.X - 50, drawRectangle.Y, 100,drawRectangle.Height);
+            collRectangle = new Rectangle(drawRectangle.Center.X - 50, drawRectangle.Y, 100, drawRectangle.Height);
 
             opening = new AnimationData(32, 4, 0, AnimationType.PlayOnce);
             animation = new Animation(Texture, drawRectangle, sourceRectangle);
@@ -51,7 +81,7 @@ namespace Adam.Interactables
                 Entity en = GameWorld.Instance.entities[i];
                 if (en is CheckPoint)
                 {
-                    if (en == this) 
+                    if (en == this)
                         continue;
                     CheckPoint ch = (CheckPoint)en;
                     ch.Close();
@@ -74,7 +104,7 @@ namespace Adam.Interactables
                 par.CreateSparkles(this);
                 GameWorld.Instance.particles.Add(par);
             }
-          
+
         }
 
         public void Close()
@@ -87,6 +117,11 @@ namespace Adam.Interactables
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
+        }
+
+        public void Animate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

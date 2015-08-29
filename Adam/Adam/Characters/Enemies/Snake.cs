@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Misc;
+using Adam.Misc.Interfaces;
 
 namespace Adam.Enemies
 {
-    public class Snake : Enemy
+    public class Snake : Enemy, IAnimated
     {
         double projCooldownTimer;
         Vector2 frameCount;
@@ -66,6 +67,36 @@ namespace Adam.Enemies
             }
         }
 
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new Adam.AnimationData[]
+                    {
+                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
+                    };
+                return animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get; set;
+        }
+
         public Snake(int x, int y)
         {
             //Sets up specific variables for the snake
@@ -108,6 +139,11 @@ namespace Adam.Enemies
             else animation.isFlipped = false;
 
             animation.Draw(spriteBatch);
+        }
+
+        public void Animate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

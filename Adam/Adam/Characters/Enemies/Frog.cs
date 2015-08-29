@@ -10,7 +10,6 @@ namespace Adam.Characters.Enemies
 {
     public class Frog : Enemy, ICollidable, INewtonian, IAnimated
     {
-        AnimationData still, jumping;
         double jumpTimer;
         SoundFx jumpSound;
 
@@ -21,12 +20,8 @@ namespace Adam.Characters.Enemies
             drawRectangle = new Rectangle(x - 8, y - 32, 48, 64);
             sourceRectangle = new Rectangle(0, 0, 24, 32);
 
-            still = new AnimationData(250, 4, 0, AnimationType.Loop);
-            jumping = new AnimationData(125, 4, 1, AnimationType.PlayOnce);
-            animation = new Animation(Texture, drawRectangle, sourceRectangle);
-
             jumpSound = new SoundFx("Sounds/Frog/frog_jump", this);
-           
+
         }
 
         public override void Update()
@@ -36,29 +31,11 @@ namespace Adam.Characters.Enemies
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 32;
             GameTime gameTime = GameWorld.Instance.GetGameTime();
-            animation.Update(gameTime, drawRectangle, still);
 
             Jump();
-            Animate();
 
             base.Update();
 
-        }
-
-        private void Animate()
-        {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
-            switch (CurrentAnimationState)
-            {
-                case AnimationState.Still:
-                    animation.Update(gameTime, drawRectangle, still);
-                    break;
-                case AnimationState.Jumping:
-                    animation.Update(gameTime, drawRectangle, jumping);
-                    break;
-                default:
-                    break;
-            }
         }
 
         private void Jump()
@@ -77,12 +54,12 @@ namespace Adam.Characters.Enemies
                     velocity.Y = -11f;
                     collRectangle.Y -= 1;
                     IsJumping = true;
-                    jumping.Reset();
+                    animationData[1].Reset();
                     CurrentAnimationState = AnimationState.Jumping;
                     jumpSound.Play();
                 }
             }
-            
+
         }
 
 
@@ -97,20 +74,20 @@ namespace Adam.Characters.Enemies
             velocity.Y = 0f;
             IsJumping = false;
             IsFlying = false;
-            CurrentAnimation = AnimationState.Still;
+            CurrentAnimationState = AnimationState.Still;
             velocity.X = 0;
         }
 
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
             if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimation = AnimationState.Still;
+                CurrentAnimationState = AnimationState.Still;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimation = AnimationState.Still;
+                CurrentAnimationState = AnimationState.Still;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
@@ -120,13 +97,14 @@ namespace Adam.Characters.Enemies
 
         void IAnimated.Animate()
         {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    Animation.Update(gameTime, drawRectangle, still);
+                    Animation.Update(gameTime, drawRectangle, animationData[0]);
                     break;
                 case AnimationState.Jumping:
-                    Animation.Update(gameTime, drawRectangle, jumping);
+                    Animation.Update(gameTime, drawRectangle, animationData[1]);
                     break;
                 default:
                     break;
@@ -171,7 +149,7 @@ namespace Adam.Characters.Enemies
             {
                 if (meanSound == null)
                     meanSound = new SoundFx("Sounds/Frog/frog_croak");
-                return meanSound;   
+                return meanSound;
             }
         }
 
@@ -197,16 +175,23 @@ namespace Adam.Characters.Enemies
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture,drawRectangle,sourceRectangle);
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
                 return animation;
             }
         }
 
+        AnimationData[] animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                throw new NotImplementedException();
+                if (animationData == null)
+                    animationData = new Adam.AnimationData[]
+                    {
+                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
+                        new Adam.AnimationData(250,4,1,AnimationType.PlayInIntervals),
+                    };
+                return animationData;
             }
         }
 

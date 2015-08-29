@@ -11,6 +11,9 @@ namespace Adam.Misc.Interfaces
         Walking,
         Jumping,
         Charging,
+        Talking,
+        Sleeping,
+        Flying,
     }
 
     public interface IAnimated

@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System;
@@ -8,8 +9,46 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class CDPlayer : Item
+    public class CDPlayer : Item, IAnimated
     {
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new AnimationData[]
+                    {
+                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
+                    };
+                return animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public CDPlayer(Vector2 position)
         {
             Texture = ContentHelper.LoadTexture("Objects/CDplayer_new");
@@ -49,6 +88,11 @@ namespace Adam.Interactables
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
+        }
+
+        public void Animate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Adam;
 using Adam.Characters.Enemies;
 using Adam.Misc;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,15 +13,8 @@ using System.Text;
 
 namespace Adam
 {
-    public class Lost : Enemy
+    public class Lost : Enemy, IAnimated
     {
-        enum AnimationState
-        {
-            Hiding,
-            Flying,
-        }
-        AnimationState CurrentAnimationState = AnimationState.Hiding;
-        AnimationData still;
         SoundFx ghost, ghost2;
         double ghostTimer;
         int timerEnd;
@@ -42,11 +36,12 @@ namespace Adam
             }
         }
 
+        SoundFx meanSound;
         protected override SoundFx MeanSound
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -54,7 +49,7 @@ namespace Adam
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -62,8 +57,38 @@ namespace Adam
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
+        }
+
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new Adam.AnimationData[]
+                    {
+                        new AnimationData(250,4,0,AnimationType.Loop),
+                    };
+                return animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get; set;
         }
 
         public Lost(int x, int y)
@@ -78,9 +103,6 @@ namespace Adam
             drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
             sourceRectangle = new Rectangle(0, 0, 24, 40);
 
-            still = new AnimationData(200, 4, 0, AnimationType.Loop);
-            animation = new Animation(Texture, drawRectangle, sourceRectangle);
-
             timerEnd = GameWorld.RandGen.Next(3, 8);
         }
 
@@ -88,9 +110,6 @@ namespace Adam
         {
             Player player = GameWorld.Instance.GetPlayer();
             GameTime gameTime = GameWorld.Instance.GetGameTime();
-
-            Animate();
-
 
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
@@ -124,18 +143,19 @@ namespace Adam
 
             drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
 
+            // Set the opacity back to normal before checking if is hiding;
             opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
 
             if (IsPlayerToTheRight() && !player.isFacingRight)
             {
-                CurrentAnimationState = AnimationState.Hiding;
+                CurrentAnimationState = AnimationState.Flying;
                 velocity = new Vector2(0, 0);
                 opacity = .5f;
             }
             if (!IsPlayerToTheRight() && player.isFacingRight)
             {
-                CurrentAnimationState = AnimationState.Hiding;
+                CurrentAnimationState = AnimationState.Flying;
                 velocity = new Vector2(0, 0);
                 opacity = .5f;
             }
@@ -157,29 +177,9 @@ namespace Adam
 
         }
 
-        private void Animate()
+        void IAnimated.Animate()
         {
-            animation.Update(GameWorld.Instance.gameTime, drawRectangle, still);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (isDead)
-                return;
-            Color color = Color.White * opacity;
-            animation.Color = color;
-            animation.Draw(spriteBatch);
-
-            if (isFacingRight)
-            {
-                animation.isFlipped = false;
-                //spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-            }
-            else
-            {
-                animation.isFlipped = true;
-                // spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-            }
+            animation.Update(GameWorld.Instance.gameTime, drawRectangle, animationData[0]);
         }
     }
 }

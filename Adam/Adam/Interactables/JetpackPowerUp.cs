@@ -23,6 +23,7 @@ namespace Adam.Interactables
             {
                 if (animation == null)
                     animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
             }
         }
 
