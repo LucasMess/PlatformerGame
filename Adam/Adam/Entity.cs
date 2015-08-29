@@ -167,7 +167,7 @@ namespace Adam
             else if (sourceRectangle != null)
             {
                 if (!isFacingRight)
-                spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                    spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
                 else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
 
@@ -301,15 +301,6 @@ namespace Adam
                     indexes.Add(i);
                 }
             }
-
-            ////Remove corner indexes
-            //int lastItem = indexes.Count - 1;
-            //int[] copy = indexes.ToArray();
-            //indexes.Remove(copy[lastItem]);
-            //indexes.Remove(copy[lastItem - widthInTiles + 1]);
-            //indexes.Remove(copy[widthInTiles - 1]);
-            //indexes.Remove(copy[0]);
-
             return indexes.ToArray();
         }
 
@@ -458,43 +449,8 @@ namespace Adam
 
             //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
             float gravity = newt.GravityStrength;
-            int indexAboveOrBelowEntity;
 
-            if (gravity > 0)
-            {
-                if (isFacingRight)
-                {
-                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Bottom - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
-                }
-                else
-                {
-                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Bottom - 1)) + gameWorld.worldData.LevelWidth;
-                }
-
-            }
-            else
-            {
-                if (isFacingRight)
-                {
-                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Top - Main.Tilesize)) + gameWorld.worldData.LevelWidth;
-                }
-                else
-                {
-                    indexAboveOrBelowEntity = GetTileIndex(new Vector2(collRectangle.Right, collRectangle.Top - 1)) + gameWorld.worldData.LevelWidth;
-                }
-            }
-
-            if (indexAboveOrBelowEntity >= 0 && indexAboveOrBelowEntity < gameWorld.tileArray.Length)
-                if (!gameWorld.tileArray[indexAboveOrBelowEntity].isSolid)
-                {
-                    newt.IsAboveTile = false;
-                }
-                else newt.IsAboveTile = true;
-
-            if (!newt.IsAboveTile || newt.IsJumping)
-            {
-                velocity.Y += gravity;
-            }
+            velocity.Y += gravity;
         }
 
         protected virtual void OnCollisionAbove(TerrainCollisionEventArgs e)
