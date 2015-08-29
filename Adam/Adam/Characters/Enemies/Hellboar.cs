@@ -10,11 +10,10 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    public class Hellboar : Enemy, ICollidable, INewtonian
+    public class Hellboar : Enemy, ICollidable, INewtonian, IAnimated
     {
         bool isAngry;
         List<Rectangle> rects;
-        AnimationData animationData;
 
         double idleTimer;
         double chargingTimer;
@@ -31,21 +30,12 @@ namespace Adam.Characters.Enemies
         SoundFx crash;
         SoundFx tweet;
 
-        enum AnimationState
-        {
-            Idle, Walking, Transforming,
-        }
-
-        AnimationState CurrentAnimation = AnimationState.Idle;
-
         public Hellboar(int x, int y)
         {
             collRectangle = new Rectangle(x, y, 50 * 2, 76);
             drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             Texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
-            animationData = new AnimationData(0, 4, 0, AnimationType.Loop);
-            animationData.FrameCount = new Vector2(3, 0);
 
             playerSeen = new SoundFx("Sounds/Hellboar/playerSeen",this);
             fire = new SoundFx("Sounds/Hellboar/fire", this);
@@ -59,14 +49,10 @@ namespace Adam.Characters.Enemies
             drawRectangle.X = collRectangle.X - 18;
             drawRectangle.Y = collRectangle.Y - 20;
 
-            int t = GetTileIndex();
-            int[] i = GetNearbyTileIndexes(GameWorld.Instance);
-
             CheckForPlayer();
             CheckIfCharging();
             CheckIfStunned();
             WalkRandomly();
-            Animate();
 
             base.Update();
         }
@@ -133,6 +119,7 @@ namespace Adam.Characters.Enemies
             if (isCharging)
                 return;
 
+            GameWorld gameWorld = GameWorld.Instance;
             Player player = GameWorld.Instance.GetPlayer();
 
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
@@ -156,7 +143,7 @@ namespace Adam.Characters.Enemies
             GameTime gameTime = GameWorld.Instance.GetGameTime();
             if (isAngry && !isCharging)
             {
-                CurrentAnimation = AnimationState.Transforming;
+                CurrentAnimationState = AnimationState.Transforming;
                 velocity.X = 0;
             }
             else
@@ -166,7 +153,7 @@ namespace Adam.Characters.Enemies
                 {
                     idleTimer = 0;
                     isWalking = true;
-                    CurrentAnimation = AnimationState.Walking;
+                    CurrentAnimationState = AnimationState.Walking;
                     velocity.X = 2f;
 
                     if (GameWorld.RandGen.Next(0, 2) == 0)
@@ -184,7 +171,7 @@ namespace Adam.Characters.Enemies
                 {
                     idleTimer = 0;
                     isWalking = false;
-                    CurrentAnimation = AnimationState.Idle;
+                    CurrentAnimationState = AnimationState.Still;
                     velocity.X = 0;
                 }
             }
@@ -203,88 +190,6 @@ namespace Adam.Characters.Enemies
             crash.Reset();
         }
 
-        private void Animate()
-        {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
-            switch (CurrentAnimation)
-            {
-                case AnimationState.Idle:
-                    sourceRectangle.Y = 0;
-                    animationData.SwitchFrame = 125;
-                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (animationData.FrameTimer >= animationData.SwitchFrame)
-                    {
-                        animationData.FrameTimer = 0;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        animationData.CurrentFrame++;
-                    }
-
-                    if (animationData.CurrentFrame > animationData.FrameCount.X)
-                    {
-                        animationData.CurrentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-                    break;
-                case AnimationState.Walking:
-                    sourceRectangle.Y = sourceRectangle.Height;
-                    animationData.SwitchFrame = 125;
-                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (animationData.FrameTimer >= animationData.SwitchFrame)
-                    {
-                        animationData.FrameTimer = 0;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        animationData.CurrentFrame++;
-                    }
-
-                    if (animationData.CurrentFrame > animationData.FrameCount.X)
-                    {
-                        animationData.CurrentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-                    break;
-                case AnimationState.Transforming:
-                    sourceRectangle.Y = sourceRectangle.Height * 2;
-                    animationData.SwitchFrame = 125;
-                    animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (animationData.FrameTimer >= animationData.SwitchFrame)
-                    {
-                        animationData.FrameTimer = 0;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        animationData.CurrentFrame++;
-                    }
-
-                    if (animationData.CurrentFrame > animationData.FrameCount.X)
-                    {
-                        animationData.CurrentFrame = 3;
-                        sourceRectangle.X = sourceRectangle.Width * 3;
-                    }
-                    break;
-            }
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            //DrawSurroundIndexes(spriteBatch);
-            spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Blue * .5f);
-            spriteBatch.Draw(Main.DefaultTexture, drawRectangle, Color.Green * .5f);
-
-            Color color = Color.White;
-            //if (isAngry) color = Color.Blue; else color = Color.White;
-
-
-            //if (rects != null)
-            //    foreach (var rect in rects)
-            //        spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), new Rectangle(rect.X, rect.Y, 16, 16), Color.Black);
-
-            base.Draw(spriteBatch);
-
-
-        }
-
-
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
             velocity.Y = 0;
@@ -302,7 +207,7 @@ namespace Adam.Characters.Enemies
                 Stun();
             }
             velocity.X = 0;
-            CurrentAnimation = AnimationState.Idle;
+            CurrentAnimationState = AnimationState.Still;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
@@ -312,13 +217,29 @@ namespace Adam.Characters.Enemies
             {
                 Stun();
             }
-            CurrentAnimation = AnimationState.Idle;
+            CurrentAnimationState = AnimationState.Still;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
         {
         }
 
+        void IAnimated.Animate()
+        {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            switch (CurrentAnimationState)
+            {
+                case AnimationState.Still:
+                    animation.Update(gameTime, drawRectangle, animationData[0]);
+                    break;
+                case AnimationState.Walking:
+                    animation.Update(gameTime, drawRectangle, animationData[1]);
+                    break;
+                case AnimationState.Transforming:
+                    animation.Update(gameTime, drawRectangle, animationData[2]);
+                    break;
+            }
+        }
 
         public float GravityStrength
         {
@@ -340,7 +261,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return 205;
             }
         }
 
@@ -348,7 +269,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return EnemyDB.Hellboar_MaxHealth;
             }
         }
 
@@ -356,7 +277,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -364,7 +285,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -372,8 +293,40 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
+        }
+
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                return animation;
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new AnimationData[]
+                    {
+                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
+                        new Adam.AnimationData(250,4,1,AnimationType.Loop),
+                        new Adam.AnimationData(250,4,2,AnimationType.PlayOnce),
+                    };
+                return animationData;
+            }
+        }
+
+        public Misc.Interfaces.AnimationState CurrentAnimationState
+        {
+            get; set;
         }
     }
 }

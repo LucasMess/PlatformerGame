@@ -14,6 +14,7 @@ namespace Adam.Misc.Interfaces
         Talking,
         Sleeping,
         Flying,
+        Transforming,
     }
 
     public interface IAnimated

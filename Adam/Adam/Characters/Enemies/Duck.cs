@@ -31,12 +31,6 @@ namespace Adam.Characters.Enemies
             base.Update();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
-
-
         public float GravityStrength { get; set; } = Main.Gravity;
 
         public bool IsAboveTile { get; set; }
@@ -49,7 +43,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return 208;
             }
         }
 
@@ -57,7 +51,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return EnemyDB.Duck_MaxHealth;
             }
         }
 
@@ -65,7 +59,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -73,7 +67,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -81,7 +75,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 

@@ -129,21 +129,10 @@ namespace Adam.Enemies
             projCooldownTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (isDead)
-                return;
-
-            if (IsPlayerToTheRight())
-                animation.isFlipped = true;
-            else animation.isFlipped = false;
-
-            animation.Draw(spriteBatch);
-        }
-
         public void Animate()
         {
-            throw new NotImplementedException();
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            animation.Update(gameTime, drawRectangle, animationData[0]);
         }
     }
 }
