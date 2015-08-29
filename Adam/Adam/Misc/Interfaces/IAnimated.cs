@@ -5,10 +5,19 @@ using System.Text;
 
 namespace Adam.Misc.Interfaces
 {
-    interface IAnimated
+    public enum AnimationState
     {
-        Animation Animation { get; set; }
-        AnimationData[] AnimationData { get; set; }
+        Still,
+        Walking,
+        Jumping,
+        Charging,
+    }
+
+    public interface IAnimated
+    {
+        Animation Animation { get; }
+        AnimationData[] AnimationData { get; }
+        AnimationState CurrentAnimationState { get; set; }
 
         void Animate();
     }

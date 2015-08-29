@@ -241,7 +241,7 @@ namespace Adam
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
-                    enemy.Update(player, gameTime);
+                    enemy.Update();
                 }
                 if (entity is Obstacle)
                 {
@@ -470,7 +470,6 @@ namespace Adam
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
-                    enemy.health = enemy.maxHealth;
                     enemy.isDead = false;
                 }
                 if (entity is Food)

@@ -58,7 +58,7 @@ namespace Adam
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Snake:
-                    animation.Draw(spriteBatch);
+                    //animation.Draw(spriteBatch);
                     break;
                 case ProjectileSource.Player:
                     spriteBatch.Draw(Texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
@@ -88,6 +88,11 @@ namespace Adam
             if (light != null)
                 GameWorld.Instance.lightEngine.RemoveDynamicLight(light);
             GameWorld.Instance.entities.Remove(this);
+        }
+
+        public void Animate()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -248,11 +253,11 @@ namespace Adam
                 case ProjectileSource.Snake:
                     Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
                     collRectangle = new Rectangle(enemy.drawRectangle.X, enemy.drawRectangle.Y, 32, 32);
-                    animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
+                   // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
                     if (!enemy.isFacingRight)
                     {
                         velocity = new Vector2(-10, -15);
-                        animation.isFlipped = true;
+                        //animation.isFlipped = true;
                     }
                     else velocity = new Vector2(10, -15);
                     break;
@@ -271,8 +276,8 @@ namespace Adam
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
 
-                    animation.UpdateRectangle(collRectangle);
-                    animation.Update(gameTime);
+                  //  animation.UpdateRectangle(collRectangle);
+                   // animation.Update(gameTime);
                     CreateParticleEffect(gameTime);
 
                     velocity.Y += .8f;

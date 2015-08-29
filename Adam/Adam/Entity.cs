@@ -28,7 +28,6 @@ namespace Adam
         public Rectangle drawRectangle;
         public Rectangle collRectangle;
         public Rectangle sourceRectangle;
-        protected Animation animation;
         protected GameWorld gameWorld;
         public bool toDelete;
         public Vector2 velocity;
@@ -137,7 +136,26 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, drawRectangle, Color.White * opacity);
+            // If the entity has an animation.
+            if (this is IAnimated)
+            {
+                IAnimated ian = (IAnimated)this;
+                ian.Animation.Draw(spriteBatch);
+            }
+
+            // Drawing for simple entities that have a texture contained in a spritesheet.
+            else if (sourceRectangle != null)
+            {
+                if (!isFacingRight)
+                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                else spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            }
+
+            // Most basic drawing when there is only one frame and it is not in a spritesheet.
+            else
+            {
+                spriteBatch.Draw(Texture, drawRectangle, Color.White * opacity);
+            }
         }
 
         /// <summary>

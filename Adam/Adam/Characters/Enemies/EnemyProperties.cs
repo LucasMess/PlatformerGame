@@ -13,10 +13,10 @@ namespace Adam.Characters.Enemies
     public abstract partial class Enemy : Entity
     {
         const short RangeRadius = 2000;
-        const short MeanResetTime = 5000;
+        const int MeanResetTime = 500000;
 
-        Timer hitByPlayerTimer;
-        Timer wasMeanTimer;
+        Timer hitByPlayerTimer = new Timer();
+        Timer wasMeanTimer = new Timer();
 
         /// <summary>
         /// The ID that identifies the enemy type.
@@ -31,7 +31,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected virtual Rectangle DamageBox
         {
-            get { return DamageBox; }
+            get { return new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2); }
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Adam.Characters.Enemies
         /// Returns the amount of damage this enemy deals when it hits something with its projectile.
         /// </summary>
         /// <returns></returns>
-        protected int GetProjectileDamage()
+        public int GetProjectileDamage()
         {
             switch (ID)
             {

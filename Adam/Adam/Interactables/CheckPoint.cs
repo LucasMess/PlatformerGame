@@ -1,4 +1,5 @@
 ﻿using Adam.Misc;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class CheckPoint : Entity
+    public class CheckPoint : Entity, IAnimated
     {
         AnimationData opening;
         SoundFx quack, openSound;

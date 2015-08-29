@@ -21,14 +21,14 @@ namespace Adam.Characters.Enemies
             velocity.X = 1;
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
             drawRectangle = collRectangle;
 
             if (velocity.X > 0) isFacingRight = true;
             else isFacingRight = false;
 
-            base.Update(player, gameTime);
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -69,7 +69,7 @@ namespace Adam.Characters.Enemies
         private void PlayMeanSound()
         {
             if (IsTimeToBeMean())
-                MeanSound.PlayIfStopped();
+                MeanSound?.PlayIfStopped();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected void PlayAttackSound()
         {
-            AttackSound.PlayIfStopped();
+            AttackSound?.PlayIfStopped();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected void PlayDeathSound()
         {
-            DeathSound.PlayIfStopped();
+            DeathSound?.PlayIfStopped();
         }
 
         /// <summary>

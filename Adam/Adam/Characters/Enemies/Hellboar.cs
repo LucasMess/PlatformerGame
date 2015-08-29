@@ -56,15 +56,8 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            this.player = player;
-            this.gameTime = gameTime;
-            base.Update(player, gameTime);
-
-            if (isDead) return;
-
             drawRectangle.X = collRectangle.X - 18;
             drawRectangle.Y = collRectangle.Y - 20;
-            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2);
 
             int t = GetTileIndex();
             int[] i = GetNearbyTileIndexes(GameWorld.Instance);
@@ -74,6 +67,8 @@ namespace Adam.Characters.Enemies
             CheckIfStunned();
             WalkRandomly();
             Animate();
+
+            base.Update();
         }
 
         private void CheckIfStunned()
@@ -88,6 +83,8 @@ namespace Adam.Characters.Enemies
 
         private void CheckIfCharging()
         {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+
             if (!isAngry)
             {
                 countTilCharge = 0;
@@ -156,6 +153,7 @@ namespace Adam.Characters.Enemies
 
         private void WalkRandomly()
         {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
             if (isAngry && !isCharging)
             {
                 CurrentAnimation = AnimationState.Transforming;
@@ -207,6 +205,7 @@ namespace Adam.Characters.Enemies
 
         private void Animate()
         {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
             switch (CurrentAnimation)
             {
                 case AnimationState.Idle:

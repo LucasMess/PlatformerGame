@@ -150,10 +150,10 @@
     <Compile Include="Characters\Enemies\Bat.cs" />
     <Compile Include="Characters\Enemies\Duck.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
-    <Compile Include="Characters\Enemies\FlyingWheel.cs" />
+    <Compile Include="Characters\Enemies\BeingOfSight.cs" />
     <Compile Include="Characters\Enemies\Frog.cs" />
     <Compile Include="Characters\Enemies\Hellboar.cs" />
-    <Compile Include="Characters\Enemies\NewEnemy.cs" />
+    <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />

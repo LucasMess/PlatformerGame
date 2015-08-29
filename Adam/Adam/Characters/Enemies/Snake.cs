@@ -15,6 +15,7 @@ namespace Adam.Enemies
     public class Snake : Enemy
     {
         double projCooldownTimer;
+        Vector2 frameCount;
 
         public override byte ID
         {
@@ -94,7 +95,7 @@ namespace Adam.Enemies
                     projCooldownTimer = 0;
                 }
             }
-            projCooldownTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            projCooldownTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -30,7 +30,7 @@ namespace Adam
             this.Content = Content;
             this.monitorRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
 
-            animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Main.Tilesize, Main.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
+            //animation = new Animation(Content.Load<Texture2D>("Objects/door"), new Rectangle(x, y, Main.Tilesize, Main.Tilesize * 2), 10, 0, AnimationType.SlowPanVertical);
             lockedSound = Content.Load<SoundEffect>("Sounds/lock_closed");
             openSound = Content.Load<SoundEffect>("Sounds/lock_open");
             radiusRect = new Rectangle(x - 100, y - 100, 200, 200);
@@ -38,7 +38,7 @@ namespace Adam
 
         public void Update(GameTime gameTime, Player player, Tile[] tileArray)
         {
-            animation.Update(gameTime);
+            //animation.Update(gameTime);
 
             if (player.collRectangle.Intersects(radiusRect) && Keyboard.GetState().IsKeyDown(Keys.W) && !isOpen)
             {
@@ -47,7 +47,7 @@ namespace Adam
                     if (s == secret)
                     {
                         isOpen = true;
-                        animation.canStart = true;
+                        //animation.canStart = true;
                         player.keySecrets.Remove(s);
                         openSound.Play();
                         tileArray[tilePos].isSolid = false;
@@ -66,7 +66,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch);
+            //animation.Draw(spriteBatch);
         }
 
         public void DrawUI(SpriteBatch spriteBatch)

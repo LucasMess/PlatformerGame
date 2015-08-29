@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,11 +10,48 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class JetpackPowerUp : Item
+    public class JetpackPowerUp : Item, IAnimated
     {
         GameTime gameTime;
         bool isHovering;
         double hoverTimer;
+
+        Animation animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (animation == null)
+                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+            }
+        }
+
+        AnimationData[] animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+                if (animationData == null)
+                    animationData = new Adam.AnimationData[]
+                    {
+                        new AnimationData(250,4,0,AnimationType.Loop),
+                    };
+                return animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public JetpackPowerUp(int x, int y)
         {
@@ -74,6 +112,11 @@ namespace Adam.Interactables
         public override void Draw(SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
+        }
+
+        public void Animate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

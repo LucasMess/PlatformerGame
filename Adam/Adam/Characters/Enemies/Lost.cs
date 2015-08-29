@@ -87,6 +87,7 @@ namespace Adam
         public override void Update()
         {
             Player player = GameWorld.Instance.GetPlayer();
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
 
             Animate();
 

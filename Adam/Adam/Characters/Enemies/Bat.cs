@@ -99,9 +99,9 @@ namespace Adam.Characters.Enemies
             velocity.X = 0;
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
-            if (isDead) return;
+            Player player = GameWorld.Instance.GetPlayer();
 
             rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200, collRectangle.Height + 200);
 
@@ -157,7 +157,7 @@ namespace Adam.Characters.Enemies
                 velocity = Vector2.Zero;
             }
 
-            base.Update(player, gameTime);
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
