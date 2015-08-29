@@ -192,7 +192,6 @@ namespace Adam
             collRectangle.Width = 32;
             collRectangle.Height = 64;
             sourceRectangle = new Rectangle(0, 0, 24, 40);
-            drawRectangle = new Rectangle(0, 0, 48, 80);
         }
 
         /// <summary>
@@ -513,14 +512,6 @@ namespace Adam
         private void UpdatePlayerPosition()
         {
             ContainInGameWorld();
-
-            //Update the drawRectangle
-            drawRectangle.X = collRectangle.X - 8;
-            drawRectangle.Y = collRectangle.Y - 16;
-
-            //Update the rectangles that define the player collision
-            //xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, 32, 64 - 20);
-            //yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, 32 - 20, 64);
 
             //Attack box for killing enemies
             attackBox = new Rectangle(collRectangle.X - 8, collRectangle.Y + collRectangle.Height - 10, collRectangle.Width + 16, 20);
@@ -979,11 +970,8 @@ namespace Adam
             if (isChronoshifting) return;
 
             if (isFacingRight == true)
-                spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White);
-            else spriteBatch.Draw(currentTexture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), xRect, Color.Red);
-            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), yRect, Color.Blue);
+                spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White);
+            else spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
 
         public void TakeDamage(int damage)
@@ -1390,6 +1378,14 @@ namespace Adam
         }
 
         public bool IsAboveTile { get; set; }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, 48, 80);
+            }
+        }
     }
 
 }

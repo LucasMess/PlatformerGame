@@ -137,7 +137,7 @@ namespace Adam.Characters.Enemies
         /// <param name="rectangles"></param>
         public void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(drawRectangle.Width / Main.Tilesize, drawRectangle.Height / Main.Tilesize);
+            Vector2 size = new Vector2(DrawRectangle.Width / Main.Tilesize, DrawRectangle.Height / Main.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
             int width = sourceRectangle.Width / xSize;

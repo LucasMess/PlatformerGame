@@ -201,8 +201,8 @@
     <Compile Include="Particles\EnemyDesintegrationEffect.cs" />
     <Compile Include="Particles\PlayerChronoshiftEffect.cs" />
     <Compile Include="Particles\SnakeVenomEffect.cs" />
-    <Compile Include="Characters\Enemies\BloodlessEnemy.cs" />
-    <Compile Include="Characters\Enemies\DroneEnemy.cs" />
+    <Compile Include="Characters\Enemies\Bloodless.cs" />
+    <Compile Include="Characters\Enemies\Drone.cs" />
     <Compile Include="Characters\Enemies\Snake.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />

@@ -8,19 +8,25 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    public class Liquid : Entity
+    public class Liquid : Obstacle
     {
         double particleTimer;
         double restartTime;
         bool isOnTop;
-        Player player;
-
 
         public enum Type
         {
             Water, Poison, Lava
         }
         Type CurrentType;
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X + 8, collRectangle.Y + 8, 32, 32);
+            }
+        }
 
         public Liquid(int x, int y, Type type)
         {

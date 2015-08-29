@@ -16,7 +16,7 @@ namespace Adam.Obstacles
         Bottom,
     }
 
-    public class Obstacle : Entity
+    public abstract class Obstacle : Entity
     {
         public bool IsTouching { get; set; }
         public bool IsCollidable { get; set; }
@@ -49,7 +49,7 @@ namespace Adam.Obstacles
                 case DamageType.Sides:
                     break;
                 case DamageType.Bottom:
-                    attackBox = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + drawRectangle.Height - 20, drawRectangle.Width - 16, 10);
+                    attackBox = new Rectangle(DrawRectangle.X + 8, DrawRectangle.Y + DrawRectangle.Height - 20, DrawRectangle.Width - 16, 10);
                     break;
                 default:
                     break;

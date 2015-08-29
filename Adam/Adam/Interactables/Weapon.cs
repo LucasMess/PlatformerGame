@@ -193,7 +193,7 @@ namespace Adam
             q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
             q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
 
-            if (projectile.collRectangle.Intersects(enemy.drawRectangle) && enemy.isDead == false)
+            if (projectile.collRectangle.Intersects(enemy.collRectangle) && enemy.isDead == false)
                 return true;
             else return false;
         }

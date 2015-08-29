@@ -21,11 +21,10 @@ namespace Adam
         Null,
     }
 
-    public class Entity
+    public abstract class Entity
     {
 
         protected Vector2 origin;
-        public Rectangle drawRectangle;
         public Rectangle collRectangle;
         public Rectangle sourceRectangle;
         protected GameWorld gameWorld;
@@ -47,7 +46,7 @@ namespace Adam
         protected float opacity = 1f;
 
         /// <summary>
-        /// All things that move or can collide with other things inherit the Entity public class.
+        /// All things that move or can collide with other things inherit the Entity class.
         /// </summary>
         public Entity()
         {
@@ -67,6 +66,15 @@ namespace Adam
                 return texture;
             }
             set { texture = value; }
+        }
+
+        Rectangle drawRectangle;
+        /// <summary>
+        /// The rectangle where the texture is drawn at.
+        /// </summary>
+        protected abstract Rectangle DrawRectangle
+        {
+            get;
         }
 
         /// <summary>
@@ -159,14 +167,14 @@ namespace Adam
             else if (sourceRectangle != null)
             {
                 if (!isFacingRight)
-                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-                else spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
 
             // Most basic drawing when there is only one frame and it is not in a spritesheet.
             else
             {
-                spriteBatch.Draw(Texture, drawRectangle, Color.White * opacity);
+                spriteBatch.Draw(Texture, DrawRectangle, Color.White * opacity);
             }
         }
 
@@ -176,29 +184,8 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void DrawFromCenter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, drawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
         }
-
-        /// <summary>
-        /// Convert a Vector2 into Rectangle position to avoid having to write "(int)" every time.
-        /// </summary>
-        /// <param name="position"></param>
-        public void SetRectPos(Vector2 position)
-        {
-            drawRectangle.X = (int)position.X;
-            drawRectangle.Y = (int)position.Y;
-        }
-
-        /// <summary>
-        /// Put the Rectangle coordinates at the origin so that the sprite is drawn as if it had no origin.
-        /// </summary>
-        /// <param name="position"></param>
-        public void SetRectPosAtOrigin(Vector2 position)
-        {
-            drawRectangle.X = (int)(position.X + origin.X);
-            drawRectangle.Y = (int)(position.Y + origin.Y);
-        }
-
 
         protected void UpdateXYRects()
         {
@@ -438,8 +425,8 @@ namespace Adam
         /// <returns>Volume of sound.</returns>
         public float GetSoundVolume(Entity listener)
         {
-            float xDist = listener.collRectangle.Center.X - drawRectangle.Center.X;
-            float yDist = listener.collRectangle.Center.Y - drawRectangle.Center.Y;
+            float xDist = listener.collRectangle.Center.X - DrawRectangle.Center.X;
+            float yDist = listener.collRectangle.Center.Y - DrawRectangle.Center.Y;
             float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
 
             if (distanceTo > 1000)

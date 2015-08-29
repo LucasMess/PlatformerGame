@@ -57,10 +57,17 @@ namespace Adam.Characters.Enemies
             }
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public BeingOfSight(int x, int y)
         {
             collRectangle = new Rectangle(x, y, 32, 32);
-            drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0,16, 16);
             Texture = ContentHelper.LoadTexture("Void Shurinken/voisshurinken");
             velocity = new Vector2(1,1);
@@ -71,7 +78,6 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            drawRectangle = collRectangle;
             rotation += .05f;
 
             base.Update();
@@ -85,7 +91,7 @@ namespace Adam.Characters.Enemies
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
             velocity.Y = -velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(drawRectangle.X,drawRectangle.Y,0,projSpeed);
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X,DrawRectangle.Y,0,projSpeed);
             GameWorld.Instance.entities.Add(proj);
         }
 
@@ -97,21 +103,21 @@ namespace Adam.Characters.Enemies
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
             velocity.Y = -velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(drawRectangle.X, drawRectangle.Y, 0, -projSpeed);
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, -projSpeed);
             GameWorld.Instance.entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             velocity.X = -velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(drawRectangle.X, drawRectangle.Y, projSpeed, 0);
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, projSpeed, 0);
             GameWorld.Instance.entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
             velocity.X = -velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(drawRectangle.X, drawRectangle.Y, -projSpeed, 0);
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, -projSpeed, 0);
             GameWorld.Instance.entities.Add(proj);
         }
     }

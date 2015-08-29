@@ -67,7 +67,7 @@ namespace Adam
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -91,6 +91,14 @@ namespace Adam
             get; set;
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
+            }
+        }
+
         public Lost(int x, int y)
         {
             maxVelocity = new Vector2(1, 1);
@@ -100,7 +108,6 @@ namespace Adam
             ghost2 = new SoundFx("Sounds/Lost/ghost2");
 
             collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
-            drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
             sourceRectangle = new Rectangle(0, 0, 24, 40);
 
             timerEnd = GameWorld.RandGen.Next(3, 8);
@@ -141,8 +148,6 @@ namespace Adam
                 velocity.X = 0;
             }
 
-            drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
-
             // Set the opacity back to normal before checking if is hiding;
             opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
@@ -179,7 +184,7 @@ namespace Adam
 
         void IAnimated.Animate()
         {
-            animation.Update(GameWorld.Instance.gameTime, drawRectangle, animationData[0]);
+            animation.Update(GameWorld.Instance.gameTime, DrawRectangle, animationData[0]);
         }
     }
 }

@@ -33,22 +33,18 @@ namespace Adam.Characters.Enemies
         public Hellboar(int x, int y)
         {
             collRectangle = new Rectangle(x, y, 50 * 2, 76);
-            drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             Texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
 
-            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen",this);
+            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen", this);
             fire = new SoundFx("Sounds/Hellboar/fire", this);
-            crash = new SoundFx("Sounds/Hellboar/crash",this);
-            breath = new SoundFx("Sounds/Hellboar/breath",this);
-            tweet = new SoundFx("Sounds/Hellboar/tweet",this);
+            crash = new SoundFx("Sounds/Hellboar/crash", this);
+            breath = new SoundFx("Sounds/Hellboar/breath", this);
+            tweet = new SoundFx("Sounds/Hellboar/tweet", this);
         }
 
         public override void Update()
         {
-            drawRectangle.X = collRectangle.X - 18;
-            drawRectangle.Y = collRectangle.Y - 20;
-
             CheckForPlayer();
             CheckIfCharging();
             CheckIfStunned();
@@ -230,13 +226,13 @@ namespace Adam.Characters.Enemies
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    animation.Update(gameTime, drawRectangle, animationData[0]);
+                    animation.Update(gameTime, DrawRectangle, animationData[0]);
                     break;
                 case AnimationState.Walking:
-                    animation.Update(gameTime, drawRectangle, animationData[1]);
+                    animation.Update(gameTime, DrawRectangle, animationData[1]);
                     break;
                 case AnimationState.Transforming:
-                    animation.Update(gameTime, drawRectangle, animationData[2]);
+                    animation.Update(gameTime, DrawRectangle, animationData[2]);
                     break;
             }
         }
@@ -303,7 +299,7 @@ namespace Adam.Characters.Enemies
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -327,6 +323,14 @@ namespace Adam.Characters.Enemies
         public Misc.Interfaces.AnimationState CurrentAnimationState
         {
             get; set;
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 18, collRectangle.Y - 44, 136, 120);
+            }
         }
     }
 }

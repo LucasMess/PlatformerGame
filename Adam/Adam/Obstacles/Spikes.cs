@@ -11,9 +11,16 @@ namespace Adam.Obstacles
     {
         public Spikes(int x, int y)
         {
-            drawRectangle = new Rectangle(x, y, 32, 32);
             collRectangle = new Rectangle(x + 4, y + 8, 24, 16);
             sourceRectangle = new Rectangle(0, 0, 32, 32);
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 4, collRectangle.Y - 8, 32, 32);
+            }
         }
 
         public override void Update(GameTime gameTime, Player player, GameWorld map)

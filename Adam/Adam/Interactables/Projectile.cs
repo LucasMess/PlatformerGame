@@ -18,7 +18,7 @@ namespace Adam
         Player, Snake,
     }
 
-    public class Projectile : Entity
+    public abstract class Projectile : Entity
     {
         public Rectangle topMidBound, botMidBound;
         public int tileHit;
@@ -158,6 +158,14 @@ namespace Adam
             collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), Texture.Width, Texture.Height);
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public override void Update(Player player, GameTime gameTime)
         {
             this.gameTime = gameTime;
@@ -182,7 +190,7 @@ namespace Adam
     }
 
     //Only use this with enemies
-    public class LinearProjectile : Projectile
+    public abstract class LinearProjectile : Projectile
     {
         public LinearProjectile()
         {
@@ -196,11 +204,18 @@ namespace Adam
         {
             Texture = Main.DefaultTexture;
             collRectangle = new Rectangle(x, y, 16, 16);
-            drawRectangle = collRectangle;
             velocity = new Vector2(xVel, yVel);
             light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
 
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
@@ -230,7 +245,6 @@ namespace Adam
 
         public override void Update(Player player, GameTime gameTime)
         {
-            drawRectangle = collRectangle;
             GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
             GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
 
@@ -252,7 +266,7 @@ namespace Adam
             {
                 case ProjectileSource.Snake:
                     Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
-                    collRectangle = new Rectangle(enemy.drawRectangle.X, enemy.drawRectangle.Y, 32, 32);
+                    collRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
                    // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
                     if (!enemy.isFacingRight)
                     {
@@ -263,6 +277,14 @@ namespace Adam
                     break;
             }
 
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
         }
 
         public override void Update(Player player, GameTime gameTime)

@@ -58,6 +58,14 @@ namespace Adam
         }
         public ParticleType CurrentParticle;
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public Particle()
         {
             gameWorld = GameWorld.Instance;
@@ -69,8 +77,8 @@ namespace Adam
             CurrentParticle = ParticleType.Impact;
             Texture = ContentHelper.LoadTexture("Explosion");
             if (projectile.velocity.X > 0)
-                drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X - 32, projectile.collRectangle.Center.Y - 32, 64, 64);
-            else drawRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X + 32, projectile.collRectangle.Center.Y - 32, 64, 64);
+                collRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X - 32, projectile.collRectangle.Center.Y - 32, 64, 64);
+            else collRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X + 32, projectile.collRectangle.Center.Y - 32, 64, 64);
             frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
         }
 
@@ -81,8 +89,8 @@ namespace Adam
             Texture = ContentHelper.LoadTexture("Explosion");
 
             if (projectile.velocity.X > 0)
-                drawRectangle = new Rectangle(enemy.drawRectangle.X - enemy.drawRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
-            else drawRectangle = new Rectangle(enemy.drawRectangle.X + enemy.drawRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
+                collRectangle = new Rectangle(enemy.collRectangle.X - enemy.collRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
+            else collRectangle = new Rectangle(enemy.collRectangle.X + enemy.collRectangle.Width / 2, projectile.collRectangle.Center.Y - sourceRectangle.Height / 2, 32, 32);
             frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
         }
 
@@ -91,7 +99,7 @@ namespace Adam
             CurrentParticle = ParticleType.SnakeVenom;
             Texture = ContentHelper.LoadTexture("Effects/venom_blob");
             randGen = new Random();
-            drawRectangle = new Rectangle(proj.collRectangle.X + proj.collRectangle.Width / 2, proj.collRectangle.Y, 8, 8);
+            collRectangle = new Rectangle(proj.collRectangle.X + proj.collRectangle.Width / 2, proj.collRectangle.Y, 8, 8);
             if (proj.velocity.X > 0)
                 velocity.X = -2;
             else velocity.X = 2;
@@ -112,7 +120,7 @@ namespace Adam
             if (player.isFacingRight)
                 position = new Vector2(player.collRectangle.X + randGen.Next(-5, 5) + player.collRectangle.Width - 8, player.collRectangle.Y + randGen.Next(-5, 5));
             else position = new Vector2(player.collRectangle.Center.X + randGen.Next(0, 20), player.collRectangle.Y + randGen.Next(-5, 5));
-            drawRectangle = new Rectangle((int)position.X, (int)position.Y, 8, 8);
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, 8, 8);
 
         }
 
@@ -124,7 +132,7 @@ namespace Adam
             Texture = ContentHelper.LoadTexture("Effects/new_Z");
             color = new Color(255, 255, 255, 255);
             position = new Vector2(rectangle.X + randGen.Next(-5, 5) + rectangle.Width - 8, rectangle.Y + randGen.Next(-5, 5));
-            this.drawRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+            this.collRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
         }
 
         public void CreateWeaponBurstEffect(Player player, Projectile proj, ContentManager Content)
@@ -137,7 +145,7 @@ namespace Adam
             CurrentParticle = ParticleType.WeaponBurst;
             Texture = ContentHelper.LoadTexture("Effects/laser_burst");
             int randSize = GameWorld.RandGen.Next(2, 5);
-            drawRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
             sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             opacity = 1;
         }
@@ -146,7 +154,7 @@ namespace Adam
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
             Texture = enemy.Texture;
-            drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
+            collRectangle = new Rectangle(enemy.collRectangle.X + sourceRectangle.X, enemy.collRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 10;
@@ -158,7 +166,7 @@ namespace Adam
         {
             CurrentParticle = ParticleType.EnemyDesintegration;
             Texture = enemy.Texture;
-            drawRectangle = new Rectangle(enemy.drawRectangle.X + sourceRectangle.X, enemy.drawRectangle.Y + sourceRectangle.Y,
+            collRectangle = new Rectangle(enemy.collRectangle.X + sourceRectangle.X, enemy.collRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 5;
@@ -169,11 +177,11 @@ namespace Adam
         {
             CurrentParticle = ParticleType.Blood;
             Texture = ContentHelper.LoadTexture("Effects/blood");
-            drawRectangle = new Rectangle(player.drawRectangle.Center.X, player.drawRectangle.Center.Y, 8, 8);
+            collRectangle = new Rectangle(player.collRectangle.Center.X, player.collRectangle.Center.Y, 8, 8);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 8, 0, 8, 8);
-            collRectangle = drawRectangle;
+            collRectangle = collRectangle;
             velocity = new Vector2(GameWorld.RandGen.Next(-10, 10), GameWorld.RandGen.Next(-10, 10));
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             this.gameWorld = map;
         }
 
@@ -187,7 +195,7 @@ namespace Adam
         {
             CurrentParticle = ParticleType.TileParticle;
             Texture = tile.texture;
-            drawRectangle = new Rectangle(player.collRectangle.Center.X - 2, player.collRectangle.Y + player.collRectangle.Height, 8, 8);
+            collRectangle = new Rectangle(player.collRectangle.Center.X - 2, player.collRectangle.Y + player.collRectangle.Height, 8, 8);
             sourceRectangle = new Rectangle(tile.sourceRectangle.X, tile.sourceRectangle.Y, 4, 4);
             if (tile is SpecialTile)
             {
@@ -205,49 +213,49 @@ namespace Adam
             this.player = player;
             CurrentParticle = ParticleType.PlayerDesintegration;
             Texture = player.GetSingleTexture();
-            drawRectangle = new Rectangle(player.drawRectangle.X + sourceRectangle.X, player.drawRectangle.Y + sourceRectangle.Y,
+            collRectangle = new Rectangle(player.collRectangle.X + sourceRectangle.X, player.collRectangle.Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 5;
             velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
-            originalPosition = new Vector2(drawRectangle.X, drawRectangle.Y);
+            originalPosition = new Vector2(collRectangle.X, collRectangle.Y);
             differenceInPosition = new Vector2(player.respawnPos.X - player.collRectangle.X, player.respawnPos.Y - player.collRectangle.Y);
             endPosition = originalPosition + differenceInPosition;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
         }
 
         public void CreateMusicNotesEffect(CDPlayer cd)
         {
             CurrentParticle = ParticleType.MusicNotes;
             Texture = ContentHelper.LoadTexture("Effects/music_notes");
-            drawRectangle = new Rectangle(cd.drawRectangle.X, cd.drawRectangle.Y, 16, 16);
+            collRectangle = new Rectangle(cd.collRectangle.X, cd.collRectangle.Y, 16, 16);
             sourceRectangle = new Rectangle(32 * GameWorld.RandGen.Next(0, 2), 0, 32, 32);
             int randX = GameWorld.RandGen.Next(0, 2);
             float velocityX = .5f;
             if (randX == 0)
             {
-                drawRectangle.X -= drawRectangle.Width;
+                collRectangle.X -= collRectangle.Width;
                 velocity.X = -velocityX;
             }
             else
             {
-                drawRectangle.X += drawRectangle.Width;
+                collRectangle.X += collRectangle.Width;
                 velocity.X = velocityX;
             }
 
             velocity.Y = -(float)GameWorld.RandGen.NextDouble();
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
         }
 
         public void CreateJetPackSmokeParticle(JetpackPowerUp jet)
         {
             CurrentParticle = ParticleType.JetpackSmoke;
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(jet.drawRectangle.Center.X - 8, jet.drawRectangle.Y + jet.drawRectangle.Height, 16, 16);
+            collRectangle = new Rectangle(jet.collRectangle.Center.X - 8, jet.collRectangle.Y + jet.collRectangle.Height, 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
             velocity.X = GameWorld.RandGen.Next(-1, 2);
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1f;
         }
 
@@ -255,11 +263,11 @@ namespace Adam
         {
             CurrentParticle = ParticleType.JetpackSmoke;
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(player.drawRectangle.Center.X - 8, player.drawRectangle.Y + player.drawRectangle.Height, 16, 16);
+            collRectangle = new Rectangle(player.collRectangle.Center.X - 8, player.collRectangle.Y + player.collRectangle.Height, 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.Y = 3f;
             velocity.X = GameWorld.RandGen.Next(-1, 2);
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1f;
         }
 
@@ -268,10 +276,10 @@ namespace Adam
             CurrentParticle = ParticleType.Lava;
             //texture = ContentHelper.LoadTexture("Effects/lava");
             Texture = GameWorld.Particle_SpriteSheet;
-            drawRectangle = new Rectangle(lava.collRectangle.Center.X - 8, lava.collRectangle.Center.Y - 8, 8, 8);
+            collRectangle = new Rectangle(lava.collRectangle.Center.X - 8, lava.collRectangle.Center.Y - 8, 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.Y = -10f;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1f;
             light = new Lights.DynamicPointLight(this,1,true, Color.Orange, .3f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
@@ -282,11 +290,11 @@ namespace Adam
         {
             CurrentParticle = ParticleType.DeathSmoke;
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 16), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 16), 16, 16);
+            collRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 16), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 16), 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-2, 3));
             velocity.Y = -.5f;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 2;
         }
 
@@ -294,11 +302,11 @@ namespace Adam
         {
             CurrentParticle = ParticleType.TookDamage;
             Texture = ContentHelper.LoadTexture("Sparkles");
-            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
+            collRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-1, 2));
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1;
             color = Color.Red;
         }
@@ -307,11 +315,11 @@ namespace Adam
         {
             CurrentParticle = ParticleType.Sparkles;
             Texture = ContentHelper.LoadTexture("Sparkles");
-            drawRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
+            collRectangle = new Rectangle(GameWorld.RandGen.Next(entity.collRectangle.X, entity.collRectangle.Right - 8), GameWorld.RandGen.Next(entity.collRectangle.Y, entity.collRectangle.Bottom - 8), 8, 8);
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-7, 0));
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 2;
             color = Color.White;
         }
@@ -322,8 +330,8 @@ namespace Adam
             switch (CurrentParticle)
             {
                 case ParticleType.ChestSparkles:
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
+                    collRectangle.X += (int)velocity.X;
+                    collRectangle.Y += (int)velocity.Y;
                     velocity.Y += .3f;
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
@@ -333,8 +341,8 @@ namespace Adam
                     Animate(gameTime);
                     break;
                 case ParticleType.GameZZZ:
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
                     position += velocity;
                     velocity = new Vector2(randGen.Next(-1, 2), -.3f);
                     opacityTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -346,8 +354,8 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.MenuZZZ:
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
                     position += velocity;
                     velocity = new Vector2(randGen.Next(-1, 2), -1f);
                     opacityTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -359,8 +367,8 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.SnakeVenom:
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
+                    collRectangle.X += (int)velocity.X;
+                    collRectangle.Y += (int)velocity.Y;
                     opacity -= .03f;
                     velocity.Y += .09f;
 
@@ -368,8 +376,8 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.WeaponBurst:
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
+                    collRectangle.X += (int)velocity.X;
+                    collRectangle.Y += (int)velocity.Y;
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -378,8 +386,8 @@ namespace Adam
                     light.Update(this);
                     break;
                 case ParticleType.EnemyDesintegration:
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
+                    collRectangle.X += (int)velocity.X;
+                    collRectangle.Y += (int)velocity.Y;
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -390,8 +398,8 @@ namespace Adam
                     
                     break;
                 case ParticleType.TileParticle:
-                    drawRectangle.X += (int)velocity.X;
-                    drawRectangle.Y += (int)velocity.Y;
+                    collRectangle.X += (int)velocity.X;
+                    collRectangle.Y += (int)velocity.Y;
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     //velocity.X = velocity.X * 0.99f;
                     //velocity.Y = velocity.Y * 0.99f;
@@ -401,8 +409,8 @@ namespace Adam
                 case ParticleType.PlayerDesintegration:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
                     if (player.isWaitingForRespawn)
                         respawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
                     if (respawnTimer > 500)
@@ -427,8 +435,8 @@ namespace Adam
                 case ParticleType.MusicNotes:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
                     opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (opacity <= 0)
@@ -437,8 +445,8 @@ namespace Adam
                 case ParticleType.JetpackSmoke:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -453,10 +461,10 @@ namespace Adam
 
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
-                    collRectangle = drawRectangle;
+                    collRectangle = collRectangle;
 
                     velocity.Y += .3f;
 
@@ -470,10 +478,10 @@ namespace Adam
                 case ParticleType.Lava:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
-                    collRectangle = drawRectangle;
+                    collRectangle = collRectangle;
 
                     velocity.Y += .3f;
 
@@ -484,8 +492,8 @@ namespace Adam
                 case ParticleType.DeathSmoke:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
                     velocity.X = velocity.X * 0.95f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -497,8 +505,8 @@ namespace Adam
                 case ParticleType.TookDamage:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
                     velocity.X = velocity.X * 0.95f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -510,8 +518,8 @@ namespace Adam
                 case ParticleType.Sparkles:
                     position += velocity;
 
-                    drawRectangle.X = (int)position.X;
-                    drawRectangle.Y = (int)position.Y;
+                    collRectangle.X = (int)position.X;
+                    collRectangle.Y = (int)position.Y;
 
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
@@ -521,7 +529,7 @@ namespace Adam
                         toDelete = true;
                     break;
             }
-            collRectangle = drawRectangle;
+            collRectangle = collRectangle;
         }
 
         public virtual void Animate(GameTime gameTime)
@@ -550,10 +558,10 @@ namespace Adam
             GameTime gameTime = GameWorld.Instance.gameTime;
             position += velocity;
 
-            drawRectangle.X = (int)position.X;
-            drawRectangle.Y = (int)position.Y;
+            collRectangle.X = (int)position.X;
+            collRectangle.Y = (int)position.Y;
 
-            collRectangle = drawRectangle;
+            collRectangle = collRectangle;
 
             velocity.X = velocity.X * 0.99f;
             velocity.Y = velocity.Y * 0.99f;
@@ -566,9 +574,9 @@ namespace Adam
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, color * opacity);                
+                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);                
             else
-                spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, color * opacity);
+                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);
 
         }
 
@@ -585,10 +593,10 @@ namespace Adam
         public JumpSmokeParticle(Entity entity)
         {
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
+            collRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
-            collRectangle = drawRectangle;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            collRectangle = collRectangle;
+            position = new Vector2(collRectangle.X, collRectangle.Y);
 
             velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.velocity.X/2, 3 - (int)entity.velocity.X/2);
             velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
@@ -607,10 +615,10 @@ namespace Adam
         public StompSmokeParticle(Entity entity)
         {
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
+            collRectangle = new Rectangle(entity.collRectangle.Center.X - 4, entity.collRectangle.Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
-            collRectangle = drawRectangle;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            collRectangle = collRectangle;
+            position = new Vector2(collRectangle.X, collRectangle.Y);
 
             velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 3);
             velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
@@ -629,11 +637,11 @@ namespace Adam
         public ConstructionSmokeParticle(Rectangle rect)
         {
             Texture = ContentHelper.LoadTexture("Effects/smoke");
-            drawRectangle = new Rectangle(GameWorld.RandGen.Next(rect.X, rect.Right - 16), GameWorld.RandGen.Next(rect.Y, rect.Bottom - 16), 16, 16);
+            collRectangle = new Rectangle(GameWorld.RandGen.Next(rect.X, rect.Right - 16), GameWorld.RandGen.Next(rect.Y, rect.Bottom - 16), 16, 16);
             sourceRectangle = new Rectangle(GameWorld.RandGen.Next(0, 4) * 16, 0, 16, 16);
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 2;
         }
 
@@ -650,11 +658,11 @@ namespace Adam
         public DestructionTileParticle(Tile tile, Rectangle source)
         {
             Texture = tile.texture;
-            drawRectangle = new Rectangle(tile.drawRectangle.Center.X, tile.drawRectangle.Center.Y, 8, 8);
+            collRectangle = new Rectangle(tile.drawRectangle.Center.X, tile.drawRectangle.Center.Y, 8, 8);
             sourceRectangle = source;
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 2;
 
         }
@@ -671,13 +679,13 @@ namespace Adam
         public TrailParticle(Entity source, Color color)
         {
             Texture = GameWorld.Particle_SpriteSheet;
-            drawRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, 8, 8);
-            collRectangle = drawRectangle;
+            collRectangle = new Rectangle(source.collRectangle.Center.X, source.collRectangle.Center.Y, 8, 8);
+            collRectangle = collRectangle;
             sourceRectangle = new Rectangle(8, 0, 8, 8);
             int buffer = 1;
             velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer,(int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
             velocity.Y = GameWorld.RandGen.Next((int)-source.velocity.Y - buffer, (int)-source.velocity.Y + buffer + 1);
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = .5f;
 
             light = new Lights.DynamicPointLight(this, .5f, false, color, 1);
@@ -699,9 +707,9 @@ namespace Adam
         {
             int maxVel = 10;
             velocity = new Vector2(GameWorld.RandGen.Next(-maxVel, maxVel+1), GameWorld.RandGen.Next(-maxVel, maxVel+1));
-            drawRectangle = new Rectangle(entity.collRectangle.Center.X, entity.collRectangle.Center.Y, 8, 8);
-            collRectangle = drawRectangle;
-            position = new Vector2(drawRectangle.X, drawRectangle.Y);
+            collRectangle = new Rectangle(entity.collRectangle.Center.X, entity.collRectangle.Center.Y, 8, 8);
+            collRectangle = collRectangle;
+            position = new Vector2(collRectangle.X, collRectangle.Y);
 
             Color colorful = new Color(GameWorld.RandGen.Next(0,256), GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), 255);
             light = new Lights.DynamicPointLight(this, .5f, false, colorful, 1f);
@@ -712,10 +720,10 @@ namespace Adam
         {
             position += velocity;
 
-            drawRectangle.X = (int)position.X;
-            drawRectangle.Y = (int)position.Y;
+            collRectangle.X = (int)position.X;
+            collRectangle.Y = (int)position.Y;
 
-            collRectangle = drawRectangle;
+            collRectangle = collRectangle;
 
             velocity.X = velocity.X * 0.95f;
             velocity.Y = velocity.Y * 0.95f;

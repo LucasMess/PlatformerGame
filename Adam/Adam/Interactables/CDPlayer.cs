@@ -17,7 +17,7 @@ namespace Adam.Interactables
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -38,24 +38,24 @@ namespace Adam.Interactables
 
         public AnimationState CurrentAnimationState
         {
+            get; set;
+        }
+
+        protected override Rectangle DrawRectangle
+        {
             get
             {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
+                return collRectangle;
             }
         }
 
         public CDPlayer(Vector2 position)
         {
             Texture = ContentHelper.LoadTexture("Objects/CDplayer_new");
-            drawRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
             sourceRectangle = new Rectangle(0, 0, 32, 32);
 
-            animation = new Animation(Texture, drawRectangle, 70, 0, AnimationType.Loop);
+            animation = new Animation(Texture, DrawRectangle, 70, 0, AnimationType.Loop);
             loopSound = new Misc.SoundFx("Sounds/loop");
             velocity.Y = -10f;
         }
@@ -64,10 +64,6 @@ namespace Adam.Interactables
         {
             GameWorld gameWorld = GameWorld.Instance;
             GameTime gameTime = gameWorld.gameTime;
-
-
-            animation.Update(gameTime);
-            animation.UpdateRectangle(drawRectangle);
 
             velocity.Y += .3f;
             if (velocity.Y > 5f)

@@ -263,11 +263,6 @@ namespace Adam
                     NonPlayableCharacter npc = (NonPlayableCharacter)entity;
                     npc.Update(gameTime, player);
                 }
-                if (entity is Door)
-                {
-                    Door door = (Door)entity;
-                    door.Update(gameTime, player, tileArray);
-                }
                 if (entity is Sign)
                 {
                     Sign sign = (Sign)entity;

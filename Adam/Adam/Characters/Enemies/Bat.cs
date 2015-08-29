@@ -58,10 +58,17 @@ namespace Adam.Characters.Enemies
             }
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public Bat(int x, int y)
         {
             collRectangle = new Rectangle(x, y, 32, 64);
-            drawRectangle = new Rectangle(x, y, 32, 64);
             sourceRectangle = new Rectangle(0, 0, 16, 32);
             Texture = Main.DefaultTexture;
             maxVelocity = new Vector2(3, 3);
@@ -104,8 +111,6 @@ namespace Adam.Characters.Enemies
             Player player = GameWorld.Instance.GetPlayer();
 
             rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200, collRectangle.Height + 200);
-
-            drawRectangle = collRectangle;
 
             if (player.collRectangle.Intersects(rangeRect))
             {
@@ -163,7 +168,7 @@ namespace Adam.Characters.Enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Main.DefaultTexture, rangeRect, Color.Red * .5f);
-            spriteBatch.Draw(Texture, drawRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
     }
 }

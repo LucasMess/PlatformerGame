@@ -20,7 +20,7 @@ namespace Adam.Interactables
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -44,15 +44,22 @@ namespace Adam.Interactables
             get; set;
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return  new Rectangle(collRectangle.X + 50, collRectangle.Y, 32, 96);
+            }
+        }
+
         public CheckPoint(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Objects/checkPoint");
-            drawRectangle = new Rectangle(x, y - Main.Tilesize * 2, 32, 96);
             sourceRectangle = new Rectangle(0, 0, 16, 48);
-            collRectangle = new Rectangle(drawRectangle.Center.X - 50, drawRectangle.Y, 100, drawRectangle.Height);
+            collRectangle = new Rectangle(x, y - Main.Tilesize * 2, 100, DrawRectangle.Height);
 
             opening = new AnimationData(32, 4, 0, AnimationType.PlayOnce);
-            animation = new Animation(Texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, DrawRectangle, sourceRectangle);
 
             quack = new SoundFx("Backgrounds/Splash/quack");
             openSound = new SoundFx("Sounds/Menu/checkPoint");
@@ -69,7 +76,7 @@ namespace Adam.Interactables
 
             if (isOpen)
             {
-                animation.Update(GameWorld.Instance.gameTime, drawRectangle, opening);
+                animation.Update(GameWorld.Instance.gameTime, DrawRectangle, opening);
             }
         }
 
@@ -95,7 +102,7 @@ namespace Adam.Interactables
 
             //Sets respawn point;
             Player player = GameWorld.Instance.player;
-            player.respawnPos = new Vector2(this.drawRectangle.X, this.drawRectangle.Y);
+            player.respawnPos = new Vector2(this.DrawRectangle.X, this.DrawRectangle.Y);
 
             //Particle effects
             for (int i = 0; i < 100; i++)
@@ -111,7 +118,7 @@ namespace Adam.Interactables
         {
             isOpen = false;
             opening.Reset();
-            animation = new Animation(Texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, DrawRectangle, sourceRectangle);
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)

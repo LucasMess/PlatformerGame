@@ -16,15 +16,12 @@ namespace Adam.Characters.Enemies
         {
             Texture = ContentHelper.LoadTexture("Enemies/duck");
             collRectangle = new Rectangle(x, y, 32, 32);
-            drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 16, 16);
             velocity.X = 1;
         }
 
         public override void Update()
         {
-            drawRectangle = collRectangle;
-
             if (velocity.X > 0) isFacingRight = true;
             else isFacingRight = false;
 
@@ -76,6 +73,14 @@ namespace Adam.Characters.Enemies
             get
             {
                 return null;
+            }
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
             }
         }
 

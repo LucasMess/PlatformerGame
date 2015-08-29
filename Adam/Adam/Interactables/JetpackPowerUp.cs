@@ -22,7 +22,7 @@ namespace Adam.Interactables
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -54,12 +54,20 @@ namespace Adam.Interactables
             }
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public JetpackPowerUp(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Objects/jetpack");
             loopSound = new Misc.SoundFx("Sounds/jetpack_engine");
-            drawRectangle = new Rectangle(x, y, 32, 32);
-            animation = new Animation(Texture, drawRectangle, 100, 0, AnimationType.Loop);
+            collRectangle = new Rectangle(x, y, 32, 32);
+            animation = new Animation(Texture, DrawRectangle, 100, 0, AnimationType.Loop);
             velocity.Y = -10f;
         }
 
@@ -68,7 +76,7 @@ namespace Adam.Interactables
             GameWorld gameWorld = GameWorld.Instance;
             gameTime = gameWorld.gameTime;
 
-            animation.UpdateRectangle(drawRectangle);
+            animation.UpdateRectangle(DrawRectangle);
             animation.Update(gameTime);
 
             Hover();

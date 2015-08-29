@@ -16,6 +16,14 @@ namespace Adam.Interactables
         int ID;
         bool playerIsOn;
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public Sign(int xCoor, int yCoor, int ID)
         {
             key = new KeyPopUp();

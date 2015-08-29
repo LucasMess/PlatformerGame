@@ -16,6 +16,14 @@ namespace Adam.Obstacles
 
         Vector2 endPoint;
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public WidePlatformUp(Player player)
         {            
             player.PlayerRespawned += player_PlayerRespawned;
@@ -32,8 +40,7 @@ namespace Adam.Obstacles
         public void SetStartPoint(int x, int y)
         {
             collRectangle = new Rectangle(x, y, Main.Tilesize * 12, Main.Tilesize);
-            drawRectangle = collRectangle;
-            original = drawRectangle;
+            original = DrawRectangle;
         }
 
         /// <summary>
@@ -50,7 +57,6 @@ namespace Adam.Obstacles
         {
             hasStartedMoving = false;
             hasReachedDestination = false;
-            drawRectangle = original;
             collRectangle = original;
         }
 
@@ -59,7 +65,6 @@ namespace Adam.Obstacles
             base.Update(gameTime, player, map);
 
             collRectangle.Y += (int)velocity.Y;
-            drawRectangle = collRectangle;
 
             xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
             yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);

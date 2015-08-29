@@ -16,8 +16,7 @@ namespace Adam.Characters.Enemies
         public Frog(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Enemies/frog");
-            collRectangle = new Rectangle(x, y, 32, 32);
-            drawRectangle = new Rectangle(x - 8, y - 32, 48, 64);
+            collRectangle = new Rectangle(x, y, 32, 32);            
             sourceRectangle = new Rectangle(0, 0, 24, 32);
 
             jumpSound = new SoundFx("Sounds/Frog/frog_jump", this);
@@ -28,8 +27,6 @@ namespace Adam.Characters.Enemies
         {
             if (isDead) return;
 
-            drawRectangle.X = collRectangle.X - 8;
-            drawRectangle.Y = collRectangle.Y - 32;
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
             Jump();
@@ -101,10 +98,10 @@ namespace Adam.Characters.Enemies
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    Animation.Update(gameTime, drawRectangle, animationData[0]);
+                    Animation.Update(gameTime, DrawRectangle, animationData[0]);
                     break;
                 case AnimationState.Jumping:
-                    Animation.Update(gameTime, drawRectangle, animationData[1]);
+                    Animation.Update(gameTime, DrawRectangle, animationData[1]);
                     break;
                 default:
                     break;
@@ -175,7 +172,7 @@ namespace Adam.Characters.Enemies
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -198,6 +195,14 @@ namespace Adam.Characters.Enemies
         public Misc.Interfaces.AnimationState CurrentAnimationState
         {
             get; set;
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 32, 48, 64);
+            }
         }
     }
 }

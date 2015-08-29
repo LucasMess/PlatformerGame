@@ -31,6 +31,14 @@ namespace Adam.Obstacles
             get; set;
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public FallingBoulder(int x, int y)
         {
             GravityStrength = Main.Gravity ;
@@ -38,20 +46,16 @@ namespace Adam.Obstacles
             fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
             fallingSoundInstance = fallingSound.CreateInstance();
 
-            drawRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
-            collRectangle = drawRectangle;
+            collRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
             sourceRectangle = new Rectangle(12 * 16, 26 * 16, 32, 32);
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
-            original = new Vector2(drawRectangle.X, drawRectangle.Y);
+            original = new Vector2(DrawRectangle.X, DrawRectangle.Y);
         }
 
         public override void Update(GameTime gameTime, Player player, GameWorld map)
         {
             base.Update(gameTime, player, map);
-
-            drawRectangle = collRectangle;
-
 
             if (IsTouching)
             {
@@ -62,7 +66,7 @@ namespace Adam.Obstacles
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }

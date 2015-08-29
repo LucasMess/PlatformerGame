@@ -35,25 +35,25 @@ namespace Adam
 
         public bool IsAboveTile { get; set; }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public Gem(int centerX, int centerY)
         {
             gemID = GenerateID();
             Texture = GameWorld.SpriteSheet;
             collRectangle = new Rectangle(centerX, centerY, 16, 16);
-            drawRectangle = collRectangle;
             sourceRectangle = GetSourceRectangle();
             velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
             light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
 
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
-        }
-
-        public override void Update()
-        {
-            drawRectangle = collRectangle;
-
-            base.Update();
         }
 
         private byte GenerateID()
@@ -131,7 +131,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, drawRectangle, sourceRectangle, Color.White);        
+            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);        
 
         }
 

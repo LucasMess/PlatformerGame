@@ -25,8 +25,7 @@ namespace Adam.Interactables
         /// <param name="enemy"></param>
         public Food(Enemy enemy)
         {
-            drawRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
-            collRectangle = drawRectangle;
+            collRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
             velocity.Y = -10f;
 
             hitGround = new SoundFx("Sounds/Items/item_pop", this);
@@ -64,7 +63,6 @@ namespace Adam.Interactables
             Player player = GameWorld.Instance.player;
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
-            drawRectangle = collRectangle;
 
             if (!hasHealed && player.collRectangle.Intersects(collRectangle) && player.health < player.maxHealth)
             {
@@ -78,7 +76,7 @@ namespace Adam.Interactables
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (!hasHealed)
-                spriteBatch.Draw(Texture, drawRectangle, Color.White);
+                spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
@@ -127,5 +125,13 @@ namespace Adam.Interactables
         public bool IsJumping { get; set; }
 
         public bool IsAboveTile { get; set; }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
     }
 }

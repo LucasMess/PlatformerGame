@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class Item : Entity
+    public abstract class Item : Entity
     {
         public bool wasPickedUp;
         protected Rectangle topMidBound;
@@ -35,7 +35,7 @@ namespace Adam.Interactables
 
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (player.collRectangle.Intersects(drawRectangle) && elapsedTime > 500)
+            if (player.collRectangle.Intersects(DrawRectangle) && elapsedTime > 500)
             {
                 pickUpSound?.PlayOnce();
                 toDelete = true;
@@ -50,7 +50,7 @@ namespace Adam.Interactables
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Texture == null) Texture = Main.DefaultTexture;
-            spriteBatch.Draw(Texture, drawRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
     }
 }

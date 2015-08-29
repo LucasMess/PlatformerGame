@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Characters.Non_Playable
 {
-    public class NonPlayableCharacter : Entity
+    public abstract class NonPlayableCharacter : Entity
     {
         bool destinationFound;
         bool toTheRight;

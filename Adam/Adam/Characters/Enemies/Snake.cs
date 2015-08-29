@@ -73,7 +73,7 @@ namespace Adam.Enemies
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -114,26 +114,31 @@ namespace Adam.Enemies
             get; set;
         }
 
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return collRectangle;
+            }
+        }
+
         public Snake(int x, int y)
         {
             //Sets up specific variables for the snake
             frameCount = new Vector2(8, 0);
             sourceRectangle = new Rectangle(0, 0, 64, 96);
-            drawRectangle = new Rectangle(x, y - 64, 64, 96);
-            collRectangle = drawRectangle;
+            collRectangle = new Rectangle(x, y - 64, 64, 96);
 
             //Textures and sound effects, single is for rectangle pieces explosion
             Texture = Content.Load<Texture2D>("Enemies/Snake");
 
             //Creates animation
-            animation = new Animation(Texture, drawRectangle, 240, 0, AnimationType.Loop);
+            animation = new Animation(Texture, DrawRectangle, 240, 0, AnimationType.Loop);
         }
 
         public override void Update()
         {
-            base.Update();
-
-            
+            base.Update();            
 
             if (projCooldownTimer > 3 && !isDead)
             {
@@ -150,7 +155,7 @@ namespace Adam.Enemies
         public void Animate()
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
-            animation.Update(gameTime, drawRectangle, animationData[0]);
+            animation.Update(gameTime, DrawRectangle, animationData[0]);
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)

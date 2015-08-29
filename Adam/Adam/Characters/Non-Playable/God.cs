@@ -20,21 +20,15 @@ namespace Adam.Noobs
             canTalk = true;
             Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
             collRectangle = new Rectangle(x, y, 48, 80);
-            drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 24, 40);
 
             spawnPoint = collRectangle.X;
-            drawRectangle.X = collRectangle.X - 8;
-            drawRectangle.Y = collRectangle.Y - 16;
 
-            animation = new Animation(Texture, drawRectangle, sourceRectangle);
+            animation = new Animation(Texture, DrawRectangle, sourceRectangle);
         }
 
         public override void Update(GameTime gameTime, Player player)
         {
-            drawRectangle.X = collRectangle.X - 8;
-            drawRectangle.Y = collRectangle.Y - 16;
-
             this.gameTime = gameTime;
             base.Update(gameTime, player);
 
@@ -135,10 +129,10 @@ namespace Adam.Noobs
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    animation.Update(gameTime, drawRectangle, animationData[0]);
+                    animation.Update(gameTime, DrawRectangle, animationData[0]);
                     break;
                 case AnimationState.Walking:
-                    animation.Update(gameTime, drawRectangle, animationData[1]);
+                    animation.Update(gameTime, DrawRectangle, animationData[1]);
                     break;
                 case AnimationState.Sleeping:
                     break;
@@ -157,7 +151,7 @@ namespace Adam.Noobs
             get
             {
                 if (animation == null)
-                    animation = new Animation(Texture, drawRectangle, sourceRectangle);
+                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
                 return animation;
             }
         }
@@ -180,6 +174,14 @@ namespace Adam.Noobs
         public Adam.Misc.Interfaces.AnimationState CurrentAnimationState
         {
             get; set;
+        }
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, 48, 80);
+            }
         }
     }
 }
