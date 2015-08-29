@@ -203,7 +203,7 @@ namespace Adam
             }
             else
             {
-                camera.UpdateSmoothly(player.collRectangle, worldData.LevelWidth, worldData.LevelHeight, !player.isDead);
+                camera.UpdateSmoothly(player.GetCollRectangle(), worldData.LevelWidth, worldData.LevelHeight, !player.isDead);
 
                 if (player.isDead)
                 {

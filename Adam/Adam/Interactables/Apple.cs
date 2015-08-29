@@ -38,7 +38,7 @@ namespace Adam
         {
             this.game1 = game1;
 
-            if (player.collRectangle.Intersects(rectangle))
+            if (player.GetCollRectangle().Intersects(rectangle))
             {
                 PlaySound();
                 wasPicked = true;

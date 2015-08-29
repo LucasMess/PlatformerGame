@@ -88,8 +88,8 @@ namespace Adam
             this.gameTime = gameTime;
             this.gameWorld = map;
 
-            rectangle.X = player.collRectangle.X + player.collRectangle.Width / 2;
-            rectangle.Y = player.collRectangle.Y + player.collRectangle.Height * 3 / 5;
+            rectangle.X = player.GetCollRectangle().X + player.GetCollRectangle().Width / 2;
+            rectangle.Y = player.GetCollRectangle().Y + player.GetCollRectangle().Height * 3 / 5;
 
             origin = new Vector2(4, 6);
 
@@ -97,8 +97,8 @@ namespace Adam
             CheckCollisions();
 
             MouseState mouse = Mouse.GetState();
-            Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.collRectangle.Width / 2),
-                (Main.UserResHeight * 3 / 5) + (player.collRectangle.Height / 2));
+            Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.GetCollRectangle().Width / 2),
+                (Main.UserResHeight * 3 / 5) + (player.GetCollRectangle().Height / 2));
 
             //Find the unit vector according to where the mouse is
             double xDiff = (mouse.X - center.X);
@@ -168,7 +168,7 @@ namespace Adam
             {
                 if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
                 {
-                    if (projectile.collRectangle.Intersects(gameWorld.tileArray[quadrant].drawRectangle))
+                    if (projectile.GetCollRectangle().Intersects(gameWorld.tileArray[quadrant].drawRectangle))
                     {
                         projectile.tileHit = quadrant;
                         return true;
@@ -193,7 +193,7 @@ namespace Adam
             q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
             q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
 
-            if (projectile.collRectangle.Intersects(enemy.collRectangle) && enemy.isDead == false)
+            if (projectile.GetCollRectangle().Intersects(enemy.GetCollRectangle()) && enemy.isDead == false)
                 return true;
             else return false;
         }

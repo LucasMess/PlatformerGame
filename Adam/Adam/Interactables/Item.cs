@@ -35,7 +35,7 @@ namespace Adam.Interactables
 
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (player.collRectangle.Intersects(DrawRectangle) && elapsedTime > 500)
+            if (player.GetCollRectangle().Intersects(DrawRectangle) && elapsedTime > 500)
             {
                 pickUpSound?.PlayOnce();
                 toDelete = true;

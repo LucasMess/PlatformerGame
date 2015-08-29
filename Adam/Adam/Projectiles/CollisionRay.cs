@@ -12,11 +12,11 @@ namespace Adam.Projectiles
     {
         public static bool IsPlayerInSight(Enemy enemy, Player player, GameWorld gameWorld, out List<Rectangle> rects)
         {
-            Rectangle rect = new Rectangle(enemy.collRectangle.Center.X, enemy.collRectangle.Center.Y, 1, 1);
+            Rectangle rect = new Rectangle(enemy.GetCollRectangle().Center.X, enemy.GetCollRectangle().Center.Y, 1, 1);
             rects = new List<Rectangle>();
 
-            double xVector = (double)(player.collRectangle.Center.X - rect.Center.X);
-            double yVector = (double)(player.collRectangle.Center.Y - rect.Center.Y);
+            double xVector = (double)(player.GetCollRectangle().Center.X - rect.Center.X);
+            double yVector = (double)(player.GetCollRectangle().Center.Y - rect.Center.Y);
 
             Vector2 maxVelocity = new Vector2(30, 30);
             double magnitude = Math.Sqrt((Math.Pow(xVector, 2.0)) + (Math.Pow(yVector, 2.0)));
@@ -28,7 +28,7 @@ namespace Adam.Projectiles
 
                 int index = (int)(rect.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(rect.X / Main.Tilesize);
 
-                if (rect.Intersects(player.collRectangle))
+                if (rect.Intersects(player.GetCollRectangle()))
                     return true;
                 if (gameWorld.tileArray[index].isSolid)
                     return false;

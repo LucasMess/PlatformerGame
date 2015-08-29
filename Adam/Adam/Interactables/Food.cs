@@ -25,7 +25,7 @@ namespace Adam.Interactables
         /// <param name="enemy"></param>
         public Food(Enemy enemy)
         {
-            collRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
+            collRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
             velocity.Y = -10f;
 
             hitGround = new SoundFx("Sounds/Items/item_pop", this);
@@ -64,7 +64,7 @@ namespace Adam.Interactables
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
 
-            if (!hasHealed && player.collRectangle.Intersects(collRectangle) && player.health < player.maxHealth)
+            if (!hasHealed && player.GetCollRectangle().Intersects(collRectangle) && player.health < player.maxHealth)
             {
                 hasHealed = true;
                 player.Heal(healAmount);

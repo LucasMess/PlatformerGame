@@ -30,7 +30,7 @@ namespace Adam
         public void Update()
         {
             Player player = GameWorld.Instance.player;
-            if (player.collRectangle.Intersects(collRectangle)&& !isOpen)
+            if (player.GetCollRectangle().Intersects(collRectangle)&& !isOpen)
             {               
                 Open();
             }

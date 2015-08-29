@@ -71,7 +71,7 @@ namespace Adam.Obstacles
 
             if (!hasStartedMoving)
             {
-                if (collRectangle.Intersects(player.collRectangle))
+                if (collRectangle.Intersects(player.GetCollRectangle()))
                     hasStartedMoving = true;
             }
 

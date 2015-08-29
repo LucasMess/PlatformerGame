@@ -122,11 +122,11 @@ namespace Adam
             collRectangle.Y += (int)velocity.Y;
 
             int buffer = 5;
-            if (collRectangle.Y < player.collRectangle.Y - buffer)
+            if (collRectangle.Y < player.GetCollRectangle().Y - buffer)
             {
                 velocity.Y = maxVelocity.Y;
             }
-            else if (collRectangle.Y > player.collRectangle.Y + buffer)
+            else if (collRectangle.Y > player.GetCollRectangle().Y + buffer)
             {
                 velocity.Y = -maxVelocity.Y;
             }
@@ -135,11 +135,11 @@ namespace Adam
                 velocity.Y = 0;
             }
 
-            if (collRectangle.X < player.collRectangle.X - buffer)
+            if (collRectangle.X < player.GetCollRectangle().X - buffer)
             {
                 velocity.X = maxVelocity.X;
             }
-            else if (collRectangle.X > player.collRectangle.X + buffer)
+            else if (collRectangle.X > player.GetCollRectangle().X + buffer)
             {
                 velocity.X = -maxVelocity.X;
             }

@@ -25,7 +25,6 @@ namespace Adam
     {
 
         protected Vector2 origin;
-        public Rectangle collRectangle;
         public Rectangle sourceRectangle;
         protected GameWorld gameWorld;
         public bool toDelete;
@@ -68,13 +67,27 @@ namespace Adam
             set { texture = value; }
         }
 
-        Rectangle drawRectangle;
         /// <summary>
         /// The rectangle where the texture is drawn at.
         /// </summary>
         protected abstract Rectangle DrawRectangle
         {
             get;
+        }
+
+
+        /// <summary>
+        /// The rectangle where position and collisions are done in.
+        /// </summary>
+        protected Rectangle collRectangle;
+
+        /// <summary>
+        /// Returns the Collision Rectangle of the entity.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetCollRectangle()
+        {
+            return collRectangle;
         }
 
         /// <summary>

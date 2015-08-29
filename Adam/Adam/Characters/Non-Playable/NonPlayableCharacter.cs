@@ -44,7 +44,7 @@ namespace Adam.Characters.Non_Playable
 
         private void CheckForPlayer()
         {
-            if (collRectangle.Intersects(player.collRectangle))
+            if (collRectangle.Intersects(player.GetCollRectangle()))
             {
                 if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !isTalking)
                 {

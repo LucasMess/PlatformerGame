@@ -26,10 +26,10 @@ namespace Adam.UI.Elements
 
         public void Update(Rectangle collRectangle)
         {
-            drawRectangle = new Rectangle(collRectangle.Center.X, GameWorld.Instance.player.collRectangle.Y - 16, 32, 32);
+            drawRectangle = new Rectangle(collRectangle.Center.X, GameWorld.Instance.player.GetCollRectangle().Y - 16, 32, 32);
             origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
 
-            if (GameWorld.Instance.player.collRectangle.Intersects(collRectangle))
+            if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
                 playerOn = true;
             else playerOn = false;
         }

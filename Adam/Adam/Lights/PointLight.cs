@@ -25,7 +25,7 @@ namespace Adam.Lights
             this.glowIntensity = glowIntensity;
             this.isShaky = isShaky;
 
-            SetPosition(source.collRectangle);
+            SetPosition(source.GetCollRectangle());
             glow = new Glow(this);
             this.source = source;
 
@@ -33,7 +33,7 @@ namespace Adam.Lights
 
         public override void Update(Entity source)
         {
-            SetPosition(source.collRectangle);
+            SetPosition(source.GetCollRectangle());
 
             if (isShaky) Shake();
 

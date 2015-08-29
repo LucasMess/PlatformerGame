@@ -16,7 +16,7 @@ namespace Adam.Misc.Interfaces
         float GravityStrength { get; set; }
 
         /// <summary>
-        /// Returns true if entity is flying or not.
+        /// Returns true if entity is flying.
         /// </summary>
         bool IsFlying { get; set; }
 

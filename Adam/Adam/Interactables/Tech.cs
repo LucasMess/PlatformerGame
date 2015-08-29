@@ -51,7 +51,7 @@ namespace Adam
             PickedUp(player, popUp);
 
             glowTimer+= gameTime.ElapsedGameTime.Milliseconds;
-            if (radius.Intersects(player.collRectangle))
+            if (radius.Intersects(player.GetCollRectangle()))
             {
                 if (glowTimer > 4000)
                 {
@@ -64,7 +64,7 @@ namespace Adam
 
         public void PickedUp(Player player, PopUp popUp)
         {
-            if (player.collRectangle.Intersects(rectangle) && !ToDelete)
+            if (player.GetCollRectangle().Intersects(rectangle) && !ToDelete)
             {
                 ToDelete = true;
                 popUp.isVisible = true;

@@ -34,7 +34,7 @@ namespace Adam.Interactables
         public override void Update()
         {
             key.Update(collRectangle);
-            if (GameWorld.Instance.player.collRectangle.Intersects(collRectangle))
+            if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
             {
                 if (InputHelper.IsKeyDown(Keys.W) && GameWorld.Instance.player.manual_hasControl)
                 {

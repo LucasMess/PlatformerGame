@@ -122,8 +122,8 @@ namespace Adam
                     //light.SetColor(Color.Red);
 
                     MouseState mouse = Mouse.GetState();
-                    Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.collRectangle.Width / 2),
-                        (Main.UserResHeight * 3 / 5) + (player.collRectangle.Height / 2));
+                    Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.GetCollRectangle().Width / 2),
+                        (Main.UserResHeight * 3 / 5) + (player.GetCollRectangle().Height / 2));
 
                     //Find the unit vector according to where the mouse is
                     double xDiff = (mouse.X - center.X);
@@ -266,7 +266,7 @@ namespace Adam
             {
                 case ProjectileSource.Snake:
                     Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
-                    collRectangle = new Rectangle(enemy.collRectangle.X, enemy.collRectangle.Y, 32, 32);
+                    collRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
                    // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
                     if (!enemy.isFacingRight)
                     {
@@ -322,7 +322,7 @@ namespace Adam
 
         private void CheckCollisionWithPlayer()
         {
-            if (player.collRectangle.Intersects(collRectangle) && !IsInactive)
+            if (player.GetCollRectangle().Intersects(collRectangle) && !IsInactive)
             {
                 IsInactive = true;
                 player.TakeDamageAndKnockBack(enemy.GetProjectileDamage());

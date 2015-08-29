@@ -30,7 +30,7 @@ namespace Adam
 
         public void Update(Player player)
         {
-            if (player.collRectangle.Intersects(rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
+            if (player.GetCollRectangle().Intersects(rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 isPickedUp = true;
                 player.keySecrets.Add(secret);

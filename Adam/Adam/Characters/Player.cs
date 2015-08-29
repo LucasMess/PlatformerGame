@@ -934,7 +934,7 @@ namespace Adam
                     switch (co)
                     {
                         case CollisionLocation.Bottom:
-                            collRectangle.Y = ob.collRectangle.Y - collRectangle.Height;
+                            collRectangle.Y = ob.GetCollRectangle().Y - collRectangle.Height;
                             velocity.Y = 0f;
                             isJumping = false;
                             isFlying = false;
@@ -942,11 +942,11 @@ namespace Adam
                             Stomp();
                             break;
                         case CollisionLocation.Right:
-                            collRectangle.X = ob.collRectangle.X - collRectangle.Width - 1;
+                            collRectangle.X = ob.GetCollRectangle().X - collRectangle.Width - 1;
                             velocity.X = 0f;
                             break;
                         case CollisionLocation.Left:
-                            collRectangle.X = ob.collRectangle.X + ob.collRectangle.Width + 1;
+                            collRectangle.X = ob.GetCollRectangle().X + ob.GetCollRectangle().Width + 1;
                             velocity.X = 0f;
                             break;
                         case CollisionLocation.Top:

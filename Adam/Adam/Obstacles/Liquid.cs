@@ -43,7 +43,7 @@ namespace Adam.Obstacles
             this.gameWorld = GameWorld.Instance;
             this.player = gameWorld.player;
 
-            if (collRectangle.Intersects(GameWorld.Instance.player.collRectangle))
+            if (collRectangle.Intersects(GameWorld.Instance.player.GetCollRectangle()))
             {
                 player.KillAndRespawn();
             }

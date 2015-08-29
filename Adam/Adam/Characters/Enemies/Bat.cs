@@ -112,7 +112,7 @@ namespace Adam.Characters.Enemies
 
             rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200, collRectangle.Height + 200);
 
-            if (player.collRectangle.Intersects(rangeRect))
+            if (player.GetCollRectangle().Intersects(rangeRect))
             {
                 isSleeping = false;
                 isLookingForRefuge = false;
@@ -125,11 +125,11 @@ namespace Adam.Characters.Enemies
             if (!isLookingForRefuge)
             {
                 int buffer = 5;
-                if (collRectangle.Y < player.collRectangle.Y - buffer)
+                if (collRectangle.Y < player.GetCollRectangle().Y - buffer)
                 {
                     velocity.Y = maxVelocity.Y;
                 }
-                else if (collRectangle.Y > player.collRectangle.Y + buffer)
+                else if (collRectangle.Y > player.GetCollRectangle().Y + buffer)
                 {
                     velocity.Y = -maxVelocity.Y;
                 }
@@ -138,11 +138,11 @@ namespace Adam.Characters.Enemies
                     velocity.Y = 0;
                 }
 
-                if (collRectangle.X < player.collRectangle.X - buffer)
+                if (collRectangle.X < player.GetCollRectangle().X - buffer)
                 {
                     velocity.X = maxVelocity.X;
                 }
-                else if (collRectangle.X > player.collRectangle.X + buffer)
+                else if (collRectangle.X > player.GetCollRectangle().X + buffer)
                 {
                     velocity.X = -maxVelocity.X;
                 }
