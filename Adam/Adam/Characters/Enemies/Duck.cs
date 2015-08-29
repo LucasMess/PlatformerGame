@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Adam.Misc;
 
 namespace Adam.Characters.Enemies
 {
@@ -18,9 +19,6 @@ namespace Adam.Characters.Enemies
             drawRectangle = collRectangle;
             sourceRectangle = new Rectangle(0, 0, 16, 16);
             velocity.X = 1;
-            health = 100;
-
-            Initialize();
         }
 
         public override void Update(Player player, GameTime gameTime)
@@ -46,6 +44,46 @@ namespace Adam.Characters.Enemies
         public bool IsFlying { get; set; }
 
         public bool IsJumping { get; set; }
+
+        public override byte ID
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {

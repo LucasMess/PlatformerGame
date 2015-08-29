@@ -26,28 +26,18 @@ namespace Adam.Characters.Enemies
             collRectangle = new Rectangle(x, y, 32, 32);
             drawRectangle = new Rectangle(x - 8, y - 32, 48, 64);
             sourceRectangle = new Rectangle(0, 0, 24, 32);
-            CurrentEnemyType = EnemyType.Frog;
-            health = EnemyDB.Frog_MaxHealth;
 
             still = new AnimationData(250, 4, 0, AnimationType.Loop);
             jumping = new AnimationData(125, 4, 1, AnimationType.PlayOnce);
             animation = new Animation(Texture, drawRectangle, sourceRectangle);
 
             jumpSound = new SoundFx("Sounds/Frog/frog_jump", this);
-            meanSound = ContentHelper.LoadSound("Sounds/Frog/frog_croak");
-
-            Initialize();
            
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
             if (isDead) return;
-
-            this.gameTime = gameTime;
-
-            if (tookDamage)
-                goto BeingHit;
 
             drawRectangle.X = collRectangle.X - 8;
             drawRectangle.Y = collRectangle.Y - 32;
@@ -59,13 +49,13 @@ namespace Adam.Characters.Enemies
             Jump();
             Animate();
 
-            BeingHit:
-            base.Update(player, gameTime);
+            base.Update();
 
         }
 
         private void Animate()
         {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
             switch (CurrentAnimation)
             {
                 case AnimationState.Still:
@@ -102,20 +92,6 @@ namespace Adam.Characters.Enemies
             
         }
 
-        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            if (!isDead)
-            {
-                if (tookDamage) animation.Color = Color.Red;
-                else animation.Color = Color.White;
-                animation.Draw(spriteBatch);
-
-               // DrawSurroundIndexes(spriteBatch);
-               // spriteBatch.Draw(Game1.DefaultTexture, collRectangle, Color.Red);
-                //spriteBatch.Draw(Game1.DefaultTexture, xRect, Color.Red);
-                //spriteBatch.Draw(Game1.DefaultTexture, yRect, Color.Blue);
-            }
-        }
 
         void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
@@ -163,5 +139,48 @@ namespace Adam.Characters.Enemies
         public bool IsJumping { get; set; }
 
         public bool IsAboveTile { get; set; }
+
+        public override byte ID
+        {
+            get
+            {
+                return 202;
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                return EnemyDB.Frog_MaxHealth;
+            }
+        }
+
+        SoundFx meanSound;
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                if (meanSound == null)
+                    meanSound = new SoundFx("Sounds/Frog/frog_croak");
+                return meanSound;   
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }

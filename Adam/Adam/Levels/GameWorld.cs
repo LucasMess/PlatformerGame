@@ -55,6 +55,12 @@ namespace Adam
         public bool debuggingMode;
         public Background background = new Background();
         PopUp popUp = new PopUp();
+
+        public GameTime GetGameTime()
+        {
+            return gameTime;
+        }
+
         PlaceNotification placeNotification;
         int enemyTilePos;
         int gemTilePos;
@@ -487,6 +493,11 @@ namespace Adam
             levelComplete = m.levelComplete;
 
             gameTime = m.gameTime;
+        }
+
+        public Player GetPlayer()
+        {
+            return player;
         }
     }
 }

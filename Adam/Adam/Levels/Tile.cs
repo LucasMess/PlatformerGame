@@ -511,7 +511,7 @@ namespace Adam
                         if (!hasAddedEntity)
                         {
                             isVoid = true;
-                            GameWorld.Instance.entities.Add(new FlyingWheel(drawRectangle.X, drawRectangle.Y));
+                            GameWorld.Instance.entities.Add(new BeingOfSight(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
                     }

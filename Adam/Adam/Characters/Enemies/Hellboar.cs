@@ -40,12 +40,10 @@ namespace Adam.Characters.Enemies
 
         public Hellboar(int x, int y)
         {
-            health = 100;
             collRectangle = new Rectangle(x, y, 50 * 2, 76);
             drawRectangle = new Rectangle(x - 18, y - 44, 68 * 2, 60 * 2);
             sourceRectangle = new Rectangle(0, 0, 68, 60);
             Texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
-            CurrentEnemyType = EnemyType.Hellboar;
             animationData = new AnimationData(0, 4, 0, AnimationType.Loop);
             animationData.FrameCount = new Vector2(3, 0);
 
@@ -54,11 +52,9 @@ namespace Adam.Characters.Enemies
             crash = new SoundFx("Sounds/Hellboar/crash",this);
             breath = new SoundFx("Sounds/Hellboar/breath",this);
             tweet = new SoundFx("Sounds/Hellboar/tweet",this);
-
-            base.Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
             this.player = player;
             this.gameTime = gameTime;
@@ -119,7 +115,7 @@ namespace Adam.Characters.Enemies
                 if (!destinationSet)
                 {
                     int fastSpeed = 5;
-                    if (isPlayerToTheRight)
+                    if (IsPlayerToTheRight())
                     {
                         velocity.X = fastSpeed;
                         isFacingRight = true;
@@ -137,14 +133,18 @@ namespace Adam.Characters.Enemies
 
         private void CheckForPlayer()
         {
-            if (isCharging) return;
+            if (isCharging)
+                return;
+
+            Player player = GameWorld.Instance.GetPlayer();
+
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
             {
                 isAngry = true;
                 playerSeen.PlayOnce();
                 fire.PlayIfStopped();
                 if (!isCharging)
-                    isFacingRight = isPlayerToTheRight;
+                    isFacingRight = IsPlayerToTheRight();
             }
             else
             {
@@ -336,5 +336,45 @@ namespace Adam.Characters.Enemies
         public bool IsJumping { get; set; }
 
         public bool IsAboveTile { get; set; }
+
+        public override byte ID
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

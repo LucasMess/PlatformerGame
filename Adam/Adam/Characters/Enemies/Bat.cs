@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Adam.Misc;
 
 namespace Adam.Characters.Enemies
 {
@@ -14,6 +15,48 @@ namespace Adam.Characters.Enemies
         bool isSleeping;
 
         Rectangle rangeRect;
+        Vector2 maxVelocity;
+
+        public override byte ID
+        {
+            get
+            {
+                return 207;
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                return EnemyDB.Bat_MaxHealth;
+            }
+        }
+
+        SoundFx meanSound;
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         public Bat(int x, int y)
         {
@@ -22,19 +65,16 @@ namespace Adam.Characters.Enemies
             sourceRectangle = new Rectangle(0, 0, 16, 32);
             Texture = Main.DefaultTexture;
             maxVelocity = new Vector2(3, 3);
-            health = 100;
             // texture = ContentHelper.LoadTexture("Bat/bat");
-
-            Initialize();
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-          if (isLookingForRefuge)
+            if (isLookingForRefuge)
             {
                 isSleeping = true;
             }
-          else
+            else
             {
                 velocity.Y = 0;
             }
@@ -63,7 +103,7 @@ namespace Adam.Characters.Enemies
         {
             if (isDead) return;
 
-            rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200,  collRectangle.Height + 200);
+            rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200, collRectangle.Height + 200);
 
             drawRectangle = collRectangle;
 
@@ -117,7 +157,7 @@ namespace Adam.Characters.Enemies
                 velocity = Vector2.Zero;
             }
 
-            base.Update(player,gameTime);
+            base.Update(player, gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

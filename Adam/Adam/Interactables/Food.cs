@@ -32,23 +32,25 @@ namespace Adam.Interactables
             hitGround = new SoundFx("Sounds/Items/item_pop", this);
             pickUpSound = ContentHelper.LoadSound("Sounds/eat");
 
-            switch (enemy.CurrentEnemyType)
+            switch (enemy.ID)
             {
-                case EnemyType.Snake:
+                case 201: // Snake
                     healAmount = 10;
                     Texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
                     break;
-                case EnemyType.Potato:
-                    break;
-                case EnemyType.Shade:
-                    break;
-                case EnemyType.Drone:
-                    break;
-                case EnemyType.Bloodless:
-                    break;
-                case EnemyType.Frog:
+                case 202: // Frog
                     healAmount = 5;
                     Texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
+                    break;
+                case 204: // Lost
+                    break;
+                case 205: // Hellboar
+                    break;
+                case 207: // Bat
+                    break;
+                case 208: // Duck                    
+                    break;
+                case 209: // Being of Sight
                     break;
                 default:
                     break;

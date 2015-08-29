@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Characters.Enemies;
+using Adam.Misc;
 
 namespace Adam.Enemies
 {
@@ -31,6 +32,46 @@ namespace Adam.Enemies
         List<Rectangle> rects = new List<Rectangle>();
         AnimationState CurrentAnimationState = AnimationState.Still;
 
+        public override byte ID
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public DroneEnemy(int x, int y, ContentManager Content, GameWorld map)
         {
             this.Content = Content;
@@ -40,23 +81,17 @@ namespace Adam.Enemies
             chargeSound = Content.Load<SoundEffect>("Sounds/Drone/Drone_Charging");
             fireSound = Content.Load<SoundEffect>("Sounds/Drone/Drone_Fire");
 
-            health = EnemyDB.Drone_MaxHealth;
-            CurrentEnemyType = EnemyType.Drone;
-
             drawRectangle = new Rectangle(x, y, 32, 72);
             collRectangle = new Rectangle(x, y, 32, 72);
             sourceRectangle = new Rectangle(0, 0, 32, 72);
-
-            Initialize();
         }
 
-        public override void Update(Player player, Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update()
         {
-            base.Update(player, gameTime);
+            Player player = GameWorld.Instance.GetPlayer();
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+           
             Animate();
-
-            if (!isInRange)
-                return;
 
             if (CollisionRay.IsPlayerInSight(this, player, GameWorld.Instance, out rects))
             {
@@ -82,6 +117,8 @@ namespace Adam.Enemies
                     //TODO launch proj
                 }
             }
+
+            base.Update();
         }
 
         private void Animate()

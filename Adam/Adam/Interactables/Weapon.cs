@@ -80,34 +80,6 @@ namespace Adam
                     break;
                 }
             }
-
-            foreach (Enemy enemy in gameWorld.entities.OfType<Enemy>())
-            {
-                foreach (var proj in projectileList)
-                {
-                    if (HasHitEnemy(proj, enemy) == true)
-                    {
-                        effectList.Add(new Particle(enemy, proj));
-                        projectileList.Remove(proj);
-                        enemy.BeMean();
-                        enemy.health -= 10;
-
-                        if (enemy.health <= 0)
-                        {
-                            Rectangle[] rectangles;
-                            enemy.GetDisintegratedRectangles(out rectangles);
-
-                            foreach (var rec in rectangles)
-                            {
-                                Particle eff = new Particle();
-                                eff.CreateEnemyDisintegrationEffect(enemy, rec, proj);
-                                effectList.Add(eff);
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
         }
 
         public void Update(Player player, GameWorld map, GameTime gameTime)

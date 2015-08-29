@@ -249,7 +249,7 @@ namespace Adam
                     Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
                     collRectangle = new Rectangle(enemy.drawRectangle.X, enemy.drawRectangle.Y, 32, 32);
                     animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
-                    if (!enemy.isPlayerToTheRight)
+                    if (!enemy.isFacingRight)
                     {
                         velocity = new Vector2(-10, -15);
                         animation.isFlipped = true;

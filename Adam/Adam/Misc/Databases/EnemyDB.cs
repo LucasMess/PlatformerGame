@@ -22,8 +22,20 @@ namespace Adam
         public const int Drone_ProjectileDamage = 15;
         public const int Drone_Score = 30;
         public const int Spike_Damage = 10;
+        public const int Hellboar_MaxHealth = 100;
         public const int Hellboar_TouchDamage = 80;
         public const int Frog_TouchDamage = 30;
         public const int Frog_MaxHealth = 40;
+        public const int Lost_MaxHealth = 1;
+        public const int Lost_TouchDamage = 20;
+        public const int Duck_MaxHealth = 30;
+        public const int Duck_TouchDamage = 10;
+        public const int Bat_MaxHealth = 60;
+        public const int Bat_TouchDamage = 30;
+        public const int BeingOfSight_MaxHealth = int.MaxValue;
+        public const int VoidEye_TouchDamage = 20;
+        public const int FallingBoulder_TouchDamage = int.MaxValue;
+        public const int FlameSpitter_TouchDamage = 20;
+        public const int FlameSpitter_DPS = 2;
     }
 }

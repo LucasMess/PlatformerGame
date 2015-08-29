@@ -24,17 +24,55 @@ namespace Adam
         SoundFx ghost, ghost2;
         double ghostTimer;
         int timerEnd;
+        Vector2 maxVelocity;
+
+        public override byte ID
+        {
+            get
+            {
+                return 204;
+            }
+        }
+
+        protected override int MaxHealth
+        {
+            get
+            {
+                return EnemyDB.Lost_MaxHealth;
+            }
+        }
+
+        protected override SoundFx MeanSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx AttackSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override SoundFx DeathSound
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public Lost(int x, int y)
         {
-            health = EnemyDB.Shade_MaxHealth;
             maxVelocity = new Vector2(1, 1);
 
             Texture = Content.Load<Texture2D>("Enemies/lost");
             ghost = new SoundFx("Sounds/Lost/ghost");
             ghost2 = new SoundFx("Sounds/Lost/ghost2");
-            deathSound = ContentHelper.LoadSound("Sounds/Lost/scream");
-            deathSoundInstance = deathSound.CreateInstance();
 
             collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
             drawRectangle = new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
@@ -44,30 +82,14 @@ namespace Adam
             animation = new Animation(Texture, drawRectangle, sourceRectangle);
 
             timerEnd = GameWorld.RandGen.Next(3, 8);
-
-            Initialize();
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update()
         {
-            DetectCollision();
-            base.Update(player, gameTime);
-            Animate(gameTime);
+            Player player = GameWorld.Instance.GetPlayer();
 
+            Animate();
 
-            if (!isInRange)
-                return;
-            if (isDead)
-                return;
-
-            //Calculating unit vector for velocity of shade
-            //double xVector = (double)(player.collRectangle.Center.X - collRectangle.Center.X);
-            //double yVector = (double)(player.collRectangle.Center.Y - collRectangle.Center.Y);
-
-            //double magnitude = Math.Sqrt((Math.Pow(xVector, 2.0)) + (Math.Pow(yVector, 2.0)));
-            //Vector2 newVelocity = new Vector2(maxVelocity.X * (float)(xVector / magnitude), maxVelocity.Y * (float)(yVector / magnitude));
-
-            //velocity = newVelocity;
 
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
@@ -104,20 +126,20 @@ namespace Adam
             opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
 
-            if (isPlayerToTheRight && !player.isFacingRight)
+            if (IsPlayerToTheRight() && !player.isFacingRight)
             {
                 CurrentAnimationState = AnimationState.Hiding;
                 velocity = new Vector2(0, 0);
                 opacity = .5f;
             }
-            if (!isPlayerToTheRight && player.isFacingRight)
+            if (!IsPlayerToTheRight() && player.isFacingRight)
             {
                 CurrentAnimationState = AnimationState.Hiding;
                 velocity = new Vector2(0, 0);
                 opacity = .5f;
             }
 
-            isFacingRight = isPlayerToTheRight;
+            isFacingRight = IsPlayerToTheRight();
 
             ghostTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (ghostTimer > timerEnd)
@@ -130,26 +152,17 @@ namespace Adam
                 else ghost2.PlayIfStopped();
             }
 
+            base.Update();
+
         }
 
-        private void Animate(GameTime gameTime)
+        private void Animate()
         {
-            animation.Update(gameTime, drawRectangle, still);
-        }
-
-        private void DetectCollision()
-        {
-            if (player.collRectangle.Intersects(drawRectangle) && !isDead && !player.isInvincible && !player.isInvulnerable && !player.isGhost)
-            {
-                player.TakeDamageAndKnockBack(EnemyDB.Shade_TouchDamage);
-                Kill();
-            }
+            animation.Update(GameWorld.Instance.gameTime, drawRectangle, still);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!isInRange)
-                return;
             if (isDead)
                 return;
             Color color = Color.White * opacity;

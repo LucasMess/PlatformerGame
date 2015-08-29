@@ -14,6 +14,8 @@ namespace Adam.Enemies
 {
     public class Snake : Enemy
     {
+        double projCooldownTimer;
+
         public override byte ID
         {
             get
@@ -75,8 +77,6 @@ namespace Adam.Enemies
 
             //Creates animation
             animation = new Animation(Texture, drawRectangle, 240, 0, AnimationType.Loop);
-
-            base.Initialize();
         }
 
         public override void Update()
@@ -84,12 +84,6 @@ namespace Adam.Enemies
             base.Update();
 
             collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
-            damageBox = new Rectangle(collRectangle.X - 5, collRectangle.Y - 10, collRectangle.Width + 10, collRectangle.Height / 2);
-
-            if (!isInRange)
-                return;
-
-            animation.Update(gameTime);
 
             if (projCooldownTimer > 3 && !isDead)
             {
@@ -107,10 +101,8 @@ namespace Adam.Enemies
         {
             if (isDead)
                 return;
-            if (!isInRange)
-                return;
 
-            if (isPlayerToTheRight)
+            if (IsPlayerToTheRight())
                 animation.isFlipped = true;
             else animation.isFlipped = false;
 
