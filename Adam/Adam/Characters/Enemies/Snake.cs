@@ -13,7 +13,7 @@ using Adam.Misc.Interfaces;
 
 namespace Adam.Enemies
 {
-    public class Snake : Enemy, IAnimated
+    public class Snake : Enemy, IAnimated, INewtonian, ICollidable
     {
         double projCooldownTimer;
         Vector2 frameCount;
@@ -97,12 +97,30 @@ namespace Adam.Enemies
             get; set;
         }
 
+        public float GravityStrength { get; set; } = Main.Gravity;
+
+        public bool IsFlying
+        {
+            get; set;
+        }
+
+        public bool IsJumping
+        {
+            get; set;
+        }
+
+        public bool IsAboveTile
+        {
+            get; set;
+        }
+
         public Snake(int x, int y)
         {
             //Sets up specific variables for the snake
             frameCount = new Vector2(8, 0);
             sourceRectangle = new Rectangle(0, 0, 64, 96);
             drawRectangle = new Rectangle(x, y - 64, 64, 96);
+            collRectangle = drawRectangle;
 
             //Textures and sound effects, single is for rectangle pieces explosion
             Texture = Content.Load<Texture2D>("Enemies/Snake");
@@ -115,7 +133,7 @@ namespace Adam.Enemies
         {
             base.Update();
 
-            collRectangle = new Rectangle(drawRectangle.X + 8, drawRectangle.Y + 12, drawRectangle.Width - 16, drawRectangle.Height - 12);
+            
 
             if (projCooldownTimer > 3 && !isDead)
             {
@@ -133,6 +151,31 @@ namespace Adam.Enemies
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
             animation.Update(gameTime, drawRectangle, animationData[0]);
+        }
+
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        {
+            velocity.Y = 0;
+        }
+
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+            velocity.Y = 0;
+        }
+
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+            velocity.X = 0;
+        }
+
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+            velocity.X = 0;
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+
         }
     }
 }
