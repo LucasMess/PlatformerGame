@@ -1354,13 +1354,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\spritemap_13.png">
-      <Name>spritemap_13</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sounds\Level Editor\changeMode.wav">
       <Name>changeMode</Name>
       <Importer>WavImporter</Importer>
@@ -1556,6 +1549,13 @@
   <ItemGroup>
     <Compile Include="Tiles\temp tile.png">
       <Name>temp tile</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\spritemap_14.png">
+      <Name>spritemap_14</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
