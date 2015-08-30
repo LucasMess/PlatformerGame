@@ -23,8 +23,7 @@ namespace Adam.Interactables
 
         public Item()
         {
-            //bounceSound = new SoundFx("Sounds/Items/item_pop", this);
-            //pickUpSound = new SoundFx("Sounds/Items/item_pop");
+
         }
 
         public override void Update()

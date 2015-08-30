@@ -157,6 +157,7 @@
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
+    <Compile Include="Interactables\MushroomBooster.cs" />
     <Compile Include="Interactables\Sign.cs" />
     <Compile Include="Levels\LevelEditor.cs" />
     <Compile Include="Levels\PlayerSpawn.cs" />
@@ -190,7 +191,9 @@
     <Compile Include="Network\PlayerDataPacket.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
+    <Compile Include="Obstacles\FlameSpitter.cs" />
     <Compile Include="Obstacles\Liquid.cs" />
+    <Compile Include="Obstacles\MachineGun.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="Particles\NewParticle.cs" />
     <Compile Include="UI\ActionBar.cs" />

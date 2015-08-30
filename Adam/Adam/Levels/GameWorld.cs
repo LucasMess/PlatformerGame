@@ -62,8 +62,6 @@ namespace Adam
         }
 
         PlaceNotification placeNotification;
-        int enemyTilePos;
-        int gemTilePos;
 
         public int TimesUpdated;
 
