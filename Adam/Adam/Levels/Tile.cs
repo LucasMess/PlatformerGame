@@ -19,7 +19,7 @@ namespace Adam
         public Texture2D texture;
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
-        SpecialTile animatedTile;
+        SpecialTile specialTile;
         Obstacle obstacle;
         Chest chest;
 
@@ -57,7 +57,7 @@ namespace Adam
         /// </summary>
         public virtual void DefineTexture()
         {
-            animatedTile = null;
+            specialTile = null;
             obstacle = null;
             isVoid = false;
 
@@ -74,7 +74,7 @@ namespace Adam
                 return;
             }
 
-            Vector2 position = Vector2.Zero;
+            Vector2 positionInSpriteSheet = Vector2.Zero;
             Vector2 startingPoint;
 
             switch (ID)
@@ -83,26 +83,26 @@ namespace Adam
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 0);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 2: //Stone
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(4, 0);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 3: //Marble Floor
                     isSolid = true;
                     switch (subID)
                     {
                         case 0: //Foundation
-                            position = new Vector2(14, 5);
+                            positionInSpriteSheet = new Vector2(14, 5);
                             break;
                         case 1: //Foundation Right
-                            position = new Vector2(15, 5);
+                            positionInSpriteSheet = new Vector2(15, 5);
                             break;
                         case 2: //Foundation Left
-                            position = new Vector2(13, 5);
+                            positionInSpriteSheet = new Vector2(13, 5);
                             break;
                     }
                     break;
@@ -110,56 +110,56 @@ namespace Adam
                     isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 5);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 5: //Sand
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(8, 0);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 6: //Mesa
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(8, 5);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 7: //ShortGrass
-                    position = new Vector2(12, 16);
+                    positionInSpriteSheet = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 8: //Metal
-                    position = new Vector2(12, 2);
+                    positionInSpriteSheet = new Vector2(12, 2);
                     isVoid = true;
                     isSolid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 9://Tall Grass
-                    position = new Vector2(0, 16);
+                    positionInSpriteSheet = new Vector2(0, 16);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 10: //Gold
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 5);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 11: //torch
-                    position = new Vector2(12, 0);
+                    positionInSpriteSheet = new Vector2(12, 0);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2,.6f));
                     break;
                 case 12: //Chandelier
-                    position = new Vector2(0, 17);
+                    positionInSpriteSheet = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,1));
                     break;
                 case 13: //Door
@@ -167,68 +167,68 @@ namespace Adam
                     isVoid = true;
                     break;
                 case 14: //Vines
-                    position = new Vector2(15, 7);
+                    positionInSpriteSheet = new Vector2(15, 7);
                     isClimbable = true;
                     break;
                 case 15: //Ladders
-                    position = new Vector2(13, 7);
+                    positionInSpriteSheet = new Vector2(13, 7);
                     isClimbable = true;
                     break;
                 case 16: //Chains
-                    position = new Vector2(14, 7);
+                    positionInSpriteSheet = new Vector2(14, 7);
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
-                    animatedTile = new SpecialTile(ID, drawRectangle);
-                    position = new Vector2(12, 10);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    positionInSpriteSheet = new Vector2(12, 10);
                     isVoid = true;
                     break;
                 case 18://Marble Column
                     switch (subID)
                     {
                         case 0: //middle
-                            position = new Vector2(13, 3);
+                            positionInSpriteSheet = new Vector2(13, 3);
                             break;
                         case 1: //top
-                            position = new Vector2(12, 3);
+                            positionInSpriteSheet = new Vector2(12, 3);
                             break;
                         case 2: //bot
-                            position = new Vector2(14, 3);
+                            positionInSpriteSheet = new Vector2(14, 3);
                             break;
                     }
                     break;
                 case 19://chest
-                    position = new Vector2(12, 24);
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    positionInSpriteSheet = new Vector2(12, 24);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     isVoid = true;
                     break;
                 case 20://tech
                     isVoid = true;
                     break;
                 case 21://scaffolding
-                    position = new Vector2(13, 6);
+                    positionInSpriteSheet = new Vector2(13, 6);
                     isSolid = true;
                     break;
                 case 22: //spikes
-                    position = new Vector2(17, 13);
+                    positionInSpriteSheet = new Vector2(17, 13);
                     obstacle = new Spikes(drawRectangle.X, drawRectangle.Y);
                     break;
                 case 23://water
-                    position = new Vector2(4, 15);
+                    positionInSpriteSheet = new Vector2(4, 15);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 24: //lava
-                    position = new Vector2(0, 15);
+                    positionInSpriteSheet = new Vector2(0, 15);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3,.3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
                 case 25:
-                    position = new Vector2(8, 15);
+                    positionInSpriteSheet = new Vector2(8, 15);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 26: //apple
                     isVoid = true;
@@ -241,41 +241,41 @@ namespace Adam
                     switch (subID)
                     {
                         case 0: //Plain
-                            position = new Vector2(15, 3);
+                            positionInSpriteSheet = new Vector2(15, 3);
                             break;
                         case 1: //Right ledge
-                            position = new Vector2(15, 4);
+                            positionInSpriteSheet = new Vector2(15, 4);
                             break;
                         case 2: //Left ledge
-                            position = new Vector2(13, 4);
+                            positionInSpriteSheet = new Vector2(13, 4);
                             break;
                     }
 
                     break;
                 case 30: //Marble ceiling support
-                    position = new Vector2(13, 4);
+                    positionInSpriteSheet = new Vector2(13, 4);
                     isSolid = true;
                     break;
                 case 31: //Tree
-                    position = new Vector2(18, 4);
+                    positionInSpriteSheet = new Vector2(18, 4);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 32: //Small Rock
-                    position = new Vector2(13, 18);
+                    positionInSpriteSheet = new Vector2(13, 18);
                     break;
                 case 33: //Big Rock
-                    position = new Vector2(14, 18);
+                    positionInSpriteSheet = new Vector2(14, 18);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 34: //Medium Rock
-                    position = new Vector2(11, 18);
+                    positionInSpriteSheet = new Vector2(11, 18);
                     isVoid = true;
-                    animatedTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
                 case 36: //Sign
-                    position = new Vector2(12, 4);
+                    positionInSpriteSheet = new Vector2(12, 4);
                     break;
                 case 37: //Checkpoint
                     isVoid = true;
@@ -284,75 +284,131 @@ namespace Adam
                     isSolid = true;
                     startingPoint = new Vector2(0, 10);
                     hasConnectPattern = true;
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 39: //Ice
                     isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 10);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 40: //Snow Covered Grass
                     isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(8, 10);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 41: //Void tile
                     isSolid = true;
                     hasConnectPattern = true;
                     startingPoint = new Vector2(16, 19);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case 42: // Flamespitter
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(12, 29);
+                    //isVoid = true;
+                    //animatedTile = new SpecialTile(ID, drawRectangle);                    
+                    break;
+                case 43: // Machine Gun
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(12,28);
+                    break;
+                case 44: // Cacti
+                    switch (subID)
+                    {
+                        case 0: // One branch normal.
+                            positionInSpriteSheet = new Vector2(20, 2);
+                            break;
+                        case 1: // Two branch normal.
+                            positionInSpriteSheet = new Vector2(20, 4);
+                            break;
+                        case 2: // One branch flower.
+                            positionInSpriteSheet = new Vector2(22, 2);
+                            break;
+                        case 3: // Two branch flower.
+                            positionInSpriteSheet = new Vector2(22, 4);
+                            break;
+                    }
+                    break;
+                case 45: // Mushroom Booster
+                    positionInSpriteSheet = new Vector2(19, 26);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    break;
+                case 46: // Void ladder.
+                    positionInSpriteSheet = new Vector2(14, 8);
+                    isClimbable = true;
+                    break;
+                case 47: // Wooden platform.
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(14, 26);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    break;
+                case 48: // Blue crystal.
+                    positionInSpriteSheet = new Vector2(20, 27);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    break;
+                case 49: // Yellow crystal.
+                    positionInSpriteSheet = new Vector2(20, 29);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    break;
+                case 50: // Green sludge.
+                    positionInSpriteSheet = new Vector2(14, 27);
+                    specialTile = new SpecialTile(ID, drawRectangle);
+                    break;
+                case 51: // Void FireSpitter.
+                    positionInSpriteSheet = new Vector2(20, 28);
+                    specialTile = new SpecialTile(ID, drawRectangle);
                     break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 19);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 101://Stone Wall
-                    position = new Vector2(13, 8);
+                    positionInSpriteSheet = new Vector2(13, 8);
                     break;
                 case 102://Dirt Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(0, 19);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 103://Fences
                     sunlightPassesThrough = true;
                     switch (subID)
                     {
                         case 0://Plain
-                            position = new Vector2(12, 7);
+                            positionInSpriteSheet = new Vector2(12, 7);
                             break;
                         case 1://Top point
-                            position = new Vector2(12, 6);
+                            positionInSpriteSheet = new Vector2(12, 6);
                             break;
                     }
                     break;
                 case 104://Marble wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(12, 19);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 105://Sand Wall
-                    position = new Vector2(15, 9);
+                    positionInSpriteSheet = new Vector2(15, 9);
                     break;
                 case 106: //Hellstone Wall
-                    position = new Vector2(14, 9);
+                    positionInSpriteSheet = new Vector2(14, 9);
                     break;
                 case 107: //Stone Brick Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(8, 19);
-                    position = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 #endregion
 
                 case 200: //Player
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
-                        position = new Vector2(17, 12);
+                        positionInSpriteSheet = new Vector2(17, 12);
                     else
                     {
                         isVoid = true;
@@ -368,7 +424,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(18, 12);
+                        positionInSpriteSheet = new Vector2(18, 12);
                     }
                     else
                     {
@@ -385,7 +441,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(21, 12);
+                        positionInSpriteSheet = new Vector2(21, 12);
                     }
                     else
                     {
@@ -402,7 +458,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(18, 13);
+                        positionInSpriteSheet = new Vector2(18, 13);
                     }
                     else
                     {
@@ -418,7 +474,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(19, 12);
+                        positionInSpriteSheet = new Vector2(19, 12);
                     }
                     else
                     {
@@ -435,7 +491,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(20, 12);
+                        positionInSpriteSheet = new Vector2(20, 12);
                     }
                     else
                     {
@@ -452,7 +508,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(12, 26);
+                        positionInSpriteSheet = new Vector2(12, 26);
                     }
                     else
                     {
@@ -469,7 +525,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(12, 8);
                     }
                     else
                     {
@@ -486,7 +542,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(12, 8);
                     }
                     else
                     {
@@ -503,7 +559,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        position = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(12, 8);
                     }
                     else
                     {
@@ -519,7 +575,7 @@ namespace Adam
             }
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
-            sourceRectangle = new Rectangle((int)(position.X * smallTileSize), (int)(position.Y * smallTileSize), smallTileSize, smallTileSize);
+            sourceRectangle = new Rectangle((int)(positionInSpriteSheet.X * smallTileSize), (int)(positionInSpriteSheet.Y * smallTileSize), smallTileSize, smallTileSize);
 
 
         }
@@ -530,7 +586,7 @@ namespace Adam
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-            animatedTile?.Animate(gameTime);
+            specialTile?.Animate(gameTime);
             obstacle?.Update(gameTime, GameWorld.Instance.player, GameWorld.Instance);
             //Not used for normal textures, only animated textures.
 
@@ -563,7 +619,7 @@ namespace Adam
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (animatedTile == null)
+            if (specialTile == null)
             {
                 if (!isVoid)
                 {
@@ -581,7 +637,7 @@ namespace Adam
             else
             {
                 if (texture != null)
-                    animatedTile.Draw(spriteBatch);
+                    specialTile.Draw(spriteBatch);
             }
         }
 
@@ -1061,7 +1117,17 @@ namespace Adam
             {38,"Stone Brick" },
             {39,"Ice" },
             {40,"Snow" },
-            {41,"Void Tile" } ,
+            {41,"Void Tile" },
+            {42, "Flame Spitter" },
+            {43, "Machine Gun" },
+            {44, "Cactus" },
+            {45, "Mushroom Booster" },
+            {46, "Void Ladder" },
+            {47, "Wooden Platform" },
+            {48, "Blue Crystal" },
+            {49, "Yellow Crystal" },
+            {50, "Green Sludge" },
+            {51, "Void Fire Spitter" },
 
             {100,"Gold Brick Wall" },
             {101,"Stone Wall" },
