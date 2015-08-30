@@ -680,7 +680,6 @@ namespace Adam
         {
             Texture = GameWorld.Particle_SpriteSheet;
             collRectangle = new Rectangle(source.GetCollRectangle().Center.X, source.GetCollRectangle().Center.Y, 8, 8);
-            collRectangle = collRectangle;
             sourceRectangle = new Rectangle(8, 0, 8, 8);
             int buffer = 1;
             velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer,(int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
@@ -689,6 +688,57 @@ namespace Adam
             opacity = .5f;
 
             light = new Lights.DynamicPointLight(this, .5f, false, color, 1);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+        }
+    }
+
+    public class FlameParticle : Particle
+    {
+        /// <summary>
+        /// Creates a new flame particle that hurts the player.
+        /// </summary>
+        /// <param name="source">The origin of the flame particle.</param>
+        /// <param name="sourceRectangle">The position of the texture in the spritesheet.</param>
+        public FlameParticle(Entity source, Color color)
+        {
+            sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
+            Texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Y  - 8, 8, 8);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+            opacity = 1;
+
+            velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
+            velocity.Y = -3f;
+
+            light = new DynamicPointLight(this, .7f, false, color, .7f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+        }
+    }
+
+    public class PlayerFlameParticle : Particle
+    {
+       public PlayerFlameParticle(Entity source, Color color)
+        {
+            sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
+            Texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Bottom - 8, 8, 8);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+            opacity = .5f;
+
+            velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
+            velocity.Y = -3f;
+
+            light = new DynamicPointLight(this, .5f, false, color, .5f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
 

@@ -20,93 +20,90 @@ namespace Adam
         bool hasRandomStartingPoint;
         Vector2 frameCount;
         Vector2 startingPosition;
+        Vector2 size;
         Rectangle startingRectangle;
         Rectangle originalPosition;
         Liquid liquid;
         Chest chest;
+        FlameSpitter flameSpitter;
+        MachineGun machineGun;
+        Tile sourceTile;
 
-        public SpecialTile(byte ID, Rectangle drawRectangle)
+
+        /// <summary>
+        /// For tiles that are not 16x16, have animations, or interact differently with the player.
+        /// </summary>
+        /// <param name="sourceTile"></param>
+        public SpecialTile(Tile sourceTile)
         {
             texture = GameWorld.SpriteSheet;
-            this.ID = ID;
-            base.drawRectangle = drawRectangle;
+            this.sourceTile = sourceTile;
+            ID = sourceTile.ID;
+            drawRectangle = sourceTile.drawRectangle;
             originalPosition = base.drawRectangle;
-            if (GameWorld.Instance != null)
-                TileIndex = (int)(base.drawRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(base.drawRectangle.Center.X / Main.Tilesize);
-            smallTileSize = Main.Tilesize / 2;
+            TileIndex = sourceTile.TileIndex;
             DefineTexture();
         }
 
         public override void DefineTexture()
         {
             startingPosition = new Vector2(0, 0);
-            Vector2 size = new Vector2(1, 1);
+            size = new Vector2(1, 1);
 
             switch (ID)
             {
                 case 7: //short grass
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     break;
                 case 9: //tall Grass
                     frameCount = new Vector2(12, 0);
-                    startingPosition = new Vector2(0, 16);
                     sunlightPassesThrough = true;
                     break;
                 case 8: //Metal
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 2);
                     break;
                 case 11: //Torch
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 0);
                     size.Y = 2;
                     drawRectangle.Height = Main.Tilesize * 2;
                     break;
                 case 12: //Chandelier
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(0, 17);
                     size.X = 2;
                     drawRectangle.Width = Main.Tilesize * 2;
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 10 + (2 * GameWorld.RandGen.Next(0, 2)));
                     size.Y = 2;
                     drawRectangle.Height = Main.Tilesize * 2;
                     drawRectangle.Y = originalPosition.Y - Main.Tilesize;
                     sunlightPassesThrough = true;
                     break;
                 case 19: //Chest
-                    chest = new Chest(this);               
-                    frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(12, 24);
+                    chest = new Chest(this);
+                    frameCount = new Vector2(6, 0);
                     size.X = 1.5f;
                     drawRectangle.Width = (int)(Main.Tilesize * size.X);
                     break;
                 case 23: //Water
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Water);
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(4, 15);
                     hasRandomStartingPoint = true;
                     break;
                 case 24: //Lava
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Lava);
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(0, 15);
                     hasRandomStartingPoint = true;
                     sunlightPassesThrough = true;
                     break;
                 case 25: //Poison
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Poison);
                     frameCount = new Vector2(4, 0);
-                    startingPosition = new Vector2(8, 15);
                     hasRandomStartingPoint = true;
                     break;
                 case 31: //Tree
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(16, 0);
                     size.X = 6;
                     size.Y = 7;
                     drawRectangle.Height = Main.Tilesize * 7;
@@ -117,7 +114,6 @@ namespace Adam
                     break;
                 case 33: //Big Rock
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(14, 17);
                     size.X = 2;
                     size.Y = 2;
                     drawRectangle.Height = Main.Tilesize * 2;
@@ -126,68 +122,79 @@ namespace Adam
                     break;
                 case 34: //Small Rock
                     frameCount = new Vector2(0, 0);
-                    startingPosition = new Vector2(11, 18);
                     size.X = 2;
                     drawRectangle.Width = Main.Tilesize * 2;
                     break;
+                case 42: // Flame Spitter.
+                    frameCount = new Vector2(8, 0);
+                    flameSpitter = new FlameSpitter(sourceTile);
+                    break;
+                case 43: // Machine Gun.
+                    frameCount = new Vector2(8, 0);
+                    break;
+                case 44: // Cactus.
+                    frameCount = new Vector2(1, 0);
+                    size.X = 2;
+                    size.Y = 2;
+                    drawRectangle.Width = 2 * Main.Tilesize;
+                    drawRectangle.Height = 2 * Main.Tilesize;
+                    break;
+                case 48: // Blue Crystal.
+                    frameCount = new Vector2(2, 0);
+                    break;
+                case 49: // Yellow Crystal.
+                    frameCount = new Vector2(4, 0);
+                    break;
+                case 50: // Green Sludge.
+                    frameCount = new Vector2(6, 0);
+                    break;
+                case 51: // Void Fire Spitter.
+                    frameCount = new Vector2(4, 0);
+                    break;
 
             }
-            sourceRectangle = new Rectangle((int)(startingPosition.X * smallTileSize), (int)(startingPosition.Y * smallTileSize), (int)(smallTileSize * size.X), (int)(smallTileSize * size.Y));
+            startingPosition = sourceTile.GetPositionInSpriteSheet();
+            sourceRectangle = DefineSourceRectangle();
+
+            // The rectangle the source rectangle returns to after the animation is complete.
             startingRectangle = sourceRectangle;
 
+            // Defines a starting point for the animation if you do not want to have all tiles synchronized.
             if (hasRandomStartingPoint)
             {
                 int randX = GameWorld.RandGen.Next(0, (int)frameCount.X);
-                sourceRectangle.X += randX * smallTileSize;
+                sourceRectangle.X += randX * SmallTileSize;
                 currentFrame += randX;
             }
 
+        }
+
+        /// <summary>
+        /// Takes all the variables given in DefineTexture method and returns the appropriate source rectangle.
+        /// </summary>
+        /// <returns></returns>
+        private Rectangle DefineSourceRectangle()
+        {
+            return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * size.X), (int)(SmallTileSize * size.Y));
+        }
+
+        /// <summary>
+        /// Takes all the variables given in DefineTexture method and returns the appropriate draw rectangle.
+        /// </summary>
+        /// <returns></returns>
+        private Rectangle DefineDrawRectangle()
+        {
+            return new Rectangle(drawRectangle.X, drawRectangle.Y, (int)(drawRectangle.Width * size.X * Main.Tilesize), (int)(drawRectangle.Height * size.Y * Main.Tilesize));
         }
 
         public void Animate(GameTime gameTime)
         {
             liquid?.Update(gameTime);
             chest?.Update();
+            flameSpitter?.Update(gameTime, GameWorld.Instance.GetPlayer(), GameWorld.Instance);
 
             switch (ID)
             {
-                case 7: //Short grass
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        frameTimer = 0;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        currentFrame++;
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = startingRectangle.X;
-                    }
-                    break;
-                case 9: //Tall grass
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += smallTileSize;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-                    break;
                 case 8://Metal
                     switchFrame = 100;
                     restartWait = 2000;
@@ -201,7 +208,7 @@ namespace Adam
                         if (frameCount.X != 0)
                         {
                             frameTimer = 0;
-                            sourceRectangle.X += smallTileSize;
+                            sourceRectangle.X += SmallTileSize;
                             currentFrame++;
                         }
                     }
@@ -213,123 +220,33 @@ namespace Adam
                         restartTimer = 0;
                     }
                     break;
-                case 11: //torch
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle = startingRectangle;
-                    }
+                default:
+                    DefaultAnimation();
                     break;
-                case 12: //chandelier
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
+        }
 
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
+        private void DefaultAnimation()
+        {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
 
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle = startingRectangle;
-                    }
-                    break;
-                case 17: //flowers
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            switchFrame = 120;
+            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                    if (frameTimer >= switchFrame)
-                    {
-                        frameTimer = 0;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        currentFrame++;
-                    }
+            if (frameTimer >= switchFrame)
+            {
+                if (frameCount.X != 0)
+                {
+                    frameTimer = 0;
+                    sourceRectangle.X += SmallTileSize;
+                    currentFrame++;
+                }
+            }
 
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = startingRectangle.X;
-                    }
-                    break;
-                case 23://Water
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += smallTileSize;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = startingRectangle.X;
-                    }
-                    break;
-                case 24: //Lava
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += smallTileSize;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = startingRectangle.X;
-                    }
-                    break;
-                case 25: //Poison
-                    switchFrame = 120;
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += smallTileSize;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = startingRectangle.X;
-                    }
-                    break;
+            if (currentFrame >= frameCount.X)
+            {
+                currentFrame = 0;
+                sourceRectangle.X = startingRectangle.X;
             }
         }
 

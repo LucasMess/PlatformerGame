@@ -29,6 +29,8 @@ namespace Adam.Lights
             glow = new Glow(this);
             this.source = source;
 
+            lightHere = true;
+
         }
 
         public override void Update(Entity source)

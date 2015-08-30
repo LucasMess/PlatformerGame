@@ -18,7 +18,7 @@ namespace Adam.Obstacles
 
     public abstract class Obstacle : Entity
     {
-        public bool IsTouching { get; set; }
+        public bool IsTouchingPlayer { get; set; }
         public bool IsCollidable { get; set; }
         public DamageType CurrentDamageType;
         protected Player player;
@@ -56,8 +56,8 @@ namespace Adam.Obstacles
             }
 
             if (player.GetCollRectangle().Intersects(attackBox))
-                IsTouching = true;
-            else IsTouching = false;
+                IsTouchingPlayer = true;
+            else IsTouchingPlayer = false;
 
         }
 

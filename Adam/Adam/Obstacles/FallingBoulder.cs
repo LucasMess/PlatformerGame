@@ -57,7 +57,7 @@ namespace Adam.Obstacles
         {
             base.Update(gameTime, player, map);
 
-            if (IsTouching)
+            if (IsTouchingPlayer)
             {
                 player.PlayGoreSound();
                 player.KillAndRespawn();

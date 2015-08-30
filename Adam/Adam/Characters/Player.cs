@@ -29,7 +29,7 @@ namespace Adam
         InProgress,
     }
 
-    public class Player : Entity, ICollidable, INewtonian
+    public partial class Player : Entity, ICollidable, INewtonian
     {
 
         public delegate void PlayerRespawnHandler();
@@ -922,6 +922,30 @@ namespace Adam
                     hasStoppedTime = false;
                 }
             }
+
+            // Checks to see if player is on fire and deals damage accordingly.
+            if (IsOnFire)
+            {
+                onFireTimer.Increment();
+                if (onFireTimer.TimeElapsedInSeconds < 4)
+                {
+                    fireTickTimer.Increment();
+                    if (fireTickTimer.TimeElapsedInMilliSeconds > 500)
+                    {
+                        TakeDPS(EnemyDB.FlameSpitter_DPS);
+                        fireTickTimer.Reset();
+                    }
+                }
+                else
+                {
+                    IsOnFire = false;
+                    onFireTimer.Reset();
+                    fireTickTimer.Reset();
+                }
+
+                PlayerFlameParticle flame = new PlayerFlameParticle(this, Color.Yellow);
+                GameWorld.Instance.particles.Add(flame);
+            }
         }
 
         private void UpdateCollisions()
@@ -994,6 +1018,16 @@ namespace Adam
             automatic_hasControl = false;
             takeDamageSound.Play();
             SpillBlood(GameWorld.RandGen.Next(3, 5));
+        }
+
+        /// <summary>
+        /// Player takes damage without becoming invincible and without spilling blood.
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDPS(int damage)
+        {
+            health -= damage;
+            takeDamageSound.Play();
         }
 
         public void TakeDamageAndKnockBack(int damage)

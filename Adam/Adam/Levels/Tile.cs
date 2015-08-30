@@ -30,7 +30,7 @@ namespace Adam
         public byte subID = 0;
         public int TileIndex { get; set; }
         private int mapWidth;
-        protected int smallTileSize = 16;
+        protected const int SmallTileSize = 16;
         public bool isVoid;
         public bool sunlightPassesThrough;
         public bool levelEditorTransparency;
@@ -42,8 +42,23 @@ namespace Adam
         const float maxOpacity = .5f;
         bool hasConnectPattern;
         bool hasAddedEntity;
+        Vector2 positionInSpriteSheet;
 
         List<Tile> cornerPieces = new List<Tile>();
+
+        /// <summary>
+        /// Returns the tile's texture position in the spritesheet. This needs to be multiplied by 16 to get the coordinates.
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetPositionInSpriteSheet()
+        {
+            return positionInSpriteSheet;
+        }
+
+        public virtual Rectangle GetDrawRectangle()
+        {
+            return drawRectangle;
+        }
 
 
         #endregion
@@ -74,7 +89,7 @@ namespace Adam
                 return;
             }
 
-            Vector2 positionInSpriteSheet = Vector2.Zero;
+            positionInSpriteSheet = Vector2.Zero;
             Vector2 startingPoint;
 
             switch (ID)
@@ -128,19 +143,19 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(12, 16);
                     sunlightPassesThrough = true;
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 8: //Metal
                     positionInSpriteSheet = new Vector2(12, 2);
                     isVoid = true;
                     isSolid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 9://Tall Grass
                     positionInSpriteSheet = new Vector2(0, 16);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 10: //Gold
                     hasConnectPattern = true;
@@ -152,14 +167,14 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(12, 0);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2,.6f));
                     break;
                 case 12: //Chandelier
                     positionInSpriteSheet = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,1));
                     break;
                 case 13: //Door
@@ -179,7 +194,7 @@ namespace Adam
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     positionInSpriteSheet = new Vector2(12, 10);
                     isVoid = true;
                     break;
@@ -199,7 +214,7 @@ namespace Adam
                     break;
                 case 19://chest
                     positionInSpriteSheet = new Vector2(12, 24);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     isVoid = true;
                     break;
                 case 20://tech
@@ -216,19 +231,19 @@ namespace Adam
                 case 23://water
                     positionInSpriteSheet = new Vector2(4, 15);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 24: //lava
                     positionInSpriteSheet = new Vector2(0, 15);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3,.3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
                 case 25:
                     positionInSpriteSheet = new Vector2(8, 15);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 26: //apple
                     isVoid = true;
@@ -259,7 +274,7 @@ namespace Adam
                 case 31: //Tree
                     positionInSpriteSheet = new Vector2(18, 4);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 32: //Small Rock
                     positionInSpriteSheet = new Vector2(13, 18);
@@ -267,12 +282,12 @@ namespace Adam
                 case 33: //Big Rock
                     positionInSpriteSheet = new Vector2(14, 18);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 34: //Medium Rock
                     positionInSpriteSheet = new Vector2(11, 18);
                     isVoid = true;
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 36: //Sign
                     positionInSpriteSheet = new Vector2(12, 4);
@@ -307,14 +322,16 @@ namespace Adam
                 case 42: // Flamespitter
                     isSolid = true;
                     positionInSpriteSheet = new Vector2(12, 29);
-                    //isVoid = true;
-                    //animatedTile = new SpecialTile(ID, drawRectangle);                    
+                    isVoid = true;
+                    specialTile = new SpecialTile(this);                    
                     break;
                 case 43: // Machine Gun
                     isSolid = true;
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(12,28);
                     break;
                 case 44: // Cacti
+                    isVoid = true;
                     switch (subID)
                     {
                         case 0: // One branch normal.
@@ -332,8 +349,9 @@ namespace Adam
                     }
                     break;
                 case 45: // Mushroom Booster
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(19, 26);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 46: // Void ladder.
                     positionInSpriteSheet = new Vector2(14, 8);
@@ -341,24 +359,28 @@ namespace Adam
                     break;
                 case 47: // Wooden platform.
                     isSolid = true;
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(14, 26);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 48: // Blue crystal.
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 27);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 49: // Yellow crystal.
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 29);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 50: // Green sludge.
                     positionInSpriteSheet = new Vector2(14, 27);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 51: // Void FireSpitter.
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 28);
-                    specialTile = new SpecialTile(ID, drawRectangle);
+                    specialTile = new SpecialTile(this);
                     break;
 
                 #region Wall Textures
@@ -575,7 +597,7 @@ namespace Adam
             }
 
             //Gets the position in the Vector2 form and converts it to pixel coordinates.
-            sourceRectangle = new Rectangle((int)(positionInSpriteSheet.X * smallTileSize), (int)(positionInSpriteSheet.Y * smallTileSize), smallTileSize, smallTileSize);
+            sourceRectangle = new Rectangle((int)(positionInSpriteSheet.X * SmallTileSize), (int)(positionInSpriteSheet.Y * SmallTileSize), SmallTileSize, SmallTileSize);
 
 
         }

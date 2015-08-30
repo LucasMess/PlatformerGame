@@ -155,6 +155,7 @@
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
+    <Compile Include="Characters\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\MushroomBooster.cs" />
@@ -195,7 +196,6 @@
     <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\MachineGun.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
-    <Compile Include="Particles\NewParticle.cs" />
     <Compile Include="UI\ActionBar.cs" />
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
