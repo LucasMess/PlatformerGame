@@ -715,7 +715,7 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
             velocity.Y = -3f;
 
-            light = new DynamicPointLight(this, .7f, false, color, .7f);
+            light = new DynamicPointLight(this, .5f, false, color, .5f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
 

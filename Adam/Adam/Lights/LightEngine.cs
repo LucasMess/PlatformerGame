@@ -125,6 +125,17 @@ namespace Adam.Lights
             {
                 l.Update(l.source.GetUpdated());
             }
+
+
+            // Limit the maximum amount of lights that can exist at the same time.
+            if (dynamicLights.Count > 1000)
+            {
+                int overflow = dynamicLights.Count - 999;
+                for (int c = 0; c < overflow; c++)
+                {
+                    dynamicLights.RemoveAt(0);
+                }
+            }
         }
 
         public void AddDynamicLight(Light light)
