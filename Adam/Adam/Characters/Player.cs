@@ -930,10 +930,19 @@ namespace Adam
                 if (onFireTimer.TimeElapsedInSeconds < 4)
                 {
                     fireTickTimer.Increment();
+                    fireSpawnTimer.Increment();
                     if (fireTickTimer.TimeElapsedInMilliSeconds > 500)
                     {
                         TakeDPS(EnemyDB.FlameSpitter_DPS);
                         fireTickTimer.Reset();
+                    }
+                    if (fireSpawnTimer.TimeElapsedInMilliSeconds > 100)
+                    {
+                        EntityFlameParticle flame = new EntityFlameParticle(this, Color.Yellow);
+                        EntityFlameParticle flame2 = new EntityFlameParticle(this, Color.Red);
+                        GameWorld.Instance.particles.Add(flame);
+                        GameWorld.Instance.particles.Add(flame2);
+                        fireSpawnTimer.Reset();
                     }
                 }
                 else
@@ -943,8 +952,6 @@ namespace Adam
                     fireTickTimer.Reset();
                 }
 
-                PlayerFlameParticle flame = new PlayerFlameParticle(this, Color.Yellow);
-                GameWorld.Instance.particles.Add(flame);
             }
         }
 
@@ -988,6 +995,8 @@ namespace Adam
         {
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
             //DrawSurroundIndexes(spriteBatch);
+
+            if (isDead) return;
 
             jetpack.Draw(spriteBatch);
 

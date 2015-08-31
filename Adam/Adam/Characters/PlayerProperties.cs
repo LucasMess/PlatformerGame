@@ -10,6 +10,7 @@ namespace Adam
     {
         Timer onFireTimer = new Timer();
         Timer fireTickTimer = new Timer();
+        Timer fireSpawnTimer = new Timer();
 
         /// <summary>
         /// Returns true if player is on fire and is taking damage per second.

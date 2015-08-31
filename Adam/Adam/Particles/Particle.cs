@@ -725,13 +725,15 @@ namespace Adam
         }
     }
 
-    public class PlayerFlameParticle : Particle
+    public class EntityFlameParticle : Particle
     {
-       public PlayerFlameParticle(Entity source, Color color)
+       public EntityFlameParticle(Entity source, Color color)
         {
             sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
             Texture = GameWorld.SpriteSheet;
-            collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Bottom - 8, 8, 8);
+            int randX = (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Width) * GameWorld.RandGen.NextDouble());
+            int randY= (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Height) * GameWorld.RandGen.NextDouble());
+            collRectangle = new Rectangle(source.GetCollRectangle().X + randX - 4, source.GetCollRectangle().Y + randY - 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = .5f;
 
