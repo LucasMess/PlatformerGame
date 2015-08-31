@@ -96,6 +96,7 @@ namespace Adam
         public Player player;
         LoadingScreen loadingScreen;
         public static ContentManager Content;
+        public static GraphicsDevice GraphicsDeviceInstance;
         #endregion
 
         public Main()
@@ -111,7 +112,6 @@ namespace Adam
 
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
-
 
             //Change Game Settings Here
             graphics.SynchronizeWithVerticalRetrace = true;
@@ -151,6 +151,7 @@ namespace Adam
             cutscene = new Cutscene();
             Dialog = new Dialog();
             ObjectiveTracker = new ObjectiveTracker();
+            GraphicsDeviceInstance = graphics.GraphicsDevice;
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,

@@ -17,6 +17,7 @@ namespace Adam.Levels
         GameWorld gameWorld;
         TileScroll tileScroll = new TileScroll();
         EntityScroll entityScroll = new EntityScroll();
+        Minimap miniMap;
         public ActionBar actionBar = new ActionBar();
         TileDescription tileDescription = new TileDescription();
         public Brush brush = new Brush();
@@ -41,6 +42,8 @@ namespace Adam.Levels
 
         public void Load()
         {
+            miniMap = new Minimap();
+            miniMap.StartUpdating();
             onInventory = false;
             tileScroll.Load();
             tileScroll.TileSelected += TileScroll_TileSelected;
@@ -411,7 +414,7 @@ namespace Adam.Levels
             if (!onInventory)
                 FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
 
-
+            miniMap.Draw(spriteBatch);
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);
             tileDescription.Draw(spriteBatch);
             tileScroll.Draw(spriteBatch);
