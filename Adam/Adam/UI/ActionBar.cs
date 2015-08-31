@@ -150,7 +150,7 @@ namespace Adam.UI
         private void PlayButton_MouseClicked()
         {
             if (!IsPlayerInWorld())
-                MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
+                System.Windows.Forms.MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
             else
             {
                 if (AskSaveDialog())
@@ -179,7 +179,7 @@ namespace Adam.UI
 
         public bool AskSaveDialog()
         {
-            DialogResult dialogResult = MessageBox.Show("Would you like to save your level first? All progress will be lost otherwise.", "Save?", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Would you like to save your level first? All progress will be lost otherwise.", "Save?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 return true;

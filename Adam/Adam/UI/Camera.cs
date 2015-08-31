@@ -62,11 +62,31 @@ namespace Adam
 
             //    return;
             //}
+            if (InputHelper.IsKeyDown(Keys.OemPlus))
+                SetZoomTo(.5f);
+            if (InputHelper.IsKeyDown(Keys.OemMinus))
+                ResetZoom();
+            if (InputHelper.IsKeyDown(Keys.R))
+                ResetZoom();
 
             velocity = (currentLeftCorner - lastCameraLeftCorner) / 8;
             Vector3 cameraLeftCorner = lastCameraLeftCorner;
             cameraLeftCorner += velocity;
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
+
+            // Make sure mult of 2.
+            if (cameraLeftCorner.X % 2 != 0)
+            {
+                cameraLeftCorner.X++;
+            }
+            if (cameraLeftCorner.Y % 2!= 0)
+            {
+                cameraLeftCorner.Y++;
+            }
+            if (cameraLeftCorner.Z % 2 != 0)
+            {
+                cameraLeftCorner.Z++;
+            }
 
             inverted = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
             inverted.X += Main.DefaultResWidth / 2;
@@ -80,16 +100,47 @@ namespace Adam
             translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
         }
 
+
+        //Slowly zooom in.
         public void ZoomIn()
         {
-            zoom += .005f;
+            zoom += .05f;
             if (zoom > 2)
                 zoom = 2;
         }
 
-        public void ZoomOut()
+        //Resets the zoom to its default value.
+        public void ResetZoom()
         {
             zoom = 1;
+        }
+
+        /// <summary>
+        /// Zoom Out slowly.
+        /// </summary>
+        public void ZoomOut()
+        {
+            zoom -= .05f;
+            if (zoom < 0.25)
+                zoom = 0.25f;
+        }
+
+        /// <summary>
+        /// Changes the current zoom to a new zoom.
+        /// </summary>
+        /// <param name="newZoom"></param>
+        public void SetZoomTo(float newZoom)
+        {
+            zoom = newZoom;
+        }
+
+        /// <summary>
+        /// Returns the current zoom.
+        /// </summary>
+        /// <returns></returns>
+        public float GetZoom()
+        {
+            return zoom;
         }
 
         public void UpdateWithZoom(Vector2 position)

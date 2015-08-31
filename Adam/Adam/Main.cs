@@ -115,7 +115,8 @@ namespace Adam
 
             //Change Game Settings Here
             graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.PreferMultiSampling = false;
+            graphics.PreferMultiSampling = true;
+          
             IsFixedTimeStep = true;
 
             Content = new ContentManager(Services, "Content");
@@ -460,13 +461,13 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.GameWorld:
-                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
-                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
-                    lightingSB.End();
+                    //lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
+                    //lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                    //lightingSB.End();
 
-                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawLights(lightingSB);
-                    lightingSB.End();
+                    //lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    //gameWorld.DrawLights(lightingSB);
+                    //lightingSB.End();
                     break;
             }
 
@@ -508,23 +509,31 @@ namespace Adam
                     break;
                 case GameState.GameWorld:
                     //Draw the rendertarget
-                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    SamplerState ss = new SamplerState();
+                    ss.AddressU = TextureAddressMode.Clamp;
+                    ss.AddressV = TextureAddressMode.Clamp;
+                    ss.AddressW = TextureAddressMode.Clamp;
+                    ss.Filter = TextureFilter.Point;
+                    ss.MipMapLevelOfDetailBias = 1000000;
+                    ss.MaxAnisotropy = 0;
+                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, ss, DepthStencilState.None, RasterizerState.CullNone);
                     mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     mainSB.End();
 
-                    if (GameData.Settings.DesiredLight)
-                    {
+                    //if (GameData.Settings.DesiredLight)
+                    //{
 
-                        BlendState LightBlendState = new BlendState();
-                        LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
-                        LightBlendState.ColorSourceBlend = Blend.DestinationColor;
-                        LightBlendState.ColorDestinationBlend = Blend.Zero;
-                        mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
-                        mainLightSB.End();
-                    }
+                    //    BlendState LightBlendState = new BlendState();
+                    //    LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
+                    //    LightBlendState.ColorSourceBlend = Blend.DestinationColor;
+                    //    LightBlendState.ColorDestinationBlend = Blend.Zero;
+                    //    mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    //    mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
+                    //    mainLightSB.End();
+                    //}
 
-                    UiSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
+                    UiSB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
                     overlay.Draw(UiSB);
 
                     if (!gameWorld.levelEditor.onInventory)
@@ -560,21 +569,23 @@ namespace Adam
                 if (debugOn)
                 {
                     debugSB.Begin();
-                    debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 280), Color.White * .3f);
+                    debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 320), Color.White * .3f);
                     debugSB.DrawString(debugFont, Main.Version+" FPS: " + fps, new Vector2(0, 0), Color.White);
                     debugSB.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
                     debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
                     debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
-                    debugSB.DrawString(debugFont, "Total Draw Time:" + drawTime, new Vector2(0, 80), Color.White);
+                    debugSB.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
                     debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
                     debugSB.DrawString(debugFont, "Player Source Rectangle: " + player.sourceRectangle, new Vector2(0, 120), Color.White);
                     debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     debugSB.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
-                    debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[0], new Vector2(0, 200), Color.White);
+                   // debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[], new Vector2(0, 200), Color.White);
                     debugSB.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
                     debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
                     debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
+                    debugSB.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
+                    debugSB.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
                     debug.Draw(debugSB);
                     debugSB.End();
                 }

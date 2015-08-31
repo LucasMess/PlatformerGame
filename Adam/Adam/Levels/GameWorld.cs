@@ -44,8 +44,8 @@ namespace Adam
         //Basic tile grid and the visible tile grid
         public Tile[] tileArray;
         public Tile[] wallArray;
-        public int[] visibleTileArray = new int[30 * 50];
-        int[] visibleLightArray = new int[60 * 100];
+        public int[] visibleTileArray = new int[0];
+        public int[] visibleLightArray = new int[0];
         Light[] lightArray;
         Light playerLight;
 
@@ -88,6 +88,7 @@ namespace Adam
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
+        Textbox textBox;
 
 
         public GameWorld() { }
@@ -106,6 +107,7 @@ namespace Adam
 
             lightEngine = new LightEngine();
             worldData = new WorldData();
+            textBox = new Textbox(300, 300, 100);
         }
 
         public void LoadFromFile(GameMode CurrentGameMode)
@@ -195,6 +197,8 @@ namespace Adam
             this.gameTime = gameTime;
             this.camera = camera;
 
+            textBox.Update();
+
             if (CurrentLevel == GameMode.Edit)
             {
                 levelEditor.Update(gameTime, CurrentLevel);
@@ -209,7 +213,7 @@ namespace Adam
                 }
                 else
                 {
-                    camera.ZoomOut();
+                    camera.ResetZoom();
                 }
             }
 
@@ -311,7 +315,7 @@ namespace Adam
                     {
                         lightEngine.RemoveDynamicLight(entity.light);
                     }
-                    entities.Remove(entity);                   
+                    entities.Remove(entity);
                 }
 
             }
@@ -339,10 +343,13 @@ namespace Adam
         {
             if (player.isDead == false)
             {
+                visibleTileArray = new int[(((int)(30 / camera.GetZoom()) * (int)(50 / camera.GetZoom())))];
+                visibleLightArray = new int[(((int)(60 / camera.GetZoom()) * (int)(100 / camera.GetZoom())))];
+
                 //defines which tiles are in range
                 int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
-                int maxHoriz = 50;
-                int maxVert = 30;
+                int maxHoriz = (int)(50 / camera.GetZoom());
+                int maxVert = (int)(30 / camera.GetZoom());
                 int i = 0;
 
                 for (int v = 0; v < maxVert; v++)
@@ -354,8 +361,8 @@ namespace Adam
                     }
                 }
                 initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-                maxHoriz = 100;
-                maxVert = 60;
+                maxHoriz = (int)(100 / camera.GetZoom());
+                maxVert = (int)(60 / camera.GetZoom());
                 i = 0;
                 for (int v = 0; v < maxVert; v++)
                 {
@@ -450,6 +457,7 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
             placeNotification.Draw(spriteBatch);
+            textBox.Draw(spriteBatch);
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawUI(spriteBatch);
