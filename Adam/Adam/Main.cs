@@ -461,13 +461,13 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.GameWorld:
-                    //lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
-                    //lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
-                    //lightingSB.End();
+                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
+                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                    lightingSB.End();
 
-                    //lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    //gameWorld.DrawLights(lightingSB);
-                    //lightingSB.End();
+                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawLights(lightingSB);
+                    lightingSB.End();
                     break;
             }
 
@@ -520,17 +520,17 @@ namespace Adam
                     mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
                     mainSB.End();
 
-                    //if (GameData.Settings.DesiredLight)
-                    //{
+                    if (GameData.Settings.DesiredLight)
+                    {
 
-                    //    BlendState LightBlendState = new BlendState();
-                    //    LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
-                    //    LightBlendState.ColorSourceBlend = Blend.DestinationColor;
-                    //    LightBlendState.ColorDestinationBlend = Blend.Zero;
-                    //    mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    //    mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
-                    //    mainLightSB.End();
-                    //}
+                        BlendState LightBlendState = new BlendState();
+                        LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
+                        LightBlendState.ColorSourceBlend = Blend.DestinationColor;
+                        LightBlendState.ColorDestinationBlend = Blend.Zero;
+                        mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
+                        mainLightSB.End();
+                    }
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
                     UiSB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);

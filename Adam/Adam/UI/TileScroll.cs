@@ -24,6 +24,8 @@ namespace Adam.UI
         protected float velocityX;
         protected int lastScrollWheel;
 
+        Rectangle mouseRectangle;
+
         protected int activeX;
         protected int inactiveX;
 
@@ -155,7 +157,9 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (InputHelper.MouseRectangleRenderTarget.Intersects(box))
+
+            InputHelper.GetMouseRectRenderTarget(ref mouseRectangle);
+            if (mouseRectangle.Intersects(box))
             {
                 if (lastScrollWheel != scrollWheel)
                 {

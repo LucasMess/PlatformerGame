@@ -37,6 +37,7 @@ namespace Adam.Levels
         SoundFx destruction;
         SoundFx wallMode;
         SoundFx close, open, select;
+        Rectangle mouseRect;
 
         public void Load()
         {
@@ -63,7 +64,7 @@ namespace Adam.Levels
 
         private void EntityScroll_TileSelected(TileSelectedArgs e)
         {
-            if(e.ID != selectedID)
+            if (e.ID != selectedID)
             {
                 select.Reset();
                 select.PlayNewInstanceOnce();
@@ -236,52 +237,27 @@ namespace Adam.Levels
 
         private void CheckForInput()
         {
-            foreach (int index in gameWorld.visibleTileArray)
+            InputHelper.GetMouseRectGameWorld(ref mouseRect);
+            IndexOfMouse = (mouseRect.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (mouseRect.Center.X / Main.Tilesize);
+
+            if (InputHelper.IsLeftMousePressed())
             {
-                if (index >= 0 && index < gameWorld.tileArray.Length)
-                {
-                    if (CurrentArray[index] == null) return;
-
-                    //Check index of mouse
-                    if (CurrentArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
-                    {
-                        IndexOfMouse = index;
-                    }
-
-                    //Prevent building and destroying fast bug
-                    //if (InputHelper.IsRightMousePressed() && InputHelper.IsLeftMousePressed())
-                    //    continue;
-
-                    //Check input
-                    Tile t = CurrentArray[index];
-                    if (InputHelper.IsLeftMousePressed())
-                    {
-                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
-                        {
-                            UpdateSelectedTiles(selectedID);
-                        }
-                    }
-
-                    if (InputHelper.IsRightMousePressed())
-                    {
-                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
-                        {
-                            UpdateSelectedTiles(0);
-
-                        }
-                    }
-
-                    if (InputHelper.IsMiddleMousePressed())
-                    {
-                        if (t.drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld) && t.ID != 0)
-                        {
-                            selectedID = t.ID;
-                        }
-                    }
-
-                }
+                UpdateSelectedTiles(selectedID);
             }
+
+            if (InputHelper.IsRightMousePressed())
+            {
+                UpdateSelectedTiles(0);
+            }
+
+            if (InputHelper.IsMiddleMousePressed())
+            {
+                selectedID = CurrentArray[IndexOfMouse].ID;
+            }
+
+
         }
+
 
         private void CheckIfPositioningPlayer()
         {
@@ -292,7 +268,7 @@ namespace Adam.Levels
                     if (index >= 0 && index < gameWorld.tileArray.Length)
                     {
                         //Check index of mouse
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(InputHelper.MouseRectangleGameWorld))
+                        if (gameWorld.tileArray[index].drawRectangle.Intersects(mouseRect))
                         {
                             gameWorld.tileArray[index].ID = 200;
                             gameWorld.tileArray[index].DefineTexture();

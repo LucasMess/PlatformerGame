@@ -89,6 +89,7 @@ namespace Adam
         public GameTime gameTime;
         public WorldData worldData;
         Textbox textBox;
+        Thread tilesThread;
 
 
         public GameWorld() { }
@@ -108,6 +109,10 @@ namespace Adam
             lightEngine = new LightEngine();
             worldData = new WorldData();
             textBox = new Textbox(300, 300, 100);
+
+            tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
+            tilesThread.IsBackground = true;
+            tilesThread.Start();
         }
 
         public void LoadFromFile(GameMode CurrentGameMode)
@@ -335,41 +340,53 @@ namespace Adam
                 particles.Remove(particles.ElementAt<Particle>(0));
             }
 
-            if (camera != null)
-                UpdateVisibleIndexes();
+            //if (camera != null)
+            //    UpdateVisibleIndexes();
         }
 
+        float lastCameraZoom;
         private void UpdateVisibleIndexes()
         {
-            if (player.isDead == false)
+            while (true)
             {
-                visibleTileArray = new int[(((int)(30 / camera.GetZoom()) * (int)(50 / camera.GetZoom())))];
-                visibleLightArray = new int[(((int)(60 / camera.GetZoom()) * (int)(100 / camera.GetZoom())))];
-
-                //defines which tiles are in range
-                int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
-                int maxHoriz = (int)(50 / camera.GetZoom());
-                int maxVert = (int)(30 / camera.GetZoom());
-                int i = 0;
-
-                for (int v = 0; v < maxVert; v++)
+                if (player != null && camera != null)
                 {
-                    for (int h = 0; h < maxHoriz; h++)
+                    if (player.isDead == false)
                     {
-                        visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
-                        i++;
-                    }
-                }
-                initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-                maxHoriz = (int)(100 / camera.GetZoom());
-                maxVert = (int)(60 / camera.GetZoom());
-                i = 0;
-                for (int v = 0; v < maxVert; v++)
-                {
-                    for (int h = 0; h < maxHoriz; h++)
-                    {
-                        visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
-                        i++;
+                        float currentZoom = camera.GetZoom();
+                        if (lastCameraZoom != currentZoom)
+                        {
+                            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
+                            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
+                            lastCameraZoom = camera.GetZoom();
+                        }
+
+                        //defines which tiles are in range
+                        int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
+                        int maxHoriz = (int)(50 / currentZoom);
+                        int maxVert = (int)(30 / currentZoom);
+                        int i = 0;
+
+                        for (int v = 0; v < maxVert; v++)
+                        {
+                            for (int h = 0; h < maxHoriz; h++)
+                            {
+                                visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
+                                i++;
+                            }
+                        }
+                        initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
+                        maxHoriz = (int)(100 / currentZoom);
+                        maxVert = (int)(60 / currentZoom);
+                        i = 0;
+                        for (int v = 0; v < maxVert; v++)
+                        {
+                            for (int h = 0; h < maxHoriz; h++)
+                            {
+                                visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
+                                i++;
+                            }
+                        }
                     }
                 }
             }
@@ -404,6 +421,7 @@ namespace Adam
                         tileArray[tileNumber].Draw(spriteBatch);
                 }
             }
+
             foreach (Key key in keyList)
             {
                 key.Draw(spriteBatch);

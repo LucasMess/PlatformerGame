@@ -66,19 +66,18 @@ namespace Adam
             else return false;
         }
 
+        static MouseState MouseState { get; set; }
+
         /// <summary>
         /// Returns the rectangle of the mouse when screen is scaled.
         /// </summary>
-        public static Rectangle MouseRectangleRenderTarget
+        public static void GetMouseRectRenderTarget(ref Rectangle rectangle)
         {
-            get
-            {
-                MouseState mouseState = Mouse.GetState();
-                double widthRatio = Main.WidthRatio;
-                double heightRatio = Main.HeightRatio;
-                Rectangle mouseRect = new Rectangle((int)(mouseState.X * widthRatio), (int)(mouseState.Y * heightRatio), 1, 1);
-                return mouseRect;
-            }
+            MouseState = Mouse.GetState();
+            rectangle.X = (int)(MouseState.X * Main.WidthRatio);
+            rectangle.Y = (int)(MouseState.Y * Main.HeightRatio);
+            rectangle.Width = 1;
+            rectangle.Height = 1;
         }
 
         /// <summary>
@@ -97,17 +96,13 @@ namespace Adam
         /// <summary>
         /// Returns the rectangle of the mouse in GameWorld coordinates.
         /// </summary>
-        public static Rectangle MouseRectangleGameWorld
+        public static void GetMouseRectGameWorld(ref Rectangle rectangle)
         {
-            get
-            {
-                Rectangle rect = MouseRectangleRenderTarget;
-                rect.X = (int)(rect.X / GameWorld.Instance.camera.GetZoom());
-                rect.Y = (int)(rect.Y / GameWorld.Instance.camera.GetZoom());
-                rect.X -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.X);
-                rect.Y -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.Y);
-                return rect;
-            }
+            GetMouseRectRenderTarget(ref rectangle);
+            rectangle.X = (int)(rectangle.X / GameWorld.Instance.camera.GetZoom());
+            rectangle.Y = (int)(rectangle.Y / GameWorld.Instance.camera.GetZoom());
+            rectangle.X -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.X);
+            rectangle.Y -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.Y);
         }
 
         /// <summary>

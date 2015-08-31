@@ -10,7 +10,7 @@ namespace Adam.UI
 {
     public class Brush
     {
-        const int MaxSize = 6;
+        const int MaxSize = 12;
         const int MinSize = 1;
 
         public int size = 1;
