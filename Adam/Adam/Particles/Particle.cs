@@ -188,7 +188,7 @@ namespace Adam
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
         {
             CurrentParticle = ParticleType.PlayerChronoshift;
-           
+
         }
 
         public void CreateTileParticleEffect(Tile tile, Player player)
@@ -281,7 +281,7 @@ namespace Adam
             velocity.Y = -10f;
             position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1f;
-            light = new Lights.DynamicPointLight(this,1,true, Color.Orange, .3f);
+            light = new Lights.DynamicPointLight(this, 1, true, Color.Orange, .3f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
             this.gameWorld = map;
         }
@@ -395,7 +395,7 @@ namespace Adam
                         toDelete = true;
                     break;
                 case ParticleType.PlayerChronoshift:
-                    
+
                     break;
                 case ParticleType.TileParticle:
                     collRectangle.X += (int)velocity.X;
@@ -561,8 +561,6 @@ namespace Adam
             collRectangle.X = (int)position.X;
             collRectangle.Y = (int)position.Y;
 
-            collRectangle = collRectangle;
-
             velocity.X = velocity.X * 0.99f;
             velocity.Y = velocity.Y * 0.99f;
 
@@ -571,10 +569,26 @@ namespace Adam
                 toDelete = true;
         }
 
+        protected void NoOpacityFadeBehavior()
+        {
+            GameTime gameTime = GameWorld.Instance.gameTime;
+            position += velocity;
+
+            collRectangle.X = (int)position.X;
+            collRectangle.Y = (int)position.Y;
+
+
+            velocity.X = velocity.X * 0.99f;
+            velocity.Y = velocity.Y * 0.99f;
+
+            if (opacity <= 0)
+                toDelete = true;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);                
+                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);
             else
                 spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);
 
@@ -598,7 +612,7 @@ namespace Adam
             collRectangle = collRectangle;
             position = new Vector2(collRectangle.X, collRectangle.Y);
 
-            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.velocity.X/2, 3 - (int)entity.velocity.X/2);
+            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.velocity.X / 2, 3 - (int)entity.velocity.X / 2);
             velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
             opacity = 1f;
         }
@@ -653,7 +667,7 @@ namespace Adam
         }
     }
 
-    public class DestructionTileParticle :Particle
+    public class DestructionTileParticle : Particle
     {
         public DestructionTileParticle(Tile tile, Rectangle source)
         {
@@ -682,7 +696,7 @@ namespace Adam
             collRectangle = new Rectangle(source.GetCollRectangle().Center.X, source.GetCollRectangle().Center.Y, 8, 8);
             sourceRectangle = new Rectangle(8, 0, 8, 8);
             int buffer = 1;
-            velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer,(int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
+            velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer, (int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
             velocity.Y = GameWorld.RandGen.Next((int)-source.velocity.Y - buffer, (int)-source.velocity.Y + buffer + 1);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = .5f;
@@ -708,7 +722,7 @@ namespace Adam
         {
             sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
             Texture = GameWorld.SpriteSheet;
-            collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Y  - 8, 8, 8);
+            collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Y - 8, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = 1;
 
@@ -727,12 +741,12 @@ namespace Adam
 
     public class EntityFlameParticle : Particle
     {
-       public EntityFlameParticle(Entity source, Color color)
+        public EntityFlameParticle(Entity source, Color color)
         {
             sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
             Texture = GameWorld.SpriteSheet;
             int randX = (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Width) * GameWorld.RandGen.NextDouble());
-            int randY= (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Height) * GameWorld.RandGen.NextDouble());
+            int randY = (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Height) * GameWorld.RandGen.NextDouble());
             collRectangle = new Rectangle(source.GetCollRectangle().X + randX - 4, source.GetCollRectangle().Y + randY - 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             opacity = .5f;
@@ -750,6 +764,121 @@ namespace Adam
         }
     }
 
+    public class MachineGunParticle : Particle, ICollidable
+    {
+        public MachineGunParticle(Entity source, int xCoor)
+        {
+            sourceRectangle = new Rectangle(264, 96, 8, 8);
+            Texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(source.GetCollRectangle().X + xCoor - 4, source.GetCollRectangle().Y + 4, 8, 8);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+            opacity = 1f;
+            velocity.Y = -8f;
+
+            light = new DynamicPointLight(this, .05f, false, Color.White, .5f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+            opacity = 0;
+            ExplosionParticle par = new ExplosionParticle(collRectangle.X + 4, collRectangle.Y, Color.White, .5f);
+            SparkParticle spar = new SparkParticle(this, Color.Orange);
+            GameWorld.Instance.particles.Add(spar);
+            GameWorld.Instance.particles.Add(par);
+        }
+
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            NoOpacityFadeBehavior();
+
+            base.Update();
+        }
+    }
+
+    public class ExplosionParticle : Particle
+    {
+        public ExplosionParticle(int x, int y, Color color, float intensity)
+        {
+            collRectangle = new Rectangle(x - 4, y - 4, 8, 8);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+            opacity = 1;
+            light = new DynamicPointLight(this, intensity, false, color, intensity);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            opacity -= .5f;
+            if (opacity <= 0)
+                toDelete = true;
+        }
+    }
+
+    public class SparkParticle : Particle , ICollidable
+    {
+        public SparkParticle(Entity source, Color color)
+        {
+            sourceRectangle = new Rectangle(272, 96, 8, 8);
+            Texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(source.GetCollRectangle().X  - 4, source.GetCollRectangle().Y + 4, 8, 8);
+            velocity.X = GameWorld.RandGen.Next(-6, 7);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+            opacity = .7f;
+
+            light = new DynamicPointLight(this, .05f, false, color, .5f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+            velocity.Y += .3f;
+            base.Update();
+        }
+
+        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        {
+            velocity.Y = -velocity.Y * .1f;
+        }
+
+        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        {
+
+        }
+
+        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        {
+            velocity.Y = -velocity.Y * .1f;
+        }
+
+        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        {
+            velocity.X = -velocity.X;
+        }
+
+        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        {
+            velocity.X = -velocity.X;
+        }
+    }
+
     public class ChronoshiftParticle : Particle
     {
         double changeDirectionTimer;
@@ -758,12 +887,12 @@ namespace Adam
         public ChronoshiftParticle(Entity entity)
         {
             int maxVel = 10;
-            velocity = new Vector2(GameWorld.RandGen.Next(-maxVel, maxVel+1), GameWorld.RandGen.Next(-maxVel, maxVel+1));
+            velocity = new Vector2(GameWorld.RandGen.Next(-maxVel, maxVel + 1), GameWorld.RandGen.Next(-maxVel, maxVel + 1));
             collRectangle = new Rectangle(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y, 8, 8);
             collRectangle = collRectangle;
             position = new Vector2(collRectangle.X, collRectangle.Y);
 
-            Color colorful = new Color(GameWorld.RandGen.Next(0,256), GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), 255);
+            Color colorful = new Color(GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), 255);
             light = new Lights.DynamicPointLight(this, .5f, false, colorful, 1f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
@@ -795,21 +924,21 @@ namespace Adam
                     }
                 }
                 GameWorld.Instance.player.chronoDeactivateSound.PlayIfStopped();
-                velocity.X = velocity.X * 1/.95f;
-                velocity.Y = velocity.Y * 1/.95f;
+                velocity.X = velocity.X * 1 / .95f;
+                velocity.Y = velocity.Y * 1 / .95f;
             }
 
             if (changeDirectionTimer > 1200)
             {
                 GameWorld.Instance.player.isChronoshifting = false;
-               
+
                 toDelete = true;
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-    //DO NOTHING
+            //DO NOTHING
         }
     }
 

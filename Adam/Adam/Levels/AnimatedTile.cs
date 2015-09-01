@@ -131,6 +131,7 @@ namespace Adam
                     break;
                 case 43: // Machine Gun.
                     frameCount = new Vector2(8, 0);
+                    machineGun = new MachineGun(sourceTile);
                     break;
                 case 44: // Cactus.
                     frameCount = new Vector2(1, 0);
@@ -192,6 +193,7 @@ namespace Adam
             liquid?.Update(gameTime);
             chest?.Update();
             flameSpitter?.Update(gameTime, GameWorld.Instance.GetPlayer(), GameWorld.Instance);
+            machineGun?.Update(gameTime, GameWorld.Instance.GetPlayer(), GameWorld.Instance);
 
             switch (ID)
             {

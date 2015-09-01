@@ -329,6 +329,7 @@ namespace Adam
                     isSolid = true;
                     isVoid = true;
                     positionInSpriteSheet = new Vector2(12,28);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 44: // Cacti
                     isVoid = true;
