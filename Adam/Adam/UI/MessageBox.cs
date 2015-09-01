@@ -15,9 +15,16 @@ namespace Adam.UI
     /// </summary>
     public class MessageBox
     {
-        OKButton button;
         SoundFx attentionSound;
-        const int BezelSize = 25;
+        protected const int BezelSize = 25;
+
+        /// <summary>
+        /// The main button of the message box.
+        /// </summary>
+        protected Button Button
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Determines whether to draw the message box or not.
@@ -30,12 +37,12 @@ namespace Adam.UI
         /// <summary>
         /// The message shown in the message box.
         /// </summary>
-        string Message
+        protected string Message
         {
             get; set;
         }
 
-        Texture2D Texture
+        protected Texture2D Texture
         {
             get
             {
@@ -43,7 +50,7 @@ namespace Adam.UI
             }
         }
 
-        SpriteFont Font
+        protected SpriteFont Font
         {
             get
             {
@@ -51,17 +58,17 @@ namespace Adam.UI
             }
         }
 
-        Rectangle DrawRectangle
+        protected Rectangle DrawRectangle
         {
             get
             {
-                int width = 60*10;
-                int height = 20*10;
+                int width = 60 * 10;
+                int height = 20 * 10;
                 return new Rectangle(Main.UserResWidth / 2 - width / 2, Main.UserResHeight / 2 - height / 2, width, height);
             }
         }
 
-        Rectangle SourceRectangle
+        protected Rectangle SourceRectangle
         {
             get
             {
@@ -76,8 +83,8 @@ namespace Adam.UI
         /// </summary>
         public MessageBox()
         {
-            button = new OKButton(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height, this);
-            attentionSound =new SoundFx("Sounds/message_show");
+            Button = new OKButton(DrawRectangle, this);
+            attentionSound = new SoundFx("Sounds/message_show");
         }
 
 
@@ -93,19 +100,19 @@ namespace Adam.UI
             IsActive = true;
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            button.Update();
+            Button.Update();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (IsActive)
             {
                 spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.Black * .7f);
                 spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White);
                 spriteBatch.DrawString(Font, Message, new Vector2(DrawRectangle.X + BezelSize, DrawRectangle.Y + BezelSize), Color.Black);
-                button.Draw(spriteBatch);
+                Button.Draw(spriteBatch);
             }
         }
 

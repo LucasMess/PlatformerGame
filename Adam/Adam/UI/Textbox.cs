@@ -32,7 +32,7 @@ namespace Adam.UI
         {
             black = ContentHelper.LoadTexture("Tiles/white");
             font = ContentHelper.LoadFont("Fonts/objectiveText");
-            bounds = new Rectangle(x,y,width,font.LineSpacing);
+            bounds = new Rectangle(x - width/2,y - font.LineSpacing/2,width,font.LineSpacing);
         }
 
         public void Update()
@@ -79,6 +79,14 @@ namespace Adam.UI
                 editLineFlashing = !editLineFlashing;
                 flashingTimer.Reset();
             }
+        }
+
+        /// <summary>
+        /// Erases contents of textbox.
+        /// </summary>
+        public void Reset()
+        {
+            Text = "";
         }
 
         /// <summary>
@@ -141,6 +149,7 @@ namespace Adam.UI
         public bool IsSelected
         {
             get { return isSelected; }
+            set { isSelected = value; }
         }
 
         string text;

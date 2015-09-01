@@ -264,6 +264,7 @@
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashDamage.cs" />
     <Compile Include="UI\Textbox.cs" />
+    <Compile Include="UI\TextInputBox.cs" />
     <Compile Include="UI\TileDescription.cs" />
     <Compile Include="UI\TileScroll.cs" />
     <Compile Include="UI\Timer.cs" />

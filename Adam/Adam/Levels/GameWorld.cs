@@ -91,6 +91,7 @@ namespace Adam
         Textbox textBox;
         Thread tilesThread;
 
+        string temp = "hi";
 
         public GameWorld() { }
 
@@ -203,6 +204,12 @@ namespace Adam
             this.camera = camera;
 
             textBox.Update();
+
+            if (InputHelper.IsKeyDown(Keys.T))
+            {
+                Main.TextInputBox.Show("Enter a creative name:");
+            }
+            temp = Main.TextInputBox.GetTextInput();
 
             if (CurrentLevel == GameMode.Edit)
             {
@@ -479,6 +486,8 @@ namespace Adam
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawUI(spriteBatch);
+
+            spriteBatch.DrawString(ContentHelper.LoadFont("debug"), temp, new Vector2(300, 500), Color.Black);
         }
 
         public void ResetWorld()

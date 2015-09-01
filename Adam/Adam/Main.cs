@@ -102,6 +102,8 @@ namespace Adam
         /// Used to display messages to the user where he needs to press OK to continue.
         /// </summary>
         public static MessageBox MessageBox { get; set; }
+
+        public static TextInputBox TextInputBox { get; set; }
         #endregion
 
         public Main()
@@ -158,6 +160,7 @@ namespace Adam
             ObjectiveTracker = new ObjectiveTracker();
             GraphicsDeviceInstance = graphics.GraphicsDevice;
             MessageBox = new MessageBox();
+            TextInputBox = new TextInputBox();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -277,6 +280,11 @@ namespace Adam
             if (MessageBox.IsActive)
             {
                 MessageBox.Update();
+                return;
+            }
+            if (TextInputBox.IsActive)
+            {
+                TextInputBox.Update();
                 return;
             }
 
@@ -554,6 +562,7 @@ namespace Adam
 
                     gameWorld.DrawUI(UiSB);
                     Dialog.Draw(UiSB);
+                    TextInputBox.Draw(UiSB);
                     MessageBox.Draw(UiSB);
 
                     UiSB.End();
