@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Misc;
+using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,12 +15,16 @@ namespace Adam.UI
     /// </summary>
     public class MessageBox
     {
+        OKButton button;
+        SoundFx attentionSound;
+        const int BezelSize = 25;
+
         /// <summary>
         /// Determines whether to draw the message box or not.
         /// </summary>
         public bool IsActive
         {
-            get; private set;
+            get; set;
         }
 
         /// <summary>
@@ -30,19 +35,11 @@ namespace Adam.UI
             get; set;
         }
 
-        OKButton button
-        {
-            get
-            {
-                return new OKButton(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height);
-            }
-        }
-
         Texture2D Texture
         {
             get
             {
-                return Main.DefaultTexture;
+                return GameWorld.SpriteSheet;
             }
         }
 
@@ -58,9 +55,9 @@ namespace Adam.UI
         {
             get
             {
-                int width = 300;
-                int height = 100;
-                return new Rectangle(Main.UserResWidth / 2 - width / 2, Main.UserResHeight/2 - height / 2, width, height);
+                int width = 60*10;
+                int height = 20*10;
+                return new Rectangle(Main.UserResWidth / 2 - width / 2, Main.UserResHeight / 2 - height / 2, width, height);
             }
         }
 
@@ -68,10 +65,19 @@ namespace Adam.UI
         {
             get
             {
-                int width = 75;
-                int height = 25;
-                return new Rectangle(0, 0, width, height);
+                int width = 60;
+                int height = 20;
+                return new Rectangle(320, 0, width, height);
             }
+        }
+
+        /// <summary>
+        /// Creates an instance of the message box that can be used to show a message to the player.
+        /// </summary>
+        public MessageBox()
+        {
+            button = new OKButton(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height, this);
+            attentionSound =new SoundFx("Sounds/message_show");
         }
 
 
@@ -79,19 +85,27 @@ namespace Adam.UI
         /// Shows a message to the user in a message box with an OK button.
         /// </summary>
         /// <param name="message"></param>
-        public void Show(string message)
+        public virtual void Show(string message)
         {
-            string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width);
+            attentionSound.PlayIfStopped();
+            string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width - BezelSize);
             Message = wrapped;
             IsActive = true;
+        }
+
+        public void Update()
+        {
+            button.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             if (IsActive)
             {
-                spriteBatch.Draw(Texture, DrawRectangle, Color.White);
-                spriteBatch.DrawString(Font, Message, new Vector2(DrawRectangle.X + 5, DrawRectangle.Y + 10), Color.White);
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.Black * .7f);
+                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White);
+                spriteBatch.DrawString(Font, Message, new Vector2(DrawRectangle.X + BezelSize, DrawRectangle.Y + BezelSize), Color.Black);
+                button.Draw(spriteBatch);
             }
         }
 

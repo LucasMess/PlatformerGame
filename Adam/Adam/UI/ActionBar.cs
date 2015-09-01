@@ -150,7 +150,7 @@ namespace Adam.UI
         private void PlayButton_MouseClicked()
         {
             if (!IsPlayerInWorld())
-                System.Windows.Forms.MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
+                Main.MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
             else
             {
                 if (AskSaveDialog())

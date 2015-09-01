@@ -1,4 +1,5 @@
-﻿using Adam.UI;
+﻿using Adam.Misc.Databases;
+using Adam.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,7 +118,7 @@ namespace Adam.GameData
             gw.worldData.IsRaining = IsRaining;
             gw.worldData.IsSnowing = IsSnowing;
 
-            gw.worldData.song = ContentHelper.LoadSong("Music/Adam" + SoundtrackID);
+            gw.worldData.song = SoundtrackDB.GetSong(1);
         }
     }
 

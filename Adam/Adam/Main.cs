@@ -97,6 +97,11 @@ namespace Adam
         LoadingScreen loadingScreen;
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
+
+        /// <summary>
+        /// Used to display messages to the user where he needs to press OK to continue.
+        /// </summary>
+        public static MessageBox MessageBox { get; set; }
         #endregion
 
         public Main()
@@ -152,6 +157,7 @@ namespace Adam
             Dialog = new Dialog();
             ObjectiveTracker = new ObjectiveTracker();
             GraphicsDeviceInstance = graphics.GraphicsDevice;
+            MessageBox = new MessageBox();
 
             //Initialize the game render target
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
@@ -267,6 +273,12 @@ namespace Adam
                     break;
             }
             #endregion
+
+            if (MessageBox.IsActive)
+            {
+                MessageBox.Update();
+                return;
+            }
 
             if (GameData.Settings.HasChanged)
             {
@@ -542,6 +554,7 @@ namespace Adam
 
                     gameWorld.DrawUI(UiSB);
                     Dialog.Draw(UiSB);
+                    MessageBox.Draw(UiSB);
 
                     UiSB.End();
 

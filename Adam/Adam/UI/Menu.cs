@@ -271,7 +271,7 @@ namespace Adam
             foreground = Content.Load<Texture2D>("Menu/menu_front");
             apple = ContentHelper.LoadTexture("Menu/menu_apple");
 
-            theme = Content.Load<Song>("Music/Anguish");
+            theme = Content.Load<Song>("Music/Force Reunite");
             font = Content.Load<SpriteFont>("Fonts/button");
 
 

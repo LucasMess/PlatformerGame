@@ -166,6 +166,7 @@
     <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
     <Compile Include="Misc\Databases\InputDB.cs" />
+    <Compile Include="Misc\Databases\SoundtrackDB.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\IAnimated.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Misc\KeyboardDispatcher.cs" />
     <Compile Include="Misc\KeyboardLayout.cs" />
     <Compile Include="Misc\SoundFx.cs" />
+    <Compile Include="Misc\SoundtrackManager.cs" />
     <Compile Include="Misc\Timer.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
