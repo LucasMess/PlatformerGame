@@ -457,7 +457,7 @@ namespace Adam
                     gameWorld.DrawBackground(backgroundSB);
                     gameWorld.DrawClouds(backgroundSB);
                     backgroundSB.End();
-                    
+
                     gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawInBack(gameSB);
                     gameWorld.Draw(gameSB);
