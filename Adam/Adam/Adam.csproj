@@ -163,6 +163,8 @@
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\MushroomBooster.cs" />
     <Compile Include="Interactables\Sign.cs" />
+    <Compile Include="Levels\Chunk.cs" />
+    <Compile Include="Levels\ChunkManager.cs" />
     <Compile Include="Levels\LevelEditor.cs" />
     <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\WorldData.cs" />

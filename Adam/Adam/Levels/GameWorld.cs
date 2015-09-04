@@ -76,6 +76,7 @@ namespace Adam
         public Main game1;
         public Camera camera;
         public LevelEditor levelEditor = new LevelEditor();
+        public ChunkManager chunkManager = new ChunkManager();
 
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
@@ -163,6 +164,8 @@ namespace Adam
                 MediaPlayer.Play(worldData.song);
 
             placeNotification.Show(worldData.LevelName);
+
+            chunkManager.ConvertToChunks(worldData.LevelWidth, worldData.LevelHeight);
         }
 
         private void ConvertToTiles(Tile[] array, byte[] IDs)
@@ -356,46 +359,50 @@ namespace Adam
         {
             while (true)
             {
-                if (player != null && camera != null)
-                {
-                    if (player.IsDead() == false)
-                    {
-                        float currentZoom = camera.GetZoom();
-                        if (lastCameraZoom != currentZoom)
-                        {
-                            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
-                            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
-                            lastCameraZoom = camera.GetZoom();
-                        }
+                visibleTileArray = chunkManager.GetVisibleIndexes();
+                visibleLightArray = chunkManager.GetVisibleIndexes();
 
-                        //defines which tiles are in range
-                        int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
-                        int maxHoriz = (int)(50 / currentZoom);
-                        int maxVert = (int)(30 / currentZoom);
-                        int i = 0;
+                //Thread.Sleep(1000);
+                //if (player != null && camera != null)
+                //{
+                //    if (player.IsDead() == false)
+                //    {
+                //        float currentZoom = camera.GetZoom();
+                //        if (lastCameraZoom != currentZoom)
+                //        {
+                //            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
+                //            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
+                //            lastCameraZoom = camera.GetZoom();
+                //        }
 
-                        for (int v = 0; v < maxVert; v++)
-                        {
-                            for (int h = 0; h < maxHoriz; h++)
-                            {
-                                visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
-                                i++;
-                            }
-                        }
-                        initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-                        maxHoriz = (int)(100 / currentZoom);
-                        maxVert = (int)(60 / currentZoom);
-                        i = 0;
-                        for (int v = 0; v < maxVert; v++)
-                        {
-                            for (int h = 0; h < maxHoriz; h++)
-                            {
-                                visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
-                                i++;
-                            }
-                        }
-                    }
-                }
+                //        //defines which tiles are in range
+                //        int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
+                //        int maxHoriz = (int)(50 / currentZoom);
+                //        int maxVert = (int)(30 / currentZoom);
+                //        int i = 0;
+
+                //        for (int v = 0; v < maxVert; v++)
+                //        {
+                //            for (int h = 0; h < maxHoriz; h++)
+                //            {
+                //                visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
+                //                i++;
+                //            }
+                //        }
+                //        initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
+                //        maxHoriz = (int)(100 / currentZoom);
+                //        maxVert = (int)(60 / currentZoom);
+                //        i = 0;
+                //        for (int v = 0; v < maxVert; v++)
+                //        {
+                //            for (int h = 0; h < maxHoriz; h++)
+                //            {
+                //                visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
+                //                i++;
+                //            }
+                //        }
+                //    }
+                //}
             }
         }
 

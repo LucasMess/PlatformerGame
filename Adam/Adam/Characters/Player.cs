@@ -525,11 +525,11 @@ namespace Adam
             GameWorld gameWorld = GameWorld.Instance;
             if (collRectangle.X < 0)
                 collRectangle.X = 0;
-            if (collRectangle.X > (int)(gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width))
-                collRectangle.X = (int)(gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width);
+            if (collRectangle.X > (gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width))
+                collRectangle.X = (gameWorld.worldData.LevelWidth * Main.Tilesize - collRectangle.Width);
             if (collRectangle.Y < 0)
                 collRectangle.Y = 0;
-            if (collRectangle.Y > (int)(gameWorld.worldData.LevelHeight * Main.Tilesize - collRectangle.Width) + 100)
+            if (collRectangle.Y > (gameWorld.worldData.LevelHeight * Main.Tilesize - collRectangle.Width) + 100)
             {
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
                     collRectangle.Y = gameWorld.worldData.LevelHeight * Main.Tilesize - collRectangle.Height;

@@ -203,7 +203,7 @@ namespace Adam.Levels
 
         public void CreateNewWorld()
         {
-            WorldConfigFile config = new WorldConfigFile(300, 300);
+            WorldConfigFile config = new WorldConfigFile(256, 256);
             config.LoadIntoEditor();
         }
 
