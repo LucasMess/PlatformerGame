@@ -60,14 +60,11 @@ namespace Adam.Obstacles
             collRectangle = original;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            base.Update(gameTime, player, map);
+            base.Update();
 
             collRectangle.Y += (int)velocity.Y;
-
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 15, collRectangle.Width, collRectangle.Height - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
 
             if (!hasStartedMoving)
             {

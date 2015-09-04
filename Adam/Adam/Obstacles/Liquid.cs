@@ -40,8 +40,8 @@ namespace Adam.Obstacles
 
         public void Update(GameTime gameTime)
         {
-            this.gameWorld = GameWorld.Instance;
-            this.player = gameWorld.player;
+            GameWorld gameWorld = GameWorld.Instance;
+            this.player = GameWorld.Instance.player;
 
             if (collRectangle.Intersects(GameWorld.Instance.player.GetCollRectangle()))
             {

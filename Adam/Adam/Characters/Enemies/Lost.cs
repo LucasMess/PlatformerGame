@@ -28,7 +28,7 @@ namespace Adam
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {
@@ -103,7 +103,7 @@ namespace Adam
         {
             maxVelocity = new Vector2(1, 1);
 
-            Texture = Content.Load<Texture2D>("Enemies/lost");
+            Texture = ContentHelper.LoadTexture("Enemies/lost");
             ghost = new SoundFx("Sounds/Lost/ghost");
             ghost2 = new SoundFx("Sounds/Lost/ghost2");
 
@@ -149,23 +149,23 @@ namespace Adam
             }
 
             // Set the opacity back to normal before checking if is hiding;
-            opacity = 1f;
+            Opacity = 1f;
             CurrentAnimationState = AnimationState.Flying;
 
-            if (IsPlayerToTheRight() && !player.isFacingRight)
+            if (IsPlayerToTheRight() && !player.IsFacingRight)
             {
                 CurrentAnimationState = AnimationState.Flying;
                 velocity = new Vector2(0, 0);
-                opacity = .5f;
+                Opacity = .5f;
             }
-            if (!IsPlayerToTheRight() && player.isFacingRight)
+            if (!IsPlayerToTheRight() && player.IsFacingRight)
             {
                 CurrentAnimationState = AnimationState.Flying;
                 velocity = new Vector2(0, 0);
-                opacity = .5f;
+                Opacity = .5f;
             }
 
-            isFacingRight = IsPlayerToTheRight();
+            IsFacingRight = IsPlayerToTheRight();
 
             ghostTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (ghostTimer > timerEnd)

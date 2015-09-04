@@ -80,7 +80,6 @@ namespace Adam
         double movementSoundTimer;
 
         //Booleans
-        public bool isDead;
         public bool isJumping;
         public bool isInvincible;
         public bool isSpaceBarPressed;
@@ -140,8 +139,14 @@ namespace Adam
             }
         }
 
-        public int health = 100;
-        public int maxHealth = 100;
+        public override int MaxHealth
+        {
+            get
+            {
+                return 100;
+            }
+        }
+
         public int armorPoints = 100;
 
         //Animation Variables
@@ -292,17 +297,16 @@ namespace Adam
                 return;
 
             }
-            if (health < 0)
-                health = 0;
+            if (Health < 0)
+                Health = 0;
 
             this.gameTime = gameTime;
-            this.gameWorld = GameWorld.Instance;
 
             deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
             //Update Method is spread out!
             //Check the following things
-            if (isDead)
+            if (IsDead())
             {
                 UpdateTimers();
                 return;
@@ -315,12 +319,11 @@ namespace Adam
             UpdatePlayerPosition();
             if (!isGhost)
                 base.Update();
-            UpdateCollisions();
             CreateWalkingParticles();
             Animate();
             SetEvolutionAttributes();
 
-            weapon.Update(this, gameWorld, gameTime);
+            weapon.Update(this, gameTime);
             jetpack.Update(this, gameTime);
 
             //If the player is falling really fast, he is not jumping anymore and is falling.
@@ -358,7 +361,7 @@ namespace Adam
         {
             //Check if player is currently on top of vines
             if (TileIndex >= 0 && TileIndex < GameWorld.Instance.tileArray.Length)
-                if (gameWorld.tileArray[TileIndex].isClimbable)
+                if (GameWorld.Instance.tileArray[TileIndex].isClimbable)
                     isOnVines = true;
                 else isOnVines = false;
 
@@ -381,7 +384,7 @@ namespace Adam
             if (Keyboard.GetState().IsKeyDown(Keys.A) && automatic_hasControl == true && manual_hasControl)
             {
                 velocity.X -= acceleration;
-                isFacingRight = false;
+                IsFacingRight = false;
                 sleepTimer = 0;
                 if (!isJumping)
                     CurrentAnimation = AnimationState.Walking;
@@ -394,7 +397,7 @@ namespace Adam
             {
 
                 velocity.X += acceleration;
-                isFacingRight = true;
+                IsFacingRight = true;
                 sleepTimer = 0;
                 if (!isJumping)
                     CurrentAnimation = AnimationState.Walking;
@@ -863,7 +866,7 @@ namespace Adam
         private void CheckDead()
         {
             //If his health falls below 0, kill him.
-            if (health <= 0)
+            if (IsDead())
             {
                 KillAndRespawn();
             }
@@ -883,7 +886,7 @@ namespace Adam
             }
 
             //If player stopped taking damage and is back on the ground give him control of his character back
-            if (!isDead)
+            if (!IsDead())
             {
                 controlTimer += gameTime.ElapsedGameTime.TotalSeconds;
                 if (controlTimer > .5)
@@ -900,7 +903,7 @@ namespace Adam
                 if (respawnTimer > 1250)
                 {
                     respawnTimer = 0;
-                    Respawn();
+                    Revive();
                 }
             }
 
@@ -955,54 +958,18 @@ namespace Adam
             }
         }
 
-        private void UpdateCollisions()
-        {
-            foreach (Obstacle ob in gameWorld.entities.OfType<Obstacle>())
-            {
-                if (ob.IsCollidable)
-                {
-                    CollisionLocation co = CheckCollisionWithOtherEntity(ob);
-                    switch (co)
-                    {
-                        case CollisionLocation.Bottom:
-                            collRectangle.Y = ob.GetCollRectangle().Y - collRectangle.Height;
-                            velocity.Y = 0f;
-                            isJumping = false;
-                            isFlying = false;
-                            PlayMovementSounds();
-                            Stomp();
-                            break;
-                        case CollisionLocation.Right:
-                            collRectangle.X = ob.GetCollRectangle().X - collRectangle.Width - 1;
-                            velocity.X = 0f;
-                            break;
-                        case CollisionLocation.Left:
-                            collRectangle.X = ob.GetCollRectangle().X + ob.GetCollRectangle().Width + 1;
-                            velocity.X = 0f;
-                            break;
-                        case CollisionLocation.Top:
-                            break;
-                        case CollisionLocation.Null:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
             //DrawSurroundIndexes(spriteBatch);
 
-            if (isDead) return;
+            if (IsDead()) return;
 
             jetpack.Draw(spriteBatch);
 
             if (isChronoshifting) return;
 
-            if (isFacingRight == true)
+            if (IsFacingRight == true)
                 spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White);
             else spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
@@ -1021,7 +988,7 @@ namespace Adam
                 GameWorld.Instance.particles.Add(par);
             }
 
-            health -= damage;
+            Health -= damage;
             //make him invincible for a while and start the being hit animation
             isInvincible = true;
             automatic_hasControl = false;
@@ -1035,7 +1002,7 @@ namespace Adam
         /// <param name="damage"></param>
         public void TakeDPS(int damage)
         {
-            health -= damage;
+            Health -= damage;
             takeDamageSound.Play();
         }
 
@@ -1062,16 +1029,15 @@ namespace Adam
             }
         }
 
-        private void Respawn()
+        public override void Revive()
         {
             if (PlayerRespawned != null)
                 PlayerRespawned();
 
+            Console.WriteLine("Player began to revive.");
+
             Overlay.Instance.FadeIn();
 
-            // tadaSound.Play();
-
-            health = maxHealth;
             //reset player velocity
             velocity = new Vector2(0, 0);
             //Take him back to the spawn point
@@ -1082,12 +1048,16 @@ namespace Adam
             gameOverSoundPlayed = false;
             fallSoundPlayed = false;
             goreSoundPlayed = false;
-            isDead = false;
             manual_hasControl = true;
             isInvisible = false;
             isWaitingForRespawn = false;
 
-            gameWorld.ResetWorld();
+            Console.WriteLine("All variables were reset.");
+            Console.WriteLine("Reseting world.");
+            GameWorld.Instance.ResetWorld();
+            Console.WriteLine("World reset.");
+            base.Revive();
+            Console.WriteLine("Player health set back to max health.");
         }
 
         public void PlayAttackSound()
@@ -1135,9 +1105,9 @@ namespace Adam
             if (tileParticleTimer < Math.Abs(350 / velocity.X))
                 return;
             Tile tile = new Tile();
-            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (gameWorld.worldData.LevelWidth * 2);
-            if (tileIndexBelow < gameWorld.tileArray.Length)
-                tile = gameWorld.tileArray[tileIndexBelow];
+            int tileIndexBelow = GetTileIndex(new Vector2(collRectangle.X, collRectangle.Y)) + (GameWorld.Instance.worldData.LevelWidth * 2);
+            if (tileIndexBelow < GameWorld.Instance.tileArray.Length)
+                tile = GameWorld.Instance.tileArray[tileIndexBelow];
             //If the player is above air skip.
             if (tile.ID == 0)
                 return;
@@ -1157,7 +1127,7 @@ namespace Adam
             movementSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             Tile tile = new Tile();
-            tile = gameWorld.tileArray[TileIndex + (gameWorld.worldData.LevelWidth * 2)];
+            tile = GameWorld.Instance.tileArray[TileIndex + (GameWorld.Instance.worldData.LevelWidth * 2)];
 
             if (tile.ID != 0 && movementSoundTimer > Math.Abs(500 / velocity.X))
             {
@@ -1222,15 +1192,15 @@ namespace Adam
 
         public void KillAndRespawn()
         {
-            if (health == 0)
-                goto SkipChecks;
 
             if (isInvulnerable)
                 return;
-            if (isInvincible)
+            else if (isInvincible)
                 return;
-
-            SkipChecks:
+            else
+            {
+                TakeDamage(Health);
+            }
 
             if (isWaitingForRespawn)
                 return;
@@ -1256,10 +1226,9 @@ namespace Adam
 
             int rand = GameWorld.RandGen.Next(20, 30);
             SpillBlood(rand);
-            TakeDamageAndKnockBack(health);
+            TakeDamageAndKnockBack(Health);
             manual_hasControl = false;
             isWaitingForRespawn = true;
-            isDead = true;
             levelFail.PlayIfStopped();
         }
 
@@ -1325,7 +1294,7 @@ namespace Adam
             for (int i = 0; i < quantity; i++)
             {
                 Particle par = new Particle();
-                par.CreateBloodEffect(this, gameWorld);
+                par.CreateBloodEffect(this, GameWorld.Instance);
                 GameWorld.Instance.particles.Add(par);
             }
         }
@@ -1333,9 +1302,9 @@ namespace Adam
         public void Heal(int amount)
         {
             //TODO add sounds.
-            health += amount;
-            if (health > maxHealth)
-                health = maxHealth;
+            Health += amount;
+            if (Health > MaxHealth)
+                Health = MaxHealth;
         }
 
         public void DealDamage(Enemy enemy)

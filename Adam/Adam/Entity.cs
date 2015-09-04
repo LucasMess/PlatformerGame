@@ -12,47 +12,35 @@ using System.Text;
 
 namespace Adam
 {
-    public enum CollisionLocation
-    {
-        Bottom,
-        Right,
-        Left,
-        Top,
-        Null,
-    }
-
+    /// <summary>
+    /// Basic class that allows for collision, animation and physics.
+    /// </summary>
     public abstract class Entity
     {
-
         protected Vector2 origin;
-        public Rectangle sourceRectangle;
-        protected GameWorld gameWorld;
-        public bool toDelete;
-        public Vector2 velocity;
-        public bool isFacingRight;
-        public bool isDead;
-        public DynamicPointLight light;
+        protected Vector2 velocity;
 
-        public Rectangle yRect, xRect;
+        private Texture2D _texture;
+        private Color _color;
 
+        private bool _toDelete;
+        private bool _isFacingRight;
+        private bool _isDead;
+
+        private DynamicPointLight _light;
+
+        private int _health;
+        private float _opacity = 1f;
+
+        /// <summary>
+        /// The index position of the entity in the game world.
+        /// </summary>
         public int TileIndex
         {
             get { return GetTileIndex(); }
         }
 
-        protected ContentManager Content;
 
-        protected float opacity = 1f;
-
-        /// <summary>
-        /// All things that move or can collide with other things inherit the Entity class.
-        /// </summary>
-        public Entity()
-        {
-            Content = Main.Content;
-        }
-
-        Texture2D texture;
         /// <summary>
         /// The texture of the entity.
         /// </summary>
@@ -60,11 +48,14 @@ namespace Adam
         {
             get
             {
-                if (texture == null)
-                    texture = Main.DefaultTexture;
-                return texture;
+                if (_texture == null)
+                {
+                    _texture = Main.DefaultTexture;
+                    Console.WriteLine("Texture for: {0} is null, using default texture instead.", GetType());
+                }
+                return _texture;
             }
-            set { texture = value; }
+            set { _texture = value; }
         }
 
         /// <summary>
@@ -95,11 +86,11 @@ namespace Adam
         /// </summary>
         public float Opacity
         {
-            get { return opacity; }
-            set { value = opacity; }
+            get { return _opacity; }
+            set { _opacity = value; }
         }
 
-        Color color;
+
         /// <summary>
         /// The color that the entity will be drawn in.
         /// </summary>
@@ -107,14 +98,106 @@ namespace Adam
         {
             get
             {
-                if (color == null)
-                    color = Color.White;
-
-                return color * Opacity;
+                if (_color == null)
+                    _color = Color.White;
+                return _color * Opacity;
             }
             set
             {
-                color = value;
+                _color = value;
+            }
+        }
+
+        /// <summary>
+        /// The rectangle that specifies the part of the texture to draw.
+        /// </summary>
+        protected Rectangle sourceRectangle;
+
+        /// <summary>
+        /// The light that the entity gives off. Default is none.
+        /// </summary>
+        public DynamicPointLight Light
+        {
+            get
+            {
+                return _light;
+            }
+
+            set
+            {
+                _light = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the entity's health is equal to or below zero.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsDead()
+        {
+            return (Health <= 0);
+        }
+
+        /// <summary>
+        /// The maximum amount of health the enemy can have. This is the value that is given to the enemy when it respawns.
+        /// </summary>
+        public virtual int MaxHealth
+        {
+            get;
+        }
+
+        int health;
+        bool healthGiven;
+        /// <summary>
+        /// The current health of the entity.
+        /// </summary>
+        public int Health
+        {
+            get
+            {
+                if (!healthGiven)
+                {
+                    health = MaxHealth;
+                    healthGiven = true;
+                }
+
+                return health;
+            }
+            set
+            {
+                health = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the entity's texture is facing right.
+        /// </summary>
+        public bool IsFacingRight
+        {
+            get
+            {
+                return _isFacingRight;
+            }
+
+            set
+            {
+                _isFacingRight = value;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the entity can be deleted or not.
+        /// </summary>
+        public bool ToDelete
+        {
+            get
+            {
+                return _toDelete;
+            }
+
+            set
+            {
+                _toDelete = value;
             }
         }
 
@@ -123,7 +206,8 @@ namespace Adam
         /// </summary>
         public virtual void Update()
         {
-            gameWorld = GameWorld.Instance;
+            if (IsDead())
+                return;
 
             //Check for physics, if applicable.
             if (this is INewtonian)
@@ -134,7 +218,6 @@ namespace Adam
             //Check for collision, if applicable.
             if (this is ICollidable)
             {
-                UpdateXYRects();
                 CheckTerrainCollision();
             }
 
@@ -167,7 +250,7 @@ namespace Adam
                 IAnimated ian = (IAnimated)this;
 
                 //Flip sprite if facing other way.
-                if (isFacingRight)
+                if (IsFacingRight)
                 {
                     ian.Animation.isFlipped = true;
                 }
@@ -179,7 +262,7 @@ namespace Adam
             // Drawing for simple entities that have a texture contained in a spritesheet.
             else if (sourceRectangle != null)
             {
-                if (!isFacingRight)
+                if (!IsFacingRight)
                     spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
                 else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
@@ -187,7 +270,7 @@ namespace Adam
             // Most basic drawing when there is only one frame and it is not in a spritesheet.
             else
             {
-                spriteBatch.Draw(Texture, DrawRectangle, Color.White * opacity);
+                spriteBatch.Draw(Texture, DrawRectangle, Color.White * Opacity);
             }
         }
 
@@ -200,44 +283,12 @@ namespace Adam
             spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
         }
 
-        protected void UpdateXYRects()
+        public Vector2 GetVelocity()
         {
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 10, collRectangle.Width, collRectangle.Height - 20);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, collRectangle.Width - 20, collRectangle.Height);
+            return velocity;
         }
 
 
-        /// <summary>
-        /// Checks for collision with other entity and returns the location of said collision.
-        /// </summary>
-        /// <param name="entity">The entity that collision will be checked on.</param>
-        /// <returns>The location of the collision.</returns>
-        public CollisionLocation CheckCollisionWithOtherEntity(Entity entity)
-        {
-            if (yRect.Intersects(entity.collRectangle))
-            {
-                if (collRectangle.Y < entity.collRectangle.Y) //hits bot
-                {
-                    return CollisionLocation.Bottom;
-                }
-                else  //hits top
-                {
-                    return CollisionLocation.Top;
-                }
-            }
-            else if (xRect.Intersects(entity.collRectangle))
-            {
-                if (collRectangle.X < entity.collRectangle.X) //hits right
-                {
-                    return CollisionLocation.Right;
-                }
-                else  //hits left
-                {
-                    return CollisionLocation.Left;
-                }
-            }
-            else return CollisionLocation.Null;
-        }
 
         /// <summary>
         /// Whether the entity is simply intersecting terrain.
@@ -276,8 +327,8 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex()
         {
-            if (gameWorld != null)
-                return (int)(collRectangle.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(collRectangle.Center.X / Main.Tilesize);
+            if (GameWorld.Instance != null)
+                return (int)(collRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(collRectangle.Center.X / Main.Tilesize);
             else return 0;
         }
 
@@ -288,8 +339,8 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex(Vector2 coord)
         {
-            if (gameWorld != null)
-                return (int)((int)coord.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
+            if (GameWorld.Instance != null)
+                return (int)((int)coord.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
             else throw new Exception("Map is null");
         }
 
@@ -322,21 +373,20 @@ namespace Adam
         /// </summary>
         private void CheckTerrainCollision()
         {
-            if (isDead) return;
             if (this is ICollidable) { } else throw new InvalidOperationException("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
 
             ICollidable ent = (ICollidable)this;
 
-            int[] q = GetNearbyTileIndexes(gameWorld);
+            int[] q = GetNearbyTileIndexes(GameWorld.Instance);
 
             //Solve Y collisions
             collRectangle.Y += (int)velocity.Y;
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length)
                 {
-                    Tile tile = gameWorld.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
+                    Tile tile = GameWorld.Instance.tileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length && tile.isSolid == true)
                     {
                         Rectangle tileRect = tile.drawRectangle;
                         if (collRectangle.Intersects(tileRect))
@@ -368,10 +418,10 @@ namespace Adam
             collRectangle.X += (int)velocity.X;
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length)
                 {
-                    Tile tile = gameWorld.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < gameWorld.tileArray.Length && tile.isSolid == true)
+                    Tile tile = GameWorld.Instance.tileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length && tile.isSolid == true)
                     {
                         Rectangle tileRect = tile.drawRectangle;
                         if (collRectangle.Intersects(tile.drawRectangle))
@@ -390,7 +440,6 @@ namespace Adam
                                 while (collRectangle.Intersects(tileRect))
                                 {
                                     collRectangle.X++;
-                                    UpdateXYRects();
                                 }
                                 ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
                                 ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
@@ -440,12 +489,12 @@ namespace Adam
 
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)
         {
-            if (gameWorld == null) return;
-            foreach (int i in GetNearbyTileIndexes(gameWorld))
+            if (GameWorld.Instance == null) return;
+            foreach (int i in GetNearbyTileIndexes(GameWorld.Instance))
             {
-                if (i < gameWorld.tileArray.Length && i >= 0)
+                if (i < GameWorld.Instance.tileArray.Length && i >= 0)
                 {
-                    Tile t = gameWorld.tileArray[i];
+                    Tile t = GameWorld.Instance.tileArray[i];
                     spriteBatch.Draw(Main.DefaultTexture, t.drawRectangle, t.sourceRectangle, Color.Red);
                 }
             }
@@ -487,9 +536,21 @@ namespace Adam
             velocity.X = 0;
         }
 
-        public Entity GetUpdated()
+        /// <summary>
+        /// Returns the current instance of this entity.
+        /// </summary>
+        /// <returns></returns>
+        public Entity Get()
         {
             return this;
+        }
+
+        /// <summary>
+        /// Sets the health back to the entity's original health.
+        /// </summary>
+        public virtual void Revive()
+        {
+            Health = MaxHealth;
         }
     }
 }

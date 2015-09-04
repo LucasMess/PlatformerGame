@@ -192,8 +192,8 @@ namespace Adam
         {
             liquid?.Update(gameTime);
             chest?.Update();
-            flameSpitter?.Update(gameTime, GameWorld.Instance.GetPlayer(), GameWorld.Instance);
-            machineGun?.Update(gameTime, GameWorld.Instance.GetPlayer(), GameWorld.Instance);
+            flameSpitter?.Update();
+            machineGun?.Update();
 
             switch (ID)
             {

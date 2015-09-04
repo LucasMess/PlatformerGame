@@ -50,8 +50,8 @@ namespace Adam
             collRectangle = new Rectangle(centerX, centerY, 16, 16);
             sourceRectangle = GetSourceRectangle();
             velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
-            light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
-            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+            Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
         }

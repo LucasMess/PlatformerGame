@@ -64,7 +64,7 @@ namespace Adam.Interactables
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
 
-            if (!hasHealed && player.GetCollRectangle().Intersects(collRectangle) && player.health < player.maxHealth)
+            if (!hasHealed && player.GetCollRectangle().Intersects(collRectangle))
             {
                 hasHealed = true;
                 player.Heal(healAmount);

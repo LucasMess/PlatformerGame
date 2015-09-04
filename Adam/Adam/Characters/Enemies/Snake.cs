@@ -26,7 +26,7 @@ namespace Adam.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {
@@ -130,7 +130,7 @@ namespace Adam.Enemies
             collRectangle = new Rectangle(x, y - 64, 64, 96);
 
             //Textures and sound effects, single is for rectangle pieces explosion
-            Texture = Content.Load<Texture2D>("Enemies/Snake");
+            Texture = ContentHelper.LoadTexture("Enemies/Snake");
 
             //Creates animation
             animation = new Animation(Texture, DrawRectangle, 240, 0, AnimationType.Loop);
@@ -140,11 +140,11 @@ namespace Adam.Enemies
         {
             base.Update();            
 
-            if (projCooldownTimer > 3 && !isDead)
+            if (projCooldownTimer > 3 && !IsDead())
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
-                    GameWorld.Instance.entities.Add(new ParabolicProjectile(this, GameWorld.Instance, Content, ProjectileSource.Snake));
+                    GameWorld.Instance.entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Snake));
                     PlayAttackSound();
                     projCooldownTimer = 0;
                 }

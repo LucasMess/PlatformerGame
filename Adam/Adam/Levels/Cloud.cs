@@ -22,10 +22,10 @@ namespace Adam
 
         public Cloud(ContentManager Content, Vector2 monitorResolution,int maxClouds, int i)
         {
-            texture1 = Content.Load<Texture2D>("Backgrounds/cloud_1");
-            texture2 = Content.Load<Texture2D>("Backgrounds/cloud_2");
-            texture3 = Content.Load<Texture2D>("Backgrounds/cloud_3");
-            texture4 = Content.Load<Texture2D>("Backgrounds/cloud_4");
+            texture1 = ContentHelper.LoadTexture("Backgrounds/cloud_1");
+            texture2 = ContentHelper.LoadTexture("Backgrounds/cloud_2");
+            texture3 = ContentHelper.LoadTexture("Backgrounds/cloud_3");
+            texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
             this.maxClouds = maxClouds;
             PrefRes = monitorResolution;
             randGen = new Random(i);

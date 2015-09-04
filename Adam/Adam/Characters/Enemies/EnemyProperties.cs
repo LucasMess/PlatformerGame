@@ -54,33 +54,10 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        int health;
-        bool healthGiven;
         /// <summary>
-        /// The current health of the enemy.
+        /// Sets the maximum health the entity can have. Enemy types must declare their max health.
         /// </summary>
-        protected int Health
-        {
-            get
-            {
-                if (!healthGiven)
-                {
-                    health = MaxHealth;
-                }
-
-                return health;
-            }
-            set
-            {
-                health = value;
-            }
-        }
-
-        int maxHealth;
-        /// <summary>
-        /// The maximum amount of health the enemy can have. This is the value that is given to the enemy when it respawns.
-        /// </summary>
-        protected abstract int MaxHealth
+        public override abstract int MaxHealth
         {
             get;
         }
@@ -251,15 +228,6 @@ namespace Adam.Characters.Enemies
                 default:
                     return 0;
             }
-        }
-
-        /// <summary>
-        /// Returns true if the enemy's health is equal to or below zero.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsDead()
-        {
-            return (health <= 0);
         }
 
     }

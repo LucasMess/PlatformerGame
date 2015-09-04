@@ -30,7 +30,7 @@ namespace Adam.Obstacles
             collRectangle = sourceTile.drawRectangle;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
             firingTimer.Increment();
             if (firingTimer.TimeElapsedInMilliSeconds > FiringInterval)
@@ -64,7 +64,7 @@ namespace Adam.Obstacles
                 }
             }
 
-            base.Update(gameTime, player, map);
+            base.Update();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {
@@ -71,8 +71,8 @@ namespace Adam.Characters.Enemies
             sourceRectangle = new Rectangle(0, 0,16, 16);
             Texture = ContentHelper.LoadTexture("Void Shurinken/voisshurinken");
             velocity = new Vector2(1,1);
-            light = new Lights.DynamicPointLight(this, 1, false, Color.Red, 1);
-            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+            Light = new Lights.DynamicPointLight(this, 1, false, Color.Red, 1);
+            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
         }
 

@@ -68,7 +68,7 @@ namespace Adam
 
         public Particle()
         {
-            gameWorld = GameWorld.Instance;
+
         }
 
         public Particle(Projectile projectile, Tile[] tileArray)
@@ -76,7 +76,7 @@ namespace Adam
             sourceRectangle = new Rectangle(0, 0, 32, 32);
             CurrentParticle = ParticleType.Impact;
             Texture = ContentHelper.LoadTexture("Explosion");
-            if (projectile.velocity.X > 0)
+            if (projectile.GetVelocity().X > 0)
                 collRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X - 32, projectile.GetCollRectangle().Center.Y - 32, 64, 64);
             else collRectangle = new Rectangle(tileArray[projectile.tileHit].drawRectangle.X + 32, projectile.GetCollRectangle().Center.Y - 32, 64, 64);
             frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
@@ -88,7 +88,7 @@ namespace Adam
             CurrentParticle = ParticleType.Impact;
             Texture = ContentHelper.LoadTexture("Explosion");
 
-            if (projectile.velocity.X > 0)
+            if (projectile.GetVelocity().X > 0)
                 collRectangle = new Rectangle(enemy.GetCollRectangle().X - enemy.GetCollRectangle().Width / 2, projectile.GetCollRectangle().Center.Y - sourceRectangle.Height / 2, 32, 32);
             else collRectangle = new Rectangle(enemy.GetCollRectangle().X + enemy.GetCollRectangle().Width / 2, projectile.GetCollRectangle().Center.Y - sourceRectangle.Height / 2, 32, 32);
             frameCount = new Vector2(Texture.Width / 32, Texture.Height / 32);
@@ -100,14 +100,14 @@ namespace Adam
             Texture = ContentHelper.LoadTexture("Effects/venom_blob");
             randGen = new Random();
             collRectangle = new Rectangle(proj.GetCollRectangle().X + proj.GetCollRectangle().Width / 2, proj.GetCollRectangle().Y, 8, 8);
-            if (proj.velocity.X > 0)
+            if (proj.GetVelocity().X > 0)
                 velocity.X = -2;
             else velocity.X = 2;
             velocity.Y = GameWorld.RandGen.Next(1, 4);
             if (GameWorld.RandGen.Next(0, 2) == 0)
                 velocity.Y = -velocity.Y;
             sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
-            opacity = 1f;
+            Opacity = 1f;
         }
 
         public Particle(Player player)
@@ -117,7 +117,7 @@ namespace Adam
             CurrentParticle = ParticleType.GameZZZ;
             Texture = ContentHelper.LoadTexture("Effects/new_Z");
             color = new Color(255, 255, 255, 255);
-            if (player.isFacingRight)
+            if (player.IsFacingRight)
                 position = new Vector2(player.GetCollRectangle().X + randGen.Next(-5, 5) + player.GetCollRectangle().Width - 8, player.GetCollRectangle().Y + randGen.Next(-5, 5));
             else position = new Vector2(player.GetCollRectangle().Center.X + randGen.Next(0, 20), player.GetCollRectangle().Y + randGen.Next(-5, 5));
             collRectangle = new Rectangle((int)position.X, (int)position.Y, 8, 8);
@@ -140,14 +140,14 @@ namespace Adam
             position = player.weapon.tipPos;
             velocity = new Vector2(0, 0);
             int maxTanSpeed = 10;
-            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
-            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
+            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.GetVelocity().X - maxTanSpeed), (int)(proj.GetVelocity().X + maxTanSpeed + 1)));
+            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.GetVelocity().Y - maxTanSpeed), (int)(proj.GetVelocity().Y + maxTanSpeed + 1)));
             CurrentParticle = ParticleType.WeaponBurst;
             Texture = ContentHelper.LoadTexture("Effects/laser_burst");
             int randSize = GameWorld.RandGen.Next(2, 5);
             collRectangle = new Rectangle((int)position.X, (int)position.Y, randSize, randSize);
             sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
-            opacity = 1;
+            Opacity = 1;
         }
 
         public void CreateEnemyDisintegrationEffect(Enemy enemy, Rectangle sourceRectangle, Projectile proj)
@@ -158,8 +158,8 @@ namespace Adam
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;
             int maxTanSpeed = 10;
-            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.velocity.X - maxTanSpeed), (int)(proj.velocity.X + maxTanSpeed + 1)));
-            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.velocity.Y - maxTanSpeed), (int)(proj.velocity.Y + maxTanSpeed + 1)));
+            velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.GetVelocity().X - maxTanSpeed), (int)(proj.GetVelocity().X + maxTanSpeed + 1)));
+            velocity.Y = (float)(GameWorld.RandGen.Next((int)(proj.GetVelocity().Y - maxTanSpeed), (int)(proj.GetVelocity().Y + maxTanSpeed + 1)));
         }
 
         public void CreateEnemyDeathEffect(Enemy enemy, Rectangle sourceRectangle)
@@ -182,7 +182,6 @@ namespace Adam
             collRectangle = collRectangle;
             velocity = new Vector2(GameWorld.RandGen.Next(-10, 10), GameWorld.RandGen.Next(-10, 10));
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            this.gameWorld = map;
         }
 
         public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
@@ -203,9 +202,9 @@ namespace Adam
                 sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
             }
             sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Main.Tilesize / 4);
-            velocity.X = (-player.velocity.X / 2) * (float)GameWorld.RandGen.NextDouble();
+            velocity.X = (-player.GetVelocity().X / 2) * (float)GameWorld.RandGen.NextDouble();
             velocity.Y = GameWorld.RandGen.Next(-1, 1);
-            opacity = 1;
+            Opacity = 1;
         }
 
         public void CreatePlayerDesintegrationEffect(Player player, Rectangle sourceRectangle)
@@ -256,7 +255,7 @@ namespace Adam
             velocity.Y = 3f;
             velocity.X = GameWorld.RandGen.Next(-1, 2);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1f;
+            Opacity = 1f;
         }
 
         public void CreateJetPackSmokeParticle(Player player)
@@ -268,7 +267,7 @@ namespace Adam
             velocity.Y = 3f;
             velocity.X = GameWorld.RandGen.Next(-1, 2);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1f;
+            Opacity = 1f;
         }
 
         public void CreateLavaParticle(Liquid lava, GameWorld map)
@@ -280,10 +279,9 @@ namespace Adam
             sourceRectangle = new Rectangle(0, 0, 8, 8);
             velocity.Y = -10f;
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1f;
+            Opacity = 1f;
             light = new Lights.DynamicPointLight(this, 1, true, Color.Orange, .3f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
-            this.gameWorld = map;
         }
 
         public void CreateDeathSmoke(Entity entity)
@@ -295,7 +293,7 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-2, 3));
             velocity.Y = -.5f;
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 2;
+            Opacity = 2;
         }
 
         public void CreateTookDamage(Entity entity)
@@ -307,7 +305,7 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-1, 2));
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1;
+            Opacity = 1;
             color = Color.Red;
         }
 
@@ -320,20 +318,20 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-4, 5));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-7, 0));
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 2;
+            Opacity = 2;
             color = Color.White;
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            gameWorld = GameWorld.Instance;
+            GameWorld gameWorld = GameWorld.Instance;
             switch (CurrentParticle)
             {
                 case ParticleType.ChestSparkles:
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
                     velocity.Y += .3f;
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
                     light.Update(this);
                     break;
@@ -348,10 +346,10 @@ namespace Adam
                     opacityTimer += gameTime.ElapsedGameTime.TotalSeconds;
                     if (opacityTimer > 1)
                     {
-                        opacity -= .1f;
+                        Opacity -= .1f;
                     }
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.MenuZZZ:
                     collRectangle.X = (int)position.X;
@@ -361,38 +359,38 @@ namespace Adam
                     opacityTimer += gameTime.ElapsedGameTime.TotalSeconds;
                     if (opacityTimer > 1)
                     {
-                        opacity -= .1f;
+                        Opacity -= .1f;
                     }
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.SnakeVenom:
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
-                    opacity -= .03f;
+                    Opacity -= .03f;
                     velocity.Y += .09f;
 
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.WeaponBurst:
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     light.Update(this);
                     break;
                 case ParticleType.EnemyDesintegration:
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.PlayerChronoshift:
 
@@ -400,11 +398,11 @@ namespace Adam
                 case ParticleType.TileParticle:
                     collRectangle.X += (int)velocity.X;
                     collRectangle.Y += (int)velocity.Y;
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     //velocity.X = velocity.X * 0.99f;
                     //velocity.Y = velocity.Y * 0.99f;
-                    if (opacity < 0)
-                        toDelete = true;
+                    if (Opacity < 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.PlayerDesintegration:
                     position += velocity;
@@ -417,8 +415,8 @@ namespace Adam
                     {
                         if (!player.isWaitingForRespawn)
                         {
-                            opacity = 0f;
-                            toDelete = true;
+                            Opacity = 0f;
+                            ToDelete = true;
                             respawnTimer = 0;
                         }
                         else
@@ -438,9 +436,9 @@ namespace Adam
                     collRectangle.X = (int)position.X;
                     collRectangle.Y = (int)position.Y;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.JetpackSmoke:
                     position += velocity;
@@ -451,9 +449,9 @@ namespace Adam
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.Blood:
                     if (dead)
@@ -485,9 +483,9 @@ namespace Adam
 
                     velocity.Y += .3f;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.DeathSmoke:
                     position += velocity;
@@ -498,9 +496,9 @@ namespace Adam
                     velocity.X = velocity.X * 0.95f;
                     velocity.Y = velocity.Y * 0.99f;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.TookDamage:
                     position += velocity;
@@ -511,9 +509,9 @@ namespace Adam
                     velocity.X = velocity.X * 0.95f;
                     velocity.Y = velocity.Y * 0.99f;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
                 case ParticleType.Sparkles:
                     position += velocity;
@@ -524,9 +522,9 @@ namespace Adam
                     velocity.X = velocity.X * 0.99f;
                     velocity.Y = velocity.Y * 0.99f;
 
-                    opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (opacity <= 0)
-                        toDelete = true;
+                    Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Opacity <= 0)
+                        ToDelete = true;
                     break;
             }
             collRectangle = collRectangle;
@@ -548,7 +546,7 @@ namespace Adam
             }
             if (currentFrame >= frameCount.X)
             {
-                opacity = 0;
+                Opacity = 0;
             }
 
         }
@@ -564,9 +562,9 @@ namespace Adam
             velocity.X = velocity.X * 0.99f;
             velocity.Y = velocity.Y * 0.99f;
 
-            opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (opacity <= 0)
-                toDelete = true;
+            Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (Opacity <= 0)
+                ToDelete = true;
         }
 
         protected void NoOpacityFadeBehavior()
@@ -581,16 +579,16 @@ namespace Adam
             velocity.X = velocity.X * 0.99f;
             velocity.Y = velocity.Y * 0.99f;
 
-            if (opacity <= 0)
-                toDelete = true;
+            if (Opacity <= 0)
+                ToDelete = true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentParticle == ParticleType.SnakeVenom)
-                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);
+                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * Opacity);
             else
-                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * opacity);
+                spriteBatch.Draw(Texture, collRectangle, sourceRectangle, color * Opacity);
 
         }
 
@@ -612,9 +610,9 @@ namespace Adam
             collRectangle = collRectangle;
             position = new Vector2(collRectangle.X, collRectangle.Y);
 
-            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.velocity.X / 2, 3 - (int)entity.velocity.X / 2);
+            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.GetVelocity().X / 2, 3 - (int)entity.GetVelocity().X / 2);
             velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
-            opacity = 1f;
+            Opacity = 1f;
         }
 
         public override void Update(GameTime gameTime)
@@ -637,7 +635,7 @@ namespace Adam
             velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 3);
             velocity.Y = (float)GameWorld.RandGen.NextDouble() * -1f;
 
-            opacity = 1f;
+            Opacity = 1f;
         }
 
         public override void Update(GameTime gameTime)
@@ -656,7 +654,7 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 2;
+            Opacity = 2;
         }
 
         public override void Update(GameTime gameTime)
@@ -677,7 +675,7 @@ namespace Adam
             velocity.X = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             velocity.Y = (float)(GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-5, 6));
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 2;
+            Opacity = 2;
 
         }
         public override void Update(GameTime gameTime)
@@ -696,10 +694,10 @@ namespace Adam
             collRectangle = new Rectangle(source.GetCollRectangle().Center.X, source.GetCollRectangle().Center.Y, 8, 8);
             sourceRectangle = new Rectangle(8, 0, 8, 8);
             int buffer = 1;
-            velocity.X = GameWorld.RandGen.Next((int)-source.velocity.X - buffer, (int)-source.velocity.X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
-            velocity.Y = GameWorld.RandGen.Next((int)-source.velocity.Y - buffer, (int)-source.velocity.Y + buffer + 1);
+            velocity.X = GameWorld.RandGen.Next((int)-source.GetVelocity().X - buffer, (int)-source.GetVelocity().X + buffer + 1) * (float)GameWorld.RandGen.NextDouble();
+            velocity.Y = GameWorld.RandGen.Next((int)-source.GetVelocity().Y - buffer, (int)-source.GetVelocity().Y + buffer + 1);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = .5f;
+            Opacity = .5f;
 
             light = new Lights.DynamicPointLight(this, .5f, false, color, 1);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
@@ -724,7 +722,7 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             collRectangle = new Rectangle(source.GetCollRectangle().Center.X - 4, source.GetCollRectangle().Y - 8, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1;
+            Opacity = 1;
 
             velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
             velocity.Y = -3f;
@@ -749,7 +747,7 @@ namespace Adam
             int randY = (int)(GameWorld.RandGen.Next(0, source.GetCollRectangle().Height) * GameWorld.RandGen.NextDouble());
             collRectangle = new Rectangle(source.GetCollRectangle().X + randX - 4, source.GetCollRectangle().Y + randY - 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = .5f;
+            Opacity = .5f;
 
             velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
             velocity.Y = -3f;
@@ -772,7 +770,7 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             collRectangle = new Rectangle(source.GetCollRectangle().X + xCoor - 4, source.GetCollRectangle().Y + 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1f;
+            Opacity = 1f;
             velocity.Y = -8f;
 
             light = new DynamicPointLight(this, .05f, false, Color.White, .5f);
@@ -785,7 +783,7 @@ namespace Adam
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
         {
-            opacity = 0;
+            Opacity = 0;
             ExplosionParticle par = new ExplosionParticle(collRectangle.X + 4, collRectangle.Y, Color.White, .5f);
             SparkParticle spar = new SparkParticle(this, Color.Orange);
             GameWorld.Instance.particles.Add(spar);
@@ -818,16 +816,16 @@ namespace Adam
         {
             collRectangle = new Rectangle(x - 4, y - 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = 1;
+            Opacity = 1;
             light = new DynamicPointLight(this, intensity, false, color, intensity);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
         {
-            opacity -= .5f;
-            if (opacity <= 0)
-                toDelete = true;
+            Opacity -= .5f;
+            if (Opacity <= 0)
+                ToDelete = true;
         }
     }
 
@@ -840,7 +838,7 @@ namespace Adam
             collRectangle = new Rectangle(source.GetCollRectangle().X  - 4, source.GetCollRectangle().Y + 4, 8, 8);
             velocity.X = GameWorld.RandGen.Next(-6, 7);
             position = new Vector2(collRectangle.X, collRectangle.Y);
-            opacity = .7f;
+            Opacity = .7f;
 
             light = new DynamicPointLight(this, .05f, false, color, .5f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
@@ -932,7 +930,7 @@ namespace Adam
             {
                 GameWorld.Instance.player.isChronoshifting = false;
 
-                toDelete = true;
+                ToDelete = true;
             }
         }
 

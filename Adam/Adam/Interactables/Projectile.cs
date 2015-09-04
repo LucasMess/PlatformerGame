@@ -20,7 +20,6 @@ namespace Adam
 
     public abstract class Projectile : Entity
     {
-        public Rectangle topMidBound, botMidBound;
         public int tileHit;
         protected bool IsInactive;
         public ProjectileSource CurrentProjectileSource;
@@ -62,8 +61,8 @@ namespace Adam
                     break;
                 case ProjectileSource.Player:
                     spriteBatch.Draw(Texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-                    if (light != null)
-                        light.DrawGlow(spriteBatch);
+                    if (Light != null)
+                        Light.DrawGlow(spriteBatch);
                     break;
                 default:
                     base.Draw(spriteBatch);
@@ -76,8 +75,8 @@ namespace Adam
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Player:
-                    if (light != null)
-                        light.Draw(spriteBatch);
+                    if (Light != null)
+                        Light.Draw(spriteBatch);
                     break;
             }
 
@@ -85,8 +84,8 @@ namespace Adam
 
         protected void Destroy()
         {
-            if (light != null)
-                GameWorld.Instance.lightEngine.RemoveDynamicLight(light);
+            if (Light != null)
+                GameWorld.Instance.lightEngine.RemoveDynamicLight(Light);
             GameWorld.Instance.entities.Remove(this);
         }
 
@@ -99,63 +98,64 @@ namespace Adam
     public class PlayerWeaponProjectile : Projectile
     {
         public PlayerWeaponProjectile(Player player, ContentManager Content)
-        {
-            CurrentProjectileSource = ProjectileSource.Player;
-            this.player = player;
-            this.Content = Content;
-            player.weapon.CurrentWeaponType = WeaponType.LaserGun;
-            switch (player.weapon.CurrentWeaponType)
-            {
-                case WeaponType.Stick:
-                    break;
-                case WeaponType.Bow:
-                    break;
-                case WeaponType.Sword:
-                    break;
-                case WeaponType.Shotgun:
-                    break;
-                case WeaponType.LaserGun:
-                    Texture = Content.Load<Texture2D>("Projectiles/laser");
+        { 
+        //{
+        //    CurrentProjectileSource = ProjectileSource.Player;
+        //    this.player = player;
+        //    this.Content = Content;
+        //    player.weapon.CurrentWeaponType = WeaponType.LaserGun;
+        //    switch (player.weapon.CurrentWeaponType)
+        //    {
+        //        case WeaponType.Stick:
+        //            break;
+        //        case WeaponType.Bow:
+        //            break;
+        //        case WeaponType.Sword:
+        //            break;
+        //        case WeaponType.Shotgun:
+        //            break;
+        //        case WeaponType.LaserGun:
+        //            Texture = ContentHelper.LoadTexture("Projectiles/laser");
 
-                    //light = new PointLight();
-                    //light.Create(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
-                    //light.SetColor(Color.Red);
+        //            //light = new PointLight();
+        //            //light.Create(new Vector2(collRectangle.Center.X, collRectangle.Center.Y));
+        //            //light.SetColor(Color.Red);
 
-                    MouseState mouse = Mouse.GetState();
-                    Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.GetCollRectangle().Width / 2),
-                        (Main.UserResHeight * 3 / 5) + (player.GetCollRectangle().Height / 2));
+        //            MouseState mouse = Mouse.GetState();
+        //            Vector2 center = new Vector2((Main.UserResWidth / 2) + (player.GetCollRectangle().Width / 2),
+        //                (Main.UserResHeight * 3 / 5) + (player.GetCollRectangle().Height / 2));
 
-                    //Find the unit vector according to where the mouse is
-                    double xDiff = (mouse.X - center.X);
-                    double yDiff = (mouse.Y - center.Y);
-                    double x2 = Math.Pow(xDiff, 2.0);
-                    double y2 = Math.Pow(yDiff, 2.0);
-                    double magnitude = Math.Sqrt(x2 + y2);
-                    double xComp = xDiff / magnitude;
-                    double yComp = yDiff / magnitude;
+        //            //Find the unit vector according to where the mouse is
+        //            double xDiff = (mouse.X - center.X);
+        //            double yDiff = (mouse.Y - center.Y);
+        //            double x2 = Math.Pow(xDiff, 2.0);
+        //            double y2 = Math.Pow(yDiff, 2.0);
+        //            double magnitude = Math.Sqrt(x2 + y2);
+        //            double xComp = xDiff / magnitude;
+        //            double yComp = yDiff / magnitude;
 
-                    //arctangent for rotation of proj, also takes into account periodicity
-                    rotation = (float)Math.Atan(yDiff / xDiff);
-                    if (yDiff < 0 && xDiff > 0)
-                        rotation += 3.14f;
-                    if (yDiff > 0 && xDiff > 0)
-                        rotation += 3.14f;
+        //            //arctangent for rotation of proj, also takes into account periodicity
+        //            rotation = (float)Math.Atan(yDiff / xDiff);
+        //            if (yDiff < 0 && xDiff > 0)
+        //                rotation += 3.14f;
+        //            if (yDiff > 0 && xDiff > 0)
+        //                rotation += 3.14f;
 
-                    //Multiply unit vectors by max speed
-                    float linearSpeed = 20f;
-                    velocity = new Vector2((float)(linearSpeed * xComp), (float)(linearSpeed * yComp));
+        //            //Multiply unit vectors by max speed
+        //            float linearSpeed = 20f;
+        //            velocity = new Vector2((float)(linearSpeed * xComp), (float)(linearSpeed * yComp));
 
-                    player.weapon.CreateBurstEffect(this);
-                    break;
-                default:
-                    break;
-            }
+        //            player.weapon.CreateBurstEffect(this);
+        //            break;
+        //        default:
+        //            break;
+        //    }
 
-            if (Texture == null) return;
-            collRectangle = new Rectangle(player.weapon.rectangle.X + player.weapon.texture.Width, player.weapon.rectangle.Y
-                + player.weapon.texture.Height / 2, Texture.Width, Texture.Height);
+        //    if (Texture == null) return;
+        //    collRectangle = new Rectangle(player.weapon.rectangle.X + player.weapon.texture.Width, player.weapon.rectangle.Y
+        //        + player.weapon.texture.Height / 2, Texture.Width, Texture.Height);
 
-            collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), Texture.Width, Texture.Height);
+        //    collRectangle = new Rectangle((int)(player.weapon.tipPos.X), (int)(player.weapon.tipPos.Y), Texture.Width, Texture.Height);
         }
 
         protected override Rectangle DrawRectangle
@@ -171,12 +171,6 @@ namespace Adam
             this.gameTime = gameTime;
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
-
-            topMidBound = new Rectangle(collRectangle.X + Texture.Width / 2, collRectangle.Y + Texture.Height / 4, 1, 1);
-            botMidBound = new Rectangle(collRectangle.X + Texture.Width / 2, collRectangle.Y + (3 * Texture.Height / 4), 1, 1);
-
-            xRect = new Rectangle(collRectangle.X, collRectangle.Y + 5, Texture.Width, Texture.Height - 10);
-            yRect = new Rectangle(collRectangle.X + 10, collRectangle.Y, Texture.Width - 20, Texture.Height);
 
             CreateTrailEffect();
         }
@@ -205,8 +199,8 @@ namespace Adam
             Texture = Main.DefaultTexture;
             collRectangle = new Rectangle(x, y, 16, 16);
             velocity = new Vector2(xVel, yVel);
-            light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
-            GameWorld.Instance.lightEngine.AddDynamicLight(light);
+            Light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
+            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
         }
 
@@ -255,20 +249,18 @@ namespace Adam
     //Only use this with enemies
     public class ParabolicProjectile : Projectile
     {
-        public ParabolicProjectile(Enemy enemy, GameWorld map, ContentManager Content, ProjectileSource CurrentProjectileSource)
+        public ParabolicProjectile(Enemy enemy, GameWorld map, ProjectileSource CurrentProjectileSource)
         {
             this.CurrentProjectileSource = CurrentProjectileSource;
-            this.gameWorld = map;
-            this.Content = Content;
             this.enemy = enemy;
 
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Snake:
-                    Texture = Content.Load<Texture2D>("Projectiles/venom_dark");
+                    Texture = ContentHelper.LoadTexture("Projectiles/venom_dark");
                     collRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
                    // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
-                    if (!enemy.isFacingRight)
+                    if (!enemy.IsFacingRight)
                     {
                         velocity = new Vector2(-10, -15);
                         //animation.isFlipped = true;
@@ -316,7 +308,7 @@ namespace Adam
 
             if (IsInactive)
             {
-                toDelete = true;
+                ToDelete = true;
             }
         }
 
@@ -331,7 +323,7 @@ namespace Adam
 
         private void CheckIfOutsideBoundaries()
         {
-            if (collRectangle.Y > gameWorld.worldData.LevelHeight * Main.Tilesize)
+            if (collRectangle.Y > GameWorld.Instance.worldData.LevelHeight * Main.Tilesize)
                 IsInactive = true;
         }
     }

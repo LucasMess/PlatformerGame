@@ -36,7 +36,7 @@ namespace Adam
 
         public Tech(int x, int y, ContentManager Content)
         {
-            texture = Content.Load<Texture2D>("Objects/gold_apple");
+            texture = ContentHelper.LoadTexture("Objects/gold_apple");
             glow = Content.Load<SoundEffect>("Sounds/apple_glow");
             tileSize = Main.Tilesize;
             rectangle = new Rectangle(x, y, tileSize, tileSize);

@@ -32,11 +32,11 @@ namespace Adam
         public Vector3 lastCameraLeftCorner;
         public Vector2 inverted;
 
-        public Camera(Viewport newViewport, Vector2 prefferedResolution, Vector2 defaultResolution)
+        public Camera(Viewport newViewport)
         {
             viewport = newViewport;
-            defRes = defaultResolution;
-            prefRes = prefferedResolution;
+            defRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
+            prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight) ;
             velocity = new Vector3(0, 0, 0);
             tileIndex = 100;
         }
@@ -104,7 +104,7 @@ namespace Adam
         //Slowly zooom in.
         public void ZoomIn()
         {
-            zoom += .05f;
+            zoom += .005f;
             if (zoom > 2)
                 zoom = 2;
         }

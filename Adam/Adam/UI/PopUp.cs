@@ -78,8 +78,8 @@ namespace Adam
             Vector2 monitorResolution = new Vector2(Main.UserResWidth, Main.UserResHeight);
             dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
 
-            fill = Content.Load<Texture2D>("Menu/Star Fill");
-            outline = Content.Load<Texture2D>("Menu/Star Outline");
+            fill = ContentHelper.LoadTexture("Menu/Star Fill");
+            outline = ContentHelper.LoadTexture("Menu/Star Outline");
 
             fillRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
             fillOrigin = new Vector2(fill.Width / 2, fill.Height / 2);
@@ -87,7 +87,7 @@ namespace Adam
             outlineRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
             outlineOrigin = new Vector2(outline.Width / 2, outline.Height / 2);
 
-            obj = Content.Load<Texture2D>("Objects/tech_items");
+            obj = ContentHelper.LoadTexture("Objects/tech_items");
             objRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 64, 64);
             objOrigin = new Vector2(8, 8);
         }

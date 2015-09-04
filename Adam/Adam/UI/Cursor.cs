@@ -29,7 +29,7 @@ namespace Adam
 
         public void Load(ContentManager Content)
         {
-            texture = Content.Load<Texture2D>("Tiles/spritemap_3");
+            texture = ContentHelper.LoadTexture("Tiles/spritemap_3");
             rectangle = new Rectangle(0, 0, Main.Tilesize, Main.Tilesize);
             sourceRectangle = rectangle;
             origin = new Vector2(Main.Tilesize / 2, Main.Tilesize / 2);

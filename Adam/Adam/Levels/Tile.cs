@@ -610,7 +610,7 @@ namespace Adam
         public virtual void Update(GameTime gameTime)
         {
             specialTile?.Animate(gameTime);
-            obstacle?.Update(gameTime, GameWorld.Instance.player, GameWorld.Instance);
+            obstacle?.Update();
             //Not used for normal textures, only animated textures.
 
             ChangeOpacity();

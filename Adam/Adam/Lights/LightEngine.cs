@@ -123,7 +123,7 @@ namespace Adam.Lights
 
             foreach (Light l in dynamicLights)
             {
-                l.Update(l.source.GetUpdated());
+                l.Update(l.source.Get());
             }
 
 

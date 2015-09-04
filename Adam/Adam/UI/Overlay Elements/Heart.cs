@@ -70,40 +70,40 @@ namespace Adam.UI.Overlay_Elements
             RotateHeart();
             PumpHeart();
 
-            if (currentHealth < player.health)
+            if (currentHealth < player.Health)
             {
                 currentHealth++;
             }
-            if (currentHealth > player.health)
+            if (currentHealth > player.Health)
             {
                 currentHealth--;
             }
 
-            if (maxHealth < player.maxHealth)
+            if (maxHealth < player.MaxHealth)
             {
                 maxHealth++;
             }
-            if (maxHealth > player.maxHealth)
+            if (maxHealth > player.MaxHealth)
             {
                 maxHealth--;
             }
 
-            if (oldCurrentHealth < player.health)
+            if (oldCurrentHealth < player.Health)
             {
-                splashDamages.Add(new SplashDamage(player.health - oldCurrentHealth));
-                oldCurrentHealth = player.health;
+                splashDamages.Add(new SplashDamage(player.Health - oldCurrentHealth));
+                oldCurrentHealth = player.Health;
             }
 
-            if (oldCurrentHealth > player.health)
+            if (oldCurrentHealth > player.Health)
             {
-                splashDamages.Add(new SplashDamage(player.health - oldCurrentHealth));
-                oldCurrentHealth = player.health;
+                splashDamages.Add(new SplashDamage(player.Health - oldCurrentHealth));
+                oldCurrentHealth = player.Health;
             }
         }
 
         private void PumpHeart()
         {
-            if (player.health <= (maxHealth * .2))
+            if (player.Health <= (maxHealth * .2))
             {
                 isHeartPumping = true;
             }
@@ -113,7 +113,7 @@ namespace Adam.UI.Overlay_Elements
                 healthColor = Color.White;
             }
 
-            if (player.health <= 0)
+            if (player.Health <= 0)
             {
                 isHeartPumping = false;
                 healthColor = Color.Red;

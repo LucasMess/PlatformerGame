@@ -38,24 +38,37 @@ namespace Adam
 
     public class Main : Microsoft.Xna.Framework.Game
     {
+        private static Main _instance;
+        /// <summary>
+        /// The running instance of the game.
+        /// </summary>
+        public static Main Instance
+        {
+            get { return _instance; }
+        }
+
         #region Variables
+
+        // Color presets for lighting engine.
         static Color SunnyPreset = new Color(255, 238, 186);
         static Color HellPreset = new Color(255, 129, 116);
         static Color WinterPreset = new Color(200, 243, 255);
         static Color NightPreset = new Color(120, 127, 183);
         static Color SunsetPreset = new Color(255, 155, 13);
 
-        GraphicsDeviceManager graphics;
-        SpriteBatch gameSB, debugSB, mainSB, UiSB, backgroundSB, lightingSB, mainLightSB;
-        SpriteFont debugFont;
+        // Rendering variables.
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private SpriteFont debugFont;
+        private RenderTarget2D mainRenderTarget;
+        private RenderTarget2D lightingRenderTarget;
+
         Camera camera;
-        public Vector2 monitorRes;
-        RenderTarget2D mainRenderTarget, lightingRenderTarget;
         Menu menu;
         Thread reloadThread;
         Overlay overlay;
-        public static Dialog Dialog;
-        Texture2D splashDKD, blackScreen;
+        Texture2D splashDKD;
+        Texture2D blackScreen;
         SoundEffect quack;
         GameDebug debug;
         Cutscene cutscene;
@@ -65,17 +78,22 @@ namespace Adam
         double splashTimer, updateTime, drawTime, lightTime, renderTime;
         double frameRateTimer;
         int fps, totalFrames;
-        int updateCount, drawCount;
 
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960;
         public const int DefaultResHeight = 540;
-        public const string Version = "Version 0.7.0.0 Beta";
-        public const string Producers = "Duck Knight Duel Games";
+
         public static int UserResWidth;
         public static int UserResHeight;
+
+        public const string Version = "Version 0.7.0.0 Beta";
+        public const string Producers = "Duck Knight Duel Games";
+
         public static Texture2D DefaultTexture;
+        public static Dialog Dialog;
+
         public const float Gravity = .5f;
+
         public static double WidthRatio;
         public static double HeightRatio;
 
@@ -108,30 +126,29 @@ namespace Adam
 
         public Main()
         {
-            graphics = new GraphicsDeviceManager(this);
-
-            //Get the current monitor resolution and set it as the game's resolution
-            monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            // Get the current monitor resolution and set it as the game's resolution
+            Vector2 monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             UserResWidth = (int)monitorRes.X;
             UserResHeight = (int)monitorRes.Y;
             WidthRatio = ((double)Main.DefaultResWidth / (double)Main.UserResWidth);
             HeightRatio = ((double)Main.DefaultResHeight / (double)Main.UserResHeight);
 
+            // Important services that need to be instanstiated before other things.
+            graphics = new GraphicsDeviceManager(this);
+            Content = new ContentManager(Services, "Content");
+            GameData = new GameDataManager();
+            
+            // Sets the current screen resolution to the user resolution.
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
 
-            //Change Game Settings Here
+            // Change game settings here.
             graphics.SynchronizeWithVerticalRetrace = true;
             graphics.PreferMultiSampling = true;
-          
             IsFixedTimeStep = true;
-
-            Content = new ContentManager(Services, "Content");
-
-            GameData = new GameDataManager();
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
-            //Set window to borderless
+            // Set window to borderless.
             IntPtr hWnd = this.Window.Handle;
             var control = System.Windows.Forms.Control.FromHandle(hWnd);
             var form = control.FindForm();
@@ -148,9 +165,7 @@ namespace Adam
 
         protected override void Initialize()
         {
-            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp tile");
-            //Initialize all instances
-            camera = new Camera(GraphicsDevice.Viewport, monitorRes, new Vector2(DefaultResWidth, DefaultResHeight));
+            camera = new Camera(GraphicsDevice.Viewport);
             menu = new Menu(this);
             gameWorld = new GameWorld(this);
             player = new Player(this);
@@ -158,24 +173,17 @@ namespace Adam
             cutscene = new Cutscene();
             Dialog = new Dialog();
             ObjectiveTracker = new ObjectiveTracker();
-            GraphicsDeviceInstance = graphics.GraphicsDevice;
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
 
-            //Initialize the game render target
-            mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
-                false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            lightingRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight,
-                false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp tile");
+            GraphicsDeviceInstance = graphics.GraphicsDevice;
 
-            //Initialize Spritebatches
-            gameSB = new SpriteBatch(GraphicsDevice);
-            debugSB = new SpriteBatch(GraphicsDevice);
-            backgroundSB = new SpriteBatch(GraphicsDevice);
-            UiSB = new SpriteBatch(GraphicsDevice);
-            mainSB = new SpriteBatch(GraphicsDevice);
-            lightingSB = new SpriteBatch(GraphicsDevice);
-            mainLightSB = new SpriteBatch(GraphicsDevice);
+            //Initialize the game render target
+            mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            lightingRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             updateWatch = new Stopwatch();
             drawWatch = new Stopwatch();
@@ -190,16 +198,16 @@ namespace Adam
         protected override void LoadContent()
         {
             CurrentGameState = GameState.SplashScreen;
-            loadingScreen = new LoadingScreen(monitorRes, Content);
-            splashDKD = Content.Load<Texture2D>("Backgrounds/Splash/DKD_new");
+            loadingScreen = new LoadingScreen(new Vector2(UserResWidth,UserResHeight), Content);
+            splashDKD = ContentHelper.LoadTexture("Backgrounds/Splash/DKD_new");
             quack = Content.Load<SoundEffect>("Backgrounds/Splash/quack");
-            blackScreen = Content.Load<Texture2D>("Tiles/black");
+            blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             debugFont = Content.Load<SpriteFont>("debug");
             menu.Load(Content);
             cutscene.Load(Content);
 
-            debug = new GameDebug(debugFont, monitorRes, blackScreen);
+            debug = new GameDebug(debugFont, new Vector2(UserResWidth,UserResHeight), blackScreen);
 
             CurrentGameMode = GameMode.None;
 
@@ -304,7 +312,7 @@ namespace Adam
             {
                 if (CurrentGameMode == GameMode.Edit)
                 {
-                    if(GameWorld.Instance.levelEditor.actionBar.AskSaveDialog())
+                    if (GameWorld.Instance.levelEditor.actionBar.AskSaveDialog())
                     {
                         GameWorld.Instance.levelEditor.actionBar.SaveButton_MouseClicked();
                     }
@@ -372,7 +380,7 @@ namespace Adam
                     if (gameWorld.isOnDebug)
                         break;
 
-                    
+
 
                     //if (gameWorld.SimulationPaused)
                     //    break;
@@ -390,14 +398,6 @@ namespace Adam
 
             base.Update(gameTime);
             debug.Update(this, player, gameWorld, debugOn);
-
-            if (drawCount > 100000 || updateCount > 100000)
-            {
-                drawCount = 0;
-                updateCount = 0;
-            }
-
-            updateCount++;
             updateWatch.Stop();
             updateTime = updateWatch.ElapsedMilliseconds;
             updateWatch.Reset();
@@ -443,9 +443,9 @@ namespace Adam
                 case GameState.LoadingScreen:
                     break;
                 case GameState.Cutscene:
-                    gameSB.Begin();
-                    cutscene.Draw(gameSB);
-                    gameSB.End();
+                    spriteBatch.Begin();
+                    cutscene.Draw(spriteBatch);
+                    spriteBatch.End();
                     break;
                 case GameState.MainMenu:
                     //backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
@@ -453,19 +453,19 @@ namespace Adam
                     //backgroundSB.End();
                     break;
                 case GameState.GameWorld:
-                    backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-                    gameWorld.DrawBackground(backgroundSB);
-                    gameWorld.DrawClouds(backgroundSB);
-                    backgroundSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+                    gameWorld.DrawBackground(spriteBatch);
+                    gameWorld.DrawClouds(spriteBatch);
+                    spriteBatch.End();
 
-                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawInBack(gameSB);
-                    gameWorld.Draw(gameSB);
-                    player.Draw(gameSB);
-                    gameSB.End();
-                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawGlows(gameSB);
-                    gameSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawInBack(spriteBatch);
+                    gameWorld.Draw(spriteBatch);
+                    player.Draw(spriteBatch);
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawGlows(spriteBatch);
+                    spriteBatch.End();
                     break;
             }
 
@@ -482,13 +482,13 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.GameWorld:
-                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
-                    lightingSB.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
-                    lightingSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
+                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                    spriteBatch.End();
 
-                    lightingSB.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawLights(lightingSB);
-                    lightingSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawLights(spriteBatch);
+                    spriteBatch.End();
                     break;
             }
 
@@ -509,37 +509,30 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.SplashScreen:
-                    gameSB.Begin();
-                    gameSB.Draw(splashDKD, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
-                    gameSB.End();
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(splashDKD, new Rectangle(0, 0,UserResWidth, UserResHeight), Color.White);
+                    spriteBatch.End();
                     break;
                 case GameState.Cutscene:
-                    gameSB.Begin();
-                    gameSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
-                    gameSB.End();
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    spriteBatch.End();
                     break;
                 case GameState.LoadingScreen:
-                    gameSB.Begin();
-                    loadingScreen.Draw(gameSB);
-                    gameSB.End();
+                    spriteBatch.Begin();
+                    loadingScreen.Draw(spriteBatch);
+                    spriteBatch.End();
                     break;
                 case GameState.MainMenu:
-                    gameSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    menu.Draw(gameSB);
-                    gameSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    menu.Draw(spriteBatch);
+                    spriteBatch.End();
                     break;
                 case GameState.GameWorld:
                     //Draw the rendertarget
-                    SamplerState ss = new SamplerState();
-                    ss.AddressU = TextureAddressMode.Clamp;
-                    ss.AddressV = TextureAddressMode.Clamp;
-                    ss.AddressW = TextureAddressMode.Clamp;
-                    ss.Filter = TextureFilter.Point;
-                    ss.MipMapLevelOfDetailBias = 1000000;
-                    ss.MaxAnisotropy = 0;
-                    mainSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, ss, DepthStencilState.None, RasterizerState.CullNone);
-                    mainSB.Draw(mainRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), Color.White);
-                    mainSB.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    spriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    spriteBatch.End();
 
                     if (GameData.Settings.DesiredLight)
                     {
@@ -548,24 +541,24 @@ namespace Adam
                         LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
                         LightBlendState.ColorSourceBlend = Blend.DestinationColor;
                         LightBlendState.ColorDestinationBlend = Blend.Zero;
-                        mainLightSB.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        mainLightSB.Draw(lightingRenderTarget, new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y), SunnyPreset);
-                        mainLightSB.End();
+                        spriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        spriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                        spriteBatch.End();
                     }
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
-                    UiSB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
-                    overlay.Draw(UiSB);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
+                    overlay.Draw(spriteBatch);
 
                     if (!gameWorld.levelEditor.onInventory)
-                        ObjectiveTracker.Draw(UiSB);
+                        ObjectiveTracker.Draw(spriteBatch);
 
-                    gameWorld.DrawUI(UiSB);
-                    Dialog.Draw(UiSB);
-                    TextInputBox.Draw(UiSB);
-                    MessageBox.Draw(UiSB);
+                    gameWorld.DrawUI(spriteBatch);
+                    Dialog.Draw(spriteBatch);
+                    TextInputBox.Draw(spriteBatch);
+                    MessageBox.Draw(spriteBatch);
 
-                    UiSB.End();
+                    spriteBatch.End();
 
                     break;
             }
@@ -591,31 +584,30 @@ namespace Adam
 
                 if (debugOn)
                 {
-                    debugSB.Begin();
-                    debugSB.Draw(blackScreen, new Rectangle(0, 0, (int)monitorRes.X, 320), Color.White * .3f);
-                    debugSB.DrawString(debugFont, Main.Version+" FPS: " + fps, new Vector2(0, 0), Color.White);
-                    debugSB.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
-                    debugSB.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
-                    debugSB.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
-                    debugSB.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
-                    debugSB.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
-                    debugSB.DrawString(debugFont, "Player Source Rectangle: " + player.sourceRectangle, new Vector2(0, 120), Color.White);
-                    debugSB.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
-                    debugSB.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
-                    debugSB.DrawString(debugFont, "Player Velocity" + player.velocity, new Vector2(0, 180), Color.White);
-                   // debugSB.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[], new Vector2(0, 200), Color.White);
-                    debugSB.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
-                    debugSB.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
-                    debugSB.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
-                    debugSB.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
-                    debugSB.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
-                    debug.Draw(debugSB);
-                    debugSB.End();
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
+                    spriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
+                    spriteBatch.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
+                    spriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
+                    spriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
+                    spriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
+                    spriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0,120),Color.White);
+                    spriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
+                    spriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
+                    spriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
+                    // spriteBatch.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[], new Vector2(0, 200), Color.White);
+                    spriteBatch.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
+                    spriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
+                    spriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
+                    spriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
+                    spriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
+                    debug.Draw(spriteBatch);
+                    spriteBatch.End();
                 }
 
             }
 
-            drawCount++;
             drawWatch.Stop();
             drawTime = drawWatch.ElapsedMilliseconds;
             drawWatch.Reset();

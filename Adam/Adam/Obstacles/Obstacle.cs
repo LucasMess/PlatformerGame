@@ -31,10 +31,8 @@ namespace Adam.Obstacles
 
         }
 
-        public virtual void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            this.gameWorld = map;
-            this.player = player;
 
             base.Update();
 
@@ -55,7 +53,7 @@ namespace Adam.Obstacles
                     break;
             }
 
-            if (player.GetCollRectangle().Intersects(attackBox))
+            if (GameWorld.Instance.player.GetCollRectangle().Intersects(attackBox))
                 IsTouchingPlayer = true;
             else IsTouchingPlayer = false;
 

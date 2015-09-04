@@ -28,7 +28,7 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            this.gameWorld = GameWorld.Instance;
+            GameWorld gameWorld = GameWorld.Instance;
             Player player = gameWorld.player;
             GameTime gameTime = gameWorld.gameTime;
 
@@ -37,7 +37,7 @@ namespace Adam.Interactables
             if (player.GetCollRectangle().Intersects(DrawRectangle) && elapsedTime > 500)
             {
                 pickUpSound?.PlayOnce();
-                toDelete = true;
+                ToDelete = true;
                 loopSound?.Stop();
             }
 

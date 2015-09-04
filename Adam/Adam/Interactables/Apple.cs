@@ -27,7 +27,7 @@ namespace Adam
 
         public void Load(ContentManager Content)
         {
-            texture = Content.Load<Texture2D>("Objects/gold_apple");
+            texture = ContentHelper.LoadTexture("Objects/gold_apple");
             levelFinishedSound = Content.Load<SoundEffect>("Sounds/LevelFinished");
             rectangle.Width = 32;
             rectangle.Height = 32;

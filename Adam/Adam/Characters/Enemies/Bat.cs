@@ -25,7 +25,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {

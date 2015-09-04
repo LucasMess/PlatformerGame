@@ -217,9 +217,9 @@ namespace Adam
             }
             else
             {
-                camera.UpdateSmoothly(player.GetCollRectangle(), worldData.LevelWidth, worldData.LevelHeight, !player.isDead);
+                camera.UpdateSmoothly(player.GetCollRectangle(), worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
 
-                if (player.isDead)
+                if (player.IsDead())
                 {
                     camera.ZoomIn();
                 }
@@ -260,7 +260,7 @@ namespace Adam
                 if (entity is Obstacle)
                 {
                     Obstacle obstacle = (Obstacle)entity;
-                    obstacle.Update(gameTime, player, this);
+                    obstacle.Update();
                 }
                 if (entity is Item)
                 {
@@ -321,11 +321,11 @@ namespace Adam
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 Entity entity = entities[i];
-                if (entity.toDelete)
+                if (entity.ToDelete)
                 {
-                    if (entity.light != null)
+                    if (entity.Light != null)
                     {
-                        lightEngine.RemoveDynamicLight(entity.light);
+                        lightEngine.RemoveDynamicLight(entity.Light);
                     }
                     entities.Remove(entity);
                 }
@@ -335,7 +335,7 @@ namespace Adam
             for (int i = particles.Count - 1; i >= 0; i--)
             {
                 Particle p = particles[i];
-                if (p.toDelete)
+                if (p.ToDelete)
                 {
                     lightEngine.RemoveDynamicLight(p.light);
                     particles.Remove(p);
@@ -358,7 +358,7 @@ namespace Adam
             {
                 if (player != null && camera != null)
                 {
-                    if (player.isDead == false)
+                    if (player.IsDead() == false)
                     {
                         float currentZoom = camera.GetZoom();
                         if (lastCameraZoom != currentZoom)
@@ -498,7 +498,7 @@ namespace Adam
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
-                    enemy.isDead = false;
+                    enemy.Revive();
                 }
                 if (entity is Food)
                 {

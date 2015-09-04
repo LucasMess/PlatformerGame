@@ -25,7 +25,7 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            if (isDead) return;
+            if (IsDead()) return;
 
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
@@ -131,7 +131,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {

@@ -53,12 +53,13 @@ namespace Adam.Obstacles
             original = new Vector2(DrawRectangle.X, DrawRectangle.Y);
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            base.Update(gameTime, player, map);
+            base.Update();
 
             if (IsTouchingPlayer)
             {
+                Player player = GameWorld.Instance.player;
                 player.PlayGoreSound();
                 player.KillAndRespawn();
             }

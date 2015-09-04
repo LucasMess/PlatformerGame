@@ -97,12 +97,12 @@ namespace Adam.Characters.Enemies
                     if (IsPlayerToTheRight())
                     {
                         velocity.X = fastSpeed;
-                        isFacingRight = true;
+                        IsFacingRight = true;
                     }
                     else
                     {
                         velocity.X = -fastSpeed;
-                        isFacingRight = false;
+                        IsFacingRight = false;
                     }
                     destinationSet = true;
                 }
@@ -124,7 +124,7 @@ namespace Adam.Characters.Enemies
                 playerSeen.PlayOnce();
                 fire.PlayIfStopped();
                 if (!isCharging)
-                    isFacingRight = IsPlayerToTheRight();
+                    IsFacingRight = IsPlayerToTheRight();
             }
             else
             {
@@ -155,11 +155,11 @@ namespace Adam.Characters.Enemies
                     if (GameWorld.RandGen.Next(0, 2) == 0)
                     {
                         velocity.X = -velocity.X;
-                        isFacingRight = false;
+                        IsFacingRight = false;
                     }
                     else
                     {
-                        isFacingRight = true;
+                        IsFacingRight = true;
                     }
                 }
 
@@ -261,7 +261,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {

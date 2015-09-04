@@ -28,7 +28,7 @@ namespace Adam.Obstacles
             collRectangle = sourceTile.drawRectangle;
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
             CheckIfChangingState();
 
@@ -49,6 +49,7 @@ namespace Adam.Obstacles
                 }
             }
 
+            Player player = GameWorld.Instance.player;
             if (isFlaming && attackBox.Intersects(player.GetCollRectangle()))
             {
                 player.TakeDamageAndKnockBack(EnemyDB.FlameSpitter_TouchDamage);
@@ -56,7 +57,7 @@ namespace Adam.Obstacles
             }
 
 
-            base.Update(gameTime, player, map);
+            base.Update();
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace Adam
         public void Load()
         {
             this.Content = Main.Content;
-            texture = Content.Load<Texture2D>("Weapon");
+            texture = ContentHelper.LoadTexture("Weapon");
             sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             rectangle.Width = texture.Width;
             rectangle.Height = texture.Height;
@@ -75,18 +75,17 @@ namespace Adam
             {
                 if (HasHitTerrain(proj))
                 {
-                    effectList.Add(new Particle(proj, gameWorld.tileArray));
+                    effectList.Add(new Particle(proj, GameWorld.Instance.tileArray));
                     projectileList.Remove(proj);
                     break;
                 }
             }
         }
 
-        public void Update(Player player, GameWorld map, GameTime gameTime)
+        public void Update(Player player, GameTime gameTime)
         {
             this.player = player;
             this.gameTime = gameTime;
-            this.gameWorld = map;
 
             rectangle.X = player.GetCollRectangle().X + player.GetCollRectangle().Width / 2;
             rectangle.Y = player.GetCollRectangle().Y + player.GetCollRectangle().Height * 3 / 5;
@@ -140,7 +139,7 @@ namespace Adam
             {
                 for (int i = effectList.Count - 1; i >= 0; i--)
                 {
-                    if (effectList.ElementAt(i).toDelete)
+                    if (effectList.ElementAt(i).ToDelete)
                         effectList.Remove(effectList.ElementAt(i));
                 }
             }
@@ -148,54 +147,12 @@ namespace Adam
 
         private bool HasHitTerrain(Projectile projectile)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(projectile.topMidBound.X / Main.Tilesize);
-
-            int[] q = new int[9];
-            q[0] = projectileTilePos - gameWorld.worldData.LevelWidth - 1;
-            q[1] = projectileTilePos - gameWorld.worldData.LevelWidth;
-            q[2] = projectileTilePos - gameWorld.worldData.LevelWidth + 1;
-            q[3] = projectileTilePos - 1;
-            q[4] = projectileTilePos;
-            q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + gameWorld.worldData.LevelWidth - 1;
-            q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
-            q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
-
-            //test = q;
-
-            //check the tiles around the projectile for collision
-            foreach (int quadrant in q)
-            {
-                if (quadrant >= 0 && quadrant <= gameWorld.tileArray.Length - 1 && gameWorld.tileArray[quadrant].isSolid == true)
-                {
-                    if (projectile.GetCollRectangle().Intersects(gameWorld.tileArray[quadrant].drawRectangle))
-                    {
-                        projectile.tileHit = quadrant;
-                        return true;
-                    }
-                }
-            }
             return false;
         }
 
         public bool HasHitEnemy(Projectile projectile, Enemy enemy)
         {
-            int projectileTilePos = (int)(projectile.topMidBound.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(projectile.topMidBound.X / Main.Tilesize);
-
-            int[] q = new int[9];
-            q[0] = projectileTilePos - gameWorld.worldData.LevelWidth - 1;
-            q[1] = projectileTilePos - gameWorld.worldData.LevelWidth;
-            q[2] = projectileTilePos - gameWorld.worldData.LevelWidth + 1;
-            q[3] = projectileTilePos - 1;
-            q[4] = projectileTilePos;
-            q[5] = projectileTilePos + 1;
-            q[6] = projectileTilePos + gameWorld.worldData.LevelWidth - 1;
-            q[7] = projectileTilePos + gameWorld.worldData.LevelWidth;
-            q[8] = projectileTilePos + gameWorld.worldData.LevelWidth + 1;
-
-            if (projectile.GetCollRectangle().Intersects(enemy.GetCollRectangle()) && enemy.isDead == false)
-                return true;
-            else return false;
+            return false;
         }
         
         public void CreateBurstEffect(Projectile projectile)

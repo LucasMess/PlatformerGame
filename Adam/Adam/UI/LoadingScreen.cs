@@ -30,9 +30,9 @@ namespace Adam
 
         public LoadingScreen(Vector2 monitorRes, ContentManager Content)
         {
-            background = Content.Load<Texture2D>("Backgrounds/Loading Screen/loading_background");
-            customObject = Content.Load<Texture2D>("Backgrounds/Loading Screen/loading_tree");
-            circle = Content.Load<Texture2D>("Backgrounds/Loading Screen/loading_circle");
+            background = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_background");
+            customObject = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_tree");
+            circle = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_circle");
             font = Content.Load<SpriteFont>("Fonts/loading_screen");
 
             randomText = "";

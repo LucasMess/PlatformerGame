@@ -22,8 +22,8 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            if (velocity.X > 0) isFacingRight = true;
-            else isFacingRight = false;
+            if (velocity.X > 0) IsFacingRight = true;
+            else IsFacingRight = false;
 
             base.Update();
         }
@@ -44,7 +44,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        protected override int MaxHealth
+        public override int MaxHealth
         {
             get
             {

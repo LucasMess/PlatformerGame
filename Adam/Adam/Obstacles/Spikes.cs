@@ -23,9 +23,9 @@ namespace Adam.Obstacles
             }
         }
 
-        public override void Update(GameTime gameTime, Player player, GameWorld map)
+        public override void Update()
         {
-            base.Update(gameTime, player, map);
+            base.Update();
 
             if (IsTouchingPlayer)
             {

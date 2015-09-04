@@ -266,9 +266,9 @@ namespace Adam
 
         public void Load(ContentManager Content)
         {
-            background = Content.Load<Texture2D>("Menu/menu_back");
-            adam = Content.Load<Texture2D>("Menu/menu_adam");
-            foreground = Content.Load<Texture2D>("Menu/menu_front");
+            background = ContentHelper.LoadTexture("Menu/menu_back");
+            adam = ContentHelper.LoadTexture("Menu/menu_adam");
+            foreground = ContentHelper.LoadTexture("Menu/menu_front");
             apple = ContentHelper.LoadTexture("Menu/menu_apple");
 
             theme = Content.Load<Song>("Music/Force Reunite");
@@ -301,7 +301,7 @@ namespace Adam
             }
             foreach (var z in zzzList)
             {
-                if (z.toDelete)
+                if (z.ToDelete)
                 {
                     zzzList.Remove(z);
                     break;

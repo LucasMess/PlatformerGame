@@ -23,7 +23,7 @@ namespace Adam
         public Key(int x, int y, ContentManager Content, int secret)
         {
             this.secret = secret;
-            texture = Content.Load<Texture2D>("Objects/key");
+            texture = ContentHelper.LoadTexture("Objects/key");
             rectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
             pickSound = Content.Load<SoundEffect>("Sounds/key_get");
         }

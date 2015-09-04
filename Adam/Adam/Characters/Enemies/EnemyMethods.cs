@@ -96,7 +96,7 @@ namespace Adam.Characters.Enemies
             PlayDeathSound();
             CreateFoodItem();
             CreateDeathEffect();
-            health = 0;            
+            Health = 0;            
 
             //Create smoke particles.
             for (int i = 0; i < 10; i++)
