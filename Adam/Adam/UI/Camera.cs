@@ -30,7 +30,7 @@ namespace Adam
         Vector2 defRes;
         public Vector3 velocity;
         public Vector3 lastCameraLeftCorner;
-        public Vector2 inverted;
+        public Vector2 invertedCoords;
 
         public Camera(Viewport newViewport)
         {
@@ -88,10 +88,10 @@ namespace Adam
                 cameraLeftCorner.Z++;
             }
 
-            inverted = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
-            inverted.X += Main.DefaultResWidth / 2;
-            inverted.Y += Main.DefaultResHeight * 2 / 3;
-            tileIndex = (int)((int)inverted.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)inverted.X / Main.Tilesize);
+            invertedCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
+            invertedCoords.X += Main.DefaultResWidth / 2;
+            invertedCoords.Y += Main.DefaultResHeight * 2 / 3;
+            tileIndex = (int)((int)invertedCoords.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)invertedCoords.X / Main.Tilesize);
 
             lastCameraLeftCorner = cameraLeftCorner;
             lastVelocity = velocity;

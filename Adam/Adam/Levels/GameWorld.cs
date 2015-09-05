@@ -112,9 +112,9 @@ namespace Adam
             worldData = new WorldData();
             textBox = new Textbox(300, 300, 100);
 
-            tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
-            tilesThread.IsBackground = true;
-            tilesThread.Start();
+            //tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
+            //tilesThread.IsBackground = true;
+            //tilesThread.Start();
         }
 
         public void LoadFromFile(GameMode CurrentGameMode)
@@ -350,60 +350,57 @@ namespace Adam
                 particles.Remove(particles.ElementAt<Particle>(0));
             }
 
-            //if (camera != null)
-            //    UpdateVisibleIndexes();
+            if (camera != null)
+                UpdateVisibleIndexes();
         }
 
         float lastCameraZoom;
         private void UpdateVisibleIndexes()
         {
-            while (true)
-            {
-                visibleTileArray = chunkManager.GetVisibleIndexes();
-                visibleLightArray = chunkManager.GetVisibleIndexes();
+            visibleTileArray = chunkManager.GetVisibleIndexes();
+            //visibleLightArray = chunkManager.GetVisibleIndexes();
 
-                //Thread.Sleep(1000);
-                //if (player != null && camera != null)
-                //{
-                //    if (player.IsDead() == false)
-                //    {
-                //        float currentZoom = camera.GetZoom();
-                //        if (lastCameraZoom != currentZoom)
-                //        {
-                //            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
-                //            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
-                //            lastCameraZoom = camera.GetZoom();
-                //        }
+            //if (player != null && camera != null)
+            //{
+            //    if (player.IsDead() == false)
+            //    {
+            //        float currentZoom = camera.GetZoom();
+            //        if (lastCameraZoom != currentZoom)
+            //        {
+            //            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
+            //            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
+            //            lastCameraZoom = camera.GetZoom();
+            //        }
 
-                //        //defines which tiles are in range
-                //        int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
-                //        int maxHoriz = (int)(50 / currentZoom);
-                //        int maxVert = (int)(30 / currentZoom);
-                //        int i = 0;
+                    ////defines which tiles are in range
+                    //int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
+                    //int maxHoriz = (int)(50 / currentZoom);
+                    //int maxVert = (int)(30 / currentZoom);
+                    //int i = 0;
 
-                //        for (int v = 0; v < maxVert; v++)
-                //        {
-                //            for (int h = 0; h < maxHoriz; h++)
-                //            {
-                //                visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
-                //                i++;
-                //            }
-                //        }
-                //        initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-                //        maxHoriz = (int)(100 / currentZoom);
-                //        maxVert = (int)(60 / currentZoom);
-                //        i = 0;
-                //        for (int v = 0; v < maxVert; v++)
-                //        {
-                //            for (int h = 0; h < maxHoriz; h++)
-                //            {
-                //                visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
-                //                i++;
-                //            }
-                //        }
-                //    }
-                //}
-            }
+                    //for (int v = 0; v < maxVert; v++)
+                    //{
+                    //    for (int h = 0; h < maxHoriz; h++)
+                    //    {
+                    //        visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
+                    //        i++;
+                    //    }
+                    //}
+                    //initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
+                    //maxHoriz = (int)(100 / currentZoom);
+                    //maxVert = (int)(60 / currentZoom);
+                    //i = 0;
+                    //for (int v = 0; v < maxVert; v++)
+                    //{
+                    //    for (int h = 0; h < maxHoriz; h++)
+                    //    {
+                    //        visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
+                    //        i++;
+                    //    }
+                    //}
+            //    }
+            //}
+
         }
 
         public void DrawLights(SpriteBatch spriteBatch)

@@ -98,20 +98,22 @@ namespace Adam.Lights
                 TransferNewLights();
             }
 
-            Camera camera = GameWorld.Instance.camera;
-            WorldData worldData = GameWorld.Instance.worldData;
-            int initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-            int maxHoriz = 100;
-            int maxVert = 60;
-            int i = 0;
-            for (int v = 0; v < maxVert; v++)
-            {
-                for (int h = 0; h < maxHoriz; h++)
-                {
-                    visibleLights[i] = initial + worldData.LevelWidth * v + h;
-                    i++;
-                }
-            }
+            visibleLights = GameWorld.Instance.chunkManager.GetVisibleIndexes();
+
+            //Camera camera = GameWorld.Instance.camera;
+            //WorldData worldData = GameWorld.Instance.worldData;
+            //int initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
+            //int maxHoriz = 100;
+            //int maxVert = 60;
+            //int i = 0;
+            //for (int v = 0; v < maxVert; v++)
+            //{
+            //    for (int h = 0; h < maxHoriz; h++)
+            //    {
+            //        visibleLights[i] = initial + worldData.LevelWidth * v + h;
+            //        i++;
+            //    }
+            //}
 
             foreach (int index in visibleLights)
             {

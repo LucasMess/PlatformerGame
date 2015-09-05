@@ -144,7 +144,7 @@ namespace Adam
 
             // Change game settings here.
             graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.PreferMultiSampling = true;
+            graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
@@ -588,7 +588,7 @@ namespace Adam
                     spriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
                     spriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
                     spriteBatch.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
-                    spriteBatch.DrawString(debugFont, "Camera Position:" + camera.lastCameraLeftCorner.X + "," + camera.lastCameraLeftCorner.Y, new Vector2(0, 40), Color.White);
+                    spriteBatch.DrawString(debugFont, "Camera Position:" + camera.invertedCoords.X + "," + camera.invertedCoords.Y, new Vector2(0, 40), Color.White);
                     spriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     spriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
                     spriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
@@ -596,12 +596,13 @@ namespace Adam
                     spriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     spriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     spriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
-                    // spriteBatch.DrawString(debugFont, "Tile Index Visible: " + gameWorld.visibleTileArray[], new Vector2(0, 200), Color.White);
+                    spriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: "+GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
                     spriteBatch.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
                     spriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
                     spriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     spriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
                     spriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
+
                     debug.Draw(spriteBatch);
                     spriteBatch.End();
                 }
