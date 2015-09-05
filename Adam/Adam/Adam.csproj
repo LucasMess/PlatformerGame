@@ -239,6 +239,7 @@
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\DataFolder.cs" />
+    <Compile Include="UI\LevelSelection.cs" />
     <Compile Include="UI\LoadingScreen.cs" />
     <Compile Include="Characters\Non-Playable\God.cs" />
     <Compile Include="Obstacles\FallingBoulder.cs" />

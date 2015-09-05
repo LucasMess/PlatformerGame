@@ -114,9 +114,10 @@ namespace Adam
         public static ObjectiveTracker ObjectiveTracker;
         public GameDataManager GameData;
         public Player player;
-        LoadingScreen loadingScreen;
+        private LoadingScreen loadingScreen;
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
+        public static DataFolder DataFolder = new DataFolder();
 
         /// <summary>
         /// Used to display messages to the user where he needs to press OK to continue.
