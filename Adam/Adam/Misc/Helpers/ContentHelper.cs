@@ -29,9 +29,8 @@ namespace Adam
             catch (ContentLoadException)
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                throw;
             }
-
-            return null;
         }
 
         /// <summary>
@@ -48,9 +47,8 @@ namespace Adam
             catch (ContentLoadException)
             {
                 Console.WriteLine("SoundEffect location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                throw;
             }
-
-            return null;
         }
 
         /// <summary>
@@ -67,9 +65,8 @@ namespace Adam
             catch (ContentLoadException)
             {
                 Console.WriteLine("Song location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
-            }
-
-            return null;
+                throw;
+            }           
         }
 
         /// <summary>
@@ -86,9 +83,8 @@ namespace Adam
             catch (ContentLoadException)
             {
                 Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                throw;
             }
-
-            return null;
         }
 
 

@@ -72,7 +72,8 @@ namespace Adam
         SoundEffect quack;
         GameDebug debug;
         Cutscene cutscene;
-        bool hasLoadedContent, hasQuacked;
+        public static bool IsLoadingContent;
+        bool hasQuacked;
         bool isDebug = true;
         Stopwatch updateWatch, drawWatch, renderWatch, lightWatch, loadWatch;
         double splashTimer, updateTime, drawTime, lightTime, renderTime;
@@ -224,7 +225,7 @@ namespace Adam
         {
             CurrentGameState = GameState.LoadingScreen;
             this.desiredGameState = desiredGameState;
-            hasLoadedContent = false;
+            IsLoadingContent = true;
             loadingScreen.Restart();
 
             if (desiredGameState == GameState.GameWorld)
@@ -233,7 +234,7 @@ namespace Adam
             }
             else
             {
-                hasLoadedContent = true;
+                IsLoadingContent = false;
             }
 
         }
@@ -243,7 +244,7 @@ namespace Adam
             CurrentGameState = GameState.LoadingScreen;
             CurrentGameMode = mode;
             desiredGameState = GameState.GameWorld;
-            hasLoadedContent = false;
+            IsLoadingContent = true;
             loadingScreen.Restart();
 
             reloadThread = new Thread(new ThreadStart(BackgroundThread_FileLoad));
@@ -253,7 +254,7 @@ namespace Adam
 
         private void BackgroundThread_FileLoad()
         {
-            hasLoadedContent = false;
+            IsLoadingContent = true;
             if (gameWorld.TryLoadFromFile(CurrentGameMode) == true)
             {
                 ObjectiveTracker = GameData.CurrentSave.ObjTracker;
@@ -264,7 +265,7 @@ namespace Adam
                 CurrentGameState = GameState.MainMenu;
             }
 
-            hasLoadedContent = true;
+            IsLoadingContent = false;
             wasPressed = false;
         }
 
@@ -373,14 +374,14 @@ namespace Adam
                 case GameState.LoadingScreen:
                     loadingScreen.Update(gameTime);
 
-                    if (hasLoadedContent && loadingScreen.isReady)
+                    if (!IsLoadingContent && loadingScreen.isReady)
                     {
                         CurrentGameState = desiredGameState;
                         overlay.FadeIn();
                     }
                     break;
                 case GameState.GameWorld:
-                    if (!hasLoadedContent) return;
+                    if (IsLoadingContent) return;
                     if (gameWorld.isOnDebug)
                         break;
 

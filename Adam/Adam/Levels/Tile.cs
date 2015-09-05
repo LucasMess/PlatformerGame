@@ -175,7 +175,7 @@ namespace Adam
                     isVoid = true;
                     sunlightPassesThrough = true;
                     specialTile = new SpecialTile(this);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,1));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,.1f));
                     break;
                 case 13: //Door
                     isSolid = true;
@@ -1138,9 +1138,9 @@ namespace Adam
             {36,"Sign" },
             {37,"Checkpoint" },
             {38,"Stone Brick" },
-            {39,"Ice" },
-            {40,"Snow" },
-            {41,"Void Tile" },
+            {39,"Snow" },
+            {40,"Snowy Grass" },
+            {41,"Compressed Void" },
             {42, "Flame Spitter" },
             {43, "Machine Gun" },
             {44, "Cactus" },
@@ -1170,8 +1170,8 @@ namespace Adam
             {205,"Hellboar" },
             {206,"Falling Boulder (Desert)" },
             {207,"Bat" },
-            {208, "Duck" },
-            {209,"Flying Wheel" },
+            {208,"Duck" },
+            {209,"Being of Sight" },
 
         };
 

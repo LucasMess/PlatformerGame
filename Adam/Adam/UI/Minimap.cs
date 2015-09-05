@@ -43,6 +43,9 @@ namespace Adam.UI
         /// </summary>
         private void Update()
         {
+            if (Main.IsLoadingContent)
+                return;
+
             bool isGoing = true;
             while (isGoing)
             {
