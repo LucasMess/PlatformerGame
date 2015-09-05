@@ -117,7 +117,7 @@ namespace Adam
             //tilesThread.Start();
         }
 
-        public void LoadFromFile(GameMode CurrentGameMode)
+        public bool TryLoadFromFile(GameMode CurrentGameMode)
         {
             byte[] tileIDs = worldData.TileIDs;
             byte[] wallIDs = worldData.WallIDs;
@@ -165,7 +165,17 @@ namespace Adam
 
             placeNotification.Show(worldData.LevelName);
 
-            chunkManager.ConvertToChunks(worldData.LevelWidth, worldData.LevelHeight);
+            try
+            {
+                chunkManager.ConvertToChunks(worldData.LevelWidth, worldData.LevelHeight);
+            }
+            catch (ArgumentException e)
+            {
+                Main.MessageBox.Show(e.Message);
+                return false;
+            }
+
+            return true;
         }
 
         private void ConvertToTiles(Tile[] array, byte[] IDs)

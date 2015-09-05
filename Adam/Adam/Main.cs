@@ -100,6 +100,7 @@ namespace Adam
         public bool wasPressed, debugOn, debugPressed;
 
         public SamplerState desiredSamplerState;
+        private BlendState LightBlendState;
 
         //Defines the initial GameState ----- Use this variable to change the GameState
         public GameState CurrentGameState;
@@ -185,6 +186,12 @@ namespace Adam
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+            LightBlendState = new BlendState();
+            LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
+            LightBlendState.ColorSourceBlend = Blend.DestinationColor;
+            LightBlendState.ColorDestinationBlend = Blend.Zero;
+
             updateWatch = new Stopwatch();
             drawWatch = new Stopwatch();
             lightWatch = new Stopwatch();
@@ -247,8 +254,16 @@ namespace Adam
         private void BackgroundThread_FileLoad()
         {
             hasLoadedContent = false;
-            gameWorld.LoadFromFile(CurrentGameMode);
-            ObjectiveTracker = GameData.CurrentSave.ObjTracker;
+            if (gameWorld.TryLoadFromFile(CurrentGameMode) == true)
+            {
+                ObjectiveTracker = GameData.CurrentSave.ObjTracker;
+            }
+            else
+            {
+                CurrentGameMode = GameMode.None;
+                CurrentGameState = GameState.MainMenu;
+            }
+
             hasLoadedContent = true;
             wasPressed = false;
         }
@@ -322,17 +337,6 @@ namespace Adam
 
             }
 
-            //if (InputHelper.IsKeyDown(Keys.I))
-            //{
-            //    Objective obj = new Objective();
-            //    obj.Create("Test Objective", 0);
-            //    ObjectiveTracker.AddObjective(obj);
-            //}
-            //if (InputHelper.IsKeyDown(Keys.U))
-            //{
-            //    ObjectiveTracker.CompleteObjective(0);
-            //}
-
             //Update the game based on what GameState it is
             switch (CurrentGameState)
             {
@@ -379,11 +383,6 @@ namespace Adam
                     if (!hasLoadedContent) return;
                     if (gameWorld.isOnDebug)
                         break;
-
-
-
-                    //if (gameWorld.SimulationPaused)
-                    //    break;
 
                     gameWorld.Update(gameTime, CurrentGameMode, camera);
                     player.Update(gameTime);
@@ -440,17 +439,10 @@ namespace Adam
             //Draw what is needed based on GameState
             switch (CurrentGameState)
             {
-                case GameState.LoadingScreen:
-                    break;
                 case GameState.Cutscene:
                     spriteBatch.Begin();
                     cutscene.Draw(spriteBatch);
                     spriteBatch.End();
-                    break;
-                case GameState.MainMenu:
-                    //backgroundSB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    //menu.Draw(backgroundSB);
-                    //backgroundSB.End();
                     break;
                 case GameState.GameWorld:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
@@ -463,6 +455,7 @@ namespace Adam
                     gameWorld.Draw(spriteBatch);
                     player.Draw(spriteBatch);
                     spriteBatch.End();
+
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
                     gameWorld.DrawGlows(spriteBatch);
                     spriteBatch.End();
@@ -526,6 +519,7 @@ namespace Adam
                 case GameState.MainMenu:
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                     menu.Draw(spriteBatch);
+                    MessageBox.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
                 case GameState.GameWorld:
@@ -536,11 +530,6 @@ namespace Adam
 
                     if (GameData.Settings.DesiredLight)
                     {
-
-                        BlendState LightBlendState = new BlendState();
-                        LightBlendState.AlphaSourceBlend = Blend.DestinationColor;
-                        LightBlendState.ColorSourceBlend = Blend.DestinationColor;
-                        LightBlendState.ColorDestinationBlend = Blend.Zero;
                         spriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                         spriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
                         spriteBatch.End();

@@ -95,7 +95,7 @@ namespace Adam.UI
         public virtual void Show(string message)
         {
             attentionSound.PlayIfStopped();
-            string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width - BezelSize);
+            string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width - BezelSize * 2);
             Message = wrapped;
             IsActive = true;
         }

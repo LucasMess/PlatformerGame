@@ -27,7 +27,7 @@ namespace Adam.Levels
             // Validate data.
             if (worldWidth % Chunk.DefaultSize != 0 || worldHeight % Chunk.DefaultSize != 0)
             {
-                throw new ArgumentException("The world size cannot be divided into chunks because it is not divisible by the default chunk size.");
+                throw new ArgumentException("This level file version is no longer supported. It has dimensions that cannot be divided into chunks.");
             }
 
             this.worldHeight = worldHeight;
