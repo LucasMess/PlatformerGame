@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Misc.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +14,35 @@ namespace Adam.UI
     /// </summary>
     public class LevelSelection
     {
-        private Rectangle scrollingFileBounds;
+        private Rectangle scissorRectangle;
+        private Rectangle boundsDrawRectangle;
+        private Rectangle boundsSourceRectangle;
+        private Texture2D boundsTexture;
         private List<LevelInfo> levelInfos;
         private int levelCount;
 
         public static int WidthOfBounds;
         public static int HeightOfBounds;
 
+        private int lastScrollWheel;
+
         public LevelSelection()
         {
-            // Defines how big the level selection box will be based on the game's resolution.
             int widthOfBounds = (int)(600 / Main.WidthRatio);
             int heightOfBounds = (int)(300 / Main.HeightRatio);
-            scrollingFileBounds = new Rectangle(Main.UserResWidth / 2, Main.UserResHeight / 2, widthOfBounds, heightOfBounds);
-            scrollingFileBounds.X -= widthOfBounds / 2;
-            scrollingFileBounds.Y -= heightOfBounds / 2;
+            boundsTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
+            boundsDrawRectangle = new Rectangle(Main.UserResWidth / 2, Main.UserResHeight / 2, widthOfBounds, heightOfBounds);
+            boundsDrawRectangle.X -= widthOfBounds / 2;
+            boundsDrawRectangle.Y -= heightOfBounds / 2;
+            boundsSourceRectangle = new Rectangle(376, 48, 300, 150);
 
             WidthOfBounds = widthOfBounds;
             HeightOfBounds = heightOfBounds;
+
+            // Defines how big the level selection box will be based on the game's resolution.
+            scissorRectangle = new Rectangle(boundsDrawRectangle.X + (int)(12 / Main.WidthRatio), boundsDrawRectangle.Y + (int)(12 / Main.HeightRatio), boundsDrawRectangle.Width - (int)(24 / Main.WidthRatio), boundsDrawRectangle.Height - (int)(24 / Main.HeightRatio));
+
+
         }
 
         /// <summary>
@@ -52,7 +65,7 @@ namespace Adam.UI
             }
 
             // Arranges the levels in an alphabetical list and sets their position.
-            int startingY = scrollingFileBounds.Y + 2;
+            int startingY = scissorRectangle.Y + 2;
             for (int i = 0; i < levelCount; i++)
             {
                 levelInfos[i].SetPosition(startingY, i);
@@ -61,16 +74,38 @@ namespace Adam.UI
 
         public void Update()
         {
+            int scrollWheel = Mouse.GetState().ScrollWheelValue;
+            Rectangle mouseRectangle = InputHelper.MouseRectangle;
 
+            if (mouseRectangle.Intersects(scissorRectangle))
+            {
+                if (lastScrollWheel != scrollWheel)
+                {
+                    foreach (LevelInfo l in levelInfos)
+                    {
+                        l.VelocityY = (scrollWheel - lastScrollWheel) / 5;
+                    }
+
+                }
+
+            }
+
+            lastScrollWheel = scrollWheel;
+
+            foreach (LevelInfo l in levelInfos)
+            {
+                l.Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Main.DefaultTexture, new Vector2(Main.UserResWidth, Main.UserResHeight), Color.White);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.Black * .7f);
+            spriteBatch.Draw(boundsTexture, boundsDrawRectangle, boundsSourceRectangle, Color.White);
 
             // Sets the scrolling levels to disappear if they are not inside of this bounding box.
             Rectangle originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-            spriteBatch.GraphicsDevice.ScissorRectangle = scrollingFileBounds;
+            spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
 
             foreach (LevelInfo level in levelInfos)
             {
@@ -88,9 +123,14 @@ namespace Adam.UI
     public class LevelInfo
     {
         Rectangle drawRectangle;
-        SpriteFont font;
+        Rectangle sourceRectangle;
+        Texture2D boxTexture;
+        SpriteFont infoFont;
+        SpriteFont nameFont;
 
         private static int Spacing;
+
+        public float VelocityY { get; set; }
 
         public LevelInfo(string name, string filePath, DateTime lastModDate)
         {
@@ -100,8 +140,12 @@ namespace Adam.UI
             LastModifiedDate = lastModDate;
 
             // Define how big each info section will be.
-            Spacing = font.LineSpacing + 4;
-            drawRectangle = new Rectangle(Main.UserResWidth - LevelSelection.WidthOfBounds / 2, 0, LevelSelection.WidthOfBounds, 50);
+            nameFont = ContentHelper.LoadFont("Fonts/objectiveHead");
+            infoFont = ContentHelper.LoadFont("Fonts/objectiveText");
+            Spacing = infoFont.LineSpacing + 4;
+            drawRectangle = new Rectangle(Main.DefaultResWidth - LevelSelection.WidthOfBounds / 2 + (int)(16 / Main.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / Main.WidthRatio), (int)(50 / Main.HeightRatio));
+            sourceRectangle = new Rectangle(128, 0, 284, 25);
+            boxTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
         }
 
         public string Name
@@ -126,14 +170,22 @@ namespace Adam.UI
         /// <param name="orderInList">The rank of this item in the list.</param>
         public void SetPosition(int initialY, int orderInList)
         {
-            drawRectangle.Y = initialY + drawRectangle.Height * orderInList;
+            drawRectangle.Y = initialY + drawRectangle.Height * orderInList + 5 * orderInList;
+        }
+
+        public void Update()
+        {
+            drawRectangle.Y += (int)VelocityY;
+            VelocityY *= .92f;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ContentHelper.LoadTexture("tiles/white"), drawRectangle, Color.Black);
-            spriteBatch.DrawString(font, Name, new Vector2(drawRectangle.X + Spacing, drawRectangle.Y + 2), Color.White);
-            spriteBatch.DrawString(font, GetDate(LastModifiedDate), new Vector2(drawRectangle.X + Spacing, drawRectangle.Y + 2 + Spacing), Color.White);
+            spriteBatch.Draw(boxTexture, drawRectangle, sourceRectangle, Color.White);
+
+            Vector2 namePos = new Vector2(drawRectangle.X + Spacing, drawRectangle.Y + drawRectangle.Height / 2 - nameFont.LineSpacing / 2);
+            FontHelper.DrawWithOutline(spriteBatch, nameFont, Name, namePos, 2, Color.LightGray, Color.Black);
+            spriteBatch.DrawString(infoFont, GetDate(LastModifiedDate), new Vector2(drawRectangle.X + drawRectangle.Width - 20 - infoFont.MeasureString(GetDate(LastModifiedDate)).X, drawRectangle.Y + drawRectangle.Height / 2 - infoFont.LineSpacing / 2), Color.Black);
         }
 
         /// <summary>
@@ -143,7 +195,11 @@ namespace Adam.UI
         /// <returns></returns>
         private static string GetDate(DateTime dt)
         {
-            string date = "Last modified: " + dt.Year + "/" + dt.Month + "/" + dt.Day + " at " + dt.Hour + ":" + dt.Second;
+            string seconds = dt.Second.ToString();
+            if (dt.Second < 10)
+                seconds = "0" + seconds;
+
+            string date = "Last modified: " + dt.Year + "/" + dt.Month + "/" + dt.Day + " at " + dt.Hour + ":" + seconds;
             return date;
         }
 

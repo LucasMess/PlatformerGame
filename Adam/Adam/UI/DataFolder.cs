@@ -147,7 +147,7 @@ namespace Adam.UI
             // Check the extension of the files and remove any that are not .lvl
             for (int i = filesInLevelFolder.Count - 1; i >= 0; i--)
             {
-                if (Path.GetExtension(filesInLevelFolder[i]) != "lvl")
+                if (Path.GetExtension(filesInLevelFolder[i]) != ".lvl")
                 {
                     filesInLevelFolder.Remove(filesInLevelFolder[i]);
                 }

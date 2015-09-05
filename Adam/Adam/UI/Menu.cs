@@ -60,6 +60,8 @@ namespace Adam
         SpriteFont font;
         Main game1;
 
+        LevelSelection levelSelection;
+
         List<Particle> zzzList = new List<Particle>();
         double zzzTimer;
 
@@ -135,6 +137,8 @@ namespace Adam
             joinGame = new Button(second, "Join Game");
             joinGame.MouseClicked += joinGame_MouseClicked;
             buttons.Add(joinGame);
+
+            levelSelection = new LevelSelection();
         }
 
         private void LevelEditor_MouseClicked()
@@ -255,8 +259,11 @@ namespace Adam
 
         void play_MouseClicked()
         {
-            game1.CurrentGameMode = GameMode.Play;
-            GameWorld.Instance.worldData.OpenLevelLocally(false);
+            levelSelection.LoadLevels();
+            CurrentMenuState = MenuState.LevelSelector;
+
+            //game1.CurrentGameMode = GameMode.Play;
+            //GameWorld.Instance.worldData.OpenLevelLocally(false);
         }
 
         void options_MouseClicked()
@@ -320,14 +327,7 @@ namespace Adam
                     levelEditor.Update();
                     break;
                 case MenuState.LevelSelector:
-                    save1.Text = "Save 1: " + game1.GameData.saves[0].Completeness;
-                    save2.Text = "Save 2: " + game1.GameData.saves[1].Completeness;
-                    save3.Text = "Save 3: " + game1.GameData.saves[2].Completeness;
-
-                    save1.Update();
-                    save2.Update();
-                    save3.Update();
-                    backButton.Update();
+                    levelSelection.Update();
                     break;
                 case MenuState.Options:
                     //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
@@ -424,10 +424,7 @@ namespace Adam
                     levelEditor.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
-                    save1.Draw(spriteBatch);
-                    save2.Draw(spriteBatch);
-                    save3.Draw(spriteBatch);
-                    backButton.Draw(spriteBatch);
+                    levelSelection.Draw(spriteBatch);
                     break;
                 case MenuState.Options:
                     //smoothPixels.Draw(spriteBatch);

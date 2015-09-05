@@ -519,7 +519,8 @@ namespace Adam
                     spriteBatch.End();
                     break;
                 case GameState.MainMenu:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    RasterizerState rs2 = new RasterizerState() { ScissorTestEnable = true };
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs2);
                     menu.Draw(spriteBatch);
                     MessageBox.Draw(spriteBatch);
                     spriteBatch.End();
