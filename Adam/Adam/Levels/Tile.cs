@@ -194,8 +194,8 @@ namespace Adam
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
+                    positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0,3)*2);
                     specialTile = new SpecialTile(this);
-                    positionInSpriteSheet = new Vector2(12, 10);
                     isVoid = true;
                     break;
                 case 18://Marble Column

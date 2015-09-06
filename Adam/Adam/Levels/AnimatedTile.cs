@@ -72,6 +72,7 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     size.X = 2;
                     drawRectangle.Width = Main.Tilesize * 2;
+                    sunlightPassesThrough = true;
                     break;
                 case 17: //Daffodyls
                     frameCount = new Vector2(4, 0);
@@ -240,7 +241,7 @@ namespace Adam
                 if (frameCount.X != 0)
                 {
                     frameTimer = 0;
-                    sourceRectangle.X += SmallTileSize;
+                    sourceRectangle.X += sourceRectangle.Width;
                     currentFrame++;
                 }
             }
