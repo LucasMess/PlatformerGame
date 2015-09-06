@@ -391,7 +391,9 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 101://Stone Wall
-                    positionInSpriteSheet = new Vector2(13, 8);
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(20, 19);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 102://Dirt Wall
                     hasConnectPattern = true;
@@ -728,7 +730,7 @@ namespace Adam
 
 
             //Default Connected Textures Pattern
-            //Please don't change this was a headache to make. -Lucas 2015
+            //"Please don't change this was a headache to make." -Lucas 2015
 
             if (!hasConnectPattern)
                 return;

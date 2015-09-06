@@ -104,7 +104,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_13");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_14");
             UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
