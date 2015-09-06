@@ -22,6 +22,9 @@ namespace Adam.UI
         /// </summary>
         public static string LevelDirectory;
 
+        public const string LevelFileExt = ".lvl";
+
+
         /// <summary>
         /// Checks to see if the directory exists upon creation, and if it does not, it will create it.
         /// </summary>
@@ -42,6 +45,10 @@ namespace Adam.UI
                 Directory.CreateDirectory(specificFolder);
             LevelDirectory = specificFolder;
 
+            // Check if the Settings folder exists or creates it.
+            specificFolder = MainDirectory;
+            specificFolder = Path.Combine(MainDirectory, "Settings");
+
         }
 
         /// <summary>
@@ -50,7 +57,7 @@ namespace Adam.UI
         /// <param name="levelName">The name of the level.</param>
         /// <param name="width">The width of the level.</param>
         /// <param name="height">The height of the level.</param>
-        public static void CreateNewLevel(string levelName, short width, short height)
+        public static string CreateNewLevel(string levelName, short width, short height)
         {
             // Checks to see if levelName is valid.
             if (levelName == null)
@@ -68,7 +75,8 @@ namespace Adam.UI
 
             // Creates the new world and sets the file path for it.
             string filePath = Path.Combine(LevelDirectory, levelName);
-            WorldConfigFile config = new WorldConfigFile(width, height);
+            filePath += LevelFileExt;
+            WorldConfigFile config = new WorldConfigFile(levelName,width, height);
 
             // Checks to see if name already exists.
             if (File.Exists(filePath))
@@ -83,17 +91,54 @@ namespace Adam.UI
                 xs.Serialize(fs, config);
             }
 
+            return filePath;
         }
 
-
+        /// <summary>
+        /// Used to load a level into gameworld and edit it.
+        /// </summary>
+        /// <param name="filePath"></param>
         public static void EditLevel(string filePath)
         {
-
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+            config.LoadIntoEditor();
         }
 
+        /// <summary>
+        /// Used to load a level into gameworld and play it.
+        /// </summary>
+        /// <param name="filePath"></param>
         public static void PlayLevel(string filePath)
         {
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+            config.LoadIntoPlay();
+        }
 
+        /// <summary>
+        /// Used to retrieve level information from the file in the form of a WorldConfigFile.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private static WorldConfigFile GetWorldConfigFile(string filePath)
+        {
+            // Deserialize file into WorldConfigFile.
+            WorldConfigFile config;
+
+            XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
+            try
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    config = (WorldConfigFile)xs.Deserialize(fs);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Main.Dialog.Show("Error: File not found.");
+                throw new Exception();
+            }
+
+            return config;
         }
 
         /// <summary>
@@ -147,7 +192,7 @@ namespace Adam.UI
             // Check the extension of the files and remove any that are not .lvl
             for (int i = filesInLevelFolder.Count - 1; i >= 0; i--)
             {
-                if (Path.GetExtension(filesInLevelFolder[i]) != ".lvl")
+                if (Path.GetExtension(filesInLevelFolder[i]) != LevelFileExt)
                 {
                     filesInLevelFolder.Remove(filesInLevelFolder[i]);
                 }
@@ -155,5 +200,7 @@ namespace Adam.UI
 
             return filesInLevelFolder;
         }
+
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Adam.Misc.Helpers;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,7 +19,23 @@ namespace Adam.UI
         private Rectangle boundsDrawRectangle;
         private Rectangle boundsSourceRectangle;
         private Texture2D boundsTexture;
+
+        private SpriteFont headerFont;
+        private Vector2 headerPos;
+        private string headerText;
+
+        private Rectangle functionButtonContainer;
+
+        private PlayButton playButton;
+        private EditButton editButton;
+        private RenameButton renameButton;
+        private DeleteButton deleteButton;
+        private NewButton newButton;
+        private BackButton backButton;
+        private List<FunctionButton> buttons;
+
         private List<LevelInfo> levelInfos;
+        private LevelInfo selectedLevel;
         private int levelCount;
 
         public static int WidthOfBounds;
@@ -28,6 +45,7 @@ namespace Adam.UI
 
         public LevelSelection()
         {
+            // Defines the bounding box for the Level Info List.
             int widthOfBounds = (int)(600 / Main.WidthRatio);
             int heightOfBounds = (int)(300 / Main.HeightRatio);
             boundsTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
@@ -42,7 +60,93 @@ namespace Adam.UI
             // Defines how big the level selection box will be based on the game's resolution.
             scissorRectangle = new Rectangle(boundsDrawRectangle.X + (int)(12 / Main.WidthRatio), boundsDrawRectangle.Y + (int)(12 / Main.HeightRatio), boundsDrawRectangle.Width - (int)(24 / Main.WidthRatio), boundsDrawRectangle.Height - (int)(24 / Main.HeightRatio));
 
+            // Defines where the function buttons will be.
+            functionButtonContainer = new Rectangle(scissorRectangle.X + scissorRectangle.Width - CalcHelper.ApplyHeightRatio(4 + 128 + 16 + 32), scissorRectangle.Y + scissorRectangle.Height + (int)(8 / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
+            playButton = new PlayButton(new Vector2(4, 4), functionButtonContainer);
+            editButton = new EditButton(new Vector2(4 + 32 + 4, 4), functionButtonContainer);
+            renameButton = new RenameButton(new Vector2(4 + 64 + 8, 4), functionButtonContainer);
+            deleteButton = new DeleteButton(new Vector2(4 + 96 + 12, 4), functionButtonContainer);
+            newButton = new NewButton(new Vector2(4 + 128 + 16, 4), functionButtonContainer);
+            backButton = new BackButton(new Vector2(-500 + 96 + 4, 4), functionButtonContainer);
 
+            buttons = new List<FunctionButton>();
+            buttons.Add(playButton);
+            buttons.Add(editButton);
+            buttons.Add(renameButton);
+            buttons.Add(deleteButton);
+            buttons.Add(newButton);
+            buttons.Add(backButton);
+
+            playButton.MouseClicked += PlayButton_MouseClicked;
+            editButton.MouseClicked += EditButton_MouseClicked;
+            renameButton.MouseClicked += RenameButton_MouseClicked;
+            deleteButton.MouseClicked += DeleteButton_MouseClicked;
+            newButton.MouseClicked += NewButton_MouseClicked;
+            backButton.MouseClicked += BackButton_MouseClicked;
+
+            // Define the spritefont for the "Select Level" header and its position.
+            headerFont = ContentHelper.LoadFont("Fonts/x64");
+            headerText = "Select a Level:";
+            headerPos = new Vector2(Main.UserResWidth / 2 - headerFont.MeasureString(headerText).X / 2, scissorRectangle.Y - headerFont.LineSpacing - CalcHelper.ApplyHeightRatio(10));
+        }
+
+        private void NewButton_MouseClicked()
+        {
+            Main.TextInputBox.Show("Please enter the name for your new level:", this);
+            Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;            
+        }
+
+        private void NewLevel_OnTextEntered(TextInputArgs e)
+        {
+            string newPath = DataFolder.CreateNewLevel(e.Input, 256, 256);
+            Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
+            DataFolder.EditLevel(newPath);
+           
+        }
+
+        private void BackButton_MouseClicked()
+        {
+            if (selectedLevel == null)
+            {
+                Main.MessageBox.Show("Please select a level.");
+                return;
+            }
+            Menu.CurrentMenuState = Menu.MenuState.Main;
+        }
+
+        private void DeleteButton_MouseClicked()
+        {
+            if (selectedLevel == null)
+            {
+                Main.MessageBox.Show("Please select a level.");
+                return;
+            }
+            throw new NotImplementedException();
+        }
+
+        private void RenameButton_MouseClicked()
+        {
+            if (selectedLevel == null)
+            {
+                Main.MessageBox.Show("Please select a level.");
+                return;
+            }
+            throw new NotImplementedException();
+        }
+
+        private void EditButton_MouseClicked()
+        {
+            if (selectedLevel == null)
+            {
+                Main.MessageBox.Show("Please select a level.");
+                return;
+            }
+            DataFolder.EditLevel(selectedLevel.FilePath);
+        }
+
+        private void PlayButton_MouseClicked()
+        {
+            DataFolder.PlayLevel(selectedLevel.FilePath);
         }
 
         /// <summary>
@@ -65,7 +169,7 @@ namespace Adam.UI
             }
 
             // Arranges the levels in an alphabetical list and sets their position.
-            int startingY = scissorRectangle.Y + 2;
+            int startingY = scissorRectangle.Y + CalcHelper.ApplyHeightRatio(3);
             for (int i = 0; i < levelCount; i++)
             {
                 levelInfos[i].SetPosition(startingY, i);
@@ -74,6 +178,7 @@ namespace Adam.UI
 
         public void Update()
         {
+            // Checks if there is scrolling.
             int scrollWheel = Mouse.GetState().ScrollWheelValue;
             Rectangle mouseRectangle = InputHelper.MouseRectangle;
 
@@ -85,16 +190,47 @@ namespace Adam.UI
                     {
                         l.VelocityY = (scrollWheel - lastScrollWheel) / 5;
                     }
-
                 }
-
             }
 
             lastScrollWheel = scrollWheel;
 
+            // Makes the level infos scroll.
             foreach (LevelInfo l in levelInfos)
             {
                 l.Update();
+            }
+
+            // Check to see if a level info is being selected.
+            if (InputHelper.IsLeftMousePressed())
+            {
+                foreach (LevelInfo level in levelInfos)
+                {
+                    if (level.IsBeingClickedOn())
+                    {
+                        selectedLevel = level;
+                        break;
+                    }
+                }
+            }
+
+            // Update buttons.
+            foreach (FunctionButton b in buttons)
+            {
+                b.Update(functionButtonContainer);
+            }
+
+            // Make the selected level know about it.
+            foreach (LevelInfo level in levelInfos)
+            {
+                if (level == selectedLevel)
+                {
+                    level.IsSelected = true;
+                }
+                else
+                {
+                    level.IsSelected = false;
+                }
             }
         }
 
@@ -114,6 +250,15 @@ namespace Adam.UI
 
             // Returns the scissor rectangle to original.
             spriteBatch.GraphicsDevice.ScissorRectangle = originalScissorRectangle;
+
+            // Draw buttons.
+            foreach (FunctionButton b in buttons)
+            {
+                b.Draw(spriteBatch);
+            }
+
+            // Draw header text.
+            FontHelper.DrawWithOutline(spriteBatch, headerFont, headerText, headerPos, 2, Color.Yellow, Color.Black);
         }
     }
 
@@ -170,7 +315,7 @@ namespace Adam.UI
         /// <param name="orderInList">The rank of this item in the list.</param>
         public void SetPosition(int initialY, int orderInList)
         {
-            drawRectangle.Y = initialY + drawRectangle.Height * orderInList + 5 * orderInList;
+            drawRectangle.Y = initialY + drawRectangle.Height * orderInList + CalcHelper.ApplyHeightRatio(3) * orderInList;
         }
 
         public void Update()
@@ -181,7 +326,15 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(boxTexture, drawRectangle, sourceRectangle, Color.White);
+            // Change color if it is selected.
+            Color color;
+            if (IsSelected)
+            {
+                color = Color.LightPink;
+            }
+            else color = Color.White;
+
+            spriteBatch.Draw(boxTexture, drawRectangle, sourceRectangle, color);
 
             Vector2 namePos = new Vector2(drawRectangle.X + Spacing, drawRectangle.Y + drawRectangle.Height / 2 - nameFont.LineSpacing / 2);
             FontHelper.DrawWithOutline(spriteBatch, nameFont, Name, namePos, 2, Color.LightGray, Color.Black);
@@ -201,6 +354,24 @@ namespace Adam.UI
 
             string date = "Last modified: " + dt.Year + "/" + dt.Month + "/" + dt.Day + " at " + dt.Hour + ":" + seconds;
             return date;
+        }
+
+        /// <summary>
+        /// Checks if the Level Info box is being clicked on.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsBeingClickedOn()
+        {
+            Rectangle mouse = InputHelper.MouseRectangle;
+            return (mouse.Intersects(drawRectangle));
+        }
+
+        /// <summary>
+        /// Determines whether this is the level info clicked on by the user.
+        /// </summary>
+        public bool IsSelected
+        {
+            get; set;
         }
 
     }

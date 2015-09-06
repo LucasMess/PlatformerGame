@@ -201,9 +201,9 @@ namespace Adam.Levels
             IsDealingWithData = false;
         }
 
-        public void CreateNewWorld()
+        public void CreateNewWorld(string levelName)
         {
-            WorldConfigFile config = new WorldConfigFile(256, 256);
+            WorldConfigFile config = new WorldConfigFile(levelName,256, 256);
             config.LoadIntoEditor();
         }
 

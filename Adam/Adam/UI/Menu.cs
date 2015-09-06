@@ -24,11 +24,11 @@ namespace Adam
         Vector2 fifth;
 
         //Main Menu
-        Button play;
+        Button chooseLevel;
         Button options;
         Button quit;
         Button multiplayer;
-        Button levelEditor;
+        Button storyMode;
 
         //Level Selector
         Button save1;
@@ -65,8 +65,8 @@ namespace Adam
         List<Particle> zzzList = new List<Particle>();
         double zzzTimer;
 
-        enum MenuState { Main, Options, LevelSelector, MultiplayerSession }
-        MenuState CurrentMenuState = MenuState.Main;
+        public enum MenuState { Main, Options, LevelSelector, MultiplayerSession }
+        public static MenuState CurrentMenuState = MenuState.Main;
 
         public Menu(Main game1)
         {
@@ -81,9 +81,9 @@ namespace Adam
             fourth = new Vector2(width, height + (diff * 3));
             fifth = new Vector2(width, height + (diff * 4));
 
-            play = new Button(first, "Play");
-            play.MouseClicked += play_MouseClicked;
-            buttons.Add(play);
+            chooseLevel = new Button(second, "Choose a Level");
+            chooseLevel.MouseClicked += chooseLevel_MouseClicked;
+            buttons.Add(chooseLevel);
 
             quit = new Button(fifth, "Quit");
             quit.MouseClicked += quit_MouseClicked;
@@ -97,9 +97,9 @@ namespace Adam
             //multiplayer.MouseClicked += multiplayer_MouseClicked;
             //buttons.Add(multiplayer);
 
-            levelEditor = new Button(second, "God Mode");
-            levelEditor.MouseClicked += LevelEditor_MouseClicked;
-            buttons.Add(levelEditor);
+            storyMode = new Button(first, "Story Mode");
+            storyMode.MouseClicked += storyMode_MouseClicked;
+            buttons.Add(storyMode);
 
             //smoothPixels = new Button(first, "Smooth Pixels: ");
             //smoothPixels.MouseClicked += smoothPixels_MouseClicked;
@@ -141,10 +141,9 @@ namespace Adam
             levelSelection = new LevelSelection();
         }
 
-        private void LevelEditor_MouseClicked()
+        private void storyMode_MouseClicked()
         {
-            game1.CurrentGameMode = GameMode.Edit;
-            GameWorld.Instance.worldData.CreateNewWorld();
+            Main.MessageBox.Show("Coming Soon...");
         }
 
         void joinGame_MouseClicked()
@@ -257,7 +256,7 @@ namespace Adam
             game1.Exit();
         }
 
-        void play_MouseClicked()
+        void chooseLevel_MouseClicked()
         {
             levelSelection.LoadLevels();
             CurrentMenuState = MenuState.LevelSelector;
@@ -320,11 +319,11 @@ namespace Adam
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
-                    play.Update();
+                    chooseLevel.Update();
                     quit.Update();
                     options.Update();
                     //multiplayer.Update();
-                    levelEditor.Update();
+                    storyMode.Update();
                     break;
                 case MenuState.LevelSelector:
                     levelSelection.Update();
@@ -414,14 +413,18 @@ namespace Adam
             spriteBatch.DrawString(font, Main.Producers, new Vector2(5, (float)(5 / Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
             spriteBatch.DrawString(font, Main.Version, new Vector2(5, (float)(30/Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
 
+
+            foreach (var z in zzzList)
+                z.Draw(spriteBatch);
+
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
-                    play.Draw(spriteBatch);
+                    chooseLevel.Draw(spriteBatch);
                     quit.Draw(spriteBatch);
                     options.Draw(spriteBatch);
                    // multiplayer.Draw(spriteBatch);
-                    levelEditor.Draw(spriteBatch);
+                    storyMode.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
                     levelSelection.Draw(spriteBatch);
@@ -434,8 +437,6 @@ namespace Adam
                     break;
             }
 
-            foreach (var z in zzzList)
-                z.Draw(spriteBatch);
         }
 
     }

@@ -65,10 +65,28 @@ namespace Adam
             {
                 var obj = formatter.Deserialize(stream);
                 return obj;
-            }
+            }           
 
-            
+        }
 
+        /// <summary>
+        /// Takes a number and applies the ratio of screen expansion to it.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ApplyWidthRatio(int number)
+        {
+            return (int)(number / Main.WidthRatio);
+        }
+
+        /// <summary>
+        /// Takes a number and applies the ratio of the screen expansion to it.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ApplyHeightRatio(int number)
+        {
+            return (int)(number / Main.HeightRatio);
         }
 
     }

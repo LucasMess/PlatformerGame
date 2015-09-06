@@ -33,11 +33,13 @@ namespace Adam.GameData
 
         public WorldConfigFile() { }
 
-        public WorldConfigFile(short width, short height)
+        public WorldConfigFile(string levelName ,short width, short height)
         {
+            if (levelName == null)
+                levelName = "Name not Found";
             LevelWidth = width;
             LevelHeight = height;
-            LevelName = "Unnamed Level";
+            LevelName = levelName;
             BackgroundID = 1;
             SoundtrackID = 1;
 

@@ -15,9 +15,9 @@ namespace Adam.Misc
         /// </summary>
         public void Increment()
         {
-            currentTimeInSeconds += GameWorld.Instance.gameTime.ElapsedGameTime.TotalSeconds;
+            currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
 
-            currentTimeInMilliSeconds += GameWorld.Instance.gameTime.ElapsedGameTime.TotalMilliseconds;
+            currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
         }
 
         /// <summary>

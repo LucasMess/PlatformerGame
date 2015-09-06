@@ -156,4 +156,48 @@ namespace Adam.UI.Elements
             base.Draw(spriteBatch);
         }
     }
+
+    public class RenameButton : FunctionButton
+    {
+        public RenameButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 80;
+            sourceRectangle.Y = 0;
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
+            hoverText = "Rename Level";
+        }
+    }
+
+    public class EditButton : FunctionButton
+    {
+        public EditButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 80;
+            sourceRectangle.Y = 16;
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
+            hoverText = "Edit level in Level Editor";
+        }
+    }
+
+    public class BackButton : FunctionButton
+    {
+        public BackButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            sourceRectangle.X = 80;
+            sourceRectangle.Y = 32;
+            sourceRectangle.Width = sourceRectangle.Width * 2;
+            collRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
+            collRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            collRectangle.Width = collRectangle.Width * 2;
+            relativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
+            hoverText = "Return";
+        }
+    }
 }

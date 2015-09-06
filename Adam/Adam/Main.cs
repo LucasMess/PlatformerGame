@@ -58,7 +58,7 @@ namespace Adam
 
         // Rendering variables.
         private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        public static SpriteBatch SpriteBatch;
         private SpriteFont debugFont;
         private RenderTarget2D mainRenderTarget;
         private RenderTarget2D lightingRenderTarget;
@@ -92,6 +92,7 @@ namespace Adam
 
         public static Texture2D DefaultTexture;
         public static Dialog Dialog;
+        public static GameTime GameTime;
 
         public const float Gravity = .5f;
 
@@ -186,7 +187,7 @@ namespace Adam
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             lightingRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24, GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
 
             LightBlendState = new BlendState();
@@ -278,7 +279,7 @@ namespace Adam
         protected override void Update(GameTime gameTime)
         {
             if (!IsActive) return;
-
+            GameTime = gameTime;
             updateWatch.Start();
 
             frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -442,25 +443,25 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.Cutscene:
-                    spriteBatch.Begin();
-                    cutscene.Draw(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin();
+                    cutscene.Draw(SpriteBatch);
+                    SpriteBatch.End();
                     break;
                 case GameState.GameWorld:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-                    gameWorld.DrawBackground(spriteBatch);
-                    gameWorld.DrawClouds(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+                    gameWorld.DrawBackground(SpriteBatch);
+                    gameWorld.DrawClouds(SpriteBatch);
+                    SpriteBatch.End();
 
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawInBack(spriteBatch);
-                    gameWorld.Draw(spriteBatch);
-                    player.Draw(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawInBack(SpriteBatch);
+                    gameWorld.Draw(SpriteBatch);
+                    player.Draw(SpriteBatch);
+                    SpriteBatch.End();
 
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawGlows(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawGlows(SpriteBatch);
+                    SpriteBatch.End();
                     break;
             }
 
@@ -477,13 +478,13 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.GameWorld:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
-                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null);
+                    SpriteBatch.Draw(ContentHelper.LoadTexture("Tiles/max_shadow"), new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                    SpriteBatch.End();
 
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
-                    gameWorld.DrawLights(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);
+                    gameWorld.DrawLights(SpriteBatch);
+                    SpriteBatch.End();
                     break;
             }
 
@@ -504,53 +505,54 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.SplashScreen:
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(splashDKD, new Rectangle(0, 0,UserResWidth, UserResHeight), Color.White);
-                    spriteBatch.End();
+                    SpriteBatch.Begin();
+                    SpriteBatch.Draw(splashDKD, new Rectangle(0, 0,UserResWidth, UserResHeight), Color.White);
+                    SpriteBatch.End();
                     break;
                 case GameState.Cutscene:
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    spriteBatch.End();
+                    SpriteBatch.Begin();
+                    SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    SpriteBatch.End();
                     break;
                 case GameState.LoadingScreen:
-                    spriteBatch.Begin();
-                    loadingScreen.Draw(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin();
+                    loadingScreen.Draw(SpriteBatch);
+                    SpriteBatch.End();
                     break;
                 case GameState.MainMenu:
                     RasterizerState rs2 = new RasterizerState() { ScissorTestEnable = true };
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs2);
-                    menu.Draw(spriteBatch);
-                    MessageBox.Draw(spriteBatch);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs2);
+                    menu.Draw(SpriteBatch);
+                    TextInputBox.Draw(SpriteBatch);
+                    MessageBox.Draw(SpriteBatch);
+                    SpriteBatch.End();
                     break;
                 case GameState.GameWorld:
                     //Draw the rendertarget
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-                    spriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    spriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+                    SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    SpriteBatch.End();
 
                     if (GameData.Settings.DesiredLight)
                     {
-                        spriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        spriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                        spriteBatch.End();
+                        SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                        SpriteBatch.End();
                     }
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
-                    overlay.Draw(spriteBatch);
+                    SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
+                    overlay.Draw(SpriteBatch);
 
                     if (!gameWorld.levelEditor.onInventory)
-                        ObjectiveTracker.Draw(spriteBatch);
+                        ObjectiveTracker.Draw(SpriteBatch);
 
-                    gameWorld.DrawUI(spriteBatch);
-                    Dialog.Draw(spriteBatch);
-                    TextInputBox.Draw(spriteBatch);
-                    MessageBox.Draw(spriteBatch);
+                    gameWorld.DrawUI(SpriteBatch);
+                    Dialog.Draw(SpriteBatch);
+                    TextInputBox.Draw(SpriteBatch);
+                    MessageBox.Draw(SpriteBatch);
 
-                    spriteBatch.End();
+                    SpriteBatch.End();
 
                     break;
             }
@@ -576,27 +578,27 @@ namespace Adam
 
                 if (debugOn)
                 {
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
-                    spriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
-                    spriteBatch.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
-                    spriteBatch.DrawString(debugFont, "Camera Position:" + camera.invertedCoords.X + "," + camera.invertedCoords.Y, new Vector2(0, 40), Color.White);
-                    spriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
-                    spriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
-                    spriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
-                    spriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0,120),Color.White);
-                    spriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
-                    spriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
-                    spriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
-                    spriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: "+GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
-                    spriteBatch.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
-                    spriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
-                    spriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
-                    spriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
-                    spriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
+                    SpriteBatch.Begin();
+                    SpriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
+                    SpriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Camera Position:" + camera.invertedCoords.X + "," + camera.invertedCoords.Y, new Vector2(0, 40), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0,120),Color.White);
+                    SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: "+GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
 
-                    debug.Draw(spriteBatch);
-                    spriteBatch.End();
+                    debug.Draw(SpriteBatch);
+                    SpriteBatch.End();
                 }
 
             }

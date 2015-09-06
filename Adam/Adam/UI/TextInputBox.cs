@@ -10,6 +10,10 @@ namespace Adam.UI
     public class TextInputBox : MessageBox
     {
         Textbox textBox;
+        object sender;
+
+        public delegate void TextInputHandler(TextInputArgs e);
+        public event TextInputHandler OnInputEntered;
 
         /// <summary>
         /// A message box that allows the user to enter input.
@@ -20,8 +24,9 @@ namespace Adam.UI
             Button = new OKButton(DrawRectangle, this);
         }
 
-        public override void Show(string message)
+        public void Show(string message, object sender)
         {
+            this.sender = sender;
             textBox.Reset();
             textBox.IsSelected = true;
             base.Show(message);
@@ -35,12 +40,13 @@ namespace Adam.UI
                     IsActive = false;
                 textBox.Update();
                 base.Update();
-            }
-        }
 
-        public string GetTextInput()
-        {
-            return textBox.Text;
+                // If state changed, tell subscriber that input has been entered.
+                if (!IsActive)
+                {
+                    OnInputEntered(new TextInputArgs(textBox.Text));
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -50,6 +56,19 @@ namespace Adam.UI
                 base.Draw(spriteBatch);
                 textBox.Draw(spriteBatch);
             }
+        }
+    }
+
+    public class TextInputArgs : EventArgs
+    {
+        public TextInputArgs(string input)
+        {
+            Input = input;
+        }
+
+        public string Input
+        {
+            get; set;
         }
     }
 }
