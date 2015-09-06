@@ -91,13 +91,14 @@ namespace Adam.Characters.Enemies
 
             if (isCharging)
             {
+                CurrentAnimationState = AnimationState.Charging;
                 if (!destinationSet)
                 {
                     int fastSpeed = 5;
                     if (IsPlayerToTheRight())
                     {
                         velocity.X = fastSpeed;
-                        IsFacingRight = true;
+                        IsFacingRight = true;                        
                     }
                     else
                     {
@@ -234,6 +235,9 @@ namespace Adam.Characters.Enemies
                 case AnimationState.Transforming:
                     animation.Update(gameTime, DrawRectangle, animationData[2]);
                     break;
+                case AnimationState.Charging:
+                    animation.Update(gameTime, DrawRectangle, animationData[3]);
+                    break;
             }
         }
 
@@ -315,6 +319,7 @@ namespace Adam.Characters.Enemies
                         new Adam.AnimationData(250,4,0,AnimationType.Loop),
                         new Adam.AnimationData(250,4,1,AnimationType.Loop),
                         new Adam.AnimationData(250,4,2,AnimationType.PlayOnce),
+                        new Adam.AnimationData(100,5,3,AnimationType.Loop),
                     };
                 return animationData;
             }

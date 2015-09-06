@@ -22,17 +22,26 @@ namespace Adam
         {
             backgroundID = GameWorld.Instance.worldData.BackgroundID;
 
-            for (int i = 0; i < middlegrounds.Length; i++)
-            {
-                middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_middleground");
-            }
+            try {
 
-            for (int i = 0; i < foregrounds.Length; i++)
-            {
-                foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_foreground");
-            }
+                for (int i = 0; i < middlegrounds.Length; i++)
+                {
+                    middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_middleground");
+                }
 
-            background.Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_background");
+                for (int i = 0; i < foregrounds.Length; i++)
+                {
+                    foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_foreground");
+                }
+
+                background.Texture = ContentHelper.LoadTexture("Backgrounds/" + backgroundID + "_background");
+            }
+            catch (ContentLoadException)
+            {
+                backgroundID = 1;
+                Load();
+                return;
+            }
 
 
             background.Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
