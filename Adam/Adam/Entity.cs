@@ -135,6 +135,9 @@ namespace Adam
         /// <returns></returns>
         public bool IsDead()
         {
+            // If entity is not one that has health, it is not always dead.
+            if (MaxHealth == 0)
+                return false;
             return (Health <= 0);
         }
 

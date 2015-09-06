@@ -42,6 +42,7 @@ namespace Adam.UI
         public static int HeightOfBounds;
 
         private int lastScrollWheel;
+        private int startingY;
 
         public LevelSelection()
         {
@@ -93,7 +94,7 @@ namespace Adam.UI
         private void NewButton_MouseClicked()
         {
             Main.TextInputBox.Show("Please enter the name for your new level:", this);
-            Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;            
+            Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
         }
 
         private void NewLevel_OnTextEntered(TextInputArgs e)
@@ -101,16 +102,11 @@ namespace Adam.UI
             string newPath = DataFolder.CreateNewLevel(e.Input, 256, 256);
             Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
             DataFolder.EditLevel(newPath);
-           
+
         }
 
         private void BackButton_MouseClicked()
         {
-            if (selectedLevel == null)
-            {
-                Main.MessageBox.Show("Please select a level.");
-                return;
-            }
             Menu.CurrentMenuState = Menu.MenuState.Main;
         }
 
@@ -169,7 +165,7 @@ namespace Adam.UI
             }
 
             // Arranges the levels in an alphabetical list and sets their position.
-            int startingY = scissorRectangle.Y + CalcHelper.ApplyHeightRatio(3);
+            startingY = scissorRectangle.Y + CalcHelper.ApplyHeightRatio(3);
             for (int i = 0; i < levelCount; i++)
             {
                 levelInfos[i].SetPosition(startingY, i);
@@ -182,18 +178,37 @@ namespace Adam.UI
             int scrollWheel = Mouse.GetState().ScrollWheelValue;
             Rectangle mouseRectangle = InputHelper.MouseRectangle;
 
-            if (mouseRectangle.Intersects(scissorRectangle))
+            if (levelCount > 5)
             {
-                if (lastScrollWheel != scrollWheel)
+                if (mouseRectangle.Intersects(scissorRectangle))
                 {
-                    foreach (LevelInfo l in levelInfos)
+                    if (lastScrollWheel != scrollWheel)
                     {
-                        l.VelocityY = (scrollWheel - lastScrollWheel) / 5;
+                        foreach (LevelInfo l in levelInfos)
+                        {
+                            l.VelocityY = (scrollWheel - lastScrollWheel) / 5;
+                        }
                     }
                 }
-            }
 
-            lastScrollWheel = scrollWheel;
+                lastScrollWheel = scrollWheel;
+
+                float velocityY = 0;
+
+                // If first element is below its starting point, make them all go back, but only if the user is not making them go back already.
+                if (levelInfos[0].GetY() > startingY && levelInfos[0].VelocityY > -1)
+                    velocityY = -1f;
+
+                // If last element is above bottom of box, make them go back, but only if the user is not making them go back already.
+                if (levelInfos[levelCount - 1].GetY() < scissorRectangle.Y + scissorRectangle.Height - levelInfos[0].GetHeight() - CalcHelper.ApplyHeightRatio(3) && levelInfos[0].VelocityY < 1)
+                    velocityY = 1f;
+
+                if (velocityY != 0)
+                    foreach (LevelInfo l in levelInfos)
+                    {
+                        l.VelocityY = velocityY;
+                    }
+            }
 
             // Makes the level infos scroll.
             foreach (LevelInfo l in levelInfos)
@@ -374,6 +389,23 @@ namespace Adam.UI
             get; set;
         }
 
+        /// <summary>
+        /// Get the Y-coordinate of this level info box.
+        /// </summary>
+        /// <returns></returns>
+        public int GetY()
+        {
+            return drawRectangle.Y;
+        }
+
+        /// <summary>
+        /// Get the height of the level info box.
+        /// </summary>
+        /// <returns></returns>
+        public int GetHeight()
+        {
+            return drawRectangle.Height;
+        }
     }
 
 }

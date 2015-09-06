@@ -24,6 +24,8 @@ namespace Adam.UI
 
         public const string LevelFileExt = ".lvl";
 
+        public static string CurrentLevelFilePath;
+
 
         /// <summary>
         /// Checks to see if the directory exists upon creation, and if it does not, it will create it.
@@ -101,6 +103,7 @@ namespace Adam.UI
         public static void EditLevel(string filePath)
         {
             WorldConfigFile config = GetWorldConfigFile(filePath);
+            CurrentLevelFilePath = filePath;
             config.LoadIntoEditor();
         }
 
@@ -111,7 +114,20 @@ namespace Adam.UI
         public static void PlayLevel(string filePath)
         {
             WorldConfigFile config = GetWorldConfigFile(filePath);
+            CurrentLevelFilePath = filePath;
             config.LoadIntoPlay();
+        }
+
+        /// <summary>
+        /// Saves the current game world to the current level file.
+        /// </summary>
+        public static void SaveLevel()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
+            using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
+            {
+                xs.Serialize(fs, new WorldConfigFile(GameWorld.Instance));
+            }
         }
 
         /// <summary>

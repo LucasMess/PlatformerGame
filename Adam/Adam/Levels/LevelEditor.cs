@@ -40,6 +40,8 @@ namespace Adam.Levels
         SoundFx close, open, select;
         Rectangle mouseRect;
 
+        Timer autoSaveTimer = new Timer();
+
         public void Load()
         {
             miniMap = new Minimap();
@@ -117,6 +119,14 @@ namespace Adam.Levels
 
             if (blackScreenOpacity > .7) blackScreenOpacity = .7f;
             if (blackScreenOpacity < 0) blackScreenOpacity = 0;
+
+            // Auto-save functionality.
+            autoSaveTimer.Increment();
+            if (autoSaveTimer.TimeElapsedInSeconds > 1)
+            {
+                autoSaveTimer.Reset();
+                DataFolder.SaveLevel();
+            }
         }
 
         public void ChangeToWallMode()
@@ -420,8 +430,6 @@ namespace Adam.Levels
             tileScroll.Draw(spriteBatch);
             entityScroll.Draw(spriteBatch);
             actionBar.Draw(spriteBatch);
-
-
         }
 
         public Tile[] CurrentArray

@@ -89,11 +89,6 @@ namespace Adam
         ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
-        Textbox textBox;
-        Thread tilesThread;
-
-        string temp = "hi";
-
         public GameWorld() { }
 
         public GameWorld(Main game1)
@@ -104,13 +99,12 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_14");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_15");
             UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
             lightEngine = new LightEngine();
             worldData = new WorldData();
-            textBox = new Textbox(300, 300, 100);
 
             //tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
             //tilesThread.IsBackground = true;
@@ -216,8 +210,6 @@ namespace Adam
             this.Content = Main.Content;
             this.gameTime = gameTime;
             this.camera = camera;
-
-            textBox.Update();
 
             if (InputHelper.IsKeyDown(Keys.T))
             {
@@ -496,7 +488,6 @@ namespace Adam
         public void DrawUI(SpriteBatch spriteBatch)
         {
             placeNotification.Draw(spriteBatch);
-            textBox.Draw(spriteBatch);
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawUI(spriteBatch);

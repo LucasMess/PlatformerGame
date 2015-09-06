@@ -607,7 +607,6 @@ namespace Adam
             Texture = ContentHelper.LoadTexture("Effects/smoke");
             collRectangle = new Rectangle(entity.GetCollRectangle().Center.X - 4, entity.GetCollRectangle().Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
-            collRectangle = collRectangle;
             position = new Vector2(collRectangle.X, collRectangle.Y);
 
             velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3 - (int)entity.GetVelocity().X / 2, 3 - (int)entity.GetVelocity().X / 2);
@@ -629,7 +628,6 @@ namespace Adam
             Texture = ContentHelper.LoadTexture("Effects/smoke");
             collRectangle = new Rectangle(entity.GetCollRectangle().Center.X - 4, entity.GetCollRectangle().Bottom - 4, 8, 8);
             sourceRectangle = new Rectangle(8 * GameWorld.RandGen.Next(0, 4), 0, 8, 8);
-            collRectangle = collRectangle;
             position = new Vector2(collRectangle.X, collRectangle.Y);
 
             velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 3);
