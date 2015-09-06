@@ -10,7 +10,6 @@ namespace Adam.UI
     public class TextInputBox : MessageBox
     {
         Textbox textBox;
-        object sender;
 
         public delegate void TextInputHandler(TextInputArgs e);
         public event TextInputHandler OnInputEntered;
@@ -24,9 +23,8 @@ namespace Adam.UI
             Button = new OKButton(DrawRectangle, this);
         }
 
-        public void Show(string message, object sender)
+        public override void Show(string message)
         {
-            this.sender = sender;
             textBox.Reset();
             textBox.IsSelected = true;
             base.Show(message);
@@ -56,6 +54,11 @@ namespace Adam.UI
                 base.Draw(spriteBatch);
                 textBox.Draw(spriteBatch);
             }
+        }
+
+        public void SetTextTo(string text)
+        {
+            textBox.Text = text;
         }
     }
 

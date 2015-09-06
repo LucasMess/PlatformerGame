@@ -36,6 +36,7 @@ namespace Adam.UI
 
         private List<LevelInfo> levelInfos;
         private LevelInfo selectedLevel;
+        private int selectedLevelIndex = -1;
         private int levelCount;
 
         public static int WidthOfBounds;
@@ -93,7 +94,7 @@ namespace Adam.UI
 
         private void NewButton_MouseClicked()
         {
-            Main.TextInputBox.Show("Please enter the name for your new level:", this);
+            Main.TextInputBox.Show("Please enter the name for your new level:");
             Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
         }
 
@@ -102,7 +103,6 @@ namespace Adam.UI
             string newPath = DataFolder.CreateNewLevel(e.Input, 256, 256);
             Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
             DataFolder.EditLevel(newPath);
-
         }
 
         private void BackButton_MouseClicked()
@@ -117,7 +117,8 @@ namespace Adam.UI
                 Main.MessageBox.Show("Please select a level.");
                 return;
             }
-            throw new NotImplementedException();
+            DataFolder.DeleteFile(selectedLevel.FilePath);
+            LoadLevels();
         }
 
         private void RenameButton_MouseClicked()
@@ -127,7 +128,16 @@ namespace Adam.UI
                 Main.MessageBox.Show("Please select a level.");
                 return;
             }
-            throw new NotImplementedException();
+            Main.TextInputBox.Show("What would you like to rename this level to?");
+            Main.TextInputBox.SetTextTo(selectedLevel.Name);
+            Main.TextInputBox.OnInputEntered += RenameButton_OnInputEntered;
+        }
+
+        private void RenameButton_OnInputEntered(TextInputArgs e)
+        {
+            DataFolder.RenameFile(selectedLevel.FilePath, selectedLevel.Name, e.Input);
+            Main.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
+            LoadLevels();
         }
 
         private void EditButton_MouseClicked()
@@ -223,11 +233,14 @@ namespace Adam.UI
                 {
                     if (level.IsBeingClickedOn())
                     {
-                        selectedLevel = level;
+                        selectedLevelIndex = levelInfos.IndexOf(level);
                         break;
                     }
                 }
             }
+            if (selectedLevelIndex > -1 && selectedLevelIndex < levelCount)
+                selectedLevel = levelInfos[selectedLevelIndex];
+            else selectedLevel = null;
 
             // Update buttons.
             foreach (FunctionButton b in buttons)

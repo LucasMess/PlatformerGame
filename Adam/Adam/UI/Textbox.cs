@@ -165,7 +165,7 @@ namespace Adam.UI
                 else return text;
             }
 
-            private set
+            set
             {
                 text = value;
             }

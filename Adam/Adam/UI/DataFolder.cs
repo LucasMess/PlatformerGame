@@ -78,7 +78,7 @@ namespace Adam.UI
             // Creates the new world and sets the file path for it.
             string filePath = Path.Combine(LevelDirectory, levelName);
             filePath += LevelFileExt;
-            WorldConfigFile config = new WorldConfigFile(levelName,width, height);
+            WorldConfigFile config = new WorldConfigFile(levelName, width, height);
 
             // Checks to see if name already exists.
             if (File.Exists(filePath))
@@ -130,6 +130,15 @@ namespace Adam.UI
             }
         }
 
+        private static void SaveLevel(WorldConfigFile config)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
+            using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
+            {
+                xs.Serialize(fs, config);
+            }
+        }
+
         /// <summary>
         /// Used to retrieve level information from the file in the form of a WorldConfigFile.
         /// </summary>
@@ -155,6 +164,39 @@ namespace Adam.UI
             }
 
             return config;
+        }
+
+        /// <summary>
+        /// Deletes the specified file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void DeleteFile(string filePath)
+        {
+            File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// Renames the specified file.
+        /// </summary>
+        /// <param name="filePath">The file path of the file.</param>
+        /// <param name="oldName">The current name of the file.</param>
+        /// <param name="newName">The new name for the file.</param>
+        public static void RenameFile(string filePath, string oldName, string newName)
+        {
+            // Rename the file.
+            Console.WriteLine(filePath);
+            string newFilePath = filePath.Remove(filePath.Length - oldName.Length - LevelFileExt.Length, oldName.Length + LevelFileExt.Length);
+            Console.WriteLine(newFilePath);
+            newFilePath += newName;
+            newFilePath += LevelFileExt;
+            Console.WriteLine(newFilePath);
+            File.Move(filePath, newFilePath);
+
+            // Rename the level inside the config file.
+            WorldConfigFile config = GetWorldConfigFile(newFilePath);
+            config.LevelName = newName;
+            CurrentLevelFilePath = newFilePath;
+            SaveLevel(config);
         }
 
         /// <summary>

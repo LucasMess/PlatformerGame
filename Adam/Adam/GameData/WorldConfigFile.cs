@@ -18,7 +18,6 @@ namespace Adam.GameData
         public short LevelWidth { get; set; }
         public short LevelHeight { get; set; }
         public string LevelName { get; set; }
-        public string FileName { get; set; }
 
         public byte BackgroundID { get; set; }
         public byte SoundtrackID { get; set; }

@@ -211,11 +211,6 @@ namespace Adam
             this.gameTime = gameTime;
             this.camera = camera;
 
-            if (InputHelper.IsKeyDown(Keys.T))
-            {
-                Main.TextInputBox.Show("Enter a creative name:",this);
-            }
-
             if (CurrentLevel == GameMode.Edit)
             {
                 levelEditor.Update(gameTime, CurrentLevel);
