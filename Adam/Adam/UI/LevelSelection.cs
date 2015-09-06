@@ -202,7 +202,7 @@ namespace Adam.UI
             }
 
             // Check to see if a level info is being selected.
-            if (InputHelper.IsLeftMousePressed())
+            if (InputHelper.IsLeftMousePressed() && InputHelper.MouseRectangle.Intersects(scissorRectangle))
             {
                 foreach (LevelInfo level in levelInfos)
                 {
