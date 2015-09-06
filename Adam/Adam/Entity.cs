@@ -244,7 +244,7 @@ namespace Adam
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // Debugging tools
-            spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
+            //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
 
 
             // If the entity has an animation.

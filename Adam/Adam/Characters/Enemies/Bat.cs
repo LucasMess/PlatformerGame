@@ -9,7 +9,7 @@ using Adam.Misc;
 
 namespace Adam.Characters.Enemies
 {
-    class Bat : Enemy, ICollidable
+    class Bat : Enemy, ICollidable, IAnimated
     {
         bool isLookingForRefuge;
         bool isSleeping;
@@ -62,17 +62,51 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return collRectangle;
+                return new Rectangle(collRectangle.X -16,collRectangle.Y,64,64);
             }
+        }
+
+        Animation _animation;
+        public Animation Animation
+        {
+            get
+            {
+                if (_animation == null)
+                {
+                    _animation = new Animation(Texture, DrawRectangle, sourceRectangle);
+                }
+                return _animation;
+            }
+        }
+
+        AnimationData[] _animationData;
+        public AnimationData[] AnimationData
+        {
+            get
+            {
+               if (_animationData == null)
+                {
+                    _animationData = new Adam.AnimationData[]
+                    {
+                        new Adam.AnimationData(200,5,0,AnimationType.Loop),
+                        new Adam.AnimationData(85,5,1,AnimationType.Loop),
+                    };
+                }
+                return _animationData;
+            }
+        }
+
+        public AnimationState CurrentAnimationState
+        {
+            get; set;
         }
 
         public Bat(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, 32, 64);
-            sourceRectangle = new Rectangle(0, 0, 16, 32);
-            Texture = Main.DefaultTexture;
-            maxVelocity = new Vector2(3, 3);
-            // texture = ContentHelper.LoadTexture("Bat/bat");
+            collRectangle = new Rectangle(x, y, 32, 32);
+            sourceRectangle = new Rectangle(0, 0, 32, 32);
+            maxVelocity = new Vector2(2, 2);
+            Texture = ContentHelper.LoadTexture("Enemies/bat");
         }
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
@@ -159,16 +193,42 @@ namespace Adam.Characters.Enemies
 
             if (isSleeping)
             {
+                CurrentAnimationState = AnimationState.Sleeping;
                 velocity = Vector2.Zero;
+            }
+            else
+            {
+                CurrentAnimationState = AnimationState.Flying;
             }
 
             base.Update();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Animate()
         {
-            spriteBatch.Draw(Main.DefaultTexture, rangeRect, Color.Red * .5f);
-            spriteBatch.Draw(Texture, DrawRectangle, Color.White);
+            switch (CurrentAnimationState)
+            {
+                case AnimationState.Still:
+                    break;
+                case AnimationState.Walking:
+                    break;
+                case AnimationState.Jumping:
+                    break;
+                case AnimationState.Charging:
+                    break;
+                case AnimationState.Talking:
+                    break;
+                case AnimationState.Sleeping:
+                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[0]);
+                    break;
+                case AnimationState.Flying:
+                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[1]);
+                    break;
+                case AnimationState.Transforming:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
