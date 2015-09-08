@@ -166,5 +166,19 @@ namespace Adam
         {
 
         }
+
+        /// <summary>
+        /// Generates specified number of gems in gameworld.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="entity"></param>
+        public static void Generate(int count, Entity entity)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Gem gem = new Gem(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y);
+                GameWorld.Instance.entities.Add(gem);
+            }
+        }
     }
 }

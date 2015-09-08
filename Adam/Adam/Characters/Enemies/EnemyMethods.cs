@@ -21,6 +21,11 @@ namespace Adam.Characters.Enemies
             PlayMeanSound();
             CheckInteractionsWithPlayer();
 
+            if (IsDead())
+            {
+                Kill();
+            }
+
             base.Update();
         }
 
@@ -91,7 +96,7 @@ namespace Adam.Characters.Enemies
         /// <summary>
         /// Sets the enemy's health to zero and creates all death particle effects.
         /// </summary>
-        public void Kill()
+        public override void Kill()
         {
             PlayDeathSound();
             CreateFoodItem();
@@ -105,6 +110,8 @@ namespace Adam.Characters.Enemies
                 particle.CreateDeathSmoke(this);
                 GameWorld.Instance.particles.Add(particle);
             }
+
+            Gem.Generate(MaxHealth / 10, this);
         }
 
         /// <summary>

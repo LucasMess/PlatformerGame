@@ -61,6 +61,7 @@ namespace Adam
         SoundFx levelFail;
         SoundFx climb1;
         SoundFx climb2;
+        SoundFx jumpedOnEnemySound;
 
         float blackScreenOpacity;
         float deltaTime;
@@ -273,6 +274,7 @@ namespace Adam
             levelFail = new SoundFx("Sounds/Menu/level_fail");
             climb1 = new SoundFx("Sounds/Player/climbing1");
             climb2 = new SoundFx("Sounds/Player/climbing2");
+            jumpedOnEnemySound = new SoundFx("Sounds/Player/enemy_jumpedOn");
 
             //Returns textures based on the current evolution. At the beginning they are all the same.
             newSingleTexture = GetSingleTexture();
@@ -1302,6 +1304,8 @@ namespace Adam
         {
             Jump();
             enemy.TakeDamage(20);
+            jumpedOnEnemySound.PlayNewInstanceOnce();
+            jumpedOnEnemySound.Reset();
         }
 
 

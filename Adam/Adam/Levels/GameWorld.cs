@@ -255,7 +255,8 @@ namespace Adam
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
-                    enemy.Update();
+                    if (!enemy.IsDead())
+                        enemy.Update();
                 }
                 if (entity is Obstacle)
                 {
@@ -351,53 +352,9 @@ namespace Adam
                 UpdateVisibleIndexes();
         }
 
-        float lastCameraZoom;
         private void UpdateVisibleIndexes()
         {
             visibleTileArray = chunkManager.GetVisibleIndexes();
-            //visibleLightArray = chunkManager.GetVisibleIndexes();
-
-            //if (player != null && camera != null)
-            //{
-            //    if (player.IsDead() == false)
-            //    {
-            //        float currentZoom = camera.GetZoom();
-            //        if (lastCameraZoom != currentZoom)
-            //        {
-            //            visibleTileArray = new int[(((int)(30 / currentZoom) * (int)(50 / currentZoom)))];
-            //            visibleLightArray = new int[(((int)(60 / currentZoom) * (int)(100 / currentZoom)))];
-            //            lastCameraZoom = camera.GetZoom();
-            //        }
-
-                    ////defines which tiles are in range
-                    //int initial = camera.tileIndex - 17 * worldData.LevelWidth - 25;
-                    //int maxHoriz = (int)(50 / currentZoom);
-                    //int maxVert = (int)(30 / currentZoom);
-                    //int i = 0;
-
-                    //for (int v = 0; v < maxVert; v++)
-                    //{
-                    //    for (int h = 0; h < maxHoriz; h++)
-                    //    {
-                    //        visibleTileArray[i] = initial + worldData.LevelWidth * v + h;
-                    //        i++;
-                    //    }
-                    //}
-                    //initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-                    //maxHoriz = (int)(100 / currentZoom);
-                    //maxVert = (int)(60 / currentZoom);
-                    //i = 0;
-                    //for (int v = 0; v < maxVert; v++)
-                    //{
-                    //    for (int h = 0; h < maxHoriz; h++)
-                    //    {
-                    //        visibleLightArray[i] = initial + worldData.LevelWidth * v + h;
-                    //        i++;
-                    //    }
-                    //}
-            //    }
-            //}
-
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
@@ -435,7 +392,10 @@ namespace Adam
                 key.Draw(spriteBatch);
             }
             for (int i = 0; i < entities.Count; i++)
-                entities[i].Draw(spriteBatch);
+            {
+                if (!entities[i].IsDead())
+                    entities[i].Draw(spriteBatch);
+            }
             for (int i = 0; i < particles.Count; i++)
             {
                 particles[i].Draw(spriteBatch);

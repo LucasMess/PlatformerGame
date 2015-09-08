@@ -252,6 +252,8 @@ namespace Adam
             {
                 IAnimated ian = (IAnimated)this;
 
+                ian.Animation.Color = Color;
+
                 //Flip sprite if facing other way.
                 if (IsFacingRight)
                 {
@@ -266,14 +268,14 @@ namespace Adam
             else if (sourceRectangle != null)
             {
                 if (!IsFacingRight)
-                    spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-                else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
 
             // Most basic drawing when there is only one frame and it is not in a spritesheet.
             else
             {
-                spriteBatch.Draw(Texture, DrawRectangle, Color.White * Opacity);
+                spriteBatch.Draw(Texture, DrawRectangle, Color * Opacity);
             }
         }
 
@@ -291,7 +293,8 @@ namespace Adam
             return velocity;
         }
 
-
+        public virtual void Kill() { 
+}
 
         /// <summary>
         /// Whether the entity is simply intersecting terrain.

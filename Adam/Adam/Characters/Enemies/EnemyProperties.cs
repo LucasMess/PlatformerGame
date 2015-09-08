@@ -134,7 +134,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool HasTakenDamageRecently()
         {
-            return (hitByPlayerTimer.TimeElapsedInSeconds < 2);
+            return (hitByPlayerTimer.TimeElapsedInSeconds < .2);
         }
 
 
@@ -196,7 +196,7 @@ namespace Adam.Characters.Enemies
         protected bool IsBeingAttacked()
         {
             Player player = GameWorld.Instance.player;
-            return (player.GetCollRectangle().Intersects(DamageBox));
+            return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 0);
         }
 
         /// <summary>
@@ -229,6 +229,7 @@ namespace Adam.Characters.Enemies
                     return 0;
             }
         }
+
 
     }
 }
