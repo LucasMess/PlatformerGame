@@ -37,5 +37,6 @@ namespace Adam
         public const int FallingBoulder_TouchDamage = int.MaxValue;
         public const int FlameSpitter_TouchDamage = 20;
         public const int FlameSpitter_DPS = 2;
+        public const int MachineGun_ProjDamage = 30;
     }
 }

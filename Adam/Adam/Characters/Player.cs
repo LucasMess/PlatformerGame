@@ -867,7 +867,7 @@ namespace Adam
         private void CheckDead()
         {
             //If his health falls below 0, kill him.
-            if (IsDead())
+            if (IsDead() && !isWaitingForRespawn)
             {
                 KillAndRespawn();
             }
@@ -910,7 +910,7 @@ namespace Adam
 
             if (InputHelper.IsKeyDown(Keys.I))
             {
-               // hasStoppedTime = true;
+                // hasStoppedTime = true;
             }
 
             if (hasStoppedTime)
@@ -920,7 +920,7 @@ namespace Adam
 
 
                 timeStopTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if(timeStopTimer > 5)
+                if (timeStopTimer > 5)
                 {
                     timeStopTimer = 0;
                     hasStoppedTime = false;
@@ -1193,20 +1193,10 @@ namespace Adam
 
         public void KillAndRespawn()
         {
-
-            if (isInvulnerable)
-                return;
-            else if (isInvincible)
-                return;
-            else
-            {
-                TakeDamage(Health);
-            }
+            TakeDamage(Health);
 
             if (isWaitingForRespawn)
                 return;
-
-            GameWorld.Instance.SimulationPaused = true;
 
             Rectangle[] rectangles;
             GetDisintegratedRectangles(out rectangles);

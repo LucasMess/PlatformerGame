@@ -11,6 +11,7 @@ using Adam.Misc.Interfaces;
 using Adam.Obstacles;
 using Adam.Lights;
 using Adam.Characters.Enemies;
+using Adam.Misc;
 
 namespace Adam
 {
@@ -567,17 +568,13 @@ namespace Adam
                 ToDelete = true;
         }
 
-        protected void NoOpacityFadeBehavior()
+        protected void NoOpacityNoFrictionBehavior()
         {
             GameTime gameTime = GameWorld.Instance.gameTime;
             position += velocity;
 
             collRectangle.X = (int)position.X;
             collRectangle.Y = (int)position.Y;
-
-
-            velocity.X = velocity.X * 0.99f;
-            velocity.Y = velocity.Y * 0.99f;
 
             if (Opacity <= 0)
                 ToDelete = true;
@@ -762,6 +759,8 @@ namespace Adam
 
     public class MachineGunParticle : Particle, ICollidable
     {
+        SoundFx hitSound;
+
         public MachineGunParticle(Entity source, int xCoor)
         {
             sourceRectangle = new Rectangle(264, 96, 8, 8);
@@ -770,6 +769,7 @@ namespace Adam
             position = new Vector2(collRectangle.X, collRectangle.Y);
             Opacity = 1f;
             velocity.Y = -8f;
+            hitSound = new SoundFx("Sounds/Machine Gun/bulletHit",this);
 
             light = new DynamicPointLight(this, .05f, false, Color.White, .5f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
@@ -786,6 +786,7 @@ namespace Adam
             SparkParticle spar = new SparkParticle(this, Color.Orange);
             GameWorld.Instance.particles.Add(spar);
             GameWorld.Instance.particles.Add(par);
+            hitSound.Play();
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
@@ -802,7 +803,12 @@ namespace Adam
 
         public override void Update(GameTime gameTime)
         {
-            NoOpacityFadeBehavior();
+            NoOpacityNoFrictionBehavior();
+
+            if (collRectangle.Intersects(GameWorld.Instance.player.GetCollRectangle()))
+            {
+                GameWorld.Instance.player.TakeDamageAndKnockBack(EnemyDB.MachineGun_ProjDamage);
+            }
 
             base.Update();
         }
@@ -815,6 +821,9 @@ namespace Adam
             collRectangle = new Rectangle(x - 4, y - 4, 8, 8);
             position = new Vector2(collRectangle.X, collRectangle.Y);
             Opacity = 1;
+            sourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
+            Texture = GameWorld.SpriteSheet;
+
             light = new DynamicPointLight(this, intensity, false, color, intensity);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
         }
@@ -825,6 +834,7 @@ namespace Adam
             if (Opacity <= 0)
                 ToDelete = true;
         }
+
     }
 
     public class SparkParticle : Particle , ICollidable
