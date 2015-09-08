@@ -99,6 +99,16 @@ namespace Adam
                     isSolid = true;
                     startingPoint = new Vector2(0, 0);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    // Random plain tile.
+                    switch (subID)
+                    {
+                        case 101:
+                            positionInSpriteSheet = new Vector2(12, 17);
+                            break;
+                        case 102:
+                            positionInSpriteSheet = new Vector2(13, 17);
+                            break;
+                    }
                     break;
                 case 2: //Stone
                     hasConnectPattern = true;
@@ -983,6 +993,23 @@ namespace Adam
 
                     array[indexAbove].DefineTexture();
                 }
+            }
+
+            // Randomly generate different plain textures for certain tiles.
+            // Grass
+            if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0,100) > 80)
+            {
+                switch (GameWorld.RandGen.Next(0, 2))
+                {
+                    case 0:
+                        subID = 101;
+                        break;
+                    case 1:
+                        subID = 102;
+                        break;
+                }
+
+                DefineTexture();
             }
         }
 
