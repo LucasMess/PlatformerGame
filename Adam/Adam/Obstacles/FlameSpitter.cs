@@ -13,6 +13,7 @@ namespace Adam.Obstacles
         Timer particleTimer = new Timer();
         bool isFlaming;
         Rectangle sourceRectangleOfParticle;
+        SoundFx flameSound;
 
         protected override Rectangle DrawRectangle
         {
@@ -24,7 +25,7 @@ namespace Adam.Obstacles
 
         public FlameSpitter(Tile sourceTile)
         {
-            
+            flameSound = new SoundFx("Sounds/Flame Spitter/flame", this);
             collRectangle = sourceTile.drawRectangle;
         }
 
@@ -46,7 +47,12 @@ namespace Adam.Obstacles
                     GameWorld.Instance.particles.Add(par2);
                     GameWorld.Instance.particles.Add(par3);
                     particleTimer.Reset();
+                    flameSound.PlayIfStopped();
                 }
+            }
+            else
+            {
+                flameSound.Stop();
             }
 
             Player player = GameWorld.Instance.player;

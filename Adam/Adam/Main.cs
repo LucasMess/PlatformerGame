@@ -81,13 +81,13 @@ namespace Adam
         int fps, totalFrames;
 
         public const int Tilesize = 32;
-        public const int DefaultResWidth = 960;
-        public const int DefaultResHeight = 540;
+        public const int DefaultResWidth = 960; //960 or 1366
+        public const int DefaultResHeight = 540;//540 or 768
 
         public static int UserResWidth;
         public static int UserResHeight;
 
-        public const string Version = "Version 0.7.0.0 Beta";
+        public const string Version = "Version 0.7.0 Beta";
         public const string Producers = "Duck Knight Duel Games";
 
         public static Texture2D DefaultTexture;

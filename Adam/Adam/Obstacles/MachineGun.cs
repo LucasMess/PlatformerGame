@@ -15,6 +15,7 @@ namespace Adam.Obstacles
         const int BulletInterval = 50;
         const int FiringInterval = 1000;
         bool firingRight;
+        SoundFx firingSound;
 
         protected override Rectangle DrawRectangle
         {
@@ -28,6 +29,8 @@ namespace Adam.Obstacles
         {
             attackBox = new Rectangle(sourceTile.drawRectangle.X, sourceTile.drawRectangle.Y - Main.Tilesize * 5, Main.Tilesize, Main.Tilesize * 5);
             collRectangle = sourceTile.drawRectangle;
+
+            firingSound = new SoundFx("Sounds/Machine Gun/fire",this);
         }
 
         public override void Update()
@@ -50,6 +53,8 @@ namespace Adam.Obstacles
                         ExplosionParticle exp = new ExplosionParticle(collRectangle.X + 8, collRectangle.Y, Color.White, .7f);
                         GameWorld.Instance.particles.Add(exp);
                         GameWorld.Instance.particles.Add(par);
+                        firingSound.PlayNewInstanceOnce();
+                        firingSound.Reset();
                         firingRight = !firingRight;
                     }
                     else
@@ -59,6 +64,8 @@ namespace Adam.Obstacles
                         GameWorld.Instance.particles.Add(exp);
                         GameWorld.Instance.particles.Add(par);
                         firingRight = !firingRight;
+                        firingSound.PlayNewInstanceOnce();
+                        firingSound.Reset();
                     }
                     bulletSpacingTimer.Reset();
                 }

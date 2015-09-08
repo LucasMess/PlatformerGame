@@ -297,8 +297,6 @@ namespace Adam
                 return;
 
             }
-            if (Health < 0)
-                Health = 0;
 
             this.gameTime = gameTime;
 
@@ -306,6 +304,10 @@ namespace Adam
 
             //Update Method is spread out!
             //Check the following things
+
+            CheckDead();
+
+
             if (IsDead())
             {
                 UpdateTimers();
@@ -313,7 +315,6 @@ namespace Adam
             }
 
             UpdateStats();
-            CheckDead();
             UpdateInput();
             UpdateTimers();
             UpdatePlayerPosition();
