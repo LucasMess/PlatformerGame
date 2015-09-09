@@ -371,9 +371,11 @@ namespace Adam
 
             //These variables define how fast the player will accelerate based on whether he is walking or runnning.
             //There is no need to put a max limit because after a certain speed, the friction is neough to maintain a const. vel.
-            float walkingAcc = .5f;
-            float runningAcc = .8f;
+            float walkingAcc = .25f;
+            float runningAcc = .4f;
             float acceleration = .5f;
+            float deceleration = .95f;
+            float jumpSpeed = 8f;
 
             //Check to see if player is running fast
             if (InputHelper.IsKeyDown(Keys.LeftShift))
@@ -411,7 +413,7 @@ namespace Adam
             //For when he is on OP mode the player can fly up.
             if (Keyboard.GetState().IsKeyDown(Keys.W) && automatic_hasControl == true && manual_hasControl && canFly)
             {
-                velocity.Y = -10f;
+                velocity.Y = -jumpSpeed;
                 sleepTimer = 0;
                 CurrentAnimation = AnimationState.Jumping;
             }
@@ -419,7 +421,7 @@ namespace Adam
             //For when he is on op mode the player can fly down.
             if (Keyboard.GetState().IsKeyDown(Keys.S) && automatic_hasControl == true && manual_hasControl && canFly)
             {
-                velocity.Y = 10f;
+                velocity.Y = jumpSpeed;
                 sleepTimer = 0;
             }
 
@@ -459,7 +461,8 @@ namespace Adam
             }
 
             //If player stops moving, reduce his speed gradually
-            velocity.X -= velocity.X * .1f * deltaTime;
+            //velocity.X -= velocity.X * .1f * deltaTime;
+            velocity.X *= deceleration;
 
             //If his speed goes below a certain point, just make it zero
             if (Math.Abs(velocity.X) < .1f)
@@ -1326,12 +1329,14 @@ namespace Adam
         {
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
+            velocity.X = 0;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
             if (Math.Abs(velocity.Y) < 1)
                 CurrentAnimation = AnimationState.Still;
+            velocity.X = 0;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
