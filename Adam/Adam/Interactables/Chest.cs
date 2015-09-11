@@ -9,14 +9,16 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
 using Adam.Misc;
+using Adam.UI.Elements;
 
 namespace Adam
 {
-    public class Chest 
+    public class Chest
     {
         bool isOpen;
         SoundFx openSound;
         Rectangle collRectangle;
+        Tile sourceTile;
 
         public bool IsGolden { get; set; }
 
@@ -25,14 +27,19 @@ namespace Adam
             //hello
             openSound = new SoundFx("Sounds/Chest/open");
             collRectangle = new Rectangle(tile.drawRectangle.X, tile.drawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
+            sourceTile = tile;
         }
 
         public void Update()
         {
             Player player = GameWorld.Instance.player;
-            if (player.GetCollRectangle().Intersects(collRectangle)&& !isOpen)
-            {               
-                Open();
+            if (player.GetCollRectangle().Intersects(collRectangle) && !isOpen)
+            {
+                // If player presses open button, open chest.
+                if (InputHelper.IsKeyDown(Keys.W))
+                {
+                    Open();
+                }
             }
         }
 

@@ -10,6 +10,7 @@ using Adam.Lights;
 using Adam.Enemies;
 using Adam.Characters.Enemies;
 using Adam.Noobs;
+using Adam.UI.Elements;
 
 namespace Adam
 {
@@ -29,6 +30,7 @@ namespace Adam
         public byte ID = 0;
         public byte subID = 0;
         public int TileIndex { get; set; }
+
         private int mapWidth;
         protected const int SmallTileSize = 16;
         public bool isVoid;
@@ -108,6 +110,12 @@ namespace Adam
                         case 102:
                             positionInSpriteSheet = new Vector2(13, 17);
                             break;
+                        case 103:
+                            positionInSpriteSheet = new Vector2(11, 17);
+                            break;
+                        case 104:
+                            positionInSpriteSheet = new Vector2(10, 17);
+                            break;
                     }
                     break;
                 case 2: //Stone
@@ -178,14 +186,14 @@ namespace Adam
                     isVoid = true;
                     sunlightPassesThrough = true;
                     specialTile = new SpecialTile(this);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2,.6f));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2, .6f));
                     break;
                 case 12: //Chandelier
                     positionInSpriteSheet = new Vector2(0, 17);
                     isVoid = true;
                     sunlightPassesThrough = true;
                     specialTile = new SpecialTile(this);
-                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4,.1f));
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4, .1f));
                     break;
                 case 13: //Door
                     isSolid = true;
@@ -204,7 +212,7 @@ namespace Adam
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
-                    positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0,3)*2);
+                    positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3) * 2);
                     specialTile = new SpecialTile(this);
                     isVoid = true;
                     break;
@@ -247,7 +255,7 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(0, 15);
                     isVoid = true;
                     specialTile = new SpecialTile(this);
-                    FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3,.3f);
+                    FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3, .3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
                 case 25:
@@ -333,20 +341,20 @@ namespace Adam
                     isSolid = true;
                     positionInSpriteSheet = new Vector2(12, 29);
                     isVoid = true;
-                    specialTile = new SpecialTile(this);                    
+                    specialTile = new SpecialTile(this);
                     break;
                 case 43: // Machine Gun
                     isSolid = true;
                     isVoid = true;
-                    positionInSpriteSheet = new Vector2(12,28);
+                    positionInSpriteSheet = new Vector2(12, 28);
                     specialTile = new SpecialTile(this);
                     break;
                 case 44: // Cacti
                     isVoid = true;
-                    switch (GameWorld.RandGen.Next(0,4))
+                    switch (GameWorld.RandGen.Next(0, 4))
                     {
                         case 0: // One branch normal.
-                            positionInSpriteSheet = new Vector2(20, 2);                           
+                            positionInSpriteSheet = new Vector2(20, 2);
                             break;
                         case 1: // Two branch normal.
                             positionInSpriteSheet = new Vector2(20, 4);
@@ -624,7 +632,6 @@ namespace Adam
         {
             specialTile?.Animate(gameTime);
             obstacle?.Update();
-            //Not used for normal textures, only animated textures.
 
             ChangeOpacity();
         }
@@ -1014,15 +1021,21 @@ namespace Adam
 
             // Randomly generate different plain textures for certain tiles.
             // Grass
-            if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0,100) > 80)
+            if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
             {
-                switch (GameWorld.RandGen.Next(0, 2))
+                switch (GameWorld.RandGen.Next(0, 4))
                 {
                     case 0:
                         subID = 101;
                         break;
                     case 1:
                         subID = 102;
+                        break;
+                    case 2:
+                        subID = 103;
+                        break;
+                    case 3:
+                        subID = 104;
                         break;
                 }
 
