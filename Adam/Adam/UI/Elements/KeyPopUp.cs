@@ -13,7 +13,6 @@ namespace Adam.UI.Elements
         Rectangle drawRectangle;
         Rectangle sourceRectangle;
         Texture2D texture;
-        Vector2 origin;
 
         /// <summary>
         /// To display the 'W' key above the object.
