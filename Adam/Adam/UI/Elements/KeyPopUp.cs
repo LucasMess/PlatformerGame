@@ -26,8 +26,7 @@ namespace Adam.UI.Elements
 
         public void Update(Rectangle collRectangle)
         {
-            drawRectangle = new Rectangle(collRectangle.Center.X, GameWorld.Instance.player.GetCollRectangle().Y - 16, 32, 32);
-            origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
+            drawRectangle = new Rectangle(collRectangle.X , collRectangle.Y - 48, 32, 32);
 
             if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
                 playerOn = true;
@@ -37,7 +36,7 @@ namespace Adam.UI.Elements
         public void Draw(SpriteBatch spriteBatch)
         {
             if (playerOn)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, origin, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0,0), Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
         }
     }
 
