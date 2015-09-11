@@ -318,7 +318,6 @@ namespace Adam
                 particles[i].Update(gameTime);
             }
 
-
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 Entity entity = entities[i];
@@ -363,8 +362,8 @@ namespace Adam
 
             if (player.weapon != null)
                 player.weapon.DrawLights(spriteBatch);
-            foreach (Particle ef in particles)
-                ef.DrawLights(spriteBatch);
+            //foreach (Particle ef in particles)
+            //    ef.DrawLights(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -429,6 +428,9 @@ namespace Adam
                 }
             }
         }
+
+        public void DrawAfterLights(SpriteBatch spriteBatch) { 
+}
 
         public void DrawGlows(SpriteBatch spriteBatch)
         {

@@ -9,29 +9,27 @@ using System.Text;
 
 namespace Adam.UI
 {
-    public class SplashDamage
+    public class SplashNumber : Particle
     {
         SpriteFont font;
-        Vector2 position;
         string text;
         bool isNegative;
-        public bool toDelete;
         bool hasExpanded;
-        float opacity = 2;
-        int damage;
+        int number;
         float scale, normScale;
-        Vector2 velocity, origin;
 
-        public SplashDamage(int damage)
+        public SplashNumber(Entity entity, int number, Color color)
         {
-            this.damage = damage;
-            text = damage.ToString();
-            position = new Vector2(Main.UserResWidth / 2, Main.UserResHeight / 2);
+            this.number = number;
+            text = this.number.ToString();
+            position = new Vector2(entity.GetCollRectangle().Right + 20, entity.GetCollRectangle().Y - 20);
+            collRectangle = new Rectangle((int)position.X, (int)position.Y, 50, 50);
+            Color = color;
 
-            if (damage < 0)
+            if (this.number < 0)
                 isNegative = true;
 
-            int absDamage = Math.Abs(damage);
+            int absDamage = Math.Abs(this.number);
             scale = .1f;
             if (absDamage > 10)
                 scale = .15f;
@@ -47,14 +45,14 @@ namespace Adam.UI
 
             origin = font.MeasureString(text) / 2;
             normScale = scale;
+            Opacity = 2;
         }
 
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            opacity -= .05f;
+            Opacity -= .05f;
             position += velocity;
-
             velocity.Y = velocity.Y * 0.95f;
 
             if (scale > normScale * 2)
@@ -71,17 +69,17 @@ namespace Adam.UI
                 scale -= .01f;
             }
 
-            if (opacity < 0)
-                toDelete = true;
+            if (Opacity <= 0)
+                ToDelete = true;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (isNegative)
             {
-                FontHelper.DrawWithOutline(spriteBatch, font, damage.ToString(), position, 2, Color.Red* opacity, Color.Black * opacity);
+                FontHelper.DrawWithOutline(spriteBatch, font, number.ToString(), position, 2, Color * Opacity, Color.Black * Opacity);
             }
-            else FontHelper.DrawWithOutline(spriteBatch, font, "+" + damage, position, 2, Color.Green * opacity, Color.Black * opacity);
+            else FontHelper.DrawWithOutline(spriteBatch, font, "+" + number, position, 2, Color * Opacity, Color.Black * Opacity);
         }
     }
 }

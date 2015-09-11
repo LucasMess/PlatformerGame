@@ -18,8 +18,12 @@ namespace Adam.Interactables
         protected SoundFx loopSound;
         protected SoundFx pickUpSound;
         protected SoundFx bounceSound;
-        int tileIndex;
+        private int tileIndex;
         protected double effectTimer;
+
+        protected delegate void PickedUpHander(PickedUpArgs e);
+        protected event PickedUpHander OnPlayerPickUp;
+
 
         public Item()
         {
@@ -36,6 +40,8 @@ namespace Adam.Interactables
 
             if (player.GetCollRectangle().Intersects(DrawRectangle) && elapsedTime > 500)
             {
+                if (OnPlayerPickUp != null)
+                OnPlayerPickUp(new PickedUpArgs(player));
                 pickUpSound?.PlayOnce();
                 ToDelete = true;
                 loopSound?.Stop();
@@ -50,6 +56,18 @@ namespace Adam.Interactables
         {
             if (Texture == null) Texture = Main.DefaultTexture;
             spriteBatch.Draw(Texture, DrawRectangle, Color.White);
+        }
+    }
+
+    /// <summary>
+    /// Used to indicate what player picked up the item.
+    /// </summary>
+    public class PickedUpArgs : EventArgs
+    {
+        public Player Player { get; private set; }
+        public PickedUpArgs(Player player)
+        {
+            Player = player;
         }
     }
 }

@@ -115,6 +115,12 @@ namespace Adam.UI
         {
             WorldConfigFile config = GetWorldConfigFile(filePath);
             CurrentLevelFilePath = filePath;
+
+            if (!config.IsValidLevel())
+            {
+                throw new Exception("This level cannot be played because there is no player spawn point. Edit the level first.");
+            }
+
             config.LoadIntoPlay();
         }
 

@@ -21,6 +21,7 @@ namespace Adam.UI.Overlay_Elements
         Animation animation;
         GameTime gameTime;
         int score;
+        bool scoreChanged;
 
         public Coin(Vector2 position)
         {
@@ -43,13 +44,16 @@ namespace Adam.UI.Overlay_Elements
 
             Animate();
 
+            scoreChanged = false;
             if (score < player.Score)
             {
                 score++;
+                scoreChanged = true;
             }
             if (score > player.Score)
             {
                 score--;
+                scoreChanged = true;
             }
         }
 
@@ -76,7 +80,10 @@ namespace Adam.UI.Overlay_Elements
         {
             spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, origin, SpriteEffects.None, 0);
 
-            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, score.ToString(), textPos, 5, Color.White, Color.Black);
+            Color color = Color.White;
+            if (scoreChanged)
+                color = Color.ForestGreen;
+            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, score.ToString(), textPos, 5, color, Color.Black);
         }
     }
 }

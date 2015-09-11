@@ -1,5 +1,6 @@
 ﻿using Adam.GameData;
 using Adam.Levels;
+using Adam.Misc.Errors;
 using Adam.Network;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -29,7 +30,6 @@ namespace Adam.UI
         float velocityY;
         int originalY;
 
-        Dialog askSave;
         WorldProperties properties;
 
         public ActionBar()
@@ -58,28 +58,7 @@ namespace Adam.UI
             buttons.Add(newButton);
             buttons.Add(wallButton);
 
-            askSave = new Dialog();
-            askSave.YesResult += AskSave_YesResult;
-            askSave.NoResult += AskSave_NoResult;
-
             properties = new WorldProperties();
-        }
-
-        private void AskSave_NoResult()
-        {
-            //gameWorld.debuggingMode = true;
-            //WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
-            //data.LoadIntoPlay();
-        }
-
-        private void AskSave_YesResult()
-        {
-            //SaveButton_MouseClicked();
-            //while (GameWorld.Instance.worldData.dealingWithData)
-            //{
-            //    Thread.Sleep(250);
-            //}
-            //AskSave_NoResult();
         }
 
         private void WallButton_MouseClicked()
@@ -106,20 +85,7 @@ namespace Adam.UI
 
         private void OpenButton_MouseClicked()
         {
-            if (AskSaveDialog())
-            {
-                SaveButton_MouseClicked();
-                while (GameWorld.Instance.worldData.IsDealingWithData)
-                {
-                    Thread.Sleep(250);
-                }
-                gameWorld.worldData.OpenLevelLocally(true);
-            }
-            else
-            {
-                gameWorld.worldData.OpenLevelLocally(true);
-            }
-            
+
         }
 
         private bool IsWorldEmpty()
@@ -149,54 +115,26 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
-            if (!IsPlayerInWorld())
-                Main.MessageBox.Show("You cannot test this level because there is no player spawnpoint set.");
-            else
-            {
-                if (AskSaveDialog())
-                {
-                    SaveButton_MouseClicked();
-                    while (GameWorld.Instance.worldData.IsDealingWithData)
-                    {
-                        Thread.Sleep(250);
-                    }
-                    TestLevel();
-                }
-                else
-                {
-                    TestLevel();
-                }
-            }
-
+            TestLevel();
         }
 
         private void TestLevel()
         {
             gameWorld.debuggingMode = true;
-            WorldConfigFile data = new WorldConfigFile(GameWorld.Instance);
-            data.LoadIntoPlay();
-        }
-
-        public bool AskSaveDialog()
-        {
-            DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Would you like to save your level first? All progress will be lost otherwise.", "Save?", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            try
             {
-                return true;
+                DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
             }
-            else if (dialogResult == DialogResult.No)
+            catch (Exception e)
             {
-                return false;
+                Main.MessageBox.Show(e.Message);
             }
-            return false;
         }
 
         public void Update()
         {
             gameWorld = GameWorld.Instance;
             levelEditor = gameWorld.levelEditor;
-
-            askSave.Update(GameWorld.Instance.gameTime);
 
             if (box.Y < originalY)
             {
@@ -241,8 +179,6 @@ namespace Adam.UI
             {
                 b.Draw(spriteBatch);
             }
-
-            askSave.Draw(spriteBatch);
         }
 
     }

@@ -328,9 +328,17 @@ namespace Adam
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu && CurrentGameState != GameState.LoadingScreen)
             {
-                GameData.SaveGame();
-                Menu.CurrentMenuState = Menu.MenuState.Main;
-                ChangeState(GameState.MainMenu, GameMode.None);
+                if (CurrentGameState == GameState.GameWorld && gameWorld.debuggingMode)
+                {
+                    ChangeState(GameState.GameWorld, GameMode.Edit);
+                    gameWorld.debuggingMode = false;
+                }
+                else
+                {
+                    GameData.SaveGame();
+                    Menu.CurrentMenuState = Menu.MenuState.Main;
+                    ChangeState(GameState.MainMenu, GameMode.None);
+                }
             }
 
             //Update the game based on what GameState it is

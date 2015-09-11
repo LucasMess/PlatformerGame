@@ -10,8 +10,19 @@ namespace Adam.Misc.Errors
     /// </summary>
     public class NotCollidableException : Exception
     {
+        string _message;
         public NotCollidableException() { }
-        public NotCollidableException(string message) { }
+        public NotCollidableException(string message)
+        {
+            _message = message;
+        }
+        public override string Message
+        {
+            get
+            {
+                return _message;
+            }
+        }
     }
 
     /// <summary>
@@ -19,8 +30,16 @@ namespace Adam.Misc.Errors
     /// </summary>
     public class InvalidCharactersException : Exception
     {
+        string _message;
         public InvalidCharactersException() { }
-        public InvalidCharactersException(string message) { }
+        public InvalidCharactersException(string message) { _message = message; }
+        public override string Message
+        {
+            get
+            {
+                return _message;
+            }
+        }
     }
 
     /// <summary>
@@ -28,7 +47,16 @@ namespace Adam.Misc.Errors
     /// </summary>
     public class FileAlreadyExistsException : Exception
     {
+        string _message;
         public FileAlreadyExistsException() { }
-        public FileAlreadyExistsException(string message) { }
+        public FileAlreadyExistsException(string message) { _message = message; }
+        public override string Message
+        {
+            get
+            {
+                return _message;
+            }
+        }
     }
+
 }

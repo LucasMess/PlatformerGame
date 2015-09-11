@@ -60,7 +60,7 @@ namespace Adam.UI.Overlay_Elements
             h2i = heartBeat2.CreateInstance();
         }
 
-        public void Update(GameTime gameTime, Player player, GameWorld map, List<SplashDamage> splashDamages)
+        public void Update(GameTime gameTime, Player player, GameWorld map)
         {
             this.gameTime = gameTime;
             this.player = player;
@@ -90,13 +90,13 @@ namespace Adam.UI.Overlay_Elements
 
             if (oldCurrentHealth < player.Health)
             {
-                splashDamages.Add(new SplashDamage(player.Health - oldCurrentHealth));
+                GameWorld.Instance.particles.Add(new SplashNumber(player, player.Health - oldCurrentHealth, Color.Green));
                 oldCurrentHealth = player.Health;
             }
 
             if (oldCurrentHealth > player.Health)
             {
-                splashDamages.Add(new SplashDamage(player.Health - oldCurrentHealth));
+                GameWorld.Instance.particles.Add(new SplashNumber(player, player.Health - oldCurrentHealth, Color.Red));
                 oldCurrentHealth = player.Health;
             }
         }

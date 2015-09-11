@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Misc.Errors;
+using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -152,7 +153,15 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
-            DataFolder.PlayLevel(selectedLevel.FilePath);
+            try
+            {
+                DataFolder.PlayLevel(selectedLevel.FilePath);
+
+            }
+            catch (Exception e)
+            {
+                Main.MessageBox.Show(e.Message);
+            }
         }
 
         /// <summary>

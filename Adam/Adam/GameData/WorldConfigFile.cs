@@ -121,6 +121,22 @@ namespace Adam.GameData
 
             gw.worldData.song = SoundtrackDB.GetSong(1);
         }
+
+        /// <summary>
+        /// Makes multiple checks to see if the world is playable.
+        /// </summary>
+        /// <returns>Returns true if level is valid.</returns>
+        public bool IsValidLevel()
+        {
+            foreach (int ID in  TileIDs)
+            { 
+                // Found player.
+                if (ID == 200)
+                    return true;
+            }
+
+            return false;
+        }
     }
 
     public class AdamDictionary
@@ -177,6 +193,7 @@ namespace Adam.GameData
 
             throw new KeyNotFoundException();
         }
+
     }
 
     public struct KeyValue

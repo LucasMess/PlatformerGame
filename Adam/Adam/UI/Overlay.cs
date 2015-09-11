@@ -19,7 +19,6 @@ namespace Adam
         public static Overlay Instance { get { return instance; } }
 
         public static SpriteFont Font;
-        List<SplashDamage> splashDamages = new List<SplashDamage>();
 
         Heart heart;
         Coin coin;
@@ -49,21 +48,8 @@ namespace Adam
 
         public void Update(GameTime gameTime, Player player, GameWorld map)
         {
-            heart.Update(gameTime, player, map, splashDamages);
+            heart.Update(gameTime, player, map);
             coin.Update(player, gameTime);
-
-            foreach (var spl in splashDamages)
-            {
-                spl.Update(gameTime);
-            }
-            foreach (var spl in splashDamages)
-            {
-                if (spl.toDelete)
-                {
-                    splashDamages.Remove(spl);
-                    break;
-                }
-            }
 
             if (fadeIn)
             {
@@ -102,11 +88,6 @@ namespace Adam
 
             heart.Draw(spriteBatch);
             coin.Draw(spriteBatch);
-
-            foreach (var spl in splashDamages)
-            {
-                spl.Draw(spriteBatch);
-            }
 
         Fade:
             if (fadeIn || fadeOut)

@@ -10,6 +10,7 @@ using Adam;
 using Adam.Interactables;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
+using Adam.UI;
 
 namespace Adam
 {
@@ -54,6 +55,36 @@ namespace Adam
             GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
+
+            OnPlayerPickUp += Gem_OnPlayerPickUp;
+        }
+
+        private void Gem_OnPlayerPickUp(PickedUpArgs e)
+        {
+            e.Player.Score += GetValue();
+
+            GameWorld.Instance.particles.Add(new SplashNumber(this, GetValue(), Color.Yellow));
+        }
+
+        private int GetValue()
+        {
+            switch (gemID)
+            {
+                case 0: // Copper
+                    return 1;
+                case 1: // Gold
+                    return 2;
+                case 2: // Emerald
+                    return 4;
+                case 3: // Sapphire
+                    return 5;
+                case 4: // Ruby
+                    return 6;
+                case 5: // Diamond
+                    return 10;
+                default:
+                    return 0;
+            }
         }
 
         private byte GenerateID()

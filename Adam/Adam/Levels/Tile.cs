@@ -343,10 +343,10 @@ namespace Adam
                     break;
                 case 44: // Cacti
                     isVoid = true;
-                    switch (subID)
+                    switch (GameWorld.RandGen.Next(0,4))
                     {
                         case 0: // One branch normal.
-                            positionInSpriteSheet = new Vector2(20, 2);
+                            positionInSpriteSheet = new Vector2(20, 2);                           
                             break;
                         case 1: // Two branch normal.
                             positionInSpriteSheet = new Vector2(20, 4);
@@ -358,6 +358,7 @@ namespace Adam
                             positionInSpriteSheet = new Vector2(22, 4);
                             break;
                     }
+                    specialTile = new SpecialTile(this);
                     break;
                 case 45: // Mushroom Booster
                     isVoid = true;
@@ -990,6 +991,22 @@ namespace Adam
                     {
                         array[indexAbove].ID = 7;
                     }
+
+                    array[indexAbove].DefineTexture();
+                }
+            }
+
+            // Random decorations for sand.
+            if (ID == 5 && subID == 5)
+            {
+                int indexAbove = TileIndex - mapWidth * 2;
+                int indexToRight = TileIndex - mapWidth + 1;
+                int indexTopRight = indexAbove + 1;
+                if (array[indexAbove].ID == 0 && array[indexToRight].ID == 0 && array[indexTopRight].ID == 0)
+                {
+                    int rand = GameWorld.RandGen.Next(0, 100);
+                    if (rand > 80)
+                        array[indexAbove].ID = 44;
 
                     array[indexAbove].DefineTexture();
                 }
