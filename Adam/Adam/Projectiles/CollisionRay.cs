@@ -30,6 +30,8 @@ namespace Adam.Projectiles
 
                 if (rect.Intersects(player.GetCollRectangle()))
                     return true;
+                if (index > GameWorld.Instance.tileArray.Length - 1 || index < 0)
+                    return false;
                 if (gameWorld.tileArray[index].isSolid)
                     return false;
 

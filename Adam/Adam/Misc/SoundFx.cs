@@ -14,7 +14,7 @@ namespace Adam.Misc
         bool isGlobal = true;
         Entity source;
 
-        public float Volume { get; set; } = 1;
+        public float Volume { get; set; } = Main.MaxVolume;
 
         public SoundFx(string file)
         {
@@ -44,12 +44,13 @@ namespace Adam.Misc
         {
             if (!isPlaying)
             {
-                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
-                if (instance.Volume > Volume)
+                SoundEffectInstance newInstance = soundEffect.CreateInstance();
+                if (!isGlobal) newInstance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
+                if (newInstance.Volume > Volume)
                 {
-                    instance.Volume = Volume;
+                    newInstance.Volume = Volume;
                 }
-                soundEffect.Play();
+                newInstance.Play();
                 isPlaying = true;
             }
         }

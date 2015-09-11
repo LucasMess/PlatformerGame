@@ -490,7 +490,7 @@ namespace Adam
 
             if (distanceTo > 1000)
                 return 0;
-            else return .5f - (distanceTo / 1000) / 2;
+            else return (1 - (distanceTo / 1000)) * Main.MaxVolume;
         }
 
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)

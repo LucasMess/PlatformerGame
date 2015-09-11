@@ -99,6 +99,8 @@ namespace Adam
         public static double WidthRatio;
         public static double HeightRatio;
 
+        public static float MaxVolume = .04f;
+
         public bool wasPressed, debugOn, debugPressed;
 
         public SamplerState desiredSamplerState;
@@ -163,7 +165,7 @@ namespace Adam
 
             //MediaPlayer Settings
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = .5f;
+            MediaPlayer.Volume = MaxVolume;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
 
