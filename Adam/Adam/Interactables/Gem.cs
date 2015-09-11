@@ -168,7 +168,7 @@ namespace Adam
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            
+            velocity.Y = 0;
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
@@ -185,12 +185,12 @@ namespace Adam
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-
+            velocity.X = 0;
         }
 
         public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-
+            velocity.X = 0;
         }
 
         public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)

@@ -209,6 +209,20 @@ namespace Adam.Characters.Enemies
             {
                 case 201:
                     return EnemyDB.Snake_TouchDamage;
+                case 202:
+                    return EnemyDB.Frog_TouchDamage;
+                case 204:
+                    return EnemyDB.Lost_TouchDamage;
+                case 205:
+                    return EnemyDB.Hellboar_TouchDamage;
+                case 206:
+                    return EnemyDB.FallingBoulder_TouchDamage;
+                case 207:
+                    return EnemyDB.Bat_TouchDamage;
+                case 208:
+                    return EnemyDB.Duck_TouchDamage;
+                case 209:
+                    return 0;
                 default:
                     return 0;
             }
