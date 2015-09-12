@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Interactables;
 using Adam.Lights;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
@@ -27,6 +28,7 @@ namespace Adam
         Chest chest;
         FlameSpitter flameSpitter;
         MachineGun machineGun;
+        Crystal crystal;
         Tile sourceTile;
 
 
@@ -153,6 +155,18 @@ namespace Adam
                 case 51: // Void Fire Spitter.
                     frameCount = new Vector2(4, 0);
                     break;
+                case 52: // Sapphire Crystal.
+                    frameCount = new Vector2(1, 0);
+                    crystal = new Crystal(sourceTile, 3);
+                    break;
+                case 53: // Ruby Crystal.
+                    frameCount = new Vector2(1, 0);
+                    crystal = new Crystal(sourceTile, 4);
+                    break;
+                case 54: // Emerald Crystal.
+                    frameCount = new Vector2(1, 0);
+                    crystal = new Crystal(sourceTile, 2);
+                    break;
                 case 56: // Stalagmite.
                     frameCount = new Vector2(1, 0);
                     size.Y = 2;
@@ -200,6 +214,7 @@ namespace Adam
             chest?.Update();
             flameSpitter?.Update();
             machineGun?.Update();
+            crystal?.Update();
 
             switch (ID)
             {

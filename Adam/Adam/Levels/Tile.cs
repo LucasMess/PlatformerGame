@@ -403,19 +403,22 @@ namespace Adam
                     specialTile = new SpecialTile(this);
                     break;
                 case 52: // Sapphire Crystal.
-                    isSolid = true;
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(21, 24);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Blue, 1, .8f));
+                    specialTile = new SpecialTile(this);
                     break;
                 case 53: // Ruby Crystal.
-                    isSolid = true;
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(22, 25);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
+                    specialTile = new SpecialTile(this);
                     break;
                 case 54: // Emerald Crystal.
-                    isSolid = true;
+                    isVoid = true;
                     positionInSpriteSheet = new Vector2(21, 25);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
+                    specialTile = new SpecialTile(this);
                     break;
                 case 55: // Skull.
                     positionInSpriteSheet = new Vector2(22, 24);

@@ -161,6 +161,7 @@
     <Compile Include="Characters\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
+    <Compile Include="Interactables\Crystal.cs" />
     <Compile Include="Interactables\MushroomBooster.cs" />
     <Compile Include="Interactables\Sign.cs" />
     <Compile Include="Levels\Chunk.cs" />

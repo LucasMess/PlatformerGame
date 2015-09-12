@@ -59,6 +59,21 @@ namespace Adam
             OnPlayerPickUp += Gem_OnPlayerPickUp;
         }
 
+        public Gem(int centerX, int centerY, byte ID)
+        {
+            gemID = ID;
+            Texture = GameWorld.SpriteSheet;
+            collRectangle = new Rectangle(centerX, centerY, 16, 16);
+            sourceRectangle = GetSourceRectangle();
+            velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
+            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
+
+            pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
+
+            OnPlayerPickUp += Gem_OnPlayerPickUp;
+        }
+
         private void Gem_OnPlayerPickUp(PickedUpArgs e)
         {
             e.Player.Score += GetValue();
@@ -87,6 +102,10 @@ namespace Adam
             }
         }
 
+        /// <summary>
+        /// Generates an ID for this gem depending on their rarity.
+        /// </summary>
+        /// <returns>ID</returns>
         private byte GenerateID()
         {
             int rand = GameWorld.RandGen.Next(0, 100);
@@ -131,7 +150,7 @@ namespace Adam
                     source = new Rectangle(20 * 16, 8 * 16, 16, 16);
                     break;
                 case 4:
-                    source = new Rectangle(21 * 16, 8 * 16, 16, 16);
+                    source = new Rectangle(21 * 16, 10 * 16, 16, 16);
                     break;
                 case 5:
                     source = new Rectangle(20 * 16, 10 * 16, 16, 16);
@@ -162,7 +181,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);        
+            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);
 
         }
 
@@ -208,6 +227,21 @@ namespace Adam
             for (int i = 0; i < count; i++)
             {
                 Gem gem = new Gem(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y);
+                GameWorld.Instance.entities.Add(gem);
+            }
+        }
+
+        /// <summary>
+        /// Generates specified number of a particular type of gem in gameworld.
+        /// </summary>
+        /// <param name="gemID"></param>
+        /// <param name="tile"></param>
+        /// <param name="count"></param>
+        public static void GenerateIdentical(byte gemID, Tile tile, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Gem gem = new Gem(tile.drawRectangle.Center.X, tile.drawRectangle.Y - Main.Tilesize / 2, gemID);
                 GameWorld.Instance.entities.Add(gem);
             }
         }
