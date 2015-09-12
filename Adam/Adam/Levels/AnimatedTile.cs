@@ -138,8 +138,8 @@ namespace Adam
                     frameCount = new Vector2(1, 0);
                     size.X = 2;
                     size.Y = 2;
-                    drawRectangle.Width = 2 * Main.Tilesize;
-                    drawRectangle.Height = 2 * Main.Tilesize;
+                    drawRectangle.Width = (int)size.X * Main.Tilesize;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
                     break;
                 case 48: // Blue Crystal.
                     frameCount = new Vector2(2, 0);
@@ -152,6 +152,11 @@ namespace Adam
                     break;
                 case 51: // Void Fire Spitter.
                     frameCount = new Vector2(4, 0);
+                    break;
+                case 56: // Stalagmite.
+                    frameCount = new Vector2(1, 0);
+                    size.Y = 2;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
                     break;
 
             }

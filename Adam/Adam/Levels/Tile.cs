@@ -402,6 +402,29 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(20, 28);
                     specialTile = new SpecialTile(this);
                     break;
+                case 52: // Sapphire Crystal.
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(21, 24);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Blue, 1, .8f));
+                    break;
+                case 53: // Ruby Crystal.
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(22, 25);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
+                    break;
+                case 54: // Emerald Crystal.
+                    isSolid = true;
+                    positionInSpriteSheet = new Vector2(21, 25);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
+                    break;
+                case 55: // Skull.
+                    positionInSpriteSheet = new Vector2(22, 24);
+                    break;
+                case 56: // Stalagmite
+                    isVoid = true;
+                    positionInSpriteSheet = new Vector2(23, 24);
+                    specialTile = new SpecialTile(this);
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
@@ -1019,6 +1042,38 @@ namespace Adam
                 }
             }
 
+            // Random decoration for hellstone.
+            if (ID == 4 && subID == 5)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                if (array[indexAbove].ID == 0)
+                {
+                    int rand = GameWorld.RandGen.Next(0, 10);
+
+                    // Skull.
+                    if (rand == 0)
+                    {
+                        array[indexAbove].ID = 55;
+                    }
+                    array[indexAbove].DefineTexture();
+                }
+            }
+
+            // Hellstone stalagmmite.
+            if (ID == 4 && subID == 13)
+            {
+                if (GameWorld.RandGen.Next(0, 5) == 1)
+                {
+                    int indexBelow = TileIndex + mapWidth;
+                    int indexTwoBelow = indexBelow + mapWidth;
+                    if (array[indexBelow].ID == 0 && array[indexTwoBelow].ID == 0)
+                    {
+                        array[indexBelow].ID = 56;
+                        array[indexBelow].DefineTexture();
+                    }
+                }
+            }
+
             // Randomly generate different plain textures for certain tiles.
             // Grass
             if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
@@ -1206,10 +1261,15 @@ namespace Adam
             {45, "Mushroom Booster" },
             {46, "Void Ladder" },
             {47, "Wooden Platform" },
-            {48, "Blue Crystal" },
-            {49, "Yellow Crystal" },
-            {50, "Green Sludge" },
+            {48, "Aquaant Crystal" },
+            {49, "Heliaura Crystal" },
+            {50, "Sentistract Sludge" },
             {51, "Void Fire Spitter" },
+            {52, "Sapphire Crystal" },
+            {53, "Ruby Crystal" },
+            {54, "Emerald Crystal" },
+            {55, "Skull" },
+
 
             {100,"Gold Brick Wall" },
             {101,"Stone Wall" },

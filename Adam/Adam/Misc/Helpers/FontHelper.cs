@@ -21,6 +21,9 @@ namespace Adam.Misc.Helpers
         /// <param name="outlineColor">The color of the outline.</param>
         public static void DrawWithOutline(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position, int outlineWidth, Color fontColor, Color outlineColor)
         {
+            if (text == null)
+                text = "";
+
             spriteBatch.DrawString(font, text, new Vector2(position.X + outlineWidth, position.Y), outlineColor);
             spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor);
             spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + outlineWidth), outlineColor);
