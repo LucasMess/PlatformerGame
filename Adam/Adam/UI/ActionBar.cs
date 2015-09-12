@@ -18,9 +18,6 @@ namespace Adam.UI
     {
         Rectangle box;
         PlayButton playButton;
-        OpenButton openButton;
-        SaveButton saveButton;
-        NewButton newButton;
         WallButton wallButton;
         List<FunctionButton> buttons = new List<FunctionButton>();
 
@@ -41,21 +38,13 @@ namespace Adam.UI
             box.Y = Main.UserResHeight + 300;
 
             playButton = new PlayButton(new Vector2(12 + 64, 4), box);
-            openButton = new OpenButton(new Vector2(8 + 32, 4), box);
-            saveButton = new SaveButton(new Vector2(16 + 96, 4), box);
-            newButton = new NewButton(new Vector2(4, 4), box);
+           
             wallButton = new WallButton(new Vector2(20 + 128, 4), box);
 
             playButton.MouseClicked += PlayButton_MouseClicked;
-            openButton.MouseClicked += OpenButton_MouseClicked;
-            saveButton.MouseClicked += SaveButton_MouseClicked;
-            newButton.MouseClicked += NewButton_MouseClicked;
             wallButton.MouseClicked += WallButton_MouseClicked;
 
             buttons.Add(playButton);
-            buttons.Add(openButton);
-            buttons.Add(saveButton);
-            buttons.Add(newButton);
             buttons.Add(wallButton);
 
             properties = new WorldProperties();

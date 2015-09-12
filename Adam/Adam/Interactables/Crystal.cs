@@ -29,7 +29,7 @@ namespace Adam.Interactables
         public void Update()
         {
             Player player = GameWorld.Instance.player;
-            player.Score += 1000;
+
             if (player.GetCollRectangle().Intersects(collRectangle) && !broken)
             {
                 breakSound.Play();

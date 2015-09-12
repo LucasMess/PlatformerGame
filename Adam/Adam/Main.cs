@@ -99,7 +99,7 @@ namespace Adam
         public static double WidthRatio;
         public static double HeightRatio;
 
-        public static float MaxVolume = .04f;
+        public static float MaxVolume = .05f;
 
         public bool wasPressed, debugOn, debugPressed;
 
@@ -143,7 +143,7 @@ namespace Adam
             graphics = new GraphicsDeviceManager(this);
             Content = new ContentManager(Services, "Content");
             GameData = new GameDataManager();
-            
+
             // Sets the current screen resolution to the user resolution.
             graphics.PreferredBackBufferWidth = UserResWidth;
             graphics.PreferredBackBufferHeight = UserResHeight;
@@ -210,7 +210,7 @@ namespace Adam
         protected override void LoadContent()
         {
             CurrentGameState = GameState.SplashScreen;
-            loadingScreen = new LoadingScreen(new Vector2(UserResWidth,UserResHeight), Content);
+            loadingScreen = new LoadingScreen(new Vector2(UserResWidth, UserResHeight), Content);
             splashDKD = ContentHelper.LoadTexture("Backgrounds/Splash/DKD_new");
             quack = Content.Load<SoundEffect>("Backgrounds/Splash/quack");
             blackScreen = ContentHelper.LoadTexture("Tiles/black");
@@ -219,7 +219,7 @@ namespace Adam
             menu.Load(Content);
             cutscene.Load(Content);
 
-            debug = new GameDebug(debugFont, new Vector2(UserResWidth,UserResHeight), blackScreen);
+            debug = new GameDebug(debugFont, new Vector2(UserResWidth, UserResHeight), blackScreen);
 
             CurrentGameMode = GameMode.None;
 
@@ -509,7 +509,7 @@ namespace Adam
             {
                 case GameState.SplashScreen:
                     SpriteBatch.Begin();
-                    SpriteBatch.Draw(splashDKD, new Rectangle(0, 0,UserResWidth, UserResHeight), Color.White);
+                    SpriteBatch.Draw(splashDKD, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
                     break;
                 case GameState.Cutscene:
@@ -536,12 +536,9 @@ namespace Adam
                     SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
 
-                    if (GameData.Settings.DesiredLight)
-                    {
-                        SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                        SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                        SpriteBatch.End();
-                    }
+                    SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                    SpriteBatch.End();
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
@@ -589,11 +586,11 @@ namespace Adam
                     SpriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     SpriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
                     SpriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
-                    SpriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0,120),Color.White);
+                    SpriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0, 120), Color.White);
                     SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     SpriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     SpriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
-                    SpriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: "+GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: " + GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
                     SpriteBatch.DrawString(debugFont, "Dynamic Lights Count: " + gameWorld.lightEngine?.dynamicLights.Count, new Vector2(0, 220), Color.White);
                     SpriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
                     SpriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);

@@ -55,7 +55,13 @@ namespace Adam.Interactables
                     break;
             }
 
+            OnPlayerPickUp += Food_OnPlayerPickUp;
+        }
 
+        private void Food_OnPlayerPickUp(PickedUpArgs e)
+        {
+            e.Player.Heal(healAmount);
+            pickUpSound.Play();
         }
 
         public override void Update()
@@ -64,12 +70,6 @@ namespace Adam.Interactables
             collRectangle.X += (int)velocity.X;
             collRectangle.Y += (int)velocity.Y;
 
-            if (!hasHealed && player.GetCollRectangle().Intersects(collRectangle))
-            {
-                hasHealed = true;
-                player.Heal(healAmount);
-                pickUpSound.Play();
-            }
             base.Update();
         }
 

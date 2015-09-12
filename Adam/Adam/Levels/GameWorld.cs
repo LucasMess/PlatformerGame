@@ -56,6 +56,9 @@ namespace Adam
         public Background background = new Background();
         PopUp popUp = new PopUp();
 
+        Adam.Misc.Timer stopMovingTimer = new Misc.Timer();
+        bool playerMovingRight;
+
         public GameTime GetGameTime()
         {
             return gameTime;
@@ -217,7 +220,32 @@ namespace Adam
             }
             else
             {
-                camera.UpdateSmoothly(player.GetCollRectangle(), worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
+                Rectangle cameraRect = player.GetCollRectangle();
+                //cameraRect.X += (int)(player.GetVelocity().X * 50);
+
+                stopMovingTimer.Increment();
+                if (InputHelper.IsKeyDown(Keys.A))
+                {
+                    stopMovingTimer.Reset();
+                }
+                if (InputHelper.IsKeyDown(Keys.D))
+                {
+                    stopMovingTimer.Reset();
+                }
+
+                if (stopMovingTimer.TimeElapsedInMilliSeconds < 3000)
+                {
+                    int distance = 150;
+
+                    if (player.IsFacingRight)
+                    {
+                        cameraRect.X += distance;
+                    }
+                    else cameraRect.X -= distance;
+                }
+
+
+                camera.UpdateSmoothly(cameraRect, worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
 
                 if (player.IsDead())
                 {

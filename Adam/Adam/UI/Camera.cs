@@ -69,7 +69,7 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 
-            velocity = (currentLeftCorner - lastCameraLeftCorner) / 8;
+            velocity = (currentLeftCorner - lastCameraLeftCorner) / 15;
             Vector3 cameraLeftCorner = lastCameraLeftCorner;
             cameraLeftCorner += velocity;
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
