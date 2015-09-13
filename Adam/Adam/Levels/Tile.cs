@@ -285,9 +285,7 @@ namespace Adam
                     }
 
                     break;
-                case 30: //Marble ceiling support
-                    positionInSpriteSheet = new Vector2(13, 4);
-                    isSolid = true;
+                case 30: //Vacant
                     break;
                 case 31: //Tree
                     positionInSpriteSheet = new Vector2(16, 0);
@@ -739,11 +737,11 @@ namespace Adam
             {
                 int indexAbove = TileIndex - mapWidth;
                 int indexBelow = TileIndex + mapWidth;
-                if (array[indexAbove].ID != 18 && array[indexAbove].ID != 0)
+                if (array[indexAbove].ID != 18)
                 {
                     subID = 1;
                 }
-                else if (array[indexBelow].ID != 18 && array[indexBelow].ID != 0)
+                else if (array[indexBelow].ID != 18)
                 {
                     subID = 2;
                 }
@@ -751,7 +749,7 @@ namespace Adam
             }
 
             //Marble Floor
-            else if (ID == 3 && subID == 0)
+            else if (ID == 3)
             {
                 if (array[TileIndex - 1].ID != 3)
                     subID = 2;
@@ -760,19 +758,21 @@ namespace Adam
                 else subID = 0;
             }
 
-            //Fences
-            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
-            {
-                subID = 1;
-            }
 
             //Marble Ceiling
             else if (ID == 29)
             {
                 if (array[TileIndex + 1].ID != 29)
                     subID = 1;
-                if (array[TileIndex - 1].ID != 29)
+                else if (array[TileIndex - 1].ID != 29)
                     subID = 2;
+                else subID = 0;
+            }
+
+            //Fences
+            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
+            {
+                subID = 1;
             }
 
 
@@ -1249,7 +1249,7 @@ namespace Adam
             {27,"Golden Chest" },
             {28,"Health Apple" },
             {29,"Marble Ceiling" },
-            {30,"Marble Ceiling Support" },
+            {30,"" },
             {31,"Tree" },
             {32,"Small Rock" },
             {33,"Big Rock" },

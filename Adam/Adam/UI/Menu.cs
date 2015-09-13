@@ -109,7 +109,7 @@ namespace Adam
             //lighting.MouseClicked += lighting_MouseClicked;
             //buttons.Add(lighting);
 
-            fullscreen = new Button(first, "Fullscreen: ");
+            fullscreen = new Button(first, "Borderless Mode: ");
             fullscreen.MouseClicked += fullscreen_MouseClicked;
             fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
             buttons.Add(fullscreen);
@@ -331,7 +331,7 @@ namespace Adam
                 case MenuState.Options:
                     //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
                     //lighting.Text = "Lighting: " + lighting.IsActive;
-                    fullscreen.Text = "Fullscreen: " + fullscreen.IsActive;
+                    fullscreen.Text = "Borderless Mode: " + !fullscreen.IsActive;
 
                     //smoothPixels.Update();
                     //lighting.Update();
