@@ -94,6 +94,8 @@ namespace Adam
         public WorldData worldData;
         public GameWorld() { }
 
+        int oldCameraDistance;
+
         public GameWorld(Main game1)
         {
             instance = this;
@@ -227,21 +229,27 @@ namespace Adam
                 if (InputHelper.IsKeyDown(Keys.A))
                 {
                     stopMovingTimer.Reset();
+                    oldCameraDistance = 0;
                 }
                 if (InputHelper.IsKeyDown(Keys.D))
                 {
                     stopMovingTimer.Reset();
+                    oldCameraDistance = 0;
                 }
 
                 if (stopMovingTimer.TimeElapsedInMilliSeconds < 3000)
                 {
-                    int distance = 150;
+                    int distance = (int)(50 * player.GetVelocity().X);
+                    if (distance < 0 && oldCameraDistance > 0)
+                        distance = oldCameraDistance;
+                    if (distance > 0 && oldCameraDistance < 0)
+                        distance = oldCameraDistance;
+                    if (Math.Abs(distance) < Math.Abs(oldCameraDistance))
+                        distance = oldCameraDistance;
 
-                    if (player.IsFacingRight)
-                    {
-                        cameraRect.X += distance;
-                    }
-                    else cameraRect.X -= distance;
+                    cameraRect.X += distance;
+
+                    oldCameraDistance = distance;
                 }
 
 
@@ -457,8 +465,9 @@ namespace Adam
             }
         }
 
-        public void DrawAfterLights(SpriteBatch spriteBatch) { 
-}
+        public void DrawAfterLights(SpriteBatch spriteBatch)
+        {
+        }
 
         public void DrawGlows(SpriteBatch spriteBatch)
         {
