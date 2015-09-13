@@ -20,6 +20,20 @@ namespace Adam.Characters.Enemies
             velocity.X = 1;
         }
 
+        private Rectangle _respawnRect;
+        public override Rectangle RespawnLocation
+        {
+            get
+            {
+                if (_respawnRect == new Rectangle(0, 0, 0, 0))
+                {
+                    _respawnRect = collRectangle;
+                }
+                return _respawnRect;
+            }
+        }
+
+
         public override void Update()
         {
             if (velocity.X > 0) IsFacingRight = true;

@@ -28,6 +28,20 @@ namespace Adam
             }
         }
 
+        private Rectangle _respawnRect;
+        public override Rectangle RespawnLocation
+        {
+            get
+            {
+                if (_respawnRect == new Rectangle(0, 0, 0, 0))
+                {
+                    _respawnRect = collRectangle;
+                }
+                return _respawnRect;
+            }
+        }
+
+
         public override int MaxHealth
         {
             get

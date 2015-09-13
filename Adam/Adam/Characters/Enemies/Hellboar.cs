@@ -43,6 +43,20 @@ namespace Adam.Characters.Enemies
             tweet = new SoundFx("Sounds/Hellboar/tweet", this);
         }
 
+        private Rectangle _respawnRect;
+        public override Rectangle RespawnLocation
+        {
+            get
+            {
+                if (_respawnRect == new Rectangle(0, 0, 0, 0))
+                {
+                    _respawnRect = collRectangle;
+                }
+                return _respawnRect;
+            }
+        }
+
+
         public override void Update()
         {
             CheckForPlayer();

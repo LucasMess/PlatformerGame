@@ -122,6 +122,19 @@ namespace Adam.Enemies
             }
         }
 
+        private Rectangle _respawnRect;
+        public override Rectangle RespawnLocation
+        {
+            get
+            {
+                if (_respawnRect == new Rectangle(0, 0, 0, 0))
+                {
+                    _respawnRect = collRectangle;
+                }
+                return _respawnRect;
+            }
+        }
+
         public Snake(int x, int y)
         {
             //Sets up specific variables for the snake

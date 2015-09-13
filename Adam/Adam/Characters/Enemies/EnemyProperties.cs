@@ -26,6 +26,14 @@ namespace Adam.Characters.Enemies
             get;
         }
 
+        /// <summary>
+        /// The original rectangle when the enemy spawned.
+        /// </summary>
+        public abstract Rectangle RespawnLocation
+        {
+            get;
+        }
+
         /// <summar
         /// The box on the enemy that defines where it can take damage from the player jumping on it.
         /// </summary>

@@ -16,6 +16,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         public override void Update()
         {
+            Rectangle check = RespawnLocation;
             hitByPlayerTimer.Increment();
             wasMeanTimer.Increment();
             PlayMeanSound();
@@ -181,6 +182,13 @@ namespace Adam.Characters.Enemies
                 player.TakeDamageAndKnockBack(GetTouchDamage());
             }
 
+        }
+
+        public override void Revive()
+        {
+            collRectangle = RespawnLocation;
+
+            base.Revive();
         }
 
 
