@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -12,10 +13,9 @@ namespace Adam.Obstacles
     public class FallingBoulder : Obstacle, ICollidable, INewtonian
     {
         bool hasFallen;
-        Vector2 original;
+        int originalY;
 
-        SoundEffect fallingSound;
-        SoundEffectInstance fallingSoundInstance;
+        SoundFx fallingSound;
 
         public float GravityStrength { get; set; }
 
@@ -43,14 +43,13 @@ namespace Adam.Obstacles
         {
             GravityStrength = Main.Gravity ;
             Texture = GameWorld.SpriteSheet;
-            fallingSound = ContentHelper.LoadSound("Sounds/Obstacles/boulder_smash");
-            fallingSoundInstance = fallingSound.CreateInstance();
+            fallingSound = new SoundFx("Sounds/Boulder/boulder_fall", this);   
 
             collRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
             sourceRectangle = new Rectangle(12 * 16, 26 * 16, 32, 32);
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
-            original = new Vector2(DrawRectangle.X, DrawRectangle.Y);
+            originalY = DrawRectangle.Y;
         }
 
         public override void Update()
@@ -62,6 +61,23 @@ namespace Adam.Obstacles
                 Player player = GameWorld.Instance.player;
                 player.PlayGoreSound();
                 player.KillAndRespawn();
+            }
+
+            // If hit ground go back up slowly.
+            if (hasFallen)
+            {
+                velocity.Y = -1f;
+            }
+            else
+            {
+                GravityStrength = Main.Gravity;
+            }
+
+            if (collRectangle.Y < originalY && hasFallen)
+            {
+                fallingSound.Reset();
+                hasFallen = false;
+                velocity.Y = 0;
             }
         }
 
@@ -76,13 +92,16 @@ namespace Adam.Obstacles
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
             velocity.Y = 0;
-            GravityStrength = Main.Gravity;
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
         {
-            velocity.Y =-0;
-            GravityStrength = -Main.Gravity;
+            velocity.Y = 0;
+            GravityStrength = 0;
+            hasFallen = true;
+
+            StompSmokeParticle.Generate(10, this);
+            fallingSound.PlayNewInstanceOnce();
         }
 
         public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)

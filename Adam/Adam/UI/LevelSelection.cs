@@ -102,6 +102,7 @@ namespace Adam.UI
         private void NewLevel_OnTextEntered(TextInputArgs e)
         {
             string newPath;
+            Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
 
             try
             {
@@ -110,10 +111,9 @@ namespace Adam.UI
             catch (Exception ex)
             {
                 Main.MessageBox.Show(ex.Message);
-                Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
                 return;
             }
-            Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
+
             DataFolder.EditLevel(newPath);
         }
 

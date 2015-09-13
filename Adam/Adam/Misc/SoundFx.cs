@@ -14,7 +14,7 @@ namespace Adam.Misc
         bool isGlobal = true;
         Entity source;
 
-        public float Volume { get; set; } = Main.MaxVolume;
+        public float MaxVolume { get; set; } = Main.MaxVolume;
 
         public SoundFx(string file)
         {
@@ -32,10 +32,10 @@ namespace Adam.Misc
 
         public void Play()
         {
-            if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
-            if (instance.Volume > Volume)
+            if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
+            if (instance.Volume > MaxVolume)
             {
-                instance.Volume = Volume;
+                instance.Volume = MaxVolume;
             }
             instance.Play();
         }
@@ -45,10 +45,10 @@ namespace Adam.Misc
             if (!isPlaying)
             {
                 SoundEffectInstance newInstance = soundEffect.CreateInstance();
-                if (!isGlobal) newInstance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
-                if (newInstance.Volume > Volume)
+                if (!isGlobal) newInstance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
+                if (newInstance.Volume > MaxVolume)
                 {
-                    newInstance.Volume = Volume;
+                    newInstance.Volume = MaxVolume;
                 }
                 newInstance.Play();
                 isPlaying = true;
@@ -59,10 +59,10 @@ namespace Adam.Misc
         {
             if (!isPlaying)
             {
-                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
-                if (instance.Volume > Volume)
+                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
+                if (instance.Volume > MaxVolume)
                 {
-                    instance.Volume = Volume;
+                    instance.Volume = MaxVolume;
                 }
                 instance.Play();
                 isPlaying = true;
@@ -78,10 +78,10 @@ namespace Adam.Misc
         {
             if (instance.State == SoundState.Stopped)
             {
-                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player);
-                if (instance.Volume > Volume)
+                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
+                if (instance.Volume > MaxVolume)
                 {
-                    instance.Volume = Volume;
+                    instance.Volume = MaxVolume;
                 }
                 instance.Play();
             }

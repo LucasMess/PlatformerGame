@@ -482,7 +482,7 @@ namespace Adam
         /// </summary>
         /// <param name="listener">Who the listener is.</param>
         /// <returns>Volume of sound.</returns>
-        public float GetSoundVolume(Entity listener)
+        public float GetSoundVolume(Entity listener, float maxVolume)
         {
             float xDist = listener.collRectangle.Center.X - DrawRectangle.Center.X;
             float yDist = listener.collRectangle.Center.Y - DrawRectangle.Center.Y;
@@ -490,7 +490,7 @@ namespace Adam
 
             if (distanceTo > 1000)
                 return 0;
-            else return (1 - (distanceTo / 1000)) * Main.MaxVolume;
+            else return (1 - (distanceTo / 1000)) *maxVolume;
         }
 
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)

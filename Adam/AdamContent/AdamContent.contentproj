@@ -869,13 +869,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Obstacles\boulder_smash.wav">
-      <Name>boulder_smash</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Effects\blood.png">
       <Name>blood</Name>
       <Importer>TextureImporter</Importer>
@@ -1666,6 +1659,13 @@
     </Compile>
     <Compile Include="Sounds\Crystal\Glass_08.wav">
       <Name>Glass_08</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sounds\Boulder\boulder_fall.wav">
+      <Name>boulder_fall</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>

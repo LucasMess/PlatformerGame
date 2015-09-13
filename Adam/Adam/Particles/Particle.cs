@@ -637,6 +637,20 @@ namespace Adam
         {
             DefaultBehavior();
         }
+
+        /// <summary>
+        /// Generate many of this particle at once.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="entity"></param>
+        public static void Generate(int number, Entity entity)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                StompSmokeParticle par = new StompSmokeParticle(entity);
+                GameWorld.Instance.particles.Add(par);
+            }
+        }
     }
 
     public class ConstructionSmokeParticle : Particle
