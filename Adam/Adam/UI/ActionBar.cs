@@ -104,6 +104,7 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
+            GameWorld.Instance.levelEditor.onWallMode = false;
             TestLevel();
         }
 

@@ -51,10 +51,8 @@ namespace Adam
 
         public GameMode CurrentGameMode;
         public Player player;
-        public Apple apple;
         public bool debuggingMode;
         public Background background = new Background();
-        PopUp popUp = new PopUp();
 
         Adam.Misc.Timer stopMovingTimer = new Misc.Timer();
         bool playerMovingRight;
@@ -94,7 +92,7 @@ namespace Adam
         public WorldData worldData;
         public GameWorld() { }
 
-        int oldCameraDistance;
+        int distance;
 
         public GameWorld(Main game1)
         {
@@ -132,7 +130,6 @@ namespace Adam
             particles = new List<Particle>();
 
             player = game1.player;
-            popUp.Load(Content);
 
             int width = worldData.LevelWidth;
             int height = worldData.LevelHeight;
@@ -229,28 +226,26 @@ namespace Adam
                 if (InputHelper.IsKeyDown(Keys.A))
                 {
                     stopMovingTimer.Reset();
-                    oldCameraDistance = 0;
+                    distance+=2;
                 }
                 if (InputHelper.IsKeyDown(Keys.D))
                 {
                     stopMovingTimer.Reset();
-                    oldCameraDistance = 0;
+                    distance-=2;
                 }
 
-                if (stopMovingTimer.TimeElapsedInMilliSeconds < 3000)
+                if (stopMovingTimer.TimeElapsedInMilliSeconds > 3000)
                 {
-                    int distance = (int)(50 * player.GetVelocity().X);
-                    if (distance < 0 && oldCameraDistance > 0)
-                        distance = oldCameraDistance;
-                    if (distance > 0 && oldCameraDistance < 0)
-                        distance = oldCameraDistance;
-                    if (Math.Abs(distance) < Math.Abs(oldCameraDistance))
-                        distance = oldCameraDistance;
-
-                    cameraRect.X += distance;
-
-                    oldCameraDistance = distance;
+                    distance = 0;
                 }
+
+                int max = 200;
+                if (distance > max)
+                    distance = max;
+                if (distance < -max)
+                    distance = -max;
+
+                cameraRect.X -= distance;
 
 
                 camera.UpdateSmoothly(cameraRect, worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
@@ -267,15 +262,12 @@ namespace Adam
 
             TimesUpdated++;
 
-            popUp.Update(gameTime, player);
             background.Update(camera);
             placeNotification.Update(gameTime);
             worldData.Update(gameTime);
             lightEngine.Update();
             UpdateInBackground();
 
-            if (apple != null)
-                apple.Update(player, gameTime, this, game1);
 
 
 
@@ -285,44 +277,47 @@ namespace Adam
                 c.Update(gameTime);
             }
 
-            for (int i = 0; i < entities.Count; i++)
+            if (CurrentGameMode == GameMode.Play)
             {
-                Entity entity = entities[i];
-                if (entity is Enemy)
+                for (int i = 0; i < entities.Count; i++)
                 {
-                    Enemy enemy = (Enemy)entity;
-                    if (!enemy.IsDead())
-                        enemy.Update();
-                }
-                if (entity is Obstacle)
-                {
-                    Obstacle obstacle = (Obstacle)entity;
-                    obstacle.Update();
-                }
-                if (entity is Item)
-                {
-                    Item power = (Item)entity;
-                    power.Update();
-                }
-                if (entity is Projectile)
-                {
-                    Projectile proj = (Projectile)entity;
-                    proj.Update(player, gameTime);
-                }
-                if (entity is NonPlayableCharacter)
-                {
-                    NonPlayableCharacter npc = (NonPlayableCharacter)entity;
-                    npc.Update(gameTime, player);
-                }
-                if (entity is Sign)
-                {
-                    Sign sign = (Sign)entity;
-                    sign.Update();
-                }
-                if (entity is CheckPoint)
-                {
-                    CheckPoint ch = (CheckPoint)entity;
-                    ch.Update();
+                    Entity entity = entities[i];
+                    if (entity is Enemy)
+                    {
+                        Enemy enemy = (Enemy)entity;
+                        if (!enemy.IsDead())
+                            enemy.Update();
+                    }
+                    if (entity is Obstacle)
+                    {
+                        Obstacle obstacle = (Obstacle)entity;
+                        obstacle.Update();
+                    }
+                    if (entity is Item)
+                    {
+                        Item power = (Item)entity;
+                        power.Update();
+                    }
+                    if (entity is Projectile)
+                    {
+                        Projectile proj = (Projectile)entity;
+                        proj.Update(player, gameTime);
+                    }
+                    if (entity is NonPlayableCharacter)
+                    {
+                        NonPlayableCharacter npc = (NonPlayableCharacter)entity;
+                        npc.Update(gameTime, player);
+                    }
+                    if (entity is Sign)
+                    {
+                        Sign sign = (Sign)entity;
+                        sign.Update();
+                    }
+                    if (entity is CheckPoint)
+                    {
+                        CheckPoint ch = (CheckPoint)entity;
+                        ch.Update();
+                    }
                 }
             }
 
@@ -407,8 +402,6 @@ namespace Adam
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawBehindTiles(spriteBatch);
 
-            if (apple != null)
-                apple.Draw(spriteBatch);
             foreach (Gem gem in gemList)
             {
                 gem.Draw(spriteBatch);
@@ -512,7 +505,6 @@ namespace Adam
 
         public void UpdateFromDataPacket(MapDataPacket m)
         {
-            apple = m.apple;
             isOnDebug = m.isPaused;
             levelComplete = m.levelComplete;
 

@@ -38,13 +38,19 @@ namespace Adam
 
     public class Main : Microsoft.Xna.Framework.Game
     {
-        private static Main _instance;
         /// <summary>
         /// The running instance of the game.
         /// </summary>
+        private static Main instance;
+
         public static Main Instance
         {
-            get { return _instance; }
+            get
+            {
+                if (instance == null)
+                    throw new Exception("The instance of Gameworld has not yet been created.");
+                else return instance;
+            }
         }
 
         #region Variables
@@ -132,6 +138,8 @@ namespace Adam
 
         public Main()
         {
+            instance = this;
+
             // Get the current monitor resolution and set it as the game's resolution
             Vector2 monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             UserResWidth = (int)monitorRes.X;
@@ -581,7 +589,7 @@ namespace Adam
                 if (debugOn)
                 {
                     SpriteBatch.Begin();
-                    SpriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
+                    SpriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White * .3f);
                     SpriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
                     SpriteBatch.DrawString(debugFont, "", new Vector2(0, 20), Color.White);
                     SpriteBatch.DrawString(debugFont, "Camera Position:" + camera.invertedCoords.X + "," + camera.invertedCoords.Y, new Vector2(0, 40), Color.White);

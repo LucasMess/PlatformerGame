@@ -73,7 +73,7 @@ namespace Adam.Obstacles
                 GravityStrength = Main.Gravity;
             }
 
-            if (collRectangle.Y < originalY && hasFallen)
+            if (collRectangle.Y <= originalY && hasFallen)
             {
                 fallingSound.Reset();
                 hasFallen = false;
@@ -91,7 +91,7 @@ namespace Adam.Obstacles
 
         public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
         {
-            velocity.Y = 0;
+
         }
 
         public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)

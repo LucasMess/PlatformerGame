@@ -24,6 +24,7 @@ namespace Adam
         Obstacle obstacle;
         Chest chest;
 
+        public bool IsBrushTile { get; set; }
         public bool isSolid;
         public bool isClimbable;
         public bool isWall;
@@ -258,16 +259,20 @@ namespace Adam
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3, .3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
-                case 25:
+                case 25: // Poisoned Water.
                     positionInSpriteSheet = new Vector2(8, 15);
                     isVoid = true;
                     specialTile = new SpecialTile(this);
                     break;
-                case 26: //apple
+                case 26: // Golden Apple.
                     isVoid = true;
+                    positionInSpriteSheet = new Vector2(8, 26);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 27: //golden chest
                     isVoid = true;
+                    positionInSpriteSheet = new Vector2(15, 3);
+                    specialTile = new SpecialTile(this);
                     break;
                 case 29: //Marble ceiling
                     isSolid = true;
@@ -285,7 +290,7 @@ namespace Adam
                     }
 
                     break;
-                case 30: //Vacant
+                case 30: // Vacant.
                     break;
                 case 31: //Tree
                     positionInSpriteSheet = new Vector2(16, 0);
@@ -309,7 +314,9 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(12, 4);
                     break;
                 case 37: //Checkpoint
+                    positionInSpriteSheet = new Vector2(8, 29);
                     isVoid = true;
+                    specialTile = new SpecialTile(this);
                     break;
                 case 38: //Stone Brick
                     isSolid = true;
@@ -426,6 +433,11 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(23, 24);
                     specialTile = new SpecialTile(this);
                     break;
+                case 57: // Mud.
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(4, 29);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
@@ -461,18 +473,24 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 105://Sand Wall
-                    positionInSpriteSheet = new Vector2(15, 9);
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(4, 24);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 106: //Hellstone Wall
-                    positionInSpriteSheet = new Vector2(14, 9);
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(0, 24);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 107: //Stone Brick Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(8, 19);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 108: // Mesa Wall
-                    positionInSpriteSheet = new Vector2(15, 8);
+                case 108: // Sand Wall
+                    hasConnectPattern = true;
+                    startingPoint = new Vector2(0, 29);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 #endregion
 
@@ -579,7 +597,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        positionInSpriteSheet = new Vector2(12, 26);
+                        positionInSpriteSheet = new Vector2(19, 13);
                     }
                     else
                     {
@@ -596,7 +614,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        positionInSpriteSheet = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(22, 12);
                     }
                     else
                     {
@@ -613,7 +631,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        positionInSpriteSheet = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(22, 13);
                     }
                     else
                     {
@@ -630,7 +648,7 @@ namespace Adam
                     sunlightPassesThrough = true;
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
-                        positionInSpriteSheet = new Vector2(12, 8);
+                        positionInSpriteSheet = new Vector2(20, 13);
                     }
                     else
                     {

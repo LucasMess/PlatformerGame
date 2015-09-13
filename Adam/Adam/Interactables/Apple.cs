@@ -6,68 +6,42 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Adam.Misc;
 
 namespace Adam
 {
     public class Apple
     {
-        Texture2D texture;
-        Rectangle rectangle;
-        SoundEffect levelFinishedSound;
+        Rectangle collRectangle;
+        SoundFx levelFinishedSound;
         bool wasPicked;
-        double winTimer;
-        Animation animation;
-        Main game1;
+        Timer changeLevelTimer = new Timer();
 
         public Apple(int x, int y)
         {
-            rectangle = new Rectangle(x, y, 0, 0);
-            Load(Main.Content);
+            collRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
+            levelFinishedSound.MaxVolume = .2f;
         }
 
-        public void Load(ContentManager Content)
+        public void Update()
         {
-            texture = ContentHelper.LoadTexture("Objects/gold_apple");
-            levelFinishedSound = Content.Load<SoundEffect>("Sounds/LevelFinished");
-            rectangle.Width = 32;
-            rectangle.Height = 32;
-            animation = new Animation(texture, rectangle, 200, 100, AnimationType.PlayInIntervals);
-        }
-
-        public void Update(Player player, GameTime gameTime, GameWorld map, Main game1)
-        {
-            this.game1 = game1;
-
-            if (player.GetCollRectangle().Intersects(rectangle))
+            Player player = GameWorld.Instance.player;
+            if (player.GetCollRectangle().Intersects(collRectangle))
             {
-                PlaySound();
+                levelFinishedSound.PlayOnce();
                 wasPicked = true;
-                player.manual_hasControl = false;
             }
+
             if (wasPicked)
             {
-                winTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (winTimer > 2000)
-                {
-                    game1.ChangeState(GameState.MainMenu,GameMode.None);
-                }
+                changeLevelTimer.Increment();
             }
 
-            animation.Update(gameTime);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            animation.Draw(spriteBatch);
-        }
-
-        public void PlaySound()
-        {
-            if (wasPicked == false)
+            if (changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
-                levelFinishedSound.Play();
+                Main.Instance.ChangeState(GameState.MainMenu, GameMode.None);
             }
         }
-
     }
 }

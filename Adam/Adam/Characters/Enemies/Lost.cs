@@ -198,6 +198,7 @@ namespace Adam
 
         void IAnimated.Animate()
         {
+            animation.isFlipped = IsFacingRight;
             animation.Update(GameWorld.Instance.gameTime, DrawRectangle, animationData[0]);
         }
     }

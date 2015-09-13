@@ -74,145 +74,15 @@ namespace Adam
 
             this.game1 = game1;
             this.player = player;
+
             oldKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
-            Keys[] pressedKeys;
-            pressedKeys = currentKeyboardState.GetPressedKeys();
-
-            foreach (Keys key in pressedKeys)
+            InputHelper.TryLinkToKeyboardInput(ref textString, currentKeyboardState, oldKeyboardState);
+            if (InputHelper.IsKeyDown(Keys.Enter) &&!definitionFound)
             {
-                if (oldKeyboardState.IsKeyUp(key))
-                {
-                    string keyString = key.ToString().ToLower();
-
-                    switch (key)
-                    {
-                        case Keys.Back:
-                            if (textString.Length != 0)
-                                textString = textString.Remove(textString.Length - 1, 1);
-                            return;
-                        case Keys.A:
-                            textString += keyString;
-                            return;
-                        case Keys.B:
-                            textString += keyString;
-                            return;
-                        case Keys.C:
-                            textString += keyString;
-                            return;
-                        case Keys.D:
-                            textString += keyString;
-                            return;
-                        case Keys.E:
-                            textString += keyString;
-                            return;
-                        case Keys.F:
-                            textString += keyString;
-                            return;
-                        case Keys.G:
-                            textString += keyString;
-                            return;
-                        case Keys.H:
-                            textString += keyString;
-                            return;
-                        case Keys.I:
-                            textString += keyString;
-                            return;
-                        case Keys.J:
-                            textString += keyString;
-                            return;
-                        case Keys.K:
-                            textString += keyString;
-                            return;
-                        case Keys.L:
-                            textString += keyString;
-                            return;
-                        case Keys.M:
-                            textString += keyString;
-                            return;
-                        case Keys.N:
-                            textString += keyString;
-                            return;
-                        case Keys.O:
-                            textString += keyString;
-                            return;
-                        case Keys.P:
-                            textString += keyString;
-                            return;
-                        case Keys.Q:
-                            textString += keyString;
-                            return;
-                        case Keys.R:
-                            textString += keyString;
-                            return;
-                        case Keys.S:
-                            textString += keyString;
-                            return;
-                        case Keys.T:
-                            textString += keyString;
-                            return;
-                        case Keys.U:
-                            textString += keyString;
-                            return;
-                        case Keys.V:
-                            textString += keyString;
-                            return;
-                        case Keys.W:
-                            textString += keyString;
-                            return;
-                        case Keys.X:
-                            textString += keyString;
-                            return;
-                        case Keys.Y:
-                            textString += keyString;
-                            return;
-                        case Keys.Z:
-                            textString += keyString;
-                            return;
-                        case Keys.Space:
-                            textString = textString.Insert(textString.Length, " ");
-                            return;
-                        case Keys.NumPad0:
-                            textString = textString.Insert(textString.Length, "0");
-                            break;
-                        case Keys.NumPad1:
-                            textString = textString.Insert(textString.Length, "1");
-                            return;
-                        case Keys.NumPad2:
-                            textString = textString.Insert(textString.Length, "2");
-                            return;
-                        case Keys.NumPad3:
-                            textString = textString.Insert(textString.Length, "3");
-                            return;
-                        case Keys.NumPad4:
-                            textString = textString.Insert(textString.Length, "4");
-                            return;
-                        case Keys.NumPad5:
-                            textString = textString.Insert(textString.Length, "5");
-                            return;
-                        case Keys.NumPad6:
-                            textString = textString.Insert(textString.Length, "6");
-                            return;
-                        case Keys.NumPad7:
-                            textString = textString.Insert(textString.Length, "7");
-                            return;
-                        case Keys.NumPad8:
-                            textString = textString.Insert(textString.Length, "8");
-                            return;
-                        case Keys.NumPad9:
-                            textString = textString.Insert(textString.Length, "9");
-                            return;
-                        case Keys.Enter:
-                            AnalyzeText();
-                            return;
-                    }
-                }
+                AnalyzeText();
             }
-        }
-
-        private void CheckKeyboardInput()
-        {
 
         }
 

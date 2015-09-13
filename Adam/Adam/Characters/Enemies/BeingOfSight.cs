@@ -85,8 +85,6 @@ namespace Adam.Characters.Enemies
             sourceRectangle = new Rectangle(0, 0,16, 16);
             Texture = ContentHelper.LoadTexture("Void Shurinken/voisshurinken");
             velocity = new Vector2(1,1);
-            Light = new Lights.DynamicPointLight(this, 1, false, Color.Red, 1);
-            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
         }
 

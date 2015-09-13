@@ -29,7 +29,9 @@ namespace Adam
         FlameSpitter flameSpitter;
         MachineGun machineGun;
         Crystal crystal;
+        Apple apple;
         Tile sourceTile;
+
 
 
         /// <summary>
@@ -104,6 +106,10 @@ namespace Adam
                     liquid = new Liquid(drawRectangle.X, drawRectangle.Y, Liquid.Type.Poison);
                     frameCount = new Vector2(4, 0);
                     hasRandomStartingPoint = true;
+                    break;
+                case 26: // Golden Apple.
+                    apple = new Apple(drawRectangle.X, drawRectangle.Y);
+                    frameCount = new Vector2(4, 0);
                     break;
                 case 31: //Tree
                     frameCount = new Vector2(1, 0);
@@ -215,6 +221,7 @@ namespace Adam
             flameSpitter?.Update();
             machineGun?.Update();
             crystal?.Update();
+            apple?.Update();
 
             switch (ID)
             {

@@ -38,8 +38,7 @@ namespace Adam
             }
             catch (ContentLoadException)
             {
-                backgroundID = 1;
-                Load();
+                lastBackgroundID = backgroundID;
                 return;
             }
 

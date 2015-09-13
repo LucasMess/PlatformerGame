@@ -84,6 +84,7 @@ namespace Adam.UI
                     Tile fakeTile = new Tile(); 
                     fakeTile.ID = gameWorld.levelEditor.selectedID;
                     fakeTile.drawRectangle = hovered.drawRectangle;
+                    fakeTile.IsBrushTile = true;
                     fakeTile.DefineTexture();
                     fakeTile.texture = GameWorld.SpriteSheet;
                     selectedBrushTiles[i] = fakeTile;
