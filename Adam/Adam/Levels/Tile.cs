@@ -473,6 +473,9 @@ namespace Adam
                     startingPoint = new Vector2(8, 19);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case 108: // Mesa Wall
+                    positionInSpriteSheet = new Vector2(15, 8);
+                    break;
                 #endregion
 
                 case 200: //Player
@@ -1279,10 +1282,10 @@ namespace Adam
             {102,"Dirt Wall" },
             {103,"Fence" },
             {104,"Marble Wall" },
-            {105,"Sand Wall" },
+            {105,"Mesa Wall" },
             {106,"Hellstone Wall" },
             {107,"Stone Brick Wall" },
-            {108,"" },
+            {108,"Sand Wall" },
 
             {200,"Player" },
             {201,"Snake" },

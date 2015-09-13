@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Misc;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace Adam
 {
     public static class InputHelper
     {
+        static Timer keyPressedTimer = new Timer();
+
         public static bool IsAnyInputPressed()
         {
             KeyboardState keyboard = Keyboard.GetState();
@@ -119,6 +122,8 @@ namespace Adam
             else return false;
         }
 
+
+
         /// <summary>
         /// Tries to convert keyboard input to characters and prevents repeatedly returning the 
         /// same character if a key was pressed last frame, but not yet unpressed this frame.
@@ -130,84 +135,139 @@ namespace Adam
         /// <param name="key">When this method returns, contains the correct character if conversion succeeded.
         /// Else contains the null, (000), character.</param>
         /// <returns>True if conversion was successful</returns>
-        public static bool TryConvertKeyboardInput(KeyboardState keyboard, KeyboardState oldKeyboard, out char key)
+        public static bool TryLinkToKeyboardInput(ref string text, KeyboardState keyboard, KeyboardState oldKeyboard)
         {
-            Keys[] keys = keyboard.GetPressedKeys();
-            bool shift = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
+            Keys[] keysPressed = keyboard.GetPressedKeys();
+            List<char> charactersList = new List<char>();
 
-            if (keys.Length > 0 && !oldKeyboard.IsKeyDown(keys[0]))
+            if (keysPressed.Length > 0)
             {
-                switch (keys[0])
+                for (int i = 0; i < keysPressed.Length; i++)
                 {
-                    //Alphabet keys
-                    case Keys.A: if (shift) { key = 'A'; } else { key = 'a'; } return true;
-                    case Keys.B: if (shift) { key = 'B'; } else { key = 'b'; } return true;
-                    case Keys.C: if (shift) { key = 'C'; } else { key = 'c'; } return true;
-                    case Keys.D: if (shift) { key = 'D'; } else { key = 'd'; } return true;
-                    case Keys.E: if (shift) { key = 'E'; } else { key = 'e'; } return true;
-                    case Keys.F: if (shift) { key = 'F'; } else { key = 'f'; } return true;
-                    case Keys.G: if (shift) { key = 'G'; } else { key = 'g'; } return true;
-                    case Keys.H: if (shift) { key = 'H'; } else { key = 'h'; } return true;
-                    case Keys.I: if (shift) { key = 'I'; } else { key = 'i'; } return true;
-                    case Keys.J: if (shift) { key = 'J'; } else { key = 'j'; } return true;
-                    case Keys.K: if (shift) { key = 'K'; } else { key = 'k'; } return true;
-                    case Keys.L: if (shift) { key = 'L'; } else { key = 'l'; } return true;
-                    case Keys.M: if (shift) { key = 'M'; } else { key = 'm'; } return true;
-                    case Keys.N: if (shift) { key = 'N'; } else { key = 'n'; } return true;
-                    case Keys.O: if (shift) { key = 'O'; } else { key = 'o'; } return true;
-                    case Keys.P: if (shift) { key = 'P'; } else { key = 'p'; } return true;
-                    case Keys.Q: if (shift) { key = 'Q'; } else { key = 'q'; } return true;
-                    case Keys.R: if (shift) { key = 'R'; } else { key = 'r'; } return true;
-                    case Keys.S: if (shift) { key = 'S'; } else { key = 's'; } return true;
-                    case Keys.T: if (shift) { key = 'T'; } else { key = 't'; } return true;
-                    case Keys.U: if (shift) { key = 'U'; } else { key = 'u'; } return true;
-                    case Keys.V: if (shift) { key = 'V'; } else { key = 'v'; } return true;
-                    case Keys.W: if (shift) { key = 'W'; } else { key = 'w'; } return true;
-                    case Keys.X: if (shift) { key = 'X'; } else { key = 'x'; } return true;
-                    case Keys.Y: if (shift) { key = 'Y'; } else { key = 'y'; } return true;
-                    case Keys.Z: if (shift) { key = 'Z'; } else { key = 'z'; } return true;
+                    if (!oldKeyboard.IsKeyDown(keysPressed[i]) || keyPressedTimer.TimeElapsedInMilliSeconds > 500)
+                    {
+                        char tempChar;
+                        FindPressedKey(keysPressed[i], out tempChar);
+                        if (tempChar != 0)
+                        charactersList.Add(tempChar);
 
-                    //Decimal keys
-                    case Keys.D0: if (shift) { key = ')'; } else { key = '0'; } return true;
-                    case Keys.D1: if (shift) { key = '!'; } else { key = '1'; } return true;
-                    case Keys.D2: if (shift) { key = '@'; } else { key = '2'; } return true;
-                    case Keys.D3: if (shift) { key = '#'; } else { key = '3'; } return true;
-                    case Keys.D4: if (shift) { key = '$'; } else { key = '4'; } return true;
-                    case Keys.D5: if (shift) { key = '%'; } else { key = '5'; } return true;
-                    case Keys.D6: if (shift) { key = '^'; } else { key = '6'; } return true;
-                    case Keys.D7: if (shift) { key = '&'; } else { key = '7'; } return true;
-                    case Keys.D8: if (shift) { key = '*'; } else { key = '8'; } return true;
-                    case Keys.D9: if (shift) { key = '('; } else { key = '9'; } return true;
+                        // If backspace is pressed, delete last character.
+                        if (InputHelper.IsKeyDown(Keys.Back))
+                        {
+                            if (text.Length != 0)
+                                text = text.Remove(text.Length - 1, 1);
+                        }
+                    }
+                }
 
-                    //Decimal numpad keys
-                    case Keys.NumPad0: key = '0'; return true;
-                    case Keys.NumPad1: key = '1'; return true;
-                    case Keys.NumPad2: key = '2'; return true;
-                    case Keys.NumPad3: key = '3'; return true;
-                    case Keys.NumPad4: key = '4'; return true;
-                    case Keys.NumPad5: key = '5'; return true;
-                    case Keys.NumPad6: key = '6'; return true;
-                    case Keys.NumPad7: key = '7'; return true;
-                    case Keys.NumPad8: key = '8'; return true;
-                    case Keys.NumPad9: key = '9'; return true;
-
-                    //Special keys
-                    case Keys.OemTilde: if (shift) { key = '~'; } else { key = '`'; } return true;
-                    case Keys.OemSemicolon: if (shift) { key = ':'; } else { key = ';'; } return true;
-                    case Keys.OemQuotes: if (shift) { key = '"'; } else { key = '\''; } return true;
-                    case Keys.OemQuestion: if (shift) { key = '?'; } else { key = '/'; } return true;
-                    case Keys.OemPlus: if (shift) { key = '+'; } else { key = '='; } return true;
-                    case Keys.OemPipe: if (shift) { key = '|'; } else { key = '\\'; } return true;
-                    case Keys.OemPeriod: if (shift) { key = '>'; } else { key = '.'; } return true;
-                    case Keys.OemOpenBrackets: if (shift) { key = '{'; } else { key = '['; } return true;
-                    case Keys.OemCloseBrackets: if (shift) { key = '}'; } else { key = ']'; } return true;
-                    case Keys.OemMinus: if (shift) { key = '_'; } else { key = '-'; } return true;
-                    case Keys.OemComma: if (shift) { key = '<'; } else { key = ','; } return true;
-                    case Keys.Space: key = ' '; return true;
+                // Check for long key presses.
+                if (keysPressed.Length == 1)
+                {
+                    keyPressedTimer.Increment();
+                }
+                else
+                {
+                    keyPressedTimer.Reset();
                 }
             }
+            else
+            {
+                // No input pressed.
+                keyPressedTimer.Reset();
+                return false;
+            }
 
-            key = (char)0;
+            // Add pressed characters to string.
+            for(int i = 0; i < charactersList.Count; i++)
+            {                
+                text += charactersList[i];
+            }
+
+
+
+            return true;
+
+        }
+
+        /// <summary>
+        /// Converts Keys class enum into char.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="character"></param>
+        /// <returns></returns>
+        public static bool FindPressedKey(Keys key, out char character)
+        {
+            bool shift = IsKeyDown(Keys.LeftShift) || IsKeyDown(Keys.RightShift);
+
+            switch (key)
+            {
+                //Alphabet keys
+                case Keys.A: if (shift) { character = 'A'; } else { character = 'a'; } return true;
+                case Keys.B: if (shift) { character = 'B'; } else { character = 'b'; } return true;
+                case Keys.C: if (shift) { character = 'C'; } else { character = 'c'; } return true;
+                case Keys.D: if (shift) { character = 'D'; } else { character = 'd'; } return true;
+                case Keys.E: if (shift) { character = 'E'; } else { character = 'e'; } return true;
+                case Keys.F: if (shift) { character = 'F'; } else { character = 'f'; } return true;
+                case Keys.G: if (shift) { character = 'G'; } else { character = 'g'; } return true;
+                case Keys.H: if (shift) { character = 'H'; } else { character = 'h'; } return true;
+                case Keys.I: if (shift) { character = 'I'; } else { character = 'i'; } return true;
+                case Keys.J: if (shift) { character = 'J'; } else { character = 'j'; } return true;
+                case Keys.K: if (shift) { character = 'K'; } else { character = 'k'; } return true;
+                case Keys.L: if (shift) { character = 'L'; } else { character = 'l'; } return true;
+                case Keys.M: if (shift) { character = 'M'; } else { character = 'm'; } return true;
+                case Keys.N: if (shift) { character = 'N'; } else { character = 'n'; } return true;
+                case Keys.O: if (shift) { character = 'O'; } else { character = 'o'; } return true;
+                case Keys.P: if (shift) { character = 'P'; } else { character = 'p'; } return true;
+                case Keys.Q: if (shift) { character = 'Q'; } else { character = 'q'; } return true;
+                case Keys.R: if (shift) { character = 'R'; } else { character = 'r'; } return true;
+                case Keys.S: if (shift) { character = 'S'; } else { character = 's'; } return true;
+                case Keys.T: if (shift) { character = 'T'; } else { character = 't'; } return true;
+                case Keys.U: if (shift) { character = 'U'; } else { character = 'u'; } return true;
+                case Keys.V: if (shift) { character = 'V'; } else { character = 'v'; } return true;
+                case Keys.W: if (shift) { character = 'W'; } else { character = 'w'; } return true;
+                case Keys.X: if (shift) { character = 'X'; } else { character = 'x'; } return true;
+                case Keys.Y: if (shift) { character = 'Y'; } else { character = 'y'; } return true;
+                case Keys.Z: if (shift) { character = 'Z'; } else { character = 'z'; } return true;
+
+                //Decimal keys
+                case Keys.D0: if (shift) { character = ')'; } else { character = '0'; } return true;
+                case Keys.D1: if (shift) { character = '!'; } else { character = '1'; } return true;
+                case Keys.D2: if (shift) { character = '@'; } else { character = '2'; } return true;
+                case Keys.D3: if (shift) { character = '#'; } else { character = '3'; } return true;
+                case Keys.D4: if (shift) { character = '$'; } else { character = '4'; } return true;
+                case Keys.D5: if (shift) { character = '%'; } else { character = '5'; } return true;
+                case Keys.D6: if (shift) { character = '^'; } else { character = '6'; } return true;
+                case Keys.D7: if (shift) { character = '&'; } else { character = '7'; } return true;
+                case Keys.D8: if (shift) { character = '*'; } else { character = '8'; } return true;
+                case Keys.D9: if (shift) { character = '('; } else { character = '9'; } return true;
+
+                //Decimal numpad keys
+                case Keys.NumPad0: character = '0'; return true;
+                case Keys.NumPad1: character = '1'; return true;
+                case Keys.NumPad2: character = '2'; return true;
+                case Keys.NumPad3: character = '3'; return true;
+                case Keys.NumPad4: character = '4'; return true;
+                case Keys.NumPad5: character = '5'; return true;
+                case Keys.NumPad6: character = '6'; return true;
+                case Keys.NumPad7: character = '7'; return true;
+                case Keys.NumPad8: character = '8'; return true;
+                case Keys.NumPad9: character = '9'; return true;
+
+                //Special keys
+                case Keys.OemTilde: if (shift) { character = '~'; } else { character = '`'; } return true;
+                case Keys.OemSemicolon: if (shift) { character = ':'; } else { character = ';'; } return true;
+                case Keys.OemQuotes: if (shift) { character = '"'; } else { character = '\''; } return true;
+                case Keys.OemQuestion: if (shift) { character = '?'; } else { character = '/'; } return true;
+                case Keys.OemPlus: if (shift) { character = '+'; } else { character = '='; } return true;
+                case Keys.OemPipe: if (shift) { character = '|'; } else { character = '\\'; } return true;
+                case Keys.OemPeriod: if (shift) { character = '>'; } else { character = '.'; } return true;
+                case Keys.OemOpenBrackets: if (shift) { character = '{'; } else { character = '['; } return true;
+                case Keys.OemCloseBrackets: if (shift) { character = '}'; } else { character = ']'; } return true;
+                case Keys.OemMinus: if (shift) { character = '_'; } else { character = '-'; } return true;
+                case Keys.OemComma: if (shift) { character = '<'; } else { character = ','; } return true;
+                case Keys.Space: character = ' '; return true;
+            }
+            character = (char)0;
             return false;
         }
 

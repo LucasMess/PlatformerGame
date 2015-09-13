@@ -32,7 +32,7 @@ namespace Adam.UI
         {
             black = ContentHelper.LoadTexture("Tiles/white");
             font = ContentHelper.LoadFont("Fonts/objectiveText");
-            bounds = new Rectangle(x - width/2,y - font.LineSpacing/2,width,font.LineSpacing);
+            bounds = new Rectangle(x - width / 2, y - font.LineSpacing / 2, width, font.LineSpacing);
         }
 
         public void Update()
@@ -95,16 +95,7 @@ namespace Adam.UI
         private void ConvertInput()
         {
             // Inputs new characters.
-            char newChar;
-            if (InputHelper.TryConvertKeyboardInput(currentKBState, oldKBState, out newChar))
-                text += newChar;
-
-            // Deletes characters.
-            if (InputHelper.IsBackSpacePressed(currentKBState,oldKBState))
-            {
-                if (Text.Length != 0)
-                    text = text.Remove(text.Length - 1, 1);
-            }
+            InputHelper.TryLinkToKeyboardInput(ref text, currentKBState, oldKBState);
 
             // Resets flashing line if anything is being pressed.
             if (InputHelper.IsAnyInputPressed())
@@ -135,7 +126,7 @@ namespace Adam.UI
             }
             else
             {
-                spriteBatch.DrawString(font, Text, new Vector2(bounds.X, bounds.Y), Color.White);
+               spriteBatch.DrawString(font, Text, new Vector2(bounds.X, bounds.Y), Color.White);
             }
 
             // Returns the scissor rectangle to its original size.

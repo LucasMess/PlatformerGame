@@ -258,7 +258,7 @@ namespace Adam.UI
 
         static byte[] AvailableWalls = new byte[]
         {
-            100,101,102,103,104,105,106,107
+            100,101,102,103,104,105,108,106,107
         };
 
     }
