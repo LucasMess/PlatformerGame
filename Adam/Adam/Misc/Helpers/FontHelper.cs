@@ -24,12 +24,12 @@ namespace Adam.Misc.Helpers
             if (text == null)
                 text = "";
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X + outlineWidth, position.Y), outlineColor);
-            spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor);
-            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + outlineWidth), outlineColor);
-            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor);
+            spriteBatch.DrawString(font, text, new Vector2(position.X + outlineWidth, position.Y), outlineColor,0,new Vector2(0,0),1,SpriteEffects.None,0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y), fontColor);
+            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y), fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
         }
 
         public static string WrapText(SpriteFont spriteFont, string text, float maxLineWidth)

@@ -106,13 +106,13 @@ namespace Adam
                     hasRandomStartingPoint = true;
                     break;
                 case 31: //Tree
-                    frameCount = new Vector2(0, 0);
-                    size.X = 6;
-                    size.Y = 7;
-                    drawRectangle.Height = Main.Tilesize * 7;
-                    drawRectangle.Width = Main.Tilesize * 6;
-                    drawRectangle.Y = originalPosition.Y - (32 * 6);
-                    drawRectangle.X = originalPosition.X - (16 * 5);
+                    frameCount = new Vector2(1, 0);
+                    size.X = 4;
+                    size.Y = 6;
+                    drawRectangle.Height = Main.Tilesize * (int)size.Y;
+                    drawRectangle.Width = Main.Tilesize * (int)size.X;
+                    drawRectangle.Y = originalPosition.Y - (32 * ((int)size.Y-1));
+                    drawRectangle.X = originalPosition.X - (16 * (int)size.X);
                     sunlightPassesThrough = true;
                     break;
                 case 33: //Big Rock

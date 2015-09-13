@@ -290,7 +290,7 @@ namespace Adam
                     isSolid = true;
                     break;
                 case 31: //Tree
-                    positionInSpriteSheet = new Vector2(18, 4);
+                    positionInSpriteSheet = new Vector2(16, 0);
                     isVoid = true;
                     specialTile = new SpecialTile(this);
                     break;
@@ -298,7 +298,7 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(13, 18);
                     break;
                 case 33: //Big Rock
-                    positionInSpriteSheet = new Vector2(14, 18);
+                    positionInSpriteSheet = new Vector2(14, 17);
                     isVoid = true;
                     specialTile = new SpecialTile(this);
                     break;

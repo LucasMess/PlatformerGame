@@ -362,6 +362,9 @@ namespace Adam
         /// </summary>
         private void UpdateInput()
         {
+            if (Main.IsLoadingContent)
+                return;
+
             //Check if player is currently on top of vines
             if (TileIndex >= 0 && TileIndex < GameWorld.Instance.tileArray.Length)
                 if (GameWorld.Instance.tileArray[TileIndex].isClimbable)
