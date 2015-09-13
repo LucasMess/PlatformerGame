@@ -83,8 +83,14 @@ namespace Adam.UI
         /// </summary>
         public MessageBox()
         {
-            Button = new OKButton(DrawRectangle, this);
+            Button = new OKButton(DrawRectangle);
             attentionSound = new SoundFx("Sounds/message_show");
+        }
+
+        protected void Button_MouseClicked()
+        {
+            IsActive = false;
+            Button.MouseClicked -= Button_MouseClicked;
         }
 
 
@@ -94,6 +100,7 @@ namespace Adam.UI
         /// <param name="message"></param>
         public virtual void Show(string message)
         {
+            Button.MouseClicked += Button_MouseClicked;
             attentionSound.PlayIfStopped();
             string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width - BezelSize * 2);
             Message = wrapped;
@@ -103,6 +110,7 @@ namespace Adam.UI
         public virtual void Update()
         {
             Button.Update();
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

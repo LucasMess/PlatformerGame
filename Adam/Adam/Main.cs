@@ -520,6 +520,8 @@ namespace Adam
                 case GameState.LoadingScreen:
                     SpriteBatch.Begin();
                     loadingScreen.Draw(SpriteBatch);
+                    TextInputBox.Draw(SpriteBatch);
+                    MessageBox.Draw(SpriteBatch);
                     SpriteBatch.End();
                     break;
                 case GameState.MainMenu:
@@ -581,7 +583,7 @@ namespace Adam
                     SpriteBatch.Begin();
                     SpriteBatch.Draw(blackScreen, new Rectangle(0, 0, UserResWidth, 320), Color.White * .3f);
                     SpriteBatch.DrawString(debugFont, Main.Version + " FPS: " + fps, new Vector2(0, 0), Color.White);
-                    SpriteBatch.DrawString(debugFont, "Is Player Above Tile: " + player.IsAboveTile, new Vector2(0, 20), Color.White);
+                    SpriteBatch.DrawString(debugFont, "", new Vector2(0, 20), Color.White);
                     SpriteBatch.DrawString(debugFont, "Camera Position:" + camera.invertedCoords.X + "," + camera.invertedCoords.Y, new Vector2(0, 40), Color.White);
                     SpriteBatch.DrawString(debugFont, "Editor Rectangle Position:" + gameWorld.levelEditor.editorRectangle.X + "," + gameWorld.levelEditor.editorRectangle.Y, new Vector2(0, 60), Color.White);
                     SpriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
@@ -596,6 +598,8 @@ namespace Adam
                     SpriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     SpriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
                     SpriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive, new Vector2(0, 320), Color.White);
+                    SpriteBatch.DrawString(debugFont, "Is MessageBox Active: " + MessageBox.IsActive, new Vector2(0, 340), Color.White);
 
                     debug.Draw(SpriteBatch);
                     SpriteBatch.End();

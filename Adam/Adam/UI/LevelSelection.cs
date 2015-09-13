@@ -101,7 +101,18 @@ namespace Adam.UI
 
         private void NewLevel_OnTextEntered(TextInputArgs e)
         {
-            string newPath = DataFolder.CreateNewLevel(e.Input, 256, 256);
+            string newPath;
+
+            try
+            {
+                newPath = DataFolder.CreateNewLevel(e.Input, 256, 256);
+            }
+            catch (Exception ex)
+            {
+                Main.MessageBox.Show(ex.Message);
+                Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
+                return;
+            }
             Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
             DataFolder.EditLevel(newPath);
         }

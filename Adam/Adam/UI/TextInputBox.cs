@@ -20,7 +20,7 @@ namespace Adam.UI
         public TextInputBox()
         {
             textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
-            Button = new OKButton(DrawRectangle, this);
+            Button = new OKButton(DrawRectangle);
         }
 
         public override void Show(string message)
@@ -35,15 +35,22 @@ namespace Adam.UI
             if (IsActive)
             {
                 if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter))
-                    IsActive = false;
-                textBox.Update();
-                base.Update();
+                {
+                    Button_MouseClicked();
+                }
+                else
+                {
+                    textBox.Update();
+                    base.Update();
+                }
 
                 // If state changed, tell subscriber that input has been entered.
                 if (!IsActive)
                 {
                     OnInputEntered(new TextInputArgs(textBox.Text));
                 }
+
+
             }
         }
 

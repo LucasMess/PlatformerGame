@@ -64,28 +64,29 @@ namespace Adam.UI
             // Checks to see if levelName is valid.
             if (levelName == null)
             {
-                throw new ArgumentNullException("The name of your level cannot be nothing.");
+                throw new Exception("The name of your level cannot be nothing.");
             }
             if (levelName.Length > 20 || levelName.Length < 3)
             {
-                throw new ArgumentOutOfRangeException("The name of your level must be between 3 and 20 characters.");
+                throw new Exception("The name of your level must be between 3 and 20 characters.");
             }
             if (levelName.IndexOfAny(Path.GetInvalidFileNameChars()) > 0)
             {
-                throw new InvalidCharactersException("The name of your level contains invalid characters");
+                throw new Exception("The name of your level contains invalid characters");
             }
 
             // Creates the new world and sets the file path for it.
             string filePath = Path.Combine(LevelDirectory, levelName);
             filePath += LevelFileExt;
-            WorldConfigFile config = new WorldConfigFile(levelName, width, height);
 
             // Checks to see if name already exists.
             if (File.Exists(filePath))
             {
-                throw new FileAlreadyExistsException("A level with this name already exists.");
+                throw new Exception("A level with this name: " + filePath + " already exists.");
             }
 
+            WorldConfigFile config = new WorldConfigFile(levelName, width, height);
+            
             // Creates the file for the world.
             XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
             using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
