@@ -699,6 +699,11 @@ namespace Adam
                     {
                         foreach (Tile c in cornerPieces)
                         {
+                            if (GameWorld.Instance.levelEditor.onWallMode)
+                            {
+                                c.opacity = GetOpacity();
+                            }
+                            else c.opacity = 1;
                             c.Draw(spriteBatch);
                         }
                     }
@@ -770,9 +775,11 @@ namespace Adam
             }
 
             //Fences
-            else if (ID == 103 && array[TileIndex - mapWidth].ID != 103)
+            else if (ID == 103)
             {
-                subID = 1;
+                if (array[TileIndex - mapWidth].ID != 103)
+                    subID = 1;
+                else subID = 0;
             }
 
 
@@ -1171,6 +1178,11 @@ namespace Adam
                     break;
             }
             return position;
+        }
+
+        public float GetOpacity()
+        {
+            return opacity;
         }
 
         public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()

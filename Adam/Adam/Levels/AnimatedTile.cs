@@ -275,7 +275,7 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * sourceTile.GetOpacity());
         }
     }
 }
