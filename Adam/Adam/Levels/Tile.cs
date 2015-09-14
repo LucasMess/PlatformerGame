@@ -391,20 +391,24 @@ namespace Adam
                 case 48: // Blue crystal.
                     isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 27);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Aqua, 1, .8f));
                     specialTile = new SpecialTile(this);
                     break;
                 case 49: // Yellow crystal.
                     isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 29);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Yellow, 1, .8f));
                     specialTile = new SpecialTile(this);
                     break;
                 case 50: // Green sludge.
                     positionInSpriteSheet = new Vector2(14, 27);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
                     specialTile = new SpecialTile(this);
                     break;
                 case 51: // Void FireSpitter.
                     isVoid = true;
                     positionInSpriteSheet = new Vector2(20, 28);
+                    GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
                     specialTile = new SpecialTile(this);
                     break;
                 case 52: // Sapphire Crystal.
@@ -472,7 +476,7 @@ namespace Adam
                     startingPoint = new Vector2(12, 19);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 105://Sand Wall
+                case 105:// Sand Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(4, 24);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -487,7 +491,7 @@ namespace Adam
                     startingPoint = new Vector2(8, 19);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 108: // Sand Wall
+                case 108: // Mesa Wall
                     hasConnectPattern = true;
                     startingPoint = new Vector2(0, 29);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -1305,6 +1309,8 @@ namespace Adam
             {53, "Ruby Crystal" },
             {54, "Emerald Crystal" },
             {55, "Skull" },
+            {56, "Stalagmite" },
+            {57, "Mud" },
 
 
             {100,"Gold Brick Wall" },
@@ -1312,10 +1318,10 @@ namespace Adam
             {102,"Dirt Wall" },
             {103,"Fence" },
             {104,"Marble Wall" },
-            {105,"Mesa Wall" },
+            {105,"Sand Wall" },
             {106,"Hellstone Wall" },
             {107,"Stone Brick Wall" },
-            {108,"Sand Wall" },
+            {108,"Mesa Wall" },
 
             {200,"Player" },
             {201,"Snake" },

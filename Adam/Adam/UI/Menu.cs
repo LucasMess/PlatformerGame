@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Audio;
 using Adam.Network;
 using Adam.UI;
 using Adam.GameData;
+using Adam.Misc;
 
 namespace Adam
 {
@@ -276,8 +277,6 @@ namespace Adam
             adam = ContentHelper.LoadTexture("Menu/menu_adam");
             foreground = ContentHelper.LoadTexture("Menu/menu_front");
             apple = ContentHelper.LoadTexture("Menu/menu_apple");
-
-            theme = Content.Load<Song>("Music/Force Reunite");
             font = Content.Load<SpriteFont>("Fonts/button");
 
 
@@ -355,17 +354,8 @@ namespace Adam
 
             AnimateSprites();
 
-            if (!isSongPlaying && game1.CurrentGameState == GameState.MainMenu)
-            {
-                MediaPlayer.Play(theme);
-                isSongPlaying = true;
-            }
-
-            if (game1.CurrentGameState != GameState.MainMenu)
-            {
-                MediaPlayer.Stop();
-                isSongPlaying = false;
-            }
+            if (game1.CurrentGameState == GameState.MainMenu)
+            SoundtrackManager.PlayMainTheme();
 
         }
 

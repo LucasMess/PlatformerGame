@@ -90,6 +90,8 @@ namespace Adam.Levels
 
         public void Update(GameTime gameTime, GameMode CurrentLevel)
         {
+            SoundtrackManager.PlayLevelEditorTheme();
+
             gameWorld = GameWorld.Instance;
             tileScroll.Update();
             entityScroll.Update();

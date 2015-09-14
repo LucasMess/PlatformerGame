@@ -17,12 +17,22 @@ namespace Adam.Misc.Databases
         {
             switch (ID)
             {
-                case 0: return ContentHelper.LoadSong("Music/Force Reunite"); // Main Menu
+                case 0: return ContentHelper.LoadSong("Music/Sunny Day");
                 case 1: return ContentHelper.LoadSong("Music/Party Time"); // Garden of Eden
-                case 2: return ContentHelper.LoadSong("Music/Autumn"); // Level Editor 1
-                case 3: return ContentHelper.LoadSong("Music/Silver Blue Light"); // Level Editor 2
-                case 4: return ContentHelper.LoadSong("Music/Adam1"); // Nathan's Theme
+                case 2: return ContentHelper.LoadSong("Music/Phantom from Space");
+                case 3: return ContentHelper.LoadSong("Music/Invincible");
+                case 4: return ContentHelper.LoadSong("Music/Anguish");
                 case 5: return ContentHelper.LoadSong("Music/Volatile Reaction"); // Chase scene maybe
+                case 6: return ContentHelper.LoadSong("Music/Sky View"); // Tutorial
+                case 7: return ContentHelper.LoadSong("Music/Another Earth");
+
+                case 100: return ContentHelper.LoadSong("Music/Menu/Force Reunite"); // Main Menu
+
+                case 101: return ContentHelper.LoadSong("Music/Level Editor/Autumn Day");
+                case 102: return ContentHelper.LoadSong("Music/Level Editor/Silver Blue Light");
+                case 103: return ContentHelper.LoadSong("Music/Level Editor/Adam1");
+                case 104: return ContentHelper.LoadSong("Music/Level Editor/Unwritten Return");
+
                 default: return ContentHelper.LoadSong("Music/Party Time"); // Garden of Eden;
             }
         }

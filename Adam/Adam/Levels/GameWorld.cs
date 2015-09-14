@@ -23,6 +23,7 @@ using Adam.Characters.Non_Playable;
 using Adam.Noobs;
 using System.ComponentModel;
 using Adam.Lights;
+using Adam.Misc;
 
 namespace Adam
 {
@@ -82,8 +83,6 @@ namespace Adam
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
         public List<Cloud> cloudList;
-        public List<Gem> gemList; //can be moved to entities
-        public List<Chest> chestList; //can be moved to entities
         public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
         public List<Entity> entities;
         public List<Particle> particles;
@@ -123,8 +122,6 @@ namespace Adam
             this.CurrentGameMode = CurrentGameMode;
             Main.ObjectiveTracker.Clear();
             cloudList = new List<Cloud>();
-            gemList = new List<Gem>();
-            chestList = new List<Chest>();
             keyList = new List<Key>();
             entities = new List<Entity>();
             particles = new List<Particle>();
@@ -155,9 +152,6 @@ namespace Adam
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Load();
-
-            if (worldData.song != null)
-                MediaPlayer.Play(worldData.song);
 
             placeNotification.Show(worldData.LevelName);
 
@@ -219,6 +213,8 @@ namespace Adam
             }
             else
             {
+                SoundtrackManager.PlayTrack(worldData.SoundtrackID, true);
+
                 Rectangle cameraRect = player.GetCollRectangle();
                 //cameraRect.X += (int)(player.GetVelocity().X * 50);
 
@@ -402,10 +398,6 @@ namespace Adam
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.DrawBehindTiles(spriteBatch);
 
-            foreach (Gem gem in gemList)
-            {
-                gem.Draw(spriteBatch);
-            }
             foreach (int tileNumber in visibleTileArray)
             {
                 if (tileNumber >= 0 && tileNumber < tileArray.Length)

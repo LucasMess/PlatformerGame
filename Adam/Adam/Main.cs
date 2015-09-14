@@ -136,6 +136,8 @@ namespace Adam
         public static TextInputBox TextInputBox { get; set; }
         #endregion
 
+        public static MediaQueue MediaQueue { get; set; }
+
         public Main()
         {
             instance = this;
@@ -170,9 +172,7 @@ namespace Adam
             form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
 
-
             //MediaPlayer Settings
-            MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = MaxVolume;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }

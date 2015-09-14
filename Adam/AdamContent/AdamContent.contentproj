@@ -1245,7 +1245,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\Adam1.mp3">
+    <Compile Include="Music\Level Editor\Adam1.mp3">
       <Name>Adam1</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
@@ -1554,7 +1554,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\Force Reunite.mp3">
+    <Compile Include="Music\Menu\Force Reunite.mp3">
       <Name>Force Reunite</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
@@ -1568,12 +1568,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Music\Autumn Day.mp3">
+    <Compile Include="Music\Level Editor\Autumn Day.mp3">
       <Name>Autumn Day</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
-    <Compile Include="Music\Silver Blue Light.mp3">
+    <Compile Include="Music\Level Editor\Silver Blue Light.mp3">
       <Name>Silver Blue Light</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
@@ -1668,6 +1668,49 @@
       <Name>boulder_fall</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\Sunny Day.mp3">
+      <Name>Sunny Day</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\Sky View.mp3">
+      <Name>Sky View</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Music\Invincible.mp3">
+      <Name>Invincible</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\Another Earth.mp3">
+      <Name>Another Earth</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\Phantom from Space.mp3">
+      <Name>Phantom from Space</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Music\Level Editor\Unwritten Return.mp3">
+      <Name>Unwritten Return</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
