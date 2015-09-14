@@ -204,7 +204,7 @@ namespace Adam.Characters.Enemies
         protected bool IsBeingAttacked()
         {
             Player player = GameWorld.Instance.player;
-            return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 0);
+            return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1);
         }
 
         /// <summary>

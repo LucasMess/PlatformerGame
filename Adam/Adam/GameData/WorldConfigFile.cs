@@ -27,6 +27,8 @@ namespace Adam.GameData
         public bool IsRaining { get; set; }
         public bool IsSnowing { get; set; }
 
+        public bool CanBeEdited { get; set; } = true;
+
         public AdamDictionary SignMessages { get; set; }
         public AdamDictionary PortalLinks { get; set; }
 

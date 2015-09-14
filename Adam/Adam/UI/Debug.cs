@@ -136,6 +136,16 @@ namespace Adam
                 definitionFound = true;
             }
 
+            //keyword = "set ambience ";
+            //if (text.StartsWith(keyword))
+            //{
+            //    string newString = text.Remove(0, keyword.Length);
+            //    int number;
+            //    Int32.TryParse(newString, out number);
+            //    GameWorld.Instance.worldData.SoundtrackID = (byte)number;
+            //    definitionFound = true;
+            //}
+
             if (definitionFound)
             {
                 textString = "";

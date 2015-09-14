@@ -90,6 +90,8 @@ namespace Adam.Levels
 
         public void Update(GameTime gameTime, GameMode CurrentLevel)
         {
+            GameWorld.Instance.player.Health = GameWorld.Instance.player.MaxHealth;
+
             SoundtrackManager.PlayLevelEditorTheme();
 
             gameWorld = GameWorld.Instance;

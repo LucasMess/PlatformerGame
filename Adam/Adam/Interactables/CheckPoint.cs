@@ -48,7 +48,7 @@ namespace Adam.Interactables
         {
             get
             {
-                return  new Rectangle(collRectangle.X + 50, collRectangle.Y, 32, 96);
+                return new Rectangle(collRectangle.X + 50, collRectangle.Y, 32, 96);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Adam.Interactables
         {
             Texture = ContentHelper.LoadTexture("Objects/checkPoint");
             sourceRectangle = new Rectangle(0, 0, 16, 48);
-            collRectangle = new Rectangle(x, y - Main.Tilesize * 2, 100, DrawRectangle.Height);
+            collRectangle = new Rectangle(x - 50, y - Main.Tilesize * 2, 100, DrawRectangle.Height);
 
             opening = new AnimationData(32, 4, 0, AnimationType.PlayOnce);
             animation = new Animation(Texture, DrawRectangle, sourceRectangle);

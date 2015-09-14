@@ -86,7 +86,7 @@ namespace Adam.UI
             }
 
             WorldConfigFile config = new WorldConfigFile(levelName, width, height);
-            
+
             // Creates the file for the world.
             XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
             using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
@@ -104,6 +104,12 @@ namespace Adam.UI
         public static void EditLevel(string filePath)
         {
             WorldConfigFile config = GetWorldConfigFile(filePath);
+            if (!config.CanBeEdited)
+            {
+                Main.MessageBox.Show("This level cannot be edited.");
+                return;
+            }
+
             CurrentLevelFilePath = filePath;
             config.LoadIntoEditor();
         }
@@ -179,6 +185,12 @@ namespace Adam.UI
         /// <param name="filePath"></param>
         public static void DeleteFile(string filePath)
         {
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+            if (!config.CanBeEdited)
+            {
+                Main.MessageBox.Show("This level cannot be deleted.");
+                return;
+            }
             File.Delete(filePath);
         }
 
@@ -190,6 +202,13 @@ namespace Adam.UI
         /// <param name="newName">The new name for the file.</param>
         public static void RenameFile(string filePath, string oldName, string newName)
         {
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+            if (!config.CanBeEdited)
+            {
+                Main.MessageBox.Show("This level cannot be renamed.");
+                return;
+            }
+
             // Rename the file.
             Console.WriteLine(filePath);
             string newFilePath = filePath.Remove(filePath.Length - oldName.Length - LevelFileExt.Length, oldName.Length + LevelFileExt.Length);
@@ -200,10 +219,10 @@ namespace Adam.UI
             File.Move(filePath, newFilePath);
 
             // Rename the level inside the config file.
-            WorldConfigFile config = GetWorldConfigFile(newFilePath);
+            WorldConfigFile config2 = GetWorldConfigFile(newFilePath);
             config.LevelName = newName;
             CurrentLevelFilePath = newFilePath;
-            SaveLevel(config);
+            SaveLevel(config2);
         }
 
         /// <summary>

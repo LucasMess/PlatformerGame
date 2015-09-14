@@ -42,14 +42,19 @@ namespace Adam.Interactables
                     Texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
                     break;
                 case 204: // Lost
+                    healAmount = 10;
                     break;
                 case 205: // Hellboar
+                    healAmount = 40;
                     break;
                 case 207: // Bat
+                    healAmount = 10;
                     break;
                 case 208: // Duck                    
+                    healAmount = 5;
                     break;
                 case 209: // Being of Sight
+                    healAmount = 30;
                     break;
                 default:
                     break;

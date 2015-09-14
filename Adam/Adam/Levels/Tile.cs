@@ -11,6 +11,7 @@ using Adam.Enemies;
 using Adam.Characters.Enemies;
 using Adam.Noobs;
 using Adam.UI.Elements;
+using Adam.Interactables;
 
 namespace Adam
 {
@@ -314,9 +315,22 @@ namespace Adam
                     positionInSpriteSheet = new Vector2(12, 4);
                     break;
                 case 37: //Checkpoint
-                    positionInSpriteSheet = new Vector2(8, 29);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
+                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    {
+                        positionInSpriteSheet = new Vector2(8, 29);
+                        isVoid = true;
+                        specialTile = new SpecialTile(this);
+                    }
+                    else
+                    {
+                        isVoid = true;
+                        if (!hasAddedEntity)
+                        {
+                            GameWorld.Instance.entities.Add(new CheckPoint(drawRectangle.X, drawRectangle.Y));
+                            hasAddedEntity = true;
+                            isVoid = true;
+                        }
+                    }
                     break;
                 case 38: //Stone Brick
                     isSolid = true;
