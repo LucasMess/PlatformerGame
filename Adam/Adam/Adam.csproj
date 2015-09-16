@@ -195,9 +195,10 @@
     <Compile Include="Misc\Timer.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
-    <Compile Include="Network\DataPacket.cs" />
-    <Compile Include="Network\MapDataPacket.cs" />
-    <Compile Include="Network\PlayerDataPacket.cs" />
+    <Compile Include="Network\Packets\DataPacket.cs" />
+    <Compile Include="Network\Packets\EntityPacket.cs" />
+    <Compile Include="Network\Packets\LevelPacket.cs" />
+    <Compile Include="Network\Packets\PlayerPacket.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Obstacles\FlameSpitter.cs" />

@@ -93,7 +93,7 @@ namespace Adam
         public static int UserResWidth;
         public static int UserResHeight;
 
-        public const string Version = "Version 0.7.0 Beta";
+        public const string Version = "Version 0.8.0 Beta";
         public const string Producers = "Duck Knight Duel Games";
 
         public static Texture2D DefaultTexture;
@@ -106,6 +106,8 @@ namespace Adam
         public static double HeightRatio;
 
         public static float MaxVolume = .05f;
+
+        public static Session Session { get; set; }
 
         public bool wasPressed, debugOn, debugPressed;
 
@@ -144,8 +146,8 @@ namespace Adam
 
             // Get the current monitor resolution and set it as the game's resolution
             Vector2 monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            UserResWidth = (int)monitorRes.X;
-            UserResHeight = (int)monitorRes.Y;
+            UserResWidth = 800;
+            UserResHeight = 450;
             WidthRatio = ((double)Main.DefaultResWidth / (double)Main.UserResWidth);
             HeightRatio = ((double)Main.DefaultResHeight / (double)Main.UserResHeight);
 
@@ -165,12 +167,14 @@ namespace Adam
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
             // Set window to borderless.
-            IntPtr hWnd = this.Window.Handle;
-            var control = System.Windows.Forms.Control.FromHandle(hWnd);
-            var form = control.FindForm();
-            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            //IntPtr hWnd = this.Window.Handle;
+            //var control = System.Windows.Forms.Control.FromHandle(hWnd);
+            //var form = control.FindForm();
+            //form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            //form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
+
+           
 
             //MediaPlayer Settings
             MediaPlayer.Volume = MaxVolume;
@@ -619,5 +623,13 @@ namespace Adam
             drawTime = drawWatch.ElapsedMilliseconds;
             drawWatch.Reset();
         }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            Session.IsActive = false;
+            base.OnExiting(sender, args);
+        }
     }
+
+    
 }

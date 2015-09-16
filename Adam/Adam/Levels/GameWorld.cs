@@ -369,7 +369,7 @@ namespace Adam
                 }
             }
 
-            while (particles.Count > 1000)
+            while (particles.Count > 10000000)
             {
                 particles.Remove(particles.ElementAt<Particle>(0));
             }
@@ -487,20 +487,6 @@ namespace Adam
                     entities.Remove(entity);
                 }
             }
-        }
-
-        public MapDataPacket GetMapDataPacket()
-        {
-            MapDataPacket m = new MapDataPacket(this);
-            return m;
-        }
-
-        public void UpdateFromDataPacket(MapDataPacket m)
-        {
-            isOnDebug = m.isPaused;
-            levelComplete = m.levelComplete;
-
-            gameTime = m.gameTime;
         }
 
         public Player GetPlayer()

@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Network.Packets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +32,7 @@ namespace Adam.Network
         public const byte DKD_MapData = 3;
         public const byte DKD_Register = 4;
         public const byte DKD_Level = 5;
+        public const byte DKD_Test = 100;
 
         public string PlayerName { get; set; }
         public bool IsConnected { get; set; }
@@ -42,61 +44,81 @@ namespace Adam.Network
         /// <param name="port"></param>
         public Connection(string ipAddress, int port, string playerName)
         {
+            Console.WriteLine("Trying to connect to server...");
             serverIP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            Console.WriteLine("Server IP: {0}, Player name: {1}", serverIP, playerName);
             PlayerName = playerName;
-            new Thread(new ThreadStart(SetupConnection));
 
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42555));
+            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42556));
+            Console.WriteLine("UDP client set up.");
+
+            new Thread(new ThreadStart(SetupConnection)).Start();
+            //SetupConnection();
         }
 
         private void SetupConnection()
         {
-            try
-            {
-                tcpClient = new TcpClient(serverIP);
-                netStream = tcpClient.GetStream();
-                ssl = new SslStream(netStream, false, new RemoteCertificateValidationCallback(ValidateCert));
-                ssl.AuthenticateAsClient("AdamMultiplayer");
-
-                int hello = br.ReadInt32();
-                if (hello == DKD_Hello)
-                {
-                    bw.Write(DKD_Hello);
-                    bw.Flush();
-
-                    bw.Write(DKD_Register);
-                    bw.Write(PlayerName);
-                    bw.Flush();
-
-                    byte ans = br.ReadByte();
-                    if (ans == DKD_OK)
-                    {
-                        IsConnected = true;
-                        Console.WriteLine("Connected with the server.");
-                        Receiver();
-                    }
-                    else
-                    {
-                        //TODO: Throw error message. Connection rejected.
-                    }
-                }
-
+            Console.WriteLine("Setting up TCP client...");
+            tcpClient = new TcpClient();
+            try {
+                tcpClient.Connect(serverIP);
             }
-
-            catch
+            catch(SocketException e)
             {
-                Console.WriteLine("Could not find server.");
+                Console.WriteLine("Could not connect to server. Error code: {0}",e.ErrorCode);
+                return;
+            }
+            Console.WriteLine("TCP client set up.");
+            netStream = tcpClient.GetStream();
+            Console.WriteLine("Network stream found.");
+            ssl = new SslStream(netStream, false);
+            Console.WriteLine("SSL stream created.");
+            //ssl.AuthenticateAsClient("AdamMultiplayer");
+            Console.WriteLine("Authenticated as client.");
+
+            br = new BinaryReader(netStream, Encoding.UTF8);
+            bw = new BinaryWriter(netStream, Encoding.UTF8);
+
+            int hello = br.ReadInt32();
+            if (hello == DKD_Hello)
+            {
+                Console.WriteLine("Sending player info to server...");
+
+                bw.Write(DKD_Hello);
+                bw.Flush();
+
+                bw.Write(DKD_Register);
+                bw.Write(PlayerName);
+                bw.Flush();
+
+                byte ans = br.ReadByte();
+                if (ans == DKD_OK)
+                {
+                    IsConnected = true;
+                    Console.WriteLine("Connected with the server.");
+                    Receiver();
+                }
+                else
+                {
+                    //TODO: Throw error message. Connection rejected.
+                }
             }
         }
 
         private void Receiver()
         {
-            while (IsConnected)
+            while (Session.IsActive)
             {
                 byte request = br.ReadByte();
                 if (request == DKD_Level)
                 {
                     CurrentLevel = (GameMode)br.ReadByte();
+                    bw.Write(DKD_OK);
+                    bw.Flush();
+                }
+                if (request == DKD_Test)
+                {
+                    Main.MessageBox.Show(br.ReadString());
                     bw.Write(DKD_OK);
                     bw.Flush();
                 }
@@ -109,17 +131,18 @@ namespace Adam.Network
             return true; //Allow untrusted certificates.
         }
 
-        public void SendPlayerDataPacket(PlayerDataPacket p)
+        public void SendPlayerDataPacket(Player player)
         {
-            byte[] playerData = CalcHelper.ToByteArray(p);
-            udpClient.Send(playerData, playerData.Length, serverIP);
+            PlayerPacket pl = new PlayerPacket(player);
+            byte[] packet = CalcHelper.ToByteArray(pl);
+            udpClient.Send(packet, packet.Length, serverIP);
         }
 
-        public MapDataPacket ReceiveMapDataPacket()
+        public EntityPacket ReceiveEntityPacket()
         {
-            byte[] mapData = udpClient.Receive(ref serverIP);
-            MapDataPacket m = (MapDataPacket)CalcHelper.ConvertToObject(mapData);
-            return m;
+            byte[] packet = udpClient.Receive(ref serverIP);
+            EntityPacket en = (EntityPacket)CalcHelper.ConvertToObject(packet);
+            return en;
         }
 
     }

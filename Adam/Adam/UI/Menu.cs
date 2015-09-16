@@ -44,13 +44,12 @@ namespace Adam
         //Multiplayer
         Button hostGame;
         Button joinGame;
-        Button connect;
+        Button startMultiplayerGame;
 
         Button backButton;
         List<Button> buttons = new List<Button>();
 
         Texture2D background, foreground, adam, apple;
-        Song theme;
         Rectangle adamRect, sourceRect;
         Rectangle appleRect, appleSource;
         GameTime gameTime;
@@ -66,7 +65,7 @@ namespace Adam
         List<Particle> zzzList = new List<Particle>();
         double zzzTimer;
 
-        public enum MenuState { Main, Options, LevelSelector, MultiplayerSession }
+        public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession  }
         public static MenuState CurrentMenuState = MenuState.Main;
 
         public Menu(Main game1)
@@ -94,9 +93,9 @@ namespace Adam
             options.MouseClicked += options_MouseClicked;
             buttons.Add(options);
 
-            //multiplayer = new Button(fourth, "Multiplayer");
-            //multiplayer.MouseClicked += multiplayer_MouseClicked;
-            //buttons.Add(multiplayer);
+            multiplayer = new Button(fourth, "Multiplayer");
+            multiplayer.MouseClicked += multiplayer_MouseClicked;
+            buttons.Add(multiplayer);
 
             storyMode = new Button(first, "Story Mode");
             storyMode.MouseClicked += storyMode_MouseClicked;
@@ -139,7 +138,19 @@ namespace Adam
             joinGame.MouseClicked += joinGame_MouseClicked;
             buttons.Add(joinGame);
 
+            startMultiplayerGame = new Button(third, "Start Game");
+            startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
+            buttons.Add(startMultiplayerGame);
+
             levelSelection = new LevelSelection();
+        }
+
+        private void StartMultiplayerGame_MouseClicked()
+        {
+           if (Session.IsHost)
+            {
+                Main.Session.SendTestMessage();
+            }
         }
 
         private void storyMode_MouseClicked()
@@ -149,12 +160,14 @@ namespace Adam
 
         void joinGame_MouseClicked()
         {
-            throw new NotImplementedException();
+            Main.Session = new Session(false, "Client");
+            CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         void hostGame_MouseClicked()
         {
-            throw new NotImplementedException();
+            Main.Session = new Session(true, "Host");
+            CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         //void level4_MouseClicked()
@@ -188,6 +201,9 @@ namespace Adam
                     CurrentMenuState = MenuState.Main;
                     break;
                 case MenuState.LevelSelector:
+                    CurrentMenuState = MenuState.Main;
+                    break;
+                case MenuState.HostJoin:
                     CurrentMenuState = MenuState.Main;
                     break;
                 case MenuState.MultiplayerSession:
@@ -248,7 +264,7 @@ namespace Adam
 
         void multiplayer_MouseClicked()
         {
-            CurrentMenuState = MenuState.MultiplayerSession;
+            CurrentMenuState = MenuState.HostJoin;
         }
 
         void quit_MouseClicked()
@@ -321,7 +337,7 @@ namespace Adam
                     chooseLevel.Update();
                     quit.Update();
                     options.Update();
-                    //multiplayer.Update();
+                    multiplayer.Update();
                     storyMode.Update();
                     break;
                 case MenuState.LevelSelector:
@@ -339,16 +355,14 @@ namespace Adam
                     backButton.Update();
                     break;
 
+                case MenuState.HostJoin:
+                    hostGame.Update();
+                    joinGame.Update();
+
+                    backButton.Update();
+                    break;
                 case MenuState.MultiplayerSession:
-                    //if (hostGame.IsPressed() && hostGame.wasPressed == false && mouseButtonReleased)
-                    //{
-                    //    game1.session = new Session(true, "Host");
-                    //}
-                    //if (joinGame.IsPressed() && joinGame.wasPressed == false && mouseButtonReleased)
-                    //{
-                    //    game1.session = new Session(false, "Random Player");
-                    //    game1.session.ConnectTo(address, 42555);
-                    //}
+                    startMultiplayerGame.Update();
                     break;
             }
 
@@ -413,7 +427,7 @@ namespace Adam
                     chooseLevel.Draw(spriteBatch);
                     quit.Draw(spriteBatch);
                     options.Draw(spriteBatch);
-                   // multiplayer.Draw(spriteBatch);
+                    multiplayer.Draw(spriteBatch);
                     storyMode.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
@@ -423,6 +437,15 @@ namespace Adam
                     //smoothPixels.Draw(spriteBatch);
                     //lighting.Draw(spriteBatch);
                     fullscreen.Draw(spriteBatch);
+                    backButton.Draw(spriteBatch);
+                    break;
+                case MenuState.HostJoin:
+                    hostGame.Draw(spriteBatch);
+                    joinGame.Draw(spriteBatch);
+                    backButton.Draw(spriteBatch);
+                    break;
+                case MenuState.MultiplayerSession:
+                    startMultiplayerGame.Draw(spriteBatch);
                     backButton.Draw(spriteBatch);
                     break;
             }

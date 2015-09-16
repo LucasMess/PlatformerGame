@@ -1,4 +1,6 @@
 ﻿using Adam;
+using Adam.GameData;
+using Adam.Network.Packets;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,18 +16,49 @@ namespace Adam.Network
         Server server;
         Connection connection;
         IPEndPoint serverIP;
-        GameMode CurrentLevel = GameMode.None;
 
-        GameWorld map;
+        GameWorld gameWorld;
 
         string playerName;
-        bool isHost;
-        bool inSession;
+
+        /// <summary>
+        /// Returns true if the current client is host.
+        /// </summary>
+        public static bool IsHost
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// The most recent entity packet received.
+        /// </summary>
+        public static EntityPacket EntityPacket
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// The most recent level packet received.
+        /// </summary>
+        public static LevelPacket LevelPacket
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Returns true if the session is still happening.
+        /// </summary>
+        public static bool IsActive
+        {
+            get; set;
+        }
 
         public Session(bool isHost, string playerName)
         {
+            IsActive = true;
+            Console.WriteLine("New session started. Is host? {0}, Player Name: {1}", isHost, playerName);
             this.playerName = playerName;
-            this.isHost = isHost;
+            IsHost = isHost;
 
             if (isHost)
             {
@@ -33,8 +66,13 @@ namespace Adam.Network
                 server = new Server();
 
                 //Automatically connects to own server.
-                ConnectTo("localhost", 42555);
+                //ConnectTo("192.168.1.1", 42555);
             }
+            else
+            {
+                ConnectTo("127.0.0.1", 42555);
+            }
+
         }
 
         public void ConnectTo(string address, int port)
@@ -43,34 +81,31 @@ namespace Adam.Network
             connection = new Connection(address, port, playerName);
         }
 
-        public void Start(GameMode Currentlevel)
+        public void Start(WorldConfigFile config)
         {
-            this.CurrentLevel = Currentlevel;
-            inSession = true;
             server.IsWaitingForPlayers = false;
-            server.SendCurrentLevel(Currentlevel);
-            new Thread(new ThreadStart(SendUpdatePackets));
+            server.SendLevelPacket(config);
+            new Thread(new ThreadStart(Update)).Start();
         }
 
-        public void Update(GameTime gameTime)
+        private void Update()
         {
-            if (isHost)
+            while (IsActive)
             {
-               // map.Update(gameTime, CurrentLevel, camera);
-            }
-            else
-            {
-                MapDataPacket m = connection.ReceiveMapDataPacket();
-                map.UpdateFromDataPacket(m);
+                if (IsHost)
+                {
+                    server.SendEntityPacket(GameWorld.Instance);
+                }
+                else
+                {
+                    EntityPacket = connection.ReceiveEntityPacket();
+                }
             }
         }
 
-        private void SendUpdatePackets()
+        public void SendTestMessage()
         {
-            while (inSession)
-            {
-                server.SendMapDataPacket(map);
-            }
+            server.SendMessage("Hello World!");
         }
     }
 }
