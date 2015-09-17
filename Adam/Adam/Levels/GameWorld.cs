@@ -203,6 +203,18 @@ namespace Adam
 
         public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
+            if (Session.IsActive)
+            {
+                if (Session.IsHost)
+                {
+                    
+                }
+                else
+                {
+                    Session.EntityPacket?.ExtractTo(this);
+                }
+            }
+
             this.Content = Main.Content;
             this.gameTime = gameTime;
             this.camera = camera;

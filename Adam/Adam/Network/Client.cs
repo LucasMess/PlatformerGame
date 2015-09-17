@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Network.Packets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,8 @@ namespace Adam.Network
 
         UdpClient udpClient;
 
+        public PlayerPacket PlayerPacket { get; set; }
+
         public const int DKD_Hello = 1996;
         public const byte DKD_OK = 0;
         public const byte DKD_Connect = 1;
@@ -40,8 +43,9 @@ namespace Adam.Network
             tcpClient = c;
             server = s;
             (new Thread(new ThreadStart(SetupConnection))).Start();
+           // (new Thread(new ThreadStart(UpdateReceiver))).Start();
 
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42555));
+            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42556));
         }
 
         private void SetupConnection()
@@ -89,27 +93,41 @@ namespace Adam.Network
             }
         }
 
+        //private void UpdateReceiver()
+        //{
+        //    Console.WriteLine("Listening for player packets...");
+        //    while (Session.IsActive)
+        //    {
+        //        IPEndPoint ip = (IPEndPoint)tcpClient.Client.RemoteEndPoint;
+        //        byte[] packet = udpClient.Receive(ref ip);
+        //        Console.WriteLine("Player packet received.");
+        //        PlayerPacket = (PlayerPacket)CalcHelper.ConvertToObject(packet); 
+        //    }
+        //}
+
         public void SendLevelOverTCP(byte[] packet)
         {
             // Tells client server is about to send level data.
             bw.Write(DKD_Level);
             // Tells client length of data.
             bw.Write(packet.Length);
-
+            Console.WriteLine("Sending level over TCP to client...");
             // Sends all data.
-            foreach (byte b in packet)
-            {
-                bw.Write(b);
-            }
+            bw.Write(packet);
 
             bw.Flush();
 
             // Checks if the client received all information.
-            byte ans = br.ReadByte();
-            if (ans == DKD_OK)
-            {
-                //over
-            }
+            //byte ans = br.ReadByte();
+            //if (ans == DKD_OK)
+            //{
+            //    Console.WriteLine("Level sent sucessfully.");
+            //    //over
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Error occurred.");
+            //}
         }
 
         public void SendMessageOverTCP(string message)

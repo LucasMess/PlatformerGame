@@ -149,7 +149,7 @@ namespace Adam
         {
            if (Session.IsHost)
             {
-                Main.Session.SendTestMessage();
+                Main.Session.Start();
             }
         }
 

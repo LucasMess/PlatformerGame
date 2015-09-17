@@ -1,5 +1,7 @@
 ﻿using Adam;
+using Adam.GameData;
 using Adam.Network.Packets;
+using Adam.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,6 +39,9 @@ namespace Adam.Network
         public string PlayerName { get; set; }
         public bool IsConnected { get; set; }
 
+        IPEndPoint udpIP;
+        IPEndPoint server;
+
         /// <summary>
         /// Sets up a connection with the specified server.
         /// </summary>
@@ -49,7 +54,10 @@ namespace Adam.Network
             Console.WriteLine("Server IP: {0}, Player name: {1}", serverIP, playerName);
             PlayerName = playerName;
 
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42556));
+            udpIP = new IPEndPoint(serverIP.Address, 42559);
+            server = new IPEndPoint(serverIP.Address, 42557);
+
+            udpClient = new UdpClient(udpIP);
             Console.WriteLine("UDP client set up.");
 
             new Thread(new ThreadStart(SetupConnection)).Start();
@@ -112,9 +120,15 @@ namespace Adam.Network
                 byte request = br.ReadByte();
                 if (request == DKD_Level)
                 {
-                    CurrentLevel = (GameMode)br.ReadByte();
-                    bw.Write(DKD_OK);
-                    bw.Flush();
+                    // Gets the amount of bytes the level was split into.
+                    int size = br.ReadInt32();
+                    byte[] data = br.ReadBytes(size);
+                    LevelPacket packet = (LevelPacket)CalcHelper.ConvertToObject(data);
+                    //bw.Write(DKD_OK);
+                    //bw.Flush();
+
+                    packet.ExtractConfigFile().LoadIntoPlay();
+                    Main.Session.Start();
                 }
                 if (request == DKD_Test)
                 {
@@ -140,8 +154,17 @@ namespace Adam.Network
 
         public EntityPacket ReceiveEntityPacket()
         {
-            byte[] packet = udpClient.Receive(ref serverIP);
+            Console.WriteLine("Listening at: {0}, for server: {1}", udpIP, server);
+            byte[] packet = udpClient.Receive(ref server);
+            Console.WriteLine("Received entity packet:" + packet);
             EntityPacket en = (EntityPacket)CalcHelper.ConvertToObject(packet);
+            return en;
+        }
+
+        public PlayerPacket ReceivePlayerPacket(IPEndPoint clientIPEndPoint)
+        {
+            byte[] packet = udpClient.Receive(ref clientIPEndPoint);
+            PlayerPacket en = (PlayerPacket)CalcHelper.ConvertToObject(packet);
             return en;
         }
 

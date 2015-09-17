@@ -157,7 +157,7 @@ namespace Adam.UI
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        private static WorldConfigFile GetWorldConfigFile(string filePath)
+        public static WorldConfigFile GetWorldConfigFile(string filePath)
         {
             // Deserialize file into WorldConfigFile.
             WorldConfigFile config;

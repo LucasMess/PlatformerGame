@@ -1,9 +1,11 @@
 ﻿using Adam;
 using Adam.GameData;
 using Adam.Network.Packets;
+using Adam.UI;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -45,6 +47,11 @@ namespace Adam.Network
             get; set;
         }
 
+        public static PlayerPacket PlayerPacket
+        {
+            get; set;
+        }
+
         /// <summary>
         /// Returns true if the session is still happening.
         /// </summary>
@@ -81,10 +88,13 @@ namespace Adam.Network
             connection = new Connection(address, port, playerName);
         }
 
-        public void Start(WorldConfigFile config)
+        public void Start()
         {
-            server.IsWaitingForPlayers = false;
-            server.SendLevelPacket(config);
+            if (IsHost)
+            {
+                server.IsWaitingForPlayers = false;
+                SendLevel();
+            }
             new Thread(new ThreadStart(Update)).Start();
         }
 
@@ -92,13 +102,19 @@ namespace Adam.Network
         {
             while (IsActive)
             {
+                if (Main.IsLoadingContent)
+                    continue;
+                Console.WriteLine("Updating...");
                 if (IsHost)
                 {
                     server.SendEntityPacket(GameWorld.Instance);
+                    Console.WriteLine("Entity packet sent.");
+                    //PlayerPacket = connection.ReceivePlayerPacket();
                 }
                 else
                 {
                     EntityPacket = connection.ReceiveEntityPacket();
+                    Console.WriteLine("Entity packet received.");
                 }
             }
         }
@@ -106,6 +122,14 @@ namespace Adam.Network
         public void SendTestMessage()
         {
             server.SendMessage("Hello World!");
+        }
+
+        public void SendLevel()
+        {
+            WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Tutorial.lvl"));
+            server.SendLevelPacket(level);
+            level.LoadIntoPlay();
+           // server.SendLevelPacket(new WorldConfigFile("Test",256, 256));
         }
     }
 }

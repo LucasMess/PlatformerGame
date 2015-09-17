@@ -32,6 +32,20 @@ namespace Adam.Network.Packets
                 velocities[i] = entities[i].GetVelocity();
             }
         }
+
+        public void ExtractTo(GameWorld gameWorld)
+        {
+            for (int i = 0; i < positions.Length; i++)
+            {
+                if (i > gameWorld.entities.Count)
+                {
+                    Console.WriteLine("There is no entity number {0} in this gameworld. There are only {1}", i, gameWorld.entities.Count);
+                    break;
+                }
+
+                gameWorld.entities[i].UpdateFromPacket(positions[i], velocities[i]);
+            }
+        }
     }
 
 

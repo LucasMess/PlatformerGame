@@ -19,6 +19,7 @@ namespace Adam.Network
         UdpClient udpServer;
         TcpListener tcpListener;
         IPEndPoint serverIP;
+        
 
         public List<IPEndPoint> clientIPs = new List<IPEndPoint>();
         public List<Client> clients = new List<Client>();
@@ -36,8 +37,10 @@ namespace Adam.Network
             IPEndPoint serverIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"),42555);
             Console.WriteLine("Server IP: {0}", serverIP);
 
+
             //The listener is to get incoming connections and the udp is for sending game data.
-            udpServer = new UdpClient(serverIP);
+            udpServer = new UdpClient(new IPEndPoint(serverIP.Address,42557));
+
             Console.WriteLine("UDP server set up.");
             tcpListener = new TcpListener(serverIP);
             tcpListener.Start();
@@ -61,6 +64,10 @@ namespace Adam.Network
             }
         }
 
+        /// <summary>
+        /// Sends an entity packet to all clients.
+        /// </summary>
+        /// <param name="gameWorld"></param>
         public void SendEntityPacket(GameWorld gameWorld)
         {
             EntityPacket en = new EntityPacket(gameWorld);
@@ -68,18 +75,30 @@ namespace Adam.Network
             SendToClients(packet);
         }
 
+        /// <summary>
+        /// Send a level packet of the specified world config file.
+        /// </summary>
+        /// <param name="config"></param>
         public void SendLevelPacket(WorldConfigFile config)
         {
-            LevelPacket lev = new LevelPacket(config);
-            byte[] packet = CalcHelper.ToByteArray(lev);
-            SendToClients(packet);
+            byte[] data = CalcHelper.ToByteArray(new LevelPacket(config));
+            foreach (Client c in clients)
+            {
+                c.SendLevelOverTCP(data);
+            }
         }
 
+        /// <summary>
+        /// Used to send a byte packet to all clients via UDP.
+        /// </summary>
+        /// <param name="packet"></param>
         private void SendToClients(byte[] packet)
         {
             foreach (var ip in clientIPs)
             {
-                udpServer.Send(packet, packet.Length, ip);
+                IPEndPoint actualIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 42559);
+                Console.WriteLine("Packet sent to {0}, from: {1}", actualIP, udpServer.Client.LocalEndPoint);
+                udpServer.Send(packet, packet.Length, actualIP);
             }
         }
 

@@ -15,5 +15,10 @@ namespace Adam.Network.Packets
         {
             this.config = config;
         }
+
+        public WorldConfigFile ExtractConfigFile()
+        {
+            return config;
+        }
     }
 }

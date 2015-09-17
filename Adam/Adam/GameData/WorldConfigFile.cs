@@ -141,6 +141,7 @@ namespace Adam.GameData
         }
     }
 
+    [Serializable]
     public class AdamDictionary
     {
         List<KeyValue> keyValues = new List<KeyValue>();
@@ -198,6 +199,7 @@ namespace Adam.GameData
 
     }
 
+    [Serializable]
     public struct KeyValue
     {
         public int Key { get; set; }

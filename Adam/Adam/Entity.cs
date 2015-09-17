@@ -558,5 +558,12 @@ namespace Adam
         {
             Health = MaxHealth;
         }
+
+        public void UpdateFromPacket(Vector2 position, Vector2 velocity)
+        {
+            collRectangle.X = (int)position.X;
+            collRectangle.Y = (int)position.Y;
+            this.velocity = velocity;
+        }
     }
 }
