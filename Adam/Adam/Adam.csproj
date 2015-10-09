@@ -171,6 +171,8 @@
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
+    <Compile Include="Misc\AbilityChannel.cs" />
+    <Compile Include="Misc\ComplexAnimation.cs" />
     <Compile Include="Misc\Databases\InputDB.cs" />
     <Compile Include="Misc\Databases\SoundtrackDB.cs" />
     <Compile Include="Misc\Errors\Exceptions.cs" />

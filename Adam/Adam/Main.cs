@@ -146,8 +146,10 @@ namespace Adam
 
             // Get the current monitor resolution and set it as the game's resolution
             Vector2 monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            UserResWidth = 800;
-            UserResHeight = 450;
+            //UserResWidth = 800;
+            //UserResHeight = 450;
+            UserResWidth = (int)monitorRes.X ;
+            UserResHeight = (int)monitorRes.Y;
             WidthRatio = ((double)Main.DefaultResWidth / (double)Main.UserResWidth);
             HeightRatio = ((double)Main.DefaultResHeight / (double)Main.UserResHeight);
 

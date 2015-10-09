@@ -10,9 +10,15 @@ namespace Adam.Network.Packets
     [Serializable]
     public class EntityPacket : DataPacket
     {
+        static int PacketTimer;
+
         int[] IDs;
         Vector2[] positions;
         Vector2[] velocities;
+        long TimeStamp
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Creates a new entity packet from the current gameworld.
@@ -31,6 +37,7 @@ namespace Adam.Network.Packets
                 positions[i] = new Vector2(entities[i].GetCollRectangle().X, entities[i].GetCollRectangle().Y);
                 velocities[i] = entities[i].GetVelocity();
             }
+
         }
 
         public void ExtractTo(GameWorld gameWorld)

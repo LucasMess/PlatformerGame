@@ -16,42 +16,17 @@ using System.Text;
 
 namespace Adam
 {
-    public enum Evolution
-    {
-        Eden,
-        Prehistoric,
-        Ancient,
-        Medieval,
-        Renaissance,
-        Modern,
-        Future,
-        God,
-        InProgress,
-    }
-
     public partial class Player : Entity, ICollidable, INewtonian
     {
-
         public delegate void PlayerRespawnHandler();
         public event PlayerRespawnHandler PlayerRespawned;
 
         #region Variables
-        public Texture2D currentTexture;
-        public Texture2D previousSingleTexture;
-        public Texture2D newSingleTexture;
-        Texture2D blackScreen;
-        Texture2D maxTexture;
-        Texture2D[] textureArray;
-        Texture2D[] singleTextureArray;
         Main game1;
-
-        public Weapon weapon;
-
-
         public Rectangle attackBox;
 
         Jetpack jetpack = new Jetpack();
-
+        ComplexAnimation complexAnim = new ComplexAnimation();
         SoundEffect jumpSound, takeDamageSound, attackSound, gameOverSound, tadaSound, fallSound;
         SoundEffect chronoActivateSound;
         public SoundFx chronoDeactivateSound;
@@ -156,26 +131,17 @@ namespace Adam
         Vector2 frameCount;
         #endregion
 
-        /// <summary>
-        /// Describes the state of the player's animation and determines which sprites to loop.
-        /// </summary>
-        public enum AnimationState
-        {
-            Still,
-            Walking,
-            Jumping,
-            Falling,
-            JumpWalking,
-            Sleeping,
-            Climbing,
-        }
-
-        public AnimationState CurrentAnimation = AnimationState.Still;
-        public Evolution CurrentEvolution = Evolution.Eden;
-
         public Player(Main game1)
         {
             this.game1 = game1;
+
+            Texture2D edenTexture = ContentHelper.LoadTexture("adam_eden");
+
+            complexAnim.AddAnimationData("idle", new ComplexAnimData(0, edenTexture, new Rectangle(0, 0, 0, 0), 0, 0, 0, 0, 0, true));
+
+
+
+
             Initialize(0, 0);
             Load();
         }
@@ -191,7 +157,6 @@ namespace Adam
             collRectangle.X = setX;
             collRectangle.Y = setY;
             respawnPos = new Vector2(setX, setY);
-            weapon = new Weapon();
 
             //Animation information
             frameCount = new Vector2(4, 0);
@@ -209,33 +174,6 @@ namespace Adam
             string path;
 
             tadaSound = ContentHelper.LoadSound("Sounds/levelup");
-
-            //Use this array to get each evolution texture.
-            path = "Characters/adam_";
-            textureArray = new Texture2D[]
-            {
-                ContentHelper.LoadTexture(path+"eden_new"),
-                ContentHelper.LoadTexture(path+"prehistoric_s5"),
-                ContentHelper.LoadTexture(path+"eden"),
-                ContentHelper.LoadTexture(path+"eden"),
-                ContentHelper.LoadTexture(path+"eden"),
-                ContentHelper.LoadTexture(path+"modern_s5"),
-                ContentHelper.LoadTexture(path+"future_s5"),
-            };
-
-            //Use this array to get any evolution single texture.
-            //Single textures are used for the desintegrated rectangles effect.
-            path = "Characters/Adam Singles/adam_";
-            singleTextureArray = new Texture2D[]
-            {
-                ContentHelper.LoadTexture(path+"eden_single"),
-                ContentHelper.LoadTexture(path+"prehistoric_single"),
-                ContentHelper.LoadTexture(path+"eden_single"),
-                ContentHelper.LoadTexture(path+"eden_single"),
-                ContentHelper.LoadTexture(path+"eden_single"),
-                ContentHelper.LoadTexture(path+"modern_single"),
-                ContentHelper.LoadTexture(path+"future_single"),
-            };
 
             //Load sound effects
             chronoActivateSound = ContentHelper.LoadSound("Sounds/chronoshift_activate");
@@ -274,16 +212,6 @@ namespace Adam
             levelFail = new SoundFx("Sounds/Menu/level_fail");
             climb1 = new SoundFx("Sounds/Player/climbing1");
             climb2 = new SoundFx("Sounds/Player/climbing2");
-            jumpedOnEnemySound = new SoundFx("Sounds/Player/enemy_jumpedOn");
-
-            //Returns textures based on the current evolution. At the beginning they are all the same.
-            newSingleTexture = GetSingleTexture();
-            previousSingleTexture = GetSingleTexture();
-            currentTexture = textureArray[0];
-
-            //Weapon
-            if (weapon != null)
-                weapon.Load();
         }
 
         /// <summary>
@@ -326,7 +254,6 @@ namespace Adam
             Animate();
             SetEvolutionAttributes();
 
-            weapon.Update(this, gameTime);
             jetpack.Update(this, gameTime);
 
             //If the player is falling really fast, he is not jumping anymore and is falling.
@@ -354,6 +281,16 @@ namespace Adam
             {
                 //Chronoshift(Evolution.Modern);
                 //isChronoshifting = true;
+            }
+
+            if (InputHelper.IsKeyDown(Keys.K))
+            {
+                velocity.X = 20;
+                sourceRectangle.Width = 48;
+                frameCount.X = 0;
+                currentFrame = 0;
+                CurrentAnimation = AnimationState.Dashing;
+                isDashing = true;
             }
         }
 
@@ -502,20 +439,6 @@ namespace Adam
             if (velocity.Y > 2 && (CurrentAnimation != AnimationState.Jumping && CurrentAnimation != AnimationState.Falling) && !grabbedVine)
                 CurrentAnimation = AnimationState.Jumping;
 
-            //If player is trying to fly using his jetpack
-            if (CurrentEvolution == Evolution.Future && InputHelper.IsLeftMousePressed())
-            {
-                if (jetpack.HasFuel)
-                {
-                    isFlying = true;
-                    isJumping = true;
-                    velocity.Y -= 1f;
-                    CurrentAnimation = AnimationState.Jumping;
-
-                    if (velocity.Y < Jetpack.MaxSpeed)
-                        velocity.Y = Jetpack.MaxSpeed;
-                }
-            }
         }
 
         /// <summary>
@@ -553,323 +476,282 @@ namespace Adam
                 }
             }
         }
-        //This changes the abilities that Adam has available depending on his evolution
-        private void SetEvolutionAttributes()
-        {
-            switch (CurrentEvolution)
-            {
-                case Evolution.Eden:
-                    canLift = false;
-                    canBecomeInvisible = false;
-                    canActivateShield = false;
-                    canSeeInDark = false;
-                    hasFireResistance = false;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.None);
-                    break;
-                case Evolution.Prehistoric:
-                    canLift = true;
-                    canBecomeInvisible = false;
-                    canActivateShield = false;
-                    canSeeInDark = false;
-                    hasFireResistance = false;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.Stick);
-                    break;
-                case Evolution.Ancient:
-                    canLift = false;
-                    canBecomeInvisible = true;
-                    canActivateShield = false;
-                    canSeeInDark = false;
-                    hasFireResistance = false;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.Bow);
-                    break;
-                case Evolution.Medieval:
-                    canLift = false;
-                    canBecomeInvisible = false;
-                    canActivateShield = true;
-                    canSeeInDark = false;
-                    hasFireResistance = false;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.Sword);
-                    break;
-                case Evolution.Renaissance:
-                    canLift = false;
-                    canBecomeInvisible = false;
-                    canActivateShield = false;
-                    canSeeInDark = true;
-                    hasFireResistance = false;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.Shotgun);
-                    break;
-                case Evolution.Modern:
-                    canLift = false;
-                    canBecomeInvisible = false;
-                    canActivateShield = false;
-                    canSeeInDark = false;
-                    hasFireResistance = true;
-                    hasJetpack = false;
-                    weapon.SwitchWeapon(WeaponType.None);
-                    break;
-                case Evolution.Future:
-                    canLift = false;
-                    canBecomeInvisible = false;
-                    canActivateShield = false;
-                    canSeeInDark = false;
-                    hasFireResistance = false;
-                    hasJetpack = true;
-                    weapon.SwitchWeapon(WeaponType.LaserGun);
-                    break;
-                case Evolution.God:
-                    break;
-            }
-        }
+        
 
         public void UpdateStats()
         {
         }
 
+        //private void Animate()
+        //{
+        //    currentFrame = sourceRectangle.X / sourceRectangle.Width;
+
+        //    if (currentFrame >= frameCount.X)
+        //    {
+        //        currentFrame = 0;
+        //        sourceRectangle.X = 0;
+        //    }
+
+        //    switch (CurrentAnimation)
+        //    {
+        //        #region Still Animation
+        //        case AnimationState.Still:
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = 0;
+        //            //defines the speed of the animation
+        //            switchFrame = 500;
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            //if the time is up, moves on to the next frame
+        //            if (frameTimer >= switchFrame)
+        //            {
+        //                if (frameCount.X != 0)
+        //                {
+        //                    frameTimer = 0;
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (currentFrame >= frameCount.X)
+        //            {
+        //                currentFrame = 0;
+        //                sourceRectangle.X = 0;
+        //            }
+        //            break;
+        //        #endregion
+        //        #region Walking Animation
+        //        case AnimationState.Walking:
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height;
+        //            //defines the speed of the animation
+        //            if (velocity.X == 0)
+        //                switchFrame = 0;
+        //            else switchFrame = (int)Math.Abs(400 / velocity.X);
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            //if the time is up, moves on to the next frame
+        //            if (frameTimer >= switchFrame)
+        //            {
+        //                if (frameCount.X != 0)
+        //                {
+        //                    frameTimer = 0;
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (currentFrame == 0 || currentFrame == 2)
+        //            {
+        //                PlayMovementSounds();
+        //            }
+
+        //            if (currentFrame >= frameCount.X)
+        //            {
+        //                currentFrame = 0;
+        //                sourceRectangle.X = 0;
+        //            }
+
+        //            break;
+        //        #endregion
+        //        #region Jump Animation
+        //        case AnimationState.Jumping:
+
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height * 2;
+        //            sourceRectangle.X = 0;
+        //            currentFrame = 0;
+        //            if (velocity.Y > -6)
+        //            {
+        //                sourceRectangle.X = sourceRectangle.Width;
+        //                currentFrame = 1;
+
+        //                if (velocity.Y > -2)
+        //                {
+        //                    sourceRectangle.X = sourceRectangle.Width * 2;
+        //                    currentFrame = 2;
+
+        //                    if (velocity.Y > 2)
+        //                        sourceRectangle.X = sourceRectangle.Width * 3;
+        //                }
+        //            }
+
+        //            break;
+        //        #endregion
+        //        #region Falling Animation
+        //        case AnimationState.Falling:
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height * 3;
+        //            //defines the speed of the animation
+        //            switchFrame = 100;
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            //if the time is up, moves on to the next frame
+        //            if (frameTimer >= switchFrame)
+        //            {
+        //                if (frameCount.X != 0)
+        //                {
+        //                    frameTimer = 0;
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (currentFrame >= frameCount.X)
+        //            {
+        //                currentFrame = 0;
+        //                sourceRectangle.X = 0;
+        //            }
+        //            break;
+        //        #endregion
+        //        #region Jump and Walking Animation
+        //        case AnimationState.JumpWalking:
+        //            if (velocity.X == 0)
+        //            {
+        //                CurrentAnimation = AnimationState.Jumping;
+        //                break;
+        //            }
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height * 4;
+        //            sourceRectangle.X = 0;
+        //            currentFrame = 0;
+        //            if (velocity.Y > -4)
+        //            {
+        //                sourceRectangle.X = sourceRectangle.Width;
+        //                currentFrame = 1;
+
+        //                if (velocity.Y > 7)
+        //                {
+        //                    sourceRectangle.X = sourceRectangle.Width * 2;
+        //                    currentFrame = 2;
+        //                    //fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //                    //if (velocity.Y >= 8 && fallingTimer > 500)
+        //                    //{
+        //                    //    CurrentAnimation = AnimationState.falling;
+        //                    //    fallingTimer = 0;
+        //                    //    sourceRectangle.X = 0;
+        //                    //    currentFrame = 0;
+        //                    //}
+        //                }
+        //            }
+        //            break;
+        //        #endregion
+        //        #region Sleeping Animation
+        //        case AnimationState.Sleeping:
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height * 5;
+        //            //defines the speed of the animation
+        //            switchFrame = 600;
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            //if the time is up, moves on to the next frame
+        //            if (frameTimer >= switchFrame)
+        //            {
+        //                if (frameCount.X != 0)
+        //                {
+        //                    frameTimer = 0;
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (currentFrame >= frameCount.X)
+        //            {
+        //                currentFrame = 0;
+        //                sourceRectangle.X = 0;
+        //            }
+
+        //            zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
+        //            if (zzzTimer > 1)
+        //            {
+        //                GameWorld.Instance.particles.Add(new Particle(this));
+        //                zzzTimer = 0;
+        //            }
+
+        //            break;
+        //        #endregion
+        //        #region Climbing Animation
+        //        case AnimationState.Climbing:
+        //            //define where in the spritesheet the still sequence is
+        //            sourceRectangle.Y = sourceRectangle.Height * 4;
+        //            //defines the speed of the animation
+        //            switchFrame = 250;
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            //if the time is up, moves on to the next frame
+        //            if (frameTimer >= switchFrame && Math.Abs((double)(velocity.Y)) > 2)
+        //            {
+        //                if (frameCount.X != 0)
+        //                {
+        //                    frameTimer = 0;
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (currentFrame >= frameCount.X)
+        //            {
+        //                currentFrame = 0;
+        //                sourceRectangle.X = 0;
+        //            }
+
+        //            if (currentFrame == 0 || currentFrame == 2)
+        //            {
+        //                climb1.PlayNewInstanceOnce();
+        //                climb2.Reset();
+        //            }
+        //            if (currentFrame == 1 || currentFrame == 3)
+        //            {
+        //                climb2.PlayNewInstanceOnce();
+        //                climb1.Reset();
+        //            }
+
+        //            break;
+        //        #endregion
+
+        //        case AnimationState.Dashing:
+        //            currentTexture = dashingTexture;
+        //            sourceRectangle.Y = 0;
+        //            switchFrame = 250;
+        //            //starts timer
+        //            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //            if (frameTimer >= switchFrame)
+        //            {
+        //                if (frameCount.X != 0 && currentFrame == 0)
+        //                {
+        //                    sourceRectangle.X += sourceRectangle.Width;
+        //                    currentFrame++;
+        //                }
+        //            }
+
+        //            if (velocity.X < 1)
+        //            {
+        //                currentFrame = 2;
+        //                sourceRectangle.X += sourceRectangle.Width ;
+        //            }
+
+
+        //            break;
+        //    }
+
+
+        //    if (currentFrame >= frameCount.X)
+        //    {
+        //        currentFrame = 0;
+        //        sourceRectangle.X = 0;
+        //    }
+        //}
+
         private void Animate()
         {
-            currentFrame = sourceRectangle.X / sourceRectangle.Width;
 
-            if (currentFrame >= frameCount.X)
-            {
-                currentFrame = 0;
-                sourceRectangle.X = 0;
-            }
-
-            switch (CurrentAnimation)
-            {
-                #region Still Animation
-                case AnimationState.Still:
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = 0;
-                    //defines the speed of the animation
-                    switchFrame = 500;
-                    //starts timer
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    //if the time is up, moves on to the next frame
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-                    break;
-                #endregion
-                #region Walking Animation
-                case AnimationState.Walking:
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height;
-                    //defines the speed of the animation
-                    if (velocity.X == 0)
-                        switchFrame = 0;
-                    else switchFrame = (int)Math.Abs(400 / velocity.X);
-                    //starts timer
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    //if the time is up, moves on to the next frame
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame == 0 || currentFrame == 2)
-                    {
-                        PlayMovementSounds();
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-
-                    break;
-                #endregion
-                #region Jump Animation
-                case AnimationState.Jumping:
-
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height * 2;
-                    sourceRectangle.X = 0;
-                    currentFrame = 0;
-                    if (velocity.Y > -6)
-                    {
-                        sourceRectangle.X = sourceRectangle.Width;
-                        currentFrame = 1;
-
-                        if (velocity.Y > -2)
-                        {
-                            sourceRectangle.X = sourceRectangle.Width * 2;
-                            currentFrame = 2;
-
-                            if (velocity.Y > 2)
-                                sourceRectangle.X = sourceRectangle.Width * 3;
-                        }
-                    }
-
-                    break;
-                #endregion
-                #region Falling Animation
-                case AnimationState.Falling:
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height * 3;
-                    //defines the speed of the animation
-                    switchFrame = 100;
-                    //starts timer
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    //if the time is up, moves on to the next frame
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-                    break;
-                #endregion
-                #region Jump and Walking Animation
-                case AnimationState.JumpWalking:
-                    if (velocity.X == 0)
-                    {
-                        CurrentAnimation = AnimationState.Jumping;
-                        break;
-                    }
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height * 4;
-                    sourceRectangle.X = 0;
-                    currentFrame = 0;
-                    if (velocity.Y > -4)
-                    {
-                        sourceRectangle.X = sourceRectangle.Width;
-                        currentFrame = 1;
-
-                        if (velocity.Y > 7)
-                        {
-                            sourceRectangle.X = sourceRectangle.Width * 2;
-                            currentFrame = 2;
-                            //fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                            //if (velocity.Y >= 8 && fallingTimer > 500)
-                            //{
-                            //    CurrentAnimation = AnimationState.falling;
-                            //    fallingTimer = 0;
-                            //    sourceRectangle.X = 0;
-                            //    currentFrame = 0;
-                            //}
-                        }
-                    }
-                    break;
-                #endregion
-                #region Sleeping Animation
-                case AnimationState.Sleeping:
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height * 5;
-                    //defines the speed of the animation
-                    switchFrame = 600;
-                    //starts timer
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    //if the time is up, moves on to the next frame
-                    if (frameTimer >= switchFrame)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-
-                    zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                    if (zzzTimer > 1)
-                    {
-                        GameWorld.Instance.particles.Add(new Particle(this));
-                        zzzTimer = 0;
-                    }
-
-                    break;
-                #endregion
-                #region Climbing Animation
-                case AnimationState.Climbing:
-                    //define where in the spritesheet the still sequence is
-                    sourceRectangle.Y = sourceRectangle.Height * 4;
-                    //defines the speed of the animation
-                    switchFrame = 250;
-                    //starts timer
-                    frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    //if the time is up, moves on to the next frame
-                    if (frameTimer >= switchFrame && Math.Abs((double)(velocity.Y)) > 2)
-                    {
-                        if (frameCount.X != 0)
-                        {
-                            frameTimer = 0;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            currentFrame++;
-                        }
-                    }
-
-                    if (currentFrame >= frameCount.X)
-                    {
-                        currentFrame = 0;
-                        sourceRectangle.X = 0;
-                    }
-
-                    if (currentFrame == 0 || currentFrame == 2)
-                    {
-                        climb1.PlayNewInstanceOnce();
-                        climb2.Reset();
-                    }
-                    if (currentFrame == 1 || currentFrame == 3)
-                    {
-                        climb2.PlayNewInstanceOnce();
-                        climb1.Reset();
-                    }
-
-                    break;
-                    #endregion
-            }
-
-
-            if (currentFrame >= frameCount.X)
-            {
-                currentFrame = 0;
-                sourceRectangle.X = 0;
-            }
         }
 
         private void CheckDead()
@@ -1083,26 +965,6 @@ namespace Adam
             }
         }
 
-        public void GetDisintegratedRectangles(out Rectangle[] rectangles)
-        {
-            Vector2 size = new Vector2(previousSingleTexture.Width / Main.Tilesize, previousSingleTexture.Height / Main.Tilesize);
-            int xSize = 4 * (int)size.X;
-            int ySize = 4 * (int)size.Y;
-            int width = previousSingleTexture.Width / xSize;
-            int height = previousSingleTexture.Height / ySize;
-            rectangles = new Rectangle[xSize * ySize];
-
-            int i = 0;
-            for (int h = 0; h < ySize; h++)
-            {
-                for (int w = 0; w < xSize; w++)
-                {
-                    rectangles[i] = new Rectangle(w * width, h * height, width, height);
-                    i++;
-                }
-            }
-        }
-
         private void CreateWalkingParticles()
         {
             //Creates little particles that have a texture according to the block below the player
@@ -1187,34 +1049,12 @@ namespace Adam
             hasStomped = false;
         }
 
-        public void Chronoshift(Evolution newEvolution)
-        {
-            isChronoshifting = true;
-            hasChronoshifted = true;
-            chronoActivateSound.Play();
-
-            for (int i = 0; i < 50; i++)
-            {
-                GameWorld.Instance.particles.Add(new ChronoshiftParticle(this));
-            }
-        }
-
         public void KillAndRespawn()
         {
             TakeDamage(Health);
 
             if (isWaitingForRespawn)
                 return;
-
-            Rectangle[] rectangles;
-            GetDisintegratedRectangles(out rectangles);
-
-            foreach (var rec in rectangles)
-            {
-                Particle eff = new Particle();
-                eff.CreatePlayerDesintegrationEffect(this, rec);
-                GameWorld.Instance.particles.Add(eff);
-            }
 
             for (int i = 0; i < 10; i++)
             {
@@ -1229,38 +1069,6 @@ namespace Adam
             manual_hasControl = false;
             isWaitingForRespawn = true;
             levelFail.PlayIfStopped();
-        }
-
-        private int GetTextureNumber(Evolution ev)
-        {
-            switch (ev)
-            {
-                case Evolution.Eden:
-                    return 0;
-                case Evolution.Prehistoric:
-                    return 1;
-                case Evolution.Ancient:
-                    return 2;
-                case Evolution.Medieval:
-                    return 3;
-                case Evolution.Renaissance:
-                    return 4;
-                case Evolution.Modern:
-                    return 5;
-                case Evolution.Future:
-                    return 6;
-                case Evolution.God:
-                    return 7;
-                case Evolution.InProgress:
-                    return 0;
-                default:
-                    return 0;
-            }
-        }
-
-        public Texture2D GetSingleTexture()
-        {
-            return singleTextureArray[GetTextureNumber(CurrentEvolution)];
         }
 
         public void Stomp()
@@ -1398,7 +1206,9 @@ namespace Adam
         {
             get
             {
-                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, 48, 80);
+                int width;
+                if (!isDashing) width = 48; else width = 96;
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, width, 80);
             }
         }
     }
