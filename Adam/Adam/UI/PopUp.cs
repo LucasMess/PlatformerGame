@@ -35,7 +35,7 @@ namespace Adam
 
         public PopUp()
         {
-            texts = new string[Player.MAX_LEVEL + 2];
+            texts = new string[Player.Player.MAX_LEVEL + 2];
             texts[1] = "A leaf! The best protection in the world!";
             texts[2] = "A stick! If only you had marshmallows.";
             texts[3] = "Leather shoes! Show those ants who is boss!";

@@ -293,6 +293,16 @@ namespace Adam
             return velocity;
         }
 
+        public void SetVelX(float x)
+        {
+            velocity.X = x;
+        }
+
+        public void SetVelY(float y)
+        {
+            velocity.Y = y;
+        }
+
         public virtual void Kill() { 
 }
 

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Adam
+namespace Adam.Player
 {
     public partial class Player : Entity, ICollidable, INewtonian
     {
@@ -163,6 +163,8 @@ namespace Adam
             collRectangle.Width = 32;
             collRectangle.Height = 64;
             sourceRectangle = new Rectangle(0, 0, 24, 40);
+
+            InitializeInput();
         }
 
         /// <summary>
@@ -214,232 +216,221 @@ namespace Adam
             climb2 = new SoundFx("Sounds/Player/climbing2");
         }
 
-        /// <summary>
-        /// Update player information, checks for collision and input, and many other things.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        /// 
-        public void Update(GameTime gameTime)
-        {
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
-            {
-                ContainInGameWorld();
-                return;
+        ///// <summary>
+        ///// Update player information, checks for collision and input, and many other things.
+        ///// </summary>
+        ///// <param name="gameTime"></param>
+        ///// 
+        //public void Update(GameTime gameTime)
+        //{
+        //    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+        //    {
+        //        ContainInGameWorld();
+        //        return;
 
-            }
+        //    }
 
-            this.gameTime = gameTime;
+        //    this.gameTime = gameTime;
 
-            deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
+        //    deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
-            //Update Method is spread out!
-            //Check the following things
+        //    //Update Method is spread out!
+        //    //Check the following things
 
-            CheckDead();
-
-
-            if (IsDead())
-            {
-                UpdateTimers();
-                return;
-            }
-
-            UpdateStats();
-            UpdateInput();
-            UpdateTimers();
-            UpdatePlayerPosition();
-            if (!isGhost)
-                base.Update();
-            CreateWalkingParticles();
-            Animate();
-            SetEvolutionAttributes();
-
-            jetpack.Update(this, gameTime);
-
-            //If the player is falling really fast, he is not jumping anymore and is falling.
-            if (velocity.Y > 7)
-            {
-                fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                if (velocity.Y >= 8 && fallingTimer > 500 && !isOnVines)
-                {
-                    CurrentAnimation = AnimationState.Falling;
-                    fallingTimer = 0;
-                    sourceRectangle.X = 0;
-                    currentFrame = 0;
-                    sleepTimer = 0;
-                }
-            }
-
-            //If the player stays idle for too long, then he will start sleeping.
-            sleepTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (sleepTimer > 3 && !isOnVines)
-                CurrentAnimation = AnimationState.Sleeping;
-
-            //For debugging chronoshift.
-            if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
-            {
-                //Chronoshift(Evolution.Modern);
-                //isChronoshifting = true;
-            }
-
-            if (InputHelper.IsKeyDown(Keys.K))
-            {
-                velocity.X = 20;
-                sourceRectangle.Width = 48;
-                frameCount.X = 0;
-                currentFrame = 0;
-                CurrentAnimation = AnimationState.Dashing;
-                isDashing = true;
-            }
-        }
-
-        /// <summary>
-        /// This method will check for input and update the player's position accordingly.
-        /// </summary>
-        private void UpdateInput()
-        {
-            if (Main.IsLoadingContent)
-                return;
-
-            //Check if player is currently on top of vines
-            if (TileIndex >= 0 && TileIndex < GameWorld.Instance.tileArray.Length)
-                if (GameWorld.Instance.tileArray[TileIndex].isClimbable)
-                    isOnVines = true;
-                else isOnVines = false;
+        //    CheckDead();
 
 
-            //These variables define how fast the player will accelerate based on whether he is walking or runnning.
-            //There is no need to put a max limit because after a certain speed, the friction is neough to maintain a const. vel.
-            float walkingAcc = .25f;
-            float runningAcc = .4f;
-            float acceleration = .5f;
-            float deceleration = .95f;
-            float jumpSpeed = 8f;
+        //    if (IsDead())
+        //    {
+        //        UpdateTimers();
+        //        return;
+        //    }
 
-            //Check to see if player is running fast
-            if (InputHelper.IsKeyDown(Keys.LeftShift))
-            {
-                acceleration = runningAcc;
-            }
-            else acceleration = walkingAcc;
+        //    UpdateStats();
+        //    UpdateInput();
+        //    UpdateTimers();
+        //    UpdatePlayerPosition();
+        //    if (!isGhost)
+        //        base.Update();
+        //    CreateWalkingParticles();
+        //    Animate();
+       
+        //    jetpack.Update(this, gameTime);
+
+        //    //If the player is falling really fast, he is not jumping anymore and is falling.
+        //    if (velocity.Y > 7)
+        //    {
+        //        fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+        //        if (velocity.Y >= 8 && fallingTimer > 500 && !isOnVines)
+        //        {
+        //            CurrentAnimation = AnimationState.Falling;
+        //            fallingTimer = 0;
+        //            sourceRectangle.X = 0;
+        //            currentFrame = 0;
+        //            sleepTimer = 0;
+        //        }
+        //    }
+
+        //    //If the player stays idle for too long, then he will start sleeping.
+        //    sleepTimer += gameTime.ElapsedGameTime.TotalSeconds;
+        //    if (sleepTimer > 3 && !isOnVines)
+        //        CurrentAnimation = AnimationState.Sleeping;
+
+        //    //For debugging chronoshift.
+        //    if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
+        //    {
+        //        //Chronoshift(Evolution.Modern);
+        //        //isChronoshifting = true;
+        //    }
+        //}
+
+        ///// <summary>
+        ///// This method will check for input and update the player's position accordingly.
+        ///// </summary>
+        //private void UpdateInput()
+        //{
+        //    if (Main.IsLoadingContent)
+        //        return;
+
+        //    //Check if player is currently on top of vines
+        //    if (TileIndex >= 0 && TileIndex < GameWorld.Instance.tileArray.Length)
+        //        if (GameWorld.Instance.tileArray[TileIndex].isClimbable)
+        //            isOnVines = true;
+        //        else isOnVines = false;
 
 
-            //Check if the player is moving Left
-            if (Keyboard.GetState().IsKeyDown(Keys.A) && automatic_hasControl == true && manual_hasControl)
-            {
-                velocity.X -= acceleration;
-                IsFacingRight = false;
-                sleepTimer = 0;
-                if (!isJumping)
-                    CurrentAnimation = AnimationState.Walking;
-                if (canFly)
-                    velocity.X = -10f;
-            }
+        //    //These variables define how fast the player will accelerate based on whether he is walking or runnning.
+        //    //There is no need to put a max limit because after a certain speed, the friction is neough to maintain a const. vel.
+        //    float walkingAcc = .25f;
+        //    float runningAcc = .4f;
+        //    float acceleration = .5f;
+        //    float deceleration = .95f;
+        //    float jumpSpeed = 8f;
 
-            //Check if the player is moving right
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && automatic_hasControl == true && manual_hasControl)
-            {
+        //    //Check to see if player is running fast
+        //    if (InputHelper.IsKeyDown(Keys.LeftShift))
+        //    {
+        //        acceleration = runningAcc;
+        //    }
+        //    else acceleration = walkingAcc;
 
-                velocity.X += acceleration;
-                IsFacingRight = true;
-                sleepTimer = 0;
-                if (!isJumping)
-                    CurrentAnimation = AnimationState.Walking;
-                if (canFly)
-                    velocity.X = 10f;
-            }
 
-            //For when he is on OP mode the player can fly up.
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && automatic_hasControl == true && manual_hasControl && canFly)
-            {
-                velocity.Y = -jumpSpeed;
-                sleepTimer = 0;
-                CurrentAnimation = AnimationState.Jumping;
-            }
+        //    //Check if the player is moving Left
+        //    if (Keyboard.GetState().IsKeyDown(Keys.A) && automatic_hasControl == true && manual_hasControl)
+        //    {
+        //        velocity.X -= acceleration;
+        //        IsFacingRight = false;
+        //        sleepTimer = 0;
+        //        if (!isJumping)
+        //            CurrentAnimation = AnimationState.Walking;
+        //        if (canFly)
+        //            velocity.X = -10f;
+        //    }
 
-            //For when he is on op mode the player can fly down.
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && automatic_hasControl == true && manual_hasControl && canFly)
-            {
-                velocity.Y = jumpSpeed;
-                sleepTimer = 0;
-            }
+        //    //Check if the player is moving right
+        //    if (Keyboard.GetState().IsKeyDown(Keys.D) && automatic_hasControl == true && manual_hasControl)
+        //    {
 
-            //Slows down y velocity if he is on op mode
-            if (canFly)
-            {
-                velocity.Y = velocity.Y * 0.9f * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
-            }
+        //        velocity.X += acceleration;
+        //        IsFacingRight = true;
+        //        sleepTimer = 0;
+        //        if (!isJumping)
+        //            CurrentAnimation = AnimationState.Walking;
+        //        if (canFly)
+        //            velocity.X = 10f;
+        //    }
 
-            //Check if the player is climbing a vine
-            if (isOnVines)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.W) && manual_hasControl)
-                {
-                    velocity.Y = -5f;
-                    grabbedVine = true;
-                    CurrentAnimation = AnimationState.Climbing;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.S) && manual_hasControl)
-                {
-                    velocity.Y = 5f;
-                    grabbedVine = true;
-                    CurrentAnimation = AnimationState.Climbing;
-                }
-                else if (grabbedVine)
-                {
-                    velocity.Y = 0;
-                    CurrentAnimation = AnimationState.Climbing;
-                }
-            }
-            else grabbedVine = false;
+        //    //For when he is on OP mode the player can fly up.
+        //    if (Keyboard.GetState().IsKeyDown(Keys.W) && automatic_hasControl == true && manual_hasControl && canFly)
+        //    {
+        //        velocity.Y = -jumpSpeed;
+        //        sleepTimer = 0;
+        //        CurrentAnimation = AnimationState.Jumping;
+        //    }
 
-            //Check if player is jumping
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && isSpaceBarPressed == false && automatic_hasControl == true && isJumping == false && manual_hasControl)
-            {
-                Jump();
-            }
+        //    //For when he is on op mode the player can fly down.
+        //    if (Keyboard.GetState().IsKeyDown(Keys.S) && automatic_hasControl == true && manual_hasControl && canFly)
+        //    {
+        //        velocity.Y = jumpSpeed;
+        //        sleepTimer = 0;
+        //    }
 
-            //If player stops moving, reduce his speed gradually
-            //velocity.X -= velocity.X * .1f * deltaTime;
-            velocity.X *= deceleration;
+        //    //Slows down y velocity if he is on op mode
+        //    if (canFly)
+        //    {
+        //        velocity.Y = velocity.Y * 0.9f * (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
+        //    }
 
-            //If his speed goes below a certain point, just make it zero
-            if (Math.Abs(velocity.X) < .1f)
-            {
-                velocity.X = 0;
-                PlayMovementSounds();
-            }
+        //    //Check if the player is climbing a vine
+        //    if (isOnVines)
+        //    {
+        //        if (Keyboard.GetState().IsKeyDown(Keys.W) && manual_hasControl)
+        //        {
+        //            velocity.Y = -5f;
+        //            grabbedVine = true;
+        //            CurrentAnimation = AnimationState.Climbing;
+        //        }
+        //        else if (Keyboard.GetState().IsKeyDown(Keys.S) && manual_hasControl)
+        //        {
+        //            velocity.Y = 5f;
+        //            grabbedVine = true;
+        //            CurrentAnimation = AnimationState.Climbing;
+        //        }
+        //        else if (grabbedVine)
+        //        {
+        //            velocity.Y = 0;
+        //            CurrentAnimation = AnimationState.Climbing;
+        //        }
+        //    }
+        //    else grabbedVine = false;
 
-            //If the player is not doing anything, change his Animation State
-            if (velocity.X == 0 && isJumping == false && CurrentAnimation != AnimationState.Sleeping && CurrentAnimation != AnimationState.Climbing)
-                CurrentAnimation = AnimationState.Still;
+        //    //Check if player is jumping
+        //    if (Keyboard.GetState().IsKeyDown(Keys.Space) && isSpaceBarPressed == false && automatic_hasControl == true && isJumping == false && manual_hasControl)
+        //    {
+        //        Jump();
+        //    }
 
-            //Check if the spacebar is pressed so that high jump mechanics can be activated
-            if (Keyboard.GetState().IsKeyUp(Keys.Space))
-                isSpaceBarPressed = false;
+        //    //If player stops moving, reduce his speed gradually
+        //    //velocity.X -= velocity.X * .1f * deltaTime;
+        //    velocity.X *= deceleration;
 
-            //if the player is flying, start timing the time his is off ground for the high jump mechanic. If he is not, reset the timer.
-            if (isJumping)
-                offGroundTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            else
-            {
-                offGroundTimer = 0;
-                if (CurrentAnimation == AnimationState.Jumping || CurrentAnimation == AnimationState.Falling)
-                    CurrentAnimation = AnimationState.Still;
-            }
+        //    //If his speed goes below a certain point, just make it zero
+        //    if (Math.Abs(velocity.X) < .1f)
+        //    {
+        //        velocity.X = 0;
+        //        PlayMovementSounds();
+        //    }
+
+        //    //If the player is not doing anything, change his Animation State
+        //    if (velocity.X == 0 && isJumping == false && CurrentAnimation != AnimationState.Sleeping && CurrentAnimation != AnimationState.Climbing)
+        //        CurrentAnimation = AnimationState.Still;
+
+        //    //Check if the spacebar is pressed so that high jump mechanics can be activated
+        //    if (Keyboard.GetState().IsKeyUp(Keys.Space))
+        //        isSpaceBarPressed = false;
+
+        //    //if the player is flying, start timing the time his is off ground for the high jump mechanic. If he is not, reset the timer.
+        //    if (isJumping)
+        //        offGroundTimer += gameTime.ElapsedGameTime.TotalSeconds;
+        //    else
+        //    {
+        //        offGroundTimer = 0;
+        //        if (CurrentAnimation == AnimationState.Jumping || CurrentAnimation == AnimationState.Falling)
+        //            CurrentAnimation = AnimationState.Still;
+        //    }
 
 
 
-            //if the player falls off a ledge without jumping, do not allow him to jump, but give him some room to jump if he is fast enough.
-            if (velocity.Y > 2f && !grabbedVine)
-                isJumping = true;
+        //    //if the player falls off a ledge without jumping, do not allow him to jump, but give him some room to jump if he is fast enough.
+        //    if (velocity.Y > 2f && !grabbedVine)
+        //        isJumping = true;
 
-            //If the player is falling from a ledge, start the jump animation
-            if (velocity.Y > 2 && (CurrentAnimation != AnimationState.Jumping && CurrentAnimation != AnimationState.Falling) && !grabbedVine)
-                CurrentAnimation = AnimationState.Jumping;
+        //    //If the player is falling from a ledge, start the jump animation
+        //    if (velocity.Y > 2 && (CurrentAnimation != AnimationState.Jumping && CurrentAnimation != AnimationState.Falling) && !grabbedVine)
+        //        CurrentAnimation = AnimationState.Jumping;
 
-        }
+        //}
 
         /// <summary>
         /// This method updates all of the rectangles and applies velocity.
@@ -860,9 +851,9 @@ namespace Adam
 
             if (isChronoshifting) return;
 
-            if (IsFacingRight == true)
-                spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White);
-            else spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            //if (IsFacingRight == true)
+            //    spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White);
+            //else spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
 
         public void TakeDamage(int damage)
@@ -1028,26 +1019,28 @@ namespace Adam
                 GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
             }
         }
+     
 
-        public void Jump()
-        {
-            //Make his velocity increase once
-            velocity.Y = -8f;
-            //Move him away from the tiles so collision does not stop the jump
-            collRectangle.Y -= 1;
-            //Make him unable to jump again
-            isJumping = true;
-            //Make this code not be repeated
-            isSpaceBarPressed = true;
-            //Play the sound
-            jumpSound.Play();
-            //Stop him from sleeping
-            sleepTimer = 0;
-            //Change the animation
-            CurrentAnimation = AnimationState.Jumping;
-            CreateJumpParticles();
-            hasStomped = false;
-        }
+
+        //public void Jump()
+        //{
+        //    //Make his velocity increase once
+        //    velocity.Y = -8f;
+        //    //Move him away from the tiles so collision does not stop the jump
+        //    collRectangle.Y -= 1;
+        //    //Make him unable to jump again
+        //    isJumping = true;
+        //    //Make this code not be repeated
+        //    isSpaceBarPressed = true;
+        //    //Play the sound
+        //    jumpSound.Play();
+        //    //Stop him from sleeping
+        //    sleepTimer = 0;
+        //    //Change the animation
+        //    CurrentAnimation = AnimationState.Jumping;
+        //    CreateJumpParticles();
+        //    hasStomped = false;
+        //}
 
         public void KillAndRespawn()
         {
@@ -1116,7 +1109,7 @@ namespace Adam
 
         public void DealDamage(Enemy enemy)
         {
-            Jump();
+            JumpAction();
             enemy.TakeDamage(20);
             jumpedOnEnemySound.PlayNewInstanceOnce();
             jumpedOnEnemySound.Reset();
@@ -1206,9 +1199,7 @@ namespace Adam
         {
             get
             {
-                int width;
-                if (!isDashing) width = 48; else width = 96;
-                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, width, 80);
+                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, 48, 80);
             }
         }
     }
