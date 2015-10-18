@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Adam.Player
+namespace Adam
 {
     public partial class Player
     {
@@ -26,6 +26,7 @@ namespace Adam.Player
         public event EventHandler UltimateAction;
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
+        public event EventHandler NotIdle;
 
         private void InitializeInput()
         {
@@ -41,6 +42,12 @@ namespace Adam.Player
             UltimateAction += Player_UltimateAction;
             FastRunActive += Player_FastRunActive;
             FastRunInactive += Player_FastRunInactive;
+            NotIdle += Player_NotIdle;
+        }
+
+        private void Player_NotIdle()
+        {
+            script.ResetIdleTimer();
         }
 
         private void Player_FastRunInactive()
@@ -60,32 +67,32 @@ namespace Adam.Player
 
         private void Player_UltimateAction()
         {
-            throw new NotImplementedException();
+            
         }
 
         private void Player_DashAction()
         {
-            throw new NotImplementedException();
+            script.OnDashAction(this);
         }
 
         private void Player_DefendAction()
         {
-            throw new NotImplementedException();
+           
         }
 
         private void Player_AttackAction()
         {
-            throw new NotImplementedException();
+            
         }
 
         private void Player_DuckAction()
         {
-            throw new NotImplementedException();
+            
         }
 
         private void Player_InteractAction()
         {
-            throw new NotImplementedException();
+            
         }
 
         private void Player_LeftMove()
@@ -100,7 +107,7 @@ namespace Adam.Player
 
         private void Player_JumpAction()
         {
-            throw new NotImplementedException();
+            script.OnJumpAction(this);
         }
 
         private void CheckInput()
@@ -133,12 +140,18 @@ namespace Adam.Player
                 DashAction();
             if (InputHelper.IsKeyDown(Keys.L))
                 UltimateAction();
+            if (InputHelper.IsKeyDown(Keys.Space))
+                JumpAction();
             if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
                 FastRunActive();
             else
             {
                 FastRunInactive();
             }
+
+            if (InputHelper.IsAnyInputPressed())
+                NotIdle();
+
         }
 
         private void UpdateWithController()

@@ -12,12 +12,13 @@ namespace Adam.Misc
     /// </summary>
     public class ComplexAnimation
     {
-        ComplexAnimData currentAnimationData;
+        ComplexAnimData currentAnimationData = new ComplexAnimData();
         int currentFrame;
+        string currentName;
 
         public delegate void FrameHandler(FrameArgs e);
         public delegate void EventHandler();
-        
+
         /// <summary>
         /// Fires whenever the animation data was switched to another one.
         /// </summary>
@@ -33,6 +34,7 @@ namespace Adam.Misc
 
         Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
         Dictionary<string, ComplexAnimData> animationData = new Dictionary<string, ComplexAnimData>();
+        List<string> queue = new List<string>();
 
         Timer frameTimer = new Timer();
 
@@ -45,8 +47,16 @@ namespace Adam.Misc
         /// Update the aniamtion, timers and fire events.
         /// </summary>
         /// <param name="collRectangle"></param>
-        public void Update(Rectangle collRectangle)
+        public void Update(Entity entity)
         {
+            FindHighestPriorityAnimation();
+
+            drawRectangle = new Rectangle(entity.GetCollRectangle().X - currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - currentAnimationData.DeltaRectangle.Y, currentAnimationData.Width * 2, currentAnimationData.Height * 2);
+
+            if (currentName == "walk")
+            {
+                currentAnimationData.Speed = (int)Math.Abs(400 / entity.GetVelocity().X);
+            }
 
             frameTimer.Increment();
 
@@ -58,7 +68,7 @@ namespace Adam.Misc
                 if (currentFrame >= currentAnimationData.FrameCount)
                 {
                     // Send notice that animation has ended.
-                    if (currentAnimationData.IsRepeating)
+                    if (!currentAnimationData.IsRepeating)
                     {
                         AnimationEnded();
                     }
@@ -74,25 +84,70 @@ namespace Adam.Misc
         }
 
         /// <summary>
-        /// Change the current animation to the specified animation.
+        /// Iterate through all animations that have been added to the queue. Choose the animation which has highest priority then empty the queue.
         /// </summary>
-        /// <param name="name">The unique identifier of the animation.</param>
-        public void ChangeAnimation(string name)
+        private void FindHighestPriorityAnimation()
+        {
+            float highestPriority = 0;
+            string best = "";
+
+            foreach (string s in queue)
+            {
+                if (CheckIfHighestPriority(s, ref highestPriority))
+                {
+                    best = s;
+                }
+            }
+            ChangeAnimation(best);
+            queue = new List<string>();
+        }
+
+        /// <summary>
+        /// Check if this animation is higher priority.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="highestPriority"></param>
+        /// <returns></returns>
+        private bool CheckIfHighestPriority(string name, ref float highestPriority)
         {
             ComplexAnimData animData;
-            if (!animationData.TryGetValue(name,out animData))
+            if (!animationData.TryGetValue(name, out animData))
             {
                 throw new Exception("Animation not found.");
             }
 
             // If the current animation has a larger priority, do not change the animation.
-            if (animData.Priority < currentAnimationData.Priority)
+            if (animData.Priority < highestPriority)
+            {
+                return false;
+            }
+            else
+            {
+                highestPriority = animData.Priority;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Change the current animation to the specified animation.
+        /// </summary>
+        /// <param name="name">The unique identifier of the animation.</param>
+        private void ChangeAnimation(string name)
+        {
+            ComplexAnimData animData;
+            if (!animationData.TryGetValue(name, out animData))
+            {
+                throw new Exception("Animation not found.");
+            }
+
+            if (name == currentName)
                 return;
 
             // Reset animation and change current animation being used.
             currentFrame = 0;
             frameTimer.Reset();
             currentAnimationData = animData;
+            currentName = name;
 
             // Switch to the new texture and size.
             texture = currentAnimationData.Texture;
@@ -105,6 +160,15 @@ namespace Adam.Misc
         }
 
         /// <summary>
+        /// Adds an animation to the list of animations that want to be played.
+        /// </summary>
+        /// <param name="name"></param>
+        public void AddToQueue(string name)
+        {
+            queue.Add(name);
+        }
+
+        /// <summary>
         /// Draws the animated texture with the specified color and flip.
         /// </summary>
         /// <param name="spriteBatch"></param>
@@ -112,6 +176,9 @@ namespace Adam.Misc
         /// <param name="color">The color and opacity of the texture.</param>
         public void Draw(SpriteBatch spriteBatch, bool isFlipped, Color color)
         {
+            if (currentAnimationData.Texture == null)
+                return;
+
             if (isFlipped)
             {
                 spriteBatch.Draw(currentAnimationData.Texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
@@ -200,6 +267,8 @@ namespace Adam.Misc
             get; set;
         }
 
+        public ComplexAnimData() { }
+
         /// <summary>
         /// Creates a new object containing the data required to animate.
         /// </summary>
@@ -212,11 +281,11 @@ namespace Adam.Misc
         /// <param name="speed">The duration of each frame.</param>
         /// <param name="frameCount">The number of frames in this animation.</param>
         /// <param name="isRepeating">Whether the animation should loop.</param>
-        public ComplexAnimData(int priority, Texture2D texture, Rectangle deltaRectangle, int startingY, int width, int height, int speed,int frameCount, bool isRepeating)
+        public ComplexAnimData(int priority, Texture2D texture, Rectangle deltaRectangle, int startingY, int width, int height, int speed, int frameCount, bool isRepeating)
         {
             Priority = priority;
             Texture = texture;
-            DeltaRectangle = deltaRectangle;
+            DeltaRectangle = new Rectangle(deltaRectangle.X * 2, deltaRectangle.Y * 2, deltaRectangle.Width * 2, deltaRectangle.Height * 2);
             StartingY = startingY;
             Width = width;
             Height = height;

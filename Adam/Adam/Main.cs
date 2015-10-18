@@ -603,7 +603,7 @@ namespace Adam
                     SpriteBatch.DrawString(debugFont, "Camera Zoom:" + camera.GetZoom(), new Vector2(0, 80), Color.White);
                     SpriteBatch.DrawString(debugFont, "Times Updated: " + gameWorld.TimesUpdated, new Vector2(0, 100), Color.White);
                     SpriteBatch.DrawString(debugFont, "Player is dead: " + player.IsDead(), new Vector2(0, 120), Color.White);
-                    SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
+                    //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     SpriteBatch.DrawString(debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
                     SpriteBatch.DrawString(debugFont, "Player Velocity" + player.GetVelocity(), new Vector2(0, 180), Color.White);
                     SpriteBatch.DrawString(debugFont, "Total Chunks: " + gameWorld.chunkManager.GetNumberOfChunks() + " Active Chunk: " + GameWorld.Instance.chunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);

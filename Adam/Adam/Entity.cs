@@ -303,6 +303,12 @@ namespace Adam
             velocity.Y = y;
         }
 
+        public void ChangePosBy(int x, int y)
+        {
+            collRectangle.X += x;
+            collRectangle.Y += y;
+        }
+
         public virtual void Kill() { 
 }
 

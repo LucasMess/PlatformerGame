@@ -398,11 +398,6 @@ namespace Adam
         public void DrawLights(SpriteBatch spriteBatch)
         {
             lightEngine.DrawLights(spriteBatch);
-
-            if (player.weapon != null)
-                player.weapon.DrawLights(spriteBatch);
-            //foreach (Particle ef in particles)
-            //    ef.DrawLights(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)

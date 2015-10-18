@@ -1,4 +1,4 @@
-﻿namespace Adam.Player
+﻿namespace Adam
 {
     public class Script
     {

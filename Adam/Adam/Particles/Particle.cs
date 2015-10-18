@@ -138,7 +138,7 @@ namespace Adam
 
         public void CreateWeaponBurstEffect(Player player, Projectile proj, ContentManager Content)
         {
-            position = player.weapon.tipPos;
+            //position = player.weapon.tipPos;
             velocity = new Vector2(0, 0);
             int maxTanSpeed = 10;
             velocity.X = (float)(GameWorld.RandGen.Next((int)(proj.GetVelocity().X - maxTanSpeed), (int)(proj.GetVelocity().X + maxTanSpeed + 1)));
@@ -212,7 +212,7 @@ namespace Adam
         {
             this.player = player;
             CurrentParticle = ParticleType.PlayerDesintegration;
-            Texture = player.GetSingleTexture();
+            //Texture = player.GetSingleTexture();
             collRectangle = new Rectangle(player.GetCollRectangle().X + sourceRectangle.X, player.GetCollRectangle().Y + sourceRectangle.Y,
                 sourceRectangle.Width, sourceRectangle.Height);
             this.sourceRectangle = sourceRectangle;

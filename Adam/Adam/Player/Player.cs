@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Adam.Player
+namespace Adam
 {
     public partial class Player : Entity, ICollidable, INewtonian
     {
@@ -127,23 +127,65 @@ namespace Adam.Player
 
         //Animation Variables
         int switchFrame;
-        int currentFrame;
+        public int CurrentAnimationFrame
+        {
+            get; private set;
+        }
         Vector2 frameCount;
         #endregion
+
+        public delegate void PlayerHandler(Player player);
+        public event PlayerHandler AnimationEnded;
 
         public Player(Main game1)
         {
             this.game1 = game1;
 
-            Texture2D edenTexture = ContentHelper.LoadTexture("adam_eden");
+            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_new");
+            Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
+            Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
 
-            complexAnim.AddAnimationData("idle", new ComplexAnimData(0, edenTexture, new Rectangle(0, 0, 0, 0), 0, 0, 0, 0, 0, true));
+            complexAnim.AnimationEnded += ComplexAnim_AnimationEnded;
+            complexAnim.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
+            complexAnim.FrameChanged += ComplexAnim_FrameChanged;
+            
+            complexAnim.AddAnimationData("idle", new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
+            complexAnim.AddAnimationData("smellPoop", new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
+            complexAnim.AddAnimationData("sleep", new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("walk", new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("jump", new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
+            complexAnim.AddAnimationData("climb", new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("fall", new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 500, 1, false));
 
 
 
+            complexAnim.AddToQueue("idle");
 
+            InitializeInput();
             Initialize(0, 0);
             Load();
+        }
+
+        public void AddAnimationToQueue(string name)
+        {
+            complexAnim.AddToQueue(name);
+        }
+
+        private void ComplexAnim_FrameChanged(FrameArgs e)
+        {
+            CurrentAnimationFrame = e.CurrentFrame;
+        }
+
+        private void ComplexAnim_AnimationStateChanged()
+        {
+
+        }
+
+        private void ComplexAnim_AnimationEnded()
+        {
+            if (AnimationEnded != null)
+                AnimationEnded(this);
         }
 
         /// <summary>
@@ -216,74 +258,75 @@ namespace Adam.Player
             climb2 = new SoundFx("Sounds/Player/climbing2");
         }
 
-        ///// <summary>
-        ///// Update player information, checks for collision and input, and many other things.
-        ///// </summary>
-        ///// <param name="gameTime"></param>
-        ///// 
-        //public void Update(GameTime gameTime)
-        //{
-        //    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
-        //    {
-        //        ContainInGameWorld();
-        //        return;
+        /// <summary>
+        /// Update player information, checks for collision and input, and many other things.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// 
+        public void Update(GameTime gameTime)
+        {
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+            {
+                ContainInGameWorld();
+                return;
+            }
 
-        //    }
+            this.gameTime = gameTime;
 
-        //    this.gameTime = gameTime;
+            deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
 
-        //    deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
+            //Update Method is spread out!
+            //Check the following things
 
-        //    //Update Method is spread out!
-        //    //Check the following things
-
-        //    CheckDead();
+            CheckDead();
 
 
-        //    if (IsDead())
-        //    {
-        //        UpdateTimers();
-        //        return;
-        //    }
+            if (IsDead())
+            {
+                UpdateTimers();
+                return;
+            }
 
-        //    UpdateStats();
-        //    UpdateInput();
-        //    UpdateTimers();
-        //    UpdatePlayerPosition();
-        //    if (!isGhost)
-        //        base.Update();
-        //    CreateWalkingParticles();
-        //    Animate();
-       
-        //    jetpack.Update(this, gameTime);
+            complexAnim.Update(this);
+            CheckInput();
+            UpdateStats();
+            //UpdateInput();
+            UpdateTimers();
+            UpdatePlayerPosition();
+            if (!isGhost)
+                base.Update();
+            CreateWalkingParticles();
+            Animate();
 
-        //    //If the player is falling really fast, he is not jumping anymore and is falling.
-        //    if (velocity.Y > 7)
-        //    {
-        //        fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            jetpack.Update(this, gameTime);
 
-        //        if (velocity.Y >= 8 && fallingTimer > 500 && !isOnVines)
-        //        {
-        //            CurrentAnimation = AnimationState.Falling;
-        //            fallingTimer = 0;
-        //            sourceRectangle.X = 0;
-        //            currentFrame = 0;
-        //            sleepTimer = 0;
-        //        }
-        //    }
+            ////If the player is falling really fast, he is not jumping anymore and is falling.
+            //if (velocity.Y > 7)
+            //{
+            //    fallingTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-        //    //If the player stays idle for too long, then he will start sleeping.
-        //    sleepTimer += gameTime.ElapsedGameTime.TotalSeconds;
-        //    if (sleepTimer > 3 && !isOnVines)
-        //        CurrentAnimation = AnimationState.Sleeping;
+            //    if (velocity.Y >= 8 && fallingTimer > 500 && !isOnVines)
+            //    {
+            //        CurrentAnimation = AnimationState.Falling;
+            //        fallingTimer = 0;
+            //        sourceRectangle.X = 0;
+            //        currentFrame = 0;
+            //        sleepTimer = 0;
+            //    }
+            //}
 
-        //    //For debugging chronoshift.
-        //    if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
-        //    {
-        //        //Chronoshift(Evolution.Modern);
-        //        //isChronoshifting = true;
-        //    }
-        //}
+            ////If the player stays idle for too long, then he will start sleeping.
+            //sleepTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            //if (sleepTimer > 3 && !isOnVines)
+            //    CurrentAnimation = AnimationState.Sleeping;
+
+            ////For debugging chronoshift.
+            //if (InputHelper.IsKeyDown(Keys.Q) && !isChronoshifting)
+            //{
+            //    //Chronoshift(Evolution.Modern);
+            //    //isChronoshifting = true;
+            //}
+        }
 
         ///// <summary>
         ///// This method will check for input and update the player's position accordingly.
@@ -467,7 +510,7 @@ namespace Adam.Player
                 }
             }
         }
-        
+
 
         public void UpdateStats()
         {
@@ -851,6 +894,8 @@ namespace Adam.Player
 
             if (isChronoshifting) return;
 
+            complexAnim.Draw(spriteBatch, IsFacingRight, Color.White);
+
             //if (IsFacingRight == true)
             //    spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White);
             //else spriteBatch.Draw(currentTexture, DrawRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
@@ -1019,7 +1064,7 @@ namespace Adam.Player
                 GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
             }
         }
-     
+
 
 
         //public void Jump()
@@ -1131,15 +1176,11 @@ namespace Adam.Player
 
         void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
         {
-            if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimation = AnimationState.Still;
             velocity.X = 0;
         }
 
         void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
         {
-            if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimation = AnimationState.Still;
             velocity.X = 0;
         }
 
