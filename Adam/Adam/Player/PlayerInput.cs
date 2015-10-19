@@ -124,29 +124,34 @@ namespace Adam
         {
             StillUpdate();
 
-            if (InputHelper.IsKeyDown(Keys.A))
-                LeftMove();
-            if (InputHelper.IsKeyDown(Keys.D))
-                RightMove();
-            if (InputHelper.IsKeyDown(Keys.S))
-                DuckAction();
-            if (InputHelper.IsKeyDown(Keys.W))
-                InteractAction();
-            if (InputHelper.IsKeyDown(Keys.H))
-                AttackAction();
-            if (InputHelper.IsKeyDown(Keys.J))
-                DefendAction();
-            if (InputHelper.IsKeyDown(Keys.K))
-                DashAction();
-            if (InputHelper.IsKeyDown(Keys.L))
-                UltimateAction();
-            if (InputHelper.IsKeyDown(Keys.Space))
-                JumpAction();
-            if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
-                FastRunActive();
-            else
+            if (!PlayerScript.IsDoingAction)
             {
-                FastRunInactive();
+
+                if (InputHelper.IsKeyDown(Keys.A))
+                    LeftMove();
+                if (InputHelper.IsKeyDown(Keys.D))
+                    RightMove();
+                if (InputHelper.IsKeyDown(Keys.S))
+                    DuckAction();
+                if (InputHelper.IsKeyDown(Keys.W))
+                    InteractAction();
+                if (InputHelper.IsKeyDown(Keys.H))
+                    AttackAction();
+                if (InputHelper.IsKeyDown(Keys.J))
+                    DefendAction();
+                if (InputHelper.IsKeyDown(Keys.K))
+                    DashAction();
+                if (InputHelper.IsKeyDown(Keys.L))
+                    UltimateAction();
+                if (InputHelper.IsKeyDown(Keys.Space))
+                    JumpAction();
+                if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
+                    FastRunActive();
+                else
+                {
+                    FastRunInactive();
+                }
+
             }
 
             if (InputHelper.IsAnyInputPressed())

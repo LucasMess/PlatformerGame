@@ -14,7 +14,7 @@ using Adam.UI;
 
 namespace Adam
 {
-    public class Gem : Item, ICollidable, INewtonian
+    public class Gem : Item, INewtonian
     {
         byte gemID;
 
@@ -185,12 +185,7 @@ namespace Adam
 
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
             velocity.Y = -3f;
             velocity.X *= .5f;
@@ -200,21 +195,6 @@ namespace Adam
             {
                 GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
             }
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-
         }
 
         /// <summary>

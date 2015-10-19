@@ -423,16 +423,20 @@ namespace Adam
                 if (!entities[i].IsDead())
                     entities[i].Draw(spriteBatch);
             }
-            for (int i = 0; i < particles.Count; i++)
-            {
-                particles[i].Draw(spriteBatch);
-            }
 
             if (CurrentGameMode == GameMode.Edit)
                 levelEditor.Draw(spriteBatch);
 
 
 
+        }
+
+        public void DrawParticles(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < particles.Count; i++)
+            {
+                particles[i].Draw(spriteBatch);
+            }
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)

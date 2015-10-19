@@ -158,6 +158,7 @@
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
+    <Compile Include="EntityProperties.cs" />
     <Compile Include="Player\PlayerInput.cs" />
     <Compile Include="Player\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="Misc\Errors\Exceptions.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\IAnimated.cs" />
-    <Compile Include="Misc\Interfaces\ICollidable.cs" />
     <Compile Include="Interactables\Food.cs" />
     <Compile Include="Levels\AnimatedTile.cs" />
     <Compile Include="Misc\Animation.cs" />

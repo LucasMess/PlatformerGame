@@ -11,23 +11,20 @@ namespace Adam
     {
         public static bool IsDoingAction = false;
 
-        const float JumpVelocity = -8f;
+        const float JumpVelocity = -10f;
         const float WalkSpeed = 5f;
         const float RunSpeed = 7f;
         const float GroundFriction = .97f;
-        const float AirFriction = .98f;
+        const float AirFriction = .99f;
         const float DashSpeed = 20f;
 
         Timer idleTimer = new Timer();
 
         SoundFx stepSound = new SoundFx("Sounds/Movement/walk1");
 
-
-        bool isDashing = false;
     
         public void Initialize()
         {
-            stepSound.MaxVolume = 1f;
         }
 
         public void OnStill(Player player)
@@ -43,37 +40,60 @@ namespace Adam
                 player.SetVelX(player.GetVelocity().X * GroundFriction);
             }
 
+            // Toggle idle animations.
             idleTimer.Increment();
             if (idleTimer.TimeElapsedInSeconds > 10)
             {
                 player.AddAnimationToQueue("smellPoop");
                 player.AnimationEnded += OnSmellPoopAnimationEnd;
-            }
-            else
-            {
-                player.AddAnimationToQueue("idle");
+                idleTimer.Reset();
             }
 
-            if (isDashing)
+            if(Math.Abs(player.GetVelocity().X) < .5f)
             {
-                player.AddAnimationToQueue("ninjaDash");
+                player.RemoveAnimationFromQueue("walk");
+            }
+            if(Math.Abs(player.GetVelocity().X) < WalkSpeed)
+            {
+                player.RemoveAnimationFromQueue("run");
             }
 
         }
 
         private void OnSmellPoopAnimationEnd(Player player)
         {
-            player.AddAnimationToQueue("idle");
+            player.RemoveAnimationFromQueue("smellPoop");
             idleTimer.Reset();
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
         public void OnJumpAction(Player player)
         {
-            player.IsJumping = true;
-            player.SetVelY(JumpVelocity);
-            player.ChangePosBy(0, -1);
-            player.AddAnimationToQueue("jump");
+            if (!player.IsJumping)
+            {
+                player.IsJumping = true;
+                player.SetVelY(JumpVelocity);
+                player.ChangePosBy(0, -1);
+                player.AddAnimationToQueue("jump");
+                player.AnimationEnded += OnJumpEnded;
+                player.CollidedWithTileBelow += OnTouchGround;
+            }
+        }
+
+        private void OnTouchGround(Entity entity, Tile tile)
+        {
+            entity.IsJumping = false;
+            entity.RemoveAnimationFromQueue("fall");
+            entity.RemoveAnimationFromQueue("jump");
+        }
+
+        private void OnJumpEnded(Player player)
+        {
+            player.RemoveAnimationFromQueue("jump");
+            if (player.IsJumping)
+            {
+                player.AddAnimationToQueue("fall");
+            }
         }
 
         public void OnRightMove(Player player)
@@ -83,8 +103,12 @@ namespace Adam
 
             float speed = WalkSpeed;
             if (player.isRunningFast)
+            {
                 speed = RunSpeed;
+                player.AddAnimationToQueue("run");
+            }
 
+            player.IsFacingRight = false;
             player.SetVelX(speed);
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
@@ -106,8 +130,12 @@ namespace Adam
 
             float speed = WalkSpeed;
             if (player.isRunningFast)
+            {
                 speed = RunSpeed;
+                player.AddAnimationToQueue("run");
+            }
 
+            player.IsFacingRight = true;
             player.SetVelX(-speed);
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
@@ -147,17 +175,22 @@ namespace Adam
             if (!IsDoingAction)
             {
                 IsDoingAction = true;
-                isDashing = true;
-                player.SetVelX(DashSpeed);
+                float speed = DashSpeed;
+                if (player.IsFacingRight)
+                    speed = -DashSpeed;
+                player.SetVelX(speed);
+                player.AddAnimationToQueue("ninjaDash");
                 player.AnimationEnded += OnNinjaDashEnd;
+                TestSmokeParticle.Generate(100, player);
             }
         }
 
         private void OnNinjaDashEnd(Player player)
         {
-            isDashing = false;
             IsDoingAction = false;
+            player.RemoveAnimationFromQueue("ninjaDash");
             player.AnimationEnded -= OnNinjaDashEnd;
+            TestSmokeParticle.Generate(100, player);
         }
 
         public void OnUltimateAction(Player player)

@@ -9,7 +9,7 @@ using Adam.Misc;
 
 namespace Adam.Characters.Enemies
 {
-    class Bat : Enemy, ICollidable, IAnimated
+    class Bat : Enemy, IAnimated
     {
         bool isLookingForRefuge;
         bool isSleeping;
@@ -120,9 +120,11 @@ namespace Adam.Characters.Enemies
             sourceRectangle = new Rectangle(0, 0, 32, 32);
             maxVelocity = new Vector2(2, 2);
             Texture = ContentHelper.LoadTexture("Enemies/bat");
+
+            CollidedWithTileAbove += OnCollisionWithTerrainAbove;
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainAbove(Entity entity, Tile tile)
         {
             if (isLookingForRefuge)
             {
@@ -132,25 +134,6 @@ namespace Adam.Characters.Enemies
             {
                 velocity.Y = 0;
             }
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
         }
 
         public override void Update()

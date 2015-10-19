@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    public class Frog : Enemy, ICollidable, INewtonian, IAnimated
+    public class Frog : Enemy, INewtonian, IAnimated
     {
         double jumpTimer;
         SoundFx jumpSound;
@@ -73,37 +73,13 @@ namespace Adam.Characters.Enemies
 
         }
 
-
-        void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0f;
-            velocity.X = 0;
-        }
-
-        void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
             velocity.Y = 0f;
             IsJumping = false;
             IsFlying = false;
             CurrentAnimationState = AnimationState.Still;
             velocity.X = 0;
-        }
-
-        void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimationState = AnimationState.Still;
-        }
-
-        void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            if (Math.Abs(velocity.Y) < 1)
-                CurrentAnimationState = AnimationState.Still;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-
         }
 
         void IAnimated.Animate()

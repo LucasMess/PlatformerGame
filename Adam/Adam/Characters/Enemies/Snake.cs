@@ -13,7 +13,7 @@ using Adam.Misc.Interfaces;
 
 namespace Adam.Enemies
 {
-    public class Snake : Enemy, IAnimated, INewtonian, ICollidable
+    public class Snake : Enemy, IAnimated, INewtonian
     {
         double projCooldownTimer;
         Vector2 frameCount;
@@ -104,11 +104,6 @@ namespace Adam.Enemies
             get; set;
         }
 
-        public bool IsJumping
-        {
-            get; set;
-        }
-
         public bool IsAboveTile
         {
             get; set;
@@ -169,31 +164,6 @@ namespace Adam.Enemies
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
             animation.Update(gameTime, DrawRectangle, animationData[0]);
-        }
-
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-
         }
     }
 }

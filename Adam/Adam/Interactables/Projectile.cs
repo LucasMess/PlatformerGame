@@ -192,7 +192,7 @@ namespace Adam
         }
     }
 
-    public class FlyingWheelProjectile : LinearProjectile, ICollidable
+    public class FlyingWheelProjectile : LinearProjectile
     {
         public FlyingWheelProjectile(int x, int y, int xVel, int yVel)
         {
@@ -212,29 +212,9 @@ namespace Adam
             }
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainAnywhere(Entity entity, Tile tile)
         {
             Destroy();
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-
         }
 
         public override void Update(Player player, GameTime gameTime)

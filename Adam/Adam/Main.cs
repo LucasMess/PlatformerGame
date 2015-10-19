@@ -474,6 +474,7 @@ namespace Adam
                     gameWorld.DrawInBack(SpriteBatch);
                     gameWorld.Draw(SpriteBatch);
                     player.Draw(SpriteBatch);
+                    gameWorld.DrawParticles(SpriteBatch);
                     SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null, null, camera.Translate);

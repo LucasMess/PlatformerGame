@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Characters.Enemies
 {
-    public class Hellboar : Enemy, ICollidable, INewtonian, IAnimated
+    public class Hellboar : Enemy, INewtonian, IAnimated
     {
         bool isAngry;
         List<Rectangle> rects;
@@ -201,17 +201,7 @@ namespace Adam.Characters.Enemies
             crash.Reset();
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
             if (isCharging)
             {
@@ -221,7 +211,7 @@ namespace Adam.Characters.Enemies
             CurrentAnimationState = AnimationState.Still;
         }
 
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
             velocity.X = 0;
             if (isCharging)
@@ -229,10 +219,6 @@ namespace Adam.Characters.Enemies
                 Stun();
             }
             CurrentAnimationState = AnimationState.Still;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
         }
 
         void IAnimated.Animate()

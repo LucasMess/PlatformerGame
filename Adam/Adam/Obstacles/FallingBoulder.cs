@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Adam.Obstacles
 {
-    public class FallingBoulder : Obstacle, ICollidable, INewtonian
+    public class FallingBoulder : Obstacle, INewtonian
     {
         bool hasFallen;
         int originalY;
@@ -20,11 +20,6 @@ namespace Adam.Obstacles
         public float GravityStrength { get; set; }
 
         public bool IsFlying { get; set; }
-
-        public bool IsJumping
-        {
-            get; set;
-        }
 
         public bool IsAboveTile
         {
@@ -50,6 +45,8 @@ namespace Adam.Obstacles
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
             originalY = DrawRectangle.Y;
+
+            CollidedWithTileBelow += OnCollisionWithTerrainBelow;
         }
 
         public override void Update()
@@ -88,13 +85,7 @@ namespace Adam.Obstacles
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }
 
-
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
             velocity.Y = 0;
             GravityStrength = 0;
@@ -102,18 +93,6 @@ namespace Adam.Obstacles
 
             StompSmokeParticle.Generate(10, this);
             fallingSound.PlayNewInstanceOnce();
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
         }
     }
 }

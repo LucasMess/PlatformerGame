@@ -53,9 +53,12 @@ namespace Adam.Misc
 
             drawRectangle = new Rectangle(entity.GetCollRectangle().X - currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - currentAnimationData.DeltaRectangle.Y, currentAnimationData.Width * 2, currentAnimationData.Height * 2);
 
-            if (currentName == "walk")
+            if (currentName == "walk" || currentName == "run")
             {
-                currentAnimationData.Speed = (int)Math.Abs(400 / entity.GetVelocity().X);
+                if (Math.Abs(entity.GetVelocity().X) < .5f)
+                    currentAnimationData.Speed = 0;
+                else
+                    currentAnimationData.Speed = (int)Math.Abs(400 / entity.GetVelocity().X);
             }
 
             frameTimer.Increment();
@@ -91,6 +94,8 @@ namespace Adam.Misc
             float highestPriority = 0;
             string best = "";
 
+            Console.WriteLine("There are {0} animations in queue: {1}", queue.Count, queue);
+
             foreach (string s in queue)
             {
                 if (CheckIfHighestPriority(s, ref highestPriority))
@@ -99,7 +104,6 @@ namespace Adam.Misc
                 }
             }
             ChangeAnimation(best);
-            queue = new List<string>();
         }
 
         /// <summary>
@@ -165,7 +169,18 @@ namespace Adam.Misc
         /// <param name="name"></param>
         public void AddToQueue(string name)
         {
-            queue.Add(name);
+            if (!queue.Contains(name))
+                queue.Add(name);
+        }
+
+        /// <summary>
+        /// Removes an animation from the list of animations that want to be played.
+        /// </summary>
+        /// <param name="name"></param>
+        public void RemoveFromQueue(string name)
+        {
+            if (name.Contains(name))
+                queue.Remove(name);
         }
 
         /// <summary>

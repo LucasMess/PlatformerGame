@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Adam.Interactables
 {
-    public class Food : Item, ICollidable, INewtonian
+    public class Food : Item, INewtonian
     {
         int healAmount;
         bool hasHealed;
@@ -61,6 +61,7 @@ namespace Adam.Interactables
             }
 
             OnPlayerPickUp += Food_OnPlayerPickUp;
+            CollidedWithTileBelow += OnCollisionWithTerrainBelow;
         }
 
         private void Food_OnPlayerPickUp(PickedUpArgs e)
@@ -84,14 +85,9 @@ namespace Adam.Interactables
                 spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            OnCollisionAbove(e);
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
+            collRectangle.Y = tile.drawRectangle.Y - collRectangle.Height;
             if (velocity.Y < 3)
                 velocity.Y = 0;
             else
@@ -100,20 +96,6 @@ namespace Adam.Interactables
 
                 hitGround.PlayIfStopped();
             }
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            OnCollisionRight(e);
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            OnCollisionLeft(e);
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
         }
 
         public float GravityStrength

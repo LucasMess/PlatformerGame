@@ -12,11 +12,38 @@ using System.Text;
 
 namespace Adam
 {
+    //Defines what happens to the velocity of the entity when it collides.
+    public enum CollisionType
+    {
+        Inelastic,
+        Elastic,
+        ElasticX,
+        ElasticY,
+    }
+
     /// <summary>
     /// Basic class that allows for collision, animation and physics.
     /// </summary>
-    public abstract class Entity
+    public abstract partial class Entity
     {
+        public delegate void EventHandler();
+        public delegate void TileHandler(Entity entity, Tile tile);
+        public delegate void Entityhandler(Entity entity);
+
+        // Collision with terrain events.
+        public event TileHandler CollidedWithTileAbove;
+        public event TileHandler CollidedWithTileBelow;
+        public event TileHandler CollidedWithTileToRight;
+        public event TileHandler CollidedWithTileToLeft;
+        public event TileHandler CollidedWithTerrain;
+
+        // Collision with entity events.
+        public event Entityhandler CollidedWithEntity;
+        public event Entityhandler CollidedWithEntityAbove;
+        public event Entityhandler CollidedWithEntityBelow;
+        public event Entityhandler CollidedWithEntityToRight;
+        public event Entityhandler CollidedWithEntityToLeft;
+
         protected Vector2 origin;
         protected Vector2 velocity;
 
@@ -33,13 +60,25 @@ namespace Adam
         private float _opacity = 1f;
 
         /// <summary>
+        /// Subscribes to events and initializes other variables.
+        /// </summary>
+        public Entity()
+        {
+            // Subscribes to default collision handling.
+            CollidedWithTileAbove += OnCollisionWithTileAbove;
+            CollidedWithTileBelow += OnCollisionWithTileBelow;
+            CollidedWithTileToLeft += OnCollisionWithTileToLeft;
+            CollidedWithTileToRight += OnCollisionWithTileToRight;
+            CollidedWithTerrain += OnCollisionWithTerrain;
+        }
+
+        /// <summary>
         /// The index position of the entity in the game world.
         /// </summary>
         public int TileIndex
         {
             get { return GetTileIndex(); }
         }
-
 
         /// <summary>
         /// The texture of the entity.
@@ -66,7 +105,6 @@ namespace Adam
             get;
         }
 
-
         /// <summary>
         /// The rectangle where position and collisions are done in.
         /// </summary>
@@ -89,7 +127,6 @@ namespace Adam
             get { return _opacity; }
             set { _opacity = value; }
         }
-
 
         /// <summary>
         /// The color that the entity will be drawn in.
@@ -219,7 +256,7 @@ namespace Adam
             }
 
             //Check for collision, if applicable.
-            if (this is ICollidable)
+            if (IsCollidable)
             {
                 CheckTerrainCollision();
             }
@@ -309,8 +346,10 @@ namespace Adam
             collRectangle.Y += y;
         }
 
-        public virtual void Kill() { 
-}
+
+        public virtual void Kill()
+        {
+        }
 
         /// <summary>
         /// Whether the entity is simply intersecting terrain.
@@ -395,10 +434,6 @@ namespace Adam
         /// </summary>
         private void CheckTerrainCollision()
         {
-            if (this is ICollidable) { } else throw new InvalidOperationException("The object: " + this.GetType().ToString() + " checked for collisions with terrain but it does not implement ICollidable.");
-
-            ICollidable ent = (ICollidable)this;
-
             int[] q = GetNearbyTileIndexes(GameWorld.Instance);
 
             //Solve Y collisions
@@ -419,8 +454,8 @@ namespace Adam
                                 {
                                     collRectangle.Y--;
                                 }
-                                ent.OnCollisionWithTerrainBelow(new TerrainCollisionEventArgs(tile));
-                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
+                                CollidedWithTileBelow(this, tile);
+                                CollidedWithTerrain(this, tile);
                             }
                             else if (velocity.Y < 0)
                             {
@@ -428,8 +463,8 @@ namespace Adam
                                 {
                                     collRectangle.Y++;
                                 }
-                                ent.OnCollisionWithTerrainAbove(new TerrainCollisionEventArgs(tile));
-                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
+                                CollidedWithTileAbove(this, tile);
+                                CollidedWithTerrain(this, tile);
                             }
                         }
                     }
@@ -454,8 +489,8 @@ namespace Adam
                                 {
                                     collRectangle.X--;
                                 }
-                                ent.OnCollisionWithTerrainRight(new TerrainCollisionEventArgs(tile));
-                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
+                                CollidedWithTileToRight(this, tile);
+                                CollidedWithTerrain(this, tile);
                             }
                             else if (velocity.X < 0)
                             {
@@ -463,8 +498,8 @@ namespace Adam
                                 {
                                     collRectangle.X++;
                                 }
-                                ent.OnCollisionWithTerrainLeft(new TerrainCollisionEventArgs(tile));
-                                ent.OnCollisionWithTerrainAnywhere(new TerrainCollisionEventArgs(tile));
+                                CollidedWithTileToLeft(this, tile);
+                                CollidedWithTerrain(this, tile);
                             }
 
                         }
@@ -492,6 +527,23 @@ namespace Adam
             }
         }
 
+        /// <summary>
+        /// Adds an animation to the list of animations that are to be played.
+        /// </summary>
+        /// <param name="name"></param>
+        public void AddAnimationToQueue(string name)
+        {
+            complexAnim.AddToQueue(name);
+        }
+
+        /// <summary>
+        /// Removes an animation from the lsit of aniamtions that are to be played.
+        /// </summary>
+        /// <param name="name"></param>
+        public void RemoveAnimationFromQueue(string name)
+        {
+            complexAnim.RemoveFromQueue(name);
+        }
 
         /// <summary>
         /// This will return the volume that the listener should be hearing from the source.
@@ -506,7 +558,7 @@ namespace Adam
 
             if (distanceTo > 1000)
                 return 0;
-            else return (1 - (distanceTo / 1000)) *maxVolume;
+            else return (1 - (distanceTo / 1000)) * maxVolume;
         }
 
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)
@@ -522,7 +574,6 @@ namespace Adam
             }
         }
 
-
         /// <summary>
         /// Makes objects fall.
         /// </summary>
@@ -537,25 +588,31 @@ namespace Adam
             velocity.Y += gravity;
         }
 
-        protected virtual void OnCollisionAbove(TerrainCollisionEventArgs e)
+
+        private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y + e.Tile.drawRectangle.Height;
+            collRectangle.Y = tile.drawRectangle.Y + tile.drawRectangle.Height;
             velocity.Y = 0;
         }
-        protected virtual void OnCollisionBelow(TerrainCollisionEventArgs e)
+        private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
-            collRectangle.Y = e.Tile.drawRectangle.Y - collRectangle.Height;
+            collRectangle.Y = tile.drawRectangle.Y - collRectangle.Height;
             velocity.Y = 0;
         }
-        protected virtual void OnCollisionRight(TerrainCollisionEventArgs e)
+        private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
-            collRectangle.X = e.Tile.drawRectangle.X - collRectangle.Width;
+            collRectangle.X = tile.drawRectangle.X - collRectangle.Width;
             velocity.X = 0;
         }
-        protected virtual void OnCollisionLeft(TerrainCollisionEventArgs e)
+        private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
-            collRectangle.X = e.Tile.drawRectangle.X + e.Tile.drawRectangle.Width;
+            collRectangle.X = tile.drawRectangle.X + tile.drawRectangle.Width;
             velocity.X = 0;
+        }
+
+        private void OnCollisionWithTerrain(Entity entity, Tile tile)
+        {
+
         }
 
         /// <summary>

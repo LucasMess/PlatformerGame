@@ -9,7 +9,7 @@ using Adam.Misc;
 
 namespace Adam.Characters.Enemies
 {
-    class Duck : Enemy, ICollidable, INewtonian
+    class Duck : Enemy, INewtonian
     {
 
         public Duck(int x, int y)
@@ -47,8 +47,6 @@ namespace Adam.Characters.Enemies
         public bool IsAboveTile { get; set; }
 
         public bool IsFlying { get; set; }
-
-        public bool IsJumping { get; set; }
 
         public override byte ID
         {
@@ -98,27 +96,12 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-           
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0;
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
             velocity.X = -velocity.X;
         }
 
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
+        public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
             velocity.X = -velocity.X;  
         }

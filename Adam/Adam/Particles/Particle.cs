@@ -618,6 +618,37 @@ namespace Adam
 
     }
 
+    public class TestSmokeParticle : Particle
+    {
+        public TestSmokeParticle(int x, int y)
+        {
+            Texture = ContentHelper.LoadTexture("Sparkles");
+            collRectangle = new Rectangle(x, y, 8, 8);
+            sourceRectangle = new Rectangle(0, 0, 8, 8);
+            position = new Vector2(collRectangle.X, collRectangle.Y);
+
+            velocity.X = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 4);
+            velocity.Y = (float)GameWorld.RandGen.NextDouble() * GameWorld.RandGen.Next(-3, 4);
+            Opacity = 1f;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            DefaultBehavior();
+        }
+
+        public static void Generate(int count, Entity entity)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int x = GameWorld.RandGen.Next(entity.GetCollRectangle().X, entity.GetCollRectangle().X+  entity.GetCollRectangle().Width - 4);
+                int y = GameWorld.RandGen.Next(entity.GetCollRectangle().Y, entity.GetCollRectangle().Y + entity.GetCollRectangle().Height - 4);
+                TestSmokeParticle par = new TestSmokeParticle(x, y);
+                GameWorld.Instance.particles.Add(par);
+            }
+        }
+    }
+
     public class StompSmokeParticle : Particle
     {
         public StompSmokeParticle(Entity entity)
@@ -771,7 +802,7 @@ namespace Adam
         }
     }
 
-    public class MachineGunParticle : Particle, ICollidable
+    public class MachineGunParticle : Particle
     {
         SoundFx hitSound;
 
@@ -787,32 +818,6 @@ namespace Adam
 
             light = new DynamicPointLight(this, .05f, false, Color.White, .5f);
             GameWorld.Instance.lightEngine.AddDynamicLight(light);
-        }
-
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-            Opacity = 0;
-            ExplosionParticle par = new ExplosionParticle(collRectangle.X + 4, collRectangle.Y, Color.White, .5f);
-            SparkParticle spar = new SparkParticle(this, Color.Orange);
-            GameWorld.Instance.particles.Add(spar);
-            GameWorld.Instance.particles.Add(par);
-            hitSound.Play();
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
         }
 
         public override void Update(GameTime gameTime)
@@ -851,7 +856,7 @@ namespace Adam
 
     }
 
-    public class SparkParticle : Particle , ICollidable
+    public class SparkParticle : Particle
     {
         public SparkParticle(Entity source, Color color)
         {
@@ -871,31 +876,6 @@ namespace Adam
             DefaultBehavior();
             velocity.Y += .3f;
             base.Update();
-        }
-
-        public void OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = -velocity.Y * .1f;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
-
-        }
-
-        public void OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = -velocity.Y * .1f;
-        }
-
-        public void OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            velocity.X = -velocity.X;
-        }
-
-        public void OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            velocity.X = -velocity.X;
         }
     }
 

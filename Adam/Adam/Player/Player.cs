@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Adam
 {
-    public partial class Player : Entity, ICollidable, INewtonian
+    public partial class Player : Entity, INewtonian
     {
         public delegate void PlayerRespawnHandler();
         public event PlayerRespawnHandler PlayerRespawned;
@@ -26,7 +26,6 @@ namespace Adam
         public Rectangle attackBox;
 
         Jetpack jetpack = new Jetpack();
-        ComplexAnimation complexAnim = new ComplexAnimation();
         SoundEffect jumpSound, takeDamageSound, attackSound, gameOverSound, tadaSound, fallSound;
         SoundEffect chronoActivateSound;
         public SoundFx chronoDeactivateSound;
@@ -56,7 +55,6 @@ namespace Adam
         double movementSoundTimer;
 
         //Booleans
-        public bool isJumping;
         public bool isInvincible;
         public bool isSpaceBarPressed;
         public bool automatic_hasControl = true;
@@ -145,6 +143,8 @@ namespace Adam
             Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
 
+            CollidedWithTileBelow += OnCollisionWithTerrainBelow;
+
             complexAnim.AnimationEnded += ComplexAnim_AnimationEnded;
             complexAnim.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
             complexAnim.FrameChanged += ComplexAnim_FrameChanged;
@@ -153,10 +153,11 @@ namespace Adam
             complexAnim.AddAnimationData("smellPoop", new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
             complexAnim.AddAnimationData("sleep", new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("walk", new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("run", new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("jump", new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
             complexAnim.AddAnimationData("climb", new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("fall", new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
-            complexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 500, 1, false));
+            complexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
 
 
 
@@ -165,11 +166,6 @@ namespace Adam
             InitializeInput();
             Initialize(0, 0);
             Load();
-        }
-
-        public void AddAnimationToQueue(string name)
-        {
-            complexAnim.AddToQueue(name);
         }
 
         private void ComplexAnim_FrameChanged(FrameArgs e)
@@ -946,13 +942,13 @@ namespace Adam
             {
                 velocity.X = -10f;
                 velocity.Y = -5;
-                isJumping = true;
+                IsJumping = true;
             }
             else
             {
                 velocity.X = 10f;
                 velocity.Y = -5;
-                isJumping = true;
+                IsJumping = true;
             }
         }
 
@@ -1028,7 +1024,7 @@ namespace Adam
         {
             if (velocity.X == 0)
                 return;
-            if (isJumping)
+            if (IsJumping)
                 return;
 
             movementSoundTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -1160,32 +1156,11 @@ namespace Adam
             jumpedOnEnemySound.Reset();
         }
 
-
-        void ICollidable.OnCollisionWithTerrainAbove(TerrainCollisionEventArgs e)
+        void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            velocity.Y = 0f;
-        }
-
-        void ICollidable.OnCollisionWithTerrainBelow(TerrainCollisionEventArgs e)
-        {
-            velocity.Y = 0f;
-            isJumping = false;
+            IsJumping = false;
             isFlying = false;
             Stomp();
-        }
-
-        void ICollidable.OnCollisionWithTerrainRight(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        void ICollidable.OnCollisionWithTerrainLeft(TerrainCollisionEventArgs e)
-        {
-            velocity.X = 0;
-        }
-
-        public void OnCollisionWithTerrainAnywhere(TerrainCollisionEventArgs e)
-        {
         }
 
         public float GravityStrength
@@ -1219,18 +1194,6 @@ namespace Adam
             set
             {
                 isFlying = value;
-            }
-        }
-
-        public bool IsJumping
-        {
-            get
-            {
-                return isJumping;
-            }
-            set
-            {
-                isJumping = value;
             }
         }
 
