@@ -125,8 +125,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\JumpSound.wav">
-      <Name>JumpSound</Name>
+    <Compile Include="Player\jumpSound.wav">
+      <Name>jumpSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -139,15 +139,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\PlayerHit.wav">
-      <Name>PlayerHit</Name>
+    <Compile Include="Player\hurtSound.wav">
+      <Name>hurtSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\PlayerAttack.wav">
-      <Name>PlayerAttack</Name>
+    <Compile Include="Player\attackSound.wav">
+      <Name>attackSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -167,8 +167,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\DeathSound.wav">
-      <Name>DeathSound</Name>
+    <Compile Include="Player\deathSound.wav">
+      <Name>deathSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -969,8 +969,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\eat.wav">
-      <Name>eat</Name>
+    <Compile Include="Player\eatSound.wav">
+      <Name>eatSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
@@ -1182,14 +1182,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Player\enemy_kill.wav">
+    <Compile Include="Player\enemy_kill.wav">
       <Name>enemy_kill</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Player\enemy_jumpedOn.wav">
+    <Compile Include="Player\enemy_jumpedOn.wav">
       <Name>enemy_jumpedOn</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
@@ -1321,12 +1321,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\Player\climbing1.wav">
+    <Compile Include="Player\climbing1.wav">
       <Name>climbing1</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="Sounds\Player\climbing2.wav">
+    <Compile Include="Player\climbing2.wav">
       <Name>climbing2</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>

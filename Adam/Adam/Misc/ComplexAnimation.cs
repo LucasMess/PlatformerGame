@@ -74,9 +74,12 @@ namespace Adam.Misc
                     if (!currentAnimationData.IsRepeating)
                     {
                         AnimationEnded();
+                        currentFrame = currentAnimationData.FrameCount - 1;
                     }
-
-                    currentFrame = 0;
+                    else
+                    {
+                        currentFrame = 0;
+                    }
                 }
 
                 FrameChanged(new FrameArgs(currentFrame));

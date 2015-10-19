@@ -26,12 +26,6 @@ namespace Adam
         public Rectangle attackBox;
 
         Jetpack jetpack = new Jetpack();
-        SoundEffect jumpSound, takeDamageSound, attackSound, gameOverSound, tadaSound, fallSound;
-        SoundEffect chronoActivateSound;
-        public SoundFx chronoDeactivateSound;
-        SoundEffect[] walkSounds, runSounds;
-        SoundEffect[] sounds;
-        SoundEffect[] goreSounds;
         SoundFx levelFail;
         SoundFx climb1;
         SoundFx climb2;
@@ -159,7 +153,9 @@ namespace Adam
             complexAnim.AddAnimationData("fall", new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
 
-
+            Sounds.AddSoundRef("hurt", "Player/hurtSound");
+            Sounds.AddSoundRef("jump", "Player/jumpSound");
+            Sounds.AddSoundRef("stomp", "Player/jumpSound");
 
             complexAnim.AddToQueue("idle");
 
@@ -210,48 +206,48 @@ namespace Adam
         /// </summary> 
         public void Load()
         {
-            //Use this string to save the path to a file if multiple files begin with the same location.
-            string path;
+            ////Use this string to save the path to a file if multiple files begin with the same location.
+            //string path;
 
-            tadaSound = ContentHelper.LoadSound("Sounds/levelup");
+            //tadaSound = ContentHelper.LoadSound("Sounds/levelup");
 
-            //Load sound effects
-            chronoActivateSound = ContentHelper.LoadSound("Sounds/chronoshift_activate");
-            chronoDeactivateSound = new SoundFx("Sounds/chronoshift_deactivate");
-            jumpSound = ContentHelper.LoadSound("Sounds/JumpSound");
-            takeDamageSound = ContentHelper.LoadSound("Sounds/PlayerHit");
-            attackSound = ContentHelper.LoadSound("Sounds/laserunNew");
-            gameOverSound = ContentHelper.LoadSound("Sounds/DeathSound");
-            fallSound = ContentHelper.LoadSound("Sounds/adam_fall");
+            ////Load sound effects
+            //chronoActivateSound = ContentHelper.LoadSound("Sounds/chronoshift_activate");
+            //chronoDeactivateSound = new SoundFx("Sounds/chronoshift_deactivate");
+            //jumpSound = ContentHelper.LoadSound("Sounds/JumpSound");
+            //takeDamageSound = ContentHelper.LoadSound("Sounds/PlayerHit");
+            //attackSound = ContentHelper.LoadSound("Sounds/laserunNew");
+            //gameOverSound = ContentHelper.LoadSound("Sounds/DeathSound");
+            //fallSound = ContentHelper.LoadSound("Sounds/adam_fall");
 
-            //Movement sounds
-            path = "Sounds/Movement/";
-            walkSounds = new SoundEffect[]
-            {
-                ContentHelper.LoadSound(path+"walk1"),
-                ContentHelper.LoadSound(path+"walk2"),
-                ContentHelper.LoadSound(path+"walk3"),
-            };
+            ////Movement sounds
+            //path = "Sounds/Movement/";
+            //walkSounds = new SoundEffect[]
+            //{
+            //    ContentHelper.LoadSound(path+"walk1"),
+            //    ContentHelper.LoadSound(path+"walk2"),
+            //    ContentHelper.LoadSound(path+"walk3"),
+            //};
 
-            //Eventually all sounds will be in one array.
-            sounds = new SoundEffect[]
-            {
-                ContentHelper.LoadSound("Sounds/Chronoshift/startSound"),
-                ContentHelper.LoadSound("Sounds/Chronoshift/stopSound"),
-                ContentHelper.LoadSound("Sounds/Movement/walk2"),
-            };
+            ////Eventually all sounds will be in one array.
+            //sounds = new SoundEffect[]
+            //{
+            //    ContentHelper.LoadSound("Sounds/Chronoshift/startSound"),
+            //    ContentHelper.LoadSound("Sounds/Chronoshift/stopSound"),
+            //    ContentHelper.LoadSound("Sounds/Movement/walk2"),
+            //};
 
-            path = "Sounds/Gore/";
-            goreSounds = new SoundEffect[]
-            {
-                ContentHelper.LoadSound(path+"gore1"),
-                ContentHelper.LoadSound(path+"gore2"),
-                ContentHelper.LoadSound(path+"gore3"),
-            };
+            //path = "Sounds/Gore/";
+            //goreSounds = new SoundEffect[]
+            //{
+            //    ContentHelper.LoadSound(path+"gore1"),
+            //    ContentHelper.LoadSound(path+"gore2"),
+            //    ContentHelper.LoadSound(path+"gore3"),
+            //};
 
-            levelFail = new SoundFx("Sounds/Menu/level_fail");
-            climb1 = new SoundFx("Sounds/Player/climbing1");
-            climb2 = new SoundFx("Sounds/Player/climbing2");
+            //levelFail = new SoundFx("Sounds/Menu/level_fail");
+            //climb1 = new SoundFx("Sounds/Player/climbing1");
+            //climb2 = new SoundFx("Sounds/Player/climbing2");
         }
 
         /// <summary>
@@ -500,7 +496,7 @@ namespace Adam
                     KillAndRespawn();
                     if (!fallSoundPlayed)
                     {
-                        fallSound.Play();
+                        //fallSound.Play();
                         fallSoundPlayed = true;
                     }
                 }
@@ -915,7 +911,7 @@ namespace Adam
             //make him invincible for a while and start the being hit animation
             isInvincible = true;
             automatic_hasControl = false;
-            takeDamageSound.Play();
+            //takeDamageSound.Play();
             SpillBlood(GameWorld.RandGen.Next(3, 5));
         }
 
@@ -926,7 +922,7 @@ namespace Adam
         public void TakeDPS(int damage)
         {
             Health -= damage;
-            takeDamageSound.Play();
+            //takeDamageSound.Play();
         }
 
         public void TakeDamageAndKnockBack(int damage)
@@ -985,14 +981,14 @@ namespace Adam
 
         public void PlayAttackSound()
         {
-            attackSound.Play();
+            //attackSound.Play();
         }
 
         public void PlayGameOverSound()
         {
             if (gameOverSoundPlayed == false)
             {
-                gameOverSound.Play();
+                //gameOverSound.Play();
                 gameOverSoundPlayed = true;
             }
         }
@@ -1037,9 +1033,9 @@ namespace Adam
                 //if (isRunningFast)
                 //    runSounds[Map.randGen.Next(0,runSounds.Length)].Play();
                 //else 
-                SoundEffectInstance s = walkSounds[0].CreateInstance();
-                s.Pitch = 1;
-                s.Play();
+                //SoundEffectInstance s = walkSounds[0].CreateInstance();
+               // s.Pitch = 1;
+                //s.Play();
 
                 movementSoundTimer = 0;
             }
@@ -1060,28 +1056,6 @@ namespace Adam
                 GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
             }
         }
-
-
-
-        //public void Jump()
-        //{
-        //    //Make his velocity increase once
-        //    velocity.Y = -8f;
-        //    //Move him away from the tiles so collision does not stop the jump
-        //    collRectangle.Y -= 1;
-        //    //Make him unable to jump again
-        //    isJumping = true;
-        //    //Make this code not be repeated
-        //    isSpaceBarPressed = true;
-        //    //Play the sound
-        //    jumpSound.Play();
-        //    //Stop him from sleeping
-        //    sleepTimer = 0;
-        //    //Change the animation
-        //    CurrentAnimation = AnimationState.Jumping;
-        //    CreateJumpParticles();
-        //    hasStomped = false;
-        //}
 
         public void KillAndRespawn()
         {
@@ -1109,7 +1083,7 @@ namespace Adam
         {
             if (!hasStomped)
             {
-                sounds[2].Play();
+                //sounds[2].Play();
                 CreateStompParticles();
                 hasStomped = true;
             }
@@ -1120,14 +1094,9 @@ namespace Adam
             if (!goreSoundPlayed)
             {
                 int rand = GameWorld.RandGen.Next(0, 2);
-                goreSounds[rand].Play();
+                //goreSounds[rand].Play();
                 goreSoundPlayed = true;
             }
-        }
-
-        public void PlayTakeDamageSound()
-        {
-            takeDamageSound.Play();
         }
 
         public void SpillBlood(int quantity)
@@ -1163,25 +1132,11 @@ namespace Adam
             Stomp();
         }
 
+        float gravity = Main.Gravity;
         public float GravityStrength
         {
-            get
-            {
-                float gravity = 0;
-                if (!canFly)
-                {
-                    gravity = .2f;
-                    if (InputHelper.IsKeyDown(Keys.Space) && offGroundTimer < .3f)
-                    { }
-                    else gravity = .5f;
-                }
-                return gravity;
-            }
-
-            set
-            {
-                GravityStrength = value;
-            }
+            get { return gravity; }
+            set { gravity = value; }
         }
 
 

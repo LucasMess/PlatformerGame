@@ -16,6 +16,7 @@ namespace Adam
 
         public event EventHandler StillUpdate;
         public event EventHandler JumpAction;
+        public event EventHandler StopJumpAction;
         public event EventHandler RightMove;
         public event EventHandler LeftMove;
         public event EventHandler InteractAction;
@@ -32,6 +33,7 @@ namespace Adam
         {
             StillUpdate += Player_StillUpdate;
             JumpAction += Player_JumpAction;
+            StopJumpAction += Player_StopJumpAction;
             RightMove += Player_RightMove;
             LeftMove += Player_LeftMove;
             InteractAction += Player_InteractAction;
@@ -43,6 +45,11 @@ namespace Adam
             FastRunActive += Player_FastRunActive;
             FastRunInactive += Player_FastRunInactive;
             NotIdle += Player_NotIdle;
+        }
+
+        private void Player_StopJumpAction()
+        {
+            script.StopJumpAction(this);
         }
 
         private void Player_NotIdle()
@@ -145,6 +152,10 @@ namespace Adam
                     UltimateAction();
                 if (InputHelper.IsKeyDown(Keys.Space))
                     JumpAction();
+                else
+                {
+                    StopJumpAction();
+                }
                 if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
                     FastRunActive();
                 else

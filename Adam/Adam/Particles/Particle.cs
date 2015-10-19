@@ -923,7 +923,7 @@ namespace Adam
                         //velocity = new Vector2(1, 1);
                     }
                 }
-                GameWorld.Instance.player.chronoDeactivateSound.PlayIfStopped();
+                //GameWorld.Instance.player.chronoDeactivateSound.PlayIfStopped();
                 velocity.X = velocity.X * 1 / .95f;
                 velocity.Y = velocity.Y * 1 / .95f;
             }

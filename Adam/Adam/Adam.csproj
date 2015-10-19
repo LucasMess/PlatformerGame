@@ -159,6 +159,7 @@
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="EntityProperties.cs" />
+    <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Player\PlayerInput.cs" />
     <Compile Include="Player\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
@@ -173,7 +174,7 @@
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Lights\LightEngine.cs" />
     <Compile Include="Lights\SunLight.cs" />
-    <Compile Include="Misc\AbilityChannel.cs" />
+    <Compile Include="Misc\Countdown.cs" />
     <Compile Include="Misc\ComplexAnimation.cs" />
     <Compile Include="Misc\Databases\InputDB.cs" />
     <Compile Include="Misc\Databases\SoundtrackDB.cs" />
@@ -193,8 +194,8 @@
     <Compile Include="Misc\Interfaces\ITalkable.cs" />
     <Compile Include="Misc\KeyboardDispatcher.cs" />
     <Compile Include="Misc\KeyboardLayout.cs" />
-    <Compile Include="Misc\SoundFx.cs" />
-    <Compile Include="Misc\SoundtrackManager.cs" />
+    <Compile Include="Misc\Sound\SoundFx.cs" />
+    <Compile Include="Misc\Sound\SoundtrackManager.cs" />
     <Compile Include="Misc\Timer.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />

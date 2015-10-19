@@ -11,18 +11,18 @@ namespace Adam
     {
         public static bool IsDoingAction = false;
 
-        const float JumpVelocity = -10f;
-        const float WalkSpeed = 5f;
-        const float RunSpeed = 7f;
-        const float GroundFriction = .97f;
-        const float AirFriction = .99f;
+        const float JumpAcc = -10f;
+        const float WalkAcc = .2f;
+        const float RunAcc = .45f;
+        const float GroundFriction = .96f;
         const float DashSpeed = 20f;
 
         Timer idleTimer = new Timer();
+        Timer airTimer = new Timer();
 
         SoundFx stepSound = new SoundFx("Sounds/Movement/walk1");
 
-    
+
         public void Initialize()
         {
         }
@@ -32,13 +32,10 @@ namespace Adam
             // Friction.
             if (player.IsJumping)
             {
-                player.SetVelX(player.GetVelocity().X * AirFriction);
-                player.SetVelY(player.GetVelocity().Y * AirFriction);
+                airTimer.Increment();
             }
-            else
-            {
-                player.SetVelX(player.GetVelocity().X * GroundFriction);
-            }
+
+            player.SetVelX(player.GetVelocity().X * GroundFriction);
 
             // Toggle idle animations.
             idleTimer.Increment();
@@ -49,13 +46,21 @@ namespace Adam
                 idleTimer.Reset();
             }
 
-            if(Math.Abs(player.GetVelocity().X) < .5f)
+            if (Math.Abs(player.GetVelocity().X) < 2f)
             {
                 player.RemoveAnimationFromQueue("walk");
             }
-            if(Math.Abs(player.GetVelocity().X) < WalkSpeed)
+            if (Math.Abs(player.GetVelocity().X) < 9)
             {
                 player.RemoveAnimationFromQueue("run");
+            }
+
+            if (player.GetVelocity().Y > 2)
+            {
+                player.IsJumping = true;
+
+                if (player.GetVelocity().Y > 6)
+                    player.AddAnimationToQueue("fall");
             }
 
         }
@@ -67,49 +72,52 @@ namespace Adam
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
+        internal void StopJumpAction(Player player)
+        {
+            player.GravityStrength = Main.Gravity;
+        }
+
         public void OnJumpAction(Player player)
         {
             if (!player.IsJumping)
             {
+                player.Sounds.Get("jump").Play();
                 player.IsJumping = true;
-                player.SetVelY(JumpVelocity);
+                player.SetVelY(JumpAcc);
                 player.ChangePosBy(0, -1);
                 player.AddAnimationToQueue("jump");
-                player.AnimationEnded += OnJumpEnded;
                 player.CollidedWithTileBelow += OnTouchGround;
+            }
+
+            if (airTimer.TimeElapsedInMilliSeconds < 1000)
+            {
+                player.GravityStrength = Main.Gravity * .75f;
+            }
+            else
+            {
+                player.GravityStrength = Main.Gravity;
             }
         }
 
         private void OnTouchGround(Entity entity, Tile tile)
         {
+            airTimer.Reset();
             entity.IsJumping = false;
             entity.RemoveAnimationFromQueue("fall");
             entity.RemoveAnimationFromQueue("jump");
         }
 
-        private void OnJumpEnded(Player player)
-        {
-            player.RemoveAnimationFromQueue("jump");
-            if (player.IsJumping)
-            {
-                player.AddAnimationToQueue("fall");
-            }
-        }
-
         public void OnRightMove(Player player)
         {
-            if (player.GetVelocity().X < 1)
-                player.SetVelX(1f);
-
-            float speed = WalkSpeed;
+            float acc = WalkAcc;
             if (player.isRunningFast)
             {
-                speed = RunSpeed;
+                acc = RunAcc;
                 player.AddAnimationToQueue("run");
             }
 
             player.IsFacingRight = false;
-            player.SetVelX(speed);
+            player.SetVelX(player.GetVelocity().X + acc);
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
@@ -125,18 +133,15 @@ namespace Adam
 
         public void OnLeftMove(Player player)
         {
-            if (player.GetVelocity().X > -1)
-                player.SetVelX(-1f);
-
-            float speed = WalkSpeed;
+            float acc = WalkAcc;
             if (player.isRunningFast)
             {
-                speed = RunSpeed;
+                acc = RunAcc;
                 player.AddAnimationToQueue("run");
             }
 
             player.IsFacingRight = true;
-            player.SetVelX(-speed);
+            player.SetVelX(player.GetVelocity().X - acc);
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {

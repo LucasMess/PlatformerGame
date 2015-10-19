@@ -2,6 +2,7 @@
 using Adam.Lights;
 using Adam.Misc.Errors;
 using Adam.Misc.Interfaces;
+using Adam.Misc.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -64,6 +65,8 @@ namespace Adam
         /// </summary>
         public Entity()
         {
+            Sounds = new SoundFxManager(this);
+
             // Subscribes to default collision handling.
             CollidedWithTileAbove += OnCollisionWithTileAbove;
             CollidedWithTileBelow += OnCollisionWithTileBelow;
@@ -552,13 +555,14 @@ namespace Adam
         /// <returns>Volume of sound.</returns>
         public float GetSoundVolume(Entity listener, float maxVolume)
         {
+            listener = listener.Get();
             float xDist = listener.collRectangle.Center.X - DrawRectangle.Center.X;
             float yDist = listener.collRectangle.Center.Y - DrawRectangle.Center.Y;
             float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
 
-            if (distanceTo > 1000)
-                return 0;
-            else return (1 - (distanceTo / 1000)) * maxVolume;
+            if (distanceTo < 1)
+                return maxVolume;
+            else return (float)(1/Math.Sqrt(distanceTo)) * maxVolume;
         }
 
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)

@@ -1,4 +1,5 @@
 ﻿using Adam.Misc;
+using Adam.Misc.Sound;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Adam
     {
         protected ComplexAnimation complexAnim = new ComplexAnimation();
 
+
+        public SoundFxManager Sounds { get; set; }
 
         /// <summary>
         /// Determines whether this entity should perform collision checks with other collidable objects.

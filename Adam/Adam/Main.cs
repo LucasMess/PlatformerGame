@@ -105,7 +105,7 @@ namespace Adam
         public static double WidthRatio;
         public static double HeightRatio;
 
-        public static float MaxVolume = .05f;
+        public static float MaxVolume = .1f;
 
         public static Session Session { get; set; }
 
@@ -433,10 +433,10 @@ namespace Adam
                     renderTime = renderWatch.ElapsedMilliseconds;
                     renderWatch.Reset();
 
-                    lightWatch.Start();
-                    DrawLightingRenderTarget(lightingRenderTarget);
-                    lightTime = lightWatch.ElapsedMilliseconds;
-                    lightWatch.Reset();
+                    //lightWatch.Start();
+                    //DrawLightingRenderTarget(lightingRenderTarget);
+                    //lightTime = lightWatch.ElapsedMilliseconds;
+                    //lightWatch.Reset();
 
                     break;
                 case GameState.Cutscene:
@@ -553,9 +553,9 @@ namespace Adam
                     SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
 
-                    SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                    SpriteBatch.End();
+                    //SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    //SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                    //SpriteBatch.End();
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
