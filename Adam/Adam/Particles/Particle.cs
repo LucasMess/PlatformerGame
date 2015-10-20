@@ -15,7 +15,10 @@ using Adam.Misc;
 
 namespace Adam
 {
-    public class Particle : Entity
+    /// <summary>
+    /// Particles cannot check collision and should disappear after a while.
+    /// </summary>
+    public class Particle: Entity
     {
         Texture2D nextTexture;
         Vector2 originalPosition, originalVelocity;
@@ -410,20 +413,19 @@ namespace Adam
 
                     collRectangle.X = (int)position.X;
                     collRectangle.Y = (int)position.Y;
-                    if (player.isWaitingForRespawn)
-                        respawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
                     if (respawnTimer > 500)
                     {
-                        if (!player.isWaitingForRespawn)
-                        {
-                            Opacity = 0f;
-                            ToDelete = true;
-                            respawnTimer = 0;
-                        }
-                        else
-                        {
-                            // velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
-                        }
+                        //if (!player.isWaitingForRespawn)
+                        //{
+                        //    Opacity = 0f;
+                        //    ToDelete = true;
+                        //    respawnTimer = 0;
+                        //}
+                        //else
+                        //{
+                        //    // velocity = new Vector2((endPosition.X - position.X) / 50, (endPosition.Y - position.Y) / 50);
+                        //}
                     }
                     else
                     {
@@ -878,68 +880,5 @@ namespace Adam
             base.Update();
         }
     }
-
-    public class ChronoshiftParticle : Particle
-    {
-        double changeDirectionTimer;
-        bool hasChangedDirection;
-
-        public ChronoshiftParticle(Entity entity)
-        {
-            int maxVel = 10;
-            velocity = new Vector2(GameWorld.RandGen.Next(-maxVel, maxVel + 1), GameWorld.RandGen.Next(-maxVel, maxVel + 1));
-            collRectangle = new Rectangle(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y, 8, 8);
-            collRectangle = collRectangle;
-            position = new Vector2(collRectangle.X, collRectangle.Y);
-
-            Color colorful = new Color(GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), GameWorld.RandGen.Next(0, 256), 255);
-            light = new Lights.DynamicPointLight(this, .5f, false, colorful, 1f);
-            GameWorld.Instance.lightEngine.AddDynamicLight(light);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            position += velocity;
-
-            collRectangle.X = (int)position.X;
-            collRectangle.Y = (int)position.Y;
-
-            collRectangle = collRectangle;
-
-            velocity.X = velocity.X * 0.95f;
-            velocity.Y = velocity.Y * 0.95f;
-
-            changeDirectionTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (changeDirectionTimer > 1000)
-            {
-                if (!hasChangedDirection)
-                {
-                    hasChangedDirection = true;
-                    velocity = -velocity;
-
-                    if (velocity == new Vector2(0, 0))
-                    {
-                        //velocity = new Vector2(1, 1);
-                    }
-                }
-                //GameWorld.Instance.player.chronoDeactivateSound.PlayIfStopped();
-                velocity.X = velocity.X * 1 / .95f;
-                velocity.Y = velocity.Y * 1 / .95f;
-            }
-
-            if (changeDirectionTimer > 1200)
-            {
-                GameWorld.Instance.player.isChronoshifting = false;
-
-                ToDelete = true;
-            }
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            //DO NOTHING
-        }
-    }
-
+    
 }

@@ -16,5 +16,10 @@ namespace Adam
         /// Returns true if player is on fire and is taking damage per second.
         /// </summary>
         public bool IsOnFire { get; set; }
+
+        /// <summary>
+        /// Returns true if the player is holding down the run fast button.
+        /// </summary>
+        public bool IsRunningFast { get; set; }
     }
 }

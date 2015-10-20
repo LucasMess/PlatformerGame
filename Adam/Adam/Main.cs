@@ -409,9 +409,6 @@ namespace Adam
                     overlay.Update(gameTime, player, gameWorld);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
-
-                    if (player.returnToMainMenu)
-                        ChangeState(GameState.MainMenu, GameMode.None);
                     break;
             }
 

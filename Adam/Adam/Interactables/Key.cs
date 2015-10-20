@@ -33,7 +33,6 @@ namespace Adam
             if (player.GetCollRectangle().Intersects(rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 isPickedUp = true;
-                player.keySecrets.Add(secret);
                 pickSound.Play();
                 toDelete = true;
             }

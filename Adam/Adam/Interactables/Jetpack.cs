@@ -35,7 +35,7 @@ namespace Adam.Interactables
 
         public void Update(Player player, GameTime gameTime)
         {
-            if (player.isFlying)
+            if (player.IsJumping)
             {
                 effectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
                 currentFuel -= depletionRate;

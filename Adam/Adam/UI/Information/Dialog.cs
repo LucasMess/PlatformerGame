@@ -100,7 +100,6 @@ namespace Adam.UI
             {
                 popSound.PlayOnce();
                 skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                GameWorld.Instance.player.manual_hasControl = false;
                 if (skipTimer > .5)
                 {
                     
@@ -122,7 +121,6 @@ namespace Adam.UI
                         else
                         {
                             isActive = false;
-                            GameWorld.Instance.player.manual_hasControl = true;
                             if (CurrentSender != null)
                                 CurrentSender.OnNextDialog();
                         }

@@ -59,7 +59,7 @@ namespace Adam
 
         private void Player_FastRunInactive()
         {
-            isRunningFast = false;
+            IsRunningFast = false;
         }
 
         private void Player_StillUpdate()
@@ -69,7 +69,7 @@ namespace Adam
 
         private void Player_FastRunActive()
         {
-            isRunningFast = true;
+            IsRunningFast = true;
         }
 
         private void Player_UltimateAction()

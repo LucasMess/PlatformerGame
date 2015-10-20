@@ -54,11 +54,13 @@ namespace Adam
         private bool _toDelete;
         private bool _isFacingRight;
         private bool _isDead;
+        private bool _healthGiven;
 
         private DynamicPointLight _light;
 
         private int _health;
         private float _opacity = 1f;
+        private float _gravityStrength = Main.Gravity;
 
         /// <summary>
         /// Subscribes to events and initializes other variables.
@@ -81,6 +83,25 @@ namespace Adam
         public int TileIndex
         {
             get { return GetTileIndex(); }
+        }
+
+        /// <summary>
+        /// How much gravity is applied to the entity
+        /// </summary>
+        public float GravityStrength
+        {
+            get
+            {
+                if (!ObeysGravity)
+                {
+                    return 0;
+                }
+                else return _gravityStrength;
+            }
+            set
+            {
+                _gravityStrength = value;
+            }
         }
 
         /// <summary>
@@ -189,8 +210,6 @@ namespace Adam
             get;
         }
 
-        int health;
-        bool healthGiven;
         /// <summary>
         /// The current health of the entity.
         /// </summary>
@@ -198,17 +217,17 @@ namespace Adam
         {
             get
             {
-                if (!healthGiven)
+                if (!_healthGiven)
                 {
-                    health = MaxHealth;
-                    healthGiven = true;
+                    _health = MaxHealth;
+                    _healthGiven = true;
                 }
 
-                return health;
+                return _health;
             }
             set
             {
-                health = value;
+                _health = value;
             }
         }
 
@@ -253,7 +272,7 @@ namespace Adam
                 return;
 
             //Check for physics, if applicable.
-            if (this is INewtonian)
+            if (ObeysGravity)
             {
                 ApplyGravity();
             }
@@ -348,7 +367,6 @@ namespace Adam
             collRectangle.X += x;
             collRectangle.Y += y;
         }
-
 
         public virtual void Kill()
         {
@@ -520,12 +538,15 @@ namespace Adam
         {
             int[] q = GetNearbyTileIndexes(map);
 
-            foreach (int quadrant in q)
+            foreach (int index in q)
             {
-                if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
+                if (index >= 0 && index <= map.tileArray.Length - 1 && map.tileArray[index].isSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[quadrant].drawRectangle)) { }
-                    //CollidedWithTerrainAnywhere(new TerrainCollisionEventArgs(map.tileArray[quadrant]));
+                    if (collRectangle.Intersects(map.tileArray[index].drawRectangle))
+                    {
+                        CollidedWithTerrain(this, map.tileArray[index]);
+                        break;
+                    }
                 }
             }
         }
@@ -562,9 +583,13 @@ namespace Adam
 
             if (distanceTo < 1)
                 return maxVolume;
-            else return (float)(1/Math.Sqrt(distanceTo)) * maxVolume;
+            else return (float)(1 / Math.Sqrt(distanceTo)) * maxVolume;
         }
 
+        /// <summary>
+        /// Highlights the surrounding tiles and draws them in a different color for debugging.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)
         {
             if (GameWorld.Instance == null) return;
@@ -583,15 +608,8 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            if (this is INewtonian) { } else throw new Exception("This object is not affected by gravity because it does not implement INewtonian.");
-            INewtonian newt = (INewtonian)this;
-
-            //Checks to see if there is a block below the player, if there is, no gravity is applied to prevent the jittery bug.
-            float gravity = newt.GravityStrength;
-
-            velocity.Y += gravity;
+            velocity.Y += GravityStrength;
         }
-
 
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {

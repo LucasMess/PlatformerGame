@@ -110,7 +110,7 @@ namespace Adam
         public void OnRightMove(Player player)
         {
             float acc = WalkAcc;
-            if (player.isRunningFast)
+            if (player.IsRunningFast)
             {
                 acc = RunAcc;
                 player.AddAnimationToQueue("run");
@@ -134,7 +134,7 @@ namespace Adam
         public void OnLeftMove(Player player)
         {
             float acc = WalkAcc;
-            if (player.isRunningFast)
+            if (player.IsRunningFast)
             {
                 acc = RunAcc;
                 player.AddAnimationToQueue("run");

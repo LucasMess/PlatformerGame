@@ -56,7 +56,6 @@ namespace Adam.Obstacles
             if (IsTouchingPlayer)
             {
                 Player player = GameWorld.Instance.player;
-                player.PlayGoreSound();
                 player.KillAndRespawn();
             }
 

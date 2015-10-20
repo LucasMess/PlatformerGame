@@ -35,7 +35,7 @@ namespace Adam
 
         public PopUp()
         {
-            texts = new string[Player.MAX_LEVEL + 2];
+            texts = new string[32];
             texts[1] = "A leaf! The best protection in the world!";
             texts[2] = "A stick! If only you had marshmallows.";
             texts[3] = "Leather shoes! Show those ants who is boss!";
@@ -105,9 +105,8 @@ namespace Adam
             objSourceRect.Y = (0) / 5 * 16;
 
             clickTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed && !player.manual_hasControl)
+            if (clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                player.manual_hasControl = true;
                 clickTimer = 0;
                 isVisible = false;
             }

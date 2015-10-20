@@ -36,7 +36,7 @@ namespace Adam.Interactables
             key.Update(collRectangle);
             if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
             {
-                if (InputHelper.IsKeyDown(Keys.W) && GameWorld.Instance.player.manual_hasControl)
+                if (InputHelper.IsKeyDown(Keys.W))
                 {
                     ShowMessage();
                 }

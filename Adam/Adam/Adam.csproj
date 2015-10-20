@@ -215,10 +215,6 @@
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
-    <Compile Include="Particles\ChestSparklesEffect.cs" />
-    <Compile Include="Particles\EnemyDesintegrationEffect.cs" />
-    <Compile Include="Particles\PlayerChronoshiftEffect.cs" />
-    <Compile Include="Particles\SnakeVenomEffect.cs" />
     <Compile Include="Characters\Enemies\Bloodless.cs" />
     <Compile Include="Characters\Enemies\Drone.cs" />
     <Compile Include="Characters\Enemies\Snake.cs" />
@@ -284,7 +280,6 @@
     <Compile Include="UI\TileScroll.cs" />
     <Compile Include="UI\Timer.cs" />
     <Compile Include="Misc\TriggerZone.cs" />
-    <Compile Include="Interactables\Weapon.cs" />
     <Compile Include="UI\WorldProperties.cs">
       <SubType>UserControl</SubType>
     </Compile>
