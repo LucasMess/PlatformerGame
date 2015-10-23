@@ -9,7 +9,7 @@ namespace Adam.Lights
 {
     public class LightEngine
     {
-        Light[] lights;
+        SunLight[] sunLights;
         int[] visibleLights = new int[60 * 100];
         public List<Light> dynamicLights = new List<Light>();
         List<Light> newLights = new List<Light>();
@@ -46,11 +46,11 @@ namespace Adam.Lights
         private void CreateArray()
         {
             //Creates light array that will be used in GameWorld.
-            lights = new Light[width * height];
-            for (int i = 0; i < lights.Length; i++)
-            {
-                lights[i] = new Light();
-            }
+            sunLights = new SunLight[width * height];
+            //for (int i = 0; i < sunLights.Length; i++)
+            //{
+            //    sunLights[i] = new SunLight();
+            //}
         }
 
         public void GenerateSunLight()
@@ -60,7 +60,7 @@ namespace Adam.Lights
             {
                 if (tiles[i].sunlightPassesThrough && walls[i].sunlightPassesThrough)
                 {
-                    lights[i] = new SunLight(tiles[i].drawRectangle);
+                    sunLights[i] = new SunLight(tiles[i].drawRectangle);
                 }
             }
 
@@ -68,20 +68,20 @@ namespace Adam.Lights
 
         private void TransferNewLights()
         {
-            for (int i = newLights.Count - 1; i >= 0; i--)
-            {
-                lights[newLights[i].index] = newLights[i];
-                newLights.Remove(newLights[i]);
-            }
+            //for (int i = newLights.Count - 1; i >= 0; i--)
+            //{
+            //    sunLights[newLights[i].index] = newLights[i];
+            //    newLights.Remove(newLights[i]);
+            //}
         }
 
         public void UpdateSunLight(int index)
         {
-            if (tiles[index].sunlightPassesThrough && walls[index].sunlightPassesThrough)
-            {
-                lights[index] = new SunLight(tiles[index].drawRectangle);
-            }
-            else lights[index] = new Light();
+            //if (tiles[index].sunlightPassesThrough && walls[index].sunlightPassesThrough)
+            //{
+            //    lights[index] = new SunLight(tiles[index].drawRectangle);
+            //}
+            //else lights[index] = new Light();
         }
 
 
@@ -115,13 +115,13 @@ namespace Adam.Lights
             //    }
             //}
 
-            foreach (int index in visibleLights)
-            {
-                if (index >= 0 && index < lights.Length)
-                {
-                    lights[index].Update();
-                }
-            }
+            //foreach (int index in visibleLights)
+            //{
+            //    if (index >= 0 && index < lights.Length)
+            //    {
+            //        lights[index].Update();
+            //    }
+            //}
 
             foreach (Light l in dynamicLights)
             {
@@ -154,9 +154,9 @@ namespace Adam.Lights
         {
             foreach (int index in visibleLights)
             {
-                if (index >= 0 && index < lights.Length)
+                if (index >= 0 && index < sunLights.Length)
                 {
-                    lights[index].Draw(spriteBatch);
+                    sunLights[index]?.Draw(spriteBatch);
                 }
             }
 
@@ -168,13 +168,13 @@ namespace Adam.Lights
 
         public void DrawGlows(SpriteBatch spriteBatch)
         {
-            foreach (int index in visibleLights)
-            {
-                if (index >= 0 && index < lights.Length)
-                {
-                    lights[index].DrawGlow(spriteBatch);
-                }
-            }
+            //foreach (int index in visibleLights)
+            //{
+            //    if (index >= 0 && index < lights.Length)
+            //    {
+            //        lights[index].DrawGlow(spriteBatch);
+            //    }
+            //}
             foreach (Light l in dynamicLights)
             {
                 l.DrawGlow(spriteBatch);

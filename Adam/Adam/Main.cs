@@ -430,10 +430,10 @@ namespace Adam
                     renderTime = renderWatch.ElapsedMilliseconds;
                     renderWatch.Reset();
 
-                    //lightWatch.Start();
-                    //DrawLightingRenderTarget(lightingRenderTarget);
-                    //lightTime = lightWatch.ElapsedMilliseconds;
-                    //lightWatch.Reset();
+                    lightWatch.Start();
+                    DrawLightingRenderTarget(lightingRenderTarget);
+                    lightTime = lightWatch.ElapsedMilliseconds;
+                    lightWatch.Reset();
 
                     break;
                 case GameState.Cutscene:
@@ -550,9 +550,9 @@ namespace Adam
                     SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
 
-                    //SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    //SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                    //SpriteBatch.End();
+                    SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                    SpriteBatch.End();
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);
@@ -609,7 +609,7 @@ namespace Adam
                     SpriteBatch.DrawString(debugFont, "Particle Count: " + gameWorld.particles?.Count, new Vector2(0, 240), Color.White);
                     SpriteBatch.DrawString(debugFont, "Entity Count: " + gameWorld.entities?.Count, new Vector2(0, 260), Color.White);
                     SpriteBatch.DrawString(debugFont, "Visible Tiles: " + gameWorld.visibleTileArray?.Length, new Vector2(0, 280), Color.White);
-                    SpriteBatch.DrawString(debugFont, "Visible Lights: " + gameWorld.visibleLightArray?.Length, new Vector2(0, 300), Color.White);
+                    SpriteBatch.DrawString(debugFont, "", new Vector2(0, 300), Color.White);
                     SpriteBatch.DrawString(debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive, new Vector2(0, 320), Color.White);
                     SpriteBatch.DrawString(debugFont, "Is MessageBox Active: " + MessageBox.IsActive, new Vector2(0, 340), Color.White);
 
