@@ -24,6 +24,7 @@ using Adam.Noobs;
 using System.ComponentModel;
 using Adam.Lights;
 using Adam.Misc;
+using Adam.Particles;
 
 namespace Adam
 {
@@ -50,6 +51,7 @@ namespace Adam
         Light[] lightArray;
         Light playerLight;
 
+        public static ParticleSystem ParticleSystem = new ParticleSystem();
         public GameMode CurrentGameMode;
         public Player player;
         public bool debuggingMode;
@@ -203,6 +205,13 @@ namespace Adam
 
         public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
+            ParticleSystem.Update();
+            for (int i = 0; i < 1; i++)
+            {
+                SmokeParticle par = new SmokeParticle(player.GetCollRectangle().Center.X - 4, player.GetCollRectangle().Bottom);
+                ParticleSystem.Add(par);
+            }
+
             if (Session.IsActive)
             {
                 if (Session.IsHost)
@@ -433,6 +442,8 @@ namespace Adam
 
         public void DrawParticles(SpriteBatch spriteBatch)
         {
+            ParticleSystem.Draw(spriteBatch);
+
             for (int i = 0; i < particles.Count; i++)
             {
                 particles[i].Draw(spriteBatch);

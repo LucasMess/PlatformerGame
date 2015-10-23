@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Particles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,9 @@ namespace Adam.Misc
         /// <param name="collRectangle"></param>
         public void Update(Entity entity)
         {
+            //SpeedParticle speed = new SpeedParticle(texture, drawRectangle.X, drawRectangle.Y, sourceRectangle, entity.IsFacingRight);
+            //GameWorld.ParticleSystem.Add(speed);
+
             FindHighestPriorityAnimation();
 
             drawRectangle = new Rectangle(entity.GetCollRectangle().X - currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - currentAnimationData.DeltaRectangle.Y, currentAnimationData.Width * 2, currentAnimationData.Height * 2);

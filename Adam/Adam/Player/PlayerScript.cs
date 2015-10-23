@@ -15,7 +15,7 @@ namespace Adam
         const float WalkAcc = .2f;
         const float RunAcc = .45f;
         const float GroundFriction = .96f;
-        const float DashSpeed = 20f;
+        const float DashSpeed = 40f;
 
         Timer idleTimer = new Timer();
         Timer airTimer = new Timer();
@@ -59,7 +59,7 @@ namespace Adam
             {
                 player.IsJumping = true;
 
-                if (player.GetVelocity().Y > 6)
+                if (player.GetVelocity().Y > 10)
                     player.AddAnimationToQueue("fall");
             }
 

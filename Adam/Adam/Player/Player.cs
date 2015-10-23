@@ -79,7 +79,7 @@ namespace Adam
         {
             this.game1 = game1;
 
-            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_new");
+            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/new_jump");
             Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
 

@@ -160,6 +160,7 @@
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
+    <Compile Include="Particles\NewParticle.cs" />
     <Compile Include="Player\PlayerInput.cs" />
     <Compile Include="Player\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />

@@ -18,7 +18,7 @@ namespace Adam
     /// <summary>
     /// Particles cannot check collision and should disappear after a while.
     /// </summary>
-    public class Particle: Entity
+    public class Particle : Entity
     {
         Texture2D nextTexture;
         Vector2 originalPosition, originalVelocity;
