@@ -11,6 +11,7 @@ namespace Adam
         Timer onFireTimer = new Timer();
         Timer fireTickTimer = new Timer();
         Timer fireSpawnTimer = new Timer();
+        Timer movementParticlesTimer = new Timer();
 
         /// <summary>
         /// Returns true if player is on fire and is taking damage per second.
@@ -21,5 +22,16 @@ namespace Adam
         /// Returns true if the player is holding down the run fast button.
         /// </summary>
         public bool IsRunningFast { get; set; }
+
+        /// <summary>
+        /// Returns true if the player is currently on top of vines.
+        /// </summary>
+        public bool IsOnVines
+        {
+            get
+            {
+                return (GameWorld.Instance.tileArray[GetTileIndex()].isClimbable);
+            }
+        }
     }
 }

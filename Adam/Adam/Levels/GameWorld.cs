@@ -206,11 +206,11 @@ namespace Adam
         public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
             ParticleSystem.Update();
-            for (int i = 0; i < 1; i++)
-            {
-                SmokeParticle par = new SmokeParticle(player.GetCollRectangle().Center.X - 4, player.GetCollRectangle().Bottom);
-                ParticleSystem.Add(par);
-            }
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    SmokeParticle par = new SmokeParticle(player.GetCollRectangle().Center.X - 4, player.GetCollRectangle().Bottom);
+            //    ParticleSystem.Add(par);
+            //}
 
             if (Session.IsActive)
             {

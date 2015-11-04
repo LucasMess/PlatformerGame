@@ -67,8 +67,8 @@ namespace Adam.Particles
         protected float Opacity { get; set; } = 1;
         protected Color Color { get; set; } = Color.White;
         protected Texture2D Texture { get; set; } = Main.DefaultTexture;
-        protected int Width { get; set; }
-        protected int Height { get; set; }
+        protected int Width { get; set; } = 8;
+        protected int Height { get; set; } = 8;
 
         public virtual void Update()
         {
@@ -138,10 +138,10 @@ namespace Adam.Particles
 
         public SmokeParticle(int x, int y)
         {
-            Position = new Vector2(x, y);
+            Position = new Vector2(x - 4, y);
             SourceRectangle = new Rectangle(256, 104, 8, 8);
             float randX = 0;
-            float randY = (float)(GameWorld.RandGen.Next(-3, 4) * GameWorld.RandGen.NextDouble());
+            float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
             Velocity = new Vector2(randX, randY);
             Opacity = 1;
             Color = Color.White;

@@ -16,10 +16,9 @@ namespace Adam
     //Defines what happens to the velocity of the entity when it collides.
     public enum CollisionType
     {
-        Inelastic,
-        Elastic,
-        ElasticX,
-        ElasticY,
+        Rigid,
+        Bouncy,
+        SuperBouncy,
     }
 
     /// <summary>
@@ -84,6 +83,11 @@ namespace Adam
         {
             get { return GetTileIndex(); }
         }
+
+        /// <summary>
+        /// Defines what happens to the velocity of the entity when it collides with something.
+        /// </summary>
+        protected CollisionType CurrentCollisionType { get; set; } = CollisionType.Rigid;
 
         /// <summary>
         /// How much gravity is applied to the entity
@@ -614,22 +618,58 @@ namespace Adam
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {
             collRectangle.Y = tile.drawRectangle.Y + tile.drawRectangle.Height;
-            velocity.Y = 0;
+            switch (CurrentCollisionType)
+            {
+                case CollisionType.Rigid:
+                    velocity.Y = 0;
+                    break;
+                case CollisionType.Bouncy:
+                    velocity.Y = -velocity.Y * .8f;
+                    break;
+            }
+            velocity.X = velocity.X * .95f;
         }
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
             collRectangle.Y = tile.drawRectangle.Y - collRectangle.Height;
-            velocity.Y = 0;
+            switch (CurrentCollisionType)
+            {
+                case CollisionType.Rigid:
+                    velocity.Y = 0;
+                    break;
+                case CollisionType.Bouncy:
+                    velocity.Y = -velocity.Y * .8f;
+                    break;
+            }
+            velocity.X = velocity.X * .95f;
         }
         private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
             collRectangle.X = tile.drawRectangle.X - collRectangle.Width;
-            velocity.X = 0;
+            switch (CurrentCollisionType)
+            {
+                case CollisionType.Rigid:
+                    velocity.X = 0;
+                    break;
+                case CollisionType.Bouncy:
+                    velocity.X = -velocity.X * .8f;
+                    break;
+            }
+            velocity.Y = velocity.Y * .95f;
         }
         private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
             collRectangle.X = tile.drawRectangle.X + tile.drawRectangle.Width;
-            velocity.X = 0;
+            switch (CurrentCollisionType)
+            {
+                case CollisionType.Rigid:
+                    velocity.X = 0;
+                    break;
+                case CollisionType.Bouncy:
+                    velocity.X = -velocity.X * .8f;
+                    break;
+            }
+            velocity.Y = velocity.Y * .95f;
         }
 
         private void OnCollisionWithTerrain(Entity entity, Tile tile)
@@ -660,5 +700,6 @@ namespace Adam
             collRectangle.Y = (int)position.Y;
             this.velocity = velocity;
         }
+        
     }
 }

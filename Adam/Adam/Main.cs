@@ -140,6 +140,8 @@ namespace Adam
 
         public static MediaQueue MediaQueue { get; set; }
 
+        public static TimeSpan DefaultTimeLapse { get; set; }
+
         public Main()
         {
             instance = this;
@@ -237,6 +239,8 @@ namespace Adam
 
             CurrentGameMode = GameMode.None;
 
+            DefaultTimeLapse = TargetElapsedTime;
+
         }
 
         public void ChangeState(GameState desiredGameState, GameMode mode)
@@ -297,6 +301,15 @@ namespace Adam
             //if (!IsActive) return;
             GameTime = gameTime;
             updateWatch.Start();
+
+            if (InputHelper.IsKeyDown(Keys.P))
+            {
+                TargetElapsedTime = new TimeSpan(0,0,0,0,1000/10);
+            }
+            else
+            {
+                TargetElapsedTime = DefaultTimeLapse;
+            }
 
             frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (frameRateTimer > 1000f)
@@ -430,10 +443,10 @@ namespace Adam
                     renderTime = renderWatch.ElapsedMilliseconds;
                     renderWatch.Reset();
 
-                    lightWatch.Start();
-                    DrawLightingRenderTarget(lightingRenderTarget);
-                    lightTime = lightWatch.ElapsedMilliseconds;
-                    lightWatch.Reset();
+                    //lightWatch.Start();
+                    //DrawLightingRenderTarget(lightingRenderTarget);
+                    //lightTime = lightWatch.ElapsedMilliseconds;
+                    //lightWatch.Reset();
 
                     break;
                 case GameState.Cutscene:
@@ -550,9 +563,9 @@ namespace Adam
                     SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
 
-                    SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                    SpriteBatch.End();
+                    //SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                    //SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
+                    //SpriteBatch.End();
 
                     RasterizerState rs = new RasterizerState() { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, rs);

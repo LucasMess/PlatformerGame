@@ -29,7 +29,7 @@ namespace Adam.Interactables
             velocity.Y = -10f;
 
             hitGround = new SoundFx("Sounds/Items/item_pop", this);
-            pickUpSound = ContentHelper.LoadSound("Sounds/eat");
+            pickUpSound = ContentHelper.LoadSound("Player/eatSound");
 
             switch (enemy.ID)
             {

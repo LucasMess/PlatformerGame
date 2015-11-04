@@ -89,12 +89,12 @@ namespace Adam
 
         private void Player_AttackAction()
         {
-            
+            script.OnAttackAction(this);
         }
 
         private void Player_DuckAction()
         {
-            
+            script.OnDuckAction(this);
         }
 
         private void Player_InteractAction()
@@ -130,6 +130,11 @@ namespace Adam
         private void UpdateWithKeyboard()
         {
             StillUpdate();
+
+            PlayerScript.TimeSinceLastPunch.Increment();
+
+            if (InputHelper.IsKeyDown(Keys.H))
+                PlayerScript.TimeSinceLastPunch.Reset();
 
             if (!PlayerScript.IsDoingAction)
             {

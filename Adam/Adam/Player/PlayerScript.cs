@@ -20,6 +20,8 @@ namespace Adam
         Timer idleTimer = new Timer();
         Timer airTimer = new Timer();
 
+        public static Timer TimeSinceLastPunch = new Timer();
+
         SoundFx stepSound = new SoundFx("Sounds/Movement/walk1");
 
 
@@ -118,6 +120,7 @@ namespace Adam
 
             player.IsFacingRight = false;
             player.SetVelX(player.GetVelocity().X + acc);
+            player.CreateMovingParticles();
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
@@ -142,6 +145,7 @@ namespace Adam
 
             player.IsFacingRight = true;
             player.SetVelX(player.GetVelocity().X - acc);
+            player.CreateMovingParticles();
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
@@ -157,17 +161,66 @@ namespace Adam
 
         public void OnInteractAction(Player player)
         {
-
+            if (player.IsOnVines)
+            {
+                player.AddAnimationToQueue("climb");
+            }
         }
 
         public void OnDuckAction(Player player)
         {
+            player.AddAnimationToQueue("standup");
+            player.AnimationEnded += OnStandUpEnd;
+            player.AddAnimationToQueue("fightIdle");
+        }
 
+        private void OnStandUpEnd(Player player)
+        {
+            player.RemoveAnimationFromQueue("standup");
         }
 
         public void OnAttackAction(Player player)
         {
+            IsDoingAction = true;
+            player.AttackSound.Play();
+            player.AddAnimationToQueue("punch");
+            player.AnimationEnded += OnPunchEnded;
+            player.AnimationFrameChanged += OnPunchFrameChange;
+            player.SetVelX(0);
+        }
 
+        private void OnPunchFrameChange(Player player)
+        {
+            if(player.CurrentAnimationFrame == 2){
+                int speed = 5;
+                if (player.IsFacingRight)
+                    speed *= -1;
+                player.SetVelX(speed);
+                player.AnimationFrameChanged -= OnPunchFrameChange;
+            }
+        }
+
+        private void OnPunchEnded(Player player)
+        {
+            player.RemoveAnimationFromQueue("punch");
+            player.AnimationEnded -= OnPunchEnded;
+            IsDoingAction = false;
+
+            if (TimeSinceLastPunch.TimeElapsedInMilliSeconds < 100)
+            {
+                player.AttackSound.Play();
+                player.AddAnimationToQueue("punch2");
+                player.AnimationFrameChanged += OnPunchFrameChange;
+                player.AnimationEnded += OnPunch2Ended;
+                IsDoingAction = true;
+            }
+        }
+
+        private void OnPunch2Ended(Player player)
+        {
+            player.RemoveAnimationFromQueue("punch2");
+            player.AnimationEnded -= OnPunch2Ended;
+            IsDoingAction = false;
         }
 
         public void OnDefendAction(Player player)

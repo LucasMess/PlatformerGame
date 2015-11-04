@@ -4,6 +4,7 @@ using Adam.Interactables;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Adam.Obstacles;
+using Adam.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -20,6 +21,8 @@ namespace Adam
     {
         public delegate void Eventhandler();
         public event EventHandler PlayerRespawned;
+
+        public SoundFx AttackSound;
 
         #region Variables
         Main game1;
@@ -74,6 +77,7 @@ namespace Adam
 
         public delegate void PlayerHandler(Player player);
         public event PlayerHandler AnimationEnded;
+        public event PlayerHandler AnimationFrameChanged;
 
         public Player(Main game1)
         {
@@ -82,22 +86,29 @@ namespace Adam
             Texture2D edenTexture = ContentHelper.LoadTexture("Characters/new_jump");
             Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
+            Texture2D standupTexture = ContentHelper.LoadTexture("Characters/adam_standup");
+            Texture2D fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
+
+            AttackSound = new SoundFx("Player/attackSound");
 
             complexAnim.AnimationEnded += ComplexAnim_AnimationEnded;
             complexAnim.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
             complexAnim.FrameChanged += ComplexAnim_FrameChanged;
-            
 
             // Animation textures.
             complexAnim.AddAnimationData("idle", new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
             complexAnim.AddAnimationData("smellPoop", new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
             complexAnim.AddAnimationData("sleep", new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("fightIdle", new ComplexAnimData(50, fightTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("walk", new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("run", new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
+            complexAnim.AddAnimationData("standup", new ComplexAnimData(155, standupTexture, new Rectangle(15, 11, 12, 66), 0, 45, 40, 125, 3, false));
             complexAnim.AddAnimationData("jump", new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
             complexAnim.AddAnimationData("climb", new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("fall", new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
             complexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
+            complexAnim.AddAnimationData("punch", new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
+            complexAnim.AddAnimationData("punch2", new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
 
             // Sounds
             Sounds.AddSoundRef("hurt", "Player/hurtSound");
@@ -113,6 +124,8 @@ namespace Adam
         private void ComplexAnim_FrameChanged(FrameArgs e)
         {
             CurrentAnimationFrame = e.CurrentFrame;
+            if (AnimationFrameChanged != null)
+                AnimationFrameChanged(this);
         }
 
         private void ComplexAnim_AnimationStateChanged()
@@ -204,6 +217,22 @@ namespace Adam
                 else
                 {
                     KillAndRespawn();
+                }
+            }
+        }
+
+        public void CreateMovingParticles()
+        {
+            if (!IsJumping)
+            {
+                movementParticlesTimer.Increment();
+                if (velocity.X == 0)
+                    return;
+                if (movementParticlesTimer.TimeElapsedInMilliSeconds > 10000 / Math.Abs(velocity.X))
+                {
+                    movementParticlesTimer.Reset();
+                    SmokeParticle par = new SmokeParticle(collRectangle.Center.X, collRectangle.Bottom);
+                    GameWorld.ParticleSystem.Add(par);
                 }
             }
         }

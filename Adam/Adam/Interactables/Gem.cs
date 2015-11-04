@@ -18,21 +18,7 @@ namespace Adam
     {
         byte gemID;
 
-        public float GravityStrength
-        {
-            get
-            {
-                return Main.Gravity;
-            }
-            set
-            {
-                GravityStrength = value;
-            }
-        }
-
         public bool IsFlying { get; set; }
-
-        public bool IsJumping { get; set; }
 
         public bool IsAboveTile { get; set; }
 
@@ -57,6 +43,7 @@ namespace Adam
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
+            CurrentCollisionType = CollisionType.Bouncy;
         }
 
         public Gem(int centerX, int centerY, byte ID)
@@ -72,6 +59,7 @@ namespace Adam
             pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
+            CurrentCollisionType = CollisionType.Bouncy;
         }
 
         private void Gem_OnPlayerPickUp(PickedUpArgs e)
@@ -187,8 +175,6 @@ namespace Adam
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            velocity.Y = -3f;
-            velocity.X *= .5f;
             bounceSound?.PlayNewInstanceOnce();
             bounceSound?.Reset();
             for (int i = 0; i < 5; i++)

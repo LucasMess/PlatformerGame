@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Adam.Misc
 {
-    class Timer
+    public class Timer
     {
         double currentTimeInSeconds;
         double currentTimeInMilliSeconds;
