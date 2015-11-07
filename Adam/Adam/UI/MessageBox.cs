@@ -54,7 +54,7 @@ namespace Adam.UI
         {
             get
             {
-                return ContentHelper.LoadFont("Fonts/objectiveText");
+                return ContentHelper.LoadFont("Fonts/x32");
             }
         }
 

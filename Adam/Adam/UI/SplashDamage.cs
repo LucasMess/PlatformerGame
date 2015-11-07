@@ -40,7 +40,7 @@ namespace Adam.UI
             if (absDamage > 80)
                 scale = .5f;
 
-            font = ContentHelper.LoadFont("Fonts/splash_damage");
+            font = ContentHelper.LoadFont("Fonts/x32");
             velocity = new Vector2(0, -5);
 
             origin = font.MeasureString(text) / 2;

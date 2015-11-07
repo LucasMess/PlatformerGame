@@ -333,8 +333,8 @@ namespace Adam.UI
             LastModifiedDate = lastModDate;
 
             // Define how big each info section will be.
-            nameFont = ContentHelper.LoadFont("Fonts/objectiveHead");
-            infoFont = ContentHelper.LoadFont("Fonts/objectiveText");
+            nameFont = ContentHelper.LoadFont("Fonts/x64");
+            infoFont = ContentHelper.LoadFont("Fonts/x32");
             Spacing = infoFont.LineSpacing + 4;
             drawRectangle = new Rectangle(Main.DefaultResWidth - LevelSelection.WidthOfBounds / 2 + (int)(16 / Main.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / Main.WidthRatio), (int)(50 / Main.HeightRatio));
             sourceRectangle = new Rectangle(128, 0, 284, 25);

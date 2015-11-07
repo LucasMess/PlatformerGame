@@ -28,8 +28,8 @@ namespace Adam.UI.Information
         public Objective()
         {
             texture = ContentHelper.LoadTexture("Tiles/white");
-            textFont = ContentHelper.LoadFont("Fonts/objectiveText");
-            headFont = ContentHelper.LoadFont("Fonts/objectiveHead");
+            textFont = ContentHelper.LoadFont("Fonts/x32");
+            headFont = ContentHelper.LoadFont("Fonts/x64");
             drawRectangle = new Rectangle(Main.UserResWidth, 0, 300, 125);
             goalX = Main.UserResWidth - drawRectangle.Width;
         }

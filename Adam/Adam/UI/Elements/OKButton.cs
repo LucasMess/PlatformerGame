@@ -30,7 +30,7 @@ namespace Adam.UI.Elements
             MouseClicked += YesButton_MouseClicked;
             sourceRectangle = new Rectangle(320, 20, 19, 6);
             texture = GameWorld.SpriteSheet;
-            font = ContentHelper.LoadFont("Fonts/objectiveText");
+            font = ContentHelper.LoadFont("Fonts/x32");
         }
 
         private void YesButton_MouseClicked()
@@ -66,7 +66,7 @@ namespace Adam.UI.Elements
             MouseOut += OnMouseOut;
             sourceRectangle = new Rectangle(320, 20, 19, 6);
             texture = GameWorld.SpriteSheet;
-            font = ContentHelper.LoadFont("Fonts/objectiveText");
+            font = ContentHelper.LoadFont("Fonts/x32");
         }
 
 

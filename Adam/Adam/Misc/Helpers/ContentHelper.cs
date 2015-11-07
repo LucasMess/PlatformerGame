@@ -82,7 +82,7 @@ namespace Adam
             }
             catch (ContentLoadException)
             {
-                Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists. @{1}", file);
                 throw;
             }
         }

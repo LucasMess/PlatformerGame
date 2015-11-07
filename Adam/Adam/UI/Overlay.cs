@@ -33,7 +33,7 @@ namespace Adam
         public Overlay()
         {
             instance = this;
-            Font = ContentHelper.LoadFont("Fonts/overlay");
+            Font = ContentHelper.LoadFont("Fonts/x64");
 
             heart = new Heart(new Vector2(40,40));
             coin = new Coin(new Vector2(40, 120));

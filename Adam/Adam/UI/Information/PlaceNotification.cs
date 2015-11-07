@@ -22,7 +22,7 @@ namespace Adam.UI
         public PlaceNotification()
         {
             texture = ContentHelper.LoadTexture("Tiles/black");
-            font = ContentHelper.LoadFont("Fonts/placeNotification");
+            font = ContentHelper.LoadFont("Fonts/x64");
             drawRectangle = new Rectangle(0, Main.UserResHeight - 180, Main.UserResWidth, 105);
         }
 

@@ -9,7 +9,7 @@ using Adam.Interactables;
 
 namespace Adam.Characters.Enemies
 {
-    public abstract partial class Enemy : Entity
+    public abstract partial class Enemy : Character
     {
         /// <summary>
         /// Updates the enemy.
@@ -17,7 +17,6 @@ namespace Adam.Characters.Enemies
         public override void Update()
         {
             Rectangle check = RespawnLocation;
-            hitByPlayerTimer.Increment();
             wasMeanTimer.Increment();
             PlayMeanSound();
             CheckInteractionsWithPlayer();
@@ -31,42 +30,14 @@ namespace Adam.Characters.Enemies
         }
 
         /// <summary>
-        /// Deals a certain amount of damage to the player.
+        /// Event fired when player attacks.
         /// </summary>
+        /// <param name="damageArea"></param>
         /// <param name="damage"></param>
-        public void TakeDamage(int damage)
+        private void OnPlayerAttack(Rectangle damageArea, int damage)
         {
-            Health -= damage;
-            hitByPlayerTimer.Reset();
-
-            //Creates damage particles.
-            for (int i = 0; i < damage; i++)
-            {
-                Particle par = new Particle();
-                par.CreateTookDamage(this);
-                GameWorld.Instance.particles.Add(par);
-            }
-        }
-
-        /// <summary>
-        /// The color that the enemy will be drawn in.
-        /// </summary>
-        public override Color Color
-        {
-            get
-            {
-                //If the enemy was recently hit, its color is changed to red.
-                if (HasTakenDamageRecently())
-                    Color = Color.Red;
-                else Color = Color.White;
-
-                return base.Color;
-            }
-
-            set
-            {
-                base.Color = value;
-            }
+            if (damageArea.Intersects(collRectangle))
+                TakeDamage(GameWorld.Instance.GetPlayer(), damage);
         }
 
         /// <summary>
@@ -170,16 +141,10 @@ namespace Adam.Characters.Enemies
         {
             Player player = GameWorld.Instance.player;
 
-            //Deals damage to enemy is player is attacking.
-            if (IsBeingAttacked())
-            {
-                player.DealDamage(this);
-            }
-
             //Deals damage to player if he is touching.
-            else if (IsIntersectingPlayer())
+            if (IsIntersectingPlayer())
             {
-                player.TakeDamageAndKnockBack(GetTouchDamage());
+                player.TakeDamage(this, GetTouchDamage());
             }
 
         }

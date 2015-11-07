@@ -1,5 +1,6 @@
 ﻿using Adam.Misc;
 using Adam.Misc.Interfaces;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Adam
 {
     public class PlayerScript : Script
     {
+        Player player;
         public static bool IsDoingAction = false;
 
         const float JumpAcc = -10f;
@@ -24,9 +26,20 @@ namespace Adam
 
         SoundFx stepSound = new SoundFx("Sounds/Movement/walk1");
 
-
-        public void Initialize()
+        public void Initialize(Player player)
         {
+            this.player = player;
+            player.PlayerDamaged += OnPlayerDamaged;
+        }
+
+        protected override void OnGameTick()
+        {
+            player = (Player)player.Get();
+        }
+
+        private void OnPlayerDamaged(Rectangle damageArea, int damage)
+        {
+            player.Sounds.Get("hurt").Play();
         }
 
         public void OnStill(Player player)
@@ -118,7 +131,7 @@ namespace Adam
                 player.AddAnimationToQueue("run");
             }
 
-            player.IsFacingRight = false;
+            player.IsFacingRight = true;
             player.SetVelX(player.GetVelocity().X + acc);
             player.CreateMovingParticles();
 
@@ -143,7 +156,7 @@ namespace Adam
                 player.AddAnimationToQueue("run");
             }
 
-            player.IsFacingRight = true;
+            player.IsFacingRight = false;
             player.SetVelX(player.GetVelocity().X - acc);
             player.CreateMovingParticles();
 
@@ -193,9 +206,17 @@ namespace Adam
         {
             if(player.CurrentAnimationFrame == 2){
                 int speed = 5;
-                if (player.IsFacingRight)
+                if (!player.IsFacingRight)
                     speed *= -1;
                 player.SetVelX(speed);
+
+                Rectangle punchHitBox = player.GetCollRectangle();
+                punchHitBox.Width += 50;
+                if (player.IsFacingRight)
+                    punchHitBox.X += player.GetCollRectangle().Width / 2;
+                else punchHitBox.X -= (punchHitBox.Width + player.GetCollRectangle().Width / 2);
+
+                player.DealDamage(punchHitBox, 20);
                 player.AnimationFrameChanged -= OnPunchFrameChange;
             }
         }
@@ -270,7 +291,6 @@ namespace Adam
         {
             idleTimer.Reset();
         }
-
 
     }
 }

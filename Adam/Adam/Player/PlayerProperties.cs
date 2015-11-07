@@ -1,4 +1,6 @@
-﻿using Adam.Misc;
+﻿using Adam.Characters;
+using Adam.Misc;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Text;
 
 namespace Adam
 {
-    public partial class Player : Entity
+    public partial class Player : Character
     {
         Timer onFireTimer = new Timer();
         Timer fireTickTimer = new Timer();
@@ -33,5 +35,16 @@ namespace Adam
                 return (GameWorld.Instance.tileArray[GetTileIndex()].isClimbable);
             }
         }
+
+        /// <summary>
+        /// The amount of damage the player deals.
+        /// </summary>
+        private int damageAmount { get; set; }
+
+        /// <summary>
+        /// The area in which the player deals damage.
+        /// </summary>
+        private Rectangle damageArea { get; set; } 
+
     }
 }

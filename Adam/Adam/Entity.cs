@@ -48,7 +48,7 @@ namespace Adam
         protected Vector2 velocity;
 
         private Texture2D _texture;
-        private Color _color;
+        private Color _color = Color.White;
 
         private bool _toDelete;
         private bool _isFacingRight;
@@ -163,8 +163,9 @@ namespace Adam
         {
             get
             {
-                if (_color == null)
-                    _color = Color.White;
+                if (HasTakenDamageRecently())
+                    return Color.Red;
+                else
                 return _color * Opacity;
             }
             set
@@ -275,6 +276,7 @@ namespace Adam
             if (IsDead())
                 return;
 
+
             //Check for physics, if applicable.
             if (ObeysGravity)
             {
@@ -298,6 +300,9 @@ namespace Adam
                 ian.Animate();
             }
 
+            // Update complex animations if this entity has it.
+            complexAnim?.Update(this);
+
         }
 
         /// <summary>
@@ -306,8 +311,17 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            hitRecentlyTimer.Increment();
+
             // Debugging tools
             //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
+
+            // Complex animations.
+            if (complexAnim != null)
+            {
+                complexAnim.Draw(spriteBatch, IsFacingRight, Color);
+                return;
+            }
 
 
             // If the entity has an animation.
@@ -700,6 +714,55 @@ namespace Adam
             collRectangle.Y = (int)position.Y;
             this.velocity = velocity;
         }
-        
+
+        /// <summary>
+        /// Checks to see if the entity has recently taken damage.
+        /// </summary>
+        /// <returns></returns>
+        protected bool HasTakenDamageRecently()
+        {
+            return (hitRecentlyTimer.TimeElapsedInSeconds < .2);
+        }
+
+        /// <summary>
+        /// Deals a certain amount of damage to the entity.
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDamage(Entity damageDealer, int damage)
+        {
+            if (IsDead() || IsTakingDamage)
+                return;
+
+            Main.TimeFreeze.AddFrozenTime(50);
+
+            IsTakingDamage = true;
+            Health -= damage;
+            hitRecentlyTimer.ResetAndWaitFor(500);
+            hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
+
+            //Creates damage particles.
+            for (int i = 0; i < damage; i++)
+            {
+                Particle par = new Particle();
+                par.CreateTookDamage(this);
+                GameWorld.Instance.particles.Add(par);
+            }
+
+            if (damageDealer == null)
+                return;
+
+            velocity.Y = -5f;
+            velocity.X = damage / Weight;
+            if (!damageDealer.IsFacingRight)
+                velocity.X *= -1;
+
+        }
+
+        // When timer ends let enemy take damage.
+        private void HitByPlayerTimer_SetTimeReached()
+        {
+            IsTakingDamage = false;
+        }
+
     }
 }

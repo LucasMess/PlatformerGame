@@ -9,6 +9,10 @@ namespace Adam.Misc
     {
         double currentTimeInSeconds;
         double currentTimeInMilliSeconds;
+        double notificationTime;
+
+        public delegate void EventHandler();
+        public event EventHandler SetTimeReached;
 
         /// <summary>
         /// Increments the timer by amount of time passed since last update.
@@ -16,8 +20,12 @@ namespace Adam.Misc
         public void Increment()
         {
             currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
-
             currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (SetTimeReached != null && currentTimeInMilliSeconds > notificationTime)
+            {
+                SetTimeReached();
+            }
         }
 
         /// <summary>
@@ -37,6 +45,16 @@ namespace Adam.Misc
         {
             currentTimeInMilliSeconds = time;
             currentTimeInSeconds = time / 1000;
+        }
+
+        /// <summary>
+        /// Resets the timer and sets a time in which the timer will fire an event.
+        /// </summary>
+        /// <param name="time"></param>
+        public void ResetAndWaitFor(double time)
+        {
+            Reset();
+            notificationTime = time;
         }
 
         /// <summary>

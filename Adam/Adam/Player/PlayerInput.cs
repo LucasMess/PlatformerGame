@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Adam.Characters;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,9 @@ using System.Text;
 
 namespace Adam
 {
-    public partial class Player
+    public partial class Player : Character
     {
         bool isController = false;
-
-        PlayerScript script = new PlayerScript();
 
         public delegate void EventHandler();
 

@@ -426,7 +426,7 @@ namespace Adam.Levels
         public void DrawUI(SpriteBatch spriteBatch)
         {
             if (!onInventory)
-                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/objectiveHead"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
+                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/x32"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
 
             miniMap.Draw(spriteBatch);
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);

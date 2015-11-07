@@ -42,7 +42,6 @@ namespace Adam.Misc
         Texture2D texture;
         Rectangle sourceRectangle;
         Rectangle drawRectangle;
-        Rectangle collRectangle;
 
         /// <summary>
         /// Update the aniamtion, timers and fire events.
@@ -77,7 +76,8 @@ namespace Adam.Misc
                     // Send notice that animation has ended.
                     if (!currentAnimationData.IsRepeating)
                     {
-                        AnimationEnded();
+                        if (AnimationEnded != null)
+                            AnimationEnded();
                         currentFrame = currentAnimationData.FrameCount - 1;
                     }
                     else
@@ -85,8 +85,8 @@ namespace Adam.Misc
                         currentFrame = 0;
                     }
                 }
-
-                FrameChanged(new FrameArgs(currentFrame));
+                if (FrameChanged != null)
+                    FrameChanged(new FrameArgs(currentFrame));
             }
 
             sourceRectangle.X = currentFrame * currentAnimationData.Width;
@@ -101,7 +101,7 @@ namespace Adam.Misc
             float highestPriority = 0;
             string best = "";
 
-            Console.WriteLine("There are {0} animations in queue: {1}", queue.Count, queue);
+            //Console.WriteLine("There are {0} animations in queue: {1}", queue.Count, queue);
 
             foreach (string s in queue)
             {
@@ -166,7 +166,8 @@ namespace Adam.Misc
             sourceRectangle.Height = currentAnimationData.Height;
             sourceRectangle.Y = currentAnimationData.StartingY;
 
-            AnimationStateChanged();
+            if (AnimationStateChanged != null)
+                AnimationStateChanged();
 
         }
 
@@ -194,14 +195,14 @@ namespace Adam.Misc
         /// Draws the animated texture with the specified color and flip.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        /// <param name="isFlipped">Whether the animation should be flipped horizontally or not.</param>
+        /// <param name="isFacingRight">Whether the animation should be flipped horizontally or not.</param>
         /// <param name="color">The color and opacity of the texture.</param>
-        public void Draw(SpriteBatch spriteBatch, bool isFlipped, Color color)
+        public void Draw(SpriteBatch spriteBatch, bool isFacingRight, Color color)
         {
             if (currentAnimationData.Texture == null)
                 return;
 
-            if (isFlipped)
+            if (!isFacingRight)
             {
                 spriteBatch.Draw(currentAnimationData.Texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }

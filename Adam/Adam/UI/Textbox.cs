@@ -31,7 +31,7 @@ namespace Adam.UI
         public Textbox(int x, int y, int width)
         {
             black = ContentHelper.LoadTexture("Tiles/white");
-            font = ContentHelper.LoadFont("Fonts/objectiveText");
+            font = ContentHelper.LoadFont("Fonts/x32");
             bounds = new Rectangle(x - width / 2, y - font.LineSpacing / 2, width, font.LineSpacing);
         }
 

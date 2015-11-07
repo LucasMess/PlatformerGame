@@ -1,4 +1,5 @@
 ﻿using Adam;
+using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Interactables;
 using Adam.Misc;
@@ -17,10 +18,11 @@ using System.Text;
 
 namespace Adam
 {
-    public partial class Player : Entity
+    public partial class Player : Character
     {
         public delegate void Eventhandler();
         public event EventHandler PlayerRespawned;
+        protected PlayerScript script = new PlayerScript();
 
         public SoundFx AttackSound;
 
@@ -79,9 +81,16 @@ namespace Adam
         public event PlayerHandler AnimationEnded;
         public event PlayerHandler AnimationFrameChanged;
 
+        public delegate void DamageHandler(Rectangle damageArea, int damage);
+        public event DamageHandler PlayerAttacked;
+        public event DamageHandler PlayerDamaged;
+
         public Player(Main game1)
         {
+            
             this.game1 = game1;
+
+            script.Initialize(this);
 
             Texture2D edenTexture = ContentHelper.LoadTexture("Characters/new_jump");
             Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
@@ -167,6 +176,8 @@ namespace Adam
         /// 
         public void Update(GameTime gameTime)
         {
+            script.Run();
+
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
             {
                 ContainInGameWorld();
@@ -181,12 +192,10 @@ namespace Adam
                 return;
             }
 
-            complexAnim.Update(this);
             CheckInput();
             Burn();
             UpdatePlayerPosition();
-            if (!isGhost)
-                base.Update();
+            base.Update();
 
             jetpack.Update(this, gameTime);
         }
@@ -273,18 +282,10 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit) return;
-
-            if (IsDead()) return;
-
-            jetpack.Draw(spriteBatch);
-
-            complexAnim.Draw(spriteBatch, IsFacingRight, Color.White);
-        }
-
-        public void TakeDamage(int damage)
-        {
-
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                return;
+            complexAnim.Draw(spriteBatch, IsFacingRight, Color);
+            base.Draw(spriteBatch);
         }
 
         /// <summary>
@@ -296,9 +297,7 @@ namespace Adam
             Health -= damage;
         }
 
-        public void TakeDamageAndKnockBack(int damage)
-        {
-        }
+        public void TakeDamageAndKnockBack(int damage) { }
 
         public override void Revive()
         {
@@ -322,7 +321,7 @@ namespace Adam
 
         public void KillAndRespawn()
         {
-            TakeDamage(Health);
+            TakeDamage(null, Health);
 
             for (int i = 0; i < 10; i++)
             {
@@ -354,10 +353,15 @@ namespace Adam
                 Health = MaxHealth;
         }
 
-        public void DealDamage(Enemy enemy)
+        /// <summary>
+        /// Fires an event to all subscribers saying the player is dealing damage to that area.
+        /// </summary>
+        /// <param name="damageArea"></param>
+        /// <param name="damage"></param>
+        public void DealDamage(Rectangle damageArea, int damage)
         {
-            JumpAction();
-            enemy.TakeDamage(20);
+            if (PlayerAttacked != null)
+                PlayerAttacked(damageArea, damage);
         }
 
         protected override Rectangle DrawRectangle

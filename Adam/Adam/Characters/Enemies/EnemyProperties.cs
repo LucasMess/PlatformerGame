@@ -10,13 +10,18 @@ namespace Adam.Characters.Enemies
     /// <summary>
     /// Class inherited by all enemies that contains basic functionality
     /// </summary>
-    public abstract partial class Enemy : Entity
+    public abstract partial class Enemy : Character
     {
         const short RangeRadius = 2000;
         const int MeanResetTime = 500000;
+        bool isTakingDamage = false;
 
-        Timer hitByPlayerTimer = new Timer();
         Timer wasMeanTimer = new Timer();
+
+        protected Enemy()
+        {
+            GameWorld.Instance.GetPlayer().PlayerAttacked += OnPlayerAttack;
+        }
 
         /// <summary>
         /// The ID that identifies the enemy type.
@@ -136,14 +141,6 @@ namespace Adam.Characters.Enemies
             return (RangeRect.Intersects(player.GetCollRectangle()));
         }
 
-        /// <summary>
-        /// Checks to see if the enemy has recently taken damage.
-        /// </summary>
-        /// <returns></returns>
-        protected bool HasTakenDamageRecently()
-        {
-            return (hitByPlayerTimer.TimeElapsedInSeconds < .2);
-        }
 
 
         int startTimeOfBeingMean;
@@ -251,6 +248,7 @@ namespace Adam.Characters.Enemies
                     return 0;
             }
         }
+
 
 
     }

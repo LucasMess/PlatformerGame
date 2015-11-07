@@ -18,6 +18,7 @@ using Adam.GameData;
 using Adam.Network;
 using Adam.UI;
 using Adam.UI.Information;
+using Adam.Misc;
 
 namespace Adam
 {
@@ -141,6 +142,8 @@ namespace Adam
         public static MediaQueue MediaQueue { get; set; }
 
         public static TimeSpan DefaultTimeLapse { get; set; }
+
+        public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
 
         public Main()
         {
@@ -298,8 +301,15 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
+
             //if (!IsActive) return;
             GameTime = gameTime;
+
+            if (TimeFreeze.IsTimeFrozen())
+            {
+                return;
+            }
+
             updateWatch.Start();
 
             if (InputHelper.IsKeyDown(Keys.P))

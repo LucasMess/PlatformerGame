@@ -24,7 +24,7 @@ namespace Adam
         public const int Spike_Damage = 10;
         public const int Hellboar_MaxHealth = 100;
         public const int Hellboar_TouchDamage = 80;
-        public const int Frog_TouchDamage = 30;
+        public const int Frog_TouchDamage = 5;
         public const int Frog_MaxHealth = 40;
         public const int Lost_MaxHealth = 1;
         public const int Lost_TouchDamage = 20;

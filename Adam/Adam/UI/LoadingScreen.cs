@@ -33,7 +33,7 @@ namespace Adam
             background = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_background");
             customObject = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_tree");
             circle = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_circle");
-            font = Content.Load<SpriteFont>("Fonts/loading_screen");
+            font = Content.Load<SpriteFont>("Fonts/x64");
 
             randomText = "";
             normalLoadingText = "";
@@ -272,9 +272,9 @@ namespace Adam
             Vector2 loadingTextOrigin = new Vector2(font.MeasureString(normalLoadingText).X / 2, font.LineSpacing / 2);
             Vector2 circleOrigin = new Vector2(circle.Width / 2, circle.Height / 2);
 
-            spriteBatch.DrawString(font, randomText, monitorRes / 2, new Color(51, 63, 80), 0, randomTextOrigin, .2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, randomText, monitorRes / 2, new Color(51, 63, 80), 0, randomTextOrigin, 1, SpriteEffects.None, 0);
             spriteBatch.Draw(circle, new Vector2(circleRect.X, circleRect.Y), null, Color.White, rotation, circleOrigin, .08f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, loadingText, new Vector2(monitorRes.X / 2, monitorRes.Y / 2 - 200), new Color(51, 63, 80), 0, loadingTextOrigin, .5f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, loadingText, new Vector2(monitorRes.X / 2, monitorRes.Y / 2 - 200), new Color(51, 63, 80), 0, loadingTextOrigin, 1, SpriteEffects.None, 0);
         }
 
     }

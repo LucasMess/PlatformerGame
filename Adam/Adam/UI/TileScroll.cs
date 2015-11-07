@@ -46,7 +46,7 @@ namespace Adam.UI
 
         protected void Initialize()
         {
-            font = ContentHelper.LoadFont("Fonts/objectiveText");
+            font = ContentHelper.LoadFont("Fonts/x32");
             scrollSound = new SoundFx("Sounds/Level Editor/scroll");
         }
 

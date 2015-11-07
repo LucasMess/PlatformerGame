@@ -11,7 +11,7 @@ namespace Adam
     {
         protected ComplexAnimation complexAnim = new ComplexAnimation();
 
-
+        Timer hitRecentlyTimer = new Timer();
         public SoundFxManager Sounds { get; set; }
 
         /// <summary>
@@ -29,6 +29,18 @@ namespace Adam
         /// </summary>
         public bool IsJumping { get; set; }
 
+        /// <summary>
+        /// Determines if the entity has recently taken damage.
+        /// </summary>
+        public bool IsTakingDamage
+        {
+            get; private set;
+        }
+
+        /// <summary>
+        /// Used in calculations such as how far back the entity is knocked back.
+        /// </summary>
+        public int Weight { get; set; } = 10;
 
     }
 }

@@ -293,7 +293,7 @@ namespace Adam
             adam = ContentHelper.LoadTexture("Menu/menu_adam");
             foreground = ContentHelper.LoadTexture("Menu/menu_front");
             apple = ContentHelper.LoadTexture("Menu/menu_apple");
-            font = Content.Load<SpriteFont>("Fonts/button");
+            font = Content.Load<SpriteFont>("Fonts/x32");
 
 
 

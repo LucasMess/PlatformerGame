@@ -28,8 +28,8 @@ namespace Adam.UI
 
         public TileDescription()
         {
-            nameFont = ContentHelper.LoadFont("Fonts/objectiveHead");
-            textFont = ContentHelper.LoadFont("Fonts/objectiveText");
+            nameFont = ContentHelper.LoadFont("Fonts/x64");
+            textFont = ContentHelper.LoadFont("Fonts/x32");
 
             imageRect = new Rectangle((int)(230 / Main.WidthRatio), (int)(90 / Main.HeightRatio), (int)(500 / Main.WidthRatio), (int)(300 / Main.HeightRatio));
             namePosition = new Vector2((int)(210 / Main.WidthRatio), (int)(410 / Main.HeightRatio));

@@ -54,7 +54,7 @@ namespace Adam.UI
             originalY = drawRectangle.Y;
             drawRectangle.Y -= 40;
 
-            font = ContentHelper.LoadFont("Fonts/dialog");
+            font = ContentHelper.LoadFont("Fonts/x16");
             popSound = new SoundFx("Sounds/message_show");
 
             yesBox = new Rectangle(drawRectangle.X, drawRectangle.Bottom, drawRectangle.Width/2, 20);

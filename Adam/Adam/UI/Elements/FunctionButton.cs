@@ -21,7 +21,7 @@ namespace Adam.UI.Elements
             MouseOut += OnMouseOut;
             collRectangle = new Rectangle(0, 0, (int)(Main.Tilesize / Main.WidthRatio), (int)(Main.Tilesize / Main.HeightRatio));
             sourceRectangle = new Rectangle(0, 0, 16, 16);
-            font = ContentHelper.LoadFont("Fonts/objectiveText");
+            font = ContentHelper.LoadFont("Fonts/x32");
         }
 
         public void Update(Rectangle box)

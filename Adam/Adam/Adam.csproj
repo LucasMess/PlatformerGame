@@ -150,6 +150,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\Bat.cs" />
     <Compile Include="Characters\Enemies\Duck.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
@@ -158,8 +159,10 @@
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
+    <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
+    <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Particles\NewParticle.cs" />
     <Compile Include="Player\PlayerInput.cs" />
     <Compile Include="Player\PlayerProperties.cs" />
