@@ -1,5 +1,6 @@
 ﻿using Adam;
 using Adam.Misc;
+using Adam.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,7 @@ namespace Adam.Interactables
         protected Rectangle topMidBound;
         protected double elapsedTime;
         protected SoundFx loopSound;
-        protected SoundFx pickUpSound;
+        protected SoundFx pickUpSound = new SoundFx("Sounds/coin");
         protected SoundFx bounceSound;
         private int tileIndex;
         protected double effectTimer;
@@ -27,7 +28,19 @@ namespace Adam.Interactables
 
         public Item()
         {
+            OnPlayerPickUp += SpawnSparkles;
+        }
 
+        private void SpawnSparkles(PickedUpArgs e)
+        {
+
+            for (int i = 0; i < 10; i++)
+            {
+                float randY = (float)(GameWorld.RandGen.Next(-2, 0) * GameWorld.RandGen.NextDouble());
+                float randX = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
+                SparkleParticle par = new SparkleParticle(collRectangle.Center.X, collRectangle.Center.Y, randX, randY, Color.Gold);
+                GameWorld.ParticleSystem.Add(par);
+            }
         }
 
         public override void Update()

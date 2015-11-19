@@ -40,7 +40,7 @@ namespace Adam
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
             GameWorld.Instance.lightEngine.AddDynamicLight(Light);
 
-            pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
+            //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;

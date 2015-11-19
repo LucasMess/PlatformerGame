@@ -123,11 +123,19 @@ namespace Adam
             Sounds.AddSoundRef("hurt", "Player/hurtSound");
             Sounds.AddSoundRef("jump", "Player/jumpSound");
             Sounds.AddSoundRef("stomp", "Player/jumpSound");
+            Sounds.AddSoundRef("punch", "Sounds/punch");
 
             complexAnim.AddToQueue("idle");
 
             InitializeInput();
             Initialize(0, 0);
+
+            PlayerAttacked += OnPlayerAttack;
+        }
+
+        private void OnPlayerAttack(Rectangle damageArea, int damage)
+        {
+            Sounds.Get("punch").Play();
         }
 
         private void ComplexAnim_FrameChanged(FrameArgs e)

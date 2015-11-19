@@ -595,11 +595,11 @@ namespace Adam
         public float GetSoundVolume(Entity listener, float maxVolume)
         {
             listener = listener.Get();
-            float xDist = listener.collRectangle.Center.X - DrawRectangle.Center.X;
-            float yDist = listener.collRectangle.Center.Y - DrawRectangle.Center.Y;
+            float xDist = listener.collRectangle.Center.X - collRectangle.Center.X;
+            float yDist = listener.collRectangle.Center.Y - collRectangle.Center.Y;
             float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
 
-            if (distanceTo < 1)
+            if (distanceTo < 64)
                 return maxVolume;
             else return (float)(1 / Math.Sqrt(distanceTo)) * maxVolume;
         }
@@ -733,7 +733,7 @@ namespace Adam
             if (IsDead() || IsTakingDamage)
                 return;
 
-            Main.TimeFreeze.AddFrozenTime(50);
+            //Main.TimeFreeze.AddFrozenTime(50);
 
             IsTakingDamage = true;
             Health -= damage;

@@ -98,6 +98,9 @@ namespace Adam.Misc
         /// </summary>
         private void FindHighestPriorityAnimation()
         {
+            if (queue.Count == 0)
+                return;
+
             float highestPriority = 0;
             string best = "";
 

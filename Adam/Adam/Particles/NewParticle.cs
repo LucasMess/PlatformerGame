@@ -153,13 +153,50 @@ namespace Adam.Particles
         public override void Update()
         {
             animationTimer.Increment();
+            if (animationTimer.TimeElapsedInMilliSeconds > 500)
+            {
+                SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
+                currentFrame++;
+                animationTimer.Reset();
+            }
+            if (currentFrame >= frames)
+            {
+                Opacity = 0;
+            }
+
+            NoOpacityDefaultBehavior();
+        }
+    }
+
+    class SparkleParticle : NewParticle
+    {
+        Timer animationTimer = new Timer();
+        int currentFrame;
+        int frames;
+
+        public SparkleParticle(int x, int y, float velX, float velY, Color color)
+        {
+            Position = new Vector2(x - 4, y - 4);
+            SourceRectangle = new Rectangle(288, 104, 8, 8);
+            Velocity = new Vector2(velX, velY);
+            Opacity = 1;
+            Color = color;
+            Texture = GameWorld.SpriteSheet;
+
+            frames = 4;
+
+        }
+
+        public override void Update()
+        {
+            animationTimer.Increment();
             if (animationTimer.TimeElapsedInMilliSeconds > 250)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
                 currentFrame++;
                 animationTimer.Reset();
             }
-            if (currentFrame > frames)
+            if (currentFrame >= frames)
             {
                 Opacity = 0;
             }

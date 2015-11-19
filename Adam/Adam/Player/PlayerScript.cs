@@ -30,6 +30,12 @@ namespace Adam
         {
             this.player = player;
             player.PlayerDamaged += OnPlayerDamaged;
+            player.CollidedWithTileBelow += Player_CollidedWithTileBelow;
+        }
+
+        private void Player_CollidedWithTileBelow(Entity entity, Tile tile)
+        {
+            entity.IsJumping = false;
         }
 
         protected override void OnGameTick()
