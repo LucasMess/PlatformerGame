@@ -38,7 +38,7 @@ namespace Adam
         }
 
         /// <summary>
-        /// Used in calculations such as how far back the entity is knocked back.
+        /// Used in calculations such as how far back the entity is knocked back and friction against ground.
         /// </summary>
         public int Weight { get; set; } = 10;
 

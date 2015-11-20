@@ -101,7 +101,7 @@ namespace Adam
         public static Dialog Dialog;
         public static GameTime GameTime;
 
-        public const float Gravity = .5f;
+        public const float Gravity = .75f;
 
         public static double WidthRatio;
         public static double HeightRatio;

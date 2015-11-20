@@ -13,10 +13,9 @@ namespace Adam
         Player player;
         public static bool IsDoingAction = false;
 
-        const float JumpAcc = -10f;
-        const float WalkAcc = .2f;
-        const float RunAcc = .45f;
-        const float GroundFriction = .96f;
+        const float JumpAcc = -15f;
+        const float WalkAcc = .1f;
+        const float RunAcc = .15f;
         const float DashSpeed = 40f;
 
         Timer idleTimer = new Timer();
@@ -55,8 +54,6 @@ namespace Adam
             {
                 airTimer.Increment();
             }
-
-            player.SetVelX(player.GetVelocity().X * GroundFriction);
 
             // Toggle idle animations.
             idleTimer.Increment();
@@ -135,6 +132,11 @@ namespace Adam
             {
                 acc = RunAcc;
                 player.AddAnimationToQueue("run");
+            }
+
+            if (player.IsJumping)
+            {
+                acc /= 2;
             }
 
             player.IsFacingRight = true;

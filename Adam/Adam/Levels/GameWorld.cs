@@ -239,42 +239,42 @@ namespace Adam
                 Rectangle cameraRect = player.GetCollRectangle();
                 //cameraRect.X += (int)(player.GetVelocity().X * 50);
 
-                stopMovingTimer.Increment();
-                if (InputHelper.IsKeyDown(Keys.A))
-                {
-                    stopMovingTimer.Reset();
-                    distance+=2;
-                }
-                if (InputHelper.IsKeyDown(Keys.D))
-                {
-                    stopMovingTimer.Reset();
-                    distance-=2;
-                }
+                //stopMovingTimer.Increment();
+                //if (InputHelper.IsKeyDown(Keys.A))
+                //{
+                //    stopMovingTimer.Reset();
+                //    distance+=2;
+                //}
+                //if (InputHelper.IsKeyDown(Keys.D))
+                //{
+                //    stopMovingTimer.Reset();
+                //    distance-=2;
+                //}
 
-                if (stopMovingTimer.TimeElapsedInMilliSeconds > 3000)
-                {
-                    distance = 0;
-                }
+                //if (stopMovingTimer.TimeElapsedInMilliSeconds > 3000)
+                //{
+                //    distance = 0;
+                //}
 
-                int max = 200;
-                if (distance > max)
-                    distance = max;
-                if (distance < -max)
-                    distance = -max;
+                //int max = 200;
+                //if (distance > max)
+                //    distance = max;
+                //if (distance < -max)
+                //    distance = -max;
 
-                cameraRect.X -= distance;
+                //cameraRect.X -= distance;
 
 
                 camera.UpdateSmoothly(cameraRect, worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
 
-                if (player.IsDead())
-                {
-                    camera.ZoomIn();
-                }
-                else
-                {
-                    camera.ResetZoom();
-                }
+                //if (player.IsDead())
+                //{
+                //    camera.ZoomIn();
+                //}
+                //else
+                //{
+                //    camera.ResetZoom();
+                //}
             }
 
             TimesUpdated++;

@@ -58,10 +58,8 @@ namespace Adam.Misc
 
             if (currentName == "walk" || currentName == "run")
             {
-                if (Math.Abs(entity.GetVelocity().X) < .5f)
-                    currentAnimationData.Speed = 0;
-                else
-                    currentAnimationData.Speed = (int)Math.Abs(400 / entity.GetVelocity().X);
+                // y = 1020/(x + 1) - 20
+                currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
             }
 
             frameTimer.Increment();

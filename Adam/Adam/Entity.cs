@@ -30,6 +30,8 @@ namespace Adam
         public delegate void TileHandler(Entity entity, Tile tile);
         public delegate void Entityhandler(Entity entity);
 
+        const float FrictionConstant = 95f / 90f;
+
         // Collision with terrain events.
         public event TileHandler CollidedWithTileAbove;
         public event TileHandler CollidedWithTileBelow;
@@ -166,7 +168,7 @@ namespace Adam
                 if (HasTakenDamageRecently())
                     return Color.Red;
                 else
-                return _color * Opacity;
+                    return _color * Opacity;
             }
             set
             {
@@ -287,6 +289,10 @@ namespace Adam
             if (IsCollidable)
             {
                 CheckTerrainCollision();
+
+                // y = (499/45) * (x / (x + 1)
+                float friction = FrictionConstant * ((float)Weight/((float)Weight +1));
+                velocity *= friction;
             }
 
             //Animate entity if applicable.
@@ -638,10 +644,9 @@ namespace Adam
                     velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.Y = -velocity.Y * .8f;
+                    velocity.Y = -velocity.Y;
                     break;
             }
-            velocity.X = velocity.X * .95f;
         }
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
@@ -652,10 +657,9 @@ namespace Adam
                     velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.Y = -velocity.Y * .8f;
+                    velocity.Y = -velocity.Y;
                     break;
             }
-            velocity.X = velocity.X * .95f;
         }
         private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
@@ -666,10 +670,10 @@ namespace Adam
                     velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.X = -velocity.X * .8f;
+                    velocity.X = -velocity.X;
                     break;
             }
-            velocity.Y = velocity.Y * .95f;
+
         }
         private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
@@ -680,10 +684,10 @@ namespace Adam
                     velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.X = -velocity.X * .8f;
+                    velocity.X = -velocity.X;
                     break;
             }
-            velocity.Y = velocity.Y * .95f;
+
         }
 
         private void OnCollisionWithTerrain(Entity entity, Tile tile)
