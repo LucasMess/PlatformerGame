@@ -27,6 +27,7 @@ namespace Adam
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
         public event EventHandler NotIdle;
+        public event EventHandler ClimbingAction;
 
         private void InitializeInput()
         {
@@ -44,6 +45,12 @@ namespace Adam
             FastRunActive += Player_FastRunActive;
             FastRunInactive += Player_FastRunInactive;
             NotIdle += Player_NotIdle;
+            ClimbingAction += Player_ClimbingAction;
+        }
+
+        private void Player_ClimbingAction()
+        {
+            throw new NotImplementedException();
         }
 
         private void Player_StopJumpAction()

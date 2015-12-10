@@ -182,10 +182,14 @@ namespace Adam
 
         public void OnInteractAction(Player player)
         {
-            if (player.IsOnVines)
-            {
-                player.AddAnimationToQueue("climb");
-            }
+
+        }
+
+        public void OnClimbingAction(Player player)
+        {
+            player.AddAnimationToQueue("climb");
+            player.SetVelY(-10);
+            player.ObeysGravity = false;
         }
 
         public void OnDuckAction(Player player)
@@ -213,7 +217,7 @@ namespace Adam
         private void OnPunchFrameChange(Player player)
         {
             if(player.CurrentAnimationFrame == 2){
-                int speed = 5;
+                int speed = 2;
                 if (!player.IsFacingRight)
                     speed *= -1;
                 player.SetVelX(speed);

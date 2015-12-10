@@ -250,11 +250,17 @@ namespace Adam
                     break;
                 case 23://water
                     positionInSpriteSheet = new Vector2(4, 15);
+
+                    if (subID == 1)
+                        positionInSpriteSheet = new Vector2(8, 24);
+
                     isVoid = true;
                     specialTile = new SpecialTile(this);
                     break;
                 case 24: //lava
                     positionInSpriteSheet = new Vector2(0, 15);
+                    if (subID == 1)
+                        positionInSpriteSheet = new Vector2(8, 25);
                     isVoid = true;
                     specialTile = new SpecialTile(this);
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3, .3f);
@@ -818,6 +824,23 @@ namespace Adam
                 else subID = 0;
             }
 
+            // Water.
+            else if (ID == 23)
+            {
+                if (array[TileIndex - mapWidth].ID == 0)
+                    subID = 1;
+                else subID = 0;
+            }
+
+            // Lava.
+            else if (ID == 24)
+            {
+                if (array[TileIndex - mapWidth].ID == 0)
+                    subID = 1;
+                else subID = 0;
+            }
+
+
 
             //Default Connected Textures Pattern
             //"Please don't change this was a headache to make." -Lucas 2015
@@ -829,27 +852,27 @@ namespace Adam
             this.array = array;
 
             int m = TileIndex;
-            int t = m - mapWidth;
-            int b = m + mapWidth;
-            int tl = t - 1;
-            int tr = t + 1;
-            int ml = m - 1;
-            int mr = m + 1;
-            int bl = b - 1;
-            int br = b + 1;
+        int t = m - mapWidth;
+        int b = m + mapWidth;
+        int tl = t - 1;
+        int tr = t + 1;
+        int ml = m - 1;
+        int mr = m + 1;
+        int bl = b - 1;
+        int br = b + 1;
 
-            if (br >= array.Length || tl < 0)
+            if (br >= array.Length || tl< 0)
                 return;
 
             Tile topLeft = array[tl];
-            Tile top = array[t];
-            Tile topRight = array[tr];
-            Tile midLeft = array[ml];
-            Tile mid = array[m];
-            Tile midRight = array[mr];
-            Tile botLeft = array[bl];
-            Tile bot = array[b];
-            Tile botRight = array[br];
+        Tile top = array[t];
+        Tile topRight = array[tr];
+        Tile midLeft = array[ml];
+        Tile mid = array[m];
+        Tile midRight = array[mr];
+        Tile botLeft = array[bl];
+        Tile bot = array[b];
+        Tile botRight = array[br];
 
             if (topLeft.ID == mid.ID &&
                top.ID == mid.ID &&
@@ -997,7 +1020,7 @@ namespace Adam
                bot.ID == mid.ID)
             {
                 Tile corner = new Tile();
-                corner.ID = mid.ID;
+        corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 1;
@@ -1009,7 +1032,7 @@ namespace Adam
                bot.ID == mid.ID)
             {
                 Tile corner = new Tile();
-                corner.ID = mid.ID;
+    corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 2;
@@ -1021,7 +1044,7 @@ namespace Adam
                 top.ID == mid.ID)
             {
                 Tile corner = new Tile();
-                corner.ID = mid.ID;
+corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 3;
@@ -1033,7 +1056,7 @@ namespace Adam
                top.ID == mid.ID)
             {
                 Tile corner = new Tile();
-                corner.ID = mid.ID;
+corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 7;
@@ -1050,178 +1073,178 @@ namespace Adam
 
 
         public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
+{
+    //Add decoration on top of grass tile.
+    if (ID == 1 && subID == 5)
+    {
+        int indexAbove = TileIndex - mapWidth;
+        if (array[indexAbove].ID == 0)
         {
-            //Add decoration on top of grass tile.
-            if (ID == 1 && subID == 5)
+            int rand = GameWorld.RandGen.Next(0, 10);
+            if (rand == 0) //flower
             {
-                int indexAbove = TileIndex - mapWidth;
-                if (array[indexAbove].ID == 0)
-                {
-                    int rand = GameWorld.RandGen.Next(0, 10);
-                    if (rand == 0) //flower
-                    {
-                        array[indexAbove].ID = 17;
-                    }
-                    else if (rand == 1 || rand == 2) //tall grass
-                    {
-                        array[indexAbove].ID = 9;
-                    }
-                    else //short grass
-                    {
-                        array[indexAbove].ID = 7;
-                    }
-
-                    array[indexAbove].DefineTexture();
-                }
+                array[indexAbove].ID = 17;
+            }
+            else if (rand == 1 || rand == 2) //tall grass
+            {
+                array[indexAbove].ID = 9;
+            }
+            else //short grass
+            {
+                array[indexAbove].ID = 7;
             }
 
-            // Random decorations for sand.
-            if (ID == 5 && subID == 5)
-            {
-                int indexAbove = TileIndex - mapWidth * 2;
-                int indexToRight = TileIndex - mapWidth + 1;
-                int indexTopRight = indexAbove + 1;
-                if (array[indexAbove].ID == 0 && array[indexToRight].ID == 0 && array[indexTopRight].ID == 0)
-                {
-                    int rand = GameWorld.RandGen.Next(0, 100);
-                    if (rand > 80)
-                        array[indexAbove].ID = 44;
+            array[indexAbove].DefineTexture();
+        }
+    }
 
-                    array[indexAbove].DefineTexture();
-                }
+    // Random decorations for sand.
+    if (ID == 5 && subID == 5)
+    {
+        int indexAbove = TileIndex - mapWidth * 2;
+        int indexToRight = TileIndex - mapWidth + 1;
+        int indexTopRight = indexAbove + 1;
+        if (array[indexAbove].ID == 0 && array[indexToRight].ID == 0 && array[indexTopRight].ID == 0)
+        {
+            int rand = GameWorld.RandGen.Next(0, 100);
+            if (rand > 80)
+                array[indexAbove].ID = 44;
+
+            array[indexAbove].DefineTexture();
+        }
+    }
+
+    // Random decoration for hellstone.
+    if (ID == 4 && subID == 5)
+    {
+        int indexAbove = TileIndex - mapWidth;
+        if (array[indexAbove].ID == 0)
+        {
+            int rand = GameWorld.RandGen.Next(0, 10);
+
+            // Skull.
+            if (rand == 0)
+            {
+                array[indexAbove].ID = 55;
             }
+            array[indexAbove].DefineTexture();
+        }
+    }
 
-            // Random decoration for hellstone.
-            if (ID == 4 && subID == 5)
+    // Hellstone stalagmmite.
+    if (ID == 4 && subID == 13)
+    {
+        if (GameWorld.RandGen.Next(0, 5) == 1)
+        {
+            int indexBelow = TileIndex + mapWidth;
+            int indexTwoBelow = indexBelow + mapWidth;
+            if (array[indexBelow].ID == 0 && array[indexTwoBelow].ID == 0)
             {
-                int indexAbove = TileIndex - mapWidth;
-                if (array[indexAbove].ID == 0)
-                {
-                    int rand = GameWorld.RandGen.Next(0, 10);
-
-                    // Skull.
-                    if (rand == 0)
-                    {
-                        array[indexAbove].ID = 55;
-                    }
-                    array[indexAbove].DefineTexture();
-                }
-            }
-
-            // Hellstone stalagmmite.
-            if (ID == 4 && subID == 13)
-            {
-                if (GameWorld.RandGen.Next(0, 5) == 1)
-                {
-                    int indexBelow = TileIndex + mapWidth;
-                    int indexTwoBelow = indexBelow + mapWidth;
-                    if (array[indexBelow].ID == 0 && array[indexTwoBelow].ID == 0)
-                    {
-                        array[indexBelow].ID = 56;
-                        array[indexBelow].DefineTexture();
-                    }
-                }
-            }
-
-            // Randomly generate different plain textures for certain tiles.
-            // Grass
-            if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
-            {
-                switch (GameWorld.RandGen.Next(0, 4))
-                {
-                    case 0:
-                        subID = 101;
-                        break;
-                    case 1:
-                        subID = 102;
-                        break;
-                    case 2:
-                        subID = 103;
-                        break;
-                    case 3:
-                        subID = 104;
-                        break;
-                }
-
-                DefineTexture();
+                array[indexBelow].ID = 56;
+                array[indexBelow].DefineTexture();
             }
         }
+    }
 
-        private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
+    // Randomly generate different plain textures for certain tiles.
+    // Grass
+    if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
+    {
+        switch (GameWorld.RandGen.Next(0, 4))
         {
-            Vector2 position = new Vector2();
-            switch (subID)
-            {
-                case 0: //Dirt
-                    position = startingPoint + new Vector2(0, 0);
-                    break;
-                case 1: //Inner bot right corner
-                    position = startingPoint + new Vector2(1, 0);
-                    break;
-                case 2: //Inner bot left corner
-                    position = startingPoint + new Vector2(2, 0);
-                    break;
-                case 3: //Inner top left corner
-                    position = startingPoint + new Vector2(3, 0);
-                    break;
-                case 4: //Top left corner
-                    position = startingPoint + new Vector2(0, 1);
-                    break;
-                case 5: //Top
-                    position = startingPoint + new Vector2(1, 1);
-                    break;
-                case 6: //Top right corner
-                    position = startingPoint + new Vector2(2, 1);
-                    break;
-                case 7: //Inner top right corner
-                    position = startingPoint + new Vector2(3, 1);
-                    break;
-                case 8: //Left
-                    position = startingPoint + new Vector2(0, 2);
-                    break;
-                case 9: //Middle
-                    position = startingPoint + new Vector2(1, 2);
-                    break;
-                case 10: //Right
-                    position = startingPoint + new Vector2(2, 2);
-                    break;
-                case 11: //Top vertical
-                    position = startingPoint + new Vector2(3, 2);
-                    break;
-                case 12: //Bot left corner
-                    position = startingPoint + new Vector2(0, 3);
-                    break;
-                case 13: //Bot
-                    position = startingPoint + new Vector2(1, 3);
-                    break;
-                case 14: //Bot right corner
-                    position = startingPoint + new Vector2(2, 3);
-                    break;
-                case 15: //Middle vertical
-                    position = startingPoint + new Vector2(3, 3);
-                    break;
-                case 16: //Left horizontal
-                    position = startingPoint + new Vector2(0, 4);
-                    break;
-                case 17: //Middle horizontal
-                    position = startingPoint + new Vector2(1, 4);
-                    break;
-                case 18: //Right horizontal
-                    position = startingPoint + new Vector2(2, 4);
-                    break;
-                case 19: //Bot vertical
-                    position = startingPoint + new Vector2(3, 4);
-                    break;
-            }
-            return position;
+            case 0:
+                subID = 101;
+                break;
+            case 1:
+                subID = 102;
+                break;
+            case 2:
+                subID = 103;
+                break;
+            case 3:
+                subID = 104;
+                break;
         }
 
-        public float GetOpacity()
-        {
-            return opacity;
-        }
+        DefineTexture();
+    }
+}
 
-        public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
+private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
+{
+    Vector2 position = new Vector2();
+    switch (subID)
+    {
+        case 0: //Dirt
+            position = startingPoint + new Vector2(0, 0);
+            break;
+        case 1: //Inner bot right corner
+            position = startingPoint + new Vector2(1, 0);
+            break;
+        case 2: //Inner bot left corner
+            position = startingPoint + new Vector2(2, 0);
+            break;
+        case 3: //Inner top left corner
+            position = startingPoint + new Vector2(3, 0);
+            break;
+        case 4: //Top left corner
+            position = startingPoint + new Vector2(0, 1);
+            break;
+        case 5: //Top
+            position = startingPoint + new Vector2(1, 1);
+            break;
+        case 6: //Top right corner
+            position = startingPoint + new Vector2(2, 1);
+            break;
+        case 7: //Inner top right corner
+            position = startingPoint + new Vector2(3, 1);
+            break;
+        case 8: //Left
+            position = startingPoint + new Vector2(0, 2);
+            break;
+        case 9: //Middle
+            position = startingPoint + new Vector2(1, 2);
+            break;
+        case 10: //Right
+            position = startingPoint + new Vector2(2, 2);
+            break;
+        case 11: //Top vertical
+            position = startingPoint + new Vector2(3, 2);
+            break;
+        case 12: //Bot left corner
+            position = startingPoint + new Vector2(0, 3);
+            break;
+        case 13: //Bot
+            position = startingPoint + new Vector2(1, 3);
+            break;
+        case 14: //Bot right corner
+            position = startingPoint + new Vector2(2, 3);
+            break;
+        case 15: //Middle vertical
+            position = startingPoint + new Vector2(3, 3);
+            break;
+        case 16: //Left horizontal
+            position = startingPoint + new Vector2(0, 4);
+            break;
+        case 17: //Middle horizontal
+            position = startingPoint + new Vector2(1, 4);
+            break;
+        case 18: //Right horizontal
+            position = startingPoint + new Vector2(2, 4);
+            break;
+        case 19: //Bot vertical
+            position = startingPoint + new Vector2(3, 4);
+            break;
+    }
+    return position;
+}
+
+public float GetOpacity()
+{
+    return opacity;
+}
+
+public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
         {
             {1,new Vector2(0,0) },
             {2,new Vector2(4,0) },
@@ -1266,7 +1289,7 @@ namespace Adam
 
         };
 
-        public static Dictionary<int, string> Names = new Dictionary<int, string>()
+public static Dictionary<int, string> Names = new Dictionary<int, string>()
         {
             {1,"Grass" },
             {2,"Stone" },

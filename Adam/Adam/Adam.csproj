@@ -186,7 +186,7 @@
     <Compile Include="Misc\Helpers\FontHelper.cs" />
     <Compile Include="Misc\Interfaces\IAnimated.cs" />
     <Compile Include="Interactables\Food.cs" />
-    <Compile Include="Levels\AnimatedTile.cs" />
+    <Compile Include="Levels\SpecialTile.cs" />
     <Compile Include="Misc\Animation.cs" />
     <Compile Include="Misc\Helpers\ContentHelper.cs" />
     <Compile Include="GameData\GameDataManager.cs" />
