@@ -462,6 +462,31 @@ namespace Adam
                     startingPoint = new Vector2(4, 29);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case 58: // Portal.
+                    switch (subID)
+                    {
+                        case 0:
+                            positionInSpriteSheet = new Vector2(8, 30);
+                            break;
+                    }
+                    isVoid = true;
+                    specialTile = new SpecialTile(this);
+                    break;
+                case 59: // Bed.
+                    isVoid = true;
+                    positionInSpriteSheet = new Vector2(10, 30);
+                    specialTile = new SpecialTile(this);
+                    break;
+                case 60: // Bookshelf.
+                    isVoid = true;
+                    positionInSpriteSheet = new Vector2(13, 30);
+                    specialTile = new SpecialTile(this);
+                    break;
+                case 61: // Painting.
+                    isVoid = true;
+                    positionInSpriteSheet = new Vector2(10, 32);
+                    specialTile = new SpecialTile(this);
+                    break;
 
                 #region Wall Textures
                 case 100://Gold Brick Wall
@@ -515,6 +540,12 @@ namespace Adam
                     hasConnectPattern = true;
                     startingPoint = new Vector2(0, 29);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case 109: // Wallpaper.
+                    positionInSpriteSheet = new Vector2(12, 9);
+                    break;
+                case 110: // Black.
+                    positionInSpriteSheet = new Vector2(13, 9);
                     break;
                 #endregion
 
@@ -1244,51 +1275,6 @@ public float GetOpacity()
     return opacity;
 }
 
-public static Dictionary<int, Vector2> PositionInSpriteMap = new Dictionary<int, Vector2>()
-        {
-            {1,new Vector2(0,0) },
-            {2,new Vector2(4,0) },
-            {3,new Vector2(0,0) },
-            {4,new Vector2(0,0) },
-            {5,new Vector2(0,0) },
-            {6,new Vector2(0,0) },
-            {7,new Vector2(0,0) },
-            {8,new Vector2(0,0) },
-            {9,new Vector2(0,0) },
-            {10,new Vector2(0,0) },
-            {11,new Vector2(0,0) },
-            {12,new Vector2(0,0) },
-            {13,new Vector2(0,0) },
-            {14,new Vector2(0,0) },
-            {15,new Vector2(0,0) },
-            {16,new Vector2(0,0) },
-            {17,new Vector2(0,0) },
-            {18,new Vector2(0,0) },
-            {19,new Vector2(0,0) },
-            {20,new Vector2(0,0) },
-            {21,new Vector2(0,0) },
-            {22,new Vector2(0,0) },
-            {23,new Vector2(0,0) },
-            {24,new Vector2(0,0) },
-            {25,new Vector2(0,0) },
-            {26,new Vector2(0,0) },
-            {27,new Vector2(0,0) },
-            {28,new Vector2(0,0) },
-            {29,new Vector2(0,0) },
-            {30,new Vector2(0,0) },
-            {31,new Vector2(0,0) },
-            {32,new Vector2(0,0) },
-            {33,new Vector2(0,0) },
-            {34,new Vector2(0,0) },
-            {35,new Vector2(0,0) },
-            {36,new Vector2(0,0) },
-            {37,new Vector2(0,0) },
-            {38,new Vector2(0,0) },
-            {39,new Vector2(0,0) },
-
-
-        };
-
 public static Dictionary<int, string> Names = new Dictionary<int, string>()
         {
             {1,"Grass" },
@@ -1348,6 +1334,11 @@ public static Dictionary<int, string> Names = new Dictionary<int, string>()
             {55, "Skull" },
             {56, "Stalagmite" },
             {57, "Mud" },
+            {58, "Portal" },
+    {59, "Bed" },
+    {60, "Bookshelf" },
+    {61, "Painting" },
+
 
 
             {100,"Gold Brick Wall" },
@@ -1359,6 +1350,8 @@ public static Dictionary<int, string> Names = new Dictionary<int, string>()
             {106,"Hellstone Wall" },
             {107,"Stone Brick Wall" },
             {108,"Mesa Wall" },
+            {109, "Wallpaper" },
+            {110, "Nothing" },
 
             {200,"Player" },
             {201,"Snake" },

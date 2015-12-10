@@ -161,6 +161,7 @@
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="EntityProperties.cs" />
+    <Compile Include="Interactables\Portal.cs" />
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Particles\NewParticle.cs" />
@@ -277,7 +278,7 @@
     <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
-    <Compile Include="UI\SplashDamage.cs" />
+    <Compile Include="UI\SplashNumber.cs" />
     <Compile Include="UI\Textbox.cs" />
     <Compile Include="UI\TextInputBox.cs" />
     <Compile Include="UI\TileDescription.cs" />

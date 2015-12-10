@@ -174,14 +174,14 @@ namespace Adam
             graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
             // Set window to borderless.
-            //IntPtr hWnd = this.Window.Handle;
-            //var control = System.Windows.Forms.Control.FromHandle(hWnd);
-            //var form = control.FindForm();
-            //form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            //form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            IntPtr hWnd = this.Window.Handle;
+            var control = System.Windows.Forms.Control.FromHandle(hWnd);
+            var form = control.FindForm();
+            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
 
-           
+
 
             //MediaPlayer Settings
             MediaPlayer.Volume = MaxVolume;

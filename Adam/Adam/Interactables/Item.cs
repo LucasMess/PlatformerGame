@@ -34,9 +34,9 @@ namespace Adam.Interactables
         private void SpawnSparkles(PickedUpArgs e)
         {
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(GameWorld.RandGen.Next(-2, 0) * GameWorld.RandGen.NextDouble());
+                float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
                 float randX = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
                 SparkleParticle par = new SparkleParticle(collRectangle.Center.X, collRectangle.Center.Y, randX, randY, Color.Gold);
                 GameWorld.ParticleSystem.Add(par);

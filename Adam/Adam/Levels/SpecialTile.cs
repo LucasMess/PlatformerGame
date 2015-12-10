@@ -31,6 +31,7 @@ namespace Adam
         Crystal crystal;
         Apple apple;
         Tile sourceTile;
+        Portal portal;
 
 
 
@@ -177,6 +178,36 @@ namespace Adam
                     frameCount = new Vector2(1, 0);
                     size.Y = 2;
                     drawRectangle.Height = (int)size.Y * Main.Tilesize;
+                    break;
+                case 58: // Portal.
+                    frameCount = new Vector2(1,0);
+                    size.Y = 3;
+                    size.X = 2;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
+                    drawRectangle.Width = (int)size.X * Main.Tilesize;
+
+                    portal = new Portal(sourceTile.drawRectangle.X, sourceTile.drawRectangle.Y, sourceTile.TileIndex);
+                    break;
+                case 59: // Bed.
+                    frameCount = new Vector2(1, 0);
+                    size.Y = 2;
+                    size.X = 3;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
+                    drawRectangle.Width = (int)size.X * Main.Tilesize;
+                    break;
+                case 60: // Bookshelf.
+                    frameCount = new Vector2(1, 0);
+                    size.Y = 3;
+                    size.X = 2;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
+                    drawRectangle.Width = (int)size.X * Main.Tilesize;
+                    break;
+                case 61: // Paintings.
+                    frameCount = new Vector2(1, 0);
+                    size.Y = 2;
+                    size.X = 2;
+                    drawRectangle.Height = (int)size.Y * Main.Tilesize;
+                    drawRectangle.Width = (int)size.X * Main.Tilesize;
                     break;
 
             }
