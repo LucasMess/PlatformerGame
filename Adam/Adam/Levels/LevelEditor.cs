@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
 using Adam.UI.Elements;
 using Adam.Misc.Helpers;
+using Adam.Interactables;
 
 namespace Adam.Levels
 {
@@ -26,6 +27,8 @@ namespace Adam.Levels
         bool inventoryKeyPressed;
         float blackScreenOpacity;
         bool recentlyChanged;
+        bool onPortalLinkMode;
+        Portal selectedPortal;
 
         public Rectangle editorRectangle;
         public int IndexOfMouse;
@@ -257,9 +260,30 @@ namespace Adam.Levels
             InputHelper.GetMouseRectGameWorld(ref mouseRect);
             IndexOfMouse = (mouseRect.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (mouseRect.Center.X / Main.Tilesize);
 
+            if (onPortalLinkMode)
+            {
+                selectedPortal.ConnectingLine = new Line(selectedPortal.Position, new Vector2(mouseRect.X, mouseRect.Y));
+
+                if (InputHelper.IsLeftMousePressed())
+                {
+                    // If mouse is on portal.
+                    if (CurrentArray[IndexOfMouse].ID == 57)
+                    {
+                        Portal link = CurrentArray[IndexOfMouse].specialTile.portal;
+                        if (link.PortalID != selectedPortal.PortalID)
+                        {
+                            //GameWorld.Instance.worldData.PortalLinks.Add()
+                        }
+                    }
+                }
+                return;
+            }
+
             if (InputHelper.IsLeftMousePressed())
             {
-                UpdateSelectedTiles(selectedID);
+                if (InputHelper.IsKeyDown(Keys.LeftAlt))
+                    SpecialInteractionTile();
+                else UpdateSelectedTiles(selectedID);
             }
 
             if (InputHelper.IsRightMousePressed())
@@ -342,6 +366,17 @@ namespace Adam.Levels
             }
         }
 
+        private void SpecialInteractionTile()
+        {
+            // Portal
+            if (CurrentArray[IndexOfMouse].ID == 58)
+            {
+                onPortalLinkMode = true;
+                selectedPortal = CurrentArray[IndexOfMouse].specialTile.portal;
+                Console.WriteLine("On portal link mode!");   
+            }
+        }
+
         private void Construct(Tile t)
         {
             UpdateTilesAround(t.TileIndex);
@@ -421,6 +456,7 @@ namespace Adam.Levels
         public void Draw(SpriteBatch spriteBatch)
         {
             brush.Draw(spriteBatch);
+            selectedPortal?.ConnectingLine?.Draw(spriteBatch);
         }
 
         public void DrawUI(SpriteBatch spriteBatch)

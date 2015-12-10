@@ -21,7 +21,7 @@ namespace Adam
         public Texture2D texture;
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
-        SpecialTile specialTile;
+        public SpecialTile specialTile;
         Obstacle obstacle;
         Chest chest;
 

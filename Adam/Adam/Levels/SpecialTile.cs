@@ -31,7 +31,10 @@ namespace Adam
         Crystal crystal;
         Apple apple;
         Tile sourceTile;
-        Portal portal;
+        public Portal portal;
+
+        public delegate void TileHandler(Tile t);
+        public event TileHandler OnTileDestroyed;
 
 
 
@@ -118,7 +121,7 @@ namespace Adam
                     size.Y = 6;
                     drawRectangle.Height = Main.Tilesize * (int)size.Y;
                     drawRectangle.Width = Main.Tilesize * (int)size.X;
-                    drawRectangle.Y = originalPosition.Y - (32 * ((int)size.Y-1));
+                    drawRectangle.Y = originalPosition.Y - (32 * ((int)size.Y - 1));
                     drawRectangle.X = originalPosition.X - (16 * (int)size.X);
                     sunlightPassesThrough = true;
                     break;
@@ -180,12 +183,12 @@ namespace Adam
                     drawRectangle.Height = (int)size.Y * Main.Tilesize;
                     break;
                 case 58: // Portal.
-                    frameCount = new Vector2(1,0);
+                    frameCount = new Vector2(1, 0);
                     size.Y = 3;
                     size.X = 2;
                     drawRectangle.Height = (int)size.Y * Main.Tilesize;
                     drawRectangle.Width = (int)size.X * Main.Tilesize;
-
+                    Console.WriteLine("Portal coords:{0},{1}", sourceTile.drawRectangle.X, sourceTile.drawRectangle.Y);
                     portal = new Portal(sourceTile.drawRectangle.X, sourceTile.drawRectangle.Y, sourceTile.TileIndex);
                     break;
                 case 59: // Bed.
@@ -285,6 +288,18 @@ namespace Adam
                     DefaultAnimation();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Used to destroy the tile and reset it to original values. This also alerts any special interactions that the tile does not exist anymore.
+        /// </summary>
+        public void Destroy()
+        {
+            if (OnTileDestroyed != null)
+                OnTileDestroyed(this);
+
+            ID = 0;
+            subID = 0;
         }
 
         private void DefaultAnimation()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.UI.Elements;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Adam.Interactables
     {
         Vector2 position;
         Portal linkedPortal;
+        Line line;
         bool locked = true;
         int tileIndex;
 
@@ -20,6 +22,14 @@ namespace Adam.Interactables
         {
             position = new Vector2(x, y);
             this.tileIndex = tileIndex;
+        }
+
+        /// <summary>
+        /// The line connecting the two portals in the level editor.
+        /// </summary>
+        public Line ConnectingLine
+        {
+            get; set;
         }
 
         /// <summary>
