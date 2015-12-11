@@ -93,8 +93,6 @@ namespace Adam
         public WorldData worldData;
         public GameWorld() { }
 
-        int distance;
-
         public GameWorld(Main game1)
         {
             instance = this;
@@ -103,7 +101,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_20");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_17");
             UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 

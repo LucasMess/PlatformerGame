@@ -36,7 +36,7 @@ namespace Adam
         Vector2 sizeOfTile;
 
         private int mapWidth;
-        protected const int SmallTileSize = 32;
+        protected const int SmallTileSize = 16;
         public bool sunlightPassesThrough;
         public bool levelEditorTransparency;
         public string name = "";
@@ -64,6 +64,7 @@ namespace Adam
         public delegate void TileHandler(Tile t);
         public event TileHandler OnTileUpdate;
         public event TileHandler OnTileDestroyed;
+        public event TileHandler OnPlayerInteraction;
 
         /// <summary>
         /// Constructor used when DefineTexture() will NOT be called.
@@ -250,6 +251,7 @@ namespace Adam
                     sizeOfTile.Y = 2;
                     positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3) * 2);
                     drawRectangle.Y = originalPosition.Y - Main.Tilesize;
+                    hasRandomStartingPoint = true;
                     break;
                 case 18://Marble Column
                     switch (subID)
@@ -266,10 +268,12 @@ namespace Adam
                     }
                     break;
                 case 19://chest
-                    frameCount = new Vector2(6, 0);
+                    frameCount = new Vector2(4, 0);
                     sizeOfTile.X = 1.5f;
-                    positionInSpriteSheet = new Vector2(12, 24);
+                    sizeOfTile.Y = 2;
+                    positionInSpriteSheet = new Vector2(15, 30);
                     animationPlaysOnce = true;
+                    drawRectangle.Y = originalPosition.Y - Main.Tilesize;
                     Chest chest = new Chest(this);
                     break;
                 case 20://tech
@@ -285,10 +289,10 @@ namespace Adam
                     frameCount = new Vector2(4, 0);
                     hasRandomStartingPoint = true;
                     positionInSpriteSheet = new Vector2(4, 15);
-
+                    
                     if (subID == 1)
                         positionInSpriteSheet = new Vector2(8, 24);
-
+                    new Liquid(this, Liquid.Type.Water);
                     break;
                 case 24: //lava
                     frameCount = new Vector2(4, 0);
@@ -298,6 +302,7 @@ namespace Adam
                         positionInSpriteSheet = new Vector2(8, 25);
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3, .3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
+                    new Liquid(this, Liquid.Type.Lava);
                     break;
                 case 25: // Poisoned Water.
                     frameCount = new Vector2(4, 0);
@@ -437,16 +442,19 @@ namespace Adam
                 case 48: // Blue crystal.
                     frameCount = new Vector2(2, 0);
                     positionInSpriteSheet = new Vector2(20, 27);
+                    new Crystal(this, 3);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Aqua, 1, .8f));
                     break;
                 case 49: // Yellow crystal.
                     frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(20, 29);
+                    new Crystal(this, 1);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Yellow, 1, .8f));
                     break;
                 case 50: // Green sludge.
                     frameCount = new Vector2(6, 0);
                     positionInSpriteSheet = new Vector2(14, 27);
+                    new Crystal(this, 2);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 51: // Void FireSpitter.
@@ -457,16 +465,19 @@ namespace Adam
                 case 52: // Sapphire Crystal.
                     frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(21, 24);
+                    new Crystal(this, 3);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Blue, 1, .8f));
                     break;
                 case 53: // Ruby Crystal.
                     frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(22, 25);
+                    new Crystal(this, 4);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
                     break;
                 case 54: // Emerald Crystal.
                     frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(21, 25);
+                    new Crystal(this, 2);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 55: // Skull.
@@ -479,6 +490,7 @@ namespace Adam
                     break;
                 case 57: // Mud.
                     hasConnectPattern = true;
+                    isSolid = true;
                     startingPoint = new Vector2(4, 29);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
@@ -729,6 +741,13 @@ namespace Adam
             DefineSourceRectangle();
             DefineDrawRectangle();
             startingRectangle = sourceRectangle;
+
+            if (hasRandomStartingPoint)
+            {
+                int randX = GameWorld.RandGen.Next(0, (int)frameCount.X);
+                sourceRectangle.X += randX * SmallTileSize;
+                currentFrame += randX;
+            }
 
         }
 

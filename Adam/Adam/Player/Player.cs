@@ -92,7 +92,7 @@ namespace Adam
 
             script.Initialize(this);
 
-            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/new_jump");
+            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_darker");
             Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
             Texture2D standupTexture = ContentHelper.LoadTexture("Characters/adam_standup");

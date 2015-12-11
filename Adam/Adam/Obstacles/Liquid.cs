@@ -28,17 +28,26 @@ namespace Adam.Obstacles
             }
         }
 
-        public Liquid(int x, int y, Type type)
+        public Liquid(Tile sourceTile, Type type)
         {
-            collRectangle = new Rectangle(x + 8, y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
+            collRectangle = new Rectangle(sourceTile.drawRectangle.X + 8, sourceTile.drawRectangle.Y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
             particleTimer = GameWorld.RandGen.Next(0, 8) * GameWorld.RandGen.NextDouble();
             restartTime = GameWorld.RandGen.Next(5, 8) * GameWorld.RandGen.NextDouble();
             if (restartTime < 1)
                 restartTime = 1;
             CurrentType = type;
+
+            sourceTile.OnTileUpdate += Update;
+            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
         }
 
-        public void Update(GameTime gameTime)
+        private void SourceTile_OnTileDestroyed(Tile t)
+        {
+            t.OnTileUpdate -= Update;
+            t.OnTileDestroyed -= SourceTile_OnTileDestroyed;
+        }
+
+        public void Update(Tile t)
         {
             GameWorld gameWorld = GameWorld.Instance;
             this.player = GameWorld.Instance.player;
@@ -55,7 +64,7 @@ namespace Adam.Obstacles
             {
                 if (GameWorld.Instance.tileArray[GetTileIndex() - GameWorld.Instance.worldData.LevelWidth].ID == 0)
                 {
-                    particleTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                    particleTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
                     if (particleTimer > restartTime)
                     {
                         Particle par = new Particle();

@@ -20,13 +20,22 @@ namespace Adam.Interactables
             this.gemID = gemID;
             this.sourceTile = sourceTile;
 
+            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
+            sourceTile.OnTileUpdate += Update;
+
             collRectangle = sourceTile.drawRectangle;
 
             int rand = GameWorld.RandGen.Next(1, 9);
             breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Instance.player);
         }
 
-        public void Update()
+        private void SourceTile_OnTileDestroyed(Tile t)
+        {
+            sourceTile.OnTileUpdate -= Update;
+            sourceTile.OnTileUpdate -= SourceTile_OnTileDestroyed;
+        }
+
+        public void Update(Tile t)
         {
             Player player = GameWorld.Instance.player;
 
