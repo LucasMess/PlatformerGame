@@ -28,9 +28,18 @@ namespace Adam
             openSound = new SoundFx("Sounds/Chest/open");
             collRectangle = new Rectangle(tile.drawRectangle.X, tile.drawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
             sourceTile = tile;
+            sourceTile.OnTileUpdate += Update;
+            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
+            sourceTile.AnimationStopped = true;
         }
 
-        public void Update()
+        private void SourceTile_OnTileDestroyed(Tile t)
+        {
+            sourceTile.OnTileUpdate -= Update;
+            sourceTile.OnTileDestroyed -= SourceTile_OnTileDestroyed;
+        }
+
+        public void Update(Tile t)
         {
             Player player = GameWorld.Instance.player;
             if (player.GetCollRectangle().Intersects(collRectangle) && !isOpen)
@@ -38,6 +47,7 @@ namespace Adam
                 // If player presses open button, open chest.
                 if (InputHelper.IsKeyDown(Keys.W))
                 {
+                    t.AnimationStopped = false;
                     Open();
                 }
             }

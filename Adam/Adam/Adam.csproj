@@ -162,6 +162,7 @@
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="Interactables\Portal.cs" />
+    <Compile Include="Misc\Interfaces\ISpecialTile.cs" />
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Particles\NewParticle.cs" />

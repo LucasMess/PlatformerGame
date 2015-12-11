@@ -57,11 +57,11 @@ namespace Adam.UI
 
             foreach (byte ID in CurrentAvailableTileSet)
             {
-                Tile tile = new Tile();
+                Tile tile = new Tile(true);
                 tile.ID = ID;
                 tile.DefineTexture();
 
-                tile.drawRectangle = new Rectangle(activeX, (int)((Main.Tilesize / Main.HeightRatio) * tiles.Count), (int)(Main.Tilesize / Main.HeightRatio), (int)(Main.Tilesize / Main.HeightRatio));
+                tile.drawRectangle = new Rectangle(activeX, (int)((Main.Tilesize / Main.HeightRatio) * tiles.Count), (int)(tile.drawRectangle.Width / Main.HeightRatio), (int)(tile.drawRectangle.Height / Main.HeightRatio));
                 tiles.Add(tile);
 
                 TileName tileName = new TileName();

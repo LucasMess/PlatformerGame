@@ -269,11 +269,11 @@ namespace Adam.Levels
                     // If mouse is on portal.
                     if (CurrentArray[IndexOfMouse].ID == 57)
                     {
-                        Portal link = CurrentArray[IndexOfMouse].specialTile.portal;
-                        if (link.PortalID != selectedPortal.PortalID)
-                        {
-                            //GameWorld.Instance.worldData.PortalLinks.Add()
-                        }
+                        //Portal link = CurrentArray[IndexOfMouse].specialTile.portal;
+                        //if (link.PortalID != selectedPortal.PortalID)
+                        //{
+                        //    //GameWorld.Instance.worldData.PortalLinks.Add()
+                        //}
                     }
                 }
                 return;
@@ -372,7 +372,7 @@ namespace Adam.Levels
             if (CurrentArray[IndexOfMouse].ID == 58)
             {
                 onPortalLinkMode = true;
-                selectedPortal = CurrentArray[IndexOfMouse].specialTile.portal;
+                //selectedPortal = CurrentArray[IndexOfMouse].specialTile.portal;
                 Console.WriteLine("On portal link mode!");   
             }
         }

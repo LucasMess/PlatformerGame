@@ -200,11 +200,6 @@ namespace Adam
             Texture = tile.texture;
             collRectangle = new Rectangle(player.GetCollRectangle().Center.X - 2, player.GetCollRectangle().Y + player.GetCollRectangle().Height, 8, 8);
             sourceRectangle = new Rectangle(tile.sourceRectangle.X, tile.sourceRectangle.Y, 4, 4);
-            if (tile is SpecialTile)
-            {
-                SpecialTile t = (SpecialTile)tile;
-                sourceRectangle = new Rectangle(t.sourceRectangle.X, t.sourceRectangle.Y, 4, 4);
-            }
             sourceRectangle.X += (GameWorld.RandGen.Next(0, 4) * Main.Tilesize / 4);
             velocity.X = (-player.GetVelocity().X / 2) * (float)GameWorld.RandGen.NextDouble();
             velocity.Y = GameWorld.RandGen.Next(-1, 1);

@@ -21,9 +21,7 @@ namespace Adam
         public Texture2D texture;
         public Rectangle drawRectangle;
         public Rectangle sourceRectangle;
-        public SpecialTile specialTile;
-        Obstacle obstacle;
-        Chest chest;
+        Vector2 frameCount;
 
         public bool IsBrushTile { get; set; }
         public bool isSolid;
@@ -33,22 +31,67 @@ namespace Adam
         public byte subID = 0;
         public int TileIndex { get; set; }
 
+        bool hasRandomStartingPoint;
+        Rectangle originalPosition;
+        Vector2 sizeOfTile;
+
         private int mapWidth;
-        protected const int SmallTileSize = 16;
-        public bool isVoid;
+        protected const int SmallTileSize = 32;
         public bool sunlightPassesThrough;
         public bool levelEditorTransparency;
         public string name = "";
         Tile[] array;
         public Color color = Color.White;
         float opacity = 1;
-        const float defaultOpacity = 1;
-        const float maxOpacity = .5f;
+        const float DefaultOpacity = 1;
+        const float MaxOpacity = .5f;
         bool hasConnectPattern;
         bool hasAddedEntity;
+        bool isSampleTile;
+        bool animationPlaysOnce;
         Vector2 positionInSpriteSheet;
 
+        int currentFrame;
+        double frameTimer;
+        double restartTimer;
+        double restartWait;
+        int switchFrame;
+        Rectangle startingRectangle;
+        Rectangle startingPosition;
+
         List<Tile> cornerPieces = new List<Tile>();
+
+        public delegate void TileHandler(Tile t);
+        public event TileHandler OnTileUpdate;
+        public event TileHandler OnTileDestroyed;
+
+        /// <summary>
+        /// Constructor used when DefineTexture() will NOT be called.
+        /// </summary>
+        public Tile() { }
+
+        /// <summary>
+        /// Default constructor for game world tiles.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public Tile(int x, int y)
+        {
+            originalPosition = new Rectangle(x, y, 0, 0);
+            drawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+        }
+
+        /// <summary>
+        /// Constructor used when the tile will be used in the UI.
+        /// </summary>
+        /// <param name="sampleTile"></param>
+        public Tile(bool sampleTile)
+        {
+            isSampleTile = true;
+        }
+
+
+
 
         /// <summary>
         /// Returns the tile's texture position in the spritesheet. This needs to be multiplied by 16 to get the coordinates.
@@ -67,19 +110,11 @@ namespace Adam
 
         #endregion
 
-        public Tile()
-        {
-        }
-
         /// <summary>
         /// After the IDs have been defined, this will give the tile the correct location of its texture in the spritemap.
         /// </summary>
         public virtual void DefineTexture()
         {
-            specialTile = null;
-            obstacle = null;
-            isVoid = false;
-
             //Air ID is 0, so it can emit sunlight.
             if (ID != 0)
             {
@@ -93,9 +128,10 @@ namespace Adam
                 return;
             }
 
-            positionInSpriteSheet = Vector2.Zero;
             Vector2 startingPoint;
+            sizeOfTile = new Vector2(1, 1);
 
+            #region DefiningTextures
             switch (ID)
             {
                 case 1: //Grass
@@ -160,46 +196,42 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 7: //ShortGrass
+                    frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(12, 16);
                     sunlightPassesThrough = true;
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 8: //Metal
+                    frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(12, 2);
-                    isVoid = true;
                     isSolid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 9://Tall Grass
+                    frameCount = new Vector2(12, 0);
                     positionInSpriteSheet = new Vector2(0, 16);
-                    isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(this);
                     break;
-                case 10: //Gold
+                case 10: // Gold.
                     hasConnectPattern = true;
                     isSolid = true;
                     startingPoint = new Vector2(0, 5);
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 11: //torch
+                case 11: // Torch.
+                    frameCount = new Vector2(4, 0);
+                    sizeOfTile.Y = 2;
                     positionInSpriteSheet = new Vector2(12, 0);
-                    isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(this);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.Orange, 2, .6f));
                     break;
                 case 12: //Chandelier
+                    frameCount = new Vector2(4, 0);
+                    sizeOfTile.X = 2;
                     positionInSpriteSheet = new Vector2(0, 17);
-                    isVoid = true;
                     sunlightPassesThrough = true;
-                    specialTile = new SpecialTile(this);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, true, Color.White, 4, .1f));
                     break;
                 case 13: //Door
                     isSolid = true;
-                    isVoid = true;
                     break;
                 case 14: //Vines
                     positionInSpriteSheet = new Vector2(15, 7);
@@ -214,9 +246,10 @@ namespace Adam
                     isClimbable = true;
                     break;
                 case 17: //Daffodyls
+                    frameCount = new Vector2(4, 0);
+                    sizeOfTile.Y = 2;
                     positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3) * 2);
-                    specialTile = new SpecialTile(this);
-                    isVoid = true;
+                    drawRectangle.Y = originalPosition.Y - Main.Tilesize;
                     break;
                 case 18://Marble Column
                     switch (subID)
@@ -233,12 +266,13 @@ namespace Adam
                     }
                     break;
                 case 19://chest
+                    frameCount = new Vector2(6, 0);
+                    sizeOfTile.X = 1.5f;
                     positionInSpriteSheet = new Vector2(12, 24);
-                    specialTile = new SpecialTile(this);
-                    isVoid = true;
+                    animationPlaysOnce = true;
+                    Chest chest = new Chest(this);
                     break;
                 case 20://tech
-                    isVoid = true;
                     break;
                 case 21://scaffolding
                     positionInSpriteSheet = new Vector2(13, 6);
@@ -246,40 +280,36 @@ namespace Adam
                     break;
                 case 22: //spikes
                     positionInSpriteSheet = new Vector2(17, 13);
-                    obstacle = new Spikes(drawRectangle.X, drawRectangle.Y);
                     break;
                 case 23://water
+                    frameCount = new Vector2(4, 0);
+                    hasRandomStartingPoint = true;
                     positionInSpriteSheet = new Vector2(4, 15);
 
                     if (subID == 1)
                         positionInSpriteSheet = new Vector2(8, 24);
 
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 24: //lava
+                    frameCount = new Vector2(4, 0);
+                    hasRandomStartingPoint = true;
                     positionInSpriteSheet = new Vector2(0, 15);
                     if (subID == 1)
                         positionInSpriteSheet = new Vector2(8, 25);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     FixedPointLight light = new FixedPointLight(drawRectangle, false, Color.OrangeRed, 3, .3f);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, light);
                     break;
                 case 25: // Poisoned Water.
+                    frameCount = new Vector2(4, 0);
+                    hasRandomStartingPoint = true;
                     positionInSpriteSheet = new Vector2(8, 15);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 26: // Golden Apple.
-                    isVoid = true;
+                    frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(8, 26);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 27: //golden chest
-                    isVoid = true;
                     positionInSpriteSheet = new Vector2(15, 3);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 29: //Marble ceiling
                     isSolid = true;
@@ -300,22 +330,26 @@ namespace Adam
                 case 30: // Vacant.
                     break;
                 case 31: //Tree
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.X = 4;
+                    sizeOfTile.Y = 6;
+
+                    drawRectangle.Y = originalPosition.Y - (32 * ((int)sizeOfTile.Y - 1));
+                    drawRectangle.X = originalPosition.X - (16 * (int)sizeOfTile.X);
                     positionInSpriteSheet = new Vector2(16, 0);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 32: //Small Rock
                     positionInSpriteSheet = new Vector2(13, 18);
                     break;
                 case 33: //Big Rock
+                    frameCount = new Vector2(0, 0);
+                    sizeOfTile.X = 2;
+                    sizeOfTile.Y = 2;
+                    drawRectangle.Y = originalPosition.Y - 32;
                     positionInSpriteSheet = new Vector2(14, 17);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 34: //Medium Rock
                     positionInSpriteSheet = new Vector2(11, 18);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 36: //Sign
                     positionInSpriteSheet = new Vector2(12, 4);
@@ -324,17 +358,13 @@ namespace Adam
                     if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                     {
                         positionInSpriteSheet = new Vector2(8, 29);
-                        isVoid = true;
-                        specialTile = new SpecialTile(this);
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             GameWorld.Instance.entities.Add(new CheckPoint(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
-                            isVoid = true;
                         }
                     }
                     break;
@@ -363,19 +393,20 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 42: // Flamespitter
+                    frameCount = new Vector2(8, 0);
                     isSolid = true;
                     positionInSpriteSheet = new Vector2(12, 29);
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
+
                     break;
                 case 43: // Machine Gun
+                    frameCount = new Vector2(8, 0);
                     isSolid = true;
-                    isVoid = true;
                     positionInSpriteSheet = new Vector2(12, 28);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 44: // Cacti
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.X = 2;
+                    sizeOfTile.Y = 2;
                     switch (GameWorld.RandGen.Next(0, 4))
                     {
                         case 0: // One branch normal.
@@ -391,12 +422,9 @@ namespace Adam
                             positionInSpriteSheet = new Vector2(22, 4);
                             break;
                     }
-                    specialTile = new SpecialTile(this);
                     break;
                 case 45: // Mushroom Booster
-                    isVoid = true;
                     positionInSpriteSheet = new Vector2(19, 26);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 46: // Void ladder.
                     positionInSpriteSheet = new Vector2(14, 8);
@@ -404,58 +432,50 @@ namespace Adam
                     break;
                 case 47: // Wooden platform.
                     isSolid = true;
-                    isVoid = true;
                     positionInSpriteSheet = new Vector2(14, 26);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 48: // Blue crystal.
-                    isVoid = true;
+                    frameCount = new Vector2(2, 0);
                     positionInSpriteSheet = new Vector2(20, 27);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Aqua, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 49: // Yellow crystal.
-                    isVoid = true;
+                    frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(20, 29);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Yellow, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 50: // Green sludge.
+                    frameCount = new Vector2(6, 0);
                     positionInSpriteSheet = new Vector2(14, 27);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 51: // Void FireSpitter.
-                    isVoid = true;
+                    frameCount = new Vector2(4, 0);
                     positionInSpriteSheet = new Vector2(20, 28);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 52: // Sapphire Crystal.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(21, 24);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Blue, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 53: // Ruby Crystal.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(22, 25);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Red, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 54: // Emerald Crystal.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
                     positionInSpriteSheet = new Vector2(21, 25);
                     GameWorld.Instance.lightEngine.AddFixedLightSource(this, new FixedPointLight(drawRectangle, false, Color.Green, 1, .8f));
-                    specialTile = new SpecialTile(this);
                     break;
                 case 55: // Skull.
                     positionInSpriteSheet = new Vector2(22, 24);
                     break;
                 case 56: // Stalagmite
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.Y = 2;
                     positionInSpriteSheet = new Vector2(23, 24);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 57: // Mud.
                     hasConnectPattern = true;
@@ -463,29 +483,35 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 58: // Portal.
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.Y = 3;
+                    sizeOfTile.X = 2;
+                    drawRectangle.Height = (int)sizeOfTile.Y * Main.Tilesize;
+                    drawRectangle.Width = (int)sizeOfTile.X * Main.Tilesize;
                     switch (subID)
                     {
                         case 0:
                             positionInSpriteSheet = new Vector2(8, 30);
                             break;
                     }
-                    isVoid = true;
-                    specialTile = new SpecialTile(this);
                     break;
                 case 59: // Bed.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.Y = 2;
+                    sizeOfTile.X = 3;
                     positionInSpriteSheet = new Vector2(10, 30);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 60: // Bookshelf.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.Y = 3;
+                    sizeOfTile.X = 2;
                     positionInSpriteSheet = new Vector2(13, 30);
-                    specialTile = new SpecialTile(this);
                     break;
                 case 61: // Painting.
-                    isVoid = true;
+                    frameCount = new Vector2(1, 0);
+                    sizeOfTile.Y = 2;
+                    sizeOfTile.X = 2;
                     positionInSpriteSheet = new Vector2(10, 32);
-                    specialTile = new SpecialTile(this);
                     break;
 
                 #region Wall Textures
@@ -555,10 +581,8 @@ namespace Adam
                         positionInSpriteSheet = new Vector2(17, 12);
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.game1.player.Initialize(drawRectangle.X, drawRectangle.Y);
                             hasAddedEntity = true;
                         }
@@ -572,10 +596,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Snake(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -589,10 +611,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Frog(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -606,7 +626,6 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
                             GameWorld.Instance.entities.Add(new God(drawRectangle.X, drawRectangle.Y));
@@ -622,10 +641,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Lost(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -639,10 +656,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Hellboar(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -656,10 +671,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new FallingBoulder(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -673,10 +686,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Bat(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -690,10 +701,8 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new Duck(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
@@ -707,21 +716,63 @@ namespace Adam
                     }
                     else
                     {
-                        isVoid = true;
                         if (!hasAddedEntity)
                         {
-                            isVoid = true;
                             GameWorld.Instance.entities.Add(new BeingOfSight(drawRectangle.X, drawRectangle.Y));
                             hasAddedEntity = true;
                         }
                     }
                     break;
             }
+            #endregion
 
-            //Gets the position in the Vector2 form and converts it to pixel coordinates.
-            sourceRectangle = new Rectangle((int)(positionInSpriteSheet.X * SmallTileSize), (int)(positionInSpriteSheet.Y * SmallTileSize), SmallTileSize, SmallTileSize);
+            DefineSourceRectangle();
+            DefineDrawRectangle();
+            startingRectangle = sourceRectangle;
 
+        }
 
+        /// <summary>
+        /// Takes all the variables given in DefineTexture method and returns the appropriate source rectangle.
+        /// </summary>
+        /// <returns></returns>
+        private void DefineSourceRectangle()
+        {
+            //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
+            sourceRectangle = new Rectangle((int)(positionInSpriteSheet.X * SmallTileSize), (int)(positionInSpriteSheet.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
+        }
+
+        /// <summary>
+        /// Takes all the variables given in DefineTexture method and returns the appropriate draw rectangle.
+        /// </summary>
+        /// <returns></returns>
+        private void DefineDrawRectangle()
+        {
+            if (isSampleTile)
+            {
+                int width = (int)(sizeOfTile.X * Main.Tilesize);
+                int height = (int)(sizeOfTile.Y * Main.Tilesize);
+
+                if (width > height)
+                {
+                    width = Main.Tilesize;
+                    height = (int)(Main.Tilesize / sizeOfTile.X);
+                }
+                if (height > width)
+                {
+                    width = (int)(Main.Tilesize / sizeOfTile.Y);
+                    height = Main.Tilesize;
+                }
+                if (height == width)
+                {
+                    width = Main.Tilesize;
+                    height = Main.Tilesize;
+                }
+                Console.WriteLine("Name:{0}, Width:{1}, Height:{2}", name, width, height);
+                drawRectangle = new Rectangle(drawRectangle.X, drawRectangle.Y, width, height);
+
+            }
+            else drawRectangle = new Rectangle(drawRectangle.X, drawRectangle.Y, (int)(sizeOfTile.X * Main.Tilesize), (int)(sizeOfTile.Y * Main.Tilesize));
         }
 
         /// <summary>
@@ -730,10 +781,83 @@ namespace Adam
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-            specialTile?.Animate(gameTime);
-            obstacle?.Update();
+            if (OnTileUpdate != null)
+            {
+                OnTileUpdate(this);
+            }
 
+            Animate();
             ChangeOpacity();
+        }
+
+        private void Animate()
+        {
+            if (frameCount.X > 1 && !AnimationStopped)
+            {
+                switch (ID)
+                {
+                    case 8://Metal
+                        switchFrame = 100;
+                        restartWait = 2000;
+                        frameTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalMilliseconds;
+                        restartTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalMilliseconds;
+
+                        if (restartTimer < restartWait)
+                            break;
+                        if (frameTimer >= switchFrame)
+                        {
+                            if (frameCount.X != 0)
+                            {
+                                frameTimer = 0;
+                                sourceRectangle.X += SmallTileSize;
+                                currentFrame++;
+                            }
+                        }
+
+                        if (currentFrame >= frameCount.X)
+                        {
+                            currentFrame = 0;
+                            sourceRectangle.X = 12 * 16;
+                            restartTimer = 0;
+                        }
+                        break;
+                    default:
+                        DefaultAnimation();
+                        break;
+                }
+            }
+        }
+
+        private void DefaultAnimation()
+        {
+            GameTime gameTime = GameWorld.Instance.GetGameTime();
+
+            switchFrame = 120;
+            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (frameTimer >= switchFrame)
+            {
+                if (frameCount.X != 0)
+                {
+                    frameTimer = 0;
+                    sourceRectangle.X += sourceRectangle.Width;
+                    currentFrame++;
+                }
+            }
+
+            if (currentFrame >= frameCount.X)
+            {
+                if (animationPlaysOnce)
+                {
+                    currentFrame--;
+                    sourceRectangle.X -= sourceRectangle.Width;
+                }
+                else
+                {
+                    currentFrame = 0;
+                    sourceRectangle.X = startingRectangle.X;
+                }
+            }
         }
 
         private void ChangeOpacity()
@@ -744,48 +868,43 @@ namespace Adam
                 {
                     opacity -= .05f;
 
-                    if (opacity < maxOpacity)
+                    if (opacity < MaxOpacity)
                     {
-                        opacity = maxOpacity;
+                        opacity = MaxOpacity;
                     }
                 }
             }
             else
             {
                 opacity += .05f;
-                if (opacity > defaultOpacity)
+                if (opacity > DefaultOpacity)
                 {
-                    opacity = defaultOpacity;
+                    opacity = DefaultOpacity;
                 }
             }
         }
 
+        public void Destroy()
+        {
+            if (OnTileDestroyed != null)
+                OnTileDestroyed(this);
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (specialTile == null)
+            if (texture != null)
+                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
+            if (hasConnectPattern)
             {
-                if (!isVoid)
+                foreach (Tile c in cornerPieces)
                 {
-                    if (texture != null)
-                        spriteBatch.Draw(texture, drawRectangle, sourceRectangle, color * opacity);
-                    if (hasConnectPattern)
+                    if (GameWorld.Instance.levelEditor.onWallMode)
                     {
-                        foreach (Tile c in cornerPieces)
-                        {
-                            if (GameWorld.Instance.levelEditor.onWallMode)
-                            {
-                                c.opacity = GetOpacity();
-                            }
-                            else c.opacity = 1;
-                            c.Draw(spriteBatch);
-                        }
+                        c.opacity = GetOpacity();
                     }
+                    else c.opacity = 1;
+                    c.Draw(spriteBatch);
                 }
-            }
-            else
-            {
-                if (texture != null)
-                    specialTile.Draw(spriteBatch);
             }
         }
 
@@ -883,27 +1002,27 @@ namespace Adam
             this.array = array;
 
             int m = TileIndex;
-        int t = m - mapWidth;
-        int b = m + mapWidth;
-        int tl = t - 1;
-        int tr = t + 1;
-        int ml = m - 1;
-        int mr = m + 1;
-        int bl = b - 1;
-        int br = b + 1;
+            int t = m - mapWidth;
+            int b = m + mapWidth;
+            int tl = t - 1;
+            int tr = t + 1;
+            int ml = m - 1;
+            int mr = m + 1;
+            int bl = b - 1;
+            int br = b + 1;
 
-            if (br >= array.Length || tl< 0)
+            if (br >= array.Length || tl < 0)
                 return;
 
             Tile topLeft = array[tl];
-        Tile top = array[t];
-        Tile topRight = array[tr];
-        Tile midLeft = array[ml];
-        Tile mid = array[m];
-        Tile midRight = array[mr];
-        Tile botLeft = array[bl];
-        Tile bot = array[b];
-        Tile botRight = array[br];
+            Tile top = array[t];
+            Tile topRight = array[tr];
+            Tile midLeft = array[ml];
+            Tile mid = array[m];
+            Tile midRight = array[mr];
+            Tile botLeft = array[bl];
+            Tile bot = array[b];
+            Tile botRight = array[br];
 
             if (topLeft.ID == mid.ID &&
                top.ID == mid.ID &&
@@ -1051,7 +1170,7 @@ namespace Adam
                bot.ID == mid.ID)
             {
                 Tile corner = new Tile();
-        corner.ID = mid.ID;
+                corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 1;
@@ -1063,7 +1182,7 @@ namespace Adam
                bot.ID == mid.ID)
             {
                 Tile corner = new Tile();
-    corner.ID = mid.ID;
+                corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 2;
@@ -1075,7 +1194,7 @@ namespace Adam
                 top.ID == mid.ID)
             {
                 Tile corner = new Tile();
-corner.ID = mid.ID;
+                corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 3;
@@ -1087,7 +1206,7 @@ corner.ID = mid.ID;
                top.ID == mid.ID)
             {
                 Tile corner = new Tile();
-corner.ID = mid.ID;
+                corner.ID = mid.ID;
                 corner.drawRectangle = drawRectangle;
                 corner.texture = texture;
                 corner.subID = 7;
@@ -1104,178 +1223,186 @@ corner.ID = mid.ID;
 
 
         public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
-{
-    //Add decoration on top of grass tile.
-    if (ID == 1 && subID == 5)
-    {
-        int indexAbove = TileIndex - mapWidth;
-        if (array[indexAbove].ID == 0)
         {
-            int rand = GameWorld.RandGen.Next(0, 10);
-            if (rand == 0) //flower
+            //Add decoration on top of grass tile.
+            if (ID == 1 && subID == 5)
             {
-                array[indexAbove].ID = 17;
-            }
-            else if (rand == 1 || rand == 2) //tall grass
-            {
-                array[indexAbove].ID = 9;
-            }
-            else //short grass
-            {
-                array[indexAbove].ID = 7;
+                int indexAbove = TileIndex - mapWidth;
+                if (array[indexAbove].ID == 0)
+                {
+                    int rand = GameWorld.RandGen.Next(0, 10);
+                    if (rand == 0) //flower
+                    {
+                        array[indexAbove].ID = 17;
+                    }
+                    else if (rand == 1 || rand == 2) //tall grass
+                    {
+                        array[indexAbove].ID = 9;
+                    }
+                    else //short grass
+                    {
+                        array[indexAbove].ID = 7;
+                    }
+
+                    array[indexAbove].DefineTexture();
+                }
             }
 
-            array[indexAbove].DefineTexture();
+            // Random decorations for sand.
+            if (ID == 5 && subID == 5)
+            {
+                int indexAbove = TileIndex - mapWidth * 2;
+                int indexToRight = TileIndex - mapWidth + 1;
+                int indexTopRight = indexAbove + 1;
+                if (array[indexAbove].ID == 0 && array[indexToRight].ID == 0 && array[indexTopRight].ID == 0)
+                {
+                    int rand = GameWorld.RandGen.Next(0, 100);
+                    if (rand > 80)
+                        array[indexAbove].ID = 44;
+
+                    array[indexAbove].DefineTexture();
+                }
+            }
+
+            // Random decoration for hellstone.
+            if (ID == 4 && subID == 5)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                if (array[indexAbove].ID == 0)
+                {
+                    int rand = GameWorld.RandGen.Next(0, 10);
+
+                    // Skull.
+                    if (rand == 0)
+                    {
+                        array[indexAbove].ID = 55;
+                    }
+                    array[indexAbove].DefineTexture();
+                }
+            }
+
+            // Hellstone stalagmmite.
+            if (ID == 4 && subID == 13)
+            {
+                if (GameWorld.RandGen.Next(0, 5) == 1)
+                {
+                    int indexBelow = TileIndex + mapWidth;
+                    int indexTwoBelow = indexBelow + mapWidth;
+                    if (array[indexBelow].ID == 0 && array[indexTwoBelow].ID == 0)
+                    {
+                        array[indexBelow].ID = 56;
+                        array[indexBelow].DefineTexture();
+                    }
+                }
+            }
+
+            // Randomly generate different plain textures for certain tiles.
+            // Grass
+            if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
+            {
+                switch (GameWorld.RandGen.Next(0, 4))
+                {
+                    case 0:
+                        subID = 101;
+                        break;
+                    case 1:
+                        subID = 102;
+                        break;
+                    case 2:
+                        subID = 103;
+                        break;
+                    case 3:
+                        subID = 104;
+                        break;
+                }
+
+                DefineTexture();
+            }
         }
-    }
 
-    // Random decorations for sand.
-    if (ID == 5 && subID == 5)
-    {
-        int indexAbove = TileIndex - mapWidth * 2;
-        int indexToRight = TileIndex - mapWidth + 1;
-        int indexTopRight = indexAbove + 1;
-        if (array[indexAbove].ID == 0 && array[indexToRight].ID == 0 && array[indexTopRight].ID == 0)
+        private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
         {
-            int rand = GameWorld.RandGen.Next(0, 100);
-            if (rand > 80)
-                array[indexAbove].ID = 44;
-
-            array[indexAbove].DefineTexture();
-        }
-    }
-
-    // Random decoration for hellstone.
-    if (ID == 4 && subID == 5)
-    {
-        int indexAbove = TileIndex - mapWidth;
-        if (array[indexAbove].ID == 0)
-        {
-            int rand = GameWorld.RandGen.Next(0, 10);
-
-            // Skull.
-            if (rand == 0)
+            Vector2 position = new Vector2();
+            switch (subID)
             {
-                array[indexAbove].ID = 55;
+                case 0: //Dirt
+                    position = startingPoint + new Vector2(0, 0);
+                    break;
+                case 1: //Inner bot right corner
+                    position = startingPoint + new Vector2(1, 0);
+                    break;
+                case 2: //Inner bot left corner
+                    position = startingPoint + new Vector2(2, 0);
+                    break;
+                case 3: //Inner top left corner
+                    position = startingPoint + new Vector2(3, 0);
+                    break;
+                case 4: //Top left corner
+                    position = startingPoint + new Vector2(0, 1);
+                    break;
+                case 5: //Top
+                    position = startingPoint + new Vector2(1, 1);
+                    break;
+                case 6: //Top right corner
+                    position = startingPoint + new Vector2(2, 1);
+                    break;
+                case 7: //Inner top right corner
+                    position = startingPoint + new Vector2(3, 1);
+                    break;
+                case 8: //Left
+                    position = startingPoint + new Vector2(0, 2);
+                    break;
+                case 9: //Middle
+                    position = startingPoint + new Vector2(1, 2);
+                    break;
+                case 10: //Right
+                    position = startingPoint + new Vector2(2, 2);
+                    break;
+                case 11: //Top vertical
+                    position = startingPoint + new Vector2(3, 2);
+                    break;
+                case 12: //Bot left corner
+                    position = startingPoint + new Vector2(0, 3);
+                    break;
+                case 13: //Bot
+                    position = startingPoint + new Vector2(1, 3);
+                    break;
+                case 14: //Bot right corner
+                    position = startingPoint + new Vector2(2, 3);
+                    break;
+                case 15: //Middle vertical
+                    position = startingPoint + new Vector2(3, 3);
+                    break;
+                case 16: //Left horizontal
+                    position = startingPoint + new Vector2(0, 4);
+                    break;
+                case 17: //Middle horizontal
+                    position = startingPoint + new Vector2(1, 4);
+                    break;
+                case 18: //Right horizontal
+                    position = startingPoint + new Vector2(2, 4);
+                    break;
+                case 19: //Bot vertical
+                    position = startingPoint + new Vector2(3, 4);
+                    break;
             }
-            array[indexAbove].DefineTexture();
+            return position;
         }
-    }
 
-    // Hellstone stalagmmite.
-    if (ID == 4 && subID == 13)
-    {
-        if (GameWorld.RandGen.Next(0, 5) == 1)
+        public float GetOpacity()
         {
-            int indexBelow = TileIndex + mapWidth;
-            int indexTwoBelow = indexBelow + mapWidth;
-            if (array[indexBelow].ID == 0 && array[indexTwoBelow].ID == 0)
-            {
-                array[indexBelow].ID = 56;
-                array[indexBelow].DefineTexture();
-            }
+            return opacity;
         }
-    }
 
-    // Randomly generate different plain textures for certain tiles.
-    // Grass
-    if (ID == 1 && subID == 0 && GameWorld.RandGen.Next(0, 100) > 80)
-    {
-        switch (GameWorld.RandGen.Next(0, 4))
+        /// <summary>
+        /// Returns true if the animation was specifically told not to run.
+        /// </summary>
+        public bool AnimationStopped
         {
-            case 0:
-                subID = 101;
-                break;
-            case 1:
-                subID = 102;
-                break;
-            case 2:
-                subID = 103;
-                break;
-            case 3:
-                subID = 104;
-                break;
+            get; set;
         }
 
-        DefineTexture();
-    }
-}
-
-private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
-{
-    Vector2 position = new Vector2();
-    switch (subID)
-    {
-        case 0: //Dirt
-            position = startingPoint + new Vector2(0, 0);
-            break;
-        case 1: //Inner bot right corner
-            position = startingPoint + new Vector2(1, 0);
-            break;
-        case 2: //Inner bot left corner
-            position = startingPoint + new Vector2(2, 0);
-            break;
-        case 3: //Inner top left corner
-            position = startingPoint + new Vector2(3, 0);
-            break;
-        case 4: //Top left corner
-            position = startingPoint + new Vector2(0, 1);
-            break;
-        case 5: //Top
-            position = startingPoint + new Vector2(1, 1);
-            break;
-        case 6: //Top right corner
-            position = startingPoint + new Vector2(2, 1);
-            break;
-        case 7: //Inner top right corner
-            position = startingPoint + new Vector2(3, 1);
-            break;
-        case 8: //Left
-            position = startingPoint + new Vector2(0, 2);
-            break;
-        case 9: //Middle
-            position = startingPoint + new Vector2(1, 2);
-            break;
-        case 10: //Right
-            position = startingPoint + new Vector2(2, 2);
-            break;
-        case 11: //Top vertical
-            position = startingPoint + new Vector2(3, 2);
-            break;
-        case 12: //Bot left corner
-            position = startingPoint + new Vector2(0, 3);
-            break;
-        case 13: //Bot
-            position = startingPoint + new Vector2(1, 3);
-            break;
-        case 14: //Bot right corner
-            position = startingPoint + new Vector2(2, 3);
-            break;
-        case 15: //Middle vertical
-            position = startingPoint + new Vector2(3, 3);
-            break;
-        case 16: //Left horizontal
-            position = startingPoint + new Vector2(0, 4);
-            break;
-        case 17: //Middle horizontal
-            position = startingPoint + new Vector2(1, 4);
-            break;
-        case 18: //Right horizontal
-            position = startingPoint + new Vector2(2, 4);
-            break;
-        case 19: //Bot vertical
-            position = startingPoint + new Vector2(3, 4);
-            break;
-    }
-    return position;
-}
-
-public float GetOpacity()
-{
-    return opacity;
-}
-
-public static Dictionary<int, string> Names = new Dictionary<int, string>()
+        public static Dictionary<int, string> Names = new Dictionary<int, string>()
         {
             {1,"Grass" },
             {2,"Stone" },

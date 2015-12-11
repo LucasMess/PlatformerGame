@@ -81,7 +81,7 @@ namespace Adam.UI
                     selectionSquares[i].Texture = GameWorld.SpriteSheet;
 
                     //Create transparent tiles to show selected tile
-                    Tile fakeTile = new Tile(); 
+                    Tile fakeTile = new Tile(true); 
                     fakeTile.ID = gameWorld.levelEditor.selectedID;
                     fakeTile.drawRectangle = hovered.drawRectangle;
                     fakeTile.IsBrushTile = true;

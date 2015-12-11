@@ -103,7 +103,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_16");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_20");
             UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
@@ -181,11 +181,10 @@ namespace Adam
                 int Ycoor = ((i - (i % width)) / width) * Main.Tilesize;
 
 
-                array[i] = new Tile();
+                array[i] = new Tile(Xcoor, Ycoor);
                 Tile t = array[i];
                 t.ID = (byte)IDs[i];
                 t.TileIndex = i;
-                t.drawRectangle = new Rectangle(Xcoor, Ycoor, Main.Tilesize, Main.Tilesize);
             }
 
             foreach (Tile t in array)
@@ -206,11 +205,6 @@ namespace Adam
         public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
         {
             ParticleSystem.Update();
-            //for (int i = 0; i < 1; i++)
-            //{
-            //    SmokeParticle par = new SmokeParticle(player.GetCollRectangle().Center.X - 4, player.GetCollRectangle().Bottom);
-            //    ParticleSystem.Add(par);
-            //}
 
             if (Session.IsActive)
             {
