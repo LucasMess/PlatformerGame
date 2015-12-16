@@ -130,7 +130,8 @@ namespace Adam
             }
 
             Vector2 startingPoint;
-            sizeOfTile = new Vector2(1, 1);
+
+            Destroy();
 
             #region DefiningTextures
             switch (ID)
@@ -276,7 +277,11 @@ namespace Adam
                     drawRectangle.Y = originalPosition.Y - Main.Tilesize;
                     Chest chest = new Chest(this);
                     break;
-                case 20://tech
+                case 20:// Marble Brick
+                    hasConnectPattern = true;
+                    isSolid = true;
+                    startingPoint = new Vector2(24,0);
+                    positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);                    
                     break;
                 case 21://scaffolding
                     positionInSpriteSheet = new Vector2(13, 6);
@@ -506,6 +511,7 @@ namespace Adam
                             positionInSpriteSheet = new Vector2(8, 30);
                             break;
                     }
+                    new Portal(this);
                     break;
                 case 59: // Bed.
                     frameCount = new Vector2(1, 0);
@@ -580,7 +586,19 @@ namespace Adam
                     positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 109: // Wallpaper.
-                    positionInSpriteSheet = new Vector2(12, 9);
+                    sunlightPassesThrough = false;
+                    switch (subID)
+                    {
+                        case 0://Plain
+                            positionInSpriteSheet = new Vector2(23, 8);
+                            break;
+                        case 1://Top point
+                            positionInSpriteSheet = new Vector2(23, 7);
+                            break;
+                        case 2://Bottom point
+                            positionInSpriteSheet = new Vector2(23, 9);
+                            break;
+                    }
                     break;
                 case 110: // Black.
                     positionInSpriteSheet = new Vector2(13, 9);
@@ -787,7 +805,7 @@ namespace Adam
                     width = Main.Tilesize;
                     height = Main.Tilesize;
                 }
-                Console.WriteLine("Name:{0}, Width:{1}, Height:{2}", name, width, height);
+               // Console.WriteLine("Name:{0}, Width:{1}, Height:{2}", name, width, height);
                 drawRectangle = new Rectangle(drawRectangle.X, drawRectangle.Y, width, height);
 
             }
@@ -804,6 +822,8 @@ namespace Adam
             {
                 OnTileUpdate(this);
             }
+            if (OnPlayerInteraction != null&& GameWorld.Instance.GetPlayer().GetCollRectangle().Intersects(drawRectangle) && InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
+                OnPlayerInteraction(this);
 
             Animate();
             ChangeOpacity();
@@ -907,6 +927,12 @@ namespace Adam
         {
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
+
+
+            sizeOfTile = new Vector2(1, 1);
+
+
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -947,6 +973,22 @@ namespace Adam
         public void FindConnectedTextures(Tile[] array, int mapWidth)
         {
             cornerPieces = new List<Tile>();
+
+            // Wallpaper.
+            if (ID == 109)
+            {
+                int indexAbove = TileIndex - mapWidth;
+                int indexBelow = TileIndex + mapWidth;
+                if (array[indexAbove].ID != 109)
+                {
+                    subID = 1;
+                }
+                else if (array[indexBelow].ID != 109)
+                {
+                    subID = 2;
+                }
+                else subID = 0;
+            }
 
             //Marble columns
             if (ID == 18)
@@ -1442,7 +1484,7 @@ namespace Adam
             {17,"Flower" },
             {18,"Marble Column" },
             {19,"Chest" },
-            {20,"Tech" },
+            {20,"Marble Brick" },
             {21,"Scaffolding" },
             {22,"Spikes" },
             {23,"Water" },

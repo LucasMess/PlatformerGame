@@ -30,7 +30,7 @@ namespace Adam
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 throw;
-            }
+            }            
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Adam
             {
                 Console.WriteLine("Song location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 throw;
-            }           
+            }
         }
 
         /// <summary>

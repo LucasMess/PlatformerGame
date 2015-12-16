@@ -58,8 +58,7 @@ namespace Adam.Levels
 
         public Vector2 SpawnPoint { get; set; }
 
-        public AdamDictionary SignMessages { get; set; }
-        public AdamDictionary PortalLinks { get; set; }
+        public string[] MetaData { get; set; }
 
         public WorldData()
         {
@@ -126,79 +125,6 @@ namespace Adam.Levels
                     }
                     break;
             }
-        }
-
-        public void OpenLevelLocally(bool editMode)
-        {
-            if (!IsDealingWithData)
-            {
-                Thread thread = new Thread(new ThreadStart(BackgroundThread_Open));
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
-                IsDealingWithData = true;
-                this.editMode = editMode;
-            }
-        }
-
-        private void BackgroundThread_Open()
-        {
-            WorldConfigFile data;
-            OpenFileDialog op = new OpenFileDialog();
-            op.DefaultExt = "lvl";
-            op.Title = "Choose level to open:";
-            DialogResult dr = op.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
-                using (FileStream fs = new FileStream(op.FileName, FileMode.Open))
-                {
-                    data = (WorldConfigFile)xs.Deserialize(fs);
-                }
-
-                if (editMode)
-                {
-                    data.LoadIntoEditor();
-                }
-                else
-                {
-                    data.LoadIntoPlay();
-                }
-
-            }
-
-            IsDealingWithData = false;
-        }
-
-        public void SaveLevelLocally()
-        {
-            if (!IsDealingWithData)
-            {
-                Thread thread = new Thread(new ThreadStart(BackgroundThread_Save));
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
-                IsDealingWithData = true;
-            }
-        }
-
-        private void BackgroundThread_Save()
-        {
-            SaveFileDialog sv = new SaveFileDialog();
-            sv.AddExtension = true;
-            sv.DefaultExt = "lvl";
-            sv.Title = "Save level as:";
-
-            DialogResult dr = sv.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
-                using (FileStream fs = new FileStream(sv.FileName, FileMode.OpenOrCreate))
-                {
-                    xs.Serialize(fs, new WorldConfigFile(GameWorld.Instance));
-                }
-
-            }
-
-            IsDealingWithData = false;
         }
 
         public void CreateNewWorld(string levelName)

@@ -44,7 +44,7 @@ namespace Adam
             texture = GameWorld.SpriteSheet;
         }
 
-        public void Load(ContentManager Content)
+        public void Load()
         {
             this.Content = Content;
             texture = GameWorld.SpriteSheet;

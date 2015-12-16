@@ -29,8 +29,7 @@ namespace Adam.GameData
 
         public bool CanBeEdited { get; set; } = true;
 
-        public AdamDictionary SignMessages { get; set; }
-        public AdamDictionary PortalLinks { get; set; }
+        public string[] MetaData { get; set; }
 
         public WorldConfigFile() { }
 
@@ -44,8 +43,7 @@ namespace Adam.GameData
             BackgroundID = 1;
             SoundtrackID = 1;
 
-            SignMessages = new AdamDictionary();
-            PortalLinks = new AdamDictionary();
+            MetaData = new string[LevelWidth * LevelHeight];
 
             TileIDs = new byte[LevelWidth * LevelHeight];
             WallIDs = new byte[LevelWidth * LevelHeight];
@@ -71,6 +69,8 @@ namespace Adam.GameData
             BackgroundID = gw.worldData.BackgroundID;
             SoundtrackID = gw.worldData.SoundtrackID;
 
+            MetaData = gw.worldData.MetaData;
+
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
@@ -78,26 +78,33 @@ namespace Adam.GameData
                 WallIDs[i] = gw.wallArray[i].ID;
             }
 
-            //Gets sign texts
-            SignMessages = gw.worldData.SignMessages;
-            PortalLinks = gw.worldData.PortalLinks;
-
             //Level conditions
             IsRaining = gw.worldData.IsRaining;
             IsSnowing = gw.worldData.IsSnowing;
             HasClouds = gw.worldData.HasClouds;
         }
 
+        ///// <summary>
+        ///// Converts Adam Dictionary into a Adam Smart String.
+        ///// </summary>
+        ///// <returns></returns>
+        //private string ToAss(AdamDictionary ad)
+        //{
+            
+        //}
+
         public void LoadIntoEditor()
         {
             TransferDataToWorldData();
-            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Edit);
+            //GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Edit);
+            Main.Instance.ChangeState(GameState.GameWorld, GameMode.Edit);
         }
 
         public void LoadIntoPlay()
         {
             TransferDataToWorldData();
-            GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Play);
+            //GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Play);
+            Main.Instance.ChangeState(GameState.GameWorld, GameMode.Play);
         }
 
         public void TransferDataToWorldData()
@@ -113,8 +120,7 @@ namespace Adam.GameData
             gw.worldData.BackgroundID = BackgroundID;
             gw.worldData.SoundtrackID = SoundtrackID;
 
-            gw.worldData.SignMessages = SignMessages;
-            gw.worldData.PortalLinks = PortalLinks;
+            gw.worldData.MetaData = MetaData;
 
             gw.worldData.LevelName = LevelName;
             gw.worldData.HasClouds = HasClouds;

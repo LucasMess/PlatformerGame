@@ -88,7 +88,6 @@ namespace Adam
         public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
         public List<Entity> entities;
         public List<Particle> particles;
-        ContentManager Content;
         public GameTime gameTime;
         public WorldData worldData;
         public GameWorld() { }
@@ -101,7 +100,7 @@ namespace Adam
 
             placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_17");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_18");
             UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
@@ -115,9 +114,9 @@ namespace Adam
 
         public bool TryLoadFromFile(GameMode CurrentGameMode)
         {
+
             byte[] tileIDs = worldData.TileIDs;
             byte[] wallIDs = worldData.WallIDs;
-            this.Content = Main.Content;
 
             this.CurrentGameMode = CurrentGameMode;
             Main.ObjectiveTracker.Clear();
@@ -125,16 +124,20 @@ namespace Adam
             keyList = new List<Key>();
             entities = new List<Entity>();
             particles = new List<Particle>();
+            chunkManager = new ChunkManager();
 
             player = game1.player;
 
             int width = worldData.LevelWidth;
             int height = worldData.LevelHeight;
 
+            if (worldData.MetaData == null)
+                worldData.MetaData = new string[width * height];
+
             int maxClouds = width / 100;
             for (int i = 0; i < maxClouds; i++)
             {
-                cloudList.Add(new Cloud(Content, new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
+                cloudList.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
             }
 
             tileArray = new Tile[tileIDs.Length];
@@ -146,7 +149,7 @@ namespace Adam
             lightEngine.Load();
 
             playerLight = new Light();
-            playerLight.Load(Content);
+            playerLight.Load();
 
             background.Load();
 
@@ -216,7 +219,6 @@ namespace Adam
                 }
             }
 
-            this.Content = Main.Content;
             this.gameTime = gameTime;
             this.camera = camera;
 

@@ -67,11 +67,6 @@ namespace Adam.UI
             properties.Show();
         }
 
-        public void SaveButton_MouseClicked()
-        {
-            gameWorld.worldData.SaveLevelLocally();
-        }
-
         private void OpenButton_MouseClicked()
         {
 

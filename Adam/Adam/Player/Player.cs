@@ -372,6 +372,13 @@ namespace Adam
                 PlayerAttacked(damageArea, damage);
         }
 
+        public void Teleport(Vector2 position)
+        {
+            collRectangle.X = (int)position.X;
+            collRectangle.Y = (int)position.Y;
+            Overlay.Instance.FadeIn();
+        }
+
         protected override Rectangle DrawRectangle
         {
             get

@@ -301,7 +301,6 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-
             //if (!IsActive) return;
             GameTime = gameTime;
 
@@ -427,8 +426,8 @@ namespace Adam
                     if (gameWorld.isOnDebug)
                         break;
 
-                    gameWorld.Update(gameTime, CurrentGameMode, camera);
                     player.Update(gameTime);
+                    gameWorld.Update(gameTime, CurrentGameMode, camera);
                     overlay.Update(gameTime, player, gameWorld);
                     Dialog.Update(gameTime);
                     ObjectiveTracker.Update(gameTime);
@@ -485,6 +484,8 @@ namespace Adam
                     SpriteBatch.End();
                     break;
                 case GameState.GameWorld:
+                    if (IsLoadingContent)
+                        break;
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
                     gameWorld.DrawBackground(SpriteBatch);
                     gameWorld.DrawClouds(SpriteBatch);

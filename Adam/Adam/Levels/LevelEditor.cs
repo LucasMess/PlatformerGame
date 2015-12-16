@@ -105,8 +105,6 @@ namespace Adam.Levels
             tileDescription.Update();
 
             CheckIfOnInventory();
-            CheckIfWantsToSave();
-            CheckIfWantsToOpen();
             CheckIfPositioningPlayer();
             CheckIfChangedToWallMode();
 
@@ -168,22 +166,6 @@ namespace Adam.Levels
             if (InputHelper.IsKeyUp(Keys.L))
             {
                 recentlyChanged = false;
-            }
-        }
-
-        private void CheckIfWantsToSave()
-        {
-            if (InputHelper.IsKeyDown(Keys.F2))
-            {
-                GameWorld.Instance.worldData.SaveLevelLocally();
-            }
-        }
-
-        private void CheckIfWantsToOpen()
-        {
-            if (InputHelper.IsKeyDown(Keys.F1))
-            {
-                GameWorld.Instance.worldData.OpenLevelLocally(true);
             }
         }
 
@@ -260,24 +242,25 @@ namespace Adam.Levels
             InputHelper.GetMouseRectGameWorld(ref mouseRect);
             IndexOfMouse = (mouseRect.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (mouseRect.Center.X / Main.Tilesize);
 
-            if (onPortalLinkMode)
-            {
-                selectedPortal.ConnectingLine = new Line(selectedPortal.Position, new Vector2(mouseRect.X, mouseRect.Y));
+            //if (onPortalLinkMode)
+            //{
+            //    selectedPortal.ConnectingLine = new Line(selectedPortal.Position, new Vector2(mouseRect.X, mouseRect.Y));
 
-                if (InputHelper.IsLeftMousePressed())
-                {
-                    // If mouse is on portal.
-                    if (CurrentArray[IndexOfMouse].ID == 57)
-                    {
-                        //Portal link = CurrentArray[IndexOfMouse].specialTile.portal;
-                        //if (link.PortalID != selectedPortal.PortalID)
-                        //{
-                        //    //GameWorld.Instance.worldData.PortalLinks.Add()
-                        //}
-                    }
-                }
-                return;
-            }
+            //    if (InputHelper.IsLeftMousePressed())
+            //    {
+            //        // If mouse is on portal.
+            //        if (CurrentArray[IndexOfMouse].ID == 58)
+            //        {
+            //            Portal link = (Portal)GameWorld.Instance.worldData.PortalLinks.TryGetValue(IndexOfMouse);
+            //            if (link.PortalID != selectedPortal.PortalID)
+            //            {
+            //                selectedPortal.LinkTo(link);
+            //                onPortalLinkMode = false;
+            //            }
+            //        }
+            //    }
+            //    return;
+            //}
 
             if (InputHelper.IsLeftMousePressed())
             {
@@ -369,12 +352,12 @@ namespace Adam.Levels
         private void SpecialInteractionTile()
         {
             // Portal
-            if (CurrentArray[IndexOfMouse].ID == 58)
-            {
-                onPortalLinkMode = true;
-                //selectedPortal = CurrentArray[IndexOfMouse].specialTile.portal;
-                Console.WriteLine("On portal link mode!");   
-            }
+            //if (CurrentArray[IndexOfMouse].ID == 58)
+            //{
+            //    onPortalLinkMode = true;
+            //    selectedPortal = (Portal)GameWorld.Instance.worldData.PortalLinks.TryGetValue(IndexOfMouse);
+            //    Console.WriteLine("On portal link mode!");   
+            //}
         }
 
         private void Construct(Tile t)

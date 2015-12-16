@@ -167,7 +167,6 @@ namespace Adam.UI
             try
             {
                 DataFolder.PlayLevel(selectedLevel.FilePath);
-
             }
             catch (Exception e)
             {

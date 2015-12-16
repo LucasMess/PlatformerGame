@@ -20,7 +20,7 @@ namespace Adam
 
         Vector2 PrefRes;
 
-        public Cloud(ContentManager Content, Vector2 monitorResolution,int maxClouds, int i)
+        public Cloud(Vector2 monitorResolution, int maxClouds, int i)
         {
             texture1 = ContentHelper.LoadTexture("Backgrounds/cloud_1");
             texture2 = ContentHelper.LoadTexture("Backgrounds/cloud_2");

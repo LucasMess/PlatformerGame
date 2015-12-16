@@ -1,4 +1,5 @@
-﻿using Adam.UI.Elements;
+﻿using Adam.UI;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,44 @@ namespace Adam.Interactables
     /// <summary>
     /// Used to teleport the player to different areas of the map.
     /// </summary>
+    [Serializable]
     public class Portal
     {
-        Vector2 position;
         Portal linkedPortal;
         Line line;
         bool locked = true;
         int tileIndex;
+        int linkedPortalIndex;
+        string linkedLevelName = "Tutorial";
 
-        public Portal(int x, int y, int tileIndex)
+        public Portal(Tile sourceTile)
         {
-            position = new Vector2(x, y);
-            this.tileIndex = tileIndex;
+            tileIndex = sourceTile.TileIndex;
+            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
+            sourceTile.OnPlayerInteraction += SourceTile_OnPlayerInteraction;
+
+            if (GameWorld.Instance.worldData.MetaData[tileIndex] != null)
+            {
+                string metadata = GameWorld.Instance.worldData.MetaData[tileIndex];
+                if (metadata.StartsWith("pl:nl:"))
+                {
+                    //linkedLevelName = metadata.Substring(7);
+                }
+            }
+            Console.WriteLine("Creating a Portal");
+        }
+
+        private void SourceTile_OnPlayerInteraction(Tile t)
+        {
+            t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
+            DataFolder.PlayLevel(DataFolder.LevelDirectory + "/" + linkedLevelName + ".lvl");
+        }
+
+        private void SourceTile_OnTileDestroyed(Tile t)
+        {
+            t.OnTileDestroyed -= SourceTile_OnTileDestroyed;
+            t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
+            GameWorld.Instance.worldData.MetaData[tileIndex] = null;
         }
 
         /// <summary>
@@ -62,31 +89,6 @@ namespace Adam.Interactables
         public bool Locked
         {
             get; set;
-        }
-
-        /// <summary>
-        /// Returns the destination coordinates of portal, unless it is locked or there is not linked portal.
-        /// </summary>
-        /// <param name="destination"></param>
-        /// <returns></returns>
-        public bool TryGetDestination(out Vector2 destination)
-        {
-            if (locked)
-            {
-                destination = Vector2.Zero;
-                return false;
-            }
-
-            destination = linkedPortal.Position;
-            return true;
-        }
-
-        /// <summary>
-        /// returns the position of the portal.
-        /// </summary>
-        public Vector2 Position
-        {
-            get;
         }
     }
 }
