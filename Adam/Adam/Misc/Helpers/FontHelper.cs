@@ -24,10 +24,13 @@ namespace Adam.Misc.Helpers
             if (text == null)
                 text = "";
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X + outlineWidth, position.Y), outlineColor,0,new Vector2(0,0),1,SpriteEffects.None,0);
-            spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            int i = outlineWidth;
+
+            spriteBatch.DrawString(font, text, new Vector2(position.X + i, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y + i), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X + i, position.Y + i), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 
             spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y), fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
         }
@@ -42,7 +45,7 @@ namespace Adam.Misc.Helpers
 
             foreach (string word in words)
             {
-             Vector2 size = spriteFont.MeasureString(word);
+                Vector2 size = spriteFont.MeasureString(word);
 
                 if (lineWidth + size.X < maxLineWidth)
                 {

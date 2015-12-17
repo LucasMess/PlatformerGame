@@ -928,10 +928,10 @@ namespace Adam
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
 
-
+            
             sizeOfTile = new Vector2(1, 1);
-
-
+            DefineDrawRectangle();
+            DefineSourceRectangle();
 
         }
 

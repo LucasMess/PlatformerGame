@@ -318,6 +318,7 @@ namespace Adam.Levels
                         continue;
                     else
                     {
+                        CurrentArray[i].Destroy();
                         CurrentArray[i].ID = (byte)desiredID;
                         if (onWallMode)
                         {
