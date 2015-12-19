@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.UI.Elements;
 
@@ -15,34 +16,34 @@ namespace Adam
 {
     public class Chest
     {
-        bool isOpen;
-        SoundFx openSound;
-        Rectangle collRectangle;
-        Tile sourceTile;
+        bool _isOpen;
+        SoundFx _openSound;
+        Rectangle _collRectangle;
+        Tile _sourceTile;
 
         public bool IsGolden { get; set; }
 
         public Chest(Tile tile)
         {
             //hello
-            openSound = new SoundFx("Sounds/Chest/open");
-            collRectangle = new Rectangle(tile.drawRectangle.X, tile.drawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
-            sourceTile = tile;
-            sourceTile.OnTileUpdate += Update;
-            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
-            sourceTile.AnimationStopped = true;
+            _openSound = new SoundFx("Sounds/Chest/open");
+            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
+            _sourceTile = tile;
+            _sourceTile.OnTileUpdate += Update;
+            _sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
+            _sourceTile.AnimationStopped = true;
         }
 
         private void SourceTile_OnTileDestroyed(Tile t)
         {
-            sourceTile.OnTileUpdate -= Update;
-            sourceTile.OnTileDestroyed -= SourceTile_OnTileDestroyed;
+            _sourceTile.OnTileUpdate -= Update;
+            _sourceTile.OnTileDestroyed -= SourceTile_OnTileDestroyed;
         }
 
         public void Update(Tile t)
         {
-            Player player = GameWorld.Instance.player;
-            if (player.GetCollRectangle().Intersects(collRectangle) && !isOpen)
+            Player player = GameWorld.Instance.Player;
+            if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
             {
                 // If player presses open button, open chest.
                 if (InputHelper.IsKeyDown(Keys.W))
@@ -55,13 +56,13 @@ namespace Adam
 
         void Open()
         {
-            openSound.PlayOnce();
-            isOpen = true;
+            _openSound.PlayOnce();
+            _isOpen = true;
 
             int maxGems = GameWorld.RandGen.Next(10, 20);
             for (int i = 0; i < maxGems; i++)
             {
-                GameWorld.Instance.entities.Add(new Gem(collRectangle.Center.X, collRectangle.Center.Y));
+                GameWorld.Instance.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));
             }
         }
     }

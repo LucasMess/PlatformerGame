@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public static class InputHelper
     {
-        static Timer keyPressedTimer = new Timer();
+        static Timer _keyPressedTimer = new Timer();
 
         public static bool IsAnyInputPressed()
         {
@@ -102,20 +103,20 @@ namespace Adam
         public static void GetMouseRectGameWorld(ref Rectangle rectangle)
         {
             GetMouseRectRenderTarget(ref rectangle);
-            rectangle.X = (int)(rectangle.X / GameWorld.Instance.camera.GetZoom());
-            rectangle.Y = (int)(rectangle.Y / GameWorld.Instance.camera.GetZoom());
-            rectangle.X -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.X);
-            rectangle.Y -= (int)(GameWorld.Instance.camera.lastCameraLeftCorner.Y);
+            rectangle.X = (int)(rectangle.X / GameWorld.Instance.Camera.GetZoom());
+            rectangle.Y = (int)(rectangle.Y / GameWorld.Instance.Camera.GetZoom());
+            rectangle.X -= (int)(GameWorld.Instance.Camera.LastCameraLeftCorner.X);
+            rectangle.Y -= (int)(GameWorld.Instance.Camera.LastCameraLeftCorner.Y);
         }
 
         /// <summary>
         /// Returns true if the backspace key is pressed.
         /// </summary>
         /// <returns></returns>
-        public static bool IsBackSpacePressed(KeyboardState newKB, KeyboardState oldKB)
+        public static bool IsBackSpacePressed(KeyboardState newKb, KeyboardState oldKb)
         {
             // Prevents multiple deletion.
-            if (oldKB == newKB)
+            if (oldKb == newKb)
                 return false;
             if (IsKeyDown(Keys.Back))
                 return true;
@@ -144,7 +145,7 @@ namespace Adam
             {
                 for (int i = 0; i < keysPressed.Length; i++)
                 {
-                    if (!oldKeyboard.IsKeyDown(keysPressed[i]) || keyPressedTimer.TimeElapsedInMilliSeconds > 500)
+                    if (!oldKeyboard.IsKeyDown(keysPressed[i]) || _keyPressedTimer.TimeElapsedInMilliSeconds > 500)
                     {
                         char tempChar;
                         FindPressedKey(keysPressed[i], out tempChar);
@@ -163,17 +164,17 @@ namespace Adam
                 // Check for long key presses.
                 if (keysPressed.Length == 1)
                 {
-                    keyPressedTimer.Increment();
+                    _keyPressedTimer.Increment();
                 }
                 else
                 {
-                    keyPressedTimer.Reset();
+                    _keyPressedTimer.Reset();
                 }
             }
             else
             {
                 // No input pressed.
-                keyPressedTimer.Reset();
+                _keyPressedTimer.Reset();
                 return false;
             }
 

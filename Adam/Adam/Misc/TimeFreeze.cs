@@ -7,30 +7,30 @@ namespace Adam.Misc
 {
     public class TimeFreeze
     {
-        private Timer freezeTimer = new Timer();
+        private Timer _freezeTimer = new Timer();
 
         public TimeFreeze()
         {
-            freezeTimer.SetTimeReached += FreezeTimer_SetTimeReached;
+            _freezeTimer.SetTimeReached += FreezeTimer_SetTimeReached;
         }
 
         private void FreezeTimer_SetTimeReached()
         {
-            isTimeFrozen = false;
+            _isTimeFrozen = false;
         }
 
         public void AddFrozenTime(double time)
         {
-            isTimeFrozen = true;
-            freezeTimer.ResetAndWaitFor(time);
+            _isTimeFrozen = true;
+            _freezeTimer.ResetAndWaitFor(time);
         }
 
-        private bool isTimeFrozen;
+        private bool _isTimeFrozen;
 
         public bool IsTimeFrozen()
         {
-            freezeTimer.Increment();
-            return isTimeFrozen;
+            _freezeTimer.Increment();
+            return _isTimeFrozen;
         }
     }
 }

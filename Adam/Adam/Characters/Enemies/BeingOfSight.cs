@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
@@ -11,10 +12,10 @@ namespace Adam.Characters.Enemies
 {
     class BeingOfSight : Enemy
     {
-        const int projSpeed = 5;
-        float rotation;
+        const int ProjSpeed = 5;
+        float _rotation;
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -29,7 +30,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -40,11 +41,11 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return EnemyDB.BeingOfSight_MaxHealth;
+                return EnemyDb.BeingOfSightMaxHealth;
             }
         }
 
-        SoundFx meanSound;
+        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
@@ -53,7 +54,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        SoundFx attackSound;
+        SoundFx _attackSound;
         protected override SoundFx AttackSound
         {
             get
@@ -62,7 +63,7 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        SoundFx deathSound;
+        SoundFx _deathSound;
         protected override SoundFx DeathSound
         {
             get
@@ -75,16 +76,16 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public BeingOfSight(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, 32, 32);
-            sourceRectangle = new Rectangle(0, 0, 16, 16);
+            CollRectangle = new Rectangle(x, y, 32, 32);
+            SourceRectangle = new Rectangle(0, 0, 16, 16);
             Texture = ContentHelper.LoadTexture("Void Shurinken/voisshurinken");
-            velocity = new Vector2(1, 1);
+            Velocity = new Vector2(1, 1);
 
             CollidedWithTileAbove += OnCollisionWithTerrainAbove;
             CollidedWithTileBelow += OnCollisionWithTerrainBelow;
@@ -95,42 +96,42 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            rotation += .05f;
+            _rotation += .05f;
 
             base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, collRectangle, sourceRectangle, Color.White, rotation, new Vector2(8, 8), SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color.White, _rotation, new Vector2(8, 8), SpriteEffects.None, 0);
         }
 
         public void OnCollisionWithTerrainAbove(Entity entity, Tile tile)
         {
-            velocity.Y = -velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, projSpeed);
-            GameWorld.Instance.entities.Add(proj);
+            Velocity.Y = -Velocity.Y;
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, ProjSpeed);
+            GameWorld.Instance.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            velocity.Y = -velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, -projSpeed);
-            GameWorld.Instance.entities.Add(proj);
+            Velocity.Y = -Velocity.Y;
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, -ProjSpeed);
+            GameWorld.Instance.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
-            velocity.X = -velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, projSpeed, 0);
-            GameWorld.Instance.entities.Add(proj);
+            Velocity.X = -Velocity.X;
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, ProjSpeed, 0);
+            GameWorld.Instance.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
-            velocity.X = -velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, -projSpeed, 0);
-            GameWorld.Instance.entities.Add(proj);
+            Velocity.X = -Velocity.X;
+            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, -ProjSpeed, 0);
+            GameWorld.Instance.Entities.Add(proj);
         }
     }
 }

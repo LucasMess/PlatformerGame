@@ -10,25 +10,25 @@ namespace Adam.Misc
 {
     public class KeyboardLayout
     {
-        const uint KLF_ACTIVATE = 1; //activate the layout
-        const int KL_NAMELENGTH = 9; // length of the leopard buffer
-        const string LANG_EN_US = "00000409";
-        const string LANG_HE_IL = "0001101A";
+        const uint KlfActivate = 1; //activate the layout
+        const int KlNamelength = 9; // length of the leopard buffer
+        const string LangEnUs = "00000409";
+        const string LangHeIl = "0001101A";
 
         [DllImport("user32.dll")]
         private static extern long LoadKeyboardLayout(
-              string pwszKLID,  // input locale identifier
-              uint Flags       // input locale identifier options
+              string pwszKlid,  // input locale identifier
+              uint flags       // input locale identifier options
               );
 
         [DllImport("user32.dll")]
         private static extern long GetKeyboardLayoutName(
-              System.Text.StringBuilder pwszKLID  //[out] string that receives the name of the locale identifier
+              System.Text.StringBuilder pwszKlid  //[out] string that receives the name of the locale identifier
               );
 
-        public static string getName()
+        public static string GetName()
         {
-            System.Text.StringBuilder name = new System.Text.StringBuilder(KL_NAMELENGTH);
+            System.Text.StringBuilder name = new System.Text.StringBuilder(KlNamelength);
             GetKeyboardLayoutName(name);
             return name.ToString();
         }
@@ -36,63 +36,63 @@ namespace Adam.Misc
 
     public class CharacterEventArgs : EventArgs
     {
-        private readonly char character;
-        private readonly int lParam;
+        private readonly char _character;
+        private readonly int _lParam;
 
         public CharacterEventArgs(char character, int lParam)
         {
-            this.character = character;
-            this.lParam = lParam;
+            this._character = character;
+            this._lParam = lParam;
         }
 
         public char Character
         {
-            get { return character; }
+            get { return _character; }
         }
 
         public int Param
         {
-            get { return lParam; }
+            get { return _lParam; }
         }
 
         public int RepeatCount
         {
-            get { return lParam & 0xffff; }
+            get { return _lParam & 0xffff; }
         }
 
         public bool ExtendedKey
         {
-            get { return (lParam & (1 << 24)) > 0; }
+            get { return (_lParam & (1 << 24)) > 0; }
         }
 
         public bool AltPressed
         {
-            get { return (lParam & (1 << 29)) > 0; }
+            get { return (_lParam & (1 << 29)) > 0; }
         }
 
         public bool PreviousState
         {
-            get { return (lParam & (1 << 30)) > 0; }
+            get { return (_lParam & (1 << 30)) > 0; }
         }
 
         public bool TransitionState
         {
-            get { return (lParam & (1 << 31)) > 0; }
+            get { return (_lParam & (1 << 31)) > 0; }
         }
     }
 
     public class KeyEventArgs : EventArgs
     {
-        private Keys keyCode;
+        private Keys _keyCode;
 
         public KeyEventArgs(Keys keyCode)
         {
-            this.keyCode = keyCode;
+            this._keyCode = keyCode;
         }
 
         public Keys KeyCode
         {
-            get { return keyCode; }
+            get { return _keyCode; }
         }
     }
 
@@ -118,21 +118,21 @@ namespace Adam.Misc
 
         delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        static bool initialized;
-        static IntPtr prevWndProc;
-        static WndProc hookProcDelegate;
-        static IntPtr hIMC;
+        static bool _initialized;
+        static IntPtr _prevWndProc;
+        static WndProc _hookProcDelegate;
+        static IntPtr _hImc;
 
         //various Win32 constants that we need
-        const int GWL_WNDPROC = -4;
-        const int WM_KEYDOWN = 0x100;
-        const int WM_KEYUP = 0x101;
-        const int WM_CHAR = 0x102;
-        const int WM_IME_SETCONTEXT = 0x0281;
-        const int WM_INPUTLANGCHANGE = 0x51;
-        const int WM_GETDLGCODE = 0x87;
-        const int WM_IME_COMPOSITION = 0x10f;
-        const int DLGC_WANTALLKEYS = 4;
+        const int GwlWndproc = -4;
+        const int WmKeydown = 0x100;
+        const int WmKeyup = 0x101;
+        const int WmChar = 0x102;
+        const int WmImeSetcontext = 0x0281;
+        const int WmInputlangchange = 0x51;
+        const int WmGetdlgcode = 0x87;
+        const int WmImeComposition = 0x10f;
+        const int DlgcWantallkeys = 4;
 
         public static object Instance { get; internal set; }
 
@@ -141,10 +141,10 @@ namespace Adam.Misc
         static extern IntPtr ImmGetContext(IntPtr hWnd);
 
         [DllImport("Imm32.dll", CharSet = CharSet.Unicode)]
-        static extern IntPtr ImmAssociateContext(IntPtr hWnd, IntPtr hIMC);
+        static extern IntPtr ImmAssociateContext(IntPtr hWnd, IntPtr hImc);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
@@ -156,49 +156,49 @@ namespace Adam.Misc
         /// <param name="window">The XNA window to which text input should be linked.</param>
         public static void Initialize(GameWindow window)
         {
-            if (initialized)
+            if (_initialized)
                 throw new InvalidOperationException("TextInput.Initialize can only be called once!");
 
-            hookProcDelegate = new WndProc(HookProc);
-            prevWndProc = (IntPtr)SetWindowLong(window.Handle, GWL_WNDPROC,
-                (int)Marshal.GetFunctionPointerForDelegate(hookProcDelegate));
+            _hookProcDelegate = new WndProc(HookProc);
+            _prevWndProc = (IntPtr)SetWindowLong(window.Handle, GwlWndproc,
+                (int)Marshal.GetFunctionPointerForDelegate(_hookProcDelegate));
 
-            hIMC = ImmGetContext(window.Handle);
-            initialized = true;
+            _hImc = ImmGetContext(window.Handle);
+            _initialized = true;
         }
 
         static IntPtr HookProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
-            IntPtr returnCode = CallWindowProc(prevWndProc, hWnd, msg, wParam, lParam);
+            IntPtr returnCode = CallWindowProc(_prevWndProc, hWnd, msg, wParam, lParam);
 
             switch (msg)
             {
-                case WM_GETDLGCODE:
-                    returnCode = (IntPtr)(returnCode.ToInt32() | DLGC_WANTALLKEYS);
+                case WmGetdlgcode:
+                    returnCode = (IntPtr)(returnCode.ToInt32() | DlgcWantallkeys);
                     break;
 
-                case WM_KEYDOWN:
+                case WmKeydown:
                     if (KeyDown != null)
                         KeyDown(null, new KeyEventArgs((Keys)wParam));
                     break;
 
-                case WM_KEYUP:
+                case WmKeyup:
                     if (KeyUp != null)
                         KeyUp(null, new KeyEventArgs((Keys)wParam));
                     break;
 
-                case WM_CHAR:
+                case WmChar:
                     if (CharEntered != null)
                         CharEntered(null, new CharacterEventArgs((char)wParam, lParam.ToInt32()));
                     break;
 
-                case WM_IME_SETCONTEXT:
+                case WmImeSetcontext:
                     if (wParam.ToInt32() == 1)
-                        ImmAssociateContext(hWnd, hIMC);
+                        ImmAssociateContext(hWnd, _hImc);
                     break;
 
-                case WM_INPUTLANGCHANGE:
-                    ImmAssociateContext(hWnd, hIMC);
+                case WmInputlangchange:
+                    ImmAssociateContext(hWnd, _hImc);
                     returnCode = (IntPtr)1;
                     break;
             }

@@ -10,48 +10,48 @@ namespace Adam
 {
     public class Cloud
     {
-        public Texture2D texture1, texture2, texture3, texture4, currentTexture;
-        Vector2 velocity;
-        Vector2 position;
-        public Rectangle rectangle;
-        int maxClouds;
-        int distance;
-        Random randGen;
+        public Texture2D Texture1, Texture2, Texture3, Texture4, CurrentTexture;
+        Vector2 _velocity;
+        Vector2 _position;
+        public Rectangle Rectangle;
+        int _maxClouds;
+        int _distance;
+        Random _randGen;
 
-        Vector2 PrefRes;
+        Vector2 _prefRes;
 
         public Cloud(Vector2 monitorResolution, int maxClouds, int i)
         {
-            texture1 = ContentHelper.LoadTexture("Backgrounds/cloud_1");
-            texture2 = ContentHelper.LoadTexture("Backgrounds/cloud_2");
-            texture3 = ContentHelper.LoadTexture("Backgrounds/cloud_3");
-            texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
-            this.maxClouds = maxClouds;
-            PrefRes = monitorResolution;
-            randGen = new Random(i);
-            velocity = new Vector2(-.1f, 0);
-            distance = (int)monitorResolution.X * 2/ maxClouds;
+            Texture1 = ContentHelper.LoadTexture("Backgrounds/cloud_1");
+            Texture2 = ContentHelper.LoadTexture("Backgrounds/cloud_2");
+            Texture3 = ContentHelper.LoadTexture("Backgrounds/cloud_3");
+            Texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
+            this._maxClouds = maxClouds;
+            _prefRes = monitorResolution;
+            _randGen = new Random(i);
+            _velocity = new Vector2(-.1f, 0);
+            _distance = (int)monitorResolution.X * 2/ maxClouds;
             Create(i);
         }
 
         public void Create(int i)
         {
-            rectangle = new Rectangle(i * distance, randGen.Next(0, 200), texture1.Width, texture1.Height);
-            position = new Vector2(rectangle.X, rectangle.Y);
+            Rectangle = new Rectangle(i * _distance, _randGen.Next(0, 200), Texture1.Width, Texture1.Height);
+            _position = new Vector2(Rectangle.X, Rectangle.Y);
 
-            switch (randGen.Next(0, 3))
+            switch (_randGen.Next(0, 3))
             {
                 case 0:
-                    currentTexture = texture1;
+                    CurrentTexture = Texture1;
                     break;
                 case 1:
-                    currentTexture = texture2;
+                    CurrentTexture = Texture2;
                     break;
                 case 2:
-                    currentTexture = texture3;
+                    CurrentTexture = Texture3;
                     break;
                 case 3:
-                    currentTexture = texture4;
+                    CurrentTexture = Texture4;
                     break;
             }
 
@@ -59,21 +59,21 @@ namespace Adam
 
         public void Update(GameTime gameTime)
         {
-            position.X += velocity.X;
-            rectangle.X = (int)position.X;
+            _position.X += _velocity.X;
+            Rectangle.X = (int)_position.X;
         }
 
         public void CheckOutOfRange()
         {
-            if (position.X < -texture1.Width)
+            if (_position.X < -Texture1.Width)
             {
-                position.X = (int)PrefRes.X * 2;
+                _position.X = (int)_prefRes.X * 2;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(currentTexture, rectangle, Color.White);
+            spriteBatch.Draw(CurrentTexture, Rectangle, Color.White);
         }
     }
 }

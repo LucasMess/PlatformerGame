@@ -11,39 +11,39 @@ namespace Adam
 {
     public class Cursor
     {
-        public Texture2D texture;
-        public Rectangle rectangle, sourceRectangle;
-        MouseState mouseState;
-        Vector2 origin;
-        public Vector2 positionOnScreen;
-        public Vector2 positionOnGame;
-        Vector2 monitorRes;
+        public Texture2D Texture;
+        public Rectangle Rectangle, SourceRectangle;
+        MouseState _mouseState;
+        Vector2 _origin;
+        public Vector2 PositionOnScreen;
+        public Vector2 PositionOnGame;
+        Vector2 _monitorRes;
 
-        public bool isPressed;
-        double scrollTimer;
-        int scrollWheel, lastScrollWheel;
+        public bool IsPressed;
+        double _scrollTimer;
+        int _scrollWheel, _lastScrollWheel;
 
         public Cursor()
         {
         }
 
-        public void Load(ContentManager Content)
+        public void Load(ContentManager content)
         {
-            texture = ContentHelper.LoadTexture("Tiles/spritemap_3");
-            rectangle = new Rectangle(0, 0, Main.Tilesize, Main.Tilesize);
-            sourceRectangle = rectangle;
-            origin = new Vector2(Main.Tilesize / 2, Main.Tilesize / 2);
+            Texture = ContentHelper.LoadTexture("Tiles/spritemap_3");
+            Rectangle = new Rectangle(0, 0, Main.Tilesize, Main.Tilesize);
+            SourceRectangle = Rectangle;
+            _origin = new Vector2(Main.Tilesize / 2, Main.Tilesize / 2);
         }
 
         public void Update(GameTime gameTime, Vector2 cameraPos)
         {
-            mouseState = Mouse.GetState();
-            positionOnScreen.X = mouseState.X;
-            positionOnScreen.Y = mouseState.Y;
+            _mouseState = Mouse.GetState();
+            PositionOnScreen.X = _mouseState.X;
+            PositionOnScreen.Y = _mouseState.Y;
 
-            positionOnGame = new Vector2(cameraPos.X - Main.DefaultResWidth / 2 + positionOnScreen.X, cameraPos.Y - Main.DefaultResHeight + positionOnScreen.Y);
+            PositionOnGame = new Vector2(cameraPos.X - Main.DefaultResWidth / 2 + PositionOnScreen.X, cameraPos.Y - Main.DefaultResHeight + PositionOnScreen.Y);
 
-            scrollWheel = mouseState.ScrollWheelValue;
+            _scrollWheel = _mouseState.ScrollWheelValue;
 
             //if (scrollWheel < lastScrollWheel)
             //{
@@ -54,35 +54,35 @@ namespace Adam
             //    sourceRectangle.X -= Game1.tileSize;
             //}
 
-            scrollTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            _scrollTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             int scrollBuffer = 20;
-            if (Keyboard.GetState().IsKeyDown(Keys.Q) && scrollTimer > scrollBuffer)
+            if (Keyboard.GetState().IsKeyDown(Keys.Q) && _scrollTimer > scrollBuffer)
             {
-                sourceRectangle.X += Main.Tilesize;
-                scrollTimer = 0;
+                SourceRectangle.X += Main.Tilesize;
+                _scrollTimer = 0;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.E) && scrollTimer > scrollBuffer)
+            if (Keyboard.GetState().IsKeyDown(Keys.E) && _scrollTimer > scrollBuffer)
             {
-                sourceRectangle.X -= Main.Tilesize;
-                scrollTimer = 0;
+                SourceRectangle.X -= Main.Tilesize;
+                _scrollTimer = 0;
             }
 
 
-            if (sourceRectangle.X < 0)
-                sourceRectangle = new Rectangle(texture.Width - Main.Tilesize, texture.Height - Main.Tilesize, Main.Tilesize, Main.Tilesize);
-            if (sourceRectangle.X > texture.Width)
+            if (SourceRectangle.X < 0)
+                SourceRectangle = new Rectangle(Texture.Width - Main.Tilesize, Texture.Height - Main.Tilesize, Main.Tilesize, Main.Tilesize);
+            if (SourceRectangle.X > Texture.Width)
             {
-                sourceRectangle.X = 0;
-                sourceRectangle.Y += Main.Tilesize;
+                SourceRectangle.X = 0;
+                SourceRectangle.Y += Main.Tilesize;
             }
-            if (sourceRectangle.Y > texture.Height)
-                sourceRectangle.Y = 0;
+            if (SourceRectangle.Y > Texture.Height)
+                SourceRectangle.Y = 0;
 
-            lastScrollWheel = scrollWheel;
+            _lastScrollWheel = _scrollWheel;
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
-                isPressed = true;
-            else isPressed = false;
+            if (_mouseState.LeftButton == ButtonState.Pressed)
+                IsPressed = true;
+            else IsPressed = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)

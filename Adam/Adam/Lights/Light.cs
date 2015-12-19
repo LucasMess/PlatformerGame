@@ -6,100 +6,101 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class Light
     {
         public Entity source;
-        public Rectangle drawRectangle;
-        protected Rectangle sourceRectangle;
-        protected Rectangle original;
-        public Texture2D texture;
-        public float glowIntensity;
-        public int pos;
-        public int index;
-        int tileSize;
-        public bool lightHere;
-        bool shakyLight;
-        protected Vector2 origin;
-        public  Color color = Color.White;
+        public Rectangle DrawRectangle;
+        protected Rectangle SourceRectangle;
+        protected Rectangle Original;
+        public Texture2D Texture;
+        public float GlowIntensity;
+        public int Pos;
+        public int Index;
+        int _tileSize;
+        public bool LightHere;
+        bool _shakyLight;
+        protected Vector2 Origin;
+        public  Color Color = Color.White;
         protected ContentManager Content;
-        protected Glow glow;
+        protected Glow Glow;
         protected const int DefaultSize = 256;
-        protected int size = DefaultSize;
-        Random randGen;
-        public float intensity = 1f;
-        protected bool isShaky;
+        protected int Size = DefaultSize;
+        Random _randGen;
+        public float Intensity = 1f;
+        protected bool IsShaky;
 
-        protected float opacity = 1f;
+        protected float Opacity = 1f;
 
         public Light()
         {
-            this.tileSize = Main.Tilesize;
+            this._tileSize = Main.Tilesize;
             this.Content = Main.Content;
-            color = Color.White;
-            opacity = 1;
-            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
-            texture = GameWorld.SpriteSheet;
+            Color = Color.White;
+            Opacity = 1;
+            SourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+            Texture = GameWorld.SpriteSheet;
         }
 
         public void Load()
         {
             this.Content = Content;
-            texture = GameWorld.SpriteSheet;
-            sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
-            origin = new Vector2(128, 128);
+            Texture = GameWorld.SpriteSheet;
+            SourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+            Origin = new Vector2(128, 128);
         }
 
         public void CalculateLighting(Tile[] tile, Tile[] wall, Texture2D map)
         {
             int w = map.Width;
 
-            if (tile[pos].sunlightPassesThrough == true && wall[pos].sunlightPassesThrough == true)
+            if (tile[Pos].SunlightPassesThrough == true && wall[Pos].SunlightPassesThrough == true)
             {
                 //sky light
-                lightHere = true;
-                drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
-                origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
-                sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+                LightHere = true;
+                DrawRectangle = new Rectangle(tile[Pos].DrawRectangle.Center.X, tile[Pos].DrawRectangle.Center.Y, (int)(256 * Intensity), (int)(256 * Intensity));
+                Origin = new Vector2(256 * Intensity / 2, 256 * Intensity / 2);
+                SourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                drawRectangle.X = drawRectangle.X - (int)origin.X;
-                drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+                DrawRectangle.X = DrawRectangle.X - (int)Origin.X;
+                DrawRectangle.Y = DrawRectangle.Y - (int)Origin.Y;
             }
 
-            if (tile[pos].sunlightPassesThrough == true && tile[pos].ID != 0)
+            if (tile[Pos].SunlightPassesThrough == true && tile[Pos].Id != 0)
             {
                 //light sauce
-                lightHere = true;
-                randGen = new Random(tile[pos].drawRectangle.X);
+                LightHere = true;
+                _randGen = new Random(tile[Pos].DrawRectangle.X);
 
-                switch (tile[pos].ID)
+                switch (tile[Pos].Id)
                 {
                     case 11:
-                        intensity = 3;
-                        texture = GameWorld.SpriteSheet;
-                        shakyLight = true;
-                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
-                        origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
-                        sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+                        Intensity = 3;
+                        Texture = GameWorld.SpriteSheet;
+                        _shakyLight = true;
+                        DrawRectangle = new Rectangle(tile[Pos].DrawRectangle.Center.X, tile[Pos].DrawRectangle.Center.Y, (int)(256 * Intensity), (int)(256 * Intensity));
+                        Origin = new Vector2(256 * Intensity / 2, 256 * Intensity / 2);
+                        SourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                        drawRectangle.X = drawRectangle.X - (int)origin.X;
-                        drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+                        DrawRectangle.X = DrawRectangle.X - (int)Origin.X;
+                        DrawRectangle.Y = DrawRectangle.Y - (int)Origin.Y;
 
-                        original = drawRectangle;
+                        Original = DrawRectangle;
                         break;
                     case 12:
-                        intensity = 4;
-                        texture = GameWorld.SpriteSheet;
-                        drawRectangle = new Rectangle(tile[pos].drawRectangle.Center.X, tile[pos].drawRectangle.Center.Y, (int)(256 * intensity), (int)(256 * intensity));
-                        origin = new Vector2(256 * intensity / 2, 256 * intensity / 2);
-                        sourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
+                        Intensity = 4;
+                        Texture = GameWorld.SpriteSheet;
+                        DrawRectangle = new Rectangle(tile[Pos].DrawRectangle.Center.X, tile[Pos].DrawRectangle.Center.Y, (int)(256 * Intensity), (int)(256 * Intensity));
+                        Origin = new Vector2(256 * Intensity / 2, 256 * Intensity / 2);
+                        SourceRectangle = new Rectangle(16 * 16, 15 * 16, 64, 64);
 
-                        drawRectangle.X = drawRectangle.X - (int)origin.X;
-                        drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+                        DrawRectangle.X = DrawRectangle.X - (int)Origin.X;
+                        DrawRectangle.Y = DrawRectangle.Y - (int)Origin.Y;
 
-                        original = drawRectangle;
+                        Original = DrawRectangle;
                         break;
                 }
             }
@@ -107,44 +108,44 @@ namespace Adam
 
         public virtual void Update(Entity source)
         {
-            glow?.Update(this);
+            Glow?.Update(this);
         }
 
         protected void SetPosition(Rectangle parentRectangle)
         {
-            drawRectangle = new Rectangle(parentRectangle.Center.X, parentRectangle.Center.Y, size, size);
-            origin = new Vector2(size / 2, size / 2);
+            DrawRectangle = new Rectangle(parentRectangle.Center.X, parentRectangle.Center.Y, Size, Size);
+            Origin = new Vector2(Size / 2, Size / 2);
 
-            drawRectangle.X = drawRectangle.X - (int)origin.X;
-            drawRectangle.Y = drawRectangle.Y - (int)origin.Y;
+            DrawRectangle.X = DrawRectangle.X - (int)Origin.X;
+            DrawRectangle.Y = DrawRectangle.Y - (int)Origin.Y;
 
-            original = drawRectangle;
+            Original = DrawRectangle;
 
         }
 
         public virtual void Update()
         {
-            glow?.Update(this);
+            Glow?.Update(this);
         }
 
         public void Shake()
         {
             Random randGen = GameWorld.RandGen;
-            drawRectangle = original;
+            DrawRectangle = Original;
 
-            drawRectangle.X += randGen.Next(-6, 7);
-            drawRectangle.Y += randGen.Next(-6, 7);
+            DrawRectangle.X += randGen.Next(-6, 7);
+            DrawRectangle.Y += randGen.Next(-6, 7);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (lightHere)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
+            if (LightHere)
+                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White * Opacity);
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)
         {
-            glow?.Draw(spriteBatch);
+            Glow?.Draw(spriteBatch);
         }
 
     }

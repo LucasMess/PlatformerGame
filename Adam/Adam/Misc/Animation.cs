@@ -11,29 +11,29 @@ namespace Adam
 
     public class Animation
     {
-        public Texture2D texture;
-        public Rectangle drawRectangle, sourceRectangle;
+        public Texture2D Texture;
+        public Rectangle DrawRectangle, SourceRectangle;
 
-        public int switchFrame, restart;
-        int currentFrameCount;
-        double frameTimer;
-        double waitTimer;
-        public bool canStart;
-        public bool isFlipped;
-        Vector2 frameCount;
+        public int SwitchFrame, Restart;
+        int _currentFrameCount;
+        double _frameTimer;
+        double _waitTimer;
+        public bool CanStart;
+        public bool IsFlipped;
+        Vector2 _frameCount;
         public Color Color = Color.White;
 
-        AnimationType type;
+        AnimationType _type;
 
         public Animation(Texture2D texture, Rectangle drawRectangle, int switchFrame, int restart, AnimationType type)
         {
-            this.type = type;
-            sourceRectangle = new Rectangle(0, 0, drawRectangle.Width, drawRectangle.Height);
-            this.texture = texture;
-            this.drawRectangle = drawRectangle;
-            this.switchFrame = switchFrame;
-            this.restart = restart;
-            frameCount = new Vector2(texture.Width / drawRectangle.Width, texture.Height / drawRectangle.Height);
+            this._type = type;
+            SourceRectangle = new Rectangle(0, 0, drawRectangle.Width, drawRectangle.Height);
+            this.Texture = texture;
+            this.DrawRectangle = drawRectangle;
+            this.SwitchFrame = switchFrame;
+            this.Restart = restart;
+            _frameCount = new Vector2(texture.Width / drawRectangle.Width, texture.Height / drawRectangle.Height);
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Adam
         /// <param name="sourceRectangle"></param>
         public Animation(Texture2D texture, Rectangle drawRectangle, Rectangle sourceRectangle)
         {
-            this.texture = texture;
-            this.drawRectangle = drawRectangle;
-            this.sourceRectangle = sourceRectangle;
+            this.Texture = texture;
+            this.DrawRectangle = drawRectangle;
+            this.SourceRectangle = sourceRectangle;
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace Adam
         /// <param name="animationData"></param>
         public void Update(GameTime gameTime, Rectangle drawRectangle, AnimationData animationData)
         {
-            this.drawRectangle = drawRectangle;
-            sourceRectangle.Y = animationData.StartingY * sourceRectangle.Height;
+            this.DrawRectangle = drawRectangle;
+            SourceRectangle.Y = animationData.StartingY * SourceRectangle.Height;
             animationData.FrameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;         
 
             switch (animationData.AnimationType)
@@ -68,11 +68,11 @@ namespace Adam
                     {
                         animationData.FrameTimer = 0;
                         animationData.CurrentFrame++;
-                        sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
+                        SourceRectangle.X = animationData.CurrentFrame * SourceRectangle.Width;
                         if (animationData.CurrentFrame > animationData.FrameCount.X)
                         {
                             animationData.CurrentFrame = 0;
-                            sourceRectangle.X = 0;
+                            SourceRectangle.X = 0;
                         }
                     }
                     break;
@@ -81,7 +81,7 @@ namespace Adam
                     {
                         animationData.FrameTimer = 0;
                         animationData.CurrentFrame++;
-                        sourceRectangle.X = animationData.CurrentFrame * sourceRectangle.Width;
+                        SourceRectangle.X = animationData.CurrentFrame * SourceRectangle.Width;
                         if (animationData.CurrentFrame >= animationData.FrameCount.X)
                         {
                             animationData.Done = true;
@@ -95,7 +95,7 @@ namespace Adam
 
         public void Update(GameTime gameTime, Rectangle rectangle)
         {
-            this.drawRectangle = rectangle;
+            this.DrawRectangle = rectangle;
             Update(gameTime);
         }
 
@@ -105,46 +105,46 @@ namespace Adam
         /// <param name="rectangle"></param>
         public void UpdateRectangle(Rectangle rectangle)
         {
-            this.drawRectangle = rectangle;
+            this.DrawRectangle = rectangle;
         }
         
         public void Update(GameTime gameTime)
         {
-            switch (type)
+            switch (_type)
             {
                 case AnimationType.Loop:
-                    frameTimer += gameTime.ElapsedGameTime.Milliseconds;
+                    _frameTimer += gameTime.ElapsedGameTime.Milliseconds;
 
-                    if (frameTimer > switchFrame)
+                    if (_frameTimer > SwitchFrame)
                     {
-                        currentFrameCount++;
-                        sourceRectangle.X += sourceRectangle.Width;
-                        frameTimer = 0;
+                        _currentFrameCount++;
+                        SourceRectangle.X += SourceRectangle.Width;
+                        _frameTimer = 0;
                     }
-                    if (currentFrameCount >= frameCount.X)
+                    if (_currentFrameCount >= _frameCount.X)
                     {
-                        currentFrameCount = 0;
-                        sourceRectangle.X = 0;
+                        _currentFrameCount = 0;
+                        SourceRectangle.X = 0;
                     }
 
                     break;
                 case AnimationType.PlayInIntervals:
-                    frameTimer += gameTime.ElapsedGameTime.Milliseconds;
-                    waitTimer += gameTime.ElapsedGameTime.Milliseconds;
+                    _frameTimer += gameTime.ElapsedGameTime.Milliseconds;
+                    _waitTimer += gameTime.ElapsedGameTime.Milliseconds;
 
-                    if (waitTimer > restart)
+                    if (_waitTimer > Restart)
                     {
-                        if (frameTimer > switchFrame)
+                        if (_frameTimer > SwitchFrame)
                         {
-                            currentFrameCount++;
-                            sourceRectangle.X += sourceRectangle.Width;
-                            frameTimer = 0;
+                            _currentFrameCount++;
+                            SourceRectangle.X += SourceRectangle.Width;
+                            _frameTimer = 0;
                         }
-                        if (currentFrameCount >= frameCount.X)
+                        if (_currentFrameCount >= _frameCount.X)
                         {
-                            currentFrameCount = 0;
-                            sourceRectangle.X = 0;
-                            waitTimer = 0;
+                            _currentFrameCount = 0;
+                            SourceRectangle.X = 0;
+                            _waitTimer = 0;
                         }
                     }
 
@@ -153,17 +153,17 @@ namespace Adam
 
                     break;
                 case AnimationType.SlowPanVertical:
-                    if (canStart)
+                    if (CanStart)
                     {
-                        frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                        if (frameTimer > switchFrame)
+                        _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                        if (_frameTimer > SwitchFrame)
                         {
-                            frameTimer = 0;
-                            sourceRectangle.Y += 1;
+                            _frameTimer = 0;
+                            SourceRectangle.Y += 1;
                         }
-                        if (sourceRectangle.Y >= sourceRectangle.Y * frameCount.Y)
+                        if (SourceRectangle.Y >= SourceRectangle.Y * _frameCount.Y)
                         {
-                            canStart = false;
+                            CanStart = false;
                         }
                     }
                     break;
@@ -176,9 +176,9 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!isFlipped)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color);
-            else spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+            if (!IsFlipped)
+                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color);
+            else spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
         }
 
 

@@ -7,40 +7,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Characters.Enemies
 {
     public class Hellboar : Enemy, INewtonian, IAnimated
     {
-        bool isAngry;
-        List<Rectangle> rects;
+        bool _isAngry;
+        List<Rectangle> _rects;
 
-        double idleTimer;
-        double chargingTimer;
-        bool isWalking;
-        bool destinationSet;
-        bool isCharging;
-        bool isStunned;
-        int countTilCharge;
+        double _idleTimer;
+        double _chargingTimer;
+        bool _isWalking;
+        bool _destinationSet;
+        bool _isCharging;
+        bool _isStunned;
+        int _countTilCharge;
 
-        SoundFx playerSeen;
-        SoundFx fire;
-        SoundFx breath;
-        SoundFx charging;
-        SoundFx crash;
-        SoundFx tweet;
+        SoundFx _playerSeen;
+        SoundFx _fire;
+        SoundFx _breath;
+        SoundFx _charging;
+        SoundFx _crash;
+        SoundFx _tweet;
 
         public Hellboar(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, 50 * 2, 76);
-            sourceRectangle = new Rectangle(0, 0, 68, 60);
+            CollRectangle = new Rectangle(x, y, 50 * 2, 76);
+            SourceRectangle = new Rectangle(0, 0, 68, 60);
             Texture = ContentHelper.LoadTexture("Enemies/hellboar_spritesheet");
 
-            playerSeen = new SoundFx("Sounds/Hellboar/playerSeen", this);
-            fire = new SoundFx("Sounds/Hellboar/fire", this);
-            crash = new SoundFx("Sounds/Hellboar/crash", this);
-            breath = new SoundFx("Sounds/Hellboar/breath", this);
-            tweet = new SoundFx("Sounds/Hellboar/tweet", this);
+            _playerSeen = new SoundFx("Sounds/Hellboar/playerSeen", this);
+            _fire = new SoundFx("Sounds/Hellboar/fire", this);
+            _crash = new SoundFx("Sounds/Hellboar/crash", this);
+            _breath = new SoundFx("Sounds/Hellboar/breath", this);
+            _tweet = new SoundFx("Sounds/Hellboar/tweet", this);
         }
 
         private Rectangle _respawnRect;
@@ -50,7 +51,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -69,10 +70,10 @@ namespace Adam.Characters.Enemies
 
         private void CheckIfStunned()
         {
-            if (isStunned)
+            if (_isStunned)
             {
-                tweet.PlayIfStopped();
-                isAngry = false;
+                _tweet.PlayIfStopped();
+                _isAngry = false;
 
             }
         }
@@ -81,45 +82,45 @@ namespace Adam.Characters.Enemies
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
-            if (!isAngry)
+            if (!_isAngry)
             {
-                countTilCharge = 0;
+                _countTilCharge = 0;
                 return;
             }
             else
             {
-                chargingTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (chargingTimer > 1)
+                _chargingTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_chargingTimer > 1)
                 {
-                    countTilCharge++;
-                    breath.PlayNewInstanceOnce();
-                    breath.Reset();
-                    chargingTimer = 0;
+                    _countTilCharge++;
+                    _breath.PlayNewInstanceOnce();
+                    _breath.Reset();
+                    _chargingTimer = 0;
                 }
 
-                if (countTilCharge > 2)
+                if (_countTilCharge > 2)
                 {
-                    isCharging = true;
+                    _isCharging = true;
                 }
             }
 
-            if (isCharging)
+            if (_isCharging)
             {
                 CurrentAnimationState = AnimationState.Charging;
-                if (!destinationSet)
+                if (!_destinationSet)
                 {
                     int fastSpeed = 5;
                     if (IsPlayerToTheRight())
                     {
-                        velocity.X = fastSpeed;
+                        Velocity.X = fastSpeed;
                         IsFacingRight = true;                        
                     }
                     else
                     {
-                        velocity.X = -fastSpeed;
+                        Velocity.X = -fastSpeed;
                         IsFacingRight = false;
                     }
-                    destinationSet = true;
+                    _destinationSet = true;
                 }
             }
 
@@ -127,24 +128,24 @@ namespace Adam.Characters.Enemies
 
         private void CheckForPlayer()
         {
-            if (isCharging)
+            if (_isCharging)
                 return;
 
             GameWorld gameWorld = GameWorld.Instance;
             Player player = GameWorld.Instance.GetPlayer();
 
-            if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out rects))
+            if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out _rects))
             {
-                isAngry = true;
-                playerSeen.PlayOnce();
-                fire.PlayIfStopped();
-                if (!isCharging)
+                _isAngry = true;
+                _playerSeen.PlayOnce();
+                _fire.PlayIfStopped();
+                if (!_isCharging)
                     IsFacingRight = IsPlayerToTheRight();
             }
             else
             {
-                isAngry = false;
-                playerSeen.Reset();
+                _isAngry = false;
+                _playerSeen.Reset();
             }
         }
 
@@ -152,24 +153,24 @@ namespace Adam.Characters.Enemies
         private void WalkRandomly()
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
-            if (isAngry && !isCharging)
+            if (_isAngry && !_isCharging)
             {
                 CurrentAnimationState = AnimationState.Transforming;
-                velocity.X = 0;
+                Velocity.X = 0;
             }
             else
             {
-                idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (idleTimer > 5000 && !isWalking)
+                _idleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_idleTimer > 5000 && !_isWalking)
                 {
-                    idleTimer = 0;
-                    isWalking = true;
+                    _idleTimer = 0;
+                    _isWalking = true;
                     CurrentAnimationState = AnimationState.Walking;
-                    velocity.X = 2f;
+                    Velocity.X = 2f;
 
                     if (GameWorld.RandGen.Next(0, 2) == 0)
                     {
-                        velocity.X = -velocity.X;
+                        Velocity.X = -Velocity.X;
                         IsFacingRight = false;
                     }
                     else
@@ -178,12 +179,12 @@ namespace Adam.Characters.Enemies
                     }
                 }
 
-                if (idleTimer > 1000 && isWalking)
+                if (_idleTimer > 1000 && _isWalking)
                 {
-                    idleTimer = 0;
-                    isWalking = false;
+                    _idleTimer = 0;
+                    _isWalking = false;
                     CurrentAnimationState = AnimationState.Still;
-                    velocity.X = 0;
+                    Velocity.X = 0;
                 }
             }
         }
@@ -191,30 +192,30 @@ namespace Adam.Characters.Enemies
         private void Stun()
         {
             //Change animation to stun
-            velocity.X = 0;
-            isCharging = false;
-            destinationSet = false;
-            countTilCharge = 0;
-            isAngry = false;
-            isStunned = true;
-            crash.PlayOnce();
-            crash.Reset();
+            Velocity.X = 0;
+            _isCharging = false;
+            _destinationSet = false;
+            _countTilCharge = 0;
+            _isAngry = false;
+            _isStunned = true;
+            _crash.PlayOnce();
+            _crash.Reset();
         }
 
         public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
-            if (isCharging)
+            if (_isCharging)
             {
                 Stun();
             }
-            velocity.X = 0;
+            Velocity.X = 0;
             CurrentAnimationState = AnimationState.Still;
         }
 
         public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
-            velocity.X = 0;
-            if (isCharging)
+            Velocity.X = 0;
+            if (_isCharging)
             {
                 Stun();
             }
@@ -227,16 +228,16 @@ namespace Adam.Characters.Enemies
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    animation.Update(gameTime, DrawRectangle, animationData[0]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[0]);
                     break;
                 case AnimationState.Walking:
-                    animation.Update(gameTime, DrawRectangle, animationData[1]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[1]);
                     break;
                 case AnimationState.Transforming:
-                    animation.Update(gameTime, DrawRectangle, animationData[2]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[2]);
                     break;
                 case AnimationState.Charging:
-                    animation.Update(gameTime, DrawRectangle, animationData[3]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[3]);
                     break;
             }
         }
@@ -257,7 +258,7 @@ namespace Adam.Characters.Enemies
 
         public bool IsAboveTile { get; set; }
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -269,7 +270,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return EnemyDB.Hellboar_MaxHealth;
+                return EnemyDb.HellboarMaxHealth;
             }
         }
 
@@ -297,31 +298,31 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new AnimationData[]
+                if (_animationData == null)
+                    _animationData = new AnimationData[]
                     {
                         new Adam.AnimationData(250,4,0,AnimationType.Loop),
                         new Adam.AnimationData(250,4,1,AnimationType.Loop),
                         new Adam.AnimationData(250,4,2,AnimationType.PlayOnce),
                         new Adam.AnimationData(100,5,3,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -334,7 +335,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return new Rectangle(collRectangle.X - 18, collRectangle.Y - 44, 136, 120);
+                return new Rectangle(CollRectangle.X - 18, CollRectangle.Y - 44, 136, 120);
             }
         }
     }

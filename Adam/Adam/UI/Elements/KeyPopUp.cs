@@ -4,38 +4,39 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI.Elements
 {
     public class KeyPopUp
     {
-        bool playerOn;
-        Rectangle drawRectangle;
-        Rectangle sourceRectangle;
-        Texture2D texture;
+        bool _playerOn;
+        Rectangle _drawRectangle;
+        Rectangle _sourceRectangle;
+        Texture2D _texture;
 
         /// <summary>
         /// To display the 'W' key above the object.
         /// </summary>
         public KeyPopUp()
         {
-            texture = GameWorld.SpriteSheet;
-            sourceRectangle = new Rectangle(16 * 20, 16 * 7, 16, 16);
+            _texture = GameWorld.SpriteSheet;
+            _sourceRectangle = new Rectangle(16 * 20, 16 * 7, 16, 16);
         }
 
         public void Update(Rectangle collRectangle)
         {
-            drawRectangle = new Rectangle(collRectangle.X , collRectangle.Y - 48, 32, 32);
+            _drawRectangle = new Rectangle(collRectangle.X , collRectangle.Y - 48, 32, 32);
 
-            if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
-                playerOn = true;
-            else playerOn = false;
+            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(collRectangle))
+                _playerOn = true;
+            else _playerOn = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (playerOn)
-                spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, new Vector2(0,0), Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
+            if (_playerOn)
+                spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White, 0, new Vector2(0,0), Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
         }
     }
 

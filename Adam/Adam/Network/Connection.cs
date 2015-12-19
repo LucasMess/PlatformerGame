@@ -17,30 +17,30 @@ namespace Adam.Network
 {
     public class Connection
     {
-        TcpClient tcpClient;
-        UdpClient udpClient;
-        IPEndPoint serverIP;
-        NetworkStream netStream;
-        SslStream ssl;
-        BinaryWriter bw;
-        BinaryReader br;
+        TcpClient _tcpClient;
+        UdpClient _udpClient;
+        IPEndPoint _serverIp;
+        NetworkStream _netStream;
+        SslStream _ssl;
+        BinaryWriter _bw;
+        BinaryReader _br;
 
-        GameMode CurrentLevel;
+        GameMode _currentLevel;
 
-        public const int DKD_Hello = 1996;
-        public const byte DKD_OK = 0;
-        public const byte DKD_Connect = 1;
-        public const byte DKD_PlayerData = 2;
-        public const byte DKD_MapData = 3;
-        public const byte DKD_Register = 4;
-        public const byte DKD_Level = 5;
-        public const byte DKD_Test = 100;
+        public const int DkdHello = 1996;
+        public const byte DkdOk = 0;
+        public const byte DkdConnect = 1;
+        public const byte DkdPlayerData = 2;
+        public const byte DkdMapData = 3;
+        public const byte DkdRegister = 4;
+        public const byte DkdLevel = 5;
+        public const byte DkdTest = 100;
 
         public string PlayerName { get; set; }
         public bool IsConnected { get; set; }
 
-        IPEndPoint udpIP;
-        IPEndPoint server;
+        IPEndPoint _udpIp;
+        IPEndPoint _server;
 
         /// <summary>
         /// Sets up a connection with the specified server.
@@ -50,14 +50,14 @@ namespace Adam.Network
         public Connection(string ipAddress, int port, string playerName)
         {
             Console.WriteLine("Trying to connect to server...");
-            serverIP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-            Console.WriteLine("Server IP: {0}, Player name: {1}", serverIP, playerName);
+            _serverIp = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            Console.WriteLine("Server IP: {0}, Player name: {1}", _serverIp, playerName);
             PlayerName = playerName;
 
-            udpIP = new IPEndPoint(serverIP.Address, 42559);
-            server = new IPEndPoint(serverIP.Address, 42557);
+            _udpIp = new IPEndPoint(_serverIp.Address, 42559);
+            _server = new IPEndPoint(_serverIp.Address, 42557);
 
-            udpClient = new UdpClient(udpIP);
+            _udpClient = new UdpClient(_udpIp);
             Console.WriteLine("UDP client set up.");
 
             new Thread(new ThreadStart(SetupConnection)).Start();
@@ -67,9 +67,9 @@ namespace Adam.Network
         private void SetupConnection()
         {
             Console.WriteLine("Setting up TCP client...");
-            tcpClient = new TcpClient();
+            _tcpClient = new TcpClient();
             try {
-                tcpClient.Connect(serverIP);
+                _tcpClient.Connect(_serverIp);
             }
             catch(SocketException e)
             {
@@ -77,30 +77,30 @@ namespace Adam.Network
                 return;
             }
             Console.WriteLine("TCP client set up.");
-            netStream = tcpClient.GetStream();
+            _netStream = _tcpClient.GetStream();
             Console.WriteLine("Network stream found.");
-            ssl = new SslStream(netStream, false);
+            _ssl = new SslStream(_netStream, false);
             Console.WriteLine("SSL stream created.");
             //ssl.AuthenticateAsClient("AdamMultiplayer");
             Console.WriteLine("Authenticated as client.");
 
-            br = new BinaryReader(netStream, Encoding.UTF8);
-            bw = new BinaryWriter(netStream, Encoding.UTF8);
+            _br = new BinaryReader(_netStream, Encoding.UTF8);
+            _bw = new BinaryWriter(_netStream, Encoding.UTF8);
 
-            int hello = br.ReadInt32();
-            if (hello == DKD_Hello)
+            int hello = _br.ReadInt32();
+            if (hello == DkdHello)
             {
                 Console.WriteLine("Sending player info to server...");
 
-                bw.Write(DKD_Hello);
-                bw.Flush();
+                _bw.Write(DkdHello);
+                _bw.Flush();
 
-                bw.Write(DKD_Register);
-                bw.Write(PlayerName);
-                bw.Flush();
+                _bw.Write(DkdRegister);
+                _bw.Write(PlayerName);
+                _bw.Flush();
 
-                byte ans = br.ReadByte();
-                if (ans == DKD_OK)
+                byte ans = _br.ReadByte();
+                if (ans == DkdOk)
                 {
                     IsConnected = true;
                     Console.WriteLine("Connected with the server.");
@@ -117,12 +117,12 @@ namespace Adam.Network
         {
             while (Session.IsActive)
             {
-                byte request = br.ReadByte();
-                if (request == DKD_Level)
+                byte request = _br.ReadByte();
+                if (request == DkdLevel)
                 {
                     // Gets the amount of bytes the level was split into.
-                    int size = br.ReadInt32();
-                    byte[] data = br.ReadBytes(size);
+                    int size = _br.ReadInt32();
+                    byte[] data = _br.ReadBytes(size);
                     LevelPacket packet = (LevelPacket)CalcHelper.ConvertToObject(data);
                     //bw.Write(DKD_OK);
                     //bw.Flush();
@@ -130,11 +130,11 @@ namespace Adam.Network
                     packet.ExtractConfigFile().LoadIntoPlay();
                     Main.Session.Start();
                 }
-                if (request == DKD_Test)
+                if (request == DkdTest)
                 {
-                    Main.MessageBox.Show(br.ReadString());
-                    bw.Write(DKD_OK);
-                    bw.Flush();
+                    Main.MessageBox.Show(_br.ReadString());
+                    _bw.Write(DkdOk);
+                    _bw.Flush();
                 }
             }
         }
@@ -149,21 +149,21 @@ namespace Adam.Network
         {
             PlayerPacket pl = new PlayerPacket(player);
             byte[] packet = CalcHelper.ToByteArray(pl);
-            udpClient.Send(packet, packet.Length, serverIP);
+            _udpClient.Send(packet, packet.Length, _serverIp);
         }
 
         public EntityPacket ReceiveEntityPacket()
         {
-            Console.WriteLine("Listening at: {0}, for server: {1}", udpIP, server);
-            byte[] packet = udpClient.Receive(ref server);
+            Console.WriteLine("Listening at: {0}, for server: {1}", _udpIp, _server);
+            byte[] packet = _udpClient.Receive(ref _server);
             Console.WriteLine("Received entity packet:" + packet);
             EntityPacket en = (EntityPacket)CalcHelper.ConvertToObject(packet);
             return en;
         }
 
-        public PlayerPacket ReceivePlayerPacket(IPEndPoint clientIPEndPoint)
+        public PlayerPacket ReceivePlayerPacket(IPEndPoint clientIpEndPoint)
         {
-            byte[] packet = udpClient.Receive(ref clientIPEndPoint);
+            byte[] packet = _udpClient.Receive(ref clientIpEndPoint);
             PlayerPacket en = (PlayerPacket)CalcHelper.ConvertToObject(packet);
             return en;
         }

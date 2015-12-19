@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
@@ -13,13 +14,13 @@ namespace Adam.UI
         const int MaxSize = 12;
         const int MinSize = 1;
 
-        public int size = 1;
-        int index;
-        Image[] selectionSquares = new Image[1];
-        Tile[] selectedBrushTiles = new Tile[1];
-        public int[] selectedIndexes;
+        public int Size = 1;
+        int _index;
+        Image[] _selectionSquares = new Image[1];
+        Tile[] _selectedBrushTiles = new Tile[1];
+        public int[] SelectedIndexes;
 
-        int lastScrollWheel;
+        int _lastScrollWheel;
 
         public delegate void EventHandler();
         public event EventHandler SizeChanged;
@@ -35,59 +36,59 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (!GameWorld.Instance.levelEditor.onInventory)
+            if (!GameWorld.Instance.LevelEditor.OnInventory)
             {
-                if (scrollWheel > lastScrollWheel)
+                if (scrollWheel > _lastScrollWheel)
                 {
-                    size++;
-                    if (size > MaxSize) size = MaxSize;
+                    Size++;
+                    if (Size > MaxSize) Size = MaxSize;
                     else
                     {
-                        selectionSquares = new Image[size * size];
-                        selectedBrushTiles = new Tile[size * size];
+                        _selectionSquares = new Image[Size * Size];
+                        _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged();
                     }
                 }
-                if (scrollWheel < lastScrollWheel)
+                if (scrollWheel < _lastScrollWheel)
                 {
-                    size--;
-                    if (size < MinSize) size = MinSize;
+                    Size--;
+                    if (Size < MinSize) Size = MinSize;
                     else
                     {
-                        selectionSquares = new Image[size * size];
-                        selectedBrushTiles = new Tile[size * size];
+                        _selectionSquares = new Image[Size * Size];
+                        _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged();
                     }
                 }
             }
 
-            lastScrollWheel = scrollWheel;
+            _lastScrollWheel = scrollWheel;
         }
 
         private void CreateBrush()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            selectedIndexes = GetTilesCoveredByBrush();
+            SelectedIndexes = GetTilesCoveredByBrush();
             
-            for (int i = 0; i < selectionSquares.Length; i++)
+            for (int i = 0; i < _selectionSquares.Length; i++)
             {
-                if (selectedIndexes[i] >= 0 && selectedIndexes[i] < gameWorld.tileArray.Length)
+                if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < gameWorld.TileArray.Length)
                 {
                     //Create grid
-                    selectionSquares[i] = new Image();
-                    Tile hovered = gameWorld.tileArray[selectedIndexes[i]];
-                    selectionSquares[i].Rectangle = hovered.drawRectangle;
-                    selectionSquares[i].SourceRectangle = new Microsoft.Xna.Framework.Rectangle(21 * 16, 7 * 16, 16, 16);
-                    selectionSquares[i].Texture = GameWorld.SpriteSheet;
+                    _selectionSquares[i] = new Image();
+                    Tile hovered = gameWorld.TileArray[SelectedIndexes[i]];
+                    _selectionSquares[i].Rectangle = hovered.DrawRectangle;
+                    _selectionSquares[i].SourceRectangle = new Microsoft.Xna.Framework.Rectangle(21 * 16, 7 * 16, 16, 16);
+                    _selectionSquares[i].Texture = GameWorld.SpriteSheet;
 
                     //Create transparent tiles to show selected tile
                     Tile fakeTile = new Tile(true); 
-                    fakeTile.ID = gameWorld.levelEditor.selectedID;
-                    fakeTile.drawRectangle = hovered.drawRectangle;
+                    fakeTile.Id = gameWorld.LevelEditor.SelectedId;
+                    fakeTile.DrawRectangle = hovered.DrawRectangle;
                     fakeTile.IsBrushTile = true;
                     fakeTile.DefineTexture();
-                    fakeTile.texture = GameWorld.SpriteSheet;
-                    selectedBrushTiles[i] = fakeTile;
+                    fakeTile.Texture = GameWorld.SpriteSheet;
+                    _selectedBrushTiles[i] = fakeTile;
                    
                 }
             }
@@ -96,18 +97,18 @@ namespace Adam.UI
 
         private int[] GetTilesCoveredByBrush()
         {
-            index = GameWorld.Instance.levelEditor.IndexOfMouse;
+            _index = GameWorld.Instance.LevelEditor.IndexOfMouse;
 
             GameWorld gameWorld = GameWorld.Instance;
 
             //Get indexes around brush
             List<int> indexes = new List<int>();
-            for (int h = 0; h < size; h++)
+            for (int h = 0; h < Size; h++)
             {
-                for (int w = 0; w < size; w++)
+                for (int w = 0; w < Size; w++)
                 {
-                    int startingIndex = index - (int)(Math.Truncate((double)(size / 2))) - (int)(Math.Truncate((double)(size / 2)) * gameWorld.worldData.LevelWidth);
-                    int i = startingIndex + (h * gameWorld.worldData.LevelHeight) + w;
+                    int startingIndex = _index - (int)(Math.Truncate((double)(Size / 2))) - (int)(Math.Truncate((double)(Size / 2)) * gameWorld.WorldData.LevelWidth);
+                    int i = startingIndex + (h * gameWorld.WorldData.LevelHeight) + w;
                     indexes.Add(i);
                 }
             }
@@ -117,18 +118,18 @@ namespace Adam.UI
 
         public void DrawBehind(SpriteBatch spriteBatch)
         {
-            if (selectedBrushTiles == null) return;
-            foreach(Tile t in selectedBrushTiles)
+            if (_selectedBrushTiles == null) return;
+            foreach(Tile t in _selectedBrushTiles)
             {
                 if (t != null)
-                spriteBatch.Draw(t.texture, t.drawRectangle, t.sourceRectangle, t.color * .5f);
+                spriteBatch.Draw(t.Texture, t.DrawRectangle, t.SourceRectangle, t.Color * .5f);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (selectionSquares == null) return;
-            foreach(Image i in selectionSquares)
+            if (_selectionSquares == null) return;
+            foreach(Image i in _selectionSquares)
             {
                 if (i.Texture != null)
                 spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);

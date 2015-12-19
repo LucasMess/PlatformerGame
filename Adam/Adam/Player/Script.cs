@@ -2,11 +2,11 @@
 {
     public class Script
     {
-        protected Entity entity;
+        protected Entity Entity;
 
         public virtual void Initialize(Entity entity)
         {
-            this.entity = entity;
+            this.Entity = entity;
         }
 
         public void Run()
@@ -16,7 +16,7 @@
 
         protected virtual void OnGameTick()
         {
-            entity = entity.Get();
+            Entity = Entity.Get();
         }
 
     }

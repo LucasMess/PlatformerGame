@@ -8,7 +8,7 @@ namespace Adam.UI.Elements
 {
     public class Container
     {
-        Rectangle box;
+        Rectangle _box;
       
 
         public void BindTo(Vector2 position)

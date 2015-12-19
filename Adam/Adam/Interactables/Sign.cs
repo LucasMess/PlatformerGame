@@ -7,34 +7,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
     public class Sign : Entity
     {
-        KeyPopUp key;
-        int ID;
-        bool playerIsOn;
+        KeyPopUp _key;
+        int _id;
+        bool _playerIsOn;
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
-        public Sign(int xCoor, int yCoor, int ID)
+        public Sign(int xCoor, int yCoor, int id)
         {
-            key = new KeyPopUp();
-            collRectangle = new Rectangle(xCoor, yCoor, Main.Tilesize, Main.Tilesize);
-            this.ID = ID;
+            _key = new KeyPopUp();
+            CollRectangle = new Rectangle(xCoor, yCoor, Main.Tilesize, Main.Tilesize);
+            this._id = id;
         }
 
         public override void Update()
         {
-            key.Update(collRectangle);
-            if (GameWorld.Instance.player.GetCollRectangle().Intersects(collRectangle))
+            _key.Update(CollRectangle);
+            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(CollRectangle))
             {
                 if (InputHelper.IsKeyDown(Keys.W))
                 {
@@ -50,7 +51,7 @@ namespace Adam.Interactables
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            key.Draw(spriteBatch);
+            _key.Draw(spriteBatch);
         }
 
     }

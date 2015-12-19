@@ -10,7 +10,7 @@ namespace Adam
 {
     public class PlayerScript : Script
     {
-        Player player;
+        Player _player;
         public static bool IsDoingAction = false;
 
         const float JumpAcc = -15f;
@@ -18,16 +18,16 @@ namespace Adam
         const float RunAcc = .15f;
         const float DashSpeed = 40f;
 
-        Timer idleTimer = new Timer();
-        Timer airTimer = new Timer();
+        Timer _idleTimer = new Timer();
+        Timer _airTimer = new Timer();
 
         public static Timer TimeSinceLastPunch = new Timer();
 
-        SoundFx stepSound = new SoundFx("Sounds/Movement/walk1");
+        SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
 
         public void Initialize(Player player)
         {
-            this.player = player;
+            this._player = player;
             player.PlayerDamaged += OnPlayerDamaged;
             player.CollidedWithTileBelow += Player_CollidedWithTileBelow;
         }
@@ -39,12 +39,12 @@ namespace Adam
 
         protected override void OnGameTick()
         {
-            player = (Player)player.Get();
+            _player = (Player)_player.Get();
         }
 
         private void OnPlayerDamaged(Rectangle damageArea, int damage)
         {
-            player.Sounds.Get("hurt").Play();
+            _player.Sounds.Get("hurt").Play();
         }
 
         public void OnStill(Player player)
@@ -52,16 +52,16 @@ namespace Adam
             // Friction.
             if (player.IsJumping)
             {
-                airTimer.Increment();
+                _airTimer.Increment();
             }
 
             // Toggle idle animations.
-            idleTimer.Increment();
-            if (idleTimer.TimeElapsedInSeconds > 10)
+            _idleTimer.Increment();
+            if (_idleTimer.TimeElapsedInSeconds > 10)
             {
                 player.AddAnimationToQueue("smellPoop");
                 player.AnimationEnded += OnSmellPoopAnimationEnd;
-                idleTimer.Reset();
+                _idleTimer.Reset();
             }
 
             if (Math.Abs(player.GetVelocity().X) < 2f)
@@ -86,7 +86,7 @@ namespace Adam
         private void OnSmellPoopAnimationEnd(Player player)
         {
             player.RemoveAnimationFromQueue("smellPoop");
-            idleTimer.Reset();
+            _idleTimer.Reset();
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
@@ -107,7 +107,7 @@ namespace Adam
                 player.CollidedWithTileBelow += OnTouchGround;
             }
 
-            if (airTimer.TimeElapsedInMilliSeconds < 1000)
+            if (_airTimer.TimeElapsedInMilliSeconds < 1000)
             {
                 player.GravityStrength = Main.Gravity * .75f;
             }
@@ -119,7 +119,7 @@ namespace Adam
 
         private void OnTouchGround(Entity entity, Tile tile)
         {
-            airTimer.Reset();
+            _airTimer.Reset();
             entity.IsJumping = false;
             entity.RemoveAnimationFromQueue("fall");
             entity.RemoveAnimationFromQueue("jump");
@@ -145,11 +145,11 @@ namespace Adam
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
-                stepSound.PlayNewInstanceOnce();
+                _stepSound.PlayNewInstanceOnce();
             }
             else
             {
-                stepSound.Reset();
+                _stepSound.Reset();
             }
 
             player.AddAnimationToQueue("walk");
@@ -170,11 +170,11 @@ namespace Adam
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
-                stepSound.PlayNewInstanceOnce();
+                _stepSound.PlayNewInstanceOnce();
             }
             else
             {
-                stepSound.Reset();
+                _stepSound.Reset();
             }
 
             player.AddAnimationToQueue("walk");
@@ -301,7 +301,7 @@ namespace Adam
 
         public void ResetIdleTimer()
         {
-            idleTimer.Reset();
+            _idleTimer.Reset();
         }
 
     }

@@ -7,23 +7,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
     public class Dialog
     {
-        Texture2D texture;
-        SpriteFont font;
-        Rectangle drawRectangle;
-        Rectangle sourceRectangle;
-        Vector2 origin;
+        Texture2D _texture;
+        SpriteFont _font;
+        Rectangle _drawRectangle;
+        Rectangle _sourceRectangle;
+        Vector2 _origin;
 
-        bool isActive;
-        bool isQuestion;
-        string text = "";
-        StringBuilder sb;
-        SoundFx popSound;
-        ITalkable CurrentSender;
+        bool _isActive;
+        bool _isQuestion;
+        string _text = "";
+        StringBuilder _sb;
+        SoundFx _popSound;
+        ITalkable _currentSender;
 
         public delegate void EventHandler();
         public event EventHandler NextDialog;
@@ -31,39 +32,39 @@ namespace Adam.UI
 
         public event EventHandler YesResult;
         public event EventHandler NoResult;
-        public event EventHandler OKResult;
+        public event EventHandler OkResult;
         public event EventHandler CancelResult;
 
 
-        float opacity = 0;
-        double skipTimer;
+        float _opacity = 0;
+        double _skipTimer;
 
-        int originalY;
+        int _originalY;
 
-        Rectangle yesBox;
-        Rectangle noBox;
+        Rectangle _yesBox;
+        Rectangle _noBox;
 
         public Dialog()
         {
-            texture = GameWorld.SpriteSheet;
-            drawRectangle = new Rectangle(Main.UserResWidth / 2, 40, 600, 200);
-            sourceRectangle = new Rectangle(16 * 16, 14 * 16, 16 * 3, 16);
-            origin = new Vector2(drawRectangle.Width / 2, drawRectangle.Height / 2);
-            drawRectangle.X -= (int)origin.X;
+            _texture = GameWorld.SpriteSheet;
+            _drawRectangle = new Rectangle(Main.UserResWidth / 2, 40, 600, 200);
+            _sourceRectangle = new Rectangle(16 * 16, 14 * 16, 16 * 3, 16);
+            _origin = new Vector2(_drawRectangle.Width / 2, _drawRectangle.Height / 2);
+            _drawRectangle.X -= (int)_origin.X;
 
-            originalY = drawRectangle.Y;
-            drawRectangle.Y -= 40;
+            _originalY = _drawRectangle.Y;
+            _drawRectangle.Y -= 40;
 
-            font = ContentHelper.LoadFont("Fonts/x16");
-            popSound = new SoundFx("Sounds/message_show");
+            _font = ContentHelper.LoadFont("Fonts/x16");
+            _popSound = new SoundFx("Sounds/message_show");
 
-            yesBox = new Rectangle(drawRectangle.X, drawRectangle.Bottom, drawRectangle.Width/2, 20);
-            noBox = new Rectangle(drawRectangle.X + drawRectangle.Width/2, drawRectangle.Bottom, drawRectangle.Width/2, 20);
+            _yesBox = new Rectangle(_drawRectangle.X, _drawRectangle.Bottom, _drawRectangle.Width/2, 20);
+            _noBox = new Rectangle(_drawRectangle.X + _drawRectangle.Width/2, _drawRectangle.Bottom, _drawRectangle.Width/2, 20);
         }
 
         public void Say(string text, ITalkable sender)
         {
-            CurrentSender = sender;
+            _currentSender = sender;
             sender.CurrentConversation++;
 
             Prepare(text);
@@ -71,99 +72,99 @@ namespace Adam.UI
 
         public void Show(string text)
         {
-            CurrentSender = null;
+            _currentSender = null;
 
             Prepare(text);
         }
 
         public void AskQuestion(string question)
         {
-            CurrentSender = null;
-            isQuestion = true;
+            _currentSender = null;
+            _isQuestion = true;
             Prepare(question);
         }
 
         private void Prepare(string text)
         {
-            isActive = true;
-            this.text = FontHelper.WrapText(font, text, drawRectangle.Width - 60);
-            skipTimer = 0;
-            opacity = 0;
-            drawRectangle.Y -= 40;
-            popSound.Reset();
+            _isActive = true;
+            this._text = FontHelper.WrapText(_font, text, _drawRectangle.Width - 60);
+            _skipTimer = 0;
+            _opacity = 0;
+            _drawRectangle.Y -= 40;
+            _popSound.Reset();
         }
 
         public void Update(GameTime gameTime)
         {
             float deltaOpacity = .03f;
-            if (isActive)
+            if (_isActive)
             {
-                popSound.PlayOnce();
-                skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (skipTimer > .5)
+                _popSound.PlayOnce();
+                _skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_skipTimer > .5)
                 {
                     
                     if (InputHelper.IsLeftMousePressed())
                     {
-                        if (isQuestion)
+                        if (_isQuestion)
                         {
-                            if (InputHelper.MouseRectangle.Intersects(yesBox))
+                            if (InputHelper.MouseRectangle.Intersects(_yesBox))
                             {
-                                isActive = false;
+                                _isActive = false;
                                 YesResult();
                             }
-                            else if (InputHelper.MouseRectangle.Intersects(noBox))
+                            else if (InputHelper.MouseRectangle.Intersects(_noBox))
                             {
-                                isActive = false;
+                                _isActive = false;
                                 NoResult();
                             }
                         }
                         else
                         {
-                            isActive = false;
-                            if (CurrentSender != null)
-                                CurrentSender.OnNextDialog();
+                            _isActive = false;
+                            if (_currentSender != null)
+                                _currentSender.OnNextDialog();
                         }
                     }
                 }
             }
 
-            if (isActive)
+            if (_isActive)
             {
-                float velocity = (originalY - drawRectangle.Y) / 10;
-                drawRectangle.Y += (int)velocity;
-                opacity += deltaOpacity;
+                float velocity = (_originalY - _drawRectangle.Y) / 10;
+                _drawRectangle.Y += (int)velocity;
+                _opacity += deltaOpacity;
             }
             else
             {
                 float velocity = -3f;
-                opacity -= deltaOpacity;
-                drawRectangle.Y += (int)velocity;
-                skipTimer = 0;
+                _opacity -= deltaOpacity;
+                _drawRectangle.Y += (int)velocity;
+                _skipTimer = 0;
             }
 
-            if (opacity > 1)
-                opacity = 1;
-            if (opacity < 0)
-                opacity = 0;
-            if (drawRectangle.Y < -100)
-                drawRectangle.Y = -100;
+            if (_opacity > 1)
+                _opacity = 1;
+            if (_opacity < 0)
+                _opacity = 0;
+            if (_drawRectangle.Y < -100)
+                _drawRectangle.Y = -100;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (texture != null)
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White * opacity);
-            spriteBatch.DrawString(font, text, new Vector2(drawRectangle.X + 30, drawRectangle.Y + 30), Color.Black * opacity);
-            if (isActive && skipTimer > .5)
+            if (_texture != null)
+            spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White * _opacity);
+            spriteBatch.DrawString(_font, _text, new Vector2(_drawRectangle.X + 30, _drawRectangle.Y + 30), Color.Black * _opacity);
+            if (_isActive && _skipTimer > .5)
             {
-                if (isQuestion)
+                if (_isQuestion)
                 {
-                    FontHelper.DrawWithOutline(spriteBatch, font, "Yes", new Vector2(yesBox.X, yesBox.Y), 2, Color.White, Color.Black);
-                    FontHelper.DrawWithOutline(spriteBatch, font, "No", new Vector2(noBox.X, noBox.Y), 2, Color.White, Color.Black);
+                    FontHelper.DrawWithOutline(spriteBatch, _font, "Yes", new Vector2(_yesBox.X, _yesBox.Y), 2, Color.White, Color.Black);
+                    FontHelper.DrawWithOutline(spriteBatch, _font, "No", new Vector2(_noBox.X, _noBox.Y), 2, Color.White, Color.Black);
                 }
                 string mousebutton = "Press left mouse button to continue";
-                FontHelper.DrawWithOutline(spriteBatch, font, mousebutton, new Vector2(drawRectangle.Right - font.MeasureString(mousebutton).X - 20, drawRectangle.Bottom), 2, Color.White, Color.Black);
+                FontHelper.DrawWithOutline(spriteBatch, _font, mousebutton, new Vector2(_drawRectangle.Right - _font.MeasureString(mousebutton).X - 20, _drawRectangle.Bottom), 2, Color.White, Color.Black);
             }
         }
 

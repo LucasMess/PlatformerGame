@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Obstacles
 {
@@ -11,15 +12,15 @@ namespace Adam.Obstacles
     {
         public Spikes(int x, int y)
         {
-            collRectangle = new Rectangle(x + 4, y + 8, 24, 16);
-            sourceRectangle = new Rectangle(0, 0, 32, 32);
+            CollRectangle = new Rectangle(x + 4, y + 8, 24, 16);
+            SourceRectangle = new Rectangle(0, 0, 32, 32);
         }
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return new Rectangle(collRectangle.X - 4, collRectangle.Y - 8, 32, 32);
+                return new Rectangle(CollRectangle.X - 4, CollRectangle.Y - 8, 32, 32);
             }
         }
 
@@ -29,7 +30,7 @@ namespace Adam.Obstacles
 
             if (IsTouchingPlayer)
             {
-                Player player = GameWorld.Instance.player;
+                Player player = GameWorld.Instance.Player;
                 player.KillAndRespawn();
             }
         }

@@ -10,33 +10,33 @@ namespace Adam.UI.Information
 {
     public class ObjectiveTracker
     {
-        public List<Objective> objectives;
-        double timer;
-        SoundFx completeSound;
-        SoundFx newObjective;
+        public List<Objective> Objectives;
+        double _timer;
+        SoundFx _completeSound;
+        SoundFx _newObjective;
 
         public ObjectiveTracker()
         {
-            completeSound = new SoundFx("Sounds/Menu/quest_complete");
-            newObjective = new SoundFx("Sounds/Menu/quest_new");
-            objectives = new List<Objective>();
+            _completeSound = new SoundFx("Sounds/Menu/quest_complete");
+            _newObjective = new SoundFx("Sounds/Menu/quest_new");
+            Objectives = new List<Objective>();
         }
 
         public void AddObjective(Objective obj)
         {
             bool found = false;
-            for (int i = 0; i < objectives.Count; i++)
+            for (int i = 0; i < Objectives.Count; i++)
             {
-                if (objectives[i].ID == obj.ID)
+                if (Objectives[i].Id == obj.Id)
                     found = true;
             }
 
             if (!found)
             {
                 //Add new objective and play the new objective sound.
-                newObjective.Play();
-                obj.SetPosition(objectives.Count);
-                objectives.Add(obj);
+                _newObjective.Play();
+                obj.SetPosition(Objectives.Count);
+                Objectives.Add(obj);
             }
         }
 
@@ -53,14 +53,14 @@ namespace Adam.UI.Information
             //    timer = 0;
             //}
 
-            foreach (Objective ob in objectives)
+            foreach (Objective ob in Objectives)
                 ob.Update(gameTime);
 
-            foreach (Objective ob in objectives)
+            foreach (Objective ob in Objectives)
             {
-                if (!ob.isActive)
+                if (!ob.IsActive)
                 {
-                    objectives.Remove(ob);
+                    Objectives.Remove(ob);
                     break;
                 }
             }
@@ -70,22 +70,22 @@ namespace Adam.UI.Information
 
         private void Reorder()
         {
-            Objective[] objs = objectives.ToArray();
+            Objective[] objs = Objectives.ToArray();
             for (int i = 0; i < objs.Length; i++)
             {
                 objs[i].TransitionIntoNewPosition(i);
             }
-            objectives = objs.ToList<Objective>();
+            Objectives = objs.ToList<Objective>();
         }
 
-        public void CompleteObjective(int ID)
+        public void CompleteObjective(int id)
         {
-            foreach (Objective ob in objectives)
+            foreach (Objective ob in Objectives)
             {
-                if (ob.ID == ID)
+                if (ob.Id == id)
                 {
-                    completeSound.PlayIfStopped();
-                    ob.isComplete = true;
+                    _completeSound.PlayIfStopped();
+                    ob.IsComplete = true;
                     break;
                 }
             }
@@ -93,12 +93,12 @@ namespace Adam.UI.Information
 
         public void Clear()
         {
-            objectives = new List<Objective>();
+            Objectives = new List<Objective>();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Objective ob in objectives)
+            foreach (Objective ob in Objectives)
             {
                 ob.Draw(spriteBatch);
             }

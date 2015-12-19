@@ -9,7 +9,7 @@ namespace Adam.UI
 {
     public class TextInputBox : MessageBox
     {
-        Textbox textBox;
+        Textbox _textBox;
 
         public delegate void TextInputHandler(TextInputArgs e);
         public event TextInputHandler OnInputEntered;
@@ -19,14 +19,14 @@ namespace Adam.UI
         /// </summary>
         public TextInputBox()
         {
-            textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
-            Button = new OKButton(DrawRectangle);
+            _textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
+            Button = new OkButton(DrawRectangle);
         }
 
         public override void Show(string message)
         {
-            textBox.Reset();
-            textBox.IsSelected = true;
+            _textBox.Reset();
+            _textBox.IsSelected = true;
             base.Show(message);
         }
 
@@ -40,14 +40,14 @@ namespace Adam.UI
                 }
                 else
                 {
-                    textBox.Update();
+                    _textBox.Update();
                     base.Update();
                 }
 
                 // If state changed, tell subscriber that input has been entered.
                 if (!IsActive)
                 {
-                    OnInputEntered(new TextInputArgs(textBox.Text));
+                    OnInputEntered(new TextInputArgs(_textBox.Text));
                 }
 
 
@@ -59,13 +59,13 @@ namespace Adam.UI
             if (IsActive)
             {
                 base.Draw(spriteBatch);
-                textBox.Draw(spriteBatch);
+                _textBox.Draw(spriteBatch);
             }
         }
 
         public void SetTextTo(string text)
         {
-            textBox.Text = text;
+            _textBox.Text = text;
         }
     }
 

@@ -7,43 +7,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Noobs
 {
     public class God : NonPlayableCharacter, ITalkable, IAnimated
     {
-        GameTime gameTime;
-        int spawnPoint;
+        GameTime _gameTime;
+        int _spawnPoint;
 
         public God(int x, int y)
         {
-            canTalk = true;
+            CanTalk = true;
             Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
-            collRectangle = new Rectangle(x, y, 48, 80);
-            sourceRectangle = new Rectangle(0, 0, 24, 40);
+            CollRectangle = new Rectangle(x, y, 48, 80);
+            SourceRectangle = new Rectangle(0, 0, 24, 40);
 
-            spawnPoint = collRectangle.X;
+            _spawnPoint = CollRectangle.X;
 
-            animation = new Animation(Texture, DrawRectangle, sourceRectangle);
+            _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
         }
 
         public override void Update(GameTime gameTime, Player player)
         {
-            this.gameTime = gameTime;
+            this._gameTime = gameTime;
             base.Update(gameTime, player);
 
-            WalkAroundSpawnPoint(spawnPoint);
+            WalkAroundSpawnPoint(_spawnPoint);
 
-            if (velocity.X != 0)
+            if (Velocity.X != 0)
             {
                 CurrentAnimationState = AnimationState.Walking;
             }
             else CurrentAnimationState = AnimationState.Still;
 
-            if (velocity.X > 0)
-                animation.isFlipped = false;
-            if (velocity.X < 0)
-                animation.isFlipped = true;
+            if (Velocity.X > 0)
+                _animation.IsFlipped = false;
+            if (Velocity.X < 0)
+                _animation.IsFlipped = true;
 
         }
 
@@ -57,7 +58,7 @@ namespace Adam.Noobs
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            animation.Draw(spriteBatch);
+            _animation.Draw(spriteBatch);
         }
 
         public int StartingConversation { get; set; }
@@ -71,7 +72,7 @@ namespace Adam.Noobs
             {
                 //No more messages to show.
                 EndConversation = false;
-                isTalking = false;
+                IsTalking = false;
                 CurrentConversation = StartingConversation;
             }
             else
@@ -87,10 +88,10 @@ namespace Adam.Noobs
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:
-                    animation.Update(gameTime, DrawRectangle, animationData[0]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[0]);
                     break;
                 case AnimationState.Walking:
-                    animation.Update(gameTime, DrawRectangle, animationData[1]);
+                    _animation.Update(gameTime, DrawRectangle, _animationData[1]);
                     break;
                 case AnimationState.Sleeping:
                     break;
@@ -103,29 +104,29 @@ namespace Adam.Noobs
 
         public bool EndConversation { get; set; }
 
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new Adam.AnimationData[]
+                if (_animationData == null)
+                    _animationData = new Adam.AnimationData[]
                     {
                         new Adam.AnimationData(250,4,0,AnimationType.Loop),
                         new Adam.AnimationData(250,4,1,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -138,7 +139,7 @@ namespace Adam.Noobs
         {
             get
             {
-                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 16, 48, 80);
+                return new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
             }
         }
     }

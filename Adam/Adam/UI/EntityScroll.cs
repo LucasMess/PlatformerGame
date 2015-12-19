@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
@@ -13,22 +14,22 @@ namespace Adam.UI
 
         public EntityScroll()
         {
-            activeX = (int)((Main.DefaultResWidth - Width) / Main.WidthRatio);
+            ActiveX = (int)((Main.DefaultResWidth - Width) / Main.WidthRatio);
             // inactiveX = (int)((Game1.DefaultResWidth + 400) / Game1.WidthRatio);
-            inactiveX = Main.UserResWidth + 400;
+            InactiveX = Main.UserResWidth + 400;
 
-            box = new Rectangle(activeX, 0, (int)(Width / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio));
+            Box = new Rectangle(ActiveX, 0, (int)(Width / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio));
             Initialize();
         }
 
         protected override void Hide()
         {
-            foreach (Tile t in tiles)
+            foreach (Tile t in Tiles)
             {
-                t.drawRectangle.X += 400;
+                t.DrawRectangle.X += 400;
             }
-            box.X += 400;
-            foreach (TileName s in names)
+            Box.X += 400;
+            foreach (TileName s in Names)
             {
                 s.Position.X += 400;
             }
@@ -36,57 +37,57 @@ namespace Adam.UI
 
         protected override void CheckIfActive()
         {
-            if (GameWorld.Instance.levelEditor.onInventory)
+            if (GameWorld.Instance.LevelEditor.OnInventory)
             {
-                isActive = true;
+                IsActive = true;
             }
-            else isActive = false;
+            else IsActive = false;
 
-            box = new Rectangle(tiles[0].drawRectangle.X, 0, box.Width, box.Height);
+            Box = new Rectangle(Tiles[0].DrawRectangle.X, 0, Box.Width, Box.Height);
 
             //Prevent super fast jumping
-            if (tiles[0].drawRectangle.X < activeX)
+            if (Tiles[0].DrawRectangle.X < ActiveX)
             {
-                for (int i = 0; i < tiles.Count; i++)
+                for (int i = 0; i < Tiles.Count; i++)
                 {
-                    tiles[i].drawRectangle.X = activeX;
+                    Tiles[i].DrawRectangle.X = ActiveX;
                 }
-                velocityX = 0;
+                VelocityX = 0;
             }
 
 
-            if (isActive)
+            if (IsActive)
             {
-                if (tiles[0].drawRectangle.X > activeX)
+                if (Tiles[0].DrawRectangle.X > ActiveX)
                 {
-                    velocityX = -(tiles[0].drawRectangle.X - activeX) / 5;
+                    VelocityX = -(Tiles[0].DrawRectangle.X - ActiveX) / 5;
                 }
 
-                for (int i = 0; i < tiles.Count; i++)
+                for (int i = 0; i < Tiles.Count; i++)
                 {
-                    tiles[i].drawRectangle.X += (int)velocityX;
-                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
+                    Tiles[i].DrawRectangle.X += (int)VelocityX;
+                    Names[i].Position.X = (float)(Tiles[i].DrawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
                 }
             }
             else
             {
-                if (tiles[0].drawRectangle.X > inactiveX)
+                if (Tiles[0].DrawRectangle.X > InactiveX)
                 {
-                    velocityX = 0;
-                    for (int i = 0; i < tiles.Count; i++)
+                    VelocityX = 0;
+                    for (int i = 0; i < Tiles.Count; i++)
                     {
-                        tiles[i].drawRectangle.X = inactiveX;
+                        Tiles[i].DrawRectangle.X = InactiveX;
                     }
                 }
                 else
                 {
-                    velocityX += .6f;
+                    VelocityX += .6f;
                 }
 
-                for (int i = 0; i < tiles.Count; i++)
+                for (int i = 0; i < Tiles.Count; i++)
                 {
-                    tiles[i].drawRectangle.X += (int)velocityX;
-                    names[i].Position.X = (float)(tiles[i].drawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
+                    Tiles[i].DrawRectangle.X += (int)VelocityX;
+                    Names[i].Position.X = (float)(Tiles[i].DrawRectangle.X + Main.Tilesize / Main.WidthRatio) + 5;
                 }
             }
         }
@@ -103,11 +104,11 @@ namespace Adam.UI
         {
             get
             {
-                byte[] IDs = new byte[]
+                byte[] ds = new byte[]
                 {
                200,201,202,203,207,208,209,204,205,206
                 };
-                return IDs;
+                return ds;
             }
         }
 

@@ -1,166 +1,153 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using Adam;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Audio;
-
-using Adam.Enemies;
-using System.Threading;
-using Adam.Interactables;
-using Adam.Obstacles;
-using Adam.Network;
 using Adam.Characters.Enemies;
-using Adam.UI;
-using Adam.UI.Information;
-using Adam.Levels;
 using Adam.Characters.Non_Playable;
-using Adam.Noobs;
-using System.ComponentModel;
+using Adam.Interactables;
 using Adam.Lights;
 using Adam.Misc;
+using Adam.Network;
+using Adam.Obstacles;
 using Adam.Particles;
+using Adam.UI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam
+namespace Adam.Levels
 {
     [Serializable]
     sealed public class GameWorld
     {
-        private static GameWorld instance;
+        private static GameWorld _instance;
 
         public static GameWorld Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                     throw new Exception("The instance of Gameworld has not yet been created.");
-                else return instance;
+                else return _instance;
             }
         }
 
         //Basic tile grid and the visible tile grid
-        public Tile[] tileArray;
-        public Tile[] wallArray;
-        public int[] visibleTileArray = new int[0];
-        public int[] visibleLightArray = new int[0];
-        Light[] lightArray;
-        Light playerLight;
+        public Tile[] TileArray;
+        public Tile[] WallArray;
+        public int[] VisibleTileArray = new int[0];
+        public int[] VisibleLightArray = new int[0];
+        Light[] _lightArray;
+        Light _playerLight;
 
         public static ParticleSystem ParticleSystem = new ParticleSystem();
         public GameMode CurrentGameMode;
-        public Player player;
-        public bool debuggingMode;
-        public Background background = new Background();
+        public Player Player;
+        public bool DebuggingMode;
+        public Background Background = new Background();
 
-        Adam.Misc.Timer stopMovingTimer = new Misc.Timer();
-        bool playerMovingRight;
+        Adam.Misc.Timer _stopMovingTimer = new Misc.Timer();
+        bool _playerMovingRight;
 
         public GameTime GetGameTime()
         {
-            return gameTime;
+            return GameTime;
         }
 
-        PlaceNotification placeNotification;
+        PlaceNotification _placeNotification;
 
         public int TimesUpdated;
 
         public bool SimulationPaused;
-        public bool isOnDebug;
-        public bool levelComplete;
+        public bool IsOnDebug;
+        public bool LevelComplete;
         public static Random RandGen;
         public static Texture2D SpriteSheet;
-        public static Texture2D UI_SpriteSheet;
-        public static Texture2D Particle_SpriteSheet;
-        public LightEngine lightEngine;
-        public Main game1;
-        public Camera camera;
-        public LevelEditor levelEditor = new LevelEditor();
-        public ChunkManager chunkManager = new ChunkManager();
+        public static Texture2D UiSpriteSheet;
+        public static Texture2D ParticleSpriteSheet;
+        public LightEngine LightEngine;
+        public Main Game1;
+        public Camera Camera;
+        public LevelEditor LevelEditor = new LevelEditor();
+        public ChunkManager ChunkManager = new ChunkManager();
 
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
-        public List<Cloud> cloudList;
-        public List<Key> keyList; //This one is tricky... it could be moved to the WorldData.
-        public List<Entity> entities;
-        public List<Particle> particles;
-        public GameTime gameTime;
-        public WorldData worldData;
+        public List<Cloud> CloudList;
+        public List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
+        public List<Entity> Entities;
+        public List<Particle> Particles;
+        public GameTime GameTime;
+        public WorldData WorldData;
         public GameWorld() { }
 
         public GameWorld(Main game1)
         {
-            instance = this;
+            _instance = this;
 
-            this.game1 = game1;
+            this.Game1 = game1;
 
-            placeNotification = new PlaceNotification();
+            _placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_18");
-            UI_SpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
-            Particle_SpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
+            UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
+            ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
-            lightEngine = new LightEngine();
-            worldData = new WorldData();
+            LightEngine = new LightEngine();
+            WorldData = new WorldData();
 
             //tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
             //tilesThread.IsBackground = true;
             //tilesThread.Start();
         }
 
-        public bool TryLoadFromFile(GameMode CurrentGameMode)
+        public bool TryLoadFromFile(GameMode currentGameMode)
         {
 
-            byte[] tileIDs = worldData.TileIDs;
-            byte[] wallIDs = worldData.WallIDs;
+            byte[] tileIDs = WorldData.TileIDs;
+            byte[] wallIDs = WorldData.WallIDs;
 
-            this.CurrentGameMode = CurrentGameMode;
+            this.CurrentGameMode = currentGameMode;
             Main.ObjectiveTracker.Clear();
-            cloudList = new List<Cloud>();
-            keyList = new List<Key>();
-            entities = new List<Entity>();
-            particles = new List<Particle>();
-            chunkManager = new ChunkManager();
+            CloudList = new List<Cloud>();
+            KeyList = new List<Key>();
+            Entities = new List<Entity>();
+            Particles = new List<Particle>();
+            ChunkManager = new ChunkManager();
 
-            player = game1.player;
+            Player = Game1.Player;
 
-            int width = worldData.LevelWidth;
-            int height = worldData.LevelHeight;
+            int width = WorldData.LevelWidth;
+            int height = WorldData.LevelHeight;
 
-            if (worldData.MetaData == null)
-                worldData.MetaData = new string[width * height];
+            if (WorldData.MetaData == null)
+                WorldData.MetaData = new string[width * height];
 
             int maxClouds = width / 100;
             for (int i = 0; i < maxClouds; i++)
             {
-                cloudList.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
+                CloudList.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
             }
 
-            tileArray = new Tile[tileIDs.Length];
-            wallArray = new Tile[tileIDs.Length];
+            TileArray = new Tile[tileIDs.Length];
+            WallArray = new Tile[tileIDs.Length];
 
-            ConvertToTiles(tileArray, tileIDs);
-            ConvertToTiles(wallArray, wallIDs);
+            ConvertToTiles(TileArray, tileIDs);
+            ConvertToTiles(WallArray, wallIDs);
 
-            lightEngine.Load();
+            LightEngine.Load();
 
-            playerLight = new Light();
-            playerLight.Load();
+            _playerLight = new Light();
+            _playerLight.Load();
 
-            background.Load();
+            Background.Load();
 
-            if (CurrentGameMode == GameMode.Edit)
-                levelEditor.Load();
+            if (currentGameMode == GameMode.Edit)
+                LevelEditor.Load();
 
-            placeNotification.Show(worldData.LevelName);
+            _placeNotification.Show(WorldData.LevelName);
 
             try
             {
-                chunkManager.ConvertToChunks(worldData.LevelWidth, worldData.LevelHeight);
+                ChunkManager.ConvertToChunks(WorldData.LevelWidth, WorldData.LevelHeight);
             }
             catch (ArgumentException e)
             {
@@ -171,20 +158,20 @@ namespace Adam
             return true;
         }
 
-        private void ConvertToTiles(Tile[] array, byte[] IDs)
+        private void ConvertToTiles(Tile[] array, byte[] ds)
         {
-            int width = worldData.LevelWidth;
-            int height = worldData.LevelHeight;
+            int width = WorldData.LevelWidth;
+            int height = WorldData.LevelHeight;
 
-            for (int i = 0; i < IDs.Length; i++)
+            for (int i = 0; i < ds.Length; i++)
             {
-                int Xcoor = (i % width) * Main.Tilesize;
-                int Ycoor = ((i - (i % width)) / width) * Main.Tilesize;
+                int xcoor = (i % width) * Main.Tilesize;
+                int ycoor = ((i - (i % width)) / width) * Main.Tilesize;
 
 
-                array[i] = new Tile(Xcoor, Ycoor);
+                array[i] = new Tile(xcoor, ycoor);
                 Tile t = array[i];
-                t.ID = (byte)IDs[i];
+                t.Id = (byte)ds[i];
                 t.TileIndex = i;
             }
 
@@ -195,7 +182,7 @@ namespace Adam
                 t.DefineTexture();
                 if (CurrentGameMode == GameMode.Play)
                 {
-                    t.AddRandomlyGeneratedDecoration(array, worldData.LevelWidth);
+                    t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                     t.DefineTexture();
                 }
 
@@ -203,7 +190,7 @@ namespace Adam
 
         }
 
-        public void Update(GameTime gameTime, GameMode CurrentLevel, Camera camera)
+        public void Update(GameTime gameTime, GameMode currentLevel, Camera camera)
         {
             ParticleSystem.Update();
 
@@ -219,18 +206,18 @@ namespace Adam
                 }
             }
 
-            this.gameTime = gameTime;
-            this.camera = camera;
+            this.GameTime = gameTime;
+            this.Camera = camera;
 
-            if (CurrentLevel == GameMode.Edit)
+            if (currentLevel == GameMode.Edit)
             {
-                levelEditor.Update(gameTime, CurrentLevel);
+                LevelEditor.Update(gameTime, currentLevel);
             }
             else
             {
-                SoundtrackManager.PlayTrack(worldData.SoundtrackID, true);
+                SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
 
-                Rectangle cameraRect = player.GetCollRectangle();
+                Rectangle cameraRect = Player.GetCollRectangle();
                 //cameraRect.X += (int)(player.GetVelocity().X * 50);
 
                 //stopMovingTimer.Increment();
@@ -259,7 +246,7 @@ namespace Adam
                 //cameraRect.X -= distance;
 
 
-                camera.UpdateSmoothly(cameraRect, worldData.LevelWidth, worldData.LevelHeight, !player.IsDead());
+                camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsDead());
 
                 //if (player.IsDead())
                 //{
@@ -273,16 +260,16 @@ namespace Adam
 
             TimesUpdated++;
 
-            background.Update(camera);
-            placeNotification.Update(gameTime);
-            worldData.Update(gameTime);
-            lightEngine.Update();
+            Background.Update(camera);
+            _placeNotification.Update(gameTime);
+            WorldData.Update(gameTime);
+            LightEngine.Update();
             UpdateInBackground();
 
 
 
 
-            foreach (Cloud c in cloudList)
+            foreach (Cloud c in CloudList)
             {
                 c.CheckOutOfRange();
                 c.Update(gameTime);
@@ -290,9 +277,9 @@ namespace Adam
 
             if (CurrentGameMode == GameMode.Play)
             {
-                for (int i = 0; i < entities.Count; i++)
+                for (int i = 0; i < Entities.Count; i++)
                 {
-                    Entity entity = entities[i];
+                    Entity entity = Entities[i];
                     if (entity is Enemy)
                     {
                         Enemy enemy = (Enemy)entity;
@@ -312,12 +299,12 @@ namespace Adam
                     if (entity is Projectile)
                     {
                         Projectile proj = (Projectile)entity;
-                        proj.Update(player, gameTime);
+                        proj.Update(Player, gameTime);
                     }
                     if (entity is NonPlayableCharacter)
                     {
                         NonPlayableCharacter npc = (NonPlayableCharacter)entity;
-                        npc.Update(gameTime, player);
+                        npc.Update(gameTime, Player);
                     }
                     if (entity is Sign)
                     {
@@ -332,103 +319,103 @@ namespace Adam
                 }
             }
 
-            playerLight.Update(player);
+            _playerLight.Update(Player);
 
-            foreach (Key key in keyList)
+            foreach (Key key in KeyList)
             {
-                key.Update(player);
-                if (key.toDelete)
+                key.Update(Player);
+                if (key.ToDelete)
                 {
-                    keyList.Remove(key);
+                    KeyList.Remove(key);
                     break;
                 }
             }
 
-            foreach (int tileNumber in visibleTileArray)
+            foreach (int tileNumber in VisibleTileArray)
             {
-                if (tileNumber >= 0 && tileNumber < tileArray.Length)
+                if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
-                    tileArray[tileNumber]?.Update(gameTime);
+                    TileArray[tileNumber]?.Update(gameTime);
                 }
             }
         }
 
         public void UpdateInBackground()
         {
-            for (int i = 0; i < particles.Count; i++)
+            for (int i = 0; i < Particles.Count; i++)
             {
-                particles[i].Update(gameTime);
+                Particles[i].Update(GameTime);
             }
 
-            for (int i = entities.Count - 1; i >= 0; i--)
+            for (int i = Entities.Count - 1; i >= 0; i--)
             {
-                Entity entity = entities[i];
+                Entity entity = Entities[i];
                 if (entity.ToDelete)
                 {
                     if (entity.Light != null)
                     {
-                        lightEngine.RemoveDynamicLight(entity.Light);
+                        LightEngine.RemoveDynamicLight(entity.Light);
                     }
-                    entities.Remove(entity);
+                    Entities.Remove(entity);
                 }
 
             }
 
-            for (int i = particles.Count - 1; i >= 0; i--)
+            for (int i = Particles.Count - 1; i >= 0; i--)
             {
-                Particle p = particles[i];
+                Particle p = Particles[i];
                 if (p.ToDelete)
                 {
-                    lightEngine.RemoveDynamicLight(p.light);
-                    particles.Remove(p);
+                    LightEngine.RemoveDynamicLight(p.light);
+                    Particles.Remove(p);
                 }
             }
 
-            while (particles.Count > 10000000)
+            while (Particles.Count > 10000000)
             {
-                particles.Remove(particles.ElementAt<Particle>(0));
+                Particles.Remove(Particles.ElementAt<Particle>(0));
             }
 
-            if (camera != null)
+            if (Camera != null)
                 UpdateVisibleIndexes();
         }
 
         private void UpdateVisibleIndexes()
         {
-            visibleTileArray = chunkManager.GetVisibleIndexes();
+            VisibleTileArray = ChunkManager.GetVisibleIndexes();
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
         {
-            lightEngine.DrawLights(spriteBatch);
+            LightEngine.DrawLights(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentGameMode == GameMode.Edit)
-                levelEditor.DrawBehindTiles(spriteBatch);
+                LevelEditor.DrawBehindTiles(spriteBatch);
 
-            foreach (int tileNumber in visibleTileArray)
+            foreach (int tileNumber in VisibleTileArray)
             {
-                if (tileNumber >= 0 && tileNumber < tileArray.Length)
+                if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
-                    if (tileArray[tileNumber].texture != null)
-                        tileArray[tileNumber].Draw(spriteBatch);
+                    if (TileArray[tileNumber].Texture != null)
+                        TileArray[tileNumber].Draw(spriteBatch);
                 }
             }
 
-            foreach (Key key in keyList)
+            foreach (Key key in KeyList)
             {
                 key.Draw(spriteBatch);
             }
-            for (int i = 0; i < entities.Count; i++)
+            for (int i = 0; i < Entities.Count; i++)
             {
-                if (!entities[i].IsDead())
-                    entities[i].Draw(spriteBatch);
+                if (!Entities[i].IsDead())
+                    Entities[i].Draw(spriteBatch);
             }
 
             if (CurrentGameMode == GameMode.Edit)
-                levelEditor.Draw(spriteBatch);
+                LevelEditor.Draw(spriteBatch);
 
 
 
@@ -438,17 +425,17 @@ namespace Adam
         {
             ParticleSystem.Draw(spriteBatch);
 
-            for (int i = 0; i < particles.Count; i++)
+            for (int i = 0; i < Particles.Count; i++)
             {
-                particles[i].Draw(spriteBatch);
+                Particles[i].Draw(spriteBatch);
             }
         }
 
         public void DrawClouds(SpriteBatch spriteBatch)
         {
-            foreach (Cloud c in cloudList)
+            foreach (Cloud c in CloudList)
             {
-                if (worldData.HasClouds == true)
+                if (WorldData.HasClouds == true)
                     c.Draw(spriteBatch);
             }
         }
@@ -456,12 +443,12 @@ namespace Adam
         public void DrawInBack(SpriteBatch spriteBatch)
         {
 
-            foreach (int tileNumber in visibleTileArray)
+            foreach (int tileNumber in VisibleTileArray)
             {
-                if (tileNumber > 0 && tileNumber < tileArray.Length)
+                if (tileNumber > 0 && tileNumber < TileArray.Length)
                 {
-                    if (wallArray[tileNumber].texture != null)
-                        wallArray[tileNumber].Draw(spriteBatch);
+                    if (WallArray[tileNumber].Texture != null)
+                        WallArray[tileNumber].Draw(spriteBatch);
                 }
             }
         }
@@ -472,27 +459,27 @@ namespace Adam
 
         public void DrawGlows(SpriteBatch spriteBatch)
         {
-            lightEngine.DrawGlows(spriteBatch);
+            LightEngine.DrawGlows(spriteBatch);
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
-            background.Draw(spriteBatch);
+            Background.Draw(spriteBatch);
         }
 
-        public void DrawUI(SpriteBatch spriteBatch)
+        public void DrawUi(SpriteBatch spriteBatch)
         {
-            placeNotification.Draw(spriteBatch);
+            _placeNotification.Draw(spriteBatch);
 
             if (CurrentGameMode == GameMode.Edit)
-                levelEditor.DrawUI(spriteBatch);
+                LevelEditor.DrawUi(spriteBatch);
         }
 
         public void ResetWorld()
         {
-            for (int i = entities.Count - 1; i >= 0; i--)
+            for (int i = Entities.Count - 1; i >= 0; i--)
             {
-                Entity entity = entities[i];
+                Entity entity = Entities[i];
                 if (entity is Enemy)
                 {
                     Enemy enemy = (Enemy)entity;
@@ -500,14 +487,14 @@ namespace Adam
                 }
                 if (entity is Food)
                 {
-                    entities.Remove(entity);
+                    Entities.Remove(entity);
                 }
             }
         }
 
         public Player GetPlayer()
         {
-            return player;
+            return Player;
         }
     }
 }

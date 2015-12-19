@@ -3,21 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Characters.Scripts
 {
     public class FrogScript : Script
     {
-        Timer jumpTimer = new Timer();
+        Timer _jumpTimer = new Timer();
 
-        double timeBetweenJumps = 2000 * GameWorld.RandGen.NextDouble();
+        double _timeBetweenJumps = 2000 * GameWorld.RandGen.NextDouble();
         const float JumpVel = -15f;
         const float MoveVel = 5f;
 
         public override void Initialize(Entity entity)
         {
-            jumpTimer.ResetAndWaitFor(timeBetweenJumps);
-            jumpTimer.SetTimeReached += JumpTimer_SetTimeReached;
+            _jumpTimer.ResetAndWaitFor(_timeBetweenJumps);
+            _jumpTimer.SetTimeReached += JumpTimer_SetTimeReached;
 
             entity.CollidedWithTileBelow += Entity_CollidedWithTileBelow;
             entity.AddAnimationToQueue("still");
@@ -30,7 +31,7 @@ namespace Adam.Characters.Scripts
             if (entity.IsJumping)
             {
                 entity.SetVelY(0);
-                jumpTimer.Reset();
+                _jumpTimer.Reset();
                 entity.RemoveAnimationFromQueue("jump");
                 entity.IsJumping = false;
             }
@@ -38,26 +39,26 @@ namespace Adam.Characters.Scripts
 
         private void JumpTimer_SetTimeReached()
         {
-            if (!entity.IsJumping)
+            if (!Entity.IsJumping)
             {
-                entity.ChangePosBy(0, -1);
-                entity.SetVelY(JumpVel);
-                entity.IsJumping = true;
+                Entity.ChangePosBy(0, -1);
+                Entity.SetVelY(JumpVel);
+                Entity.IsJumping = true;
 
                 float speed = MoveVel;
                 if (GameWorld.RandGen.Next(0, 2) == 0)
                 {
                     speed *= -1;
                 }
-                entity.SetVelX(speed);
-                entity.AddAnimationToQueue("jump");
-                entity.Sounds.Get("jump").Play();
+                Entity.SetVelX(speed);
+                Entity.AddAnimationToQueue("jump");
+                Entity.Sounds.Get("jump").Play();
             }
         }
 
         protected override void OnGameTick()
         {
-            jumpTimer.Increment();
+            _jumpTimer.Increment();
 
             base.OnGameTick();
         }

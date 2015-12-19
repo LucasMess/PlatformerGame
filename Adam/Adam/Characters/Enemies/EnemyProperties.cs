@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Characters.Enemies
 {
@@ -14,9 +15,9 @@ namespace Adam.Characters.Enemies
     {
         const short RangeRadius = 2000;
         const int MeanResetTime = 500000;
-        bool isTakingDamage = false;
+        bool _isTakingDamage = false;
 
-        Timer wasMeanTimer = new Timer();
+        Timer _wasMeanTimer = new Timer();
 
         protected Enemy()
         {
@@ -26,7 +27,7 @@ namespace Adam.Characters.Enemies
         /// <summary>
         /// The ID that identifies the enemy type.
         /// </summary>
-        public abstract byte ID
+        public abstract byte Id
         {
             get;
         }
@@ -44,26 +45,26 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected virtual Rectangle DamageBox
         {
-            get { return new Rectangle(collRectangle.X - 5, collRectangle.Y - 20, collRectangle.Width + 10, collRectangle.Height / 2); }
+            get { return new Rectangle(CollRectangle.X - 5, CollRectangle.Y - 20, CollRectangle.Width + 10, CollRectangle.Height / 2); }
         }
 
         /// <summary>
         /// The rectangle that the player must intersect for the enemy to be in range for drawing and updating.
         /// </summary>
-        Rectangle rangeRect;
+        Rectangle _rangeRect;
         protected Rectangle RangeRect
         {
             get
             {
-                if (rangeRect == null)
+                if (_rangeRect == null)
                 {
-                    rangeRect = new Rectangle(0, 0, RangeRadius, RangeRadius);
+                    _rangeRect = new Rectangle(0, 0, RangeRadius, RangeRadius);
                 }
 
-                rangeRect.X = collRectangle.X - rangeRect.Width / 2;
-                rangeRect.Y = collRectangle.Y - rangeRect.Height / 2;
+                _rangeRect.X = CollRectangle.X - _rangeRect.Width / 2;
+                _rangeRect.Y = CollRectangle.Y - _rangeRect.Height / 2;
 
-                return rangeRect;
+                return _rangeRect;
             }
         }
 
@@ -99,7 +100,7 @@ namespace Adam.Characters.Enemies
             get;
         }
 
-        SoundFx disappearSound;
+        SoundFx _disappearSound;
         /// <summary>
         /// The sound played when the enemy poofs.
         /// </summary>
@@ -107,15 +108,15 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                if (disappearSound == null)
+                if (_disappearSound == null)
                 {
-                    disappearSound = new SoundFx("Sounds/Player/enemy_kill");
+                    _disappearSound = new SoundFx("Sounds/Player/enemy_kill");
                 }
-                return disappearSound;
+                return _disappearSound;
             }
         }
 
-        SoundFx jumpedOnSound;
+        SoundFx _jumpedOnSound;
         /// <summary>
         /// The sound played when the player jumps on the enemy.
         /// </summary>
@@ -123,11 +124,11 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                if (jumpedOnSound == null)
+                if (_jumpedOnSound == null)
                 {
-                    jumpedOnSound = new SoundFx("Sounds/Player/enemy_jumpedOn");
+                    _jumpedOnSound = new SoundFx("Sounds/Player/enemy_jumpedOn");
                 }
-                return jumpedOnSound;
+                return _jumpedOnSound;
             }
         }
 
@@ -137,13 +138,13 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsInRange()
         {
-            Player player = GameWorld.Instance.player;
+            Player player = GameWorld.Instance.Player;
             return (RangeRect.Intersects(player.GetCollRectangle()));
         }
 
 
 
-        int startTimeOfBeingMean;
+        int _startTimeOfBeingMean;
         /// <summary>
         /// Checks to see if enemy should make mean sound.
         /// </summary>
@@ -151,13 +152,13 @@ namespace Adam.Characters.Enemies
         private bool IsTimeToBeMean()
         {
             //Starts the timer at a random position.
-            if (startTimeOfBeingMean == 0)
+            if (_startTimeOfBeingMean == 0)
             {
-                startTimeOfBeingMean = GameWorld.RandGen.Next(0, MeanResetTime);
-                wasMeanTimer.SetToInMilliseconds(startTimeOfBeingMean);
+                _startTimeOfBeingMean = GameWorld.RandGen.Next(0, MeanResetTime);
+                _wasMeanTimer.SetToInMilliseconds(_startTimeOfBeingMean);
             }
 
-            return (wasMeanTimer.TimeElapsedInMilliSeconds > MeanResetTime);
+            return (_wasMeanTimer.TimeElapsedInMilliSeconds > MeanResetTime);
         }
 
         /// <summary>
@@ -166,8 +167,8 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerToTheRight()
         {
-            Player player = GameWorld.Instance.player;
-            if (player.GetCollRectangle().X > collRectangle.X)
+            Player player = GameWorld.Instance.Player;
+            if (player.GetCollRectangle().X > CollRectangle.X)
                 return true;
             else return false;
         }
@@ -178,8 +179,8 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerAbove()
         {
-            Player player = GameWorld.Instance.player;
-            if (player.GetCollRectangle().Y < collRectangle.Y)
+            Player player = GameWorld.Instance.Player;
+            if (player.GetCollRectangle().Y < CollRectangle.Y)
                 return true;
             else return false;
         }
@@ -190,8 +191,8 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsIntersectingPlayer()
         {
-            Player player = GameWorld.Instance.player;
-            return (player.GetCollRectangle().Intersects(collRectangle));
+            Player player = GameWorld.Instance.Player;
+            return (player.GetCollRectangle().Intersects(CollRectangle));
         }
 
         /// <summary>
@@ -200,7 +201,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsBeingAttacked()
         {
-            Player player = GameWorld.Instance.player;
+            Player player = GameWorld.Instance.Player;
             return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1);
         }
 
@@ -210,22 +211,22 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected int GetTouchDamage()
         {
-            switch (ID)
+            switch (Id)
             {
                 case 201:
-                    return EnemyDB.Snake_TouchDamage;
+                    return EnemyDb.SnakeTouchDamage;
                 case 202:
-                    return EnemyDB.Frog_TouchDamage;
+                    return EnemyDb.FrogTouchDamage;
                 case 204:
-                    return EnemyDB.Lost_TouchDamage;
+                    return EnemyDb.LostTouchDamage;
                 case 205:
-                    return EnemyDB.Hellboar_TouchDamage;
+                    return EnemyDb.HellboarTouchDamage;
                 case 206:
-                    return EnemyDB.FallingBoulder_TouchDamage;
+                    return EnemyDb.FallingBoulderTouchDamage;
                 case 207:
-                    return EnemyDB.Bat_TouchDamage;
+                    return EnemyDb.BatTouchDamage;
                 case 208:
-                    return EnemyDB.Duck_TouchDamage;
+                    return EnemyDb.DuckTouchDamage;
                 case 209:
                     return 0;
                 default:
@@ -240,10 +241,10 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         public int GetProjectileDamage()
         {
-            switch (ID)
+            switch (Id)
             {
                 case 0:
-                    return EnemyDB.Snake_ProjectileDamage;
+                    return EnemyDb.SnakeProjectileDamage;
                 default:
                     return 0;
             }

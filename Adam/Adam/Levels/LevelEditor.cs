@@ -15,94 +15,94 @@ namespace Adam.Levels
 {
     public class LevelEditor
     {
-        GameWorld gameWorld;
-        TileScroll tileScroll = new TileScroll();
-        EntityScroll entityScroll = new EntityScroll();
-        Minimap miniMap;
-        public ActionBar actionBar = new ActionBar();
-        TileDescription tileDescription = new TileDescription();
-        public Brush brush = new Brush();
-        public bool onInventory;
-        public bool onWallMode;
-        bool inventoryKeyPressed;
-        float blackScreenOpacity;
-        bool recentlyChanged;
-        bool onPortalLinkMode;
-        Portal selectedPortal;
+        GameWorld _gameWorld;
+        TileScroll _tileScroll = new TileScroll();
+        EntityScroll _entityScroll = new EntityScroll();
+        Minimap _miniMap;
+        public ActionBar ActionBar = new ActionBar();
+        TileDescription _tileDescription = new TileDescription();
+        public Brush Brush = new Brush();
+        public bool OnInventory;
+        public bool OnWallMode;
+        bool _inventoryKeyPressed;
+        float _blackScreenOpacity;
+        bool _recentlyChanged;
+        bool _onPortalLinkMode;
+        Portal _selectedPortal;
 
-        public Rectangle editorRectangle;
+        public Rectangle EditorRectangle;
         public int IndexOfMouse;
-        public byte selectedID = 1;
+        public byte SelectedId = 1;
 
-        byte lastUsedTile = 1;
-        byte lastUsedWall = 100;
+        byte _lastUsedTile = 1;
+        byte _lastUsedWall = 100;
 
-        SoundFx[] construction = new SoundFx[3];
-        SoundFx destruction;
-        SoundFx wallMode;
-        SoundFx close, open, select;
-        Rectangle mouseRect;
+        SoundFx[] _construction = new SoundFx[3];
+        SoundFx _destruction;
+        SoundFx _wallMode;
+        SoundFx _close, _open, _select;
+        Rectangle _mouseRect;
 
-        Timer autoSaveTimer = new Timer();
+        Timer _autoSaveTimer = new Timer();
 
         public void Load()
         {
-            miniMap = new Minimap();
-            miniMap.StartUpdating();
-            onInventory = false;
-            tileScroll.Load();
-            tileScroll.TileSelected += TileScroll_TileSelected;
+            _miniMap = new Minimap();
+            _miniMap.StartUpdating();
+            OnInventory = false;
+            _tileScroll.Load();
+            _tileScroll.TileSelected += TileScroll_TileSelected;
 
-            entityScroll.Load();
-            entityScroll.TileSelected += EntityScroll_TileSelected;
+            _entityScroll.Load();
+            _entityScroll.TileSelected += EntityScroll_TileSelected;
 
-            for (int i = 1; i <= construction.Length; i++)
+            for (int i = 1; i <= _construction.Length; i++)
             {
-                construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
+                _construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
-            destruction = new SoundFx("Sounds/Level Editor/destroy1");
+            _destruction = new SoundFx("Sounds/Level Editor/destroy1");
 
-            wallMode = new SoundFx("Sounds/Level Editor/changeMode");
-            close = new SoundFx("Sounds/Level Editor/open");
-            open = new SoundFx("Sounds/Level Editor/close");
-            select = new SoundFx("Sounds/Level Editor/select");
+            _wallMode = new SoundFx("Sounds/Level Editor/changeMode");
+            _close = new SoundFx("Sounds/Level Editor/open");
+            _open = new SoundFx("Sounds/Level Editor/close");
+            _select = new SoundFx("Sounds/Level Editor/select");
 
-            editorRectangle = new Rectangle(GameWorld.Instance.worldData.LevelWidth * Main.Tilesize / 2, GameWorld.Instance.worldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+            EditorRectangle = new Rectangle(GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize / 2, GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
 
         private void EntityScroll_TileSelected(TileSelectedArgs e)
         {
-            if (e.ID != selectedID)
+            if (e.Id != SelectedId)
             {
-                select.Reset();
-                select.PlayNewInstanceOnce();
-                selectedID = (byte)e.ID;
+                _select.Reset();
+                _select.PlayNewInstanceOnce();
+                SelectedId = (byte)e.Id;
             }
 
         }
 
         private void TileScroll_TileSelected(TileSelectedArgs e)
         {
-            if (e.ID != selectedID)
+            if (e.Id != SelectedId)
             {
-                select.Reset();
-                select.PlayNewInstanceOnce();
-                selectedID = (byte)e.ID;
+                _select.Reset();
+                _select.PlayNewInstanceOnce();
+                SelectedId = (byte)e.Id;
             }
         }
 
-        public void Update(GameTime gameTime, GameMode CurrentLevel)
+        public void Update(GameTime gameTime, GameMode currentLevel)
         {
-            GameWorld.Instance.player.Health = GameWorld.Instance.player.MaxHealth;
+            GameWorld.Instance.Player.Health = GameWorld.Instance.Player.MaxHealth;
 
             SoundtrackManager.PlayLevelEditorTheme();
 
-            gameWorld = GameWorld.Instance;
-            tileScroll.Update();
-            entityScroll.Update();
-            actionBar.Update();
-            brush.Update();
-            tileDescription.Update();
+            _gameWorld = GameWorld.Instance;
+            _tileScroll.Update();
+            _entityScroll.Update();
+            ActionBar.Update();
+            Brush.Update();
+            _tileDescription.Update();
 
             CheckIfOnInventory();
             CheckIfPositioningPlayer();
@@ -110,62 +110,62 @@ namespace Adam.Levels
 
             float deltaOpacity = .05f;
 
-            if (!onInventory)
+            if (!OnInventory)
             {
                 CheckForCameraMovement();
                 CheckForInput();
 
-                blackScreenOpacity -= deltaOpacity;
+                _blackScreenOpacity -= deltaOpacity;
             }
             else
             {
-                blackScreenOpacity += deltaOpacity;
+                _blackScreenOpacity += deltaOpacity;
             }
 
-            if (blackScreenOpacity > .7) blackScreenOpacity = .7f;
-            if (blackScreenOpacity < 0) blackScreenOpacity = 0;
+            if (_blackScreenOpacity > .7) _blackScreenOpacity = .7f;
+            if (_blackScreenOpacity < 0) _blackScreenOpacity = 0;
 
             // Auto-save functionality.
-            autoSaveTimer.Increment();
-            if (autoSaveTimer.TimeElapsedInSeconds > 1)
+            _autoSaveTimer.Increment();
+            if (_autoSaveTimer.TimeElapsedInSeconds > 1)
             {
-                autoSaveTimer.Reset();
+                _autoSaveTimer.Reset();
                 DataFolder.SaveLevel();
             }
         }
 
         public void ChangeToWallMode()
         {
-            onWallMode = !onWallMode;
-            wallMode.PlayNewInstanceOnce();
-            wallMode.Reset();
+            OnWallMode = !OnWallMode;
+            _wallMode.PlayNewInstanceOnce();
+            _wallMode.Reset();
 
-            if (onWallMode)
+            if (OnWallMode)
             {
-                lastUsedTile = selectedID;
-                selectedID = lastUsedWall;
+                _lastUsedTile = SelectedId;
+                SelectedId = _lastUsedWall;
             }
             else
             {
-                lastUsedWall = selectedID;
-                selectedID = lastUsedTile;
+                _lastUsedWall = SelectedId;
+                SelectedId = _lastUsedTile;
             }
 
 
-            tileScroll.Load();
+            _tileScroll.Load();
         }
 
         private void CheckIfChangedToWallMode()
         {
-            if (InputHelper.IsKeyDown(Keys.L) && !recentlyChanged)
+            if (InputHelper.IsKeyDown(Keys.L) && !_recentlyChanged)
             {
                 ChangeToWallMode();
-                recentlyChanged = true;
+                _recentlyChanged = true;
 
             }
             if (InputHelper.IsKeyUp(Keys.L))
             {
-                recentlyChanged = false;
+                _recentlyChanged = false;
             }
         }
 
@@ -173,74 +173,74 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.E))
             {
-                if (!inventoryKeyPressed)
+                if (!_inventoryKeyPressed)
                 {
-                    if (!onInventory)
+                    if (!OnInventory)
                     {
-                        open.PlayNewInstanceOnce();
-                        open.Reset();
+                        _open.PlayNewInstanceOnce();
+                        _open.Reset();
                     }
                     else
                     {
-                        close.PlayNewInstanceOnce();
-                        close.Reset();
+                        _close.PlayNewInstanceOnce();
+                        _close.Reset();
                     }
-                    onInventory = !onInventory;
-                    inventoryKeyPressed = true;
+                    OnInventory = !OnInventory;
+                    _inventoryKeyPressed = true;
                 }
             }
             if (InputHelper.IsKeyUp(Keys.E))
             {
-                inventoryKeyPressed = false;
+                _inventoryKeyPressed = false;
             }
         }
 
         private void CheckForCameraMovement()
         {
-            gameWorld.camera.UpdateSmoothly(editorRectangle, GameWorld.Instance.worldData.LevelWidth, GameWorld.Instance.worldData.LevelHeight, true);
+            _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight, true);
             int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
-                editorRectangle.X -= speed;
+                EditorRectangle.X -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.D))
             {
-                editorRectangle.X += speed;
+                EditorRectangle.X += speed;
             }
             if (InputHelper.IsKeyDown(Keys.W))
             {
-                editorRectangle.Y -= speed;
+                EditorRectangle.Y -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.S))
             {
-                editorRectangle.Y += speed;
+                EditorRectangle.Y += speed;
             }
 
 
             //Prevent camera box from moving out of screen
-            if (editorRectangle.X < 0)
+            if (EditorRectangle.X < 0)
             {
-                editorRectangle.X = 0;
+                EditorRectangle.X = 0;
             }
-            if (editorRectangle.X > (GameWorld.Instance.worldData.LevelWidth * Main.Tilesize) - editorRectangle.Width)
+            if (EditorRectangle.X > (GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width)
             {
-                editorRectangle.X = (GameWorld.Instance.worldData.LevelWidth * Main.Tilesize) - editorRectangle.Width;
+                EditorRectangle.X = (GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width;
             }
-            if (editorRectangle.Y < 0)
+            if (EditorRectangle.Y < 0)
             {
-                editorRectangle.Y = 0;
+                EditorRectangle.Y = 0;
             }
-            if (editorRectangle.Y > (GameWorld.Instance.worldData.LevelHeight * Main.Tilesize) - editorRectangle.Height)
+            if (EditorRectangle.Y > (GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height)
             {
-                editorRectangle.Y = (GameWorld.Instance.worldData.LevelHeight * Main.Tilesize) - editorRectangle.Height;
+                EditorRectangle.Y = (GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height;
             }
         }
 
         private void CheckForInput()
         {
-            InputHelper.GetMouseRectGameWorld(ref mouseRect);
-            IndexOfMouse = (mouseRect.Center.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (mouseRect.Center.X / Main.Tilesize);
+            InputHelper.GetMouseRectGameWorld(ref _mouseRect);
+            IndexOfMouse = (_mouseRect.Center.Y / Main.Tilesize * _gameWorld.WorldData.LevelWidth) + (_mouseRect.Center.X / Main.Tilesize);
 
             //if (onPortalLinkMode)
             //{
@@ -266,7 +266,7 @@ namespace Adam.Levels
             {
                 if (InputHelper.IsKeyDown(Keys.LeftAlt))
                     SpecialInteractionTile();
-                else UpdateSelectedTiles(selectedID);
+                else UpdateSelectedTiles(SelectedId);
             }
 
             if (InputHelper.IsRightMousePressed())
@@ -276,7 +276,7 @@ namespace Adam.Levels
 
             if (InputHelper.IsMiddleMousePressed())
             {
-                selectedID = CurrentArray[IndexOfMouse].ID;
+                SelectedId = CurrentArray[IndexOfMouse].Id;
             }
 
 
@@ -287,45 +287,45 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                foreach (int index in gameWorld.visibleTileArray)
+                foreach (int index in _gameWorld.VisibleTileArray)
                 {
-                    if (index >= 0 && index < gameWorld.tileArray.Length)
+                    if (index >= 0 && index < _gameWorld.TileArray.Length)
                     {
                         //Check index of mouse
-                        if (gameWorld.tileArray[index].drawRectangle.Intersects(mouseRect))
+                        if (_gameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRect))
                         {
-                            gameWorld.tileArray[index].ID = 200;
-                            gameWorld.tileArray[index].DefineTexture();
+                            _gameWorld.TileArray[index].Id = 200;
+                            _gameWorld.TileArray[index].DefineTexture();
                         }
                     }
                 }
             }
         }
 
-        private void UpdateSelectedTiles(int desiredID)
+        private void UpdateSelectedTiles(int desiredId)
         {
-            foreach (int i in brush.selectedIndexes)
+            foreach (int i in Brush.SelectedIndexes)
             {
                 if (i < 0 || i > CurrentArray.Length)
                     continue;
-                int tileID = CurrentArray[i].ID;
+                int tileId = CurrentArray[i].Id;
 
                 //Wants to destroy. Any block can be destroyed.
-                if (desiredID == 0)
+                if (desiredId == 0)
                 {
                     //Check to see if block is already air.
-                    if (tileID == 0)
+                    if (tileId == 0)
                         continue;
                     else
                     {
                         CurrentArray[i].Destroy();
-                        CurrentArray[i].ID = (byte)desiredID;
-                        if (onWallMode)
+                        CurrentArray[i].Id = (byte)desiredId;
+                        if (OnWallMode)
                         {
-                            CurrentArray[i].isWall = true;
+                            CurrentArray[i].IsWall = true;
                         }
                         else
-                            CurrentArray[i].isWall = false;
+                            CurrentArray[i].IsWall = false;
 
                         Destroy(CurrentArray[i]);
                     }
@@ -334,15 +334,15 @@ namespace Adam.Levels
                 //Wants to build, but only if there is air.
                 else
                 {
-                    if (tileID == 0)
+                    if (tileId == 0)
                     {
-                        CurrentArray[i].ID = (byte)desiredID;
-                        if (onWallMode)
+                        CurrentArray[i].Id = (byte)desiredId;
+                        if (OnWallMode)
                         {
-                            CurrentArray[i].isWall = true;
+                            CurrentArray[i].IsWall = true;
                         }
                         else
-                            CurrentArray[i].isWall = false;
+                            CurrentArray[i].IsWall = false;
                         Construct(CurrentArray[i]);
                     }
                     else continue;
@@ -364,13 +364,13 @@ namespace Adam.Levels
         private void Construct(Tile t)
         {
             UpdateTilesAround(t.TileIndex);
-            construction[GameWorld.RandGen.Next(0, 3)].Play();
-            CreateConstructionParticles(t.drawRectangle);
+            _construction[GameWorld.RandGen.Next(0, 3)].Play();
+            CreateConstructionParticles(t.DrawRectangle);
         }
 
         private void Destroy(Tile t)
         {
-            destruction.Play();
+            _destruction.Play();
             CreateDestructionParticles(t);
             UpdateTilesAround(t.TileIndex);
         }
@@ -378,28 +378,28 @@ namespace Adam.Levels
         private void UpdateTilesAround(int index)
         {
             List<int> indexes = new List<int>();
-            int diameterOfSquare = 2 + brush.size;
+            int diameterOfSquare = 2 + Brush.Size;
             for (int h = 0; h < diameterOfSquare; h++)
             {
                 for (int w = 0; w < diameterOfSquare; w++)
                 {
-                    int brushSize = brush.size;
-                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * gameWorld.worldData.LevelWidth);
-                    int i = startingIndex - 1 - gameWorld.worldData.LevelWidth + (h * gameWorld.worldData.LevelWidth) + w;
+                    int brushSize = Brush.Size;
+                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * _gameWorld.WorldData.LevelWidth);
+                    int i = startingIndex - 1 - _gameWorld.WorldData.LevelWidth + (h * _gameWorld.WorldData.LevelWidth) + w;
                     indexes.Add(i);
                 }
             }
 
             foreach (int ind in indexes)
             {
-                if (ind >= 0 && ind < gameWorld.tileArray.Length)
+                if (ind >= 0 && ind < _gameWorld.TileArray.Length)
                 {
                     Tile t = CurrentArray[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(CurrentArray,
-                    gameWorld.worldData.LevelWidth);
+                    _gameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    GameWorld.Instance.lightEngine.UpdateSunLight(ind);
+                    GameWorld.Instance.LightEngine.UpdateSunLight(ind);
                 }
             }
 
@@ -409,7 +409,7 @@ namespace Adam.Levels
         {
             for (int i = 0; i < 10; i++)
             {
-                gameWorld.particles.Add(new ConstructionSmokeParticle(rect));
+                _gameWorld.Particles.Add(new ConstructionSmokeParticle(rect));
             }
         }
 
@@ -421,52 +421,52 @@ namespace Adam.Levels
             {
                 for (int h = 0; h < 4; h++)
                 {
-                    rects[i] = new Rectangle((w * 4) + tile.sourceRectangle.X, (h * 4) + tile.sourceRectangle.Y, 4, 4);
+                    rects[i] = new Rectangle((w * 4) + tile.SourceRectangle.X, (h * 4) + tile.SourceRectangle.Y, 4, 4);
                     i++;
                 }
             }
 
             foreach (Rectangle r in rects)
             {
-                gameWorld.particles.Add(new DestructionTileParticle(tile, r));
+                _gameWorld.Particles.Add(new DestructionTileParticle(tile, r));
             }
         }
 
         public void DrawBehindTiles(SpriteBatch spriteBatch)
         {
-            brush.DrawBehind(spriteBatch);
+            Brush.DrawBehind(spriteBatch);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            brush.Draw(spriteBatch);
-            selectedPortal?.ConnectingLine?.Draw(spriteBatch);
+            Brush.Draw(spriteBatch);
+            _selectedPortal?.ConnectingLine?.Draw(spriteBatch);
         }
 
-        public void DrawUI(SpriteBatch spriteBatch)
+        public void DrawUi(SpriteBatch spriteBatch)
         {
-            if (!onInventory)
-                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/x32"), "On Wall Mode: " + onWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
+            if (!OnInventory)
+                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/x32"), "On Wall Mode: " + OnWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
 
-            miniMap.Draw(spriteBatch);
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * blackScreenOpacity);
-            tileDescription.Draw(spriteBatch);
-            tileScroll.Draw(spriteBatch);
-            entityScroll.Draw(spriteBatch);
-            actionBar.Draw(spriteBatch);
+            _miniMap.Draw(spriteBatch);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * _blackScreenOpacity);
+            _tileDescription.Draw(spriteBatch);
+            _tileScroll.Draw(spriteBatch);
+            _entityScroll.Draw(spriteBatch);
+            ActionBar.Draw(spriteBatch);
         }
 
         public Tile[] CurrentArray
         {
             get
             {
-                if (onWallMode)
+                if (OnWallMode)
                 {
-                    return gameWorld.wallArray;
+                    return _gameWorld.WallArray;
                 }
                 else
                 {
-                    return gameWorld.tileArray;
+                    return _gameWorld.TileArray;
                 }
 
             }

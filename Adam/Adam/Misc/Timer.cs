@@ -7,9 +7,9 @@ namespace Adam.Misc
 {
     public class Timer
     {
-        double currentTimeInSeconds;
-        double currentTimeInMilliSeconds;
-        double notificationTime;
+        double _currentTimeInSeconds;
+        double _currentTimeInMilliSeconds;
+        double _notificationTime;
 
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
@@ -19,10 +19,10 @@ namespace Adam.Misc
         /// </summary>
         public void Increment()
         {
-            currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
-            currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+            _currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
+            _currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (SetTimeReached != null && currentTimeInMilliSeconds > notificationTime)
+            if (SetTimeReached != null && _currentTimeInMilliSeconds > _notificationTime)
             {
                 SetTimeReached();
             }
@@ -33,8 +33,8 @@ namespace Adam.Misc
         /// </summary>
         public void Reset()
         {
-            currentTimeInMilliSeconds = 0;
-            currentTimeInSeconds = 0;
+            _currentTimeInMilliSeconds = 0;
+            _currentTimeInSeconds = 0;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace Adam.Misc
         /// <param name="time"></param>
         public void SetToInMilliseconds(double time)
         {
-            currentTimeInMilliSeconds = time;
-            currentTimeInSeconds = time / 1000;
+            _currentTimeInMilliSeconds = time;
+            _currentTimeInSeconds = time / 1000;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Adam.Misc
         public void ResetAndWaitFor(double time)
         {
             Reset();
-            notificationTime = time;
+            _notificationTime = time;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Adam.Misc
         {
             get
             {
-                return currentTimeInSeconds;
+                return _currentTimeInSeconds;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Adam.Misc
         {
             get
             {
-                return currentTimeInMilliSeconds;
+                return _currentTimeInMilliSeconds;
             }
         }
     }

@@ -12,113 +12,113 @@ namespace Adam
 {
     public class PopUp
     {
-        Texture2D fill;
-        Texture2D outline;
+        Texture2D _fill;
+        Texture2D _outline;
 
-        Rectangle fillRect;
-        Rectangle outlineRect;
+        Rectangle _fillRect;
+        Rectangle _outlineRect;
 
-        float fillRotation, outlineRotation;
-        Vector2 fillOrigin, outlineOrigin;
-        public bool isVisible;
-        string[] texts;
+        float _fillRotation, _outlineRotation;
+        Vector2 _fillOrigin, _outlineOrigin;
+        public bool IsVisible;
+        string[] _texts;
 
-        double clickTimer;
+        double _clickTimer;
 
-        Texture2D obj;
-        Rectangle objRect, objSourceRect;
-        Vector2 objOrigin;
+        Texture2D _obj;
+        Rectangle _objRect, _objSourceRect;
+        Vector2 _objOrigin;
 
-        Rectangle dialogRect;
+        Rectangle _dialogRect;
 
-        ContentManager Content;
+        ContentManager _content;
 
         public PopUp()
         {
-            texts = new string[32];
-            texts[1] = "A leaf! The best protection in the world!";
-            texts[2] = "A stick! If only you had marshmallows.";
-            texts[3] = "Leather shoes! Show those ants who is boss!";
-            texts[4] = "Bear skin! Just don't smell it.";
-            texts[5] = "A... piece of scrap metal?";
-            texts[6] = "A bow! Arrows not included.";
-            texts[7] = "A toga! Hey, it's better than nothing.";
-            texts[8] = "Sandals! Stylish and aerodynamic.";
-            texts[9] = "A razor! CAUTION: Use it above the waist.";
-            texts[10] = "A diadem! Sorry, no refunds.";
-            texts[11] = "An iron sword! Useful for spreading butter!";
-            texts[12] = "An iron chestplate! Not recommended for females.";
-            texts[13] = "Iron leggings! Protect the children.";
-            texts[14] = "An iron helmet!";
-            texts[15] = "";
-            texts[16] = "A shotgun! Get these kids off my lawn!";
-            texts[17] = "A fancy jacket! At least it has pockets.";
-            texts[18] = "A wig! Hide that male pattern baldness!";
-            texts[19] = "Fancy pants! ";
-            texts[20] = "";
-            texts[21] = "Sunglasses! Do not look directly at the Sun.";
-            texts[22] = "A hoodie! ";
-            texts[23] = "Jeans!";
-            texts[24] = "Athletic shoes!";
-            texts[25] = "";
-            texts[26] = "A laser gun! Built-in mp3 player.";
-            texts[27] = "An astronaut suit! It's cut in half.";
-            texts[28] = "The rest of the astronaut suit! Goodbye freedom.";
-            texts[29] = "A helmet. Fish not included.";
-            texts[30] = "A jetpack! To infinity and beyond!";
-            texts[31] = "Untapped power. Using it voids the warranty.";
+            _texts = new string[32];
+            _texts[1] = "A leaf! The best protection in the world!";
+            _texts[2] = "A stick! If only you had marshmallows.";
+            _texts[3] = "Leather shoes! Show those ants who is boss!";
+            _texts[4] = "Bear skin! Just don't smell it.";
+            _texts[5] = "A... piece of scrap metal?";
+            _texts[6] = "A bow! Arrows not included.";
+            _texts[7] = "A toga! Hey, it's better than nothing.";
+            _texts[8] = "Sandals! Stylish and aerodynamic.";
+            _texts[9] = "A razor! CAUTION: Use it above the waist.";
+            _texts[10] = "A diadem! Sorry, no refunds.";
+            _texts[11] = "An iron sword! Useful for spreading butter!";
+            _texts[12] = "An iron chestplate! Not recommended for females.";
+            _texts[13] = "Iron leggings! Protect the children.";
+            _texts[14] = "An iron helmet!";
+            _texts[15] = "";
+            _texts[16] = "A shotgun! Get these kids off my lawn!";
+            _texts[17] = "A fancy jacket! At least it has pockets.";
+            _texts[18] = "A wig! Hide that male pattern baldness!";
+            _texts[19] = "Fancy pants! ";
+            _texts[20] = "";
+            _texts[21] = "Sunglasses! Do not look directly at the Sun.";
+            _texts[22] = "A hoodie! ";
+            _texts[23] = "Jeans!";
+            _texts[24] = "Athletic shoes!";
+            _texts[25] = "";
+            _texts[26] = "A laser gun! Built-in mp3 player.";
+            _texts[27] = "An astronaut suit! It's cut in half.";
+            _texts[28] = "The rest of the astronaut suit! Goodbye freedom.";
+            _texts[29] = "A helmet. Fish not included.";
+            _texts[30] = "A jetpack! To infinity and beyond!";
+            _texts[31] = "Untapped power. Using it voids the warranty.";
 
-            objSourceRect = new Rectangle(0, 0, 16, 16);
+            _objSourceRect = new Rectangle(0, 0, 16, 16);
         }
 
-        public void Load(ContentManager Content)
+        public void Load(ContentManager content)
         {
-            this.Content = Content;
+            this._content = content;
 
             Vector2 monitorResolution = new Vector2(Main.UserResWidth, Main.UserResHeight);
-            dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
+            _dialogRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y * 4 / 5, (int)monitorResolution.X * 2 / 3, (int)monitorResolution.Y * 1 / 6);
 
-            fill = ContentHelper.LoadTexture("Menu/Star Fill");
-            outline = ContentHelper.LoadTexture("Menu/Star Outline");
+            _fill = ContentHelper.LoadTexture("Menu/Star Fill");
+            _outline = ContentHelper.LoadTexture("Menu/Star Outline");
 
-            fillRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
-            fillOrigin = new Vector2(fill.Width / 2, fill.Height / 2);
+            _fillRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
+            _fillOrigin = new Vector2(_fill.Width / 2, _fill.Height / 2);
 
-            outlineRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
-            outlineOrigin = new Vector2(outline.Width / 2, outline.Height / 2);
+            _outlineRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 300, 300);
+            _outlineOrigin = new Vector2(_outline.Width / 2, _outline.Height / 2);
 
-            obj = ContentHelper.LoadTexture("Objects/tech_items");
-            objRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 64, 64);
-            objOrigin = new Vector2(8, 8);
+            _obj = ContentHelper.LoadTexture("Objects/tech_items");
+            _objRect = new Rectangle((int)monitorResolution.X / 2, (int)monitorResolution.Y / 2 - 100, 64, 64);
+            _objOrigin = new Vector2(8, 8);
         }
 
         public void Update(GameTime gameTime, Player player)
         {
 
-            if (!isVisible)
+            if (!IsVisible)
                 return;
 
-            fillRotation += .01f;
-            outlineRotation -= .01f;
+            _fillRotation += .01f;
+            _outlineRotation -= .01f;
 
-            objSourceRect.X = (0) % 5 * 16;
-            objSourceRect.Y = (0) / 5 * 16;
+            _objSourceRect.X = (0) % 5 * 16;
+            _objSourceRect.Y = (0) / 5 * 16;
 
-            clickTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed)
+            _clickTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (_clickTimer > 1 && Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                clickTimer = 0;
-                isVisible = false;
+                _clickTimer = 0;
+                IsVisible = false;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isVisible)
+            if (IsVisible)
             {
-                spriteBatch.Draw(fill, fillRect, null, Color.White, fillRotation, fillOrigin, SpriteEffects.None, 0);
-                spriteBatch.Draw(outline, outlineRect, null, Color.White, outlineRotation, outlineOrigin, SpriteEffects.None, 0);
-                spriteBatch.Draw(obj, objRect, objSourceRect, Color.White, 0, objOrigin, SpriteEffects.None, 0);
+                spriteBatch.Draw(_fill, _fillRect, null, Color.White, _fillRotation, _fillOrigin, SpriteEffects.None, 0);
+                spriteBatch.Draw(_outline, _outlineRect, null, Color.White, _outlineRotation, _outlineOrigin, SpriteEffects.None, 0);
+                spriteBatch.Draw(_obj, _objRect, _objSourceRect, Color.White, 0, _objOrigin, SpriteEffects.None, 0);
             }
         }
 

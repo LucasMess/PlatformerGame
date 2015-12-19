@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
@@ -14,22 +15,22 @@ namespace Adam.Interactables
     [Serializable]
     public class Portal
     {
-        Portal linkedPortal;
-        Line line;
-        bool locked = true;
-        int tileIndex;
-        int linkedPortalIndex;
-        string linkedLevelName = "Tutorial";
+        Portal _linkedPortal;
+        Line _line;
+        bool _locked = true;
+        int _tileIndex;
+        int _linkedPortalIndex;
+        string _linkedLevelName = "Tutorial";
 
         public Portal(Tile sourceTile)
         {
-            tileIndex = sourceTile.TileIndex;
+            _tileIndex = sourceTile.TileIndex;
             sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
             sourceTile.OnPlayerInteraction += SourceTile_OnPlayerInteraction;
 
-            if (GameWorld.Instance.worldData.MetaData[tileIndex] != null)
+            if (GameWorld.Instance.WorldData.MetaData[_tileIndex] != null)
             {
-                string metadata = GameWorld.Instance.worldData.MetaData[tileIndex];
+                string metadata = GameWorld.Instance.WorldData.MetaData[_tileIndex];
                 if (metadata.StartsWith("pl:nl:"))
                 {
                     //linkedLevelName = metadata.Substring(7);
@@ -41,14 +42,14 @@ namespace Adam.Interactables
         private void SourceTile_OnPlayerInteraction(Tile t)
         {
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
-            DataFolder.PlayLevel(DataFolder.LevelDirectory + "/" + linkedLevelName + ".lvl");
+            DataFolder.PlayLevel(DataFolder.LevelDirectory + "/" + _linkedLevelName + ".lvl");
         }
 
         private void SourceTile_OnTileDestroyed(Tile t)
         {
             t.OnTileDestroyed -= SourceTile_OnTileDestroyed;
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
-            GameWorld.Instance.worldData.MetaData[tileIndex] = null;
+            GameWorld.Instance.WorldData.MetaData[_tileIndex] = null;
         }
 
         /// <summary>
@@ -62,9 +63,9 @@ namespace Adam.Interactables
         /// <summary>
         /// Returns the id of the portal, which is based on the tile index where it is positioned.
         /// </summary>
-        public int PortalID
+        public int PortalId
         {
-            get { return tileIndex; }
+            get { return _tileIndex; }
         }
 
         /// <summary>
@@ -73,14 +74,14 @@ namespace Adam.Interactables
         /// <param name="p"></param>
         public void LinkTo(Portal p)
         {
-            if (linkedPortal != null)
+            if (_linkedPortal != null)
             {
-                linkedPortal.Locked = true;
+                _linkedPortal.Locked = true;
             }
 
-            linkedPortal = p;
-            linkedPortal.Locked = false;
-            locked = false;
+            _linkedPortal = p;
+            _linkedPortal.Locked = false;
+            _locked = false;
         }
 
         /// <summary>

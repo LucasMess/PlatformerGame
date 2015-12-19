@@ -9,18 +9,18 @@ namespace Adam.Obstacles
 {
     public class WidePlatformUp : Obstacle
     {
-        bool hasStartedMoving;
-        bool hasReachedDestination;
-        Vector2 velocity;
-        Rectangle original;
+        bool _hasStartedMoving;
+        bool _hasReachedDestination;
+        Vector2 _velocity;
+        Rectangle _original;
 
-        Vector2 endPoint;
+        Vector2 _endPoint;
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
@@ -39,8 +39,8 @@ namespace Adam.Obstacles
         /// <param name="y"></param>
         public void SetStartPoint(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, Main.Tilesize * 12, Main.Tilesize);
-            original = DrawRectangle;
+            CollRectangle = new Rectangle(x, y, Main.Tilesize * 12, Main.Tilesize);
+            _original = DrawRectangle;
         }
 
         /// <summary>
@@ -50,42 +50,42 @@ namespace Adam.Obstacles
         /// <param name="endY"></param>
         public void SetEndPoint(int endX, int endY)
         {
-            endPoint = new Vector2(endX, endY);
+            _endPoint = new Vector2(endX, endY);
         }
 
         void player_PlayerRespawned()
         {
-            hasStartedMoving = false;
-            hasReachedDestination = false;
-            collRectangle = original;
+            _hasStartedMoving = false;
+            _hasReachedDestination = false;
+            CollRectangle = _original;
         }
 
         public override void Update()
         {
             base.Update();
 
-            collRectangle.Y += (int)velocity.Y;
+            CollRectangle.Y += (int)_velocity.Y;
 
-            if (!hasStartedMoving)
+            if (!_hasStartedMoving)
             {
-                if (collRectangle.Intersects(player.GetCollRectangle()))
-                    hasStartedMoving = true;
+                if (CollRectangle.Intersects(Player.GetCollRectangle()))
+                    _hasStartedMoving = true;
             }
 
-            if (hasStartedMoving)
+            if (_hasStartedMoving)
             {
-                if (hasReachedDestination)
+                if (_hasReachedDestination)
                 {
-                    velocity.Y = 0;
-                    collRectangle.Y = (int)endPoint.Y;
+                    _velocity.Y = 0;
+                    CollRectangle.Y = (int)_endPoint.Y;
                 }
                 else
                 {
-                    velocity.Y = -1f;
+                    _velocity.Y = -1f;
 
-                    if (collRectangle.Y <= (int)endPoint.Y)
+                    if (CollRectangle.Y <= (int)_endPoint.Y)
                     {
-                        hasReachedDestination = true;
+                        _hasReachedDestination = true;
                     }
                 }
             }

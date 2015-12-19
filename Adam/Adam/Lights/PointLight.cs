@@ -17,19 +17,19 @@ namespace Adam.Lights
         public DynamicPointLight(Entity source, float? scale, bool isShaky, Color? color, float glowIntensity)
         {
             if (scale.HasValue)
-                size = (int)(DefaultSize * scale);
+                Size = (int)(DefaultSize * scale);
 
             if (color.HasValue)
-                this.color = color.Value;
+                this.Color = color.Value;
 
-            this.glowIntensity = glowIntensity;
-            this.isShaky = isShaky;
+            this.GlowIntensity = glowIntensity;
+            this.IsShaky = isShaky;
 
             SetPosition(source.GetCollRectangle());
-            glow = new Glow(this);
+            Glow = new Glow(this);
             this.source = source;
 
-            lightHere = true;
+            LightHere = true;
 
         }
 
@@ -37,7 +37,7 @@ namespace Adam.Lights
         {
             SetPosition(source.GetCollRectangle());
 
-            if (isShaky) Shake();
+            if (IsShaky) Shake();
 
             base.Update();
         }
@@ -50,22 +50,22 @@ namespace Adam.Lights
     {
         public FixedPointLight(Rectangle tileRectangle, bool isShaky, Color color, float? scale, float glowIntensity)
         {
-            this.isShaky = isShaky;
-            this.color = color;
+            this.IsShaky = isShaky;
+            this.Color = color;
 
             if (scale.HasValue)
-                size = (int)(DefaultSize * scale);
+                Size = (int)(DefaultSize * scale);
 
             SetPosition(tileRectangle);
-            this.glowIntensity = glowIntensity;
-            glow = new Glow(this);
+            this.GlowIntensity = glowIntensity;
+            Glow = new Glow(this);
 
-            lightHere = true;
+            LightHere = true;
         }
 
         public override void Update()
         {
-            if (isShaky) Shake();
+            if (IsShaky) Shake();
 
             base.Update();
         }

@@ -9,7 +9,7 @@ namespace Adam
 {
     public partial class Player : Character
     {
-        bool isController = false;
+        bool _isController = false;
 
         public delegate void EventHandler();
 
@@ -125,7 +125,7 @@ namespace Adam
 
         private void CheckInput()
         {
-            if (isController)
+            if (_isController)
                 UpdateWithController();
             else UpdateWithKeyboard();
         }

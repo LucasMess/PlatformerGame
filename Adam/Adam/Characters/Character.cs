@@ -8,12 +8,12 @@ namespace Adam.Characters
 {
     public abstract class Character : Entity
     {
-        protected Script script;
+        protected Script Script;
 
         public override void Update()
         {
             if (Session.IsActive && Session.IsHost)
-                script?.Run();
+                Script?.Run();
             base.Update();
         }
 

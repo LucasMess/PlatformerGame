@@ -10,72 +10,72 @@ namespace Adam.UI
     public class PlaceNotification
     {
 
-        SpriteFont font;
-        Texture2D texture;
-        Rectangle drawRectangle;
-        string text = "";
-        bool isActive;
-        double timer;
-        float opacity = 0;
-        Vector2 textPos, original;
+        SpriteFont _font;
+        Texture2D _texture;
+        Rectangle _drawRectangle;
+        string _text = "";
+        bool _isActive;
+        double _timer;
+        float _opacity = 0;
+        Vector2 _textPos, _original;
 
         public PlaceNotification()
         {
-            texture = ContentHelper.LoadTexture("Tiles/black");
-            font = ContentHelper.LoadFont("Fonts/x64");
-            drawRectangle = new Rectangle(0, Main.UserResHeight - 180, Main.UserResWidth, 105);
+            _texture = ContentHelper.LoadTexture("Tiles/black");
+            _font = ContentHelper.LoadFont("Fonts/x64");
+            _drawRectangle = new Rectangle(0, Main.UserResHeight - 180, Main.UserResWidth, 105);
         }
 
         public void Show(string text)
         {
-            this.text = text;
+            this._text = text;
             if (text == null) return;
-            isActive = true;
-            timer = 0;
-            textPos = new Vector2(Main.UserResWidth - font.MeasureString(text).X - 30, drawRectangle.Y);
-            original = textPos;
-            textPos.X += font.MeasureString(text).X / 2;
+            _isActive = true;
+            _timer = 0;
+            _textPos = new Vector2(Main.UserResWidth - _font.MeasureString(text).X - 30, _drawRectangle.Y);
+            _original = _textPos;
+            _textPos.X += _font.MeasureString(text).X / 2;
         }
 
         public void Update(GameTime gameTime)
         {
             float deltaOpacity = .03f;
 
-            if (isActive)
+            if (_isActive)
             {
-                opacity += deltaOpacity;
-                timer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (textPos.X >= original.X)
+                _opacity += deltaOpacity;
+                _timer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_textPos.X >= _original.X)
                 {
-                    textPos.X += (original.X - textPos.X) / 10;
+                    _textPos.X += (_original.X - _textPos.X) / 10;
                 }
-                textPos.X -= 1f;
+                _textPos.X -= 1f;
 
-                if (timer > 3)
+                if (_timer > 3)
                 {
-                    isActive = false;
+                    _isActive = false;
                 }
             }
             else
             {
-                opacity -= deltaOpacity;
-                textPos.X -= 6f;
+                _opacity -= deltaOpacity;
+                _textPos.X -= 6f;
             }
 
-            if (opacity > .7f)
-                opacity = .7f;
-            if (opacity < 0)
-                opacity = 0;
+            if (_opacity > .7f)
+                _opacity = .7f;
+            if (_opacity < 0)
+                _opacity = 0;
 
-            if (textPos.X < 0) textPos.X = 0;
+            if (_textPos.X < 0) _textPos.X = 0;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (text == null) return;
-            spriteBatch.Draw(texture, drawRectangle, Color.White * opacity);
-            spriteBatch.DrawString(font, text, textPos,
-                Color.White * opacity);
+            if (_text == null) return;
+            spriteBatch.Draw(_texture, _drawRectangle, Color.White * _opacity);
+            spriteBatch.DrawString(_font, _text, _textPos,
+                Color.White * _opacity);
 
         }
     }

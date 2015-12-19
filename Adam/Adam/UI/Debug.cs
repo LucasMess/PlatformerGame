@@ -6,80 +6,81 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class GameDebug
     {
-        Texture2D black;
-        Rectangle rect;
-        Keys[] lastPressedKeys;
-        public bool isWritingCommand;
-        KeyboardState oldKeyboardState, currentKeyboardState;
-        string textString;
-        SpriteFont font;
-        Vector2 monitorRes;
-        Vector2 position;
-        Main game1;
-        Player player;
-        bool definitionFound;
+        Texture2D _black;
+        Rectangle _rect;
+        Keys[] _lastPressedKeys;
+        public bool IsWritingCommand;
+        KeyboardState _oldKeyboardState, _currentKeyboardState;
+        string _textString;
+        SpriteFont _font;
+        Vector2 _monitorRes;
+        Vector2 _position;
+        Main _game1;
+        Player _player;
+        bool _definitionFound;
 
         public GameDebug(SpriteFont font, Vector2 monitorRes, Texture2D black)
         {
-            this.monitorRes = monitorRes;
-            this.font = font;
-            this.black = black;
-            lastPressedKeys = new Keys[0];
-            position = new Vector2(10, monitorRes.Y - font.LineSpacing - 40);
-            rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
+            this._monitorRes = monitorRes;
+            this._font = font;
+            this._black = black;
+            _lastPressedKeys = new Keys[0];
+            _position = new Vector2(10, monitorRes.Y - font.LineSpacing - 40);
+            _rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
         public void Update(Main game1, Player player, GameWorld map, bool isOnDebug)
         {
             if (!isOnDebug)
             {
-                textString = "";
-                isWritingCommand = false;
-                map.isOnDebug = false;
+                _textString = "";
+                IsWritingCommand = false;
+                map.IsOnDebug = false;
                 return;
             }
 
-            if (!isWritingCommand)
+            if (!IsWritingCommand)
             {
-                map.isOnDebug = false;
+                map.IsOnDebug = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
                     && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
                     && Keyboard.GetState().IsKeyDown(Keys.C))
                 {
-                    isWritingCommand = true;
-                    textString = "";
+                    IsWritingCommand = true;
+                    _textString = "";
                     return;
                 }
                 else return;
             }
             else
             {
-                map.isOnDebug = true;
+                map.IsOnDebug = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
                     && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
                     && Keyboard.GetState().IsKeyDown(Keys.C))
             {
-                textString = "";
+                _textString = "";
             }
 
-            if (textString == "No command found" && Keyboard.GetState().IsKeyDown(Keys.Back))
-                textString = "";
+            if (_textString == "No command found" && Keyboard.GetState().IsKeyDown(Keys.Back))
+                _textString = "";
 
-            this.game1 = game1;
-            this.player = player;
+            this._game1 = game1;
+            this._player = player;
 
-            oldKeyboardState = currentKeyboardState;
-            currentKeyboardState = Keyboard.GetState();
+            _oldKeyboardState = _currentKeyboardState;
+            _currentKeyboardState = Keyboard.GetState();
 
-            InputHelper.TryLinkToKeyboardInput(ref textString, currentKeyboardState, oldKeyboardState);
-            if (InputHelper.IsKeyDown(Keys.Enter) &&!definitionFound)
+            InputHelper.TryLinkToKeyboardInput(ref _textString, _currentKeyboardState, _oldKeyboardState);
+            if (InputHelper.IsKeyDown(Keys.Enter) &&!_definitionFound)
             {
                 AnalyzeText();
             }
@@ -88,43 +89,43 @@ namespace Adam
 
         public void AnalyzeText()
         {
-            switch (textString)
+            switch (_textString)
             {
                 case "is op true":
-                    player.canFly = true;
-                    player.isInvulnerable = true;
-                    definitionFound = true;
+                    _player.CanFly = true;
+                    _player.IsInvulnerable = true;
+                    _definitionFound = true;
                     break;
                 case "is op false":
-                    player.canFly = false;
-                    player.isInvulnerable = false;
-                    definitionFound = true;
+                    _player.CanFly = false;
+                    _player.IsInvulnerable = false;
+                    _definitionFound = true;
                     break;
                 case "is ghost true":
-                    player.isGhost = true;
-                    player.canFly = true;
-                    player.isInvulnerable = true;
-                    definitionFound = true;
+                    _player.IsGhost = true;
+                    _player.CanFly = true;
+                    _player.IsInvulnerable = true;
+                    _definitionFound = true;
                     break;
                 case "is ghost false":
-                    player.isGhost = false;
-                    player.canFly = false;
-                    player.isInvulnerable = false;
-                    definitionFound = true;
+                    _player.IsGhost = false;
+                    _player.CanFly = false;
+                    _player.IsInvulnerable = false;
+                    _definitionFound = true;
                     break;
                 case "set level":
                     break;
             }
 
-            String text = textString;
+            String text = _textString;
             string keyword = "set background ";
             if (text.StartsWith(keyword))
             {
                 string newString = text.Remove(0, keyword.Length);
                 int number;
                 Int32.TryParse(newString, out number);
-                GameWorld.Instance.worldData.BackgroundID = (byte)number;
-                definitionFound = true;
+                GameWorld.Instance.WorldData.BackgroundId = (byte)number;
+                _definitionFound = true;
             }
             keyword = "set soundtrack ";
             if (text.StartsWith(keyword))
@@ -132,8 +133,8 @@ namespace Adam
                 string newString = text.Remove(0, keyword.Length);
                 int number;
                 Int32.TryParse(newString, out number);
-                GameWorld.Instance.worldData.SoundtrackID = (byte)number;
-                definitionFound = true;
+                GameWorld.Instance.WorldData.SoundtrackId = (byte)number;
+                _definitionFound = true;
             }
 
             //keyword = "set ambience ";
@@ -146,22 +147,22 @@ namespace Adam
             //    definitionFound = true;
             //}
 
-            if (definitionFound)
+            if (_definitionFound)
             {
-                textString = "";
-                definitionFound = false;
-                isWritingCommand = false;
+                _textString = "";
+                _definitionFound = false;
+                IsWritingCommand = false;
             }
-            else textString = "No command found";
+            else _textString = "No command found";
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isWritingCommand)
-                spriteBatch.Draw(black, rect, Color.White * .3f);
-            if (textString != null)
-                spriteBatch.DrawString(font, textString, position, Color.White);
+            if (IsWritingCommand)
+                spriteBatch.Draw(_black, _rect, Color.White * .3f);
+            if (_textString != null)
+                spriteBatch.DrawString(_font, _textString, _position, Color.White);
         }
     }
 }

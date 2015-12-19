@@ -9,13 +9,13 @@ namespace Adam.Network.Packets
     [Serializable]
     public class PlayerPacket : DataPacket
     {
-        Vector2 position;
-        Vector2 velocity;
+        Vector2 _position;
+        Vector2 _velocity;
 
         public PlayerPacket(Player player)
         {
-            position = new Vector2(player.GetCollRectangle().X, player.GetCollRectangle().Y);
-            velocity = player.GetVelocity();
+            _position = new Vector2(player.GetCollRectangle().X, player.GetCollRectangle().Y);
+            _velocity = player.GetVelocity();
         }
     }
 }

@@ -7,15 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Obstacles
 {
     public class FallingBoulder : Obstacle, INewtonian
     {
-        bool hasFallen;
-        int originalY;
+        bool _hasFallen;
+        int _originalY;
 
-        SoundFx fallingSound;
+        SoundFx _fallingSound;
 
         public float GravityStrength { get; set; }
 
@@ -30,7 +31,7 @@ namespace Adam.Obstacles
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
@@ -38,13 +39,13 @@ namespace Adam.Obstacles
         {
             GravityStrength = Main.Gravity ;
             Texture = GameWorld.SpriteSheet;
-            fallingSound = new SoundFx("Sounds/Boulder/boulder_fall", this);   
+            _fallingSound = new SoundFx("Sounds/Boulder/boulder_fall", this);   
 
-            collRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
-            sourceRectangle = new Rectangle(12 * 16, 26 * 16, 32, 32);
+            CollRectangle = new Rectangle(x, y, Main.Tilesize * 2, Main.Tilesize * 2);
+            SourceRectangle = new Rectangle(12 * 16, 26 * 16, 32, 32);
             CurrentDamageType = DamageType.Bottom;
             IsCollidable = true;
-            originalY = DrawRectangle.Y;
+            _originalY = DrawRectangle.Y;
 
             CollidedWithTileBelow += OnCollisionWithTerrainBelow;
         }
@@ -55,43 +56,43 @@ namespace Adam.Obstacles
 
             if (IsTouchingPlayer)
             {
-                Player player = GameWorld.Instance.player;
+                Player player = GameWorld.Instance.Player;
                 player.KillAndRespawn();
             }
 
             // If hit ground go back up slowly.
-            if (hasFallen)
+            if (_hasFallen)
             {
-                velocity.Y = -1f;
+                Velocity.Y = -1f;
             }
             else
             {
                 GravityStrength = Main.Gravity;
             }
 
-            if (collRectangle.Y <= originalY && hasFallen)
+            if (CollRectangle.Y <= _originalY && _hasFallen)
             {
-                fallingSound.Reset();
-                hasFallen = false;
-                velocity.Y = 0;
+                _fallingSound.Reset();
+                _hasFallen = false;
+                Velocity.Y = 0;
             }
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White);
 
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/temp"), attackBox, Color.Red);
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            velocity.Y = 0;
+            Velocity.Y = 0;
             GravityStrength = 0;
-            hasFallen = true;
+            _hasFallen = true;
 
             StompSmokeParticle.Generate(10, this);
-            fallingSound.PlayNewInstanceOnce();
+            _fallingSound.PlayNewInstanceOnce();
         }
     }
 }

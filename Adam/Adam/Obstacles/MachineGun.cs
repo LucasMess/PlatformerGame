@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Adam.Misc;
 
@@ -9,65 +10,65 @@ namespace Adam.Obstacles
 {
     class MachineGun : Obstacle
     {
-        bool isFiring;
-        Timer firingTimer = new Timer();
-        Timer bulletSpacingTimer = new Timer();
+        bool _isFiring;
+        Timer _firingTimer = new Timer();
+        Timer _bulletSpacingTimer = new Timer();
         const int BulletInterval = 50;
         const int FiringInterval = 1000;
-        bool firingRight;
-        SoundFx firingSound;
+        bool _firingRight;
+        SoundFx _firingSound;
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public MachineGun(Tile sourceTile)
         {
-            attackBox = new Rectangle(sourceTile.drawRectangle.X, sourceTile.drawRectangle.Y - Main.Tilesize * 5, Main.Tilesize, Main.Tilesize * 5);
-            collRectangle = sourceTile.drawRectangle;
+            AttackBox = new Rectangle(sourceTile.DrawRectangle.X, sourceTile.DrawRectangle.Y - Main.Tilesize * 5, Main.Tilesize, Main.Tilesize * 5);
+            CollRectangle = sourceTile.DrawRectangle;
 
-            firingSound = new SoundFx("Sounds/Machine Gun/fire",this);
+            _firingSound = new SoundFx("Sounds/Machine Gun/fire",this);
         }
 
         public override void Update()
         {
-            firingTimer.Increment();
-            if (firingTimer.TimeElapsedInMilliSeconds > FiringInterval)
+            _firingTimer.Increment();
+            if (_firingTimer.TimeElapsedInMilliSeconds > FiringInterval)
             {
-                firingTimer.Reset();
-                isFiring = !isFiring;
+                _firingTimer.Reset();
+                _isFiring = !_isFiring;
             }
 
-            if (isFiring)
+            if (_isFiring)
             {
-                bulletSpacingTimer.Increment();
-                if (bulletSpacingTimer.TimeElapsedInMilliSeconds > BulletInterval)
+                _bulletSpacingTimer.Increment();
+                if (_bulletSpacingTimer.TimeElapsedInMilliSeconds > BulletInterval)
                 {
-                    if (firingRight)
+                    if (_firingRight)
                     {
                         MachineGunParticle par = new MachineGunParticle(this, 8);
-                        ExplosionParticle exp = new ExplosionParticle(collRectangle.X + 8, collRectangle.Y, Color.White, .7f);
-                        GameWorld.Instance.particles.Add(exp);
-                        GameWorld.Instance.particles.Add(par);
-                        firingSound.PlayNewInstanceOnce();
-                        firingSound.Reset();
-                        firingRight = !firingRight;
+                        ExplosionParticle exp = new ExplosionParticle(CollRectangle.X + 8, CollRectangle.Y, Color.White, .7f);
+                        GameWorld.Instance.Particles.Add(exp);
+                        GameWorld.Instance.Particles.Add(par);
+                        _firingSound.PlayNewInstanceOnce();
+                        _firingSound.Reset();
+                        _firingRight = !_firingRight;
                     }
                     else
                     {                      
                         MachineGunParticle par = new MachineGunParticle(this, 24);
-                        ExplosionParticle exp = new ExplosionParticle(collRectangle.X + 24, collRectangle.Y, Color.White,.7f);
-                        GameWorld.Instance.particles.Add(exp);
-                        GameWorld.Instance.particles.Add(par);
-                        firingRight = !firingRight;
-                        firingSound.PlayNewInstanceOnce();
-                        firingSound.Reset();
+                        ExplosionParticle exp = new ExplosionParticle(CollRectangle.X + 24, CollRectangle.Y, Color.White,.7f);
+                        GameWorld.Instance.Particles.Add(exp);
+                        GameWorld.Instance.Particles.Add(par);
+                        _firingRight = !_firingRight;
+                        _firingSound.PlayNewInstanceOnce();
+                        _firingSound.Reset();
                     }
-                    bulletSpacingTimer.Reset();
+                    _bulletSpacingTimer.Reset();
                 }
             }
 

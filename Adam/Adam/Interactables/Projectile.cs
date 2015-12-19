@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Adam.Lights;
 using Adam.Misc.Interfaces;
 using Adam.Characters.Enemies;
+using Adam.Levels;
 
 namespace Adam
 {
@@ -20,16 +21,16 @@ namespace Adam
 
     public abstract class Projectile : Entity
     {
-        public int tileHit;
+        public int TileHit;
         protected bool IsInactive;
         public ProjectileSource CurrentProjectileSource;
 
-        protected float rotation;
-        protected bool isFlipped;
-        protected double effTimer;
-        protected GameTime gameTime;
-        protected Player player;
-        protected Enemy enemy;
+        protected float Rotation;
+        protected bool IsFlipped;
+        protected double EffTimer;
+        protected GameTime GameTime;
+        protected Player Player;
+        protected Enemy Enemy;
 
 
         public Projectile()
@@ -39,11 +40,11 @@ namespace Adam
 
         protected void CreateParticleEffect(GameTime gameTime)
         {
-            effTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (effTimer > 20 && !IsInactive)
+            EffTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (EffTimer > 20 && !IsInactive)
             {
-                GameWorld.Instance.particles.Add(new Particle(this));
-                effTimer = 0;
+                GameWorld.Instance.Particles.Add(new Particle(this));
+                EffTimer = 0;
             }
         }
 
@@ -60,7 +61,7 @@ namespace Adam
                     //animation.Draw(spriteBatch);
                     break;
                 case ProjectileSource.Player:
-                    spriteBatch.Draw(Texture, collRectangle, null, Color.White, rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(Texture, CollRectangle, null, Color.White, Rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                     if (Light != null)
                         Light.DrawGlow(spriteBatch);
                     break;
@@ -85,8 +86,8 @@ namespace Adam
         protected void Destroy()
         {
             if (Light != null)
-                GameWorld.Instance.lightEngine.RemoveDynamicLight(Light);
-            GameWorld.Instance.entities.Remove(this);
+                GameWorld.Instance.LightEngine.RemoveDynamicLight(Light);
+            GameWorld.Instance.Entities.Remove(this);
         }
 
         public void Animate()
@@ -97,7 +98,7 @@ namespace Adam
 
     public class PlayerWeaponProjectile : Projectile
     {
-        public PlayerWeaponProjectile(Player player, ContentManager Content)
+        public PlayerWeaponProjectile(Player player, ContentManager content)
         { 
         //{
         //    CurrentProjectileSource = ProjectileSource.Player;
@@ -162,15 +163,15 @@ namespace Adam
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public override void Update(Player player, GameTime gameTime)
         {
-            this.gameTime = gameTime;
-            collRectangle.X += (int)velocity.X;
-            collRectangle.Y += (int)velocity.Y;
+            this.GameTime = gameTime;
+            CollRectangle.X += (int)Velocity.X;
+            CollRectangle.Y += (int)Velocity.Y;
 
             CreateTrailEffect();
         }
@@ -197,10 +198,10 @@ namespace Adam
         public FlyingWheelProjectile(int x, int y, int xVel, int yVel)
         {
             Texture = Main.DefaultTexture;
-            collRectangle = new Rectangle(x, y, 16, 16);
-            velocity = new Vector2(xVel, yVel);
+            CollRectangle = new Rectangle(x, y, 16, 16);
+            Velocity = new Vector2(xVel, yVel);
             Light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
-            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
+            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
 
         }
 
@@ -208,7 +209,7 @@ namespace Adam
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
@@ -219,8 +220,8 @@ namespace Adam
 
         public override void Update(Player player, GameTime gameTime)
         {
-            GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
-            GameWorld.Instance.particles.Add(new TrailParticle(this, Color.MediumPurple));
+            GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
+            GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
 
             base.Update(player, gameTime);
         }
@@ -229,23 +230,23 @@ namespace Adam
     //Only use this with enemies
     public class ParabolicProjectile : Projectile
     {
-        public ParabolicProjectile(Enemy enemy, GameWorld map, ProjectileSource CurrentProjectileSource)
+        public ParabolicProjectile(Enemy enemy, GameWorld map, ProjectileSource currentProjectileSource)
         {
-            this.CurrentProjectileSource = CurrentProjectileSource;
-            this.enemy = enemy;
+            this.CurrentProjectileSource = currentProjectileSource;
+            this.Enemy = enemy;
 
-            switch (CurrentProjectileSource)
+            switch (currentProjectileSource)
             {
                 case ProjectileSource.Snake:
                     Texture = ContentHelper.LoadTexture("Projectiles/venom_dark");
-                    collRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
+                    CollRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
                    // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
                     if (!enemy.IsFacingRight)
                     {
-                        velocity = new Vector2(-10, -15);
+                        Velocity = new Vector2(-10, -15);
                         //animation.isFlipped = true;
                     }
-                    else velocity = new Vector2(10, -15);
+                    else Velocity = new Vector2(10, -15);
                     break;
             }
 
@@ -255,31 +256,31 @@ namespace Adam
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public override void Update(Player player, GameTime gameTime)
         {
-            this.player = player;
-            this.gameTime = gameTime;
+            this.Player = player;
+            this.GameTime = gameTime;
 
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Snake:
-                    collRectangle.X += (int)velocity.X;
-                    collRectangle.Y += (int)velocity.Y;
+                    CollRectangle.X += (int)Velocity.X;
+                    CollRectangle.Y += (int)Velocity.Y;
 
                   //  animation.UpdateRectangle(collRectangle);
                    // animation.Update(gameTime);
                     CreateParticleEffect(gameTime);
 
-                    velocity.Y += .8f;
+                    Velocity.Y += .8f;
 
-                    if (velocity.Y > 10)
-                        velocity.Y = 10f;
+                    if (Velocity.Y > 10)
+                        Velocity.Y = 10f;
 
-                    velocity.X = velocity.X * 0.995f;
+                    Velocity.X = Velocity.X * 0.995f;
                     break;
             }
 
@@ -294,16 +295,16 @@ namespace Adam
 
         private void CheckCollisionWithPlayer()
         {
-            if (player.GetCollRectangle().Intersects(collRectangle) && !IsInactive)
+            if (Player.GetCollRectangle().Intersects(CollRectangle) && !IsInactive)
             {
                 IsInactive = true;
-                player.TakeDamageAndKnockBack(enemy.GetProjectileDamage());
+                Player.TakeDamageAndKnockBack(Enemy.GetProjectileDamage());
             }
         }
 
         private void CheckIfOutsideBoundaries()
         {
-            if (collRectangle.Y > GameWorld.Instance.worldData.LevelHeight * Main.Tilesize)
+            if (CollRectangle.Y > GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize)
                 IsInactive = true;
         }
     }

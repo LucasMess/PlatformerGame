@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Adam.Levels;
 
 namespace Adam.UI
 {
@@ -13,19 +14,19 @@ namespace Adam.UI
     /// </summary>
     class Minimap
     {
-        Color[] pixels;
-        Texture2D texture, antiTexture, temp;
-        Thread thread;
-        Rectangle rectangle;
-        bool isAnti;
+        Color[] _pixels;
+        Texture2D _texture, _antiTexture, _temp;
+        Thread _thread;
+        Rectangle _rectangle;
+        bool _isAnti;
 
         public Minimap()
         {
-            temp = Main.DefaultTexture;
-            texture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.worldData.LevelWidth, GameWorld.Instance.worldData.LevelHeight);
-            antiTexture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.worldData.LevelWidth, GameWorld.Instance.worldData.LevelHeight);
-            pixels = new Color[texture.Width * texture.Height];
-            rectangle = new Rectangle(Main.UserResWidth - texture.Width, Main.UserResHeight - texture.Height, texture.Width, texture.Height);
+            _temp = Main.DefaultTexture;
+            _texture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight);
+            _antiTexture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight);
+            _pixels = new Color[_texture.Width * _texture.Height];
+            _rectangle = new Rectangle(Main.UserResWidth - _texture.Width, Main.UserResHeight - _texture.Height, _texture.Width, _texture.Height);
         }
 
         /// <summary>
@@ -33,9 +34,9 @@ namespace Adam.UI
         /// </summary>
         public void StartUpdating()
         {
-            thread = new Thread(new ThreadStart(Update));
-            thread.IsBackground = true;
-            thread.Start();
+            _thread = new Thread(new ThreadStart(Update));
+            _thread.IsBackground = true;
+            _thread.Start();
         }
 
         /// <summary>
@@ -50,27 +51,27 @@ namespace Adam.UI
                 if (Main.IsLoadingContent)
                     continue;
 
-                Tile[] tileArray = GameWorld.Instance.tileArray;
-                Tile[] wallArray = GameWorld.Instance.wallArray;
+                Tile[] tileArray = GameWorld.Instance.TileArray;
+                Tile[] wallArray = GameWorld.Instance.WallArray;
 
                 for (int i = 0; i < tileArray.Length; i++)
                 {
-                    pixels[i] = new Color(0, 0, 0, 50);
-                    if (tileArray[i].ID != 0 && tileArray[i].ID < 200)
+                    _pixels[i] = new Color(0, 0, 0, 50);
+                    if (tileArray[i].Id != 0 && tileArray[i].Id < 200)
                     {
-                        pixels[i] = Color.ForestGreen;
+                        _pixels[i] = Color.ForestGreen;
                     }
-                    else if (wallArray[i].ID != 0)
+                    else if (wallArray[i].Id != 0)
                     {
-                        pixels[i] = Color.DarkGreen;
+                        _pixels[i] = Color.DarkGreen;
                     }
                 }
 
-                if (!isAnti)
+                if (!_isAnti)
                 {
                     try
                     {
-                        texture?.SetData(pixels);
+                        _texture?.SetData(_pixels);
                     }
                     catch
                     {
@@ -81,14 +82,14 @@ namespace Adam.UI
                 {
                     try
                     {
-                        antiTexture?.SetData(pixels);
+                        _antiTexture?.SetData(_pixels);
                     }
                     catch
                     {
                         isGoing = false;
                     }
                 }
-                isAnti = !isAnti;
+                _isAnti = !_isAnti;
 
                 Thread.Sleep(1000);
             }
@@ -96,11 +97,11 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isAnti)
-                spriteBatch.Draw(texture, rectangle, Color.White);
+            if (_isAnti)
+                spriteBatch.Draw(_texture, _rectangle, Color.White);
             else
             {
-                spriteBatch.Draw(antiTexture, rectangle, Color.White);
+                spriteBatch.Draw(_antiTexture, _rectangle, Color.White);
             }
         }
     }

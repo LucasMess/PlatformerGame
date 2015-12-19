@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Lights
 {
@@ -12,23 +13,23 @@ namespace Adam.Lights
     /// </summary>
     public class SunLight
     {
-        Vector2 position;
-        static Texture2D texture = GameWorld.SpriteSheet;
-        static Rectangle sourceRectangle =new Rectangle(380, 0, Width, Height);
+        Vector2 _position;
+        static Texture2D _texture = GameWorld.SpriteSheet;
+        static Rectangle _sourceRectangle =new Rectangle(380, 0, Width, Height);
 
         const int Width = 256;
         const int Height = 256;
 
         public SunLight(Rectangle tileDrawRectangle)
         {
-            position = new Vector2(tileDrawRectangle.Center.X, tileDrawRectangle.Center.Y);
-            position.X -= Width/2;
-            position.Y -= Height /2;
+            _position = new Vector2(tileDrawRectangle.Center.X, tileDrawRectangle.Center.Y);
+            _position.X -= Width/2;
+            _position.Y -= Height /2;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White);
+            spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White);
         }
     }
 }

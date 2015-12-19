@@ -16,70 +16,70 @@ namespace Adam.Network
 {
     public class Client
     {
-        Server server;
-        TcpClient tcpClient;
-        NetworkStream netStream;
-        SslStream ssl;
-        BinaryReader br;
-        BinaryWriter bw;
-        BinaryFormatter formatter;
+        Server _server;
+        TcpClient _tcpClient;
+        NetworkStream _netStream;
+        SslStream _ssl;
+        BinaryReader _br;
+        BinaryWriter _bw;
+        BinaryFormatter _formatter;
 
-        UdpClient udpClient;
+        UdpClient _udpClient;
 
         public PlayerPacket PlayerPacket { get; set; }
 
-        public const int DKD_Hello = 1996;
-        public const byte DKD_OK = 0;
-        public const byte DKD_Connect = 1;
-        public const byte DKD_PlayerData = 2;
-        public const byte DKD_EntityData = 3;
-        public const byte DKD_Register = 4;
-        public const byte DKD_Level = 5;
-        public const byte DKD_Test = 100;
+        public const int DkdHello = 1996;
+        public const byte DkdOk = 0;
+        public const byte DkdConnect = 1;
+        public const byte DkdPlayerData = 2;
+        public const byte DkdEntityData = 3;
+        public const byte DkdRegister = 4;
+        public const byte DkdLevel = 5;
+        public const byte DkdTest = 100;
 
 
         public Client(Server s, TcpClient c)
         {
-            tcpClient = c;
-            server = s;
+            _tcpClient = c;
+            _server = s;
             (new Thread(new ThreadStart(SetupConnection))).Start();
            // (new Thread(new ThreadStart(UpdateReceiver))).Start();
 
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42556));
+            _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, 42556));
         }
 
         private void SetupConnection()
         {
             Console.WriteLine("Setting up connection to client...");
-            netStream = tcpClient.GetStream();
-            ssl = new SslStream(netStream, false);
+            _netStream = _tcpClient.GetStream();
+            _ssl = new SslStream(_netStream, false);
             //ssl.AuthenticateAsServer(server.cert, false, SslProtocols.Tls, true);
 
-            br = new BinaryReader(netStream, Encoding.UTF8);
-            bw = new BinaryWriter(netStream, Encoding.UTF8);
+            _br = new BinaryReader(_netStream, Encoding.UTF8);
+            _bw = new BinaryWriter(_netStream, Encoding.UTF8);
 
             //Hello greeting.
-            bw.Write(DKD_Hello);
-            bw.Flush();
+            _bw.Write(DkdHello);
+            _bw.Flush();
 
-            int hello = br.ReadInt32();
-            if (hello == DKD_Hello)
+            int hello = _br.ReadInt32();
+            if (hello == DkdHello)
             {
-                byte message = br.ReadByte();
+                byte message = _br.ReadByte();
 
-                if (message == DKD_Register)
+                if (message == DkdRegister)
                 {
                     
-                    server.clientIPs.Add((IPEndPoint)tcpClient.Client.RemoteEndPoint);
-                    server.clients.Add(this);
+                    _server.ClientIPs.Add((IPEndPoint)_tcpClient.Client.RemoteEndPoint);
+                    _server.Clients.Add(this);
 
                     //TODO: Add player to map.
-                    string playerName = br.ReadString();
+                    string playerName = _br.ReadString();
 
-                    Console.WriteLine("New client registered with IP address: {0}, and Player name: {1}", (IPEndPoint)tcpClient.Client.RemoteEndPoint,playerName);
+                    Console.WriteLine("New client registered with IP address: {0}, and Player name: {1}", (IPEndPoint)_tcpClient.Client.RemoteEndPoint,playerName);
 
-                    bw.Write(DKD_OK);
-                    bw.Flush();
+                    _bw.Write(DkdOk);
+                    _bw.Flush();
                     Receiver();
                 }
             }
@@ -87,9 +87,9 @@ namespace Adam.Network
 
         private void Receiver()
         {
-            while (tcpClient.Connected)
+            while (_tcpClient.Connected)
             {
-                byte request = br.ReadByte();
+                byte request = _br.ReadByte();
             }
         }
 
@@ -105,17 +105,17 @@ namespace Adam.Network
         //    }
         //}
 
-        public void SendLevelOverTCP(byte[] packet)
+        public void SendLevelOverTcp(byte[] packet)
         {
             // Tells client server is about to send level data.
-            bw.Write(DKD_Level);
+            _bw.Write(DkdLevel);
             // Tells client length of data.
-            bw.Write(packet.Length);
+            _bw.Write(packet.Length);
             Console.WriteLine("Sending level over TCP to client...");
             // Sends all data.
-            bw.Write(packet);
+            _bw.Write(packet);
 
-            bw.Flush();
+            _bw.Flush();
 
             // Checks if the client received all information.
             //byte ans = br.ReadByte();
@@ -130,14 +130,14 @@ namespace Adam.Network
             //}
         }
 
-        public void SendMessageOverTCP(string message)
+        public void SendMessageOverTcp(string message)
         {
-            bw.Write(DKD_Test);
-            bw.Write(message);
-            bw.Flush();
+            _bw.Write(DkdTest);
+            _bw.Write(message);
+            _bw.Flush();
 
-            byte ans = br.ReadByte();
-            if (ans == DKD_OK)
+            byte ans = _br.ReadByte();
+            if (ans == DkdOk)
             {
                 //over
             }

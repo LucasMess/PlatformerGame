@@ -11,20 +11,20 @@ namespace Adam.GameData
 {
     public class GameDataManager
     {
-        public Save[] saves;
-        Settings settings;
+        public Save[] Saves;
+        Settings _settings;
 
         public int SelectedSave { get; set; }
 
         public GameDataManager()
         {
-            saves = new Save[3];
-            for (int i = 0; i < saves.Length; i++)
+            Saves = new Save[3];
+            for (int i = 0; i < Saves.Length; i++)
             {
-                saves[i] = new Save();
+                Saves[i] = new Save();
             }
 
-            settings = new Settings();
+            _settings = new Settings();
 
             LoadSaves();
             Thread.Sleep(10);
@@ -34,7 +34,7 @@ namespace Adam.GameData
 
         private void LoadSaves()
         {
-            for (int s = 0; s < saves.Length; s++)
+            for (int s = 0; s < Saves.Length; s++)
             {
                 //int saveNumber = s + 1;
                 //FileStream fs = new FileStream("save" + saveNumber + ".xml", FileMode.OpenOrCreate);
@@ -60,7 +60,7 @@ namespace Adam.GameData
             {
                 FileStream fs = new FileStream("settings.xml", FileMode.Open, FileAccess.Read);
                 XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                settings = (Settings)xs.Deserialize(fs);
+                _settings = (Settings)xs.Deserialize(fs);
                 fs.Close();
             }
 
@@ -68,7 +68,7 @@ namespace Adam.GameData
             {
                 FileStream fs = new FileStream("settings.xml", FileMode.Create);
                 XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                xs.Serialize(fs, settings);
+                xs.Serialize(fs, _settings);
                 fs.Close();
             }
         }
@@ -77,23 +77,23 @@ namespace Adam.GameData
         {
             FileStream fs = new FileStream("settings.xml", FileMode.Create);
             XmlSerializer xs = new XmlSerializer(typeof(Settings));
-            xs.Serialize(fs, settings);
+            xs.Serialize(fs, _settings);
             fs.Close();
         }
 
         public Settings Settings
         {
-            get { return settings; }
+            get { return _settings; }
         }
 
         public Save CurrentSave
         {
-            get { return saves[SelectedSave]; }
+            get { return Saves[SelectedSave]; }
         }
 
         public Save GetSave(int number)
         {
-            return saves[number];
+            return Saves[number];
         }
 
     }

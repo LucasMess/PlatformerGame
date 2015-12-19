@@ -6,47 +6,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class Glow
     {
         public Color Color { get; set; }
-        Texture2D texture;
-        Rectangle drawRectangle;
-        Rectangle sourceRectangle;
-        Light source;
+        Texture2D _texture;
+        Rectangle _drawRectangle;
+        Rectangle _sourceRectangle;
+        Light _source;
 
         public Glow(Light light)
         {
-            texture = GameWorld.SpriteSheet;
-            drawRectangle = light.drawRectangle;
-            int width = light.drawRectangle.Width - 64;
-            int height = light.drawRectangle.Height - 64;
-            drawRectangle.X += (light.drawRectangle.Width - width) / 2;
-            drawRectangle.Y += (light.drawRectangle.Height - height) / 2;
-            drawRectangle.Width = width;
-            drawRectangle.Height = height;
-            sourceRectangle = new Rectangle(20 * 16, 15 * 16, 64, 64);
-            Color = light.color;
-            source = light;
+            _texture = GameWorld.SpriteSheet;
+            _drawRectangle = light.DrawRectangle;
+            int width = light.DrawRectangle.Width - 64;
+            int height = light.DrawRectangle.Height - 64;
+            _drawRectangle.X += (light.DrawRectangle.Width - width) / 2;
+            _drawRectangle.Y += (light.DrawRectangle.Height - height) / 2;
+            _drawRectangle.Width = width;
+            _drawRectangle.Height = height;
+            _sourceRectangle = new Rectangle(20 * 16, 15 * 16, 64, 64);
+            Color = light.Color;
+            _source = light;
         }
 
         public void Update(Light light)
         {
-            source = light;
-            drawRectangle = light.drawRectangle;
-            int width = light.drawRectangle.Width - 64;
-            int height = light.drawRectangle.Height - 64;
-            drawRectangle.X += (light.drawRectangle.Width - width) / 2;
-            drawRectangle.Y += (light.drawRectangle.Height - height) / 2;
-            drawRectangle.Width = width;
-            drawRectangle.Height = height;
+            _source = light;
+            _drawRectangle = light.DrawRectangle;
+            int width = light.DrawRectangle.Width - 64;
+            int height = light.DrawRectangle.Height - 64;
+            _drawRectangle.X += (light.DrawRectangle.Width - width) / 2;
+            _drawRectangle.Y += (light.DrawRectangle.Height - height) / 2;
+            _drawRectangle.Width = width;
+            _drawRectangle.Height = height;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color * source.glowIntensity);
+            spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color * _source.GlowIntensity);
         }
     }
 }

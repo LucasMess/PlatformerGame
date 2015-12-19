@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Adam.Misc;
 using Adam.Interactables;
+using Adam.Levels;
 
 namespace Adam.Characters.Enemies
 {
@@ -17,7 +18,7 @@ namespace Adam.Characters.Enemies
         public override void Update()
         {
             Rectangle check = RespawnLocation;
-            wasMeanTimer.Increment();
+            _wasMeanTimer.Increment();
             PlayMeanSound();
             CheckInteractionsWithPlayer();
 
@@ -36,7 +37,7 @@ namespace Adam.Characters.Enemies
         /// <param name="damage"></param>
         private void OnPlayerAttack(Rectangle damageArea, int damage)
         {
-            if (damageArea.Intersects(collRectangle))
+            if (damageArea.Intersects(CollRectangle))
                 TakeDamage(GameWorld.Instance.GetPlayer(), damage);
         }
 
@@ -80,7 +81,7 @@ namespace Adam.Characters.Enemies
             {
                 Particle particle = new Particle();
                 particle.CreateDeathSmoke(this);
-                GameWorld.Instance.particles.Add(particle);
+                GameWorld.Instance.Particles.Add(particle);
             }
 
             Gem.Generate(MaxHealth / 10, this);
@@ -91,7 +92,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected void CreateFoodItem()
         {
-            GameWorld.Instance.entities.Add(new Food(this));
+            GameWorld.Instance.Entities.Add(new Food(this));
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace Adam.Characters.Enemies
             {
                 Particle eff = new Particle();
                 eff.CreateEnemyDeathEffect(this, rec);
-                GameWorld.Instance.particles.Add(eff);
+                GameWorld.Instance.Particles.Add(eff);
             }
         }
 
@@ -119,8 +120,8 @@ namespace Adam.Characters.Enemies
             Vector2 size = new Vector2(DrawRectangle.Width / Main.Tilesize, DrawRectangle.Height / Main.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
-            int width = sourceRectangle.Width / xSize;
-            int height = sourceRectangle.Height / ySize;
+            int width = SourceRectangle.Width / xSize;
+            int height = SourceRectangle.Height / ySize;
             rectangles = new Rectangle[xSize * ySize];
 
             int i = 0;
@@ -139,7 +140,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         private void CheckInteractionsWithPlayer()
         {
-            Player player = GameWorld.Instance.player;
+            Player player = GameWorld.Instance.Player;
 
             //Deals damage to player if he is touching.
             if (IsIntersectingPlayer())
@@ -151,7 +152,7 @@ namespace Adam.Characters.Enemies
 
         public override void Revive()
         {
-            collRectangle = RespawnLocation;
+            CollRectangle = RespawnLocation;
 
             base.Revive();
         }

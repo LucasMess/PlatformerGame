@@ -12,51 +12,51 @@ namespace Adam
 {
     public class Tech
     {
-        public Rectangle rectangle;
-        Rectangle radius;
-        private GameTime gameTime;
-        Animation animation;
-        SoundEffect glow;
-        double glowTimer;
+        public Rectangle Rectangle;
+        Rectangle _radius;
+        private GameTime _gameTime;
+        Animation _animation;
+        SoundEffect _glow;
+        double _glowTimer;
 
-        public Texture2D texture; 
+        public Texture2D Texture; 
         public int RectangleX
         {
-            get { return rectangle.X; }
-            set { rectangle.X = value; }
+            get { return Rectangle.X; }
+            set { Rectangle.X = value; }
         }
         public int RectangleY
         {
-            get { return rectangle.Y; }
-            set { rectangle.Y = value; }
+            get { return Rectangle.Y; }
+            set { Rectangle.Y = value; }
         }
         public bool ToDelete { get; set; }
 
-        int tileSize;
+        int _tileSize;
 
-        public Tech(int x, int y, ContentManager Content)
+        public Tech(int x, int y, ContentManager content)
         {
-            texture = ContentHelper.LoadTexture("Objects/gold_apple");
-            glow = Content.Load<SoundEffect>("Sounds/apple_glow");
-            tileSize = Main.Tilesize;
-            rectangle = new Rectangle(x, y, tileSize, tileSize);
-            animation = new Animation(texture, rectangle, 50, 3000, AnimationType.PlayInIntervals);
-            radius = new Rectangle(x - 1000, y - 1000, 2000, 2000);
+            Texture = ContentHelper.LoadTexture("Objects/gold_apple");
+            _glow = content.Load<SoundEffect>("Sounds/apple_glow");
+            _tileSize = Main.Tilesize;
+            Rectangle = new Rectangle(x, y, _tileSize, _tileSize);
+            _animation = new Animation(Texture, Rectangle, 50, 3000, AnimationType.PlayInIntervals);
+            _radius = new Rectangle(x - 1000, y - 1000, 2000, 2000);
         }
 
         public void Update(GameTime gameTime, Player player, PopUp popUp)
         {
-            this.gameTime = gameTime;
-            animation.Update(gameTime);
+            this._gameTime = gameTime;
+            _animation.Update(gameTime);
             PickedUp(player, popUp);
 
-            glowTimer+= gameTime.ElapsedGameTime.Milliseconds;
-            if (radius.Intersects(player.GetCollRectangle()))
+            _glowTimer+= gameTime.ElapsedGameTime.Milliseconds;
+            if (_radius.Intersects(player.GetCollRectangle()))
             {
-                if (glowTimer > 4000)
+                if (_glowTimer > 4000)
                 {
-                    glow.Play();
-                    glowTimer = 0;
+                    _glow.Play();
+                    _glowTimer = 0;
                 }
             }
 
@@ -64,16 +64,16 @@ namespace Adam
 
         public void PickedUp(Player player, PopUp popUp)
         {
-            if (player.GetCollRectangle().Intersects(rectangle) && !ToDelete)
+            if (player.GetCollRectangle().Intersects(Rectangle) && !ToDelete)
             {
                 ToDelete = true;
-                popUp.isVisible = true;
+                popUp.IsVisible = true;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch);
+            _animation.Draw(spriteBatch);
         }
     }
 }

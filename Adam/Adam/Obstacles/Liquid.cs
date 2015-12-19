@@ -5,37 +5,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Obstacles
 {
     public class Liquid : Obstacle
     {
-        double particleTimer;
-        double restartTime;
-        bool isOnTop;
+        double _particleTimer;
+        double _restartTime;
+        bool _isOnTop;
 
         public enum Type
         {
             Water, Poison, Lava
         }
-        Type CurrentType;
+        Type _currentType;
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return new Rectangle(collRectangle.X + 8, collRectangle.Y + 8, 32, 32);
+                return new Rectangle(CollRectangle.X + 8, CollRectangle.Y + 8, 32, 32);
             }
         }
 
         public Liquid(Tile sourceTile, Type type)
         {
-            collRectangle = new Rectangle(sourceTile.drawRectangle.X + 8, sourceTile.drawRectangle.Y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
-            particleTimer = GameWorld.RandGen.Next(0, 8) * GameWorld.RandGen.NextDouble();
-            restartTime = GameWorld.RandGen.Next(5, 8) * GameWorld.RandGen.NextDouble();
-            if (restartTime < 1)
-                restartTime = 1;
-            CurrentType = type;
+            CollRectangle = new Rectangle(sourceTile.DrawRectangle.X + 8, sourceTile.DrawRectangle.Y + 8, Main.Tilesize / 2, Main.Tilesize / 2);
+            _particleTimer = GameWorld.RandGen.Next(0, 8) * GameWorld.RandGen.NextDouble();
+            _restartTime = GameWorld.RandGen.Next(5, 8) * GameWorld.RandGen.NextDouble();
+            if (_restartTime < 1)
+                _restartTime = 1;
+            _currentType = type;
 
             sourceTile.OnTileUpdate += Update;
             sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
@@ -50,27 +51,27 @@ namespace Adam.Obstacles
         public void Update(Tile t)
         {
             GameWorld gameWorld = GameWorld.Instance;
-            this.player = GameWorld.Instance.player;
+            this.Player = GameWorld.Instance.Player;
 
-            if (collRectangle.Intersects(GameWorld.Instance.player.GetCollRectangle()))
+            if (CollRectangle.Intersects(GameWorld.Instance.Player.GetCollRectangle()))
             {
-                player.KillAndRespawn();
+                Player.KillAndRespawn();
             }
 
             //if (!isOnTop)
             //    return;
 
-            if (CurrentType == Type.Lava)
+            if (_currentType == Type.Lava)
             {
-                if (GameWorld.Instance.tileArray[GetTileIndex() - GameWorld.Instance.worldData.LevelWidth].ID == 0)
+                if (GameWorld.Instance.TileArray[GetTileIndex() - GameWorld.Instance.WorldData.LevelWidth].Id == 0)
                 {
-                    particleTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
-                    if (particleTimer > restartTime)
+                    _particleTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
+                    if (_particleTimer > _restartTime)
                     {
                         Particle par = new Particle();
                         par.CreateLavaParticle(this, gameWorld);
-                        gameWorld.particles.Add(par);
-                        particleTimer = 0;
+                        gameWorld.Particles.Add(par);
+                        _particleTimer = 0;
                     }
                 }
             }

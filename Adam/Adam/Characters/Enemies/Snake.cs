@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
 
@@ -15,10 +16,10 @@ namespace Adam.Enemies
 {
     public class Snake : Enemy, IAnimated, INewtonian
     {
-        double projCooldownTimer;
-        Vector2 frameCount;
+        double _projCooldownTimer;
+        Vector2 _frameCount;
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -30,65 +31,65 @@ namespace Adam.Enemies
         {
             get
             {
-                return EnemyDB.Snake_MaxHealth;
+                return EnemyDb.SnakeMaxHealth;
             }
         }
 
-        SoundFx meanSound;
+        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
             {
-                if (meanSound == null)
-                    meanSound = new SoundFx("Sounds/Snake/mean");
-                return meanSound;
+                if (_meanSound == null)
+                    _meanSound = new SoundFx("Sounds/Snake/mean");
+                return _meanSound;
             }
         }
 
-        SoundFx attackSound;
+        SoundFx _attackSound;
         protected override SoundFx AttackSound
         {
             get
             {
-                if (attackSound == null)
-                    attackSound = new SoundFx("Sounds/Snake/attack");
-                return attackSound;
+                if (_attackSound == null)
+                    _attackSound = new SoundFx("Sounds/Snake/attack");
+                return _attackSound;
             }
         }
 
-        SoundFx deathSound;
+        SoundFx _deathSound;
         protected override SoundFx DeathSound
         {
             get
             {
-                if (deathSound == null)
-                    deathSound = new SoundFx("Sounds/Snake/death");
-                return deathSound;
+                if (_deathSound == null)
+                    _deathSound = new SoundFx("Sounds/Snake/death");
+                return _deathSound;
             }
         }
 
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new Adam.AnimationData[]
+                if (_animationData == null)
+                    _animationData = new Adam.AnimationData[]
                     {
                         new Adam.AnimationData(250,4,0,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -113,7 +114,7 @@ namespace Adam.Enemies
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
@@ -124,7 +125,7 @@ namespace Adam.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -133,37 +134,37 @@ namespace Adam.Enemies
         public Snake(int x, int y)
         {
             //Sets up specific variables for the snake
-            frameCount = new Vector2(8, 0);
-            sourceRectangle = new Rectangle(0, 0, 64, 96);
-            collRectangle = new Rectangle(x, y - 64, 64, 96);
+            _frameCount = new Vector2(8, 0);
+            SourceRectangle = new Rectangle(0, 0, 64, 96);
+            CollRectangle = new Rectangle(x, y - 64, 64, 96);
 
             //Textures and sound effects, single is for rectangle pieces explosion
             Texture = ContentHelper.LoadTexture("Enemies/Snake");
 
             //Creates animation
-            animation = new Animation(Texture, DrawRectangle, 240, 0, AnimationType.Loop);
+            _animation = new Animation(Texture, DrawRectangle, 240, 0, AnimationType.Loop);
         }
 
         public override void Update()
         {
             base.Update();            
 
-            if (projCooldownTimer > 3 && !IsDead())
+            if (_projCooldownTimer > 3 && !IsDead())
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
-                    GameWorld.Instance.entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Snake));
+                    GameWorld.Instance.Entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Snake));
                     PlayAttackSound();
-                    projCooldownTimer = 0;
+                    _projCooldownTimer = 0;
                 }
             }
-            projCooldownTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
+            _projCooldownTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
         }
 
         public void Animate()
         {
             GameTime gameTime = GameWorld.Instance.GetGameTime();
-            animation.Update(gameTime, DrawRectangle, animationData[0]);
+            _animation.Update(gameTime, DrawRectangle, _animationData[0]);
         }
     }
 }

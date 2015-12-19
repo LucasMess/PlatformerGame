@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Adam
 {
-    public class TextDB
+    public class TextDb
     {
-        static string[] db = new string[1];
-        public static string GetText(int textID)
+        static string[] _db = new string[1];
+        public static string GetText(int textId)
         {
-            return db[textID];
+            return _db[textId];
         }
     }
 }

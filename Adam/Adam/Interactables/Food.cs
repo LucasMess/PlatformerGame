@@ -8,16 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
     public class Food : Item, INewtonian
     {
-        int healAmount;
-        bool hasHealed;
-        SoundFx hitGround;
+        int _healAmount;
+        bool _hasHealed;
+        SoundFx _hitGround;
 
-        SoundEffect pickUpSound;
+        SoundEffect _pickUpSound;
 
         /// <summary>
         /// Creates new food based on enemy killed.
@@ -25,36 +26,36 @@ namespace Adam.Interactables
         /// <param name="enemy"></param>
         public Food(Enemy enemy)
         {
-            collRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
-            velocity.Y = -10f;
+            CollRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
+            Velocity.Y = -10f;
 
-            hitGround = new SoundFx("Sounds/Items/item_pop", this);
-            pickUpSound = ContentHelper.LoadSound("Player/eatSound");
+            _hitGround = new SoundFx("Sounds/Items/item_pop", this);
+            _pickUpSound = ContentHelper.LoadSound("Player/eatSound");
 
-            switch (enemy.ID)
+            switch (enemy.Id)
             {
                 case 201: // Snake
-                    healAmount = 10;
+                    _healAmount = 10;
                     Texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
                     break;
                 case 202: // Frog
-                    healAmount = 5;
+                    _healAmount = 5;
                     Texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
                     break;
                 case 204: // Lost
-                    healAmount = 10;
+                    _healAmount = 10;
                     break;
                 case 205: // Hellboar
-                    healAmount = 40;
+                    _healAmount = 40;
                     break;
                 case 207: // Bat
-                    healAmount = 10;
+                    _healAmount = 10;
                     break;
                 case 208: // Duck                    
-                    healAmount = 5;
+                    _healAmount = 5;
                     break;
                 case 209: // Being of Sight
-                    healAmount = 30;
+                    _healAmount = 30;
                     break;
                 default:
                     break;
@@ -66,35 +67,35 @@ namespace Adam.Interactables
 
         private void Food_OnPlayerPickUp(PickedUpArgs e)
         {
-            e.Player.Heal(healAmount);
-            pickUpSound.Play();
+            e.Player.Heal(_healAmount);
+            _pickUpSound.Play();
         }
 
         public override void Update()
         {
-            Player player = GameWorld.Instance.player;
-            collRectangle.X += (int)velocity.X;
-            collRectangle.Y += (int)velocity.Y;
+            Player player = GameWorld.Instance.Player;
+            CollRectangle.X += (int)Velocity.X;
+            CollRectangle.Y += (int)Velocity.Y;
 
             base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!hasHealed)
+            if (!_hasHealed)
                 spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            collRectangle.Y = tile.drawRectangle.Y - collRectangle.Height;
-            if (velocity.Y < 3)
-                velocity.Y = 0;
+            CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
+            if (Velocity.Y < 3)
+                Velocity.Y = 0;
             else
             {
-                velocity.Y *= -.9f;
+                Velocity.Y *= -.9f;
 
-                hitGround.PlayIfStopped();
+                _hitGround.PlayIfStopped();
             }
         }
 
@@ -117,7 +118,7 @@ namespace Adam.Interactables
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
     }

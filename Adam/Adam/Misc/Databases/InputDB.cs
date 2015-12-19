@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Adam.Misc.Databases
 {
-    public class InputDB
+    public class InputDb
     {
     }
 }

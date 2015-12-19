@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Adam;
 using Adam.Interactables;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Adam.UI;
@@ -16,7 +17,7 @@ namespace Adam
 {
     public class Gem : Item, INewtonian
     {
-        byte gemID;
+        byte _gemId;
 
         public bool IsFlying { get; set; }
 
@@ -26,19 +27,19 @@ namespace Adam
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public Gem(int centerX, int centerY)
         {
-            gemID = GenerateID();
+            _gemId = GenerateId();
             Texture = GameWorld.SpriteSheet;
-            collRectangle = new Rectangle(centerX, centerY, 16, 16);
-            sourceRectangle = GetSourceRectangle();
-            velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            CollRectangle = new Rectangle(centerX, centerY, 16, 16);
+            SourceRectangle = GetSourceRectangle();
+            Velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
-            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
+            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -46,17 +47,17 @@ namespace Adam
             CurrentCollisionType = CollisionType.Bouncy;
         }
 
-        public Gem(int centerX, int centerY, byte ID)
+        public Gem(int centerX, int centerY, byte id)
         {
-            gemID = ID;
+            _gemId = id;
             Texture = GameWorld.SpriteSheet;
-            collRectangle = new Rectangle(centerX, centerY, 16, 16);
-            sourceRectangle = GetSourceRectangle();
-            velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            CollRectangle = new Rectangle(centerX, centerY, 16, 16);
+            SourceRectangle = GetSourceRectangle();
+            Velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
-            GameWorld.Instance.lightEngine.AddDynamicLight(Light);
+            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
 
-            pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
+            PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
@@ -66,12 +67,12 @@ namespace Adam
         {
             e.Player.Score += GetValue();
 
-            GameWorld.Instance.particles.Add(new SplashNumber(this, GetValue(), Color.Yellow));
+            GameWorld.Instance.Particles.Add(new SplashNumber(this, GetValue(), Color.Yellow));
         }
 
         private int GetValue()
         {
-            switch (gemID)
+            switch (_gemId)
             {
                 case 0: // Copper
                     return 1;
@@ -94,7 +95,7 @@ namespace Adam
         /// Generates an ID for this gem depending on their rarity.
         /// </summary>
         /// <returns>ID</returns>
-        private byte GenerateID()
+        private byte GenerateId()
         {
             int rand = GameWorld.RandGen.Next(0, 100);
             if (rand > 95) //5% - Diamond
@@ -123,7 +124,7 @@ namespace Adam
         private Rectangle GetSourceRectangle()
         {
             Rectangle source = new Rectangle();
-            switch (gemID)
+            switch (_gemId)
             {
                 case 0:
                     source = new Rectangle(21 * 16, 9 * 16, 16, 16);
@@ -149,7 +150,7 @@ namespace Adam
 
         public Color GetGemColor()
         {
-            switch (gemID)
+            switch (_gemId)
             {
                 case 0:
                     return Color.Brown;
@@ -169,17 +170,17 @@ namespace Adam
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White);
 
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            bounceSound?.PlayNewInstanceOnce();
-            bounceSound?.Reset();
+            BounceSound?.PlayNewInstanceOnce();
+            BounceSound?.Reset();
             for (int i = 0; i < 5; i++)
             {
-                GameWorld.Instance.particles.Add(new StompSmokeParticle(this));
+                GameWorld.Instance.Particles.Add(new StompSmokeParticle(this));
             }
         }
 
@@ -193,22 +194,22 @@ namespace Adam
             for (int i = 0; i < count; i++)
             {
                 Gem gem = new Gem(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y);
-                GameWorld.Instance.entities.Add(gem);
+                GameWorld.Instance.Entities.Add(gem);
             }
         }
 
         /// <summary>
         /// Generates specified number of a particular type of gem in gameworld.
         /// </summary>
-        /// <param name="gemID"></param>
+        /// <param name="gemId"></param>
         /// <param name="tile"></param>
         /// <param name="count"></param>
-        public static void GenerateIdentical(byte gemID, Tile tile, int count)
+        public static void GenerateIdentical(byte gemId, Tile tile, int count)
         {
             for (int i = 0; i < count; i++)
             {
-                Gem gem = new Gem(tile.drawRectangle.Center.X, tile.drawRectangle.Y - Main.Tilesize / 2, gemID);
-                GameWorld.Instance.entities.Add(gem);
+                Gem gem = new Gem(tile.DrawRectangle.Center.X, tile.DrawRectangle.Y - Main.Tilesize / 2, gemId);
+                GameWorld.Instance.Entities.Add(gem);
             }
         }
     }

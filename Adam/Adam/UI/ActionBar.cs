@@ -16,43 +16,43 @@ namespace Adam.UI
 {
     public class ActionBar
     {
-        Rectangle box;
-        PlayButton playButton;
-        WallButton wallButton;
-        List<FunctionButton> buttons = new List<FunctionButton>();
+        Rectangle _box;
+        PlayButton _playButton;
+        WallButton _wallButton;
+        List<FunctionButton> _buttons = new List<FunctionButton>();
 
-        LevelEditor levelEditor;
-        GameWorld gameWorld;
+        LevelEditor _levelEditor;
+        GameWorld _gameWorld;
 
-        float velocityY;
-        int originalY;
+        float _velocityY;
+        int _originalY;
 
-        WorldProperties properties;
+        WorldProperties _properties;
 
         public ActionBar()
         {
-            box = new Rectangle((int)((Main.DefaultResWidth / 2) / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
-            box.X -= box.Width / 2;
-            box.Y -= box.Height;
-            originalY = box.Y;
-            box.Y = Main.UserResHeight + 300;
+            _box = new Rectangle((int)((Main.DefaultResWidth / 2) / Main.WidthRatio), (int)(Main.DefaultResHeight / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
+            _box.X -= _box.Width / 2;
+            _box.Y -= _box.Height;
+            _originalY = _box.Y;
+            _box.Y = Main.UserResHeight + 300;
 
-            playButton = new PlayButton(new Vector2(12 + 64, 4), box);
+            _playButton = new PlayButton(new Vector2(12 + 64, 4), _box);
            
-            wallButton = new WallButton(new Vector2(20 + 128, 4), box);
+            _wallButton = new WallButton(new Vector2(20 + 128, 4), _box);
 
-            playButton.MouseClicked += PlayButton_MouseClicked;
-            wallButton.MouseClicked += WallButton_MouseClicked;
+            _playButton.MouseClicked += PlayButton_MouseClicked;
+            _wallButton.MouseClicked += WallButton_MouseClicked;
 
-            buttons.Add(playButton);
-            buttons.Add(wallButton);
+            _buttons.Add(_playButton);
+            _buttons.Add(_wallButton);
 
-            properties = new WorldProperties();
+            _properties = new WorldProperties();
         }
 
         private void WallButton_MouseClicked()
         {
-            gameWorld.levelEditor.ChangeToWallMode();
+            _gameWorld.LevelEditor.ChangeToWallMode();
         }
 
         private void NewButton_MouseClicked()
@@ -64,7 +64,7 @@ namespace Adam.UI
 
         private void ShowProperties()
         {
-            properties.Show();
+            _properties.Show();
         }
 
         private void OpenButton_MouseClicked()
@@ -74,9 +74,9 @@ namespace Adam.UI
 
         private bool IsWorldEmpty()
         {
-            foreach (Tile t in gameWorld.tileArray)
+            foreach (Tile t in _gameWorld.TileArray)
             {
-                if (t.ID != 0)
+                if (t.Id != 0)
                 {
                     return false;
                 }
@@ -86,10 +86,10 @@ namespace Adam.UI
 
         public bool IsPlayerInWorld()
         {
-            foreach (Tile t in gameWorld.tileArray)
+            foreach (Tile t in _gameWorld.TileArray)
             {
                 //check if there is a player tile
-                if (t.ID == 200)
+                if (t.Id == 200)
                 {
                     return true;
                 }
@@ -99,13 +99,13 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
-            GameWorld.Instance.levelEditor.onWallMode = false;
+            GameWorld.Instance.LevelEditor.OnWallMode = false;
             TestLevel();
         }
 
         private void TestLevel()
         {
-            gameWorld.debuggingMode = true;
+            _gameWorld.DebuggingMode = true;
             try
             {
                 DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
@@ -118,49 +118,49 @@ namespace Adam.UI
 
         public void Update()
         {
-            gameWorld = GameWorld.Instance;
-            levelEditor = gameWorld.levelEditor;
+            _gameWorld = GameWorld.Instance;
+            _levelEditor = _gameWorld.LevelEditor;
 
-            if (box.Y < originalY)
+            if (_box.Y < _originalY)
             {
-                box.Y = originalY;
-                velocityY = 0;
+                _box.Y = _originalY;
+                _velocityY = 0;
             }
 
-            if (levelEditor.onInventory)
+            if (_levelEditor.OnInventory)
             {
-                velocityY = (originalY - box.Y) / 5;
+                _velocityY = (_originalY - _box.Y) / 5;
 
             }
             else
             {
                 int hidingPlace = Main.UserResHeight + 200;
-                velocityY += .3f;
-                if (box.Y > hidingPlace)
+                _velocityY += .3f;
+                if (_box.Y > hidingPlace)
                 {
-                    box.Y = hidingPlace;
-                    velocityY = 0;
+                    _box.Y = hidingPlace;
+                    _velocityY = 0;
                 }
             }
 
-            box.Y += (int)velocityY;
+            _box.Y += (int)_velocityY;
 
-            foreach (FunctionButton b in buttons)
+            foreach (FunctionButton b in _buttons)
             {
-                b.Update(box);
+                b.Update(_box);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.UI_SpriteSheet, box, new Rectangle(0, 48, 184, 40), Color.White * .5f);
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, _box, new Rectangle(0, 48, 184, 40), Color.White * .5f);
 
             if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F5))
             {
                 PlayButton_MouseClicked();
             }
 
-            foreach (FunctionButton b in buttons)
+            foreach (FunctionButton b in _buttons)
             {
                 b.Draw(spriteBatch);
             }

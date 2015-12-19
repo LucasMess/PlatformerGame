@@ -6,16 +6,16 @@ using System.Text;
 
 namespace Adam.Misc.Databases
 {
-    public static class SoundtrackDB
+    public static class SoundtrackDb
     {
         /// <summary>
         /// Returns the appropriate song from the database according to the ID given.
         /// </summary>
-        /// <param name="ID"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public static Song GetSong(byte ID)
+        public static Song GetSong(byte id)
         {
-            switch (ID)
+            switch (id)
             {
                 case 0: return ContentHelper.LoadSong("Music/Sunny Day");
                 case 1: return ContentHelper.LoadSong("Music/Party Time"); // Garden of Eden

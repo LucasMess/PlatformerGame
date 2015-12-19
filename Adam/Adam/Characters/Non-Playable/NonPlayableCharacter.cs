@@ -6,50 +6,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Characters.Non_Playable
 {
     public abstract class NonPlayableCharacter : Entity
     {
-        bool destinationFound;
-        bool toTheRight;
-        double destinationTimer;
-        int destinationX;
-        GameTime gameTime;
-        Player player;
-        protected bool canTalk;
-        protected bool isTalking;
+        bool _destinationFound;
+        bool _toTheRight;
+        double _destinationTimer;
+        int _destinationX;
+        GameTime _gameTime;
+        Player _player;
+        protected bool CanTalk;
+        protected bool IsTalking;
 
-        KeyPopUp key;
+        KeyPopUp _key;
         public NonPlayableCharacter()
         {
             Texture = Main.DefaultTexture;
 
-            key = new KeyPopUp();
+            _key = new KeyPopUp();
         }
 
         public virtual void Update(GameTime gameTime, Player player)
         {
-            key.Update(collRectangle);
+            _key.Update(CollRectangle);
 
-            collRectangle.X += (int)velocity.X;
-            collRectangle.Y += (int)velocity.Y;
+            CollRectangle.X += (int)Velocity.X;
+            CollRectangle.Y += (int)Velocity.Y;
 
-            this.player = player;
-            this.gameTime = gameTime;
+            this._player = player;
+            this._gameTime = gameTime;
             base.Update();
 
-            if (canTalk)
+            if (CanTalk)
                 CheckForPlayer();
         }
 
         private void CheckForPlayer()
         {
-            if (collRectangle.Intersects(player.GetCollRectangle()))
+            if (CollRectangle.Intersects(_player.GetCollRectangle()))
             {
-                if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !isTalking)
+                if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !IsTalking)
                 {
-                    isTalking = true;
+                    IsTalking = true;
                     ShowMessage();
                 }
             }
@@ -66,47 +67,47 @@ namespace Adam.Characters.Non_Playable
                 return;
 
             int speed = 1;
-            if (isTalking)
+            if (IsTalking)
             {
-                velocity.X = 0;
+                Velocity.X = 0;
                 return;
             }
-            if (!destinationFound)
+            if (!_destinationFound)
             {
-                velocity.X = 0;
-                destinationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (destinationTimer > 2)
+                Velocity.X = 0;
+                _destinationTimer += _gameTime.ElapsedGameTime.TotalSeconds;
+                if (_destinationTimer > 2)
                 {
-                    destinationTimer = 0;
-                    destinationX = GameWorld.RandGen.Next(-3, 4);
-                    destinationX *= Main.Tilesize;
-                    destinationX += spawnX;
-                    destinationFound = true;
+                    _destinationTimer = 0;
+                    _destinationX = GameWorld.RandGen.Next(-3, 4);
+                    _destinationX *= Main.Tilesize;
+                    _destinationX += spawnX;
+                    _destinationFound = true;
 
-                    if (destinationX > collRectangle.X)
+                    if (_destinationX > CollRectangle.X)
                     {
-                        toTheRight = true;
+                        _toTheRight = true;
                     }
-                    else toTheRight = false;
+                    else _toTheRight = false;
                 }
             }
 
-            if (destinationFound)
+            if (_destinationFound)
             {
-                if (toTheRight)
+                if (_toTheRight)
                 {
-                    velocity.X = speed;
-                    if (collRectangle.X > destinationX)
+                    Velocity.X = speed;
+                    if (CollRectangle.X > _destinationX)
                     {
-                        destinationFound = false;
+                        _destinationFound = false;
                     }
                 }
                 else
                 {
-                    velocity.X = -speed;
-                    if (collRectangle.X < destinationX)
+                    Velocity.X = -speed;
+                    if (CollRectangle.X < _destinationX)
                     {
-                        destinationFound = false;
+                        _destinationFound = false;
                     }
                 }
             }
@@ -114,8 +115,8 @@ namespace Adam.Characters.Non_Playable
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!isTalking)
-                key.Draw(spriteBatch);
+            if (!IsTalking)
+                _key.Draw(spriteBatch);
         }
     }
 }

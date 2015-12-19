@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Projectiles
 {
@@ -26,13 +27,13 @@ namespace Adam.Projectiles
             {
                 rects.Add(rect);
 
-                int index = (int)(rect.Y / Main.Tilesize * gameWorld.worldData.LevelWidth) + (int)(rect.X / Main.Tilesize);
+                int index = (int)(rect.Y / Main.Tilesize * gameWorld.WorldData.LevelWidth) + (int)(rect.X / Main.Tilesize);
 
                 if (rect.Intersects(player.GetCollRectangle()))
                     return true;
-                if (index > GameWorld.Instance.tileArray.Length - 1 || index < 0)
+                if (index > GameWorld.Instance.TileArray.Length - 1 || index < 0)
                     return false;
-                if (gameWorld.tileArray[index].isSolid)
+                if (gameWorld.TileArray[index].IsSolid)
                     return false;
 
                 rect.X += (int)newVelocity.X;

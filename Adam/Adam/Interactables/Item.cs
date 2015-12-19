@@ -8,19 +8,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
     public abstract class Item : Entity
     {
-        public bool wasPickedUp;
-        protected Rectangle topMidBound;
-        protected double elapsedTime;
-        protected SoundFx loopSound;
-        protected SoundFx pickUpSound = new SoundFx("Sounds/coin");
-        protected SoundFx bounceSound;
-        private int tileIndex;
-        protected double effectTimer;
+        public bool WasPickedUp;
+        protected Rectangle TopMidBound;
+        protected double ElapsedTime;
+        protected SoundFx LoopSound;
+        protected SoundFx PickUpSound = new SoundFx("Sounds/coin");
+        protected SoundFx BounceSound;
+        private int _tileIndex;
+        protected double EffectTimer;
 
         protected delegate void PickedUpHander(PickedUpArgs e);
         protected event PickedUpHander OnPlayerPickUp;
@@ -38,7 +39,7 @@ namespace Adam.Interactables
             {
                 float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
                 float randX = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
-                SparkleParticle par = new SparkleParticle(collRectangle.Center.X, collRectangle.Center.Y, randX, randY, Color.Gold);
+                SparkleParticle par = new SparkleParticle(CollRectangle.Center.X, CollRectangle.Center.Y, randX, randY, Color.Gold);
                 GameWorld.ParticleSystem.Add(par);
             }
         }
@@ -46,21 +47,21 @@ namespace Adam.Interactables
         public override void Update()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            Player player = gameWorld.player;
-            GameTime gameTime = gameWorld.gameTime;
+            Player player = gameWorld.Player;
+            GameTime gameTime = gameWorld.GameTime;
 
-            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            ElapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (player.GetCollRectangle().Intersects(DrawRectangle) && elapsedTime > 500)
+            if (player.GetCollRectangle().Intersects(DrawRectangle) && ElapsedTime > 500)
             {
                 if (OnPlayerPickUp != null)
                 OnPlayerPickUp(new PickedUpArgs(player));
-                pickUpSound?.PlayOnce();
+                PickUpSound?.PlayOnce();
                 ToDelete = true;
-                loopSound?.Stop();
+                LoopSound?.Stop();
             }
 
-            loopSound?.PlayIfStopped();
+            LoopSound?.PlayIfStopped();
 
             base.Update();
         }

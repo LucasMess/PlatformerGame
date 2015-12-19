@@ -9,9 +9,9 @@ namespace Adam
 {
     public partial class Entity
     {
-        protected ComplexAnimation complexAnim = new ComplexAnimation();
+        protected ComplexAnimation ComplexAnim = new ComplexAnimation();
 
-        Timer hitRecentlyTimer = new Timer();
+        Timer _hitRecentlyTimer = new Timer();
         public SoundFxManager Sounds { get; set; }
 
         /// <summary>

@@ -5,42 +5,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI.Overlay_Elements
 {
     public class Hourglass
     {
-        Texture2D texture;
-        Rectangle drawRectangle, sourceRectangle;
-        Vector2 origin;
-        Animation animation;
-        Vector2 position;
+        Texture2D _texture;
+        Rectangle _drawRectangle, _sourceRectangle;
+        Vector2 _origin;
+        Animation _animation;
+        Vector2 _position;
 
-        int currentTime;
+        int _currentTime;
 
         public Hourglass(Vector2 position)
         {
-            texture = ContentHelper.LoadTexture("Menu/timer");
-            drawRectangle = new Rectangle(Main.UserResWidth * 9 / 12, Main.UserResHeight * 1 / 12, 64, texture.Height);
-            sourceRectangle = new Rectangle(0, 0, 64, 64);
-            origin = new Vector2(32, 32);
-            drawRectangle.X += (int)origin.X;
-            drawRectangle.Y -= (int)origin.Y;
-            animation = new Animation(texture, new Rectangle(drawRectangle.X, drawRectangle.Y, 64, 64), 200, 0, AnimationType.Loop);
+            _texture = ContentHelper.LoadTexture("Menu/timer");
+            _drawRectangle = new Rectangle(Main.UserResWidth * 9 / 12, Main.UserResHeight * 1 / 12, 64, _texture.Height);
+            _sourceRectangle = new Rectangle(0, 0, 64, 64);
+            _origin = new Vector2(32, 32);
+            _drawRectangle.X += (int)_origin.X;
+            _drawRectangle.Y -= (int)_origin.Y;
+            _animation = new Animation(_texture, new Rectangle(_drawRectangle.X, _drawRectangle.Y, 64, 64), 200, 0, AnimationType.Loop);
 
-            this.position = position;
+            this._position = position;
         }
 
         public void Update(GameTime gameTime, Player player, GameWorld map)
         {
-            animation.Update(gameTime);
+            _animation.Update(gameTime);
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch);
-            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, currentTime.ToString(), position, 5, Color.White, Color.Black);
+            _animation.Draw(spriteBatch);
+            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, _currentTime.ToString(), _position, 5, Color.White, Color.Black);
         }
     }
 }

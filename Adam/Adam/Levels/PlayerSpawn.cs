@@ -9,18 +9,18 @@ namespace Adam.Levels
 {
     public class PlayerSpawn
     {
-        Texture2D texture;
-        SoundFx error;
+        Texture2D _texture;
+        SoundFx _error;
                         
         public void TrySetSpawn(int index)
         {
-            WorldData data = GameWorld.Instance.worldData;
-            Tile[] tiles = GameWorld.Instance.tileArray;
+            WorldData data = GameWorld.Instance.WorldData;
+            Tile[] tiles = GameWorld.Instance.TileArray;
             int width = data.LevelWidth;
 
             //if (tiles[index].isSolid)
 
-            data.SpawnPoint = new Microsoft.Xna.Framework.Vector2(tiles[index].drawRectangle.X, tiles[index].drawRectangle.Y);
+            data.SpawnPoint = new Microsoft.Xna.Framework.Vector2(tiles[index].DrawRectangle.X, tiles[index].DrawRectangle.Y);
         }
 
         private void ThrowInvalidError()

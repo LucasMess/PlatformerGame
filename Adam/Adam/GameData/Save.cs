@@ -9,38 +9,38 @@ namespace Adam.GameData
 {
     public class Save
     {
-        double progress;
-        double maxprogress = 1000;
-        GameMode currentLevel;
-        PlayerStats playerStats;
-        ObjectiveTracker objTracker;
+        double _progress;
+        double _maxprogress = 1000;
+        GameMode _currentLevel;
+        PlayerStats _playerStats;
+        ObjectiveTracker _objTracker;
 
         public Save()
         {
-            objTracker = new ObjectiveTracker();
-            playerStats = new PlayerStats();
-            playerStats.SetToDefault();
-            currentLevel = GameMode.None;
-            progress = 0;
+            _objTracker = new ObjectiveTracker();
+            _playerStats = new PlayerStats();
+            _playerStats.SetToDefault();
+            _currentLevel = GameMode.None;
+            _progress = 0;
         }
 
         public PlayerStats PlayerStats
         {
-            get { return playerStats; }
-            set { playerStats = value; }
+            get { return _playerStats; }
+            set { _playerStats = value; }
         }
 
         public GameMode CurrentLevel
         {
-            get { return currentLevel; }
-            set { currentLevel = value; }
+            get { return _currentLevel; }
+            set { _currentLevel = value; }
         }
 
         public string Completeness
         {
             get
             {
-                double percent = (progress / maxprogress) * 100;
+                double percent = (_progress / _maxprogress) * 100;
                 return percent + "%";
             }
         }
@@ -49,59 +49,59 @@ namespace Adam.GameData
         {
             set
             {
-                progress = value;
-                if (progress > maxprogress)
+                _progress = value;
+                if (_progress > _maxprogress)
                     throw new Exception("Progress set is bigger than maximum allowed progress!");
             }
         }
 
         public ObjectiveTracker ObjTracker
         {
-            get { return objTracker; }
-            set { objTracker = value; }
+            get { return _objTracker; }
+            set { _objTracker = value; }
         }
     }
 
     public class PlayerStats
     {
-        byte lives;
+        byte _lives;
         public byte Lives
         {
-            get { return lives; }
-            set { lives = value; }
+            get { return _lives; }
+            set { _lives = value; }
         }
 
-        int score;
+        int _score;
         public int Score
         {
-            get { return score; }
-            set { score = value; }
+            get { return _score; }
+            set { _score = value; }
         }
 
-        int numberOfDeaths;
+        int _numberOfDeaths;
         public int NumberOfDeaths
         {
-            get { return numberOfDeaths; }
-            set { numberOfDeaths = value; }
+            get { return _numberOfDeaths; }
+            set { _numberOfDeaths = value; }
         }
 
-        int damageTaken;
+        int _damageTaken;
         public int DamageTaken
         {
-            get { return damageTaken; }
-            set { damageTaken = value; }
+            get { return _damageTaken; }
+            set { _damageTaken = value; }
         }
 
-        int damageInflicted;
+        int _damageInflicted;
         public int DamageInflicted
         {
-            get { return damageInflicted; }
-            set { damageInflicted = value; }
+            get { return _damageInflicted; }
+            set { _damageInflicted = value; }
         }
 
         public void SetToDefault()
         {
-            lives = 5;
+            _lives = 5;
         }
 
     }

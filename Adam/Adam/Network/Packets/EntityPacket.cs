@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Network.Packets
 {
@@ -10,11 +11,11 @@ namespace Adam.Network.Packets
     [Serializable]
     public class EntityPacket : DataPacket
     {
-        static int PacketTimer;
+        static int _packetTimer;
 
-        int[] IDs;
-        Vector2[] positions;
-        Vector2[] velocities;
+        int[] _ds;
+        Vector2[] _positions;
+        Vector2[] _velocities;
         long TimeStamp
         {
             get; set;
@@ -27,29 +28,29 @@ namespace Adam.Network.Packets
         /// <returns></returns>
         public EntityPacket(GameWorld gameWorld)
         {
-            Entity[] entities = gameWorld.entities.ToArray();
+            Entity[] entities = gameWorld.Entities.ToArray();
 
-            positions = new Vector2[entities.Length];
-            velocities = new Vector2[entities.Length];
+            _positions = new Vector2[entities.Length];
+            _velocities = new Vector2[entities.Length];
 
             for (int i = 0; i < entities.Length; i++)
             {
-                positions[i] = new Vector2(entities[i].GetCollRectangle().X, entities[i].GetCollRectangle().Y);
-                velocities[i] = entities[i].GetVelocity();
+                _positions[i] = new Vector2(entities[i].GetCollRectangle().X, entities[i].GetCollRectangle().Y);
+                _velocities[i] = entities[i].GetVelocity();
             }
         }
 
         public void ExtractTo(GameWorld gameWorld)
         {
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < _positions.Length; i++)
             {
-                if (i > gameWorld.entities.Count)
+                if (i > gameWorld.Entities.Count)
                 {
-                    Console.WriteLine("There is no entity number {0} in this gameworld. There are only {1}", i, gameWorld.entities.Count);
+                    Console.WriteLine("There is no entity number {0} in this gameworld. There are only {1}", i, gameWorld.Entities.Count);
                     break;
                 }
 
-                gameWorld.entities[i].UpdateFromPacket(positions[i], velocities[i]);
+                gameWorld.Entities[i].UpdateFromPacket(_positions[i], _velocities[i]);
             }
         }
     }

@@ -13,9 +13,9 @@ namespace Adam.Misc
     /// </summary>
     public class ComplexAnimation
     {
-        ComplexAnimData currentAnimationData = new ComplexAnimData();
-        int currentFrame;
-        string currentName;
+        ComplexAnimData _currentAnimationData = new ComplexAnimData();
+        int _currentFrame;
+        string _currentName;
 
         public delegate void FrameHandler(FrameArgs e);
         public delegate void EventHandler();
@@ -33,15 +33,15 @@ namespace Adam.Misc
         /// </summary>
         public event FrameHandler FrameChanged;
 
-        Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-        Dictionary<string, ComplexAnimData> animationData = new Dictionary<string, ComplexAnimData>();
-        List<string> queue = new List<string>();
+        Dictionary<string, Texture2D> _textures = new Dictionary<string, Texture2D>();
+        Dictionary<string, ComplexAnimData> _animationData = new Dictionary<string, ComplexAnimData>();
+        List<string> _queue = new List<string>();
 
-        Timer frameTimer = new Timer();
+        Timer _frameTimer = new Timer();
 
-        Texture2D texture;
-        Rectangle sourceRectangle;
-        Rectangle drawRectangle;
+        Texture2D _texture;
+        Rectangle _sourceRectangle;
+        Rectangle _drawRectangle;
 
         /// <summary>
         /// Update the aniamtion, timers and fire events.
@@ -54,40 +54,40 @@ namespace Adam.Misc
 
             FindHighestPriorityAnimation();
 
-            drawRectangle = new Rectangle(entity.GetCollRectangle().X - currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - currentAnimationData.DeltaRectangle.Y, currentAnimationData.Width * 2, currentAnimationData.Height * 2);
+            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * 2, _currentAnimationData.Height * 2);
 
-            if (currentName == "walk" || currentName == "run")
+            if (_currentName == "walk" || _currentName == "run")
             {
                 // y = 1020/(x + 1) - 20
-                currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
+                _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
             }
 
-            frameTimer.Increment();
+            _frameTimer.Increment();
 
-            if (frameTimer.TimeElapsedInMilliSeconds > currentAnimationData.Speed)
+            if (_frameTimer.TimeElapsedInMilliSeconds > _currentAnimationData.Speed)
             {
-                frameTimer.Reset();
-                currentFrame++;
+                _frameTimer.Reset();
+                _currentFrame++;
 
-                if (currentFrame >= currentAnimationData.FrameCount)
+                if (_currentFrame >= _currentAnimationData.FrameCount)
                 {
                     // Send notice that animation has ended.
-                    if (!currentAnimationData.IsRepeating)
+                    if (!_currentAnimationData.IsRepeating)
                     {
                         if (AnimationEnded != null)
                             AnimationEnded();
-                        currentFrame = currentAnimationData.FrameCount - 1;
+                        _currentFrame = _currentAnimationData.FrameCount - 1;
                     }
                     else
                     {
-                        currentFrame = 0;
+                        _currentFrame = 0;
                     }
                 }
                 if (FrameChanged != null)
-                    FrameChanged(new FrameArgs(currentFrame));
+                    FrameChanged(new FrameArgs(_currentFrame));
             }
 
-            sourceRectangle.X = currentFrame * currentAnimationData.Width;
+            _sourceRectangle.X = _currentFrame * _currentAnimationData.Width;
 
         }
 
@@ -96,7 +96,7 @@ namespace Adam.Misc
         /// </summary>
         private void FindHighestPriorityAnimation()
         {
-            if (queue.Count == 0)
+            if (_queue.Count == 0)
                 return;
 
             float highestPriority = 0;
@@ -104,7 +104,7 @@ namespace Adam.Misc
 
             //Console.WriteLine("There are {0} animations in queue: {1}", queue.Count, queue);
 
-            foreach (string s in queue)
+            foreach (string s in _queue)
             {
                 if (CheckIfHighestPriority(s, ref highestPriority))
                 {
@@ -123,7 +123,7 @@ namespace Adam.Misc
         private bool CheckIfHighestPriority(string name, ref float highestPriority)
         {
             ComplexAnimData animData;
-            if (!animationData.TryGetValue(name, out animData))
+            if (!_animationData.TryGetValue(name, out animData))
             {
                 throw new Exception("Animation not found.");
             }
@@ -147,25 +147,25 @@ namespace Adam.Misc
         private void ChangeAnimation(string name)
         {
             ComplexAnimData animData;
-            if (!animationData.TryGetValue(name, out animData))
+            if (!_animationData.TryGetValue(name, out animData))
             {
                 throw new Exception("Animation not found.");
             }
 
-            if (name == currentName)
+            if (name == _currentName)
                 return;
 
             // Reset animation and change current animation being used.
-            currentFrame = 0;
-            frameTimer.Reset();
-            currentAnimationData = animData;
-            currentName = name;
+            _currentFrame = 0;
+            _frameTimer.Reset();
+            _currentAnimationData = animData;
+            _currentName = name;
 
             // Switch to the new texture and size.
-            texture = currentAnimationData.Texture;
-            sourceRectangle.Width = currentAnimationData.Width;
-            sourceRectangle.Height = currentAnimationData.Height;
-            sourceRectangle.Y = currentAnimationData.StartingY;
+            _texture = _currentAnimationData.Texture;
+            _sourceRectangle.Width = _currentAnimationData.Width;
+            _sourceRectangle.Height = _currentAnimationData.Height;
+            _sourceRectangle.Y = _currentAnimationData.StartingY;
 
             if (AnimationStateChanged != null)
                 AnimationStateChanged();
@@ -178,8 +178,8 @@ namespace Adam.Misc
         /// <param name="name"></param>
         public void AddToQueue(string name)
         {
-            if (!queue.Contains(name))
-                queue.Add(name);
+            if (!_queue.Contains(name))
+                _queue.Add(name);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Adam.Misc
         public void RemoveFromQueue(string name)
         {
             if (name.Contains(name))
-                queue.Remove(name);
+                _queue.Remove(name);
         }
 
         /// <summary>
@@ -200,16 +200,16 @@ namespace Adam.Misc
         /// <param name="color">The color and opacity of the texture.</param>
         public void Draw(SpriteBatch spriteBatch, bool isFacingRight, Color color)
         {
-            if (currentAnimationData.Texture == null)
+            if (_currentAnimationData.Texture == null)
                 return;
 
             if (!isFacingRight)
             {
-                spriteBatch.Draw(currentAnimationData.Texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(_currentAnimationData.Texture, _drawRectangle, _sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
             else
             {
-                spriteBatch.Draw(currentAnimationData.Texture, drawRectangle, sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                spriteBatch.Draw(_currentAnimationData.Texture, _drawRectangle, _sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
             }
         }
 
@@ -222,12 +222,12 @@ namespace Adam.Misc
         {
             // Check to see if identifier already exists.
             ComplexAnimData value;
-            if (animationData.TryGetValue(name, out value))
+            if (_animationData.TryGetValue(name, out value))
             {
                 throw new Exception("Identifier for this animation data already exists.");
             }
 
-            animationData.Add(name, data);
+            _animationData.Add(name, data);
         }
 
     }

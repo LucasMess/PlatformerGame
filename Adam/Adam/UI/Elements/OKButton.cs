@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -9,7 +10,7 @@ namespace Adam.UI.Elements
 {
     public class YesButton : Button
     {
-        MessageBox sender;
+        MessageBox _sender;
 
         public YesButton(Rectangle containerRectangle, MessageBox sender)
         {
@@ -18,8 +19,8 @@ namespace Adam.UI.Elements
             int height = 6 * 5;
             int x = containerRectangle.X + containerRectangle.Width / 2;
             int y = containerRectangle.Y + containerRectangle.Height;
-            collRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
-            this.sender = sender;
+            CollRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
+            this._sender = sender;
             Initialize();
         }
 
@@ -28,35 +29,35 @@ namespace Adam.UI.Elements
             MouseOver += OnMouseOver;
             MouseOut += OnMouseOut;
             MouseClicked += YesButton_MouseClicked;
-            sourceRectangle = new Rectangle(320, 20, 19, 6);
-            texture = GameWorld.SpriteSheet;
-            font = ContentHelper.LoadFont("Fonts/x32");
+            SourceRectangle = new Rectangle(320, 20, 19, 6);
+            Texture = GameWorld.SpriteSheet;
+            Font = ContentHelper.LoadFont("Fonts/x32");
         }
 
         private void YesButton_MouseClicked()
         {
-            sender.IsActive = false;
+            _sender.IsActive = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, collRectangle, sourceRectangle, color);
-            spriteBatch.DrawString(font, Text, new Vector2(collRectangle.Center.X, collRectangle.Center.Y),
-                Color.White, 0, font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color);
+            spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
+                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
 
         }
     }
 
-    public class OKButton : Button
+    public class OkButton : Button
     {
-        public OKButton(Rectangle containerRectangle)
+        public OkButton(Rectangle containerRectangle)
         {
             Text = "OK";
             int width = 19 * 5;
             int height = 6 * 5;
             int x = containerRectangle.X + containerRectangle.Width / 2;
             int y = containerRectangle.Y + containerRectangle.Height;
-            collRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
+            CollRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
             Initialize();
         }
 
@@ -64,17 +65,17 @@ namespace Adam.UI.Elements
         {
             MouseOver += OnMouseOver;
             MouseOut += OnMouseOut;
-            sourceRectangle = new Rectangle(320, 20, 19, 6);
-            texture = GameWorld.SpriteSheet;
-            font = ContentHelper.LoadFont("Fonts/x32");
+            SourceRectangle = new Rectangle(320, 20, 19, 6);
+            Texture = GameWorld.SpriteSheet;
+            Font = ContentHelper.LoadFont("Fonts/x32");
         }
 
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, collRectangle, sourceRectangle, color);
-            spriteBatch.DrawString(font, Text, new Vector2(collRectangle.Center.X, collRectangle.Center.Y),
-                Color.White, 0, font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color);
+            spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
+                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
         }
     }
 }

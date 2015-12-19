@@ -11,75 +11,75 @@ namespace Adam.Interactables
 {
     public class Jetpack
     {
-        int currentFuel;
-        int maxFuel = 10000;
+        int _currentFuel;
+        int _maxFuel = 10000;
 
-        int depletionRate = 10;
-        int refuelingRate = 50;
+        int _depletionRate = 10;
+        int _refuelingRate = 50;
 
-        double effectTimer;
+        double _effectTimer;
 
-        SoundEffect loop;
-        SoundEffectInstance loopInstance;
-        List<Particle> particles = new List<Particle>();
+        SoundEffect _loop;
+        SoundEffectInstance _loopInstance;
+        List<Particle> _particles = new List<Particle>();
 
         public bool HasFuel { get; set; }
         public const float MaxSpeed  = -10f;
 
         public Jetpack()
         {
-            currentFuel = maxFuel;
-            loop = ContentHelper.LoadSound("Sounds/jetpack_engine");
-            loopInstance = loop.CreateInstance();
+            _currentFuel = _maxFuel;
+            _loop = ContentHelper.LoadSound("Sounds/jetpack_engine");
+            _loopInstance = _loop.CreateInstance();
         }
 
         public void Update(Player player, GameTime gameTime)
         {
             if (player.IsJumping)
             {
-                effectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                currentFuel -= depletionRate;
-                if (loopInstance.State == SoundState.Stopped)
-                    loopInstance.Play();
+                _effectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                _currentFuel -= _depletionRate;
+                if (_loopInstance.State == SoundState.Stopped)
+                    _loopInstance.Play();
 
-                if (effectTimer > 100 && InputHelper.IsLeftMousePressed() && HasFuel)
+                if (_effectTimer > 100 && InputHelper.IsLeftMousePressed() && HasFuel)
                 {
                     Particle eff = new Particle();
                     eff.CreateJetPackSmokeParticle(player);
-                    particles.Add(eff);
-                    effectTimer = 0;
+                    _particles.Add(eff);
+                    _effectTimer = 0;
                 }
             }
             else 
-                currentFuel += refuelingRate;
+                _currentFuel += _refuelingRate;
 
-            if (currentFuel <= 0)
+            if (_currentFuel <= 0)
             {
                 HasFuel = false;
             }
             else HasFuel = true;
 
-            if (currentFuel > maxFuel)
-                currentFuel = maxFuel;
+            if (_currentFuel > _maxFuel)
+                _currentFuel = _maxFuel;
 
-            foreach (var eff in particles)
+            foreach (var eff in _particles)
             {
                 eff.Update(gameTime);
                 if (eff.ToDelete)
                 {
-                    particles.Remove(eff);
+                    _particles.Remove(eff);
                     break;
                 }
             }
 
             if (InputHelper.IsLeftMouseReleased() || !HasFuel)
-                loopInstance.Stop();
+                _loopInstance.Stop();
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var par in particles)
+            foreach (var par in _particles)
                 par.Draw(spriteBatch);
         }
     }

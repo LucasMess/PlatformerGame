@@ -10,80 +10,80 @@ namespace Adam.UI.Overlay_Elements
 {
     public class Coin
     {
-        Texture2D texture;
-        Rectangle drawRectangle, sourceRectangle;
-        Vector2 origin;
-        Vector2 frameCount;
-        Vector2 textPos;
-        int currentFrame, switchFrame;
-        double timer;
+        Texture2D _texture;
+        Rectangle _drawRectangle, _sourceRectangle;
+        Vector2 _origin;
+        Vector2 _frameCount;
+        Vector2 _textPos;
+        int _currentFrame, _switchFrame;
+        double _timer;
 
-        Animation animation;
-        GameTime gameTime;
-        int score;
-        bool scoreChanged;
+        Animation _animation;
+        GameTime _gameTime;
+        int _score;
+        bool _scoreChanged;
 
         public Coin(Vector2 position)
         {
-            texture = ContentHelper.LoadTexture("Menu/player_coin");
-            frameCount = new Vector2(7, 0);
-            drawRectangle = new Rectangle((int)position.X, (int)position.Y, 64, texture.Height);
-            sourceRectangle = new Rectangle(0, 0, 64, 64);
-            origin = new Vector2(32, 32);
+            _texture = ContentHelper.LoadTexture("Menu/player_coin");
+            _frameCount = new Vector2(7, 0);
+            _drawRectangle = new Rectangle((int)position.X, (int)position.Y, 64, _texture.Height);
+            _sourceRectangle = new Rectangle(0, 0, 64, 64);
+            _origin = new Vector2(32, 32);
 
-            drawRectangle.X += (int)origin.X;
-            drawRectangle.Y += (int)origin.Y;
-            textPos = new Vector2(drawRectangle.X + 64 + 10, drawRectangle.Y - 16);
+            _drawRectangle.X += (int)_origin.X;
+            _drawRectangle.Y += (int)_origin.Y;
+            _textPos = new Vector2(_drawRectangle.X + 64 + 10, _drawRectangle.Y - 16);
 
-            animation = new Animation(texture, drawRectangle, 100, 0, AnimationType.Loop);
+            _animation = new Animation(_texture, _drawRectangle, 100, 0, AnimationType.Loop);
         }
 
         public void Update(Player player, GameTime gameTime)
         {
-            this.gameTime = gameTime;
+            this._gameTime = gameTime;
 
             Animate();
 
-            scoreChanged = false;
-            if (score < player.Score)
+            _scoreChanged = false;
+            if (_score < player.Score)
             {
-                score++;
-                scoreChanged = true;
+                _score++;
+                _scoreChanged = true;
             }
-            if (score > player.Score)
+            if (_score > player.Score)
             {
-                score--;
-                scoreChanged = true;
+                _score--;
+                _scoreChanged = true;
             }
         }
 
         private void Animate()
         {
-            switchFrame = 100;
-            timer += gameTime.ElapsedGameTime.Milliseconds;
+            _switchFrame = 100;
+            _timer += _gameTime.ElapsedGameTime.Milliseconds;
 
-            if (timer > switchFrame)
+            if (_timer > _switchFrame)
             {
-                sourceRectangle.X += sourceRectangle.Width;
-                currentFrame++;
-                timer = 0;
+                _sourceRectangle.X += _sourceRectangle.Width;
+                _currentFrame++;
+                _timer = 0;
             }
 
-            if (currentFrame > frameCount.X)
+            if (_currentFrame > _frameCount.X)
             {
-                sourceRectangle.X = 0;
-                currentFrame = 0;
+                _sourceRectangle.X = 0;
+                _currentFrame = 0;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, drawRectangle, sourceRectangle, Color.White, 0, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White, 0, _origin, SpriteEffects.None, 0);
 
             Color color = Color.White;
-            if (scoreChanged)
+            if (_scoreChanged)
                 color = Color.ForestGreen;
-            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, score.ToString(), textPos, 5, color, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, Overlay.Font, _score.ToString(), _textPos, 5, color, Color.Black);
         }
     }
 }

@@ -3,93 +3,94 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Misc
 {
     public class SoundFx
     {
-        SoundEffect soundEffect;
-        SoundEffectInstance instance;
-        bool isPlaying;
-        bool isGlobal = true;
-        Entity source;
+        SoundEffect _soundEffect;
+        SoundEffectInstance _instance;
+        bool _isPlaying;
+        bool _isGlobal = true;
+        Entity _source;
 
         public float MaxVolume { get; set; } = Main.MaxVolume;
 
         public SoundFx(string file)
         {
-            soundEffect = ContentHelper.LoadSound(file);
-            instance = soundEffect.CreateInstance();
+            _soundEffect = ContentHelper.LoadSound(file);
+            _instance = _soundEffect.CreateInstance();
         }
 
         public SoundFx(string file, Entity entity)
         {
-            soundEffect = ContentHelper.LoadSound(file);
-            instance = soundEffect.CreateInstance();
-            source = entity;
-            isGlobal = false;
+            _soundEffect = ContentHelper.LoadSound(file);
+            _instance = _soundEffect.CreateInstance();
+            _source = entity;
+            _isGlobal = false;
         }
 
         public void Play()
         {
-            if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
-            if (instance.Volume > MaxVolume)
+            if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+            if (_instance.Volume > MaxVolume)
             {
-                instance.Volume = MaxVolume;
+                _instance.Volume = MaxVolume;
             }
-            instance.Play();
+            _instance.Play();
         }
 
         public void PlayNewInstanceOnce()
         {
-            if (!isPlaying)
+            if (!_isPlaying)
             {
-                SoundEffectInstance newInstance = soundEffect.CreateInstance();
-                if (!isGlobal) newInstance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
+                SoundEffectInstance newInstance = _soundEffect.CreateInstance();
+                if (!_isGlobal) newInstance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
                 if (newInstance.Volume > MaxVolume)
                 {
                     newInstance.Volume = MaxVolume;
                 }
                 newInstance.Play();
-                isPlaying = true;
+                _isPlaying = true;
             }
         }
 
         public void PlayOnce()
         {
-            if (!isPlaying)
+            if (!_isPlaying)
             {
-                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
-                if (instance.Volume > MaxVolume)
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+                if (_instance.Volume > MaxVolume)
                 {
-                    instance.Volume = MaxVolume;
+                    _instance.Volume = MaxVolume;
                 }
-                instance.Play();
-                isPlaying = true;
+                _instance.Play();
+                _isPlaying = true;
             }
         }
 
         public void Reset()
         {
-            isPlaying = false;
+            _isPlaying = false;
         }
 
         public void PlayIfStopped()
         {
-            if (instance.State == SoundState.Stopped)
+            if (_instance.State == SoundState.Stopped)
             {
-                if (!isGlobal) instance.Volume = source.GetSoundVolume(GameWorld.Instance.player, MaxVolume);
-                if (instance.Volume > MaxVolume)
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+                if (_instance.Volume > MaxVolume)
                 {
-                    instance.Volume = MaxVolume;
+                    _instance.Volume = MaxVolume;
                 }
-                instance.Play();
+                _instance.Play();
             }
         }
 
         public void Stop()
         {
-            instance.Stop();
+            _instance.Stop();
         }
     }
 }

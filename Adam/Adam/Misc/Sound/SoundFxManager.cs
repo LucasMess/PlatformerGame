@@ -7,13 +7,13 @@ namespace Adam.Misc.Sound
 {
     public class SoundFxManager
     {
-        Entity source;
-        Dictionary<string, SoundFx> sounds = new Dictionary<string, SoundFx>();
+        Entity _source;
+        Dictionary<string, SoundFx> _sounds = new Dictionary<string, SoundFx>();
 
 
         public SoundFxManager(Entity source)
         {
-            this.source = source;
+            this._source = source;
         }
 
         public SoundFxManager()
@@ -22,22 +22,22 @@ namespace Adam.Misc.Sound
 
         public void AddSoundRef(string name, string location)
         {
-            if (source != null)
+            if (_source != null)
             {
-                SoundFx sound = new SoundFx(location, source);
-                sounds.Add(name, sound);
+                SoundFx sound = new SoundFx(location, _source);
+                _sounds.Add(name, sound);
             }
             else
             {
                 SoundFx sound = new SoundFx(location);
-                sounds.Add(name, sound);
+                _sounds.Add(name, sound);
             }
         }
 
         public SoundFx Get(string name)
         {
             SoundFx sound;
-            if (sounds.TryGetValue(name, out sound))
+            if (_sounds.TryGetValue(name, out sound))
             {
                 return sound;
             }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Particles
 {
@@ -16,43 +17,43 @@ namespace Adam.Particles
             get
             {
                 _nextInt++;
-                if (_nextInt >= particles.Length)
+                if (_nextInt >= _particles.Length)
                     _nextInt = 0;
                 return _nextInt;
             }
         }
 
-        NewParticle[] particles;
+        NewParticle[] _particles;
 
         public ParticleSystem()
         {
-            particles = new NewParticle[10000];
+            _particles = new NewParticle[10000];
 
-            for (int i = 0; i < particles.Length; i++)
+            for (int i = 0; i < _particles.Length; i++)
             {
-                particles[i] = new NewParticle();
+                _particles[i] = new NewParticle();
             }
         }
 
         public void Update()
         {
-            for (int i = 0; i < particles.Length; i++)
+            for (int i = 0; i < _particles.Length; i++)
             {
-                particles[i].Update();
+                _particles[i].Update();
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < particles.Length; i++)
+            for (int i = 0; i < _particles.Length; i++)
             {
-                particles[i].Draw(spriteBatch);
+                _particles[i].Draw(spriteBatch);
             }
         }
 
         public void Add(NewParticle par)
         {
-            particles[NextIndex] = par;
+            _particles[NextIndex] = par;
         }
 
 
@@ -132,9 +133,9 @@ namespace Adam.Particles
 
     class SmokeParticle : NewParticle
     {
-        Timer animationTimer = new Timer();
-        int currentFrame;
-        int frames;
+        Timer _animationTimer = new Timer();
+        int _currentFrame;
+        int _frames;
 
         public SmokeParticle(int x, int y)
         {
@@ -147,19 +148,19 @@ namespace Adam.Particles
             Color = Color.White;
             Texture = GameWorld.SpriteSheet;
 
-            frames = 4;
+            _frames = 4;
         }
 
         public override void Update()
         {
-            animationTimer.Increment();
-            if (animationTimer.TimeElapsedInMilliSeconds > 500)
+            _animationTimer.Increment();
+            if (_animationTimer.TimeElapsedInMilliSeconds > 500)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
-                currentFrame++;
-                animationTimer.Reset();
+                _currentFrame++;
+                _animationTimer.Reset();
             }
-            if (currentFrame >= frames)
+            if (_currentFrame >= _frames)
             {
                 Opacity = 0;
             }
@@ -170,9 +171,9 @@ namespace Adam.Particles
 
     class SparkleParticle : NewParticle
     {
-        Timer animationTimer = new Timer();
-        int currentFrame;
-        int frames;
+        Timer _animationTimer = new Timer();
+        int _currentFrame;
+        int _frames;
 
         public SparkleParticle(int x, int y, float velX, float velY, Color color)
         {
@@ -183,20 +184,20 @@ namespace Adam.Particles
             Color = color;
             Texture = GameWorld.SpriteSheet;
 
-            frames = 4;
+            _frames = 4;
 
         }
 
         public override void Update()
         {
-            animationTimer.Increment();
-            if (animationTimer.TimeElapsedInMilliSeconds > 250)
+            _animationTimer.Increment();
+            if (_animationTimer.TimeElapsedInMilliSeconds > 250)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
-                currentFrame++;
-                animationTimer.Reset();
+                _currentFrame++;
+                _animationTimer.Reset();
             }
-            if (currentFrame >= frames)
+            if (_currentFrame >= _frames)
             {
                 Opacity = 0;
             }

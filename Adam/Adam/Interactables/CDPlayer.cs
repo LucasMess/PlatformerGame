@@ -6,33 +6,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
-    public class CDPlayer : Item, IAnimated
+    public class CdPlayer : Item, IAnimated
     {
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new AnimationData[]
+                if (_animationData == null)
+                    _animationData = new AnimationData[]
                     {
                         new Adam.AnimationData(250,4,0,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -45,37 +46,37 @@ namespace Adam.Interactables
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
-        public CDPlayer(Vector2 position)
+        public CdPlayer(Vector2 position)
         {
             Texture = ContentHelper.LoadTexture("Objects/CDplayer_new");
-            collRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
-            sourceRectangle = new Rectangle(0, 0, 32, 32);
+            CollRectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+            SourceRectangle = new Rectangle(0, 0, 32, 32);
 
-            animation = new Animation(Texture, DrawRectangle, 70, 0, AnimationType.Loop);
-            loopSound = new Misc.SoundFx("Sounds/loop");
-            velocity.Y = -10f;
+            _animation = new Animation(Texture, DrawRectangle, 70, 0, AnimationType.Loop);
+            LoopSound = new Misc.SoundFx("Sounds/loop");
+            Velocity.Y = -10f;
         }
 
         public override void Update()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            GameTime gameTime = gameWorld.gameTime;
+            GameTime gameTime = gameWorld.GameTime;
 
-            velocity.Y += .3f;
-            if (velocity.Y > 5f)
-                velocity.Y = 5f;
+            Velocity.Y += .3f;
+            if (Velocity.Y > 5f)
+                Velocity.Y = 5f;
 
-            effectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (effectTimer > 500)
+            EffectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (EffectTimer > 500)
             {
                 Particle eff = new Particle();
                 eff.CreateMusicNotesEffect(this);
-                GameWorld.Instance.particles.Add(eff);
-                effectTimer = 0;
+                GameWorld.Instance.Particles.Add(eff);
+                EffectTimer = 0;
             }
 
             base.Update();
@@ -83,7 +84,7 @@ namespace Adam.Interactables
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch);
+            _animation.Draw(spriteBatch);
         }
 
         public void Animate()

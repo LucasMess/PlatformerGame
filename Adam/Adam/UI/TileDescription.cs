@@ -6,79 +6,80 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
     class TileDescription
     {
-        string description = "";
-        string name = "";
+        string _description = "";
+        string _name = "";
 
-        Vector2 textPosition;
-        Vector2 namePosition;
-        SpriteFont nameFont;
-        SpriteFont textFont;
+        Vector2 _textPosition;
+        Vector2 _namePosition;
+        SpriteFont _nameFont;
+        SpriteFont _textFont;
 
-        Texture2D image;
-        Texture2D border;
-        Rectangle imageRect;
+        Texture2D _image;
+        Texture2D _border;
+        Rectangle _imageRect;
 
-        byte ID;
-        byte lastID;
+        byte _id;
+        byte _lastId;
 
         public TileDescription()
         {
-            nameFont = ContentHelper.LoadFont("Fonts/x64");
-            textFont = ContentHelper.LoadFont("Fonts/x32");
+            _nameFont = ContentHelper.LoadFont("Fonts/x64");
+            _textFont = ContentHelper.LoadFont("Fonts/x32");
 
-            imageRect = new Rectangle((int)(230 / Main.WidthRatio), (int)(90 / Main.HeightRatio), (int)(500 / Main.WidthRatio), (int)(300 / Main.HeightRatio));
-            namePosition = new Vector2((int)(210 / Main.WidthRatio), (int)(410 / Main.HeightRatio));
-            textPosition = new Vector2((int)(210 / Main.WidthRatio), (int)(440 / Main.HeightRatio));
+            _imageRect = new Rectangle((int)(230 / Main.WidthRatio), (int)(90 / Main.HeightRatio), (int)(500 / Main.WidthRatio), (int)(300 / Main.HeightRatio));
+            _namePosition = new Vector2((int)(210 / Main.WidthRatio), (int)(410 / Main.HeightRatio));
+            _textPosition = new Vector2((int)(210 / Main.WidthRatio), (int)(440 / Main.HeightRatio));
 
-            border = ContentHelper.LoadTexture("Example Tile Images/border");
+            _border = ContentHelper.LoadTexture("Example Tile Images/border");
         }
 
         public void Update()
         {
-            ID = GameWorld.Instance.levelEditor.selectedID;
+            _id = GameWorld.Instance.LevelEditor.SelectedId;
 
-            if (lastID != ID)
+            if (_lastId != _id)
             {
 
                 try
                 {
-                    image = ContentHelper.LoadTexture("Example Tile Images/" + ID);
+                    _image = ContentHelper.LoadTexture("Example Tile Images/" + _id);
                 }
                 catch (ContentLoadException)
                 {
-                    image = ContentHelper.LoadTexture("Example Tile Images/missing");
+                    _image = ContentHelper.LoadTexture("Example Tile Images/missing");
                 }
 
-                Tile.Names.TryGetValue(ID, out name);
-                Descriptions.TryGetValue(ID, out description);
+                Tile.Names.TryGetValue(_id, out _name);
+                _descriptions.TryGetValue(_id, out _description);
 
-                description = FontHelper.WrapText(textFont, description, (int)(540 / Main.WidthRatio));
+                _description = FontHelper.WrapText(_textFont, _description, (int)(540 / Main.WidthRatio));
 
-                lastID = ID;
+                _lastId = _id;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.levelEditor.onInventory)
+            if (GameWorld.Instance.LevelEditor.OnInventory)
             {
-                if (image != null)
+                if (_image != null)
                 {
-                    spriteBatch.Draw(image, imageRect, Color.White);
-                    spriteBatch.Draw(border, imageRect, Color.White);
+                    spriteBatch.Draw(_image, _imageRect, Color.White);
+                    spriteBatch.Draw(_border, _imageRect, Color.White);
                 }
 
-                FontHelper.DrawWithOutline(spriteBatch, nameFont, name, namePosition, 2, Color.Yellow, Color.Black);
-                spriteBatch.DrawString(textFont, description, textPosition, Color.White);
+                FontHelper.DrawWithOutline(spriteBatch, _nameFont, _name, _namePosition, 2, Color.Yellow, Color.Black);
+                spriteBatch.DrawString(_textFont, _description, _textPosition, Color.White);
             }
         }
 
-        static Dictionary<byte, string> Descriptions = new Dictionary<byte, string>()
+        static Dictionary<byte, string> _descriptions = new Dictionary<byte, string>()
         {
             {1,"Uprooted (illegally) from God's own garden, these tiles shall provide a luxurious green accent to your build. Maintenance required: things grow on it." },
             {2,"Much harder than dirt, God thought stone wasn't pretty enough for his paradise in the sky. That's why there is so much." },

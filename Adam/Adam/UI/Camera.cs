@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,50 +11,50 @@ namespace Adam
 {
     public class Camera
     {
-        private Matrix translation;
+        private Matrix _translation;
         public Matrix Translate
         {
-            get { return translation; }
+            get { return _translation; }
         }
 
         //leave center for later
-        public Vector2 centerPos;
-        private Vector2 lastCenterPos;
-        Vector3 lastVelocity;
-        private Viewport viewport;
-        public int tileIndex;
+        public Vector2 CenterPos;
+        private Vector2 _lastCenterPos;
+        Vector3 _lastVelocity;
+        private Viewport _viewport;
+        public int TileIndex;
 
-        float zoom = 1;
-        int lastScrollWheel;
+        float _zoom = 1;
+        int _lastScrollWheel;
 
-        Vector2 prefRes;
-        Vector2 defRes;
-        public Vector3 velocity;
-        public Vector3 lastCameraLeftCorner;
-        public Vector2 invertedCoords;
+        Vector2 _prefRes;
+        Vector2 _defRes;
+        public Vector3 Velocity;
+        public Vector3 LastCameraLeftCorner;
+        public Vector2 InvertedCoords;
 
         public Camera(Viewport newViewport)
         {
-            viewport = newViewport;
-            defRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
-            prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight) ;
-            velocity = new Vector3(0, 0, 0);
-            tileIndex = 100;
+            _viewport = newViewport;
+            _defRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
+            _prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight) ;
+            Velocity = new Vector3(0, 0, 0);
+            TileIndex = 100;
         }
 
         public void UpdateSmoothly(Rectangle rectangle, int width, int height, bool active)
         {
             Vector2 playerPos = new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
-            Vector3 currentLeftCorner = new Vector3(-playerPos.X + defRes.X / zoom / 2, -playerPos.Y + (3 * defRes.Y / zoom / 5), 0);
+            Vector3 currentLeftCorner = new Vector3(-playerPos.X + _defRes.X / _zoom / 2, -playerPos.Y + (3 * _defRes.Y / _zoom / 5), 0);
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;
-            if (currentLeftCorner.X < -(width * Main.Tilesize - defRes.X))
-                currentLeftCorner.X = -(width * Main.Tilesize - defRes.X);
+            if (currentLeftCorner.X < -(width * Main.Tilesize - _defRes.X))
+                currentLeftCorner.X = -(width * Main.Tilesize - _defRes.X);
             if (currentLeftCorner.Y > 0)
                 currentLeftCorner.Y = 0;
-            if (currentLeftCorner.Y < -(height * Main.Tilesize - defRes.Y))
-                currentLeftCorner.Y = -(height * Main.Tilesize - defRes.Y);
+            if (currentLeftCorner.Y < -(height * Main.Tilesize - _defRes.Y))
+                currentLeftCorner.Y = -(height * Main.Tilesize - _defRes.Y);
 
             //if (zoom > 1)
             //{
@@ -69,9 +70,9 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 
-            velocity = (currentLeftCorner - lastCameraLeftCorner) / 5;
-            Vector3 cameraLeftCorner = lastCameraLeftCorner;
-            cameraLeftCorner += velocity;
+            Velocity = (currentLeftCorner - LastCameraLeftCorner) / 5;
+            Vector3 cameraLeftCorner = LastCameraLeftCorner;
+            cameraLeftCorner += Velocity;
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
 
             // Make sure mult of 2.
@@ -88,31 +89,31 @@ namespace Adam
                 cameraLeftCorner.Z++;
             }
 
-            invertedCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
-            invertedCoords.X += Main.DefaultResWidth / 2;
-            invertedCoords.Y += Main.DefaultResHeight * 2 / 3;
-            tileIndex = (int)((int)invertedCoords.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)invertedCoords.X / Main.Tilesize);
+            InvertedCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
+            InvertedCoords.X += Main.DefaultResWidth / 2;
+            InvertedCoords.Y += Main.DefaultResHeight * 2 / 3;
+            TileIndex = (int)((int)InvertedCoords.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)((int)InvertedCoords.X / Main.Tilesize);
 
-            lastCameraLeftCorner = cameraLeftCorner;
-            lastVelocity = velocity;
+            LastCameraLeftCorner = cameraLeftCorner;
+            _lastVelocity = Velocity;
 
 
-            translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
+            _translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(_zoom, _zoom, 0));
         }
 
 
         //Slowly zooom in.
         public void ZoomIn()
         {
-            zoom += .005f;
-            if (zoom > 2)
-                zoom = 2;
+            _zoom += .005f;
+            if (_zoom > 2)
+                _zoom = 2;
         }
 
         //Resets the zoom to its default value.
         public void ResetZoom()
         {
-            zoom = 1;
+            _zoom = 1;
         }
 
         /// <summary>
@@ -120,9 +121,9 @@ namespace Adam
         /// </summary>
         public void ZoomOut()
         {
-            zoom -= .05f;
-            if (zoom < 0.25)
-                zoom = 0.25f;
+            _zoom -= .05f;
+            if (_zoom < 0.25)
+                _zoom = 0.25f;
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace Adam
         /// <param name="newZoom"></param>
         public void SetZoomTo(float newZoom)
         {
-            zoom = newZoom;
+            _zoom = newZoom;
         }
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace Adam
         /// <returns></returns>
         public float GetZoom()
         {
-            return zoom;
+            return _zoom;
         }
 
         public void UpdateWithZoom(Vector2 position)
@@ -148,19 +149,19 @@ namespace Adam
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (scrollWheel < lastScrollWheel)
+            if (scrollWheel < _lastScrollWheel)
             {
-                zoom += .05f;
+                _zoom += .05f;
             }
-            if (scrollWheel > lastScrollWheel)
+            if (scrollWheel > _lastScrollWheel)
             {
-                zoom -= .05f;
+                _zoom -= .05f;
             }
-            lastScrollWheel = scrollWheel;
+            _lastScrollWheel = scrollWheel;
 
-            centerPos = new Vector2(position.X, position.Y);
-            translation = Matrix.CreateTranslation(new Vector3(-centerPos.X + ((int)defRes.X / 2), -centerPos.Y + (3 * (int)defRes.Y / 5), 0))
-                    * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
+            CenterPos = new Vector2(position.X, position.Y);
+            _translation = Matrix.CreateTranslation(new Vector3(-CenterPos.X + ((int)_defRes.X / 2), -CenterPos.Y + (3 * (int)_defRes.Y / 5), 0))
+                    * Matrix.CreateScale(new Vector3(_zoom, _zoom, 0));
         }
 
     }

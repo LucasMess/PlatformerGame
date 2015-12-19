@@ -10,271 +10,271 @@ namespace Adam
 {
     public class LoadingScreen
     {
-        Texture2D background, customObject, circle;
-        Rectangle rectangle, customRect, circleRect;
-        GameTime gameTime;
-        Vector2 monitorRes;
-        SpriteFont font;
-        Random randGen = new Random();
+        Texture2D _background, _customObject, _circle;
+        Rectangle _rectangle, _customRect, _circleRect;
+        GameTime _gameTime;
+        Vector2 _monitorRes;
+        SpriteFont _font;
+        Random _randGen = new Random();
 
-        bool hasAnimated, hasGoneUp;
-        bool textChosen;
-        public bool isReady;
+        bool _hasAnimated, _hasGoneUp;
+        bool _textChosen;
+        public bool IsReady;
 
-        string loadingText, randomText, normalLoadingText;
+        string _loadingText, _randomText, _normalLoadingText;
 
-        double bufferTimer, textTimer, loadingTextTimer;
-        float velocity;
-        float rotation;
-        int count = 0, maxCount;
+        double _bufferTimer, _textTimer, _loadingTextTimer;
+        float _velocity;
+        float _rotation;
+        int _count = 0, _maxCount;
 
-        public LoadingScreen(Vector2 monitorRes, ContentManager Content)
+        public LoadingScreen(Vector2 monitorRes, ContentManager content)
         {
-            background = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_background");
-            customObject = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_tree");
-            circle = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_circle");
-            font = Content.Load<SpriteFont>("Fonts/x64");
+            _background = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_background");
+            _customObject = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_tree");
+            _circle = ContentHelper.LoadTexture("Backgrounds/Loading Screen/loading_circle");
+            _font = content.Load<SpriteFont>("Fonts/x64");
 
-            randomText = "";
-            normalLoadingText = "";
-            loadingText = "";
+            _randomText = "";
+            _normalLoadingText = "";
+            _loadingText = "";
 
-            this.monitorRes = monitorRes;
+            this._monitorRes = monitorRes;
 
-            rectangle = new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y);
-            customRect = new Rectangle(0, (int)monitorRes.Y, (int)monitorRes.X, (int)monitorRes.Y);
-            circleRect = new Rectangle((int)monitorRes.X / 2, (int)monitorRes.Y / 2 - 100, circle.Width, circle.Height);
+            _rectangle = new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y);
+            _customRect = new Rectangle(0, (int)monitorRes.Y, (int)monitorRes.X, (int)monitorRes.Y);
+            _circleRect = new Rectangle((int)monitorRes.X / 2, (int)monitorRes.Y / 2 - 100, _circle.Width, _circle.Height);
         }
 
         public void Update(GameTime gameTime)
         {
-            this.gameTime = gameTime;
+            this._gameTime = gameTime;
             UpdateTimers();
             LoadingDots();
 
-            rotation += .2f;
+            _rotation += .2f;
 
-            if (!textChosen)
+            if (!_textChosen)
                 ChooseText();
 
-            if (!hasAnimated)
+            if (!_hasAnimated)
             {
-                if (!hasGoneUp)
+                if (!_hasGoneUp)
                 {
-                    customRect.Y += (int)velocity;
-                    velocity = -10f;
-                    if (customRect.Y < 10)
+                    _customRect.Y += (int)_velocity;
+                    _velocity = -10f;
+                    if (_customRect.Y < 10)
                     {
-                        hasGoneUp = true;
-                        velocity = 0;
+                        _hasGoneUp = true;
+                        _velocity = 0;
                     }
                 }
                 else
                 {
-                    customRect.Y += (int)velocity;
-                    velocity = 1f;
-                    if (customRect.Y >= 30)
+                    _customRect.Y += (int)_velocity;
+                    _velocity = 1f;
+                    if (_customRect.Y >= 30)
                     {
-                        hasAnimated = true;
-                        customRect.Y = 30;
+                        _hasAnimated = true;
+                        _customRect.Y = 30;
                     }
                 }
             }
 
-            if (velocity < -10)
-                velocity = -10;
-            if (velocity > 5)
-                velocity = 5;
+            if (_velocity < -10)
+                _velocity = -10;
+            if (_velocity > 5)
+                _velocity = 5;
 
         }
 
         public void UpdateTimers()
         {
-            bufferTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            _bufferTimer += _gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (bufferTimer > 0)
-                isReady = true;
+            if (_bufferTimer > 0)
+                IsReady = true;
 
-            textTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            _textTimer += _gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (textTimer > 3)
+            if (_textTimer > 3)
             {
-                textTimer = 0;
-                textChosen = false;
+                _textTimer = 0;
+                _textChosen = false;
             }
 
-            loadingTextTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (loadingTextTimer > 250)
+            _loadingTextTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_loadingTextTimer > 250)
             {
-                count++;
-                loadingTextTimer = 0;
-                if (count > maxCount)
-                    count = 0;
+                _count++;
+                _loadingTextTimer = 0;
+                if (_count > _maxCount)
+                    _count = 0;
             }
 
         }
 
         public void LoadingDots()
         {
-            switch (count)
+            switch (_count)
             {
                 case 0:
-                    loadingText = "Loading";
+                    _loadingText = "Loading";
                     break;
                 case 1:
-                    loadingText = "Loading.";
+                    _loadingText = "Loading.";
                     break;
                 case 2:
-                    loadingText = "Loading..";
+                    _loadingText = "Loading..";
                     break;
                 case 3:
-                    loadingText = "Loading...";
+                    _loadingText = "Loading...";
                     break;
             }
-            maxCount = 3;
-            normalLoadingText = "Loading...";
+            _maxCount = 3;
+            _normalLoadingText = "Loading...";
         }
 
         public void Restart()
         {
-            isReady = false;
-            hasAnimated = false;
-            hasGoneUp = false;
-            rectangle = new Rectangle(0, 0, (int)monitorRes.X, (int)monitorRes.Y);
-            customRect = new Rectangle(0, (int)monitorRes.Y, (int)monitorRes.X, (int)monitorRes.Y);
-            bufferTimer = 0;
-            textTimer = 10000;
+            IsReady = false;
+            _hasAnimated = false;
+            _hasGoneUp = false;
+            _rectangle = new Rectangle(0, 0, (int)_monitorRes.X, (int)_monitorRes.Y);
+            _customRect = new Rectangle(0, (int)_monitorRes.Y, (int)_monitorRes.X, (int)_monitorRes.Y);
+            _bufferTimer = 0;
+            _textTimer = 10000;
         }
 
         public void ChooseText()
         {
-            switch (randGen.Next(0, 36))
+            switch (_randGen.Next(0, 36))
             {
                 case 0:
-                    randomText = "Hello there.";
+                    _randomText = "Hello there.";
                     break;
                 case 1:
-                    randomText = "Walnuts are yummy.";
+                    _randomText = "Walnuts are yummy.";
                     break;
                 case 2:
-                    randomText = "Stephen smells like roses.";
+                    _randomText = "Stephen smells like roses.";
                     break;
                 case 3:
-                    randomText = "Salmon is a good source of protein.";
+                    _randomText = "Salmon is a good source of protein.";
                     break;
                 case 4:
-                    randomText = "Indeeeeeeeeeed.";
+                    _randomText = "Indeeeeeeeeeed.";
                     break;
                 case 5:
-                    randomText = "Loading the loading screen.";
+                    _randomText = "Loading the loading screen.";
                     break;
                 case 6:
-                    randomText = "Reticulating spines.";
+                    _randomText = "Reticulating spines.";
                     break;
                 case 7:
-                    randomText = "Error 404: Level not found.";
+                    _randomText = "Error 404: Level not found.";
                     break;
                 case 8:
-                    randomText = "You are beautiful.";
+                    _randomText = "You are beautiful.";
                     break;
                 case 9:
-                    randomText = "Trying to find lost keys.";
+                    _randomText = "Trying to find lost keys.";
                     break;
                 case 10:
-                    randomText = "Deleting system memory.";
+                    _randomText = "Deleting system memory.";
                     break;
                 case 11:
-                    randomText = "Windows update incoming.";
+                    _randomText = "Windows update incoming.";
                     break;
                 case 12:
-                    randomText = "You have lost connection to the internet.";
+                    _randomText = "You have lost connection to the internet.";
                     break;
                 case 13:
-                    randomText = "Lighting the darkness.";
+                    _randomText = "Lighting the darkness.";
                     break;
                 case 14:
-                    randomText = "Moving immovable objects.";
+                    _randomText = "Moving immovable objects.";
                     break;
                 case 15:
-                    randomText = "Stopping unstoppable force.";
+                    _randomText = "Stopping unstoppable force.";
                     break;
                 case 16:
-                    randomText = "Nerfing Irelia.";
+                    _randomText = "Nerfing Irelia.";
                     break;
                 case 17:
-                    randomText = "Meow.";
+                    _randomText = "Meow.";
                     break;
                 case 18:
-                    randomText = "Upgrading antiviruses.";
+                    _randomText = "Upgrading antiviruses.";
                     break;
                 case 19:
-                    randomText = "Opening Internet Explorer.";
+                    _randomText = "Opening Internet Explorer.";
                     break;
                 case 20:
-                    randomText = "Putting out the firewall.";
+                    _randomText = "Putting out the firewall.";
                     break;
                 case 21:
-                    randomText = "Giving Satan a massage.";
+                    _randomText = "Giving Satan a massage.";
                     break;
                 case 22:
-                    randomText = "Doing Satan's pedicure.";
+                    _randomText = "Doing Satan's pedicure.";
                     break;
                 case 23:
-                    randomText = "Far Lands or Bust!";
+                    _randomText = "Far Lands or Bust!";
                     break;
                 case 24:
-                    randomText = "Shaving bears.";
+                    _randomText = "Shaving bears.";
                     break;
                 case 25:
-                    randomText = "Drinking tea.";
+                    _randomText = "Drinking tea.";
                     break;
                 case 26:
-                    randomText = "Starting pillow fight.";
+                    _randomText = "Starting pillow fight.";
                     break;
                 case 27:
-                    randomText = "Reloading the unloadable.";
+                    _randomText = "Reloading the unloadable.";
                     break;
                 case 28:
-                    randomText = "Checking out pictures folder.";
+                    _randomText = "Checking out pictures folder.";
                     break;
                 case 29:
-                    randomText = "Taking a break.";
+                    _randomText = "Taking a break.";
                     break;
                 case 30:
-                    randomText = "Loading assets.";
+                    _randomText = "Loading assets.";
                     break;
                 case 31:
-                    randomText = "Googling for solution.";
+                    _randomText = "Googling for solution.";
                     break;
                 case 32:
-                    randomText = "Oh oh, we might blue screen!";
+                    _randomText = "Oh oh, we might blue screen!";
                     break;
                 case 33:
-                    randomText = "Deleting user files.";
+                    _randomText = "Deleting user files.";
                     break;
                 case 34:
-                    randomText = "Drinking water.";
+                    _randomText = "Drinking water.";
                     break;
                 case 35:
-                    randomText = "Pretending to load.";
+                    _randomText = "Pretending to load.";
                     break;
             }
-            textChosen = true;
+            _textChosen = true;
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background, rectangle, Color.White);
-            spriteBatch.Draw(customObject, customRect, Color.White);
+            spriteBatch.Draw(_background, _rectangle, Color.White);
+            spriteBatch.Draw(_customObject, _customRect, Color.White);
 
-            Vector2 randomTextOrigin = new Vector2(font.MeasureString(randomText).X / 2, font.LineSpacing / 2);
-            Vector2 loadingTextOrigin = new Vector2(font.MeasureString(normalLoadingText).X / 2, font.LineSpacing / 2);
-            Vector2 circleOrigin = new Vector2(circle.Width / 2, circle.Height / 2);
+            Vector2 randomTextOrigin = new Vector2(_font.MeasureString(_randomText).X / 2, _font.LineSpacing / 2);
+            Vector2 loadingTextOrigin = new Vector2(_font.MeasureString(_normalLoadingText).X / 2, _font.LineSpacing / 2);
+            Vector2 circleOrigin = new Vector2(_circle.Width / 2, _circle.Height / 2);
 
-            spriteBatch.DrawString(font, randomText, monitorRes / 2, new Color(51, 63, 80), 0, randomTextOrigin, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(circle, new Vector2(circleRect.X, circleRect.Y), null, Color.White, rotation, circleOrigin, .08f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, loadingText, new Vector2(monitorRes.X / 2, monitorRes.Y / 2 - 200), new Color(51, 63, 80), 0, loadingTextOrigin, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font, _randomText, _monitorRes / 2, new Color(51, 63, 80), 0, randomTextOrigin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(_circle, new Vector2(_circleRect.X, _circleRect.Y), null, Color.White, _rotation, circleOrigin, .08f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font, _loadingText, new Vector2(_monitorRes.X / 2, _monitorRes.Y / 2 - 200), new Color(51, 63, 80), 0, loadingTextOrigin, 1, SpriteEffects.None, 0);
         }
 
     }

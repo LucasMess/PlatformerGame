@@ -12,48 +12,48 @@ namespace Adam
 {
     public class Cutscene
     {
-        Video video;
-        VideoPlayer videoPlayer;
-        Texture2D videoTexture;
-        public bool playIntro, wasPlayed;
+        Video _video;
+        VideoPlayer _videoPlayer;
+        Texture2D _videoTexture;
+        public bool PlayIntro, WasPlayed;
 
         public Cutscene()
         {
-            videoPlayer = new VideoPlayer();
-            playIntro = true;
+            _videoPlayer = new VideoPlayer();
+            PlayIntro = true;
         }
 
-        public void Load(ContentManager Content)
+        public void Load(ContentManager content)
         {
-           video = Content.Load<Video>("Cutscenes/cutscene_narration_sammy_sfx_st_xna");
+           _video = content.Load<Video>("Cutscenes/cutscene_narration_sammy_sfx_st_xna");
         }
 
         public void Update(GameState currentGameState)
         {
-            if (playIntro == true)
+            if (PlayIntro == true)
             {
-                videoPlayer.Play(video);
-                playIntro = false;
+                _videoPlayer.Play(_video);
+                PlayIntro = false;
             }
-            if (videoPlayer.State == MediaState.Stopped)
+            if (_videoPlayer.State == MediaState.Stopped)
             {
                 Stop();
             }
-            else videoTexture = videoPlayer.GetTexture();
+            else _videoTexture = _videoPlayer.GetTexture();
         }
 
         public void Stop()
         {
-            videoPlayer.Stop();
-            videoTexture = null;
-            wasPlayed = true;
+            _videoPlayer.Stop();
+            _videoTexture = null;
+            WasPlayed = true;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (videoTexture != null)
+            if (_videoTexture != null)
             {
-                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_videoTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
         }
 

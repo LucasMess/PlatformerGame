@@ -13,34 +13,34 @@ namespace Adam
 {
     public class Key
     {
-        Texture2D texture;
-        Rectangle rectangle;
-        public bool isPickedUp;
-        public bool toDelete;
-        public int secret;
-        SoundEffect pickSound;
+        Texture2D _texture;
+        Rectangle _rectangle;
+        public bool IsPickedUp;
+        public bool ToDelete;
+        public int Secret;
+        SoundEffect _pickSound;
 
-        public Key(int x, int y, ContentManager Content, int secret)
+        public Key(int x, int y, ContentManager content, int secret)
         {
-            this.secret = secret;
-            texture = ContentHelper.LoadTexture("Objects/key");
-            rectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
-            pickSound = Content.Load<SoundEffect>("Sounds/key_get");
+            this.Secret = secret;
+            _texture = ContentHelper.LoadTexture("Objects/key");
+            _rectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            _pickSound = content.Load<SoundEffect>("Sounds/key_get");
         }
 
         public void Update(Player player)
         {
-            if (player.GetCollRectangle().Intersects(rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
+            if (player.GetCollRectangle().Intersects(_rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                isPickedUp = true;
-                pickSound.Play();
-                toDelete = true;
+                IsPickedUp = true;
+                _pickSound.Play();
+                ToDelete = true;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, rectangle, Color.White);
+            spriteBatch.Draw(_texture, _rectangle, Color.White);
         }
     }
 }

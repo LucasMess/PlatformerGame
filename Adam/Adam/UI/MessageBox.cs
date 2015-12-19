@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
@@ -15,7 +16,7 @@ namespace Adam.UI
     /// </summary>
     public class MessageBox
     {
-        SoundFx attentionSound;
+        SoundFx _attentionSound;
         protected const int BezelSize = 25;
 
         /// <summary>
@@ -83,8 +84,8 @@ namespace Adam.UI
         /// </summary>
         public MessageBox()
         {
-            Button = new OKButton(DrawRectangle);
-            attentionSound = new SoundFx("Sounds/message_show");
+            Button = new OkButton(DrawRectangle);
+            _attentionSound = new SoundFx("Sounds/message_show");
         }
 
         protected void Button_MouseClicked()
@@ -101,7 +102,7 @@ namespace Adam.UI
         public virtual void Show(string message)
         {
             Button.MouseClicked += Button_MouseClicked;
-            attentionSound.PlayIfStopped();
+            _attentionSound.PlayIfStopped();
             string wrapped = FontHelper.WrapText(Font, message, DrawRectangle.Width - BezelSize * 2);
             Message = wrapped;
             IsActive = true;

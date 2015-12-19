@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using Adam.Levels;
 
 namespace Adam.GameData
 {
@@ -19,9 +20,9 @@ namespace Adam.GameData
         public short LevelHeight { get; set; }
         public string LevelName { get; set; }
 
-        public byte BackgroundID { get; set; }
-        public byte SoundtrackID { get; set; }
-        public byte AmbienceID { get; set; }
+        public byte BackgroundId { get; set; }
+        public byte SoundtrackId { get; set; }
+        public byte AmbienceId { get; set; }
 
         public bool HasClouds { get; set; }
         public bool IsRaining { get; set; }
@@ -40,8 +41,8 @@ namespace Adam.GameData
             LevelWidth = width;
             LevelHeight = height;
             LevelName = levelName;
-            BackgroundID = 1;
-            SoundtrackID = 1;
+            BackgroundId = 1;
+            SoundtrackId = 1;
 
             MetaData = new string[LevelWidth * LevelHeight];
 
@@ -56,32 +57,32 @@ namespace Adam.GameData
         public WorldConfigFile(GameWorld gw)
         {
             //Creates arrays for the tiles.
-            int size = gw.tileArray.Length;
+            int size = gw.TileArray.Length;
             TileIDs = new byte[size];
             WallIDs = new byte[size];
 
             //Sets the dimensions of the level.
-            LevelWidth = (short)gw.worldData.LevelWidth;
-            LevelHeight = (short)gw.worldData.LevelHeight;
-            LevelName = gw.worldData.LevelName;
+            LevelWidth = (short)gw.WorldData.LevelWidth;
+            LevelHeight = (short)gw.WorldData.LevelHeight;
+            LevelName = gw.WorldData.LevelName;
 
             //Sets soundtrack and background.
-            BackgroundID = gw.worldData.BackgroundID;
-            SoundtrackID = gw.worldData.SoundtrackID;
+            BackgroundId = gw.WorldData.BackgroundId;
+            SoundtrackId = gw.WorldData.SoundtrackId;
 
-            MetaData = gw.worldData.MetaData;
+            MetaData = gw.WorldData.MetaData;
 
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
-                TileIDs[i] = gw.tileArray[i].ID;
-                WallIDs[i] = gw.wallArray[i].ID;
+                TileIDs[i] = gw.TileArray[i].Id;
+                WallIDs[i] = gw.WallArray[i].Id;
             }
 
             //Level conditions
-            IsRaining = gw.worldData.IsRaining;
-            IsSnowing = gw.worldData.IsSnowing;
-            HasClouds = gw.worldData.HasClouds;
+            IsRaining = gw.WorldData.IsRaining;
+            IsSnowing = gw.WorldData.IsSnowing;
+            HasClouds = gw.WorldData.HasClouds;
         }
 
         ///// <summary>
@@ -111,23 +112,23 @@ namespace Adam.GameData
         {
             GameWorld gw = GameWorld.Instance;
 
-            gw.worldData.TileIDs = TileIDs;
-            gw.worldData.WallIDs = WallIDs;
+            gw.WorldData.TileIDs = TileIDs;
+            gw.WorldData.WallIDs = WallIDs;
 
-            gw.worldData.LevelWidth = LevelWidth;
-            gw.worldData.LevelHeight = LevelHeight;
+            gw.WorldData.LevelWidth = LevelWidth;
+            gw.WorldData.LevelHeight = LevelHeight;
 
-            gw.worldData.BackgroundID = BackgroundID;
-            gw.worldData.SoundtrackID = SoundtrackID;
+            gw.WorldData.BackgroundId = BackgroundId;
+            gw.WorldData.SoundtrackId = SoundtrackId;
 
-            gw.worldData.MetaData = MetaData;
+            gw.WorldData.MetaData = MetaData;
 
-            gw.worldData.LevelName = LevelName;
-            gw.worldData.HasClouds = HasClouds;
-            gw.worldData.IsRaining = IsRaining;
-            gw.worldData.IsSnowing = IsSnowing;
+            gw.WorldData.LevelName = LevelName;
+            gw.WorldData.HasClouds = HasClouds;
+            gw.WorldData.IsRaining = IsRaining;
+            gw.WorldData.IsSnowing = IsSnowing;
 
-            gw.worldData.song = SoundtrackDB.GetSong(1);
+            gw.WorldData.Song = SoundtrackDb.GetSong(1);
         }
 
         /// <summary>
@@ -136,10 +137,10 @@ namespace Adam.GameData
         /// <returns>Returns true if level is valid.</returns>
         public bool IsValidLevel()
         {
-            foreach (int ID in  TileIDs)
+            foreach (int id in  TileIDs)
             { 
                 // Found player.
-                if (ID == 200)
+                if (id == 200)
                     return true;
             }
 
@@ -150,7 +151,7 @@ namespace Adam.GameData
     [Serializable]
     public class AdamDictionary
     {
-        List<KeyValue> keyValues = new List<KeyValue>();
+        List<KeyValue> _keyValues = new List<KeyValue>();
         public AdamDictionary()
         {
 
@@ -164,7 +165,7 @@ namespace Adam.GameData
         public void Add(int key, object keyword)
         {
             KeyValue newKey = new KeyValue(key, keyword);
-            keyValues.Add(newKey);
+            _keyValues.Add(newKey);
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace Adam.GameData
         /// <returns></returns>
         public object TryGetValue(int key)
         {
-            foreach (KeyValue kv in keyValues)
+            foreach (KeyValue kv in _keyValues)
             {
                 if (kv.Key == key)
                 {
@@ -191,11 +192,11 @@ namespace Adam.GameData
         /// <param name="key"></param>
         public void Remove(int key)
         {
-            foreach (KeyValue kv in keyValues)
+            foreach (KeyValue kv in _keyValues)
             {
                 if (kv.Key == key)
                 {
-                    keyValues.Remove(kv);
+                    _keyValues.Remove(kv);
                     return;
                 }
             }

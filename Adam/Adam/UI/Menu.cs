@@ -18,88 +18,88 @@ namespace Adam
 {
     public class Menu
     {
-        Vector2 first;
-        Vector2 second;
-        Vector2 third;
-        Vector2 fourth;
-        Vector2 fifth;
+        Vector2 _first;
+        Vector2 _second;
+        Vector2 _third;
+        Vector2 _fourth;
+        Vector2 _fifth;
 
         //Main Menu
-        Button chooseLevel;
-        Button options;
-        Button quit;
-        Button multiplayer;
-        Button storyMode;
+        Button _chooseLevel;
+        Button _options;
+        Button _quit;
+        Button _multiplayer;
+        Button _storyMode;
 
         //Level Selector
-        Button save1;
-        Button save2;
-        Button save3;
+        Button _save1;
+        Button _save2;
+        Button _save3;
 
         //Options
-        Button smoothPixels;
-        Button lighting;
-        Button fullscreen;
+        Button _smoothPixels;
+        Button _lighting;
+        Button _fullscreen;
 
         //Multiplayer
-        Button hostGame;
-        Button joinGame;
-        Button startMultiplayerGame;
+        Button _hostGame;
+        Button _joinGame;
+        Button _startMultiplayerGame;
 
-        Button backButton;
-        List<Button> buttons = new List<Button>();
+        Button _backButton;
+        List<Button> _buttons = new List<Button>();
 
-        Texture2D background, foreground, adam, apple;
-        Rectangle adamRect, sourceRect;
-        Rectangle appleRect, appleSource;
-        GameTime gameTime;
-        double frameTimer;
-        double appleTimer;
-        int switchFrame, currentFrame;
-        bool isSongPlaying;
-        SpriteFont font;
-        Main game1;
+        Texture2D _background, _foreground, _adam, _apple;
+        Rectangle _adamRect, _sourceRect;
+        Rectangle _appleRect, _appleSource;
+        GameTime _gameTime;
+        double _frameTimer;
+        double _appleTimer;
+        int _switchFrame, _currentFrame;
+        bool _isSongPlaying;
+        SpriteFont _font;
+        Main _game1;
 
-        LevelSelection levelSelection;
+        LevelSelection _levelSelection;
 
-        List<Particle> zzzList = new List<Particle>();
-        double zzzTimer;
+        List<Particle> _zzzList = new List<Particle>();
+        double _zzzTimer;
 
         public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession  }
         public static MenuState CurrentMenuState = MenuState.Main;
 
         public Menu(Main game1)
         {
-            this.game1 = game1;
+            this._game1 = game1;
 
             int width = (int)(530 / Main.WidthRatio);
             int height = (int)(200 / Main.HeightRatio);
             int diff = (int)(40 / Main.HeightRatio);
-            first = new Vector2(width, height + (diff * 0));
-            second = new Vector2(width, height + (diff * 1));
-            third = new Vector2(width, height + (diff * 2));
-            fourth = new Vector2(width, height + (diff * 3));
-            fifth = new Vector2(width, height + (diff * 4));
+            _first = new Vector2(width, height + (diff * 0));
+            _second = new Vector2(width, height + (diff * 1));
+            _third = new Vector2(width, height + (diff * 2));
+            _fourth = new Vector2(width, height + (diff * 3));
+            _fifth = new Vector2(width, height + (diff * 4));
 
-            chooseLevel = new Button(second, "Choose a Level");
-            chooseLevel.MouseClicked += chooseLevel_MouseClicked;
-            buttons.Add(chooseLevel);
+            _chooseLevel = new Button(_second, "Choose a Level");
+            _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
+            _buttons.Add(_chooseLevel);
 
-            quit = new Button(fifth, "Quit");
-            quit.MouseClicked += quit_MouseClicked;
-            buttons.Add(quit);
+            _quit = new Button(_fifth, "Quit");
+            _quit.MouseClicked += quit_MouseClicked;
+            _buttons.Add(_quit);
 
-            options = new Button(third, "Options");
-            options.MouseClicked += options_MouseClicked;
-            buttons.Add(options);
+            _options = new Button(_third, "Options");
+            _options.MouseClicked += options_MouseClicked;
+            _buttons.Add(_options);
 
-            multiplayer = new Button(fourth, "Multiplayer");
-            multiplayer.MouseClicked += multiplayer_MouseClicked;
-            buttons.Add(multiplayer);
+            _multiplayer = new Button(_fourth, "Multiplayer");
+            _multiplayer.MouseClicked += multiplayer_MouseClicked;
+            _buttons.Add(_multiplayer);
 
-            storyMode = new Button(first, "Story Mode");
-            storyMode.MouseClicked += storyMode_MouseClicked;
-            buttons.Add(storyMode);
+            _storyMode = new Button(_first, "Story Mode");
+            _storyMode.MouseClicked += storyMode_MouseClicked;
+            _buttons.Add(_storyMode);
 
             //smoothPixels = new Button(first, "Smooth Pixels: ");
             //smoothPixels.MouseClicked += smoothPixels_MouseClicked;
@@ -109,14 +109,14 @@ namespace Adam
             //lighting.MouseClicked += lighting_MouseClicked;
             //buttons.Add(lighting);
 
-            fullscreen = new Button(first, "Borderless Mode: ");
-            fullscreen.MouseClicked += fullscreen_MouseClicked;
-            fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
-            buttons.Add(fullscreen);
+            _fullscreen = new Button(_first, "Borderless Mode: ");
+            _fullscreen.MouseClicked += fullscreen_MouseClicked;
+            _fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
+            _buttons.Add(_fullscreen);
 
-            backButton = new Button(fifth, "Back");
-            backButton.MouseClicked += backButton_MouseClicked;
-            buttons.Add(backButton);
+            _backButton = new Button(_fifth, "Back");
+            _backButton.MouseClicked += backButton_MouseClicked;
+            _buttons.Add(_backButton);
 
             //save1 = new Button(first, "Save 1");
             //save1.MouseClicked += level1_MouseClicked;
@@ -130,19 +130,19 @@ namespace Adam
             //save3.MouseClicked += level3_MouseClicked;
             //buttons.Add(save3);
 
-            hostGame = new Button(first, "Host Game");
-            hostGame.MouseClicked += hostGame_MouseClicked;
-            buttons.Add(hostGame);
+            _hostGame = new Button(_first, "Host Game");
+            _hostGame.MouseClicked += hostGame_MouseClicked;
+            _buttons.Add(_hostGame);
 
-            joinGame = new Button(second, "Join Game");
-            joinGame.MouseClicked += joinGame_MouseClicked;
-            buttons.Add(joinGame);
+            _joinGame = new Button(_second, "Join Game");
+            _joinGame.MouseClicked += joinGame_MouseClicked;
+            _buttons.Add(_joinGame);
 
-            startMultiplayerGame = new Button(third, "Start Game");
-            startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
-            buttons.Add(startMultiplayerGame);
+            _startMultiplayerGame = new Button(_third, "Start Game");
+            _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
+            _buttons.Add(_startMultiplayerGame);
 
-            levelSelection = new LevelSelection();
+            _levelSelection = new LevelSelection();
         }
 
         private void StartMultiplayerGame_MouseClicked()
@@ -217,19 +217,19 @@ namespace Adam
         void fullscreen_MouseClicked()
         {
 
-            switch (fullscreen.IsActive)
+            switch (_fullscreen.IsActive)
             {
                 case true:
-                    fullscreen.IsActive = false;
-                    game1.GameData.Settings.IsFullscreen = false;
-                    game1.GameData.Settings.NeedsRestart = true;
-                    game1.GameData.Settings.HasChanged = true;
+                    _fullscreen.IsActive = false;
+                    _game1.GameData.Settings.IsFullscreen = false;
+                    _game1.GameData.Settings.NeedsRestart = true;
+                    _game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
-                    fullscreen.IsActive = true;
-                    game1.GameData.Settings.IsFullscreen = true;
-                    game1.GameData.Settings.NeedsRestart = true;
-                    game1.GameData.Settings.HasChanged = true;
+                    _fullscreen.IsActive = true;
+                    _game1.GameData.Settings.IsFullscreen = true;
+                    _game1.GameData.Settings.NeedsRestart = true;
+                    _game1.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -238,19 +238,19 @@ namespace Adam
 
         void lighting_MouseClicked()
         {
-            switch (lighting.IsActive)
+            switch (_lighting.IsActive)
             {
                 case true:
-                    lighting.IsActive = false;
-                    game1.GameData.Settings.DesiredLight = false;
-                    game1.GameData.Settings.NeedsRestart = true;
-                    game1.GameData.Settings.HasChanged = true;
+                    _lighting.IsActive = false;
+                    _game1.GameData.Settings.DesiredLight = false;
+                    _game1.GameData.Settings.NeedsRestart = true;
+                    _game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
-                    lighting.IsActive = true;
-                    game1.GameData.Settings.DesiredLight = true;
-                    game1.GameData.Settings.NeedsRestart = true;
-                    game1.GameData.Settings.HasChanged = true;
+                    _lighting.IsActive = true;
+                    _game1.GameData.Settings.DesiredLight = true;
+                    _game1.GameData.Settings.NeedsRestart = true;
+                    _game1.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -270,12 +270,12 @@ namespace Adam
         void quit_MouseClicked()
         {
             // game1.GameData.SaveGame();
-            game1.Exit();
+            _game1.Exit();
         }
 
         void chooseLevel_MouseClicked()
         {
-            levelSelection.LoadLevels();
+            _levelSelection.LoadLevels();
             CurrentMenuState = MenuState.LevelSelector;
 
             //game1.CurrentGameMode = GameMode.Play;
@@ -287,82 +287,82 @@ namespace Adam
             CurrentMenuState = MenuState.Options;
         }
 
-        public void Load(ContentManager Content)
+        public void Load(ContentManager content)
         {
-            background = ContentHelper.LoadTexture("Menu/menu_back");
-            adam = ContentHelper.LoadTexture("Menu/menu_adam");
-            foreground = ContentHelper.LoadTexture("Menu/menu_front");
-            apple = ContentHelper.LoadTexture("Menu/menu_apple");
-            font = Content.Load<SpriteFont>("Fonts/x32");
+            _background = ContentHelper.LoadTexture("Menu/menu_back");
+            _adam = ContentHelper.LoadTexture("Menu/menu_adam");
+            _foreground = ContentHelper.LoadTexture("Menu/menu_front");
+            _apple = ContentHelper.LoadTexture("Menu/menu_apple");
+            _font = content.Load<SpriteFont>("Fonts/x32");
 
 
 
             double scaleWidth = 8 / Main.WidthRatio;
             double scaleHeight = 8 / Main.HeightRatio;
 
-            appleRect = new Rectangle((int)(5 * scaleWidth), (int)(36 * scaleHeight), (int)(16 * scaleWidth), (int)(16 * scaleHeight));
-            appleSource = new Rectangle(0, 0, 16, 16);
-            adamRect = new Rectangle((int)(20 * scaleWidth), (int)(16 * scaleHeight), (int)(adam.Width*.25* scaleWidth), (int)(adam.Height * scaleHeight));
-            sourceRect = new Rectangle(0, 0, 24, 36);
+            _appleRect = new Rectangle((int)(5 * scaleWidth), (int)(36 * scaleHeight), (int)(16 * scaleWidth), (int)(16 * scaleHeight));
+            _appleSource = new Rectangle(0, 0, 16, 16);
+            _adamRect = new Rectangle((int)(20 * scaleWidth), (int)(16 * scaleHeight), (int)(_adam.Width*.25* scaleWidth), (int)(_adam.Height * scaleHeight));
+            _sourceRect = new Rectangle(0, 0, 24, 36);
 
         }
 
         public void Update(Main game1, GameTime gameTime, Settings settings)
         {
-            zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (zzzTimer > 1)
+            _zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (_zzzTimer > 1)
             {
-                zzzList.Add(new Particle(adamRect));
-                zzzTimer = 0;
+                _zzzList.Add(new Particle(_adamRect));
+                _zzzTimer = 0;
             }
 
-            foreach (var z in zzzList)
+            foreach (var z in _zzzList)
             {
                 z.Update(gameTime);
             }
-            foreach (var z in zzzList)
+            foreach (var z in _zzzList)
             {
                 if (z.ToDelete)
                 {
-                    zzzList.Remove(z);
+                    _zzzList.Remove(z);
                     break;
                 }
             }
 
 
-            this.gameTime = gameTime;
+            this._gameTime = gameTime;
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
-                    chooseLevel.Update();
-                    quit.Update();
-                    options.Update();
-                    multiplayer.Update();
-                    storyMode.Update();
+                    _chooseLevel.Update();
+                    _quit.Update();
+                    _options.Update();
+                    _multiplayer.Update();
+                    _storyMode.Update();
                     break;
                 case MenuState.LevelSelector:
-                    levelSelection.Update();
+                    _levelSelection.Update();
                     break;
                 case MenuState.Options:
                     //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
                     //lighting.Text = "Lighting: " + lighting.IsActive;
-                    fullscreen.Text = "Borderless Mode: " + !fullscreen.IsActive;
+                    _fullscreen.Text = "Borderless Mode: " + !_fullscreen.IsActive;
 
                     //smoothPixels.Update();
                     //lighting.Update();
-                    fullscreen.Update();
+                    _fullscreen.Update();
 
-                    backButton.Update();
+                    _backButton.Update();
                     break;
 
                 case MenuState.HostJoin:
-                    hostGame.Update();
-                    joinGame.Update();
+                    _hostGame.Update();
+                    _joinGame.Update();
 
-                    backButton.Update();
+                    _backButton.Update();
                     break;
                 case MenuState.MultiplayerSession:
-                    startMultiplayerGame.Update();
+                    _startMultiplayerGame.Update();
                     break;
             }
 
@@ -373,80 +373,80 @@ namespace Adam
 
         }
 
-        int appleFrame;
+        int _appleFrame;
         public void AnimateSprites()
         {
-            switchFrame = 600;
-            frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            appleTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            _switchFrame = 600;
+            _frameTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
+            _appleTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (frameTimer > switchFrame)
+            if (_frameTimer > _switchFrame)
             {
-                frameTimer = 0;
-                sourceRect.X += sourceRect.Width;
-                currentFrame++;
+                _frameTimer = 0;
+                _sourceRect.X += _sourceRect.Width;
+                _currentFrame++;
             }
 
-            if (currentFrame > 3)
+            if (_currentFrame > 3)
             {
-                sourceRect.X = 0;
-                currentFrame = 0;
+                _sourceRect.X = 0;
+                _currentFrame = 0;
             }
 
-            if (appleTimer > 150)
+            if (_appleTimer > 150)
             {
-                appleSource.X += appleSource.Width;
-                appleTimer = 0;
-                appleFrame++;
+                _appleSource.X += _appleSource.Width;
+                _appleTimer = 0;
+                _appleFrame++;
             }
 
-            if (appleFrame > 3)
+            if (_appleFrame > 3)
             {
-                appleSource.X = 0;
-                appleFrame = 0;
+                _appleSource.X = 0;
+                _appleFrame = 0;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
-            spriteBatch.Draw(foreground, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
-            spriteBatch.Draw(adam, adamRect, sourceRect, Color.White);
-            spriteBatch.Draw(apple, appleRect, appleSource, Color.White);
+            spriteBatch.Draw(_background, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
+            spriteBatch.Draw(_foreground, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
+            spriteBatch.Draw(_adam, _adamRect, _sourceRect, Color.White);
+            spriteBatch.Draw(_apple, _appleRect, _appleSource, Color.White);
 
-            spriteBatch.DrawString(font, Main.Producers, new Vector2(5, (float)(5 / Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, Main.Version, new Vector2(5, (float)(30/Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font, Main.Producers, new Vector2(5, (float)(5 / Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
+            spriteBatch.DrawString(_font, Main.Version, new Vector2(5, (float)(30/Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
 
 
-            foreach (var z in zzzList)
+            foreach (var z in _zzzList)
                 z.Draw(spriteBatch);
 
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
-                    chooseLevel.Draw(spriteBatch);
-                    quit.Draw(spriteBatch);
-                    options.Draw(spriteBatch);
-                    multiplayer.Draw(spriteBatch);
-                    storyMode.Draw(spriteBatch);
+                    _chooseLevel.Draw(spriteBatch);
+                    _quit.Draw(spriteBatch);
+                    _options.Draw(spriteBatch);
+                    _multiplayer.Draw(spriteBatch);
+                    _storyMode.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
-                    levelSelection.Draw(spriteBatch);
+                    _levelSelection.Draw(spriteBatch);
                     break;
                 case MenuState.Options:
                     //smoothPixels.Draw(spriteBatch);
                     //lighting.Draw(spriteBatch);
-                    fullscreen.Draw(spriteBatch);
-                    backButton.Draw(spriteBatch);
+                    _fullscreen.Draw(spriteBatch);
+                    _backButton.Draw(spriteBatch);
                     break;
                 case MenuState.HostJoin:
-                    hostGame.Draw(spriteBatch);
-                    joinGame.Draw(spriteBatch);
-                    backButton.Draw(spriteBatch);
+                    _hostGame.Draw(spriteBatch);
+                    _joinGame.Draw(spriteBatch);
+                    _backButton.Draw(spriteBatch);
                     break;
                 case MenuState.MultiplayerSession:
-                    startMultiplayerGame.Draw(spriteBatch);
-                    backButton.Draw(spriteBatch);
+                    _startMultiplayerGame.Draw(spriteBatch);
+                    _backButton.Draw(spriteBatch);
                     break;
             }
 

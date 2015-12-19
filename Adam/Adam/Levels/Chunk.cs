@@ -11,8 +11,8 @@ namespace Adam.Levels
     public class Chunk
     {
         public const int DefaultSize = 32;
-        private int[] indexes = new int[DefaultSize * DefaultSize];
-        private int[] indexesAround;
+        private int[] _indexes = new int[DefaultSize * DefaultSize];
+        private int[] _indexesAround;
 
         /// <summary>
         /// 
@@ -25,12 +25,12 @@ namespace Adam.Levels
 
         public void SetData(int index, int tileIndex)
         {
-            indexes[index] = tileIndex;
+            _indexes[index] = tileIndex;
         }
 
         public int[] GetTileIndexes()
         {
-            return indexes;
+            return _indexes;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Adam.Levels
                     indexesSurroundingChunk.Add(i);
                 }
             }
-            indexesAround = indexesSurroundingChunk.ToArray();
+            _indexesAround = indexesSurroundingChunk.ToArray();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Adam.Levels
 
         public int[] GetSurroundIndexes()
         {
-            return indexesAround;
+            return _indexesAround;
         }
     }
 }

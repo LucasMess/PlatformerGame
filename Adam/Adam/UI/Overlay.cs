@@ -10,73 +10,74 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class Overlay
     {
-        private static Overlay instance;
-        public static Overlay Instance { get { return instance; } }
+        private static Overlay _instance;
+        public static Overlay Instance { get { return _instance; } }
 
         public static SpriteFont Font;
 
-        Heart heart;
-        Coin coin;
-        Image blackCorners = new Image();
-        Image blackScreen = new Image();
+        Heart _heart;
+        Coin _coin;
+        Image _blackCorners = new Image();
+        Image _blackScreen = new Image();
 
-        bool fadeIn;
-        bool fadeOut;
-        float blackOpacity;
-        double fadingTimer;
+        bool _fadeIn;
+        bool _fadeOut;
+        float _blackOpacity;
+        double _fadingTimer;
 
         public Overlay()
         {
-            instance = this;
+            _instance = this;
             Font = ContentHelper.LoadFont("Fonts/x64");
 
-            heart = new Heart(new Vector2(40,40));
-            coin = new Coin(new Vector2(40, 120));
+            _heart = new Heart(new Vector2(40,40));
+            _coin = new Coin(new Vector2(40, 120));
 
             //Black corners of the screen
-            blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
-            blackCorners.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
+            _blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
+            _blackCorners.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
 
-            blackScreen.Texture = ContentHelper.LoadTexture("Tiles/black");
-            blackScreen.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
+            _blackScreen.Texture = ContentHelper.LoadTexture("Tiles/black");
+            _blackScreen.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
         }
 
         public void Update(GameTime gameTime, Player player, GameWorld map)
         {
-            heart.Update(gameTime, player, map);
-            coin.Update(player, gameTime);
+            _heart.Update(gameTime, player, map);
+            _coin.Update(player, gameTime);
 
-            if (fadeIn)
+            if (_fadeIn)
             {
-                blackOpacity -= .03f;
-                if (blackOpacity <= 0)
-                    fadeIn = false;
+                _blackOpacity -= .03f;
+                if (_blackOpacity <= 0)
+                    _fadeIn = false;
             }
-            if (fadeOut)
+            if (_fadeOut)
             {
-                blackOpacity += .03f;
-                if (blackOpacity >= 1)
-                    fadeOut = false;
+                _blackOpacity += .03f;
+                if (_blackOpacity >= 1)
+                    _fadeOut = false;
             }
         }
 
         public void FadeIn()
         {
-            fadeIn = true;
-            fadeOut = false;
-            blackOpacity = 2;
+            _fadeIn = true;
+            _fadeOut = false;
+            _blackOpacity = 2;
         }
 
         public void FadeOut()
         {
-            blackOpacity = 0;
-            fadeOut = true;
-            fadeIn = false;
+            _blackOpacity = 0;
+            _fadeOut = true;
+            _fadeIn = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -84,14 +85,14 @@ namespace Adam
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                 goto Fade;
 
-            spriteBatch.Draw(blackCorners.Texture, blackCorners.Rectangle, Color.White * .6f);
+            spriteBatch.Draw(_blackCorners.Texture, _blackCorners.Rectangle, Color.White * .6f);
 
-            heart.Draw(spriteBatch);
-            coin.Draw(spriteBatch);
+            _heart.Draw(spriteBatch);
+            _coin.Draw(spriteBatch);
 
         Fade:
-            if (fadeIn || fadeOut)
-            spriteBatch.Draw(blackScreen.Texture, blackScreen.Rectangle, Color.White * blackOpacity);
+            if (_fadeIn || _fadeOut)
+            spriteBatch.Draw(_blackScreen.Texture, _blackScreen.Rectangle, Color.White * _blackOpacity);
         }
     }
 

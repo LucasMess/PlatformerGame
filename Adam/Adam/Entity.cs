@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
@@ -46,8 +47,8 @@ namespace Adam
         public event Entityhandler CollidedWithEntityToRight;
         public event Entityhandler CollidedWithEntityToLeft;
 
-        protected Vector2 origin;
-        protected Vector2 velocity;
+        protected Vector2 Origin;
+        protected Vector2 Velocity;
 
         private Texture2D _texture;
         private Color _color = Color.White;
@@ -138,7 +139,7 @@ namespace Adam
         /// <summary>
         /// The rectangle where position and collisions are done in.
         /// </summary>
-        protected Rectangle collRectangle;
+        protected Rectangle CollRectangle;
 
         /// <summary>
         /// Returns the Collision Rectangle of the entity.
@@ -146,7 +147,7 @@ namespace Adam
         /// <returns></returns>
         public Rectangle GetCollRectangle()
         {
-            return collRectangle;
+            return CollRectangle;
         }
 
         /// <summary>
@@ -179,7 +180,7 @@ namespace Adam
         /// <summary>
         /// The rectangle that specifies the part of the texture to draw.
         /// </summary>
-        protected Rectangle sourceRectangle;
+        protected Rectangle SourceRectangle;
 
         /// <summary>
         /// The light that the entity gives off. Default is none.
@@ -292,7 +293,7 @@ namespace Adam
 
                 // y = (499/45) * (x / (x + 1)
                 float friction = FrictionConstant * ((float)Weight/((float)Weight +1));
-                velocity *= friction;
+                Velocity *= friction;
             }
 
             //Animate entity if applicable.
@@ -307,7 +308,7 @@ namespace Adam
             }
 
             // Update complex animations if this entity has it.
-            complexAnim?.Update(this);
+            ComplexAnim?.Update(this);
 
         }
 
@@ -317,15 +318,15 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            hitRecentlyTimer.Increment();
+            _hitRecentlyTimer.Increment();
 
             // Debugging tools
             //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
 
             // Complex animations.
-            if (complexAnim != null)
+            if (ComplexAnim != null)
             {
-                complexAnim.Draw(spriteBatch, IsFacingRight, Color);
+                ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
                 return;
             }
 
@@ -340,19 +341,19 @@ namespace Adam
                 //Flip sprite if facing other way.
                 if (IsFacingRight)
                 {
-                    ian.Animation.isFlipped = true;
+                    ian.Animation.IsFlipped = true;
                 }
-                else ian.Animation.isFlipped = false;
+                else ian.Animation.IsFlipped = false;
 
                 ian.Animation.Draw(spriteBatch);
             }
 
             // Drawing for simple entities that have a texture contained in a spritesheet.
-            else if (sourceRectangle != null)
+            else if (SourceRectangle != null)
             {
                 if (!IsFacingRight)
-                    spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-                else spriteBatch.Draw(Texture, DrawRectangle, sourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                else spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             }
 
             // Most basic drawing when there is only one frame and it is not in a spritesheet.
@@ -368,28 +369,28 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void DrawFromCenter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, origin, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, Origin, SpriteEffects.None, 0);
         }
 
         public Vector2 GetVelocity()
         {
-            return velocity;
+            return Velocity;
         }
 
         public void SetVelX(float x)
         {
-            velocity.X = x;
+            Velocity.X = x;
         }
 
         public void SetVelY(float y)
         {
-            velocity.Y = y;
+            Velocity.Y = y;
         }
 
         public void ChangePosBy(int x, int y)
         {
-            collRectangle.X += x;
-            collRectangle.Y += y;
+            CollRectangle.X += x;
+            CollRectangle.Y += y;
         }
 
         public virtual void Kill()
@@ -407,9 +408,9 @@ namespace Adam
 
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant <= map.tileArray.Length - 1 && map.tileArray[quadrant].isSolid == true)
+                if (quadrant >= 0 && quadrant <= map.TileArray.Length - 1 && map.TileArray[quadrant].IsSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[quadrant].drawRectangle))
+                    if (CollRectangle.Intersects(map.TileArray[quadrant].DrawRectangle))
                         return true;
                 }
             }
@@ -423,7 +424,7 @@ namespace Adam
         /// <returns></returns>
         public bool IsTouchingEntity(Entity entity)
         {
-            return entity.collRectangle.Intersects(this.collRectangle);
+            return entity.CollRectangle.Intersects(this.CollRectangle);
         }
 
         /// <summary>
@@ -434,7 +435,7 @@ namespace Adam
         public int GetTileIndex()
         {
             if (GameWorld.Instance != null)
-                return (int)(collRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)(collRectangle.Center.X / Main.Tilesize);
+                return (int)(CollRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)(CollRectangle.Center.X / Main.Tilesize);
             else return 0;
         }
 
@@ -446,7 +447,7 @@ namespace Adam
         public int GetTileIndex(Vector2 coord)
         {
             if (GameWorld.Instance != null)
-                return (int)((int)coord.Y / Main.Tilesize * GameWorld.Instance.worldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
+                return (int)((int)coord.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
             else throw new Exception("Map is null");
         }
 
@@ -457,10 +458,10 @@ namespace Adam
         /// <returns></returns>
         public int[] GetNearbyTileIndexes(GameWorld map)
         {
-            int width = map.worldData.LevelWidth;
-            int startingIndex = GetTileIndex(new Vector2(collRectangle.Center.X, collRectangle.Y)) - width - 1;
-            int heightInTiles = (int)(Math.Ceiling((double)collRectangle.Height / Main.Tilesize) + 2);
-            int widthInTiles = (int)(Math.Ceiling((double)collRectangle.Width / Main.Tilesize) + 2);
+            int width = map.WorldData.LevelWidth;
+            int startingIndex = GetTileIndex(new Vector2(CollRectangle.Center.X, CollRectangle.Y)) - width - 1;
+            int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / Main.Tilesize) + 2);
+            int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / Main.Tilesize) + 2);
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)
@@ -482,31 +483,31 @@ namespace Adam
             int[] q = GetNearbyTileIndexes(GameWorld.Instance);
 
             //Solve Y collisions
-            collRectangle.Y += (int)velocity.Y;
+            CollRectangle.Y += (int)Velocity.Y;
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
                 {
-                    Tile tile = GameWorld.Instance.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length && tile.isSolid == true)
+                    Tile tile = GameWorld.Instance.TileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length && tile.IsSolid == true)
                     {
-                        Rectangle tileRect = tile.drawRectangle;
-                        if (collRectangle.Intersects(tileRect))
+                        Rectangle tileRect = tile.DrawRectangle;
+                        if (CollRectangle.Intersects(tileRect))
                         {
-                            if (velocity.Y > 0)
+                            if (Velocity.Y > 0)
                             {
-                                while (collRectangle.Intersects(tileRect))
+                                while (CollRectangle.Intersects(tileRect))
                                 {
-                                    collRectangle.Y--;
+                                    CollRectangle.Y--;
                                 }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
-                            else if (velocity.Y < 0)
+                            else if (Velocity.Y < 0)
                             {
-                                while (collRectangle.Intersects(tileRect))
+                                while (CollRectangle.Intersects(tileRect))
                                 {
-                                    collRectangle.Y++;
+                                    CollRectangle.Y++;
                                 }
                                 CollidedWithTileAbove(this, tile);
                                 CollidedWithTerrain(this, tile);
@@ -517,31 +518,31 @@ namespace Adam
             }
 
             //Solve X Collisions
-            collRectangle.X += (int)velocity.X;
+            CollRectangle.X += (int)Velocity.X;
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
                 {
-                    Tile tile = GameWorld.Instance.tileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.Instance.tileArray.Length && tile.isSolid == true)
+                    Tile tile = GameWorld.Instance.TileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length && tile.IsSolid == true)
                     {
-                        Rectangle tileRect = tile.drawRectangle;
-                        if (collRectangle.Intersects(tile.drawRectangle))
+                        Rectangle tileRect = tile.DrawRectangle;
+                        if (CollRectangle.Intersects(tile.DrawRectangle))
                         {
-                            if (velocity.X > 0)
+                            if (Velocity.X > 0)
                             {
-                                while (collRectangle.Intersects(tileRect))
+                                while (CollRectangle.Intersects(tileRect))
                                 {
-                                    collRectangle.X--;
+                                    CollRectangle.X--;
                                 }
                                 CollidedWithTileToRight(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
-                            else if (velocity.X < 0)
+                            else if (Velocity.X < 0)
                             {
-                                while (collRectangle.Intersects(tileRect))
+                                while (CollRectangle.Intersects(tileRect))
                                 {
-                                    collRectangle.X++;
+                                    CollRectangle.X++;
                                 }
                                 CollidedWithTileToLeft(this, tile);
                                 CollidedWithTerrain(this, tile);
@@ -564,11 +565,11 @@ namespace Adam
 
             foreach (int index in q)
             {
-                if (index >= 0 && index <= map.tileArray.Length - 1 && map.tileArray[index].isSolid == true)
+                if (index >= 0 && index <= map.TileArray.Length - 1 && map.TileArray[index].IsSolid == true)
                 {
-                    if (collRectangle.Intersects(map.tileArray[index].drawRectangle))
+                    if (CollRectangle.Intersects(map.TileArray[index].DrawRectangle))
                     {
-                        CollidedWithTerrain(this, map.tileArray[index]);
+                        CollidedWithTerrain(this, map.TileArray[index]);
                         break;
                     }
                 }
@@ -581,7 +582,7 @@ namespace Adam
         /// <param name="name"></param>
         public void AddAnimationToQueue(string name)
         {
-            complexAnim.AddToQueue(name);
+            ComplexAnim.AddToQueue(name);
         }
 
         /// <summary>
@@ -590,7 +591,7 @@ namespace Adam
         /// <param name="name"></param>
         public void RemoveAnimationFromQueue(string name)
         {
-            complexAnim.RemoveFromQueue(name);
+            ComplexAnim.RemoveFromQueue(name);
         }
 
         /// <summary>
@@ -601,8 +602,8 @@ namespace Adam
         public float GetSoundVolume(Entity listener, float maxVolume)
         {
             listener = listener.Get();
-            float xDist = listener.collRectangle.Center.X - collRectangle.Center.X;
-            float yDist = listener.collRectangle.Center.Y - collRectangle.Center.Y;
+            float xDist = listener.CollRectangle.Center.X - CollRectangle.Center.X;
+            float yDist = listener.CollRectangle.Center.Y - CollRectangle.Center.Y;
             float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
 
             if (distanceTo < 64)
@@ -619,10 +620,10 @@ namespace Adam
             if (GameWorld.Instance == null) return;
             foreach (int i in GetNearbyTileIndexes(GameWorld.Instance))
             {
-                if (i < GameWorld.Instance.tileArray.Length && i >= 0)
+                if (i < GameWorld.Instance.TileArray.Length && i >= 0)
                 {
-                    Tile t = GameWorld.Instance.tileArray[i];
-                    spriteBatch.Draw(Main.DefaultTexture, t.drawRectangle, t.sourceRectangle, Color.Red);
+                    Tile t = GameWorld.Instance.TileArray[i];
+                    spriteBatch.Draw(Main.DefaultTexture, t.DrawRectangle, t.SourceRectangle, Color.Red);
                 }
             }
         }
@@ -632,59 +633,59 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            velocity.Y += GravityStrength;
+            Velocity.Y += GravityStrength;
         }
 
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {
-            collRectangle.Y = tile.drawRectangle.Y + tile.drawRectangle.Height;
+            CollRectangle.Y = tile.DrawRectangle.Y + tile.DrawRectangle.Height;
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
-                    velocity.Y = 0;
+                    Velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.Y = -velocity.Y;
+                    Velocity.Y = -Velocity.Y;
                     break;
             }
         }
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
-            collRectangle.Y = tile.drawRectangle.Y - collRectangle.Height;
+            CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
-                    velocity.Y = 0;
+                    Velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.Y = -velocity.Y;
+                    Velocity.Y = -Velocity.Y;
                     break;
             }
         }
         private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
-            collRectangle.X = tile.drawRectangle.X - collRectangle.Width;
+            CollRectangle.X = tile.DrawRectangle.X - CollRectangle.Width;
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
-                    velocity.X = 0;
+                    Velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.X = -velocity.X;
+                    Velocity.X = -Velocity.X;
                     break;
             }
 
         }
         private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
-            collRectangle.X = tile.drawRectangle.X + tile.drawRectangle.Width;
+            CollRectangle.X = tile.DrawRectangle.X + tile.DrawRectangle.Width;
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
-                    velocity.X = 0;
+                    Velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    velocity.X = -velocity.X;
+                    Velocity.X = -Velocity.X;
                     break;
             }
 
@@ -714,9 +715,9 @@ namespace Adam
 
         public void UpdateFromPacket(Vector2 position, Vector2 velocity)
         {
-            collRectangle.X = (int)position.X;
-            collRectangle.Y = (int)position.Y;
-            this.velocity = velocity;
+            CollRectangle.X = (int)position.X;
+            CollRectangle.Y = (int)position.Y;
+            this.Velocity = velocity;
         }
 
         /// <summary>
@@ -725,7 +726,7 @@ namespace Adam
         /// <returns></returns>
         protected bool HasTakenDamageRecently()
         {
-            return (hitRecentlyTimer.TimeElapsedInSeconds < .2);
+            return (_hitRecentlyTimer.TimeElapsedInSeconds < .2);
         }
 
         /// <summary>
@@ -741,24 +742,24 @@ namespace Adam
 
             IsTakingDamage = true;
             Health -= damage;
-            hitRecentlyTimer.ResetAndWaitFor(500);
-            hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
+            _hitRecentlyTimer.ResetAndWaitFor(500);
+            _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
 
             //Creates damage particles.
             for (int i = 0; i < damage; i++)
             {
                 Particle par = new Particle();
                 par.CreateTookDamage(this);
-                GameWorld.Instance.particles.Add(par);
+                GameWorld.Instance.Particles.Add(par);
             }
 
             if (damageDealer == null)
                 return;
 
-            velocity.Y = -5f;
-            velocity.X = damage / Weight;
+            Velocity.Y = -5f;
+            Velocity.X = damage / Weight;
             if (!damageDealer.IsFacingRight)
-                velocity.X *= -1;
+                Velocity.X *= -1;
 
         }
 

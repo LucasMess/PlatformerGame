@@ -10,18 +10,19 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using Adam.Levels;
 
 namespace Adam.Network
 {
     public class Session
     {
-        Server server;
-        Connection connection;
-        IPEndPoint serverIP;
+        Server _server;
+        Connection _connection;
+        IPEndPoint _serverIp;
 
-        GameWorld gameWorld;
+        GameWorld _gameWorld;
 
-        string playerName;
+        string _playerName;
 
         /// <summary>
         /// Returns true if the current client is host.
@@ -64,13 +65,13 @@ namespace Adam.Network
         {
             IsActive = true;
             Console.WriteLine("New session started. Is host? {0}, Player Name: {1}", isHost, playerName);
-            this.playerName = playerName;
+            this._playerName = playerName;
             IsHost = isHost;
 
             if (isHost)
             {
                 //Server automatically starts listening for players.
-                server = new Server();
+                _server = new Server();
 
                 //Automatically connects to own server.
                 //ConnectTo("192.168.1.1", 42555);
@@ -85,14 +86,14 @@ namespace Adam.Network
         public void ConnectTo(string address, int port)
         {
             //Connection automatically sets up a connection with server.
-            connection = new Connection(address, port, playerName);
+            _connection = new Connection(address, port, _playerName);
         }
 
         public void Start()
         {
             if (IsHost)
             {
-                server.IsWaitingForPlayers = false;
+                _server.IsWaitingForPlayers = false;
                 SendLevel();
             }
             new Thread(new ThreadStart(Update)).Start();
@@ -107,13 +108,13 @@ namespace Adam.Network
                 Console.WriteLine("Updating...");
                 if (IsHost)
                 {
-                    server.SendEntityPacket(GameWorld.Instance);
+                    _server.SendEntityPacket(GameWorld.Instance);
                     Console.WriteLine("Entity packet sent.");
                     //PlayerPacket = connection.ReceivePlayerPacket();
                 }
                 else
                 {
-                    EntityPacket = connection.ReceiveEntityPacket();
+                    EntityPacket = _connection.ReceiveEntityPacket();
                     Console.WriteLine("Entity packet received.");
                 }
             }
@@ -121,13 +122,13 @@ namespace Adam.Network
 
         public void SendTestMessage()
         {
-            server.SendMessage("Hello World!");
+            _server.SendMessage("Hello World!");
         }
 
         public void SendLevel()
         {
             WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Enemies Test.lvl"));
-            server.SendLevelPacket(level);
+            _server.SendLevelPacket(level);
             level.LoadIntoPlay();
            // server.SendLevelPacket(new WorldConfigFile("Test",256, 256));
         }

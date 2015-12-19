@@ -15,15 +15,15 @@ namespace Adam.Characters.Enemies
         public Frog(int x, int y)
         {
             Weight = 10;
-            script = new FrogScript();
-            script.Initialize(this);
+            Script = new FrogScript();
+            Script.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/frog");
-            collRectangle = new Rectangle(x, y, 32, 32);            
-            sourceRectangle = new Rectangle(0, 0, 24, 32);
+            CollRectangle = new Rectangle(x, y, 32, 32);            
+            SourceRectangle = new Rectangle(0, 0, 24, 32);
 
-            complexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(4, 16, 24, 32), 0, 24, 32, 125, 4, true));
-            complexAnim.AddAnimationData("jump", new ComplexAnimData(100, Texture, new Rectangle(4, 16, 24, 32), 32, 24, 32, 125, 4, false));
+            ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(4, 16, 24, 32), 0, 24, 32, 125, 4, true));
+            ComplexAnim.AddAnimationData("jump", new ComplexAnimData(100, Texture, new Rectangle(4, 16, 24, 32), 32, 24, 32, 125, 4, false));
 
             Sounds.AddSoundRef("jump", "Sounds/Frog/frog_jump");
         }
@@ -35,7 +35,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -49,7 +49,7 @@ namespace Adam.Characters.Enemies
             base.Update();
         }
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -61,18 +61,18 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return EnemyDB.Frog_MaxHealth;
+                return EnemyDb.FrogMaxHealth;
             }
         }
 
-        SoundFx meanSound;
+        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
             {
-                if (meanSound == null)
-                    meanSound = new SoundFx("Sounds/Frog/frog_croak");
-                return meanSound;
+                if (_meanSound == null)
+                    _meanSound = new SoundFx("Sounds/Frog/frog_croak");
+                return _meanSound;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 32, 48, 64);
+                return new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 32, 48, 64);
             }
         }
     }

@@ -15,9 +15,9 @@ namespace Adam.Characters.Enemies
         public Duck(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Enemies/duck");
-            collRectangle = new Rectangle(x, y, 32, 32);
-            sourceRectangle = new Rectangle(0, 0, 16, 16);
-            velocity.X = 1;
+            CollRectangle = new Rectangle(x, y, 32, 32);
+            SourceRectangle = new Rectangle(0, 0, 16, 16);
+            Velocity.X = 1;
         }
 
         private Rectangle _respawnRect;
@@ -27,7 +27,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -36,7 +36,7 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            if (velocity.X > 0) IsFacingRight = true;
+            if (Velocity.X > 0) IsFacingRight = true;
             else IsFacingRight = false;
 
             base.Update();
@@ -48,7 +48,7 @@ namespace Adam.Characters.Enemies
 
         public bool IsFlying { get; set; }
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -60,7 +60,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return EnemyDB.Duck_MaxHealth;
+                return EnemyDb.DuckMaxHealth;
             }
         }
 
@@ -92,18 +92,18 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
-            velocity.X = -velocity.X;
+            Velocity.X = -Velocity.X;
         }
 
         public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
-            velocity.X = -velocity.X;  
+            Velocity.X = -Velocity.X;  
         }
     }
 }

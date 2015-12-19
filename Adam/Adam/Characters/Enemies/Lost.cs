@@ -10,17 +10,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class Lost : Enemy, IAnimated
     {
-        SoundFx ghost, ghost2;
-        double ghostTimer;
-        int timerEnd;
-        Vector2 maxVelocity;
+        SoundFx _ghost, _ghost2;
+        double _ghostTimer;
+        int _timerEnd;
+        Vector2 _maxVelocity;
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -35,7 +36,7 @@ namespace Adam
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -46,11 +47,11 @@ namespace Adam
         {
             get
             {
-                return EnemyDB.Lost_MaxHealth;
+                return EnemyDb.LostMaxHealth;
             }
         }
 
-        SoundFx meanSound;
+        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
@@ -75,28 +76,28 @@ namespace Adam
             }
         }
 
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new Adam.AnimationData[]
+                if (_animationData == null)
+                    _animationData = new Adam.AnimationData[]
                     {
                         new AnimationData(250,4,0,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -109,22 +110,22 @@ namespace Adam
         {
             get
             {
-                return new Rectangle(collRectangle.X - 8, collRectangle.Y - 12, 48, 80);
+                return new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 12, 48, 80);
             }
         }
 
         public Lost(int x, int y)
         {
-            maxVelocity = new Vector2(1, 1);
+            _maxVelocity = new Vector2(1, 1);
 
             Texture = ContentHelper.LoadTexture("Enemies/lost");
-            ghost = new SoundFx("Sounds/Lost/ghost");
-            ghost2 = new SoundFx("Sounds/Lost/ghost2");
+            _ghost = new SoundFx("Sounds/Lost/ghost");
+            _ghost2 = new SoundFx("Sounds/Lost/ghost2");
 
-            collRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
-            sourceRectangle = new Rectangle(0, 0, 24, 40);
+            CollRectangle = new Rectangle(x, y, 48 - 8, 80 - 12);
+            SourceRectangle = new Rectangle(0, 0, 24, 40);
 
-            timerEnd = GameWorld.RandGen.Next(3, 8);
+            _timerEnd = GameWorld.RandGen.Next(3, 8);
         }
 
         public override void Update()
@@ -132,34 +133,34 @@ namespace Adam
             Player player = GameWorld.Instance.GetPlayer();
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
-            collRectangle.X += (int)velocity.X;
-            collRectangle.Y += (int)velocity.Y;
+            CollRectangle.X += (int)Velocity.X;
+            CollRectangle.Y += (int)Velocity.Y;
 
             int buffer = 5;
-            if (collRectangle.Y < player.GetCollRectangle().Y - buffer)
+            if (CollRectangle.Y < player.GetCollRectangle().Y - buffer)
             {
-                velocity.Y = maxVelocity.Y;
+                Velocity.Y = _maxVelocity.Y;
             }
-            else if (collRectangle.Y > player.GetCollRectangle().Y + buffer)
+            else if (CollRectangle.Y > player.GetCollRectangle().Y + buffer)
             {
-                velocity.Y = -maxVelocity.Y;
+                Velocity.Y = -_maxVelocity.Y;
             }
             else
             {
-                velocity.Y = 0;
+                Velocity.Y = 0;
             }
 
-            if (collRectangle.X < player.GetCollRectangle().X - buffer)
+            if (CollRectangle.X < player.GetCollRectangle().X - buffer)
             {
-                velocity.X = maxVelocity.X;
+                Velocity.X = _maxVelocity.X;
             }
-            else if (collRectangle.X > player.GetCollRectangle().X + buffer)
+            else if (CollRectangle.X > player.GetCollRectangle().X + buffer)
             {
-                velocity.X = -maxVelocity.X;
+                Velocity.X = -_maxVelocity.X;
             }
             else
             {
-                velocity.X = 0;
+                Velocity.X = 0;
             }
 
             // Set the opacity back to normal before checking if is hiding;
@@ -169,27 +170,27 @@ namespace Adam
             if (IsPlayerToTheRight() && !player.IsFacingRight)
             {
                 CurrentAnimationState = AnimationState.Flying;
-                velocity = new Vector2(0, 0);
+                Velocity = new Vector2(0, 0);
                 Opacity = .5f;
             }
             if (!IsPlayerToTheRight() && player.IsFacingRight)
             {
                 CurrentAnimationState = AnimationState.Flying;
-                velocity = new Vector2(0, 0);
+                Velocity = new Vector2(0, 0);
                 Opacity = .5f;
             }
 
             IsFacingRight = IsPlayerToTheRight();
 
-            ghostTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (ghostTimer > timerEnd)
+            _ghostTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (_ghostTimer > _timerEnd)
             {
-                ghostTimer = 0;
+                _ghostTimer = 0;
                 if (GameWorld.RandGen.Next(0, 2) == 0)
                 {
-                    ghost.PlayIfStopped();
+                    _ghost.PlayIfStopped();
                 }
-                else ghost2.PlayIfStopped();
+                else _ghost2.PlayIfStopped();
             }
 
             base.Update();
@@ -198,7 +199,7 @@ namespace Adam
 
         void IAnimated.Animate()
         {           
-            animation.Update(GameWorld.Instance.gameTime, DrawRectangle, animationData[0]);
+            _animation.Update(GameWorld.Instance.GameTime, DrawRectangle, _animationData[0]);
         }
     }
 }

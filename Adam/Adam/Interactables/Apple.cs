@@ -1,44 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
+﻿using Adam.Levels;
 using Adam.Misc;
+using Microsoft.Xna.Framework;
 
 namespace Adam
 {
     public class Apple
     {
-        Rectangle collRectangle;
-        SoundFx levelFinishedSound;
-        bool wasPicked;
-        Timer changeLevelTimer = new Timer();
+        private readonly Timer _changeLevelTimer = new Timer();
+        private readonly Rectangle _collRectangle;
+        private readonly SoundFx _levelFinishedSound;
+        private bool _wasPicked;
 
         public Apple(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
-            levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
-            levelFinishedSound.MaxVolume = .2f;
+            _collRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            _levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
+            _levelFinishedSound.MaxVolume = .2f;
         }
 
         public void Update()
         {
-            Player player = GameWorld.Instance.player;
-            if (player.GetCollRectangle().Intersects(collRectangle))
+            var player = GameWorld.Instance.Player;
+            if (player.GetCollRectangle().Intersects(_collRectangle))
             {
-                levelFinishedSound.PlayOnce();
-                wasPicked = true;
+                _levelFinishedSound.PlayOnce();
+                _wasPicked = true;
             }
 
-            if (wasPicked)
+            if (_wasPicked)
             {
-                changeLevelTimer.Increment();
+                _changeLevelTimer.Increment();
             }
 
-            if (changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
+            if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
                 Main.Instance.ChangeState(GameState.MainMenu, GameMode.None);
             }

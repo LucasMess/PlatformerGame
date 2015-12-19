@@ -10,12 +10,12 @@ namespace Adam.Levels
     /// </summary>
     public class ChunkManager
     {
-        Chunk[] chunks;
-        Chunk activeChunk;
+        Chunk[] _chunks;
+        Chunk _activeChunk;
         private int _maxChunksX;
         private int _maxChunksY;
-        private int worldWidth;
-        private int worldHeight;
+        private int _worldWidth;
+        private int _worldHeight;
 
         public ChunkManager()
         {
@@ -30,18 +30,18 @@ namespace Adam.Levels
                 throw new ArgumentException("This level file version is no longer supported. It has dimensions that cannot be divided into chunks.");
             }
 
-            this.worldHeight = worldHeight;
-            this.worldWidth = worldWidth;
+            this._worldHeight = worldHeight;
+            this._worldWidth = worldWidth;
 
             // Calculates the amount of chunks that need to be created.
             _maxChunksX = worldWidth / Chunk.DefaultSize;
             _maxChunksY = worldHeight / Chunk.DefaultSize;
 
-            chunks = new Chunk[_maxChunksX * _maxChunksY];
+            _chunks = new Chunk[_maxChunksX * _maxChunksY];
 
-            for (int i = 0; i < chunks.Length; i++)
+            for (int i = 0; i < _chunks.Length; i++)
             {
-                chunks[i] = new Chunk(i);
+                _chunks[i] = new Chunk(i);
             }
 
             SplitTiles();
@@ -61,11 +61,11 @@ namespace Adam.Levels
                     {
                         for (int tileX = 0; tileX < Chunk.DefaultSize; tileX++)
                         {
-                            int currentTileInArray = (tileY * worldWidth) + (tileX) + (chunkX * Chunk.DefaultSize) + (Chunk.DefaultSize * chunkY * worldWidth);
+                            int currentTileInArray = (tileY * _worldWidth) + (tileX) + (chunkX * Chunk.DefaultSize) + (Chunk.DefaultSize * chunkY * _worldWidth);
                             int currentChunkInArray = chunkY * _maxChunksY + chunkX;
                             int currentTileInChunk = tileY * Chunk.DefaultSize + tileX;
 
-                            chunks[currentChunkInArray].SetData(currentTileInChunk, currentTileInArray);
+                            _chunks[currentChunkInArray].SetData(currentTileInChunk, currentTileInArray);
 
                         }
                     }
@@ -77,9 +77,9 @@ namespace Adam.Levels
 
         private void PreCalculateIndexes()
         {
-            foreach (Chunk c in chunks)
+            foreach (Chunk c in _chunks)
             {
-                c.StoreIndexesOfSurroundingChunks(chunks, _maxChunksX);
+                c.StoreIndexesOfSurroundingChunks(_chunks, _maxChunksX);
             }
         }
 
@@ -89,13 +89,13 @@ namespace Adam.Levels
         /// <returns>Visible indexes of tiles in chunks.</returns>
         public int[] GetVisibleIndexes()
         {
-            Camera camera = GameWorld.Instance.camera;
+            Camera camera = GameWorld.Instance.Camera;
             if (camera == null)
                 return new int[0];
 
-            activeChunk = GetChunk((int)camera.invertedCoords.X, (int)camera.invertedCoords.Y);
+            _activeChunk = GetChunk((int)camera.InvertedCoords.X, (int)camera.InvertedCoords.Y);
             // Chunk activeChunk = GetChunk(128 * Main.Tilesize, 128 * Main.Tilesize);
-            return activeChunk.GetSurroundIndexes();
+            return _activeChunk.GetSurroundIndexes();
         }
 
         /// <summary>
@@ -108,11 +108,11 @@ namespace Adam.Levels
         {
             int size = Chunk.DefaultSize * Main.Tilesize;
             int chunkIndex = (y / size) * _maxChunksX + (x / size);
-            if (chunkIndex >= 0 && chunkIndex < chunks.Length)
+            if (chunkIndex >= 0 && chunkIndex < _chunks.Length)
             {
-                return chunks[chunkIndex];
+                return _chunks[chunkIndex];
             }
-            else return chunks[0];
+            else return _chunks[0];
         }
 
         /// <summary>
@@ -121,15 +121,15 @@ namespace Adam.Levels
         /// <returns>Visible chunks.</returns>
         private Chunk[] GetVisibleChunks()
         {
-            if (GameWorld.Instance.player == null || chunks == null || GameWorld.Instance.camera == null) return new Chunk[0];
+            if (GameWorld.Instance.Player == null || _chunks == null || GameWorld.Instance.Camera == null) return new Chunk[0];
 
             // Gets the chunk the camera is in.
 
-            int cameraChunk = GetChunk((int)GameWorld.Instance.camera.lastCameraLeftCorner.X, (int)GameWorld.Instance.camera.lastCameraLeftCorner.Y).Index;
+            int cameraChunk = GetChunk((int)GameWorld.Instance.Camera.LastCameraLeftCorner.X, (int)GameWorld.Instance.Camera.LastCameraLeftCorner.Y).Index;
 
             // Defines how many chunks are visible in either direction.
-            int visibleChunksY = (int)(3 / GameWorld.Instance.camera.GetZoom());
-            int visibleChunksX = (int)(3 / GameWorld.Instance.camera.GetZoom());
+            int visibleChunksY = (int)(3 / GameWorld.Instance.Camera.GetZoom());
+            int visibleChunksX = (int)(3 / GameWorld.Instance.Camera.GetZoom());
 
             // Finds where the top left visible chunk is.
             int startingChunk = cameraChunk - (int)Math.Ceiling((double)(visibleChunksX / 2)) - 1;
@@ -141,8 +141,8 @@ namespace Adam.Levels
                 for (int w = 0; w < visibleChunksX; w++)
                 {
                     int i = startingChunk + (h * _maxChunksX) + w;
-                    if (i >= 0 && i < chunks.Length)
-                        visibleChunks.Add(chunks[i]);
+                    if (i >= 0 && i < _chunks.Length)
+                        visibleChunks.Add(_chunks[i]);
                 }
             }
             return visibleChunks.ToArray();
@@ -150,16 +150,16 @@ namespace Adam.Levels
 
         public int GetNumberOfChunks()
         {
-            if (chunks == null)
+            if (_chunks == null)
                 return 0;
-            else return chunks.Length;
+            else return _chunks.Length;
         }
 
         public int GetActiveChunkIndex()
         {
-            if (activeChunk == null)
+            if (_activeChunk == null)
                 return Int32.MaxValue;
-            else return activeChunk.Index;
+            else return _activeChunk.Index;
         }
     }
 }

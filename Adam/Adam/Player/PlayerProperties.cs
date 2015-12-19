@@ -5,15 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public partial class Player : Character
     {
-        Timer onFireTimer = new Timer();
-        Timer fireTickTimer = new Timer();
-        Timer fireSpawnTimer = new Timer();
-        Timer movementParticlesTimer = new Timer();
+        Timer _onFireTimer = new Timer();
+        Timer _fireTickTimer = new Timer();
+        Timer _fireSpawnTimer = new Timer();
+        Timer _movementParticlesTimer = new Timer();
 
         /// <summary>
         /// Returns true if player is on fire and is taking damage per second.
@@ -32,19 +33,19 @@ namespace Adam
         {
             get
             {
-                return (GameWorld.Instance.tileArray[GetTileIndex()].isClimbable);
+                return (GameWorld.Instance.TileArray[GetTileIndex()].IsClimbable);
             }
         }
 
         /// <summary>
         /// The amount of damage the player deals.
         /// </summary>
-        private int damageAmount { get; set; }
+        private int DamageAmount { get; set; }
 
         /// <summary>
         /// The area in which the player deals damage.
         /// </summary>
-        private Rectangle damageArea { get; set; } 
+        private Rectangle DamageArea { get; set; } 
 
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Adam.Misc;
 
@@ -9,56 +10,56 @@ namespace Adam.Obstacles
 {
     class FlameSpitter : Obstacle
     {
-        Timer firingTimer = new Timer();
-        Timer particleTimer = new Timer();
-        bool isFlaming;
-        Rectangle sourceRectangleOfParticle;
-        SoundFx flameSound;
+        Timer _firingTimer = new Timer();
+        Timer _particleTimer = new Timer();
+        bool _isFlaming;
+        Rectangle _sourceRectangleOfParticle;
+        SoundFx _flameSound;
 
         protected override Rectangle DrawRectangle
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public FlameSpitter(Tile sourceTile)
         {
-            flameSound = new SoundFx("Sounds/Flame Spitter/flame", this);
-            collRectangle = sourceTile.drawRectangle;
+            _flameSound = new SoundFx("Sounds/Flame Spitter/flame", this);
+            CollRectangle = sourceTile.DrawRectangle;
         }
 
         public override void Update()
         {
             CheckIfChangingState();
 
-            attackBox = new Rectangle(collRectangle.X, collRectangle.Y - (Main.Tilesize * 4), Main.Tilesize, Main.Tilesize * 4);
+            AttackBox = new Rectangle(CollRectangle.X, CollRectangle.Y - (Main.Tilesize * 4), Main.Tilesize, Main.Tilesize * 4);
 
-            if (isFlaming)
+            if (_isFlaming)
             {
-                particleTimer.Increment();
-                if (particleTimer.TimeElapsedInMilliSeconds > 100)
+                _particleTimer.Increment();
+                if (_particleTimer.TimeElapsedInMilliSeconds > 100)
                 {
                     FlameParticle par = new FlameParticle(this, Color.LightBlue);
                     FlameParticle par2 = new FlameParticle(this, Color.Red);
                     FlameParticle par3 = new FlameParticle(this, Color.Yellow);
-                    GameWorld.Instance.particles.Add(par);
-                    GameWorld.Instance.particles.Add(par2);
-                    GameWorld.Instance.particles.Add(par3);
-                    particleTimer.Reset();
-                    flameSound.PlayIfStopped();
+                    GameWorld.Instance.Particles.Add(par);
+                    GameWorld.Instance.Particles.Add(par2);
+                    GameWorld.Instance.Particles.Add(par3);
+                    _particleTimer.Reset();
+                    _flameSound.PlayIfStopped();
                 }
             }
             else
             {
-                flameSound.Stop();
+                _flameSound.Stop();
             }
 
-            Player player = GameWorld.Instance.player;
-            if (isFlaming && attackBox.Intersects(player.GetCollRectangle()))
+            Player player = GameWorld.Instance.Player;
+            if (_isFlaming && AttackBox.Intersects(player.GetCollRectangle()))
             {
-                player.TakeDamageAndKnockBack(EnemyDB.FlameSpitter_TouchDamage);
+                player.TakeDamageAndKnockBack(EnemyDb.FlameSpitterTouchDamage);
                 player.IsOnFire = true;
             }
 
@@ -71,22 +72,22 @@ namespace Adam.Obstacles
         /// </summary>
         private void CheckIfChangingState()
         {
-            firingTimer.Increment();
+            _firingTimer.Increment();
 
-            if (!isFlaming)
+            if (!_isFlaming)
             {
-                if (firingTimer.TimeElapsedInMilliSeconds > 3000)
+                if (_firingTimer.TimeElapsedInMilliSeconds > 3000)
                 {
-                    isFlaming = true;
-                    firingTimer.Reset();
+                    _isFlaming = true;
+                    _firingTimer.Reset();
                 }
             }
             else
             {
-                if (firingTimer.TimeElapsedInMilliSeconds > 3000)
+                if (_firingTimer.TimeElapsedInMilliSeconds > 3000)
                 {
-                    isFlaming = false;
-                    firingTimer.Reset();
+                    _isFlaming = false;
+                    _firingTimer.Reset();
                 }
             }
         }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
 
@@ -11,13 +12,13 @@ namespace Adam.Characters.Enemies
 {
     class Bat : Enemy, IAnimated
     {
-        bool isLookingForRefuge;
-        bool isSleeping;
+        bool _isLookingForRefuge;
+        bool _isSleeping;
 
-        Rectangle rangeRect;
-        Vector2 maxVelocity;
+        Rectangle _rangeRect;
+        Vector2 _maxVelocity;
 
-        public override byte ID
+        public override byte Id
         {
             get
             {
@@ -32,7 +33,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_respawnRect == new Rectangle(0, 0, 0, 0))
                 {
-                    _respawnRect = collRectangle;
+                    _respawnRect = CollRectangle;
                 }
                 return _respawnRect;
             }
@@ -42,11 +43,11 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return EnemyDB.Bat_MaxHealth;
+                return EnemyDb.BatMaxHealth;
             }
         }
 
-        SoundFx meanSound;
+        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
@@ -75,7 +76,7 @@ namespace Adam.Characters.Enemies
         {
             get
             {
-                return new Rectangle(collRectangle.X -16,collRectangle.Y,64,64);
+                return new Rectangle(CollRectangle.X -16,CollRectangle.Y,64,64);
             }
         }
 
@@ -86,7 +87,7 @@ namespace Adam.Characters.Enemies
             {
                 if (_animation == null)
                 {
-                    _animation = new Animation(Texture, DrawRectangle, sourceRectangle);
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
                 }
                 return _animation;
             }
@@ -116,9 +117,9 @@ namespace Adam.Characters.Enemies
 
         public Bat(int x, int y)
         {
-            collRectangle = new Rectangle(x, y, 32, 32);
-            sourceRectangle = new Rectangle(0, 0, 32, 32);
-            maxVelocity = new Vector2(2, 2);
+            CollRectangle = new Rectangle(x, y, 32, 32);
+            SourceRectangle = new Rectangle(0, 0, 32, 32);
+            _maxVelocity = new Vector2(2, 2);
             Texture = ContentHelper.LoadTexture("Enemies/bat");
 
             CollidedWithTileAbove += OnCollisionWithTerrainAbove;
@@ -126,13 +127,13 @@ namespace Adam.Characters.Enemies
 
         public void OnCollisionWithTerrainAbove(Entity entity, Tile tile)
         {
-            if (isLookingForRefuge)
+            if (_isLookingForRefuge)
             {
-                isSleeping = true;
+                _isSleeping = true;
             }
             else
             {
-                velocity.Y = 0;
+                Velocity.Y = 0;
             }
         }
 
@@ -140,57 +141,57 @@ namespace Adam.Characters.Enemies
         {
             Player player = GameWorld.Instance.GetPlayer();
 
-            rangeRect = new Rectangle(collRectangle.X - 100, collRectangle.Y - 100, collRectangle.Width + 200, collRectangle.Height + 200);
+            _rangeRect = new Rectangle(CollRectangle.X - 100, CollRectangle.Y - 100, CollRectangle.Width + 200, CollRectangle.Height + 200);
 
-            if (player.GetCollRectangle().Intersects(rangeRect))
+            if (player.GetCollRectangle().Intersects(_rangeRect))
             {
-                isSleeping = false;
-                isLookingForRefuge = false;
+                _isSleeping = false;
+                _isLookingForRefuge = false;
             }
             else
             {
-                isLookingForRefuge = true;
+                _isLookingForRefuge = true;
             }
 
-            if (!isLookingForRefuge)
+            if (!_isLookingForRefuge)
             {
                 int buffer = 5;
-                if (collRectangle.Y < player.GetCollRectangle().Y - buffer)
+                if (CollRectangle.Y < player.GetCollRectangle().Y - buffer)
                 {
-                    velocity.Y = maxVelocity.Y;
+                    Velocity.Y = _maxVelocity.Y;
                 }
-                else if (collRectangle.Y > player.GetCollRectangle().Y + buffer)
+                else if (CollRectangle.Y > player.GetCollRectangle().Y + buffer)
                 {
-                    velocity.Y = -maxVelocity.Y;
+                    Velocity.Y = -_maxVelocity.Y;
                 }
                 else
                 {
-                    velocity.Y = 0;
+                    Velocity.Y = 0;
                 }
 
-                if (collRectangle.X < player.GetCollRectangle().X - buffer)
+                if (CollRectangle.X < player.GetCollRectangle().X - buffer)
                 {
-                    velocity.X = maxVelocity.X;
+                    Velocity.X = _maxVelocity.X;
                 }
-                else if (collRectangle.X > player.GetCollRectangle().X + buffer)
+                else if (CollRectangle.X > player.GetCollRectangle().X + buffer)
                 {
-                    velocity.X = -maxVelocity.X;
+                    Velocity.X = -_maxVelocity.X;
                 }
                 else
                 {
-                    velocity.X = 0;
+                    Velocity.X = 0;
                 }
             }
             else
             {
-                velocity.X = 0;
-                velocity.Y = -maxVelocity.Y;
+                Velocity.X = 0;
+                Velocity.Y = -_maxVelocity.Y;
             }
 
-            if (isSleeping)
+            if (_isSleeping)
             {
                 CurrentAnimationState = AnimationState.Sleeping;
-                velocity = Vector2.Zero;
+                Velocity = Vector2.Zero;
             }
             else
             {

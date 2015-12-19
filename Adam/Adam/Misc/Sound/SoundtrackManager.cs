@@ -4,31 +4,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Misc
 {
     public static class SoundtrackManager
     {
 
-        public static byte CurrentID
+        public static byte CurrentId
         {
             get; private set;
         }
 
-        static Song currentSong;
+        static Song _currentSong;
 
         /// <summary>
         /// Plays the specified track.
         /// </summary>
-        /// <param name="ID"></param>
-        public static void PlayTrack(byte ID, bool repeating)
+        /// <param name="id"></param>
+        public static void PlayTrack(byte id, bool repeating)
         {
-            if (ID != CurrentID)
+            if (id != CurrentId)
             {
                 MediaPlayer.Stop();
-                CurrentID = ID;
-                currentSong = SoundtrackDB.GetSong(CurrentID);
-                MediaPlayer.Play(currentSong);
+                CurrentId = id;
+                _currentSong = SoundtrackDb.GetSong(CurrentId);
+                MediaPlayer.Play(_currentSong);
                 MediaPlayer.IsRepeating = repeating;
             }
         }
@@ -51,16 +52,16 @@ namespace Adam.Misc
         /// </summary>
         public static void PlayLevelEditorTheme()
         {
-            byte newID = 0;
-            if (CurrentID < 101 || CurrentID > 103)
+            byte newId = 0;
+            if (CurrentId < 101 || CurrentId > 103)
             {
-                newID = (byte)GameWorld.RandGen.Next(101, 103);
-                PlayTrack(newID, false);
+                newId = (byte)GameWorld.RandGen.Next(101, 103);
+                PlayTrack(newId, false);
             }
             else if (MediaPlayer.State == MediaState.Stopped)
             {
-                newID = (byte)GameWorld.RandGen.Next(101, 103);
-                PlayTrack(newID, false);
+                newId = (byte)GameWorld.RandGen.Next(101, 103);
+                PlayTrack(newId, false);
             }
         }
     }

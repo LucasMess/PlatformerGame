@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Obstacles
 {
@@ -21,10 +22,10 @@ namespace Adam.Obstacles
         public bool IsTouchingPlayer { get; set; }
         public bool IsCollidable { get; set; }
         public DamageType CurrentDamageType;
-        protected Player player;
-        protected Rectangle attackBox;
+        protected Player Player;
+        protected Rectangle AttackBox;
 
-        protected List<Particle> particles = new List<Particle>();
+        protected List<Particle> Particles = new List<Particle>();
 
         public Obstacle()
         {
@@ -40,20 +41,20 @@ namespace Adam.Obstacles
             switch (CurrentDamageType)
             {
                 case DamageType.All:
-                    attackBox = collRectangle;
+                    AttackBox = CollRectangle;
                     break;
                 case DamageType.Top:
                     break;
                 case DamageType.Sides:
                     break;
                 case DamageType.Bottom:
-                    attackBox = new Rectangle(DrawRectangle.X + 8, DrawRectangle.Y + DrawRectangle.Height - 20, DrawRectangle.Width - 16, 10);
+                    AttackBox = new Rectangle(DrawRectangle.X + 8, DrawRectangle.Y + DrawRectangle.Height - 20, DrawRectangle.Width - 16, 10);
                     break;
                 default:
                     break;
             }
 
-            if (GameWorld.Instance.player.GetCollRectangle().Intersects(attackBox))
+            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(AttackBox))
                 IsTouchingPlayer = true;
             else IsTouchingPlayer = false;
 

@@ -4,21 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
     public class TriggerZone
     {
-        Rectangle rectangle;
-        GameWorld map;
-        int ID;
-        int incrementingWidth;
-        int incrementingHeight;
+        Rectangle _rectangle;
+        GameWorld _map;
+        int _id;
+        int _incrementingWidth;
+        int _incrementingHeight;
 
-        public TriggerZone(int x, int y, int ID)
+        public TriggerZone(int x, int y, int id)
         {
-            this.ID = ID;
-            rectangle = new Rectangle(x, y, 1, 1);
+            this._id = id;
+            _rectangle = new Rectangle(x, y, 1, 1);
         }
 
         public void IncreaseDimensions(int x, int y)
@@ -26,7 +27,7 @@ namespace Adam
 
         }
 
-        public void Update(Player player, GameMode CurrentLevel)
+        public void Update(Player player, GameMode currentLevel)
         {
         }
 

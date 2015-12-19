@@ -7,37 +7,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Interactables
 {
     public class JetpackPowerUp : Item, IAnimated
     {
-        GameTime gameTime;
-        bool isHovering;
-        double hoverTimer;
+        GameTime _gameTime;
+        bool _isHovering;
+        double _hoverTimer;
 
-        Animation animation;
+        Animation _animation;
         public Animation Animation
         {
             get
             {
-                if (animation == null)
-                    animation = new Animation(Texture, DrawRectangle, sourceRectangle);
-                return animation;
+                if (_animation == null)
+                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+                return _animation;
             }
         }
 
-        AnimationData[] animationData;
+        AnimationData[] _animationData;
         public AnimationData[] AnimationData
         {
             get
             {
-                if (animationData == null)
-                    animationData = new Adam.AnimationData[]
+                if (_animationData == null)
+                    _animationData = new Adam.AnimationData[]
                     {
                         new AnimationData(250,4,0,AnimationType.Loop),
                     };
-                return animationData;
+                return _animationData;
             }
         }
 
@@ -58,36 +59,36 @@ namespace Adam.Interactables
         {
             get
             {
-                return collRectangle;
+                return CollRectangle;
             }
         }
 
         public JetpackPowerUp(int x, int y)
         {
             Texture = ContentHelper.LoadTexture("Objects/jetpack");
-            loopSound = new Misc.SoundFx("Sounds/jetpack_engine");
-            collRectangle = new Rectangle(x, y, 32, 32);
-            animation = new Animation(Texture, DrawRectangle, 100, 0, AnimationType.Loop);
-            velocity.Y = -10f;
+            LoopSound = new Misc.SoundFx("Sounds/jetpack_engine");
+            CollRectangle = new Rectangle(x, y, 32, 32);
+            _animation = new Animation(Texture, DrawRectangle, 100, 0, AnimationType.Loop);
+            Velocity.Y = -10f;
         }
 
         public override void Update()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            gameTime = gameWorld.gameTime;
+            _gameTime = gameWorld.GameTime;
 
-            animation.UpdateRectangle(DrawRectangle);
-            animation.Update(gameTime);
+            _animation.UpdateRectangle(DrawRectangle);
+            _animation.Update(_gameTime);
 
             Hover();
 
-            effectTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (effectTimer > 100)
+            EffectTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (EffectTimer > 100)
             {
                 Particle eff = new Particle();
                 eff.CreateJetPackSmokeParticle(this);
-                GameWorld.Instance.particles.Add(eff);
-                effectTimer = 0;
+                GameWorld.Instance.Particles.Add(eff);
+                EffectTimer = 0;
             }
 
             base.Update();
@@ -95,32 +96,32 @@ namespace Adam.Interactables
 
         private void Hover()
         {
-            if (isHovering)
+            if (_isHovering)
             {
-                hoverTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (hoverTimer > 100)
+                _hoverTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_hoverTimer > 100)
                 {
-                    velocity.Y = -velocity.Y;
-                    hoverTimer = 0;
+                    Velocity.Y = -Velocity.Y;
+                    _hoverTimer = 0;
                 }
             }
             else
             {
-                if (velocity.Y < 0)
+                if (Velocity.Y < 0)
                 {
-                    velocity.Y += .3f;
+                    Velocity.Y += .3f;
                 }
                 else
                 {
-                    isHovering = true;
-                    velocity.Y = 1f;
+                    _isHovering = true;
+                    Velocity.Y = 1f;
                 }
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animation.Draw(spriteBatch);
+            _animation.Draw(spriteBatch);
         }
 
         public void Animate()

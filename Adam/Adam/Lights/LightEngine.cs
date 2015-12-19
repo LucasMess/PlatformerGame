@@ -9,16 +9,16 @@ namespace Adam.Lights
 {
     public class LightEngine
     {
-        SunLight[] sunLights;
-        int[] visibleLights = new int[60 * 100];
-        public List<Light> dynamicLights = new List<Light>();
-        List<Light> newLights = new List<Light>();
+        SunLight[] _sunLights;
+        int[] _visibleLights = new int[60 * 100];
+        public List<Light> DynamicLights = new List<Light>();
+        List<Light> _newLights = new List<Light>();
 
-        Tile[] tiles;
-        Tile[] walls;
+        Tile[] _tiles;
+        Tile[] _walls;
 
-        int width;
-        int height;
+        int _width;
+        int _height;
 
         
 
@@ -29,24 +29,24 @@ namespace Adam.Lights
 
         public void Load()
         {
-            tiles = GameWorld.Instance.tileArray;
-            walls = GameWorld.Instance.wallArray;
+            _tiles = GameWorld.Instance.TileArray;
+            _walls = GameWorld.Instance.WallArray;
 
-            width = GameWorld.Instance.worldData.LevelWidth;
-            height = GameWorld.Instance.worldData.LevelHeight;
+            _width = GameWorld.Instance.WorldData.LevelWidth;
+            _height = GameWorld.Instance.WorldData.LevelHeight;
 
             CreateArray();
             GenerateSunLight();
             TransferNewLights();
 
-            dynamicLights = new List<Light>();
-            newLights = new List<Light>();
+            DynamicLights = new List<Light>();
+            _newLights = new List<Light>();
         }
 
         private void CreateArray()
         {
             //Creates light array that will be used in GameWorld.
-            sunLights = new SunLight[width * height];
+            _sunLights = new SunLight[_width * _height];
             //for (int i = 0; i < sunLights.Length; i++)
             //{
             //    sunLights[i] = new SunLight();
@@ -56,11 +56,11 @@ namespace Adam.Lights
         public void GenerateSunLight()
         {
             //Checks the arrays and looks for places where there is an opening to the sky.
-            for (int i = 0; i < tiles.Length; i++)
+            for (int i = 0; i < _tiles.Length; i++)
             {
-                if (tiles[i].sunlightPassesThrough && walls[i].sunlightPassesThrough)
+                if (_tiles[i].SunlightPassesThrough && _walls[i].SunlightPassesThrough)
                 {
-                    sunLights[i] = new SunLight(tiles[i].drawRectangle);
+                    _sunLights[i] = new SunLight(_tiles[i].DrawRectangle);
                 }
             }
 
@@ -87,18 +87,18 @@ namespace Adam.Lights
 
         public void AddFixedLightSource(Tile tile, Light light)
         {
-            light.index = tile.TileIndex;
-            newLights.Add(light);
+            light.Index = tile.TileIndex;
+            _newLights.Add(light);
         }
 
         public void Update()
         {
-            if (newLights.Count > 0)
+            if (_newLights.Count > 0)
             {
                 TransferNewLights();
             }
 
-            visibleLights = GameWorld.Instance.chunkManager.GetVisibleIndexes();
+            _visibleLights = GameWorld.Instance.ChunkManager.GetVisibleIndexes();
 
             //Camera camera = GameWorld.Instance.camera;
             //WorldData worldData = GameWorld.Instance.worldData;
@@ -123,44 +123,44 @@ namespace Adam.Lights
             //    }
             //}
 
-            foreach (Light l in dynamicLights)
+            foreach (Light l in DynamicLights)
             {
                 l.Update(l.source.Get());
             }
 
 
             // Limit the maximum amount of lights that can exist at the same time.
-            if (dynamicLights.Count > 1000)
+            if (DynamicLights.Count > 1000)
             {
-                int overflow = dynamicLights.Count - 999;
+                int overflow = DynamicLights.Count - 999;
                 for (int c = 0; c < overflow; c++)
                 {
-                    dynamicLights.RemoveAt(0);
+                    DynamicLights.RemoveAt(0);
                 }
             }
         }
 
         public void AddDynamicLight(Light light)
         {
-            dynamicLights.Add(light);
+            DynamicLights.Add(light);
         }
 
         public void RemoveDynamicLight(Light light)
         {
-            dynamicLights.Remove(light);
+            DynamicLights.Remove(light);
         }
 
         public void DrawLights(SpriteBatch spriteBatch)
         {
-            foreach (int index in visibleLights)
+            foreach (int index in _visibleLights)
             {
-                if (index >= 0 && index < sunLights.Length)
+                if (index >= 0 && index < _sunLights.Length)
                 {
-                    sunLights[index]?.Draw(spriteBatch);
+                    _sunLights[index]?.Draw(spriteBatch);
                 }
             }
 
-            foreach (Light l in dynamicLights)
+            foreach (Light l in DynamicLights)
             {
                 l.Draw(spriteBatch);
             }
@@ -175,7 +175,7 @@ namespace Adam.Lights
             //        lights[index].DrawGlow(spriteBatch);
             //    }
             //}
-            foreach (Light l in dynamicLights)
+            foreach (Light l in DynamicLights)
             {
                 l.DrawGlow(spriteBatch);
             }

@@ -9,16 +9,16 @@ namespace Adam.Network.Packets
     [Serializable]
     public class LevelPacket : DataPacket
     {
-        WorldConfigFile config;
+        WorldConfigFile _config;
 
         public LevelPacket(WorldConfigFile config)
         {
-            this.config = config;
+            this._config = config;
         }
 
         public WorldConfigFile ExtractConfigFile()
         {
-            return config;
+            return _config;
         }
     }
 }
