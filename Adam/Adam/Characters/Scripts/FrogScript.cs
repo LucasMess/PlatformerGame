@@ -11,8 +11,8 @@ namespace Adam.Characters.Scripts
         Timer jumpTimer = new Timer();
 
         double timeBetweenJumps = 2000 * GameWorld.RandGen.NextDouble();
-        const float JumpVel = -10f;
-        const float MoveVel = 4f;
+        const float JumpVel = -15f;
+        const float MoveVel = 5f;
 
         public override void Initialize(Entity entity)
         {
@@ -29,7 +29,7 @@ namespace Adam.Characters.Scripts
         {
             if (entity.IsJumping)
             {
-                entity.SetVelX(0);
+                entity.SetVelY(0);
                 jumpTimer.Reset();
                 entity.RemoveAnimationFromQueue("jump");
                 entity.IsJumping = false;

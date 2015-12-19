@@ -37,7 +37,6 @@ namespace Adam.Network.Packets
                 positions[i] = new Vector2(entities[i].GetCollRectangle().X, entities[i].GetCollRectangle().Y);
                 velocities[i] = entities[i].GetVelocity();
             }
-
         }
 
         public void ExtractTo(GameWorld gameWorld)

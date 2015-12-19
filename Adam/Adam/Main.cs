@@ -54,8 +54,6 @@ namespace Adam
             }
         }
 
-        #region Variables
-
         // Color presets for lighting engine.
         static Color SunnyPreset = new Color(255, 238, 186);
         static Color HellPreset = new Color(255, 129, 116);
@@ -64,8 +62,8 @@ namespace Adam
         static Color SunsetPreset = new Color(255, 155, 13);
 
         // Rendering variables.
-        private GraphicsDeviceManager graphics;
         public static SpriteBatch SpriteBatch;
+        private GraphicsDeviceManager graphics;
         private SpriteFont debugFont;
         private RenderTarget2D mainRenderTarget;
         private RenderTarget2D lightingRenderTarget;
@@ -82,6 +80,7 @@ namespace Adam
         public static bool IsLoadingContent;
         bool hasQuacked;
         bool isDebug = true;
+        bool isTestingMultiplayer = true;
         Stopwatch updateWatch, drawWatch, renderWatch, lightWatch, loadWatch;
         double splashTimer, updateTime, drawTime, lightTime, renderTime;
         double frameRateTimer;
@@ -107,6 +106,7 @@ namespace Adam
         public static double HeightRatio;
 
         public static float MaxVolume = .1f;
+        public static bool IsMusicMuted = true;
 
         public static Session Session { get; set; }
 
@@ -137,12 +137,7 @@ namespace Adam
         public static MessageBox MessageBox { get; set; }
 
         public static TextInputBox TextInputBox { get; set; }
-        #endregion
-
-        public static MediaQueue MediaQueue { get; set; }
-
         public static TimeSpan DefaultTimeLapse { get; set; }
-
         public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
 
         public Main()
@@ -151,10 +146,16 @@ namespace Adam
 
             // Get the current monitor resolution and set it as the game's resolution
             Vector2 monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            //UserResWidth = 800;
-            //UserResHeight = 450;
-            UserResWidth = (int)monitorRes.X ;
-            UserResHeight = (int)monitorRes.Y;
+            if (isTestingMultiplayer)
+            {
+                UserResWidth = 960;
+                UserResHeight = 540;
+            }
+            else
+            {
+                UserResWidth = (int)monitorRes.X;
+                UserResHeight = (int)monitorRes.Y;
+            }
             WidthRatio = ((double)Main.DefaultResWidth / (double)Main.UserResWidth);
             HeightRatio = ((double)Main.DefaultResHeight / (double)Main.UserResHeight);
 
@@ -177,9 +178,15 @@ namespace Adam
             IntPtr hWnd = this.Window.Handle;
             var control = System.Windows.Forms.Control.FromHandle(hWnd);
             var form = control.FindForm();
-            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-
+            if (isTestingMultiplayer)
+            {
+                form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            }
+            else
+            {
+                form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            }
 
 
 
@@ -313,7 +320,7 @@ namespace Adam
 
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                TargetElapsedTime = new TimeSpan(0,0,0,0,1000/10);
+                TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 10);
             }
             else
             {
@@ -655,5 +662,5 @@ namespace Adam
         }
     }
 
-    
+
 }

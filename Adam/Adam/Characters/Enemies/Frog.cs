@@ -14,7 +14,7 @@ namespace Adam.Characters.Enemies
     {
         public Frog(int x, int y)
         {
-            Weight = 3;
+            Weight = 10;
             script = new FrogScript();
             script.Initialize(this);
 

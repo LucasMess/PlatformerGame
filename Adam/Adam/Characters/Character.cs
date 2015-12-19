@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adam.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace Adam.Characters
 
         public override void Update()
         {
-            script?.Run();
+            if (Session.IsActive && Session.IsHost)
+                script?.Run();
             base.Update();
         }
 

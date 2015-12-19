@@ -126,7 +126,7 @@ namespace Adam.Network
 
         public void SendLevel()
         {
-            WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Tutorial.lvl"));
+            WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Enemies Test.lvl"));
             server.SendLevelPacket(level);
             level.LoadIntoPlay();
            // server.SendLevelPacket(new WorldConfigFile("Test",256, 256));

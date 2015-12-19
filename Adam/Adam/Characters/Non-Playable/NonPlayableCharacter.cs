@@ -1,4 +1,5 @@
-﻿using Adam.UI.Elements;
+﻿using Adam.Network;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -61,6 +62,9 @@ namespace Adam.Characters.Non_Playable
 
         protected void WalkAroundSpawnPoint(int spawnX)
         {
+            if (Session.IsActive && !Session.IsHost)
+                return;
+
             int speed = 1;
             if (isTalking)
             {
