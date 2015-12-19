@@ -47,7 +47,7 @@ namespace Adam
             _blackScreen.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
         }
 
-        public void Update(GameTime gameTime, Player player, GameWorld map)
+        public void Update(GameTime gameTime, Player.Player player, GameWorld map)
         {
             _heart.Update(gameTime, player, map);
             _coin.Update(player, gameTime);

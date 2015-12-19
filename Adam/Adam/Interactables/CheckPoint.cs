@@ -102,7 +102,7 @@ namespace Adam.Interactables
             _openSound.PlayIfStopped();
 
             //Sets respawn point;
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             player.RespawnPos = new Vector2(this.DrawRectangle.X, this.DrawRectangle.Y);
 
             //Particle effects

@@ -33,7 +33,7 @@ namespace Adam.Interactables
             _loopInstance = _loop.CreateInstance();
         }
 
-        public void Update(Player player, GameTime gameTime)
+        public void Update(Player.Player player, GameTime gameTime)
         {
             if (player.IsJumping)
             {

@@ -1,13 +1,9 @@
 ﻿using Adam.Characters;
+using Adam.Levels;
 using Adam.Misc;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Levels;
 
-namespace Adam
+namespace Adam.Player
 {
     public partial class Player : Character
     {

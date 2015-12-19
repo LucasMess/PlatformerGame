@@ -28,7 +28,7 @@ namespace Adam.Noobs
             _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
         }
 
-        public override void Update(GameTime gameTime, Player player)
+        public override void Update(GameTime gameTime, Player.Player player)
         {
             this._gameTime = gameTime;
             base.Update(gameTime, player);

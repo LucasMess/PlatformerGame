@@ -47,7 +47,7 @@ namespace Adam.Interactables
         public override void Update()
         {
             GameWorld gameWorld = GameWorld.Instance;
-            Player player = gameWorld.Player;
+            Player.Player player = gameWorld.Player;
             GameTime gameTime = gameWorld.GameTime;
 
             ElapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -78,8 +78,8 @@ namespace Adam.Interactables
     /// </summary>
     public class PickedUpArgs : EventArgs
     {
-        public Player Player { get; private set; }
-        public PickedUpArgs(Player player)
+        public Player.Player Player { get; private set; }
+        public PickedUpArgs(Player.Player player)
         {
             Player = player;
         }

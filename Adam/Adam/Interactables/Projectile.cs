@@ -29,7 +29,7 @@ namespace Adam
         protected bool IsFlipped;
         protected double EffTimer;
         protected GameTime GameTime;
-        protected Player Player;
+        protected Player.Player Player;
         protected Enemy Enemy;
 
 
@@ -48,7 +48,7 @@ namespace Adam
             }
         }
 
-        public virtual void Update(Player player, GameTime gameTime)
+        public virtual void Update(Player.Player player, GameTime gameTime)
         {
             base.Update();
         }
@@ -98,7 +98,7 @@ namespace Adam
 
     public class PlayerWeaponProjectile : Projectile
     {
-        public PlayerWeaponProjectile(Player player, ContentManager content)
+        public PlayerWeaponProjectile(Player.Player player, ContentManager content)
         { 
         //{
         //    CurrentProjectileSource = ProjectileSource.Player;
@@ -167,7 +167,7 @@ namespace Adam
             }
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update(Player.Player player, GameTime gameTime)
         {
             this.GameTime = gameTime;
             CollRectangle.X += (int)Velocity.X;
@@ -218,7 +218,7 @@ namespace Adam
             Destroy();
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update(Player.Player player, GameTime gameTime)
         {
             GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
             GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
@@ -260,7 +260,7 @@ namespace Adam
             }
         }
 
-        public override void Update(Player player, GameTime gameTime)
+        public override void Update(Player.Player player, GameTime gameTime)
         {
             this.Player = player;
             this.GameTime = gameTime;

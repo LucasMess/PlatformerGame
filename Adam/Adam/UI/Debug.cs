@@ -22,7 +22,7 @@ namespace Adam
         Vector2 _monitorRes;
         Vector2 _position;
         Main _game1;
-        Player _player;
+        Player.Player _player;
         bool _definitionFound;
 
         public GameDebug(SpriteFont font, Vector2 monitorRes, Texture2D black)
@@ -35,7 +35,7 @@ namespace Adam
             _rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
-        public void Update(Main game1, Player player, GameWorld map, bool isOnDebug)
+        public void Update(Main game1, Player.Player player, GameWorld map, bool isOnDebug)
         {
             if (!isOnDebug)
             {

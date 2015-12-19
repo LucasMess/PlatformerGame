@@ -28,7 +28,7 @@ namespace Adam
             _pickSound = content.Load<SoundEffect>("Sounds/key_get");
         }
 
-        public void Update(Player player)
+        public void Update(Player.Player player)
         {
             if (player.GetCollRectangle().Intersects(_rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
             {

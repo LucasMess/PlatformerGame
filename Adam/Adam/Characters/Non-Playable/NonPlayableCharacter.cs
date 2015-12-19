@@ -17,7 +17,7 @@ namespace Adam.Characters.Non_Playable
         double _destinationTimer;
         int _destinationX;
         GameTime _gameTime;
-        Player _player;
+        Player.Player _player;
         protected bool CanTalk;
         protected bool IsTalking;
 
@@ -29,7 +29,7 @@ namespace Adam.Characters.Non_Playable
             _key = new KeyPopUp();
         }
 
-        public virtual void Update(GameTime gameTime, Player player)
+        public virtual void Update(GameTime gameTime, Player.Player player)
         {
             _key.Update(CollRectangle);
 

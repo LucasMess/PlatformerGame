@@ -12,7 +12,7 @@ namespace Adam.Network.Packets
         Vector2 _position;
         Vector2 _velocity;
 
-        public PlayerPacket(Player player)
+        public PlayerPacket(Player.Player player)
         {
             _position = new Vector2(player.GetCollRectangle().X, player.GetCollRectangle().Y);
             _velocity = player.GetVelocity();

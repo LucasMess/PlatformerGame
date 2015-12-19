@@ -32,7 +32,7 @@ namespace Adam.UI.Overlay_Elements
             this._position = position;
         }
 
-        public void Update(GameTime gameTime, Player player, GameWorld map)
+        public void Update(GameTime gameTime, Player.Player player, GameWorld map)
         {
             _animation.Update(gameTime);
 

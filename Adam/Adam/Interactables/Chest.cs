@@ -42,7 +42,7 @@ namespace Adam
 
         public void Update(Tile t)
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
             {
                 // If player presses open button, open chest.

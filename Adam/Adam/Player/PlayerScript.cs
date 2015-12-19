@@ -10,7 +10,7 @@ namespace Adam
 {
     public class PlayerScript : Script
     {
-        Player _player;
+        Player.Player _player;
         public static bool IsDoingAction = false;
 
         const float JumpAcc = -15f;
@@ -25,7 +25,7 @@ namespace Adam
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
 
-        public void Initialize(Player player)
+        public void Initialize(Player.Player player)
         {
             this._player = player;
             player.PlayerDamaged += OnPlayerDamaged;
@@ -39,7 +39,7 @@ namespace Adam
 
         protected override void OnGameTick()
         {
-            _player = (Player)_player.Get();
+            _player = (Player.Player)_player.Get();
         }
 
         private void OnPlayerDamaged(Rectangle damageArea, int damage)
@@ -47,7 +47,7 @@ namespace Adam
             _player.Sounds.Get("hurt").Play();
         }
 
-        public void OnStill(Player player)
+        public void OnStill(Player.Player player)
         {
             // Friction.
             if (player.IsJumping)
@@ -83,19 +83,19 @@ namespace Adam
 
         }
 
-        private void OnSmellPoopAnimationEnd(Player player)
+        private void OnSmellPoopAnimationEnd(Player.Player player)
         {
             player.RemoveAnimationFromQueue("smellPoop");
             _idleTimer.Reset();
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
-        internal void StopJumpAction(Player player)
+        internal void StopJumpAction(Player.Player player)
         {
             player.GravityStrength = Main.Gravity;
         }
 
-        public void OnJumpAction(Player player)
+        public void OnJumpAction(Player.Player player)
         {
             if (!player.IsJumping)
             {
@@ -125,7 +125,7 @@ namespace Adam
             entity.RemoveAnimationFromQueue("jump");
         }
 
-        public void OnRightMove(Player player)
+        public void OnRightMove(Player.Player player)
         {
             float acc = WalkAcc;
             if (player.IsRunningFast)
@@ -155,7 +155,7 @@ namespace Adam
             player.AddAnimationToQueue("walk");
         }
 
-        public void OnLeftMove(Player player)
+        public void OnLeftMove(Player.Player player)
         {
             float acc = WalkAcc;
             if (player.IsRunningFast)
@@ -180,31 +180,31 @@ namespace Adam
             player.AddAnimationToQueue("walk");
         }
 
-        public void OnInteractAction(Player player)
+        public void OnInteractAction(Player.Player player)
         {
 
         }
 
-        public void OnClimbingAction(Player player)
+        public void OnClimbingAction(Player.Player player)
         {
             player.AddAnimationToQueue("climb");
             player.SetVelY(-10);
             player.ObeysGravity = false;
         }
 
-        public void OnDuckAction(Player player)
+        public void OnDuckAction(Player.Player player)
         {
             player.AddAnimationToQueue("standup");
             player.AnimationEnded += OnStandUpEnd;
             player.AddAnimationToQueue("fightIdle");
         }
 
-        private void OnStandUpEnd(Player player)
+        private void OnStandUpEnd(Player.Player player)
         {
             player.RemoveAnimationFromQueue("standup");
         }
 
-        public void OnAttackAction(Player player)
+        public void OnAttackAction(Player.Player player)
         {
             IsDoingAction = true;
             player.AttackSound.Play();
@@ -214,7 +214,7 @@ namespace Adam
             player.SetVelX(0);
         }
 
-        private void OnPunchFrameChange(Player player)
+        private void OnPunchFrameChange(Player.Player player)
         {
             if(player.CurrentAnimationFrame == 2){
                 int speed = 2;
@@ -233,7 +233,7 @@ namespace Adam
             }
         }
 
-        private void OnPunchEnded(Player player)
+        private void OnPunchEnded(Player.Player player)
         {
             player.RemoveAnimationFromQueue("punch");
             player.AnimationEnded -= OnPunchEnded;
@@ -249,19 +249,19 @@ namespace Adam
             }
         }
 
-        private void OnPunch2Ended(Player player)
+        private void OnPunch2Ended(Player.Player player)
         {
             player.RemoveAnimationFromQueue("punch2");
             player.AnimationEnded -= OnPunch2Ended;
             IsDoingAction = false;
         }
 
-        public void OnDefendAction(Player player)
+        public void OnDefendAction(Player.Player player)
         {
 
         }
 
-        public void OnDashAction(Player player)
+        public void OnDashAction(Player.Player player)
         {
             if (!IsDoingAction)
             {
@@ -276,7 +276,7 @@ namespace Adam
             }
         }
 
-        private void OnNinjaDashEnd(Player player)
+        private void OnNinjaDashEnd(Player.Player player)
         {
             IsDoingAction = false;
             player.RemoveAnimationFromQueue("ninjaDash");
@@ -284,17 +284,17 @@ namespace Adam
             TestSmokeParticle.Generate(100, player);
         }
 
-        public void OnUltimateAction(Player player)
+        public void OnUltimateAction(Player.Player player)
         {
 
         }
 
-        public void OnFastRunTrigger(Player player)
+        public void OnFastRunTrigger(Player.Player player)
         {
 
         }
 
-        public void OnDeath(Player player)
+        public void OnDeath(Player.Player player)
         {
 
         }

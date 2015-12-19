@@ -140,7 +140,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         private void CheckInteractionsWithPlayer()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
 
             //Deals damage to player if he is touching.
             if (IsIntersectingPlayer())

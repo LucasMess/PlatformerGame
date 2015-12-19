@@ -31,7 +31,7 @@ namespace Adam
         public delegate void TileHandler(Entity entity, Tile tile);
         public delegate void Entityhandler(Entity entity);
 
-        const float FrictionConstant = 95f / 90f;
+        const float FrictionConstant = 91f / 90f;
 
         // Collision with terrain events.
         public event TileHandler CollidedWithTileAbove;
@@ -292,8 +292,8 @@ namespace Adam
                 CheckTerrainCollision();
 
                 // y = (499/45) * (x / (x + 1)
-                float friction = FrictionConstant * ((float)Weight/((float)Weight +1));
-                Velocity *= friction;
+                var friction = FrictionConstant * (Weight/((float)Weight +1));
+                Velocity *= (float)Math.Pow(friction , Main.TimeDelta);
             }
 
             //Animate entity if applicable.
@@ -633,7 +633,7 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            Velocity.Y += GravityStrength;
+            Velocity.Y += GravityStrength * Main.TimeDelta;
         }
 
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)

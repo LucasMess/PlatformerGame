@@ -1,11 +1,8 @@
-﻿using Adam.Characters;
+﻿using System;
+using Adam.Characters;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Adam
+namespace Adam.Player
 {
     public partial class Player : Character
     {

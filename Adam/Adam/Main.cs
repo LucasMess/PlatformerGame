@@ -59,6 +59,7 @@ namespace Adam
         // Rendering variables.
         public static SpriteBatch SpriteBatch;
         public static bool IsLoadingContent;
+        public static float TimeDelta;
         public static int UserResWidth;
         public static int UserResHeight;
         public static Texture2D DefaultTexture;
@@ -99,7 +100,7 @@ namespace Adam
         public GameState CurrentGameState;
         public SamplerState DesiredSamplerState;
         public GameDataManager GameData;
-        public Player Player;
+        public Player.Player Player;
         public bool WasPressed, DebugOn, DebugPressed;
 
         public Main()
@@ -132,9 +133,9 @@ namespace Adam
             _graphics.PreferredBackBufferHeight = UserResHeight;
 
             // Change game settings here.
-            _graphics.SynchronizeWithVerticalRetrace = true;
+            _graphics.SynchronizeWithVerticalRetrace = false;
             _graphics.PreferMultiSampling = false;
-            IsFixedTimeStep = true;
+            IsFixedTimeStep = false;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
             // Set window to borderless.
@@ -183,7 +184,7 @@ namespace Adam
             _camera = new Camera(GraphicsDevice.Viewport);
             _menu = new Menu(this);
             _gameWorld = new GameWorld(this);
-            Player = new Player(this);
+            Player = new Player.Player(this);
             _overlay = new Overlay();
             _cutscene = new Cutscene();
             Dialog = new Dialog();
@@ -287,8 +288,9 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-            //if (!IsActive) return;
             GameTime = gameTime;
+
+            TimeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
             if (TimeFreeze.IsTimeFrozen())
             {

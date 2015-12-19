@@ -44,7 +44,7 @@ namespace Adam
             _radius = new Rectangle(x - 1000, y - 1000, 2000, 2000);
         }
 
-        public void Update(GameTime gameTime, Player player, PopUp popUp)
+        public void Update(GameTime gameTime, Player.Player player, PopUp popUp)
         {
             this._gameTime = gameTime;
             _animation.Update(gameTime);
@@ -62,7 +62,7 @@ namespace Adam
 
         }
 
-        public void PickedUp(Player player, PopUp popUp)
+        public void PickedUp(Player.Player player, PopUp popUp)
         {
             if (player.GetCollRectangle().Intersects(Rectangle) && !ToDelete)
             {

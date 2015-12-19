@@ -145,7 +145,7 @@ namespace Adam.Network
             return true; //Allow untrusted certificates.
         }
 
-        public void SendPlayerDataPacket(Player player)
+        public void SendPlayerDataPacket(Player.Player player)
         {
             PlayerPacket pl = new PlayerPacket(player);
             byte[] packet = CalcHelper.ToByteArray(pl);

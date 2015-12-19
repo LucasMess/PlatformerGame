@@ -56,7 +56,7 @@ namespace Adam.Obstacles
                 _flameSound.Stop();
             }
 
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             if (_isFlaming && AttackBox.Intersects(player.GetCollRectangle()))
             {
                 player.TakeDamageAndKnockBack(EnemyDb.FlameSpitterTouchDamage);

@@ -138,7 +138,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsInRange()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             return (RangeRect.Intersects(player.GetCollRectangle()));
         }
 
@@ -167,7 +167,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerToTheRight()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().X > CollRectangle.X)
                 return true;
             else return false;
@@ -179,7 +179,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerAbove()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().Y < CollRectangle.Y)
                 return true;
             else return false;
@@ -191,7 +191,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsIntersectingPlayer()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             return (player.GetCollRectangle().Intersects(CollRectangle));
         }
 
@@ -201,7 +201,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsBeingAttacked()
         {
-            Player player = GameWorld.Instance.Player;
+            Player.Player player = GameWorld.Instance.Player;
             return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1);
         }
 

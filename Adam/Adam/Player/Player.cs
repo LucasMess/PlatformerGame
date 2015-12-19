@@ -1,103 +1,46 @@
-﻿using Adam;
+﻿using System;
 using Adam.Characters;
-using Adam.Characters.Enemies;
 using Adam.Interactables;
+using Adam.Levels;
 using Adam.Misc;
-using Adam.Misc.Interfaces;
-using Adam.Obstacles;
 using Adam.Particles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Levels;
 
-namespace Adam
+namespace Adam.Player
 {
     public partial class Player : Character
     {
+        public delegate void DamageHandler(Rectangle damageArea, int damage);
+
         public delegate void Eventhandler();
-        public event EventHandler PlayerRespawned;
-        protected PlayerScript script = new PlayerScript();
-
-        public SoundFx AttackSound;
-
-        #region Variables
-        Main _game1;
-        public Rectangle AttackBox;
-
-        Jetpack _jetpack = new Jetpack();
-
-        float _deltaTime;
-
-        public Vector2 RespawnPos;
-
-        //Debug
-        public bool CanFly;
-        public bool IsInvulnerable;
-        public bool IsGhost;
-
-        //Player stats
-        public int Score
-        {
-            get
-            {
-                try
-                {
-                    return _game1.GameData.CurrentSave.PlayerStats.Score;
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
-            set
-            {
-                _game1.GameData.CurrentSave.PlayerStats.Score = value;
-            }
-        }
-
-        public override int MaxHealth
-        {
-            get
-            {
-                return 100;
-            }
-        }
-
-        //Animation Variables
-        public int CurrentAnimationFrame
-        {
-            get; private set;
-        }
-        Vector2 _frameCount;
-        #endregion
 
         public delegate void PlayerHandler(Player player);
-        public event PlayerHandler AnimationEnded;
-        public event PlayerHandler AnimationFrameChanged;
 
-        public delegate void DamageHandler(Rectangle damageArea, int damage);
-        public event DamageHandler PlayerAttacked;
-        public event DamageHandler PlayerDamaged;
+        private readonly Main _game1;
+        private readonly Jetpack _jetpack = new Jetpack();
+        private readonly PlayerScript script = new PlayerScript();
+        private float _deltaTime;
+        private Vector2 _frameCount;
+        public Rectangle AttackBox;
+        public SoundFx AttackSound;
+        //Debug
+        public bool CanFly;
+        public bool IsGhost;
+        public bool IsInvulnerable;
+        public Vector2 RespawnPos;
 
         public Player(Main game1)
         {
-            
-            this._game1 = game1;
+            _game1 = game1;
 
             script.Initialize(this);
 
-            Texture2D edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_darker");
-            Texture2D idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
-            Texture2D ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
-            Texture2D standupTexture = ContentHelper.LoadTexture("Characters/adam_standup");
-            Texture2D fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
+            var edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_darker");
+            var idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
+            var ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
+            var standupTexture = ContentHelper.LoadTexture("Characters/adam_standup");
+            var fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
 
             AttackSound = new SoundFx("Player/attackSound");
 
@@ -106,19 +49,32 @@ namespace Adam
             ComplexAnim.FrameChanged += ComplexAnim_FrameChanged;
 
             // Animation textures.
-            ComplexAnim.AddAnimationData("idle", new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
-            ComplexAnim.AddAnimationData("smellPoop", new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
-            ComplexAnim.AddAnimationData("sleep", new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("fightIdle", new ComplexAnimData(50, fightTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("walk", new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("run", new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("standup", new ComplexAnimData(155, standupTexture, new Rectangle(15, 11, 12, 66), 0, 45, 40, 125, 3, false));
-            ComplexAnim.AddAnimationData("jump", new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
-            ComplexAnim.AddAnimationData("climb", new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("fall", new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("ninjaDash", new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
-            ComplexAnim.AddAnimationData("punch", new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
-            ComplexAnim.AddAnimationData("punch2", new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
+            ComplexAnim.AddAnimationData("idle",
+                new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
+            ComplexAnim.AddAnimationData("smellPoop",
+                new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
+            ComplexAnim.AddAnimationData("sleep",
+                new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("fightIdle",
+                new ComplexAnimData(50, fightTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("walk",
+                new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("run",
+                new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("standup",
+                new ComplexAnimData(155, standupTexture, new Rectangle(15, 11, 12, 66), 0, 45, 40, 125, 3, false));
+            ComplexAnim.AddAnimationData("jump",
+                new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
+            ComplexAnim.AddAnimationData("climb",
+                new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("fall",
+                new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("ninjaDash",
+                new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
+            ComplexAnim.AddAnimationData("punch",
+                new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
+            ComplexAnim.AddAnimationData("punch2",
+                new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
 
             // Sounds
             Sounds.AddSoundRef("hurt", "Player/hurtSound");
@@ -134,6 +90,35 @@ namespace Adam
             PlayerAttacked += OnPlayerAttack;
         }
 
+        protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
+
+        //Player stats
+        public int Score
+        {
+            get
+            {
+                try
+                {
+                    return _game1.GameData.CurrentSave.PlayerStats.Score;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+            set { _game1.GameData.CurrentSave.PlayerStats.Score = value; }
+        }
+
+        public override int MaxHealth => 100;
+
+        //Animation Variables
+        public int CurrentAnimationFrame { get; private set; }
+        public event EventHandler PlayerRespawned;
+        public event PlayerHandler AnimationEnded;
+        public event PlayerHandler AnimationFrameChanged;
+        public event DamageHandler PlayerAttacked;
+        public event DamageHandler PlayerDamaged;
+
         private void OnPlayerAttack(Rectangle damageArea, int damage)
         {
             Sounds.Get("punch").Play();
@@ -148,17 +133,15 @@ namespace Adam
 
         private void ComplexAnim_AnimationStateChanged()
         {
-
         }
 
         private void ComplexAnim_AnimationEnded()
         {
-            if (AnimationEnded != null)
-                AnimationEnded(this);
+            AnimationEnded?.Invoke(this);
         }
 
         /// <summary>
-        /// This method will set the player's positions to those specified. It should be used when the map is changed.
+        ///     This method will set the player's positions to those specified. It should be used when the map is changed.
         /// </summary>
         /// <param name="setX"> The x-Coordinate</param>
         /// <param name="setY"> The y-Coordinate</param>
@@ -179,10 +162,9 @@ namespace Adam
         }
 
         /// <summary>
-        /// Update player information, checks for collision and input, and many other things.
+        ///     Update player information, checks for collision and input, and many other things.
         /// </summary>
         /// <param name="gameTime"></param>
-        /// 
         public void Update(GameTime gameTime)
         {
             script.Run();
@@ -193,7 +175,7 @@ namespace Adam
                 return;
             }
 
-            _deltaTime = (float)(60 * gameTime.ElapsedGameTime.TotalSeconds);
+            _deltaTime = (float) (60*gameTime.ElapsedGameTime.TotalSeconds);
 
             if (IsDead())
             {
@@ -209,9 +191,8 @@ namespace Adam
             _jetpack.Update(this, gameTime);
         }
 
-
         /// <summary>
-        /// This method updates all of the rectangles and applies velocity.
+        ///     This method updates all of the rectangles and applies velocity.
         /// </summary>
         private void UpdatePlayerPosition()
         {
@@ -220,18 +201,18 @@ namespace Adam
 
         private void ContainInGameWorld()
         {
-            GameWorld gameWorld = GameWorld.Instance;
+            var gameWorld = GameWorld.Instance;
             if (CollRectangle.X < 0)
                 CollRectangle.X = 0;
-            if (CollRectangle.X > (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
-                CollRectangle.X = (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
+            if (CollRectangle.X > (gameWorld.WorldData.LevelWidth*Main.Tilesize - CollRectangle.Width))
+                CollRectangle.X = (gameWorld.WorldData.LevelWidth*Main.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
                 CollRectangle.Y = 0;
-            if (CollRectangle.Y > (gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
+            if (CollRectangle.Y > (gameWorld.WorldData.LevelHeight*Main.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    CollRectangle.Y = gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
+                    CollRectangle.Y = gameWorld.WorldData.LevelHeight*Main.Tilesize - CollRectangle.Height;
                 else
                 {
                     KillAndRespawn();
@@ -244,12 +225,12 @@ namespace Adam
             if (!IsJumping)
             {
                 _movementParticlesTimer.Increment();
-                if (Velocity.X == 0)
+                if (Math.Abs(Velocity.X) < .1f)
                     return;
-                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000 / Math.Abs(Velocity.X))
+                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000/Math.Abs(Velocity.X))
                 {
                     _movementParticlesTimer.Reset();
-                    SmokeParticle par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom);
+                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom);
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -272,8 +253,8 @@ namespace Adam
                     }
                     if (_fireSpawnTimer.TimeElapsedInMilliSeconds > 100)
                     {
-                        EntityFlameParticle flame = new EntityFlameParticle(this, Color.Yellow);
-                        EntityFlameParticle flame2 = new EntityFlameParticle(this, Color.Red);
+                        var flame = new EntityFlameParticle(this, Color.Yellow);
+                        var flame2 = new EntityFlameParticle(this, Color.Red);
                         GameWorld.Instance.Particles.Add(flame);
                         GameWorld.Instance.Particles.Add(flame2);
                         _fireSpawnTimer.Reset();
@@ -285,7 +266,6 @@ namespace Adam
                     _onFireTimer.Reset();
                     _fireTickTimer.Reset();
                 }
-
             }
         }
 
@@ -298,7 +278,7 @@ namespace Adam
         }
 
         /// <summary>
-        /// Player takes damage without becoming invincible and without spilling blood.
+        ///     Player takes damage without becoming invincible and without spilling blood.
         /// </summary>
         /// <param name="damage"></param>
         public void TakeDps(int damage)
@@ -306,7 +286,9 @@ namespace Adam
             Health -= damage;
         }
 
-        public void TakeDamageAndKnockBack(int damage) { }
+        public void TakeDamageAndKnockBack(int damage)
+        {
+        }
 
         public override void Revive()
         {
@@ -314,7 +296,7 @@ namespace Adam
 
         private void CreateJumpParticles()
         {
-            for (int i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
                 GameWorld.Instance.Particles.Add(new JumpSmokeParticle(this));
             }
@@ -322,7 +304,7 @@ namespace Adam
 
         private void CreateStompParticles()
         {
-            for (int i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
                 GameWorld.Instance.Particles.Add(new StompSmokeParticle(this));
             }
@@ -332,23 +314,23 @@ namespace Adam
         {
             TakeDamage(null, Health);
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Particle par = new Particle();
+                var par = new Particle();
                 par.CreateDeathSmoke(this);
                 GameWorld.Instance.Particles.Add(par);
             }
 
-            int rand = GameWorld.RandGen.Next(20, 30);
+            var rand = GameWorld.RandGen.Next(20, 30);
             SpillBlood(rand);
             TakeDamageAndKnockBack(Health);
         }
 
         public void SpillBlood(int quantity)
         {
-            for (int i = 0; i < quantity; i++)
+            for (var i = 0; i < quantity; i++)
             {
-                Particle par = new Particle();
+                var par = new Particle();
                 par.CreateBloodEffect(this, GameWorld.Instance);
                 GameWorld.Instance.Particles.Add(par);
             }
@@ -363,30 +345,20 @@ namespace Adam
         }
 
         /// <summary>
-        /// Fires an event to all subscribers saying the player is dealing damage to that area.
+        ///     Fires an event to all subscribers saying the player is dealing damage to that area.
         /// </summary>
         /// <param name="damageArea"></param>
         /// <param name="damage"></param>
         public void DealDamage(Rectangle damageArea, int damage)
         {
-            if (PlayerAttacked != null)
-                PlayerAttacked(damageArea, damage);
+            PlayerAttacked?.Invoke(damageArea, damage);
         }
 
-        public void Teleport(Vector2 position)
+        public void MoveTo(Vector2 position)
         {
-            CollRectangle.X = (int)position.X;
-            CollRectangle.Y = (int)position.Y;
+            CollRectangle.X = (int) position.X;
+            CollRectangle.Y = (int) position.Y;
             Overlay.Instance.FadeIn();
         }
-
-        protected override Rectangle DrawRectangle
-        {
-            get
-            {
-                return new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
-            }
-        }
     }
-
 }

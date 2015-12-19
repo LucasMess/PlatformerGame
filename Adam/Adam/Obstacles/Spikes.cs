@@ -30,7 +30,7 @@ namespace Adam.Obstacles
 
             if (IsTouchingPlayer)
             {
-                Player player = GameWorld.Instance.Player;
+                Player.Player player = GameWorld.Instance.Player;
                 player.KillAndRespawn();
             }
         }

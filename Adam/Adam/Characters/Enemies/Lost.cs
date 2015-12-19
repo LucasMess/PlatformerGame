@@ -130,7 +130,7 @@ namespace Adam
 
         public override void Update()
         {
-            Player player = GameWorld.Instance.GetPlayer();
+            Player.Player player = GameWorld.Instance.GetPlayer();
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
             CollRectangle.X += (int)Velocity.X;

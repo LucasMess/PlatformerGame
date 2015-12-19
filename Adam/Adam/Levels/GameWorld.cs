@@ -40,7 +40,7 @@ namespace Adam.Levels
 
         public static ParticleSystem ParticleSystem = new ParticleSystem();
         public GameMode CurrentGameMode;
-        public Player Player;
+        public Player.Player Player;
         public bool DebuggingMode;
         public Background Background = new Background();
 
@@ -492,7 +492,7 @@ namespace Adam.Levels
             }
         }
 
-        public Player GetPlayer()
+        public Player.Player GetPlayer()
         {
             return Player;
         }

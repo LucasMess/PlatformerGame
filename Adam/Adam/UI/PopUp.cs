@@ -92,7 +92,7 @@ namespace Adam
             _objOrigin = new Vector2(8, 8);
         }
 
-        public void Update(GameTime gameTime, Player player)
+        public void Update(GameTime gameTime, Player.Player player)
         {
 
             if (!IsVisible)

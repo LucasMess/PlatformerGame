@@ -27,7 +27,7 @@ namespace Adam
 
         }
 
-        public void Update(Player player, GameMode currentLevel)
+        public void Update(Player.Player player, GameMode currentLevel)
         {
         }
 

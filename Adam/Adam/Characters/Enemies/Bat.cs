@@ -1,32 +1,32 @@
-﻿using Adam.Misc.Interfaces;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Levels;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Adam.Levels;
 using Adam.Misc;
+using Adam.Misc.Interfaces;
+using Microsoft.Xna.Framework;
 
 namespace Adam.Characters.Enemies
 {
-    class Bat : Enemy, IAnimated
+    internal class Bat : Enemy, IAnimated
     {
-        bool _isLookingForRefuge;
-        bool _isSleeping;
+        private Animation _animation;
+        private AnimationData[] _animationData;
+        private bool _isLookingForRefuge;
+        private bool _isSleeping;
+        private Vector2 _maxVelocity;
+        private Rectangle _rangeRect;
+        private Rectangle _respawnRect;
 
-        Rectangle _rangeRect;
-        Vector2 _maxVelocity;
-
-        public override byte Id
+        public Bat(int x, int y)
         {
-            get
-            {
-                return 207;
-            }
+            CollRectangle = new Rectangle(x, y, 32, 32);
+            SourceRectangle = new Rectangle(0, 0, 32, 32);
+            _maxVelocity = new Vector2(2, 2);
+            Texture = ContentHelper.LoadTexture("Enemies/bat");
+
+            CollidedWithTileAbove += OnCollisionWithTerrainAbove;
         }
 
-        private Rectangle _respawnRect;
+        public override byte Id => 207;
+
         public override Rectangle RespawnLocation
         {
             get
@@ -39,90 +39,46 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        public override int MaxHealth
-        {
-            get
-            {
-                return EnemyDb.BatMaxHealth;
-            }
-        }
+        public override int MaxHealth => EnemyDb.BatMaxHealth;
+        protected override SoundFx MeanSound => null;
+        protected override SoundFx AttackSound => null;
+        protected override SoundFx DeathSound => null;
+        protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 16, CollRectangle.Y, 64, 64);
 
-        SoundFx _meanSound;
-        protected override SoundFx MeanSound
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected override SoundFx AttackSound
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected override SoundFx DeathSound
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected override Rectangle DrawRectangle
-        {
-            get
-            {
-                return new Rectangle(CollRectangle.X -16,CollRectangle.Y,64,64);
-            }
-        }
-
-        Animation _animation;
         public Animation Animation
+            => _animation ?? (_animation = new Animation(Texture, DrawRectangle, SourceRectangle));
+
+        public AnimationData[] AnimationData => _animationData ?? (_animationData = new[]
         {
-            get
+            new AnimationData(200, 5, 0, AnimationType.Loop),
+            new AnimationData(85, 5, 1, AnimationType.Loop)
+        });
+
+        public AnimationState CurrentAnimationState { get; set; }
+
+        public void Animate()
+        {
+            switch (CurrentAnimationState)
             {
-                if (_animation == null)
-                {
-                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
-                }
-                return _animation;
+                case AnimationState.Still:
+                    break;
+                case AnimationState.Walking:
+                    break;
+                case AnimationState.Jumping:
+                    break;
+                case AnimationState.Charging:
+                    break;
+                case AnimationState.Talking:
+                    break;
+                case AnimationState.Sleeping:
+                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[0]);
+                    break;
+                case AnimationState.Flying:
+                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[1]);
+                    break;
+                case AnimationState.Transforming:
+                    break;
             }
-        }
-
-        AnimationData[] _animationData;
-        public AnimationData[] AnimationData
-        {
-            get
-            {
-               if (_animationData == null)
-                {
-                    _animationData = new Adam.AnimationData[]
-                    {
-                        new Adam.AnimationData(200,5,0,AnimationType.Loop),
-                        new Adam.AnimationData(85,5,1,AnimationType.Loop),
-                    };
-                }
-                return _animationData;
-            }
-        }
-
-        public AnimationState CurrentAnimationState
-        {
-            get; set;
-        }
-
-        public Bat(int x, int y)
-        {
-            CollRectangle = new Rectangle(x, y, 32, 32);
-            SourceRectangle = new Rectangle(0, 0, 32, 32);
-            _maxVelocity = new Vector2(2, 2);
-            Texture = ContentHelper.LoadTexture("Enemies/bat");
-
-            CollidedWithTileAbove += OnCollisionWithTerrainAbove;
         }
 
         public void OnCollisionWithTerrainAbove(Entity entity, Tile tile)
@@ -139,9 +95,10 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            Player player = GameWorld.Instance.GetPlayer();
+            var player = GameWorld.Instance.GetPlayer();
 
-            _rangeRect = new Rectangle(CollRectangle.X - 100, CollRectangle.Y - 100, CollRectangle.Width + 200, CollRectangle.Height + 200);
+            _rangeRect = new Rectangle(CollRectangle.X - 100, CollRectangle.Y - 100, CollRectangle.Width + 200,
+                CollRectangle.Height + 200);
 
             if (player.GetCollRectangle().Intersects(_rangeRect))
             {
@@ -155,7 +112,7 @@ namespace Adam.Characters.Enemies
 
             if (!_isLookingForRefuge)
             {
-                int buffer = 5;
+                const int buffer = 5;
                 if (CollRectangle.Y < player.GetCollRectangle().Y - buffer)
                 {
                     Velocity.Y = _maxVelocity.Y;
@@ -199,33 +156,6 @@ namespace Adam.Characters.Enemies
             }
 
             base.Update();
-        }
-
-        public void Animate()
-        {
-            switch (CurrentAnimationState)
-            {
-                case AnimationState.Still:
-                    break;
-                case AnimationState.Walking:
-                    break;
-                case AnimationState.Jumping:
-                    break;
-                case AnimationState.Charging:
-                    break;
-                case AnimationState.Talking:
-                    break;
-                case AnimationState.Sleeping:
-                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[0]);
-                    break;
-                case AnimationState.Flying:
-                    Animation.Update(Main.GameTime, DrawRectangle, AnimationData[1]);
-                    break;
-                case AnimationState.Transforming:
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

@@ -132,7 +132,7 @@ namespace Adam.Characters.Enemies
                 return;
 
             GameWorld gameWorld = GameWorld.Instance;
-            Player player = GameWorld.Instance.GetPlayer();
+            Player.Player player = GameWorld.Instance.GetPlayer();
 
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out _rects))
             {

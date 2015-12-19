@@ -22,7 +22,7 @@ namespace Adam.Obstacles
         public bool IsTouchingPlayer { get; set; }
         public bool IsCollidable { get; set; }
         public DamageType CurrentDamageType;
-        protected Player Player;
+        protected Player.Player Player;
         protected Rectangle AttackBox;
 
         protected List<Particle> Particles = new List<Particle>();
