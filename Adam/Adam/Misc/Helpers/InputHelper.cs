@@ -164,7 +164,6 @@ namespace Adam
                 // Check for long key presses.
                 if (keysPressed.Length == 1)
                 {
-                    _keyPressedTimer.Increment();
                 }
                 else
                 {

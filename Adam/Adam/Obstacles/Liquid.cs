@@ -55,7 +55,7 @@ namespace Adam.Obstacles
 
             if (CollRectangle.Intersects(GameWorld.Instance.Player.GetCollRectangle()))
             {
-                Player.KillAndRespawn();
+                Player.TakeDamage(this, Player.MaxHealth);
             }
 
             //if (!isOnTop)

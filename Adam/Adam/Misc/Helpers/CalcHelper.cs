@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam
 {
@@ -57,6 +58,11 @@ namespace Adam
             }
         }
 
+        /// <summary>
+        /// Converts a byte array into an object.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
         public static object ConvertToObject(byte[] array)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -65,7 +71,7 @@ namespace Adam
             {
                 var obj = formatter.Deserialize(stream);
                 return obj;
-            }           
+            }
 
         }
 
@@ -89,6 +95,24 @@ namespace Adam
             return (int)(number / Main.HeightRatio);
         }
 
+        /// <summary>
+        /// Returns a random x value from this rectangle's x-coord.
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static int GetRandomX(Rectangle rect)
+        {
+            return GameWorld.RandGen.Next(rect.X, rect.X + rect.Width);
+        }
 
+        /// <summary>
+        /// Returns a random y value from this rectangle's y-coord.
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static int GetRandomY(Rectangle rect)
+        {
+            return GameWorld.RandGen.Next(rect.Y, rect.Y + rect.Height);
+        }
     }
 }

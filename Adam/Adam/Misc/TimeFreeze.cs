@@ -29,7 +29,6 @@ namespace Adam.Misc
 
         public bool IsTimeFrozen()
         {
-            _freezeTimer.Increment();
             return _isTimeFrozen;
         }
     }

@@ -22,6 +22,17 @@ namespace Adam.Characters.Enemies
         protected Enemy()
         {
             GameWorld.Instance.GetPlayer().PlayerAttacked += OnPlayerAttack;
+            HasFinishedDying += Enemy_HasFinishedDying;
+        }
+
+        /// <summary>
+        /// Makes the enemy drop gems.
+        /// </summary>
+        /// <param name="entity"></param>
+        private void Enemy_HasFinishedDying(Entity entity)
+        {
+            Gem.Generate(MaxHealth/10,this);
+            PlayDeathSound();
         }
 
         /// <summary>
@@ -120,13 +131,13 @@ namespace Adam.Characters.Enemies
         /// <summary>
         /// The sound played when the player jumps on the enemy.
         /// </summary>
-        protected SoundFx JumpedOnSound
+        protected SoundFx HitSound
         {
             get
             {
                 if (_jumpedOnSound == null)
                 {
-                    _jumpedOnSound = new SoundFx("Sounds/Player/enemy_jumpedOn");
+                    _jumpedOnSound = new SoundFx("Player/enemy_jumpedOn");
                 }
                 return _jumpedOnSound;
             }

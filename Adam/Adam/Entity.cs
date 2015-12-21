@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.Particles;
 
 namespace Adam
 {
@@ -30,6 +31,8 @@ namespace Adam
         public delegate void EventHandler();
         public delegate void TileHandler(Entity entity, Tile tile);
         public delegate void Entityhandler(Entity entity);
+
+        public event Entityhandler HasFinishedDying;
 
         const float FrictionConstant = 91f / 90f;
 
@@ -53,9 +56,7 @@ namespace Adam
         private Texture2D _texture;
         private Color _color = Color.White;
 
-        private bool _toDelete;
         private bool _isFacingRight;
-        private bool _isDead;
         private bool _healthGiven;
 
         private DynamicPointLight _light;
@@ -120,9 +121,17 @@ namespace Adam
             {
                 if (_texture == null)
                 {
-                    _texture = Main.DefaultTexture;
-                    Console.WriteLine("Texture for: {0} is null, using default texture instead.", GetType());
+                    if (ComplexAnim != null)
+                    {
+                        _texture = ComplexAnim.GetCurrentTexture();
+                    }
+                    else
+                    {
+                        _texture = Main.DefaultTexture;
+                        Console.WriteLine("Texture for: {0} is null, using default texture instead.", GetType());
+                    }
                 }
+
                 return _texture;
             }
             set { _texture = value; }
@@ -134,6 +143,17 @@ namespace Adam
         protected abstract Rectangle DrawRectangle
         {
             get;
+        }
+
+        /// <summary>
+        /// Retrieves the current DrawRectangle.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetDrawRectangle()
+        {
+            if (ComplexAnim != null)
+                return ComplexAnim.GetDrawRectangle();
+            return DrawRectangle;
         }
 
         /// <summary>
@@ -199,24 +219,20 @@ namespace Adam
         }
 
         /// <summary>
-        /// Returns true if the entity's health is equal to or below zero.
+        /// Returns true if the entity is dead.
         /// </summary>
         /// <returns></returns>
-        public bool IsDead()
-        {
-            // If entity is not one that has health, it is not always dead.
-            if (MaxHealth == 0)
-                return false;
-            return (Health <= 0);
-        }
+        public bool IsDead { get; private set; }
+
+        /// <summary>
+        /// Returns true if the enemy is in the process of dying.
+        /// </summary>
+        public bool IsAboutToDie { get; private set; }
 
         /// <summary>
         /// The maximum amount of health the enemy can have. This is the value that is given to the enemy when it respawns.
         /// </summary>
-        public virtual int MaxHealth
-        {
-            get;
-        }
+        public virtual int MaxHealth { get; } = 0;
 
         /// <summary>
         /// The current health of the entity.
@@ -258,30 +274,21 @@ namespace Adam
         /// <summary>
         /// Determines whether the entity can be deleted or not.
         /// </summary>
-        public bool ToDelete
-        {
-            get
-            {
-                return _toDelete;
-            }
-
-            set
-            {
-                _toDelete = value;
-            }
-        }
+        public bool ToDelete { get; set; }
 
         /// <summary>
         /// Base update that provides basic logic.
         /// </summary>
         public virtual void Update()
         {
-            if (IsDead())
-                return;
 
+            if (Health <= 0 && MaxHealth > 0 && !IsAboutToDie)
+            {
+                Kill();
+            }
 
             //Check for physics, if applicable.
-            if (ObeysGravity)
+            if (ObeysGravity && !IsAboutToDie)
             {
                 ApplyGravity();
             }
@@ -292,8 +299,8 @@ namespace Adam
                 CheckTerrainCollision();
 
                 // y = (499/45) * (x / (x + 1)
-                var friction = FrictionConstant * (Weight/((float)Weight +1));
-                Velocity *= (float)Math.Pow(friction , Main.TimeDelta);
+                var friction = FrictionConstant * (Weight / ((float)Weight + 1));
+                Velocity *= (float)Math.Pow(friction, Main.TimeDelta);
             }
 
             //Animate entity if applicable.
@@ -318,8 +325,6 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            _hitRecentlyTimer.Increment();
-
             // Debugging tools
             //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
 
@@ -372,29 +377,85 @@ namespace Adam
             spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, Origin, SpriteEffects.None, 0);
         }
 
+        /// <summary>
+        /// Returns the current velocity of the entity.
+        /// </summary>
+        /// <returns></returns>
         public Vector2 GetVelocity()
         {
             return Velocity;
         }
 
+        /// <summary>
+        /// Sets the X component of the entity's velocity.
+        /// </summary>
+        /// <param name="x"></param>
         public void SetVelX(float x)
         {
-            Velocity.X = x;
+            if (!IsAboutToDie && !IsTakingDamage)
+                Velocity.X = x;
         }
 
+        /// <summary>
+        /// Sets the Y component of the entity's velocity.
+        /// </summary>
+        /// <param name="y"></param>
         public void SetVelY(float y)
         {
-            Velocity.Y = y;
+            if (!IsAboutToDie && !IsTakingDamage)
+                Velocity.Y = y;
         }
 
+        /// <summary>
+        /// Changes the position of the entity by the specified amount.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void ChangePosBy(int x, int y)
         {
-            CollRectangle.X += x;
-            CollRectangle.Y += y;
+            if (!IsAboutToDie && !IsTakingDamage)
+            {
+                CollRectangle.X += x;
+                CollRectangle.Y += y;
+            }
         }
 
-        public virtual void Kill()
+        /// <summary>
+        /// Begins the process of killing the entity. This will start the death animation, make it disappear and invoke an event when it is complete.
+        /// </summary>
+        private void Kill()
         {
+            // Queues up death animation and waits for it to finish.
+            ComplexAnim.AddToQueue("death");
+            _deathAnimationTimer.ResetAndWaitFor(1000);
+            _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
+            IsAboutToDie = true;
+            Velocity.Y = -5f;
+        }
+
+        /// <summary>
+        /// Creates death particles and calls event to do other death related things.
+        /// </summary>
+        private void DeathAnimationEnded()
+        {
+            _deathAnimationTimer.SetTimeReached -= DeathAnimationEnded;
+            IsDead = true;
+
+            for (int i = 0; i < 20; i++)
+            {
+                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -GameWorld.RandGen.Next(1, 5) / 10f));
+                GameWorld.ParticleSystem.Add(par);
+            }
+
+            Rectangle[] desinRectangles;
+            GetDisintegratedRectangles(out desinRectangles);
+            foreach (Rectangle rect in desinRectangles)
+            {
+                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle),CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(GameWorld.RandGen.Next(-5,5)/10f, -GameWorld.RandGen.Next(-5, 5) / 10f), this);
+                GameWorld.ParticleSystem.Add(par);
+            }
+
+            HasFinishedDying?.Invoke(this);
         }
 
         /// <summary>
@@ -636,6 +697,11 @@ namespace Adam
             Velocity.Y += GravityStrength * Main.TimeDelta;
         }
 
+        /// <summary>
+        /// Collision logic.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="tile"></param>
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {
             CollRectangle.Y = tile.DrawRectangle.Y + tile.DrawRectangle.Height;
@@ -649,6 +715,12 @@ namespace Adam
                     break;
             }
         }
+
+        /// <summary>
+        /// Collision logic.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="tile"></param>
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
             CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
@@ -662,6 +734,12 @@ namespace Adam
                     break;
             }
         }
+
+        /// <summary>
+        /// Collision logic.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="tile"></param>
         private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
             CollRectangle.X = tile.DrawRectangle.X - CollRectangle.Width;
@@ -676,6 +754,12 @@ namespace Adam
             }
 
         }
+
+        /// <summary>
+        /// Collision logic.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="tile"></param>
         private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
             CollRectangle.X = tile.DrawRectangle.X + tile.DrawRectangle.Width;
@@ -691,6 +775,11 @@ namespace Adam
 
         }
 
+        /// <summary>
+        /// Collision logic.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="tile"></param>
         private void OnCollisionWithTerrain(Entity entity, Tile tile)
         {
 
@@ -713,6 +802,11 @@ namespace Adam
             Health = MaxHealth;
         }
 
+        /// <summary>
+        /// Updates the position and velocity of the entiy based on the information received from the network packet.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="velocity"></param>
         public void UpdateFromPacket(Vector2 position, Vector2 velocity)
         {
             CollRectangle.X = (int)position.X;
@@ -732,10 +826,11 @@ namespace Adam
         /// <summary>
         /// Deals a certain amount of damage to the entity.
         /// </summary>
+        /// <param name="damageDealer"></param>
         /// <param name="damage"></param>
         public void TakeDamage(Entity damageDealer, int damage)
         {
-            if (IsDead() || IsTakingDamage)
+            if (IsTakingDamage || IsAboutToDie)
                 return;
 
             //Main.TimeFreeze.AddFrozenTime(50);
@@ -746,27 +841,55 @@ namespace Adam
             _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
 
             //Creates damage particles.
-            for (int i = 0; i < damage; i++)
+            int particleCount = damage / 2;
+            if (particleCount > 100)
+                particleCount = 100;
+            for (int i = 0; i < particleCount; i++)
             {
-                Particle par = new Particle();
-                par.CreateTookDamage(this);
-                GameWorld.Instance.Particles.Add(par);
+                RoundCommonParticle par = new RoundCommonParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -GameWorld.RandGen.Next(1, 5) / 10f), Color.Red);
+                GameWorld.ParticleSystem.Add(par);
             }
 
             if (damageDealer == null)
                 return;
 
-            Velocity.Y = -5f;
-            Velocity.X = damage / Weight;
+            Velocity.Y = -8f;
+            Velocity.X = (Weight / 2f);
             if (!damageDealer.IsFacingRight)
                 Velocity.X *= -1;
 
         }
 
-        // When timer ends let enemy take damage.
+        /// <summary>
+        ///  When timer ends let enemy take damage.
+        /// </summary>
         private void HitByPlayerTimer_SetTimeReached()
         {
             IsTakingDamage = false;
+        }
+
+        /// <summary>
+        /// Returns the texture of the entity as small rectangles for particle effects.
+        /// </summary>
+        /// <param name="rectangles"></param>
+        private void GetDisintegratedRectangles(out Rectangle[] rectangles)
+        {
+            Vector2 size = new Vector2(GetDrawRectangle().Width / Main.Tilesize, GetDrawRectangle().Height / Main.Tilesize);
+            int xSize = 4 * (int)size.X;
+            int ySize = 4 * (int)size.Y;
+            int width = SourceRectangle.Width / xSize;
+            int height = SourceRectangle.Height / ySize;
+            rectangles = new Rectangle[xSize * ySize];
+
+            int i = 0;
+            for (int h = 0; h < ySize; h++)
+            {
+                for (int w = 0; w < xSize; w++)
+                {
+                    rectangles[i] = new Rectangle(w * width, h * height, width, height);
+                    i++;
+                }
+            }
         }
 
     }

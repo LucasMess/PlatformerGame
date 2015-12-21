@@ -198,7 +198,7 @@ namespace Adam.Levels
             {
                 if (Session.IsHost)
                 {
-                    
+
                 }
                 else
                 {
@@ -218,44 +218,8 @@ namespace Adam.Levels
                 SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
 
                 Rectangle cameraRect = Player.GetCollRectangle();
-                //cameraRect.X += (int)(player.GetVelocity().X * 50);
 
-                //stopMovingTimer.Increment();
-                //if (InputHelper.IsKeyDown(Keys.A))
-                //{
-                //    stopMovingTimer.Reset();
-                //    distance+=2;
-                //}
-                //if (InputHelper.IsKeyDown(Keys.D))
-                //{
-                //    stopMovingTimer.Reset();
-                //    distance-=2;
-                //}
-
-                //if (stopMovingTimer.TimeElapsedInMilliSeconds > 3000)
-                //{
-                //    distance = 0;
-                //}
-
-                //int max = 200;
-                //if (distance > max)
-                //    distance = max;
-                //if (distance < -max)
-                //    distance = -max;
-
-                //cameraRect.X -= distance;
-
-
-                camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsDead());
-
-                //if (player.IsDead())
-                //{
-                //    camera.ZoomIn();
-                //}
-                //else
-                //{
-                //    camera.ResetZoom();
-                //}
+                camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
             }
 
             TimesUpdated++;
@@ -280,11 +244,13 @@ namespace Adam.Levels
                 for (int i = 0; i < Entities.Count; i++)
                 {
                     Entity entity = Entities[i];
+                    if (entity.IsDead)
+                        continue;
+
                     if (entity is Enemy)
                     {
                         Enemy enemy = (Enemy)entity;
-                        if (!enemy.IsDead())
-                            enemy.Update();
+                        enemy.Update();
                     }
                     if (entity is Obstacle)
                     {
@@ -410,7 +376,7 @@ namespace Adam.Levels
             }
             for (int i = 0; i < Entities.Count; i++)
             {
-                if (!Entities[i].IsDead())
+                if (!Entities[i].IsDead)
                     Entities[i].Draw(spriteBatch);
             }
 

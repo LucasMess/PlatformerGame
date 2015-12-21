@@ -137,13 +137,11 @@ namespace Adam.Particles
         int _currentFrame;
         int _frames;
 
-        public SmokeParticle(int x, int y)
+        public SmokeParticle(int x, int y, Vector2 velocity)
         {
             Position = new Vector2(x - 4, y);
             SourceRectangle = new Rectangle(256, 104, 8, 8);
-            float randX = 0;
-            float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
-            Velocity = new Vector2(randX, randY);
+            Velocity = velocity;
             Opacity = 1;
             Color = Color.White;
             Texture = GameWorld.SpriteSheet;
@@ -153,7 +151,6 @@ namespace Adam.Particles
 
         public override void Update()
         {
-            _animationTimer.Increment();
             if (_animationTimer.TimeElapsedInMilliSeconds > 500)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
@@ -169,17 +166,17 @@ namespace Adam.Particles
         }
     }
 
-    class SparkleParticle : NewParticle
+    class RoundCommonParticle : NewParticle
     {
         Timer _animationTimer = new Timer();
         int _currentFrame;
         int _frames;
 
-        public SparkleParticle(int x, int y, float velX, float velY, Color color)
+        public RoundCommonParticle(int x, int y, Vector2 vel, Color color)
         {
             Position = new Vector2(x - 4, y - 4);
             SourceRectangle = new Rectangle(288, 104, 8, 8);
-            Velocity = new Vector2(velX, velY);
+            Velocity = vel;
             Opacity = 1;
             Color = color;
             Texture = GameWorld.SpriteSheet;
@@ -190,7 +187,6 @@ namespace Adam.Particles
 
         public override void Update()
         {
-            _animationTimer.Increment();
             if (_animationTimer.TimeElapsedInMilliSeconds > 250)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
@@ -203,6 +199,17 @@ namespace Adam.Particles
             }
 
             NoOpacityDefaultBehavior();
+        }
+    }
+
+    class EntityTextureParticle :NewParticle
+    {
+        public EntityTextureParticle(int x, int y, Rectangle rect, Vector2 vel, Entity entity)
+        {
+            Position = new Vector2(x,y);
+            SourceRectangle = rect;
+            Texture = entity.Texture;
+            Velocity = vel;
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Adam.Obstacles
 
         public override void Update()
         {
-            _firingTimer.Increment();
             if (_firingTimer.TimeElapsedInMilliSeconds > FiringInterval)
             {
                 _firingTimer.Reset();
@@ -45,7 +44,6 @@ namespace Adam.Obstacles
 
             if (_isFiring)
             {
-                _bulletSpacingTimer.Increment();
                 if (_bulletSpacingTimer.TimeElapsedInMilliSeconds > BulletInterval)
                 {
                     if (_firingRight)

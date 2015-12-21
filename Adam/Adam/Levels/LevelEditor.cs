@@ -126,7 +126,6 @@ namespace Adam.Levels
             if (_blackScreenOpacity < 0) _blackScreenOpacity = 0;
 
             // Auto-save functionality.
-            _autoSaveTimer.Increment();
             if (_autoSaveTimer.TimeElapsedInSeconds > 1)
             {
                 _autoSaveTimer.Reset();

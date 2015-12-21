@@ -149,7 +149,7 @@ namespace Adam.Enemies
         {
             base.Update();            
 
-            if (_projCooldownTimer > 3 && !IsDead())
+            if (_projCooldownTimer > 3)
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {

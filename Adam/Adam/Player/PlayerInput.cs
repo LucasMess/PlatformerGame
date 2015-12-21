@@ -134,7 +134,7 @@ namespace Adam.Player
         {
             StillUpdate();
 
-            PlayerScript.TimeSinceLastPunch.Increment();
+           
 
             if (InputHelper.IsKeyDown(Keys.H))
                 PlayerScript.TimeSinceLastPunch.Reset();

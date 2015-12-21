@@ -20,8 +20,6 @@ namespace Adam.Player
         private readonly Main _game1;
         private readonly Jetpack _jetpack = new Jetpack();
         private readonly PlayerScript script = new PlayerScript();
-        private float _deltaTime;
-        private Vector2 _frameCount;
         public Rectangle AttackBox;
         public SoundFx AttackSound;
         //Debug
@@ -153,7 +151,6 @@ namespace Adam.Player
             RespawnPos = new Vector2(setX, setY);
 
             //Animation information
-            _frameCount = new Vector2(4, 0);
             CollRectangle.Width = 32;
             CollRectangle.Height = 64;
             SourceRectangle = new Rectangle(0, 0, 24, 40);
@@ -172,14 +169,6 @@ namespace Adam.Player
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
             {
                 ContainInGameWorld();
-                return;
-            }
-
-            _deltaTime = (float) (60*gameTime.ElapsedGameTime.TotalSeconds);
-
-            if (IsDead())
-            {
-                Burn();
                 return;
             }
 
@@ -215,7 +204,7 @@ namespace Adam.Player
                     CollRectangle.Y = gameWorld.WorldData.LevelHeight*Main.Tilesize - CollRectangle.Height;
                 else
                 {
-                    KillAndRespawn();
+                    TakeDamage(null, MaxHealth);
                 }
             }
         }
@@ -224,13 +213,13 @@ namespace Adam.Player
         {
             if (!IsJumping)
             {
-                _movementParticlesTimer.Increment();
+            
                 if (Math.Abs(Velocity.X) < .1f)
                     return;
                 if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000/Math.Abs(Velocity.X))
                 {
                     _movementParticlesTimer.Reset();
-                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom);
+                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom, new Vector2(0,(float)(GameWorld.RandGen.Next(-1,1) * GameWorld.RandGen.NextDouble())));
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -241,11 +230,10 @@ namespace Adam.Player
             // Checks to see if player is on fire and deals damage accordingly.
             if (IsOnFire)
             {
-                _onFireTimer.Increment();
+               
                 if (_onFireTimer.TimeElapsedInSeconds < 4)
                 {
-                    _fireTickTimer.Increment();
-                    _fireSpawnTimer.Increment();
+                  
                     if (_fireTickTimer.TimeElapsedInMilliSeconds > 500)
                     {
                         TakeDps(EnemyDb.FlameSpitterDps);
@@ -307,32 +295,6 @@ namespace Adam.Player
             for (var i = 0; i < 20; i++)
             {
                 GameWorld.Instance.Particles.Add(new StompSmokeParticle(this));
-            }
-        }
-
-        public void KillAndRespawn()
-        {
-            TakeDamage(null, Health);
-
-            for (var i = 0; i < 10; i++)
-            {
-                var par = new Particle();
-                par.CreateDeathSmoke(this);
-                GameWorld.Instance.Particles.Add(par);
-            }
-
-            var rand = GameWorld.RandGen.Next(20, 30);
-            SpillBlood(rand);
-            TakeDamageAndKnockBack(Health);
-        }
-
-        public void SpillBlood(int quantity)
-        {
-            for (var i = 0; i < quantity; i++)
-            {
-                var par = new Particle();
-                par.CreateBloodEffect(this, GameWorld.Instance);
-                GameWorld.Instance.Particles.Add(par);
             }
         }
 

@@ -14,8 +14,8 @@ namespace Adam
         public static bool IsDoingAction = false;
 
         const float JumpAcc = -15f;
-        const float WalkAcc = .1f;
-        const float RunAcc = .15f;
+        const float WalkAcc = .08f;
+        const float RunAcc = .12f;
         const float DashSpeed = 40f;
 
         Timer _idleTimer = new Timer();
@@ -52,11 +52,11 @@ namespace Adam
             // Friction.
             if (player.IsJumping)
             {
-                _airTimer.Increment();
+                
             }
 
             // Toggle idle animations.
-            _idleTimer.Increment();
+           
             if (_idleTimer.TimeElapsedInSeconds > 10)
             {
                 player.AddAnimationToQueue("smellPoop");

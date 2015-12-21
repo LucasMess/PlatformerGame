@@ -11,8 +11,8 @@ namespace Adam.Characters.Scripts
     {
         Timer _jumpTimer = new Timer();
 
-        double _timeBetweenJumps = 2000 * GameWorld.RandGen.NextDouble();
-        const float JumpVel = -15f;
+        double _timeBetweenJumps = 2000;
+        const float JumpVel = -12f;
         const float MoveVel = 5f;
 
         public override void Initialize(Entity entity)
@@ -54,13 +54,6 @@ namespace Adam.Characters.Scripts
                 Entity.AddAnimationToQueue("jump");
                 Entity.Sounds.Get("jump").Play();
             }
-        }
-
-        protected override void OnGameTick()
-        {
-            _jumpTimer.Increment();
-
-            base.OnGameTick();
         }
 
 

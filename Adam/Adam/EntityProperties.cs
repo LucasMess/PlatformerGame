@@ -11,9 +11,9 @@ namespace Adam
     {
         protected ComplexAnimation ComplexAnim = new ComplexAnimation();
 
-        Timer _hitRecentlyTimer = new Timer();
+        readonly Timer _hitRecentlyTimer = new Timer();
+        readonly Timer _deathAnimationTimer = new Timer();
         public SoundFxManager Sounds { get; set; }
-
         /// <summary>
         /// Determines whether this entity should perform collision checks with other collidable objects.
         /// </summary>
@@ -36,7 +36,6 @@ namespace Adam
         {
             get; private set;
         }
-
         /// <summary>
         /// Used in calculations such as how far back the entity is knocked back and friction against ground.
         /// </summary>

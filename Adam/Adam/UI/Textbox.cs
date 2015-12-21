@@ -73,7 +73,7 @@ namespace Adam.UI
         /// </summary>
         private void FlashEditLine()
         {
-            _flashingTimer.Increment();
+            
             if (_flashingTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _editLineFlashing = !_editLineFlashing;

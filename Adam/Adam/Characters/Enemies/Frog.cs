@@ -41,14 +41,6 @@ namespace Adam.Characters.Enemies
             }
         }
 
-
-        public override void Update()
-        {
-            if (IsDead()) return;
-
-            base.Update();
-        }
-
         public override byte Id
         {
             get

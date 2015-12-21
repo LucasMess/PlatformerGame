@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace Adam.Misc
 {
@@ -14,13 +15,23 @@ namespace Adam.Misc
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
 
+        public Timer()
+        {
+            Main.GameUpdateCalled += Increment;
+        }
+
+        /// <summary>
+        /// Is set to true the timer will increment on each update tick.
+        /// </summary>
+        public bool IsOn { get; set; }
+
         /// <summary>
         /// Increments the timer by amount of time passed since last update.
         /// </summary>
-        public void Increment()
+        private void Increment(GameTime gameTime)
         {
-            _currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
-            _currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+            _currentTimeInSeconds += gameTime.ElapsedGameTime.TotalSeconds;
+            _currentTimeInMilliSeconds += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (SetTimeReached != null && _currentTimeInMilliSeconds > _notificationTime)
             {

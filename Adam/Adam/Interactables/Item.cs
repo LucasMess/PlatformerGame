@@ -19,7 +19,7 @@ namespace Adam.Interactables
         protected double ElapsedTime;
         protected SoundFx LoopSound;
         protected SoundFx PickUpSound = new SoundFx("Sounds/coin");
-        protected SoundFx BounceSound;
+        protected SoundFx BounceSound = new SoundFx("Sounds/Items/item_pop");
         private int _tileIndex;
         protected double EffectTimer;
 
@@ -30,6 +30,15 @@ namespace Adam.Interactables
         public Item()
         {
             OnPlayerPickUp += SpawnSparkles;
+            CollidedWithTerrain += Item_CollidedWithTerrain;
+        }
+
+        private void Item_CollidedWithTerrain(Entity entity, Tile tile)
+        {
+            if (Math.Abs(Velocity.Y) > 2)
+            {
+                BounceSound?.Play();
+            }
         }
 
         private void SpawnSparkles(PickedUpArgs e)
@@ -39,7 +48,7 @@ namespace Adam.Interactables
             {
                 float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
                 float randX = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
-                SparkleParticle par = new SparkleParticle(CollRectangle.Center.X, CollRectangle.Center.Y, randX, randY, Color.Gold);
+                RoundCommonParticle par = new RoundCommonParticle(CollRectangle.Center.X, CollRectangle.Center.Y, new Vector2(randX,randY), Color.Gold);
                 GameWorld.ParticleSystem.Add(par);
             }
         }

@@ -38,7 +38,7 @@ namespace Adam.Obstacles
 
             if (_isFlaming)
             {
-                _particleTimer.Increment();
+                
                 if (_particleTimer.TimeElapsedInMilliSeconds > 100)
                 {
                     FlameParticle par = new FlameParticle(this, Color.LightBlue);
@@ -72,8 +72,7 @@ namespace Adam.Obstacles
         /// </summary>
         private void CheckIfChangingState()
         {
-            _firingTimer.Increment();
-
+        
             if (!_isFlaming)
             {
                 if (_firingTimer.TimeElapsedInMilliSeconds > 3000)

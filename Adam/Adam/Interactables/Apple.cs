@@ -27,11 +27,6 @@ namespace Adam
                 _wasPicked = true;
             }
 
-            if (_wasPicked)
-            {
-                _changeLevelTimer.Increment();
-            }
-
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
                 Main.Instance.ChangeState(GameState.MainMenu, GameMode.None);

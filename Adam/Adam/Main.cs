@@ -36,8 +36,8 @@ namespace Adam
 
     public class Main : Game
     {
-        private const bool InDebugMode = true;
-        private const bool IsTestingMultiplayer = false;
+        public const bool InDebugMode = true;
+        public const bool IsTestingMultiplayer = false;
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960; //960 or 1366
         public const int DefaultResHeight = 540; //540 or 768
@@ -103,6 +103,9 @@ namespace Adam
         public Player.Player Player;
         public bool WasPressed, DebugOn, DebugPressed;
 
+        public delegate void UpdateHandler(GameTime gameTime);
+        public static event UpdateHandler GameUpdateCalled;
+
         public Main()
         {
             _instance = this;
@@ -110,6 +113,9 @@ namespace Adam
             // Get the current monitor resolution and set it as the game's resolution
             var monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+
+#pragma warning disable 0162
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (IsTestingMultiplayer)
             {
                 UserResWidth = 960;
@@ -117,11 +123,13 @@ namespace Adam
             }
             else
             {
-                UserResWidth = (int) monitorRes.X;
-                UserResHeight = (int) monitorRes.Y;
+                UserResWidth = (int)monitorRes.X;
+                UserResHeight = (int)monitorRes.Y;
             }
-            WidthRatio = (DefaultResWidth/(double) UserResWidth);
-            HeightRatio = (DefaultResHeight/(double) UserResHeight);
+#pragma warning restore 0162
+
+            WidthRatio = (DefaultResWidth / (double)UserResWidth);
+            HeightRatio = (DefaultResHeight / (double)UserResHeight);
 
             // Important services that need to be instanstiated before other things.
             _graphics = new GraphicsDeviceManager(this);
@@ -142,15 +150,19 @@ namespace Adam
             var hWnd = Window.Handle;
             var control = Control.FromHandle(hWnd);
             var form = control.FindForm();
+#pragma warning disable
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (IsTestingMultiplayer)
             {
                 form.WindowState = FormWindowState.Normal;
             }
             else
             {
+                // ReSharper disable once PossibleNullReferenceException
                 form.FormBorderStyle = FormBorderStyle.None;
                 form.WindowState = FormWindowState.Maximized;
             }
+#pragma warning restore
 
 
             //MediaPlayer Settings
@@ -288,6 +300,8 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
+            GameUpdateCalled?.Invoke(gameTime);
+
             GameTime = gameTime;
 
             TimeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
@@ -299,7 +313,7 @@ namespace Adam
 
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000/10);
+                TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 10);
             }
             else
             {
@@ -470,7 +484,8 @@ namespace Adam
                         null, null, _camera.Translate);
                     _gameWorld.DrawInBack(SpriteBatch);
                     _gameWorld.Draw(SpriteBatch);
-                    Player.Draw(SpriteBatch);
+                    if (!Player.IsDead)
+                        Player.Draw(SpriteBatch);
                     _gameWorld.DrawParticles(SpriteBatch);
                     SpriteBatch.End();
 
@@ -540,7 +555,7 @@ namespace Adam
                     SpriteBatch.End();
                     break;
                 case GameState.MainMenu:
-                    var rs2 = new RasterizerState {ScissorTestEnable = true};
+                    var rs2 = new RasterizerState { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs2);
                     _menu.Draw(SpriteBatch);
@@ -559,7 +574,7 @@ namespace Adam
                     //SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
                     //SpriteBatch.End();
 
-                    var rs = new RasterizerState {ScissorTestEnable = true};
+                    var rs = new RasterizerState { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
                     _overlay.Draw(SpriteBatch);
@@ -599,7 +614,7 @@ namespace Adam
                 if (DebugOn)
                 {
                     SpriteBatch.Begin();
-                    SpriteBatch.Draw(_blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White*.3f);
+                    SpriteBatch.Draw(_blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White * .3f);
                     SpriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
                     SpriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
                     SpriteBatch.DrawString(_debugFont,
@@ -612,7 +627,7 @@ namespace Adam
                         Color.White);
                     SpriteBatch.DrawString(_debugFont, "Times Updated: " + _gameWorld.TimesUpdated, new Vector2(0, 100),
                         Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Player is dead: " + Player.IsDead(), new Vector2(0, 120),
+                    SpriteBatch.DrawString(_debugFont, "Player is dead: " + Player.IsDead, new Vector2(0, 120),
                         Color.White);
                     //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);

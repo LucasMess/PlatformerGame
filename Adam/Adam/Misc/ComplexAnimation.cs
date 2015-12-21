@@ -46,7 +46,7 @@ namespace Adam.Misc
         /// <summary>
         /// Update the aniamtion, timers and fire events.
         /// </summary>
-        /// <param name="collRectangle"></param>
+        /// <param name="entity"></param>
         public void Update(Entity entity)
         {
             //SpeedParticle speed = new SpeedParticle(texture, drawRectangle.X, drawRectangle.Y, sourceRectangle, entity.IsFacingRight);
@@ -62,7 +62,7 @@ namespace Adam.Misc
                 _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
             }
 
-            _frameTimer.Increment();
+           
 
             if (_frameTimer.TimeElapsedInMilliSeconds > _currentAnimationData.Speed)
             {
@@ -71,11 +71,10 @@ namespace Adam.Misc
 
                 if (_currentFrame >= _currentAnimationData.FrameCount)
                 {
+                    AnimationEnded?.Invoke();
                     // Send notice that animation has ended.
                     if (!_currentAnimationData.IsRepeating)
-                    {
-                        if (AnimationEnded != null)
-                            AnimationEnded();
+                    { 
                         _currentFrame = _currentAnimationData.FrameCount - 1;
                     }
                     else
@@ -83,8 +82,7 @@ namespace Adam.Misc
                         _currentFrame = 0;
                     }
                 }
-                if (FrameChanged != null)
-                    FrameChanged(new FrameArgs(_currentFrame));
+                FrameChanged?.Invoke(new FrameArgs(_currentFrame));
             }
 
             _sourceRectangle.X = _currentFrame * _currentAnimationData.Width;
@@ -125,7 +123,8 @@ namespace Adam.Misc
             ComplexAnimData animData;
             if (!_animationData.TryGetValue(name, out animData))
             {
-                throw new Exception("Animation not found.");
+                //throw new Exception("Animation not found.");
+                return false;
             }
 
             // If the current animation has a larger priority, do not change the animation.
@@ -228,6 +227,24 @@ namespace Adam.Misc
             }
 
             _animationData.Add(name, data);
+        }
+
+        /// <summary>
+        /// Returns the texture being used currently.
+        /// </summary>
+        /// <returns></returns>
+        public Texture2D GetCurrentTexture()
+        {
+            return _currentAnimationData.Texture;
+        }
+
+        /// <summary>
+        /// Returns the current draw rectangle set by the animation settings.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetDrawRectangle()
+        {
+            return _drawRectangle;
         }
 
     }
