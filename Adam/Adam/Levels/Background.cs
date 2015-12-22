@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Windows.Documents;
 using Adam.Levels;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,57 +11,75 @@ using Microsoft.Xna.Framework;
 
 namespace Adam
 {
-
-
+    /// <summary>
+    /// Class responsible for drawing the three layered backgrounds for each level.
+    /// </summary>
     public class Background
     {
-        Image _background;
-        Image[] _middlegrounds = new Image[6];
-        Image[] _foregrounds = new Image[12];
-        public int BackgroundId = 1;
+        private Texture2D _backgroundTexture;
+        private Texture2D _middlegroundTexture;
+        private Texture2D _foregroundTexture;
+
+        private Vector2[] middleCoords = new Vector2[3];
+        private Vector2[] foreCoords = new Vector2[3];
+
+        /// <summary>
+        /// The current background Id.
+        /// </summary>
+        public int BackgroundId { get; set; } = 1;
         int _lastBackgroundId;
 
+        /// <summary>
+        /// Loads the textures based on the level settings.
+        /// </summary>
         public void Load()
         {
             BackgroundId = GameWorld.Instance.WorldData.BackgroundId;
+            if (BackgroundId == 0)
+            {
+                GameWorld.Instance.WorldData.BackgroundId = 1;
+                BackgroundId = 1;
+            }
 
-            try {
+            // Sets the textures to a default texture to avoid problems.
+            _backgroundTexture = Main.DefaultTexture;
+            _middlegroundTexture = Main.DefaultTexture;
+            _foregroundTexture = Main.DefaultTexture;
 
-                for (int i = 0; i < _middlegrounds.Length; i++)
-                {
-                    _middlegrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_middleground");
-                }
-
-                for (int i = 0; i < _foregrounds.Length; i++)
-                {
-                    _foregrounds[i].Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_foreground");
-                }
-
-                _background.Texture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_background");
+            // Tries to set the textures to what the level settings specify. If none are found, the default are kept.
+            try
+            {
+                Console.WriteLine("Reloading background textures.");
+                _backgroundTexture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_background");
+                _middlegroundTexture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_middleground");
+                _foregroundTexture = ContentHelper.LoadTexture("Backgrounds/" + BackgroundId + "_foreground");
             }
             catch (ContentLoadException)
             {
-                _lastBackgroundId = BackgroundId;
-                return;
+
             }
 
-
-            _background.Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
-            for (int i = 0; i < _middlegrounds.Length; i++)
+            // Makes three of each (except background).
+            List<Vector2> one = new List<Vector2>();
+            for (int i = 0; i < 3; i++)
             {
-                _middlegrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
+                Vector2 pos = new Vector2(-Main.DefaultResWidth + (Main.DefaultResWidth * i), 0);
+                one.Add(pos);
             }
-            for (int i = 0; i < _foregrounds.Length; i++)
-            {
-                _foregrounds[i].Rectangle = new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight);
-            }
+            middleCoords = one.ToArray();
+            foreCoords = one.ToArray();
 
+            // Changes the last Id so that it does not continue loading.
             _lastBackgroundId = BackgroundId;
         }
 
-
+        /// <summary>
+        /// Moves the backgrounds and sets their position, and also checks if the background changed.
+        /// </summary>
+        /// <param name="camera"></param>
         public void Update(Camera camera)
         {
+            // Checks if background changes.
             BackgroundId = GameWorld.Instance.WorldData.BackgroundId;
 
             if (_lastBackgroundId != BackgroundId)
@@ -68,36 +88,26 @@ namespace Adam
             }
 
 
-            _middlegrounds[0].Rectangle = new Rectangle((int)(camera.LastCameraLeftCorner.X / 10), _middlegrounds[0].Rectangle.Y, _middlegrounds[0].Rectangle.Width, _middlegrounds[0].Rectangle.Height);
+            middleCoords[0] = new Vector2((camera.LastCameraLeftCorner.X / 10) % Main.DefaultResWidth, 0);
+            foreCoords[0] = new Vector2((camera.LastCameraLeftCorner.X / 5) % Main.DefaultResWidth, 0);
 
-            for (int i = 1; i < _middlegrounds.Length; i++)
-            {
-                _middlegrounds[i].Rectangle = new Rectangle(_middlegrounds[i - 1].Rectangle.X + (_middlegrounds[i - 1].Rectangle.Width), _middlegrounds[i - 1].Rectangle.Y, _middlegrounds[i - 1].Rectangle.Width, _middlegrounds[i - 1].Rectangle.Height);
-            }
+            middleCoords[1] = middleCoords[0] + new Vector2(Main.DefaultResWidth, 0);
+            foreCoords[1] = foreCoords[0] + new Vector2(Main.DefaultResWidth, 0);
 
-            _foregrounds[0].Rectangle = new Rectangle((int)(camera.LastCameraLeftCorner.X / 5), _foregrounds[0].Rectangle.Y, _foregrounds[0].Rectangle.Width, _foregrounds[0].Rectangle.Height);
+            middleCoords[2] = middleCoords[0] - new Vector2(Main.DefaultResWidth, 0);
+            foreCoords[2] = foreCoords[0] - new Vector2(Main.DefaultResWidth, 0);
 
-            for (int i = 1; i < _foregrounds.Length; i++)
-            {
-                _foregrounds[i].Rectangle = new Rectangle(_foregrounds[i - 1].Rectangle.X + (_foregrounds[i - 1].Rectangle.Width), _foregrounds[i - 1].Rectangle.Y, _foregrounds[i - 1].Rectangle.Width, _foregrounds[i - 1].Rectangle.Height);
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_background.Texture == null)
-                return;
 
-            spriteBatch.Draw(_background.Texture, _background.Rectangle, Color.White);
+            spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
 
-            for (int i = 0; i < _middlegrounds.Length; i++)
+            for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(_middlegrounds[i].Texture, _middlegrounds[i].Rectangle, Color.White);
-            }
-
-            for (int i = 0; i < _foregrounds.Length; i++)
-            {
-                spriteBatch.Draw(_foregrounds[i].Texture, _foregrounds[i].Rectangle, Color.White);
+                spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
         }
     }

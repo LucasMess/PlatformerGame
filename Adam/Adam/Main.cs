@@ -39,11 +39,11 @@ namespace Adam
         public const bool InDebugMode = true;
         public const bool IsTestingMultiplayer = false;
         public const int Tilesize = 32;
-        public const int DefaultResWidth = 960; //960 or 1366
-        public const int DefaultResHeight = 540; //540 or 768
+        public const int DefaultResWidth = 960; // Default 960x540
+        public const int DefaultResHeight = 540;
         public const string Version = "Version 0.8.0 Beta";
         public const string Producers = "Duck Knight Duel Games";
-        public const float Gravity = .75f;
+        public const float Gravity = .90f;
 
         /// <summary>
         ///     The running instance of the game.
@@ -141,9 +141,9 @@ namespace Adam
             _graphics.PreferredBackBufferHeight = UserResHeight;
 
             // Change game settings here.
-            _graphics.SynchronizeWithVerticalRetrace = false;
+            _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = true;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
             // Set window to borderless.

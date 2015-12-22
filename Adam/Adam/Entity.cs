@@ -34,7 +34,7 @@ namespace Adam
 
         public event Entityhandler HasFinishedDying;
 
-        const float FrictionConstant = 91f / 90f;
+        const float FrictionConstant = 94f / 90f;
 
         // Collision with terrain events.
         public event TileHandler CollidedWithTileAbove;
@@ -297,11 +297,11 @@ namespace Adam
             if (IsCollidable)
             {
                 CheckTerrainCollision();
-
-                // y = (499/45) * (x / (x + 1)
-                var friction = FrictionConstant * (Weight / ((float)Weight + 1));
-                Velocity *= (float)Math.Pow(friction, Main.TimeDelta);
             }
+
+            // y = (499/45) * (x / (x + 1)
+            var friction = FrictionConstant * (Weight / ((float)Weight + 1));
+            Velocity *= friction;
 
             //Animate entity if applicable.
             if (this is IAnimated)
@@ -451,7 +451,7 @@ namespace Adam
             GetDisintegratedRectangles(out desinRectangles);
             foreach (Rectangle rect in desinRectangles)
             {
-                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle),CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(GameWorld.RandGen.Next(-5,5)/10f, -GameWorld.RandGen.Next(-5, 5) / 10f), this);
+                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(GameWorld.RandGen.Next(-5, 5) / 10f, -GameWorld.RandGen.Next(-5, 5) / 10f), this);
                 GameWorld.ParticleSystem.Add(par);
             }
 
@@ -544,7 +544,7 @@ namespace Adam
             int[] q = GetNearbyTileIndexes(GameWorld.Instance);
 
             //Solve Y collisions
-            CollRectangle.Y += (int)Velocity.Y;
+            CollRectangle.Y += (int)(Velocity.Y);
             foreach (int quadrant in q)
             {
                 if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
@@ -579,7 +579,7 @@ namespace Adam
             }
 
             //Solve X Collisions
-            CollRectangle.X += (int)Velocity.X;
+            CollRectangle.X += (int)(Velocity.X);
             foreach (int quadrant in q)
             {
                 if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
@@ -694,7 +694,7 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            Velocity.Y += GravityStrength * Main.TimeDelta;
+            Velocity.Y += (GravityStrength);
         }
 
         /// <summary>

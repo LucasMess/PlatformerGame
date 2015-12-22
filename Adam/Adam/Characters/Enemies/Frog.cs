@@ -23,7 +23,7 @@ namespace Adam.Characters.Enemies
             SourceRectangle = new Rectangle(0, 0, 24, 32);
 
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(4, 16, 24, 32), 0, 24, 32, 125, 4, true));
-            ComplexAnim.AddAnimationData("jump", new ComplexAnimData(100, Texture, new Rectangle(4, 16, 24, 32), 32, 24, 32, 125, 4, false));
+            ComplexAnim.AddAnimationData("jump", new ComplexAnimData(100, Texture, new Rectangle(4, 16, 24, 32), 32, 24, 32, 50, 4, false));
 
             Sounds.AddSoundRef("jump", "Sounds/Frog/frog_jump");
         }

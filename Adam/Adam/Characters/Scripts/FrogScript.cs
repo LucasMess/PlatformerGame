@@ -12,7 +12,7 @@ namespace Adam.Characters.Scripts
         Timer _jumpTimer = new Timer();
 
         double _timeBetweenJumps = 2000;
-        const float JumpVel = -12f;
+        const float JumpVel = -14f;
         const float MoveVel = 5f;
 
         public override void Initialize(Entity entity)

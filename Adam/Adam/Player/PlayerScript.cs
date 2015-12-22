@@ -13,9 +13,9 @@ namespace Adam
         Player.Player _player;
         public static bool IsDoingAction = false;
 
-        const float JumpAcc = -15f;
-        const float WalkAcc = .08f;
-        const float RunAcc = .12f;
+        const float JumpAcc = -17f;
+        const float WalkAcc = .13f;
+        const float RunAcc = .20f;
         const float DashSpeed = 40f;
 
         Timer _idleTimer = new Timer();
