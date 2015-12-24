@@ -207,22 +207,6 @@ namespace Adam
             Opacity = 1;
         }
 
-        public void CreatePlayerDesintegrationEffect(Player.Player player, Rectangle sourceRectangle)
-        {
-            this._player = player;
-            CurrentParticle = ParticleType.PlayerDesintegration;
-            //Texture = player.GetSingleTexture();
-            CollRectangle = new Rectangle(player.GetCollRectangle().X + sourceRectangle.X, player.GetCollRectangle().Y + sourceRectangle.Y,
-                sourceRectangle.Width, sourceRectangle.Height);
-            this.SourceRectangle = sourceRectangle;
-            int maxTanSpeed = 5;
-            Velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
-            _originalPosition = new Vector2(CollRectangle.X, CollRectangle.Y);
-            _differenceInPosition = new Vector2(player.RespawnPos.X - player.GetCollRectangle().X, player.RespawnPos.Y - player.GetCollRectangle().Y);
-            _endPosition = _originalPosition + _differenceInPosition;
-            Position = new Vector2(CollRectangle.X, CollRectangle.Y);
-        }
-
         public void CreateMusicNotesEffect(CdPlayer cd)
         {
             CurrentParticle = ParticleType.MusicNotes;
@@ -824,7 +808,7 @@ namespace Adam
 
             if (CollRectangle.Intersects(GameWorld.Instance.Player.GetCollRectangle()))
             {
-                GameWorld.Instance.Player.TakeDamageAndKnockBack(EnemyDb.MachineGunProjDamage);
+                
             }
 
             base.Update();

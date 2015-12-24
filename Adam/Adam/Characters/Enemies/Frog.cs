@@ -28,18 +28,6 @@ namespace Adam.Characters.Enemies
             Sounds.AddSoundRef("jump", "Sounds/Frog/frog_jump");
         }
 
-        private Rectangle _respawnRect;
-        public override Rectangle RespawnLocation
-        {
-            get
-            {
-                if (_respawnRect == new Rectangle(0, 0, 0, 0))
-                {
-                    _respawnRect = CollRectangle;
-                }
-                return _respawnRect;
-            }
-        }
 
         public override byte Id
         {

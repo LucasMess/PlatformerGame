@@ -6,10 +6,12 @@ namespace Adam.Player
 {
     public partial class Player : Character
     {
-        bool _isController = false;
-
         public delegate void EventHandler();
 
+        private static bool _hasInitialized;
+        private readonly bool _isController = false;
+        private bool _attackIsPressed;
+        private bool _spaceIsPressed;
         public event EventHandler StillUpdate;
         public event EventHandler JumpAction;
         public event EventHandler StopJumpAction;
@@ -28,31 +30,28 @@ namespace Adam.Player
 
         private void InitializeInput()
         {
-            StillUpdate += Player_StillUpdate;
-            JumpAction += Player_JumpAction;
-            StopJumpAction += Player_StopJumpAction;
-            RightMove += Player_RightMove;
-            LeftMove += Player_LeftMove;
-            InteractAction += Player_InteractAction;
-            DuckAction += Player_DuckAction;
-            AttackAction += Player_AttackAction;
-            DefendAction += Player_DefendAction;
-            DashAction += Player_DashAction;
-            UltimateAction += Player_UltimateAction;
-            FastRunActive += Player_FastRunActive;
-            FastRunInactive += Player_FastRunInactive;
-            NotIdle += Player_NotIdle;
-            ClimbingAction += Player_ClimbingAction;
+            if (!_hasInitialized)
+            {
+                StillUpdate += Player_StillUpdate;
+                JumpAction += Player_JumpAction;
+                RightMove += Player_RightMove;
+                LeftMove += Player_LeftMove;
+                InteractAction += Player_InteractAction;
+                DuckAction += Player_DuckAction;
+                AttackAction += Player_AttackAction;
+                DefendAction += Player_DefendAction;
+                DashAction += Player_DashAction;
+                UltimateAction += Player_UltimateAction;
+                FastRunActive += Player_FastRunActive;
+                FastRunInactive += Player_FastRunInactive;
+                NotIdle += Player_NotIdle;
+                ClimbingAction += Player_ClimbingAction;
+            }
         }
 
         private void Player_ClimbingAction()
         {
             throw new NotImplementedException();
-        }
-
-        private void Player_StopJumpAction()
-        {
-            script.StopJumpAction(this);
         }
 
         private void Player_NotIdle()
@@ -77,7 +76,6 @@ namespace Adam.Player
 
         private void Player_UltimateAction()
         {
-            
         }
 
         private void Player_DashAction()
@@ -87,7 +85,6 @@ namespace Adam.Player
 
         private void Player_DefendAction()
         {
-           
         }
 
         private void Player_AttackAction()
@@ -102,7 +99,6 @@ namespace Adam.Player
 
         private void Player_InteractAction()
         {
-            
         }
 
         private void Player_LeftMove()
@@ -128,20 +124,24 @@ namespace Adam.Player
         }
 
         /// <summary>
-        /// Check keyboard input and fire events according to what was pressed.
+        ///     Check keyboard input and fire events according to what was pressed.
         /// </summary>
         private void UpdateWithKeyboard()
         {
             StillUpdate();
 
-           
+            if (InputHelper.IsKeyUp(Keys.H))
+            {
+                _attackIsPressed = false;
+            }
 
-            if (InputHelper.IsKeyDown(Keys.H))
+            if (InputHelper.IsKeyDown(Keys.H) && !_attackIsPressed)
+            {
                 PlayerScript.TimeSinceLastPunch.Reset();
+            }
 
             if (!PlayerScript.IsDoingAction)
             {
-
                 if (InputHelper.IsKeyDown(Keys.A))
                     LeftMove();
                 if (InputHelper.IsKeyDown(Keys.D))
@@ -150,8 +150,21 @@ namespace Adam.Player
                     DuckAction();
                 if (InputHelper.IsKeyDown(Keys.W))
                     InteractAction();
+
                 if (InputHelper.IsKeyDown(Keys.H))
-                    AttackAction();
+                {
+                    if (!_attackIsPressed)
+                    {
+                        AttackAction();
+                        _attackIsPressed = true;
+                    }
+                }
+                else
+                {
+                    _attackIsPressed = false;
+                }
+
+
                 if (InputHelper.IsKeyDown(Keys.J))
                     DefendAction();
                 if (InputHelper.IsKeyDown(Keys.K))
@@ -159,10 +172,16 @@ namespace Adam.Player
                 if (InputHelper.IsKeyDown(Keys.L))
                     UltimateAction();
                 if (InputHelper.IsKeyDown(Keys.Space))
-                    JumpAction();
+                {
+                    if (!_spaceIsPressed)
+                    {
+                        JumpAction();
+                        _spaceIsPressed = true;
+                    }
+                }
                 else
                 {
-                    StopJumpAction();
+                    _spaceIsPressed = false;
                 }
                 if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
                     FastRunActive();
@@ -170,19 +189,14 @@ namespace Adam.Player
                 {
                     FastRunInactive();
                 }
-
             }
 
             if (InputHelper.IsAnyInputPressed())
                 NotIdle();
-
         }
 
         private void UpdateWithController()
         {
-
         }
-
-
     }
 }

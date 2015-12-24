@@ -17,7 +17,6 @@ namespace Adam.Characters.Enemies
         /// </summary>
         public override void Update()
         {
-            Rectangle check = RespawnLocation;
             PlayMeanSound();
             CheckInteractionsWithPlayer();
 
@@ -85,15 +84,5 @@ namespace Adam.Characters.Enemies
             }
 
         }
-
-        public override void Revive()
-        {
-            CollRectangle = RespawnLocation;
-
-            base.Revive();
-        }
-
-
-
     }
 }

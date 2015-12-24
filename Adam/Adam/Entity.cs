@@ -56,7 +56,6 @@ namespace Adam
         private Texture2D _texture;
         private Color _color = Color.White;
 
-        private bool _isFacingRight;
         private bool _healthGiven;
 
         private DynamicPointLight _light;
@@ -78,6 +77,7 @@ namespace Adam
             CollidedWithTileToLeft += OnCollisionWithTileToLeft;
             CollidedWithTileToRight += OnCollisionWithTileToRight;
             CollidedWithTerrain += OnCollisionWithTerrain;
+            Main.GameUpdateCalled += DefineRespawnPoint;
         }
 
         /// <summary>
@@ -258,18 +258,7 @@ namespace Adam
         /// <summary>
         /// Returns true if the entity's texture is facing right.
         /// </summary>
-        public bool IsFacingRight
-        {
-            get
-            {
-                return _isFacingRight;
-            }
-
-            set
-            {
-                _isFacingRight = value;
-            }
-        }
+        public bool IsFacingRight { get; set; }
 
         /// <summary>
         /// Determines whether the entity can be deleted or not.
@@ -317,6 +306,16 @@ namespace Adam
             // Update complex animations if this entity has it.
             ComplexAnim?.Update(this);
 
+        }
+
+        /// <summary>
+        /// Called right after the entity spawns to define the respawn location;
+        /// </summary>
+        /// <param name="gameTime"></param>
+        private void DefineRespawnPoint(GameTime gameTime)
+        {
+            Main.GameUpdateCalled -= DefineRespawnPoint;
+            Vector2 v = RespawnPos;
         }
 
         /// <summary>
@@ -724,6 +723,12 @@ namespace Adam
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
             CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
+
+            if (Math.Abs(Velocity.Y) > 5)
+            {
+                CreateStompParticles(CollRectangle.Width/10);
+            }
+
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
@@ -799,7 +804,14 @@ namespace Adam
         /// </summary>
         public virtual void Revive()
         {
+            _respawnTimer.SetTimeReached -= Revive;
+            CollRectangle = new Rectangle((int)RespawnPos.X, (int)RespawnPos.Y, CollRectangle.Width,
+                CollRectangle.Height);
+            Console.WriteLine("Respawned at location: {0}, {1}",RespawnPos.X,RespawnPos.Y);
             Health = MaxHealth;
+            Velocity = new Vector2(0, 0);
+            IsDead = false;
+            IsAboutToDie = false;
         }
 
         /// <summary>
@@ -889,6 +901,19 @@ namespace Adam
                     rectangles[i] = new Rectangle(w * width, h * height, width, height);
                     i++;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Creates and adds stomp particles where the entity is.
+        /// </summary>
+        /// <param name="count"></param>
+        public void CreateStompParticles(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(GameWorld.RandGen.Next(-5, 5) / 10f, -GameWorld.RandGen.Next(1, 5) / 10f));
+                GameWorld.ParticleSystem.Add(par);
             }
         }
 

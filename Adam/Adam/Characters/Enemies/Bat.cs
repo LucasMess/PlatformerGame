@@ -27,18 +27,6 @@ namespace Adam.Characters.Enemies
 
         public override byte Id => 207;
 
-        public override Rectangle RespawnLocation
-        {
-            get
-            {
-                if (_respawnRect == new Rectangle(0, 0, 0, 0))
-                {
-                    _respawnRect = CollRectangle;
-                }
-                return _respawnRect;
-            }
-        }
-
         public override int MaxHealth => EnemyDb.BatMaxHealth;
         protected override SoundFx MeanSound => null;
         protected override SoundFx AttackSound => null;

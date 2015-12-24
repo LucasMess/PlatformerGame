@@ -271,6 +271,7 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     _animationPlaysOnce = true;
+                    DrawRectangle.X = _originalPosition.X + Main.Tilesize/4;
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     var chest = new Chest(this);
                     break;

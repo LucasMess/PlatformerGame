@@ -298,7 +298,6 @@ namespace Adam
             if (Player.GetCollRectangle().Intersects(CollRectangle) && !IsInactive)
             {
                 IsInactive = true;
-                Player.TakeDamageAndKnockBack(Enemy.GetProjectileDamage());
             }
         }
 

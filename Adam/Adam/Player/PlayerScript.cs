@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
+using Adam.Particles;
 
 namespace Adam
 {
@@ -90,11 +92,6 @@ namespace Adam
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
-        internal void StopJumpAction(Player.Player player)
-        {
-            player.GravityStrength = Main.Gravity;
-        }
-
         public void OnJumpAction(Player.Player player)
         {
             if (!player.IsJumping)
@@ -105,6 +102,14 @@ namespace Adam
                 player.ChangePosBy(0, -1);
                 player.AddAnimationToQueue("jump");
                 player.CollidedWithTileBelow += OnTouchGround;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()),player.GetCollRectangle().Bottom,new Vector2(GameWorld.RandGen.Next((int)player.GetVelocity().X - 1,(int)player.GetVelocity().X + 1)/10f,-GameWorld.RandGen.Next(1,10)/10f));
+                    GameWorld.ParticleSystem.Add(par);
+                }
+
+
             }
 
             if (_airTimer.TimeElapsedInMilliSeconds < 1000)
@@ -239,7 +244,7 @@ namespace Adam
             player.AnimationEnded -= OnPunchEnded;
             IsDoingAction = false;
 
-            if (TimeSinceLastPunch.TimeElapsedInMilliSeconds < 100)
+            if (TimeSinceLastPunch.TimeElapsedInMilliSeconds < 325)
             {
                 player.AttackSound.Play();
                 player.AddAnimationToQueue("punch2");

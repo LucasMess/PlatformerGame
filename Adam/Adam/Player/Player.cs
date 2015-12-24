@@ -26,7 +26,6 @@ namespace Adam.Player
         public bool CanFly;
         public bool IsGhost;
         public bool IsInvulnerable;
-        public Vector2 RespawnPos;
 
         public Player(Main game1)
         {
@@ -86,10 +85,10 @@ namespace Adam.Player
             Initialize(0, 0);
 
             PlayerAttacked += OnPlayerAttack;
+            HasFinishedDying += OnPlayerDeath;
         }
 
         protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
-
         //Player stats
         public int Score
         {
@@ -108,7 +107,6 @@ namespace Adam.Player
         }
 
         public override int MaxHealth => 100;
-
         //Animation Variables
         public int CurrentAnimationFrame { get; private set; }
         public event EventHandler PlayerRespawned;
@@ -213,13 +211,13 @@ namespace Adam.Player
         {
             if (!IsJumping)
             {
-            
                 if (Math.Abs(Velocity.X) < .1f)
                     return;
                 if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000/Math.Abs(Velocity.X))
                 {
                     _movementParticlesTimer.Reset();
-                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom, new Vector2(0,(float)(GameWorld.RandGen.Next(-1,1) * GameWorld.RandGen.NextDouble())));
+                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
+                        new Vector2(0, (float) (GameWorld.RandGen.Next(-1, 1)*GameWorld.RandGen.NextDouble())));
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -230,10 +228,8 @@ namespace Adam.Player
             // Checks to see if player is on fire and deals damage accordingly.
             if (IsOnFire)
             {
-               
                 if (_onFireTimer.TimeElapsedInSeconds < 4)
                 {
-                  
                     if (_fireTickTimer.TimeElapsedInMilliSeconds > 500)
                     {
                         TakeDps(EnemyDb.FlameSpitterDps);
@@ -272,14 +268,6 @@ namespace Adam.Player
         public void TakeDps(int damage)
         {
             Health -= damage;
-        }
-
-        public void TakeDamageAndKnockBack(int damage)
-        {
-        }
-
-        public override void Revive()
-        {
         }
 
         private void CreateJumpParticles()
@@ -321,6 +309,17 @@ namespace Adam.Player
             CollRectangle.X = (int) position.X;
             CollRectangle.Y = (int) position.Y;
             Overlay.Instance.FadeIn();
+        }
+
+        private void OnPlayerDeath(Entity entity)
+        {
+            _respawnTimer.ResetAndWaitFor(1000);
+            _respawnTimer.SetTimeReached += Revive;
+        }
+
+        public void SetRespawnPoint(int x, int y)
+        {
+            RespawnPos = new Vector2(x,y);
         }
     }
 }

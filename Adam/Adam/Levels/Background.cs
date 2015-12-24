@@ -96,7 +96,6 @@ namespace Adam
 
             middleCoords[2] = middleCoords[0] - new Vector2(Main.DefaultResWidth, 0);
             foreCoords[2] = foreCoords[0] - new Vector2(Main.DefaultResWidth, 0);
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -107,6 +106,9 @@ namespace Adam
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+            }
+            for (int i = 0; i < 3; i++)
+            {
                 spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
         }

@@ -23,6 +23,7 @@ namespace Adam.Characters.Enemies
         {
             GameWorld.Instance.GetPlayer().PlayerAttacked += OnPlayerAttack;
             HasFinishedDying += Enemy_HasFinishedDying;
+            RespawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
         }
 
         /// <summary>
@@ -31,6 +32,8 @@ namespace Adam.Characters.Enemies
         /// <param name="entity"></param>
         private void Enemy_HasFinishedDying(Entity entity)
         {
+            _respawnTimer.ResetAndWaitFor(120 * 1000);
+            _respawnTimer.SetTimeReached += Revive;
             Gem.Generate(MaxHealth/10,this);
             PlayDeathSound();
         }
@@ -39,14 +42,6 @@ namespace Adam.Characters.Enemies
         /// The ID that identifies the enemy type.
         /// </summary>
         public abstract byte Id
-        {
-            get;
-        }
-
-        /// <summary>
-        /// The original rectangle when the enemy spawned.
-        /// </summary>
-        public abstract Rectangle RespawnLocation
         {
             get;
         }

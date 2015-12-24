@@ -37,7 +37,7 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
             GameWorld.Instance.LightEngine.AddDynamicLight(Light);
 
@@ -53,7 +53,7 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(GameWorld.RandGen.Next(-3, 4), GameWorld.RandGen.Next(-10, -5));
+            Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
             GameWorld.Instance.LightEngine.AddDynamicLight(Light);
 

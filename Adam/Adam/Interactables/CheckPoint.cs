@@ -103,7 +103,7 @@ namespace Adam.Interactables
 
             //Sets respawn point;
             Player.Player player = GameWorld.Instance.Player;
-            player.RespawnPos = new Vector2(this.DrawRectangle.X, this.DrawRectangle.Y);
+            player.SetRespawnPoint(DrawRectangle.X, DrawRectangle.Y);
 
             //Particle effects
             for (int i = 0; i < 100; i++)
