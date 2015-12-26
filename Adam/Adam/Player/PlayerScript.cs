@@ -14,10 +14,11 @@ namespace Adam
     {
         Player.Player _player;
         public static bool IsDoingAction = false;
+        private bool _isDucking;
 
         const float JumpAcc = -17f;
-        const float WalkAcc = .13f;
-        const float RunAcc = .20f;
+        const float WalkAcc = .35f;
+        const float RunAcc = .50f;
         const float DashSpeed = 40f;
 
         Timer _idleTimer = new Timer();
@@ -132,6 +133,9 @@ namespace Adam
 
         public void OnRightMove(Player.Player player)
         {
+            if (_isDucking)
+                return;
+
             float acc = WalkAcc;
             if (player.IsRunningFast)
             {
@@ -162,6 +166,9 @@ namespace Adam
 
         public void OnLeftMove(Player.Player player)
         {
+            if (_isDucking)
+                return;
+
             float acc = WalkAcc;
             if (player.IsRunningFast)
             {
@@ -199,14 +206,14 @@ namespace Adam
 
         public void OnDuckAction(Player.Player player)
         {
-            player.AddAnimationToQueue("standup");
-            player.AnimationEnded += OnStandUpEnd;
-            player.AddAnimationToQueue("fightIdle");
+            player.AddAnimationToQueue("duck");
+            _isDucking = true;
         }
 
-        private void OnStandUpEnd(Player.Player player)
+        public void OnDuckActionStop(Player.Player player)
         {
-            player.RemoveAnimationFromQueue("standup");
+            player.RemoveAnimationFromQueue("duck");
+            _isDucking = false;
         }
 
         public void OnAttackAction(Player.Player player)

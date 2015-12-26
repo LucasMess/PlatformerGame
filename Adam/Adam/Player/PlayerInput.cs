@@ -1,17 +1,16 @@
 ﻿using System;
 using Adam.Characters;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Adam.Player
 {
     public partial class Player : Character
     {
-        public delegate void EventHandler();
-
         private static bool _hasInitialized;
-        private readonly bool _isController = false;
+        public bool IsController { get; set; }
         private bool _attackIsPressed;
-        private bool _spaceIsPressed;
+        private bool _jumpButtonIsPressed;
         public event EventHandler StillUpdate;
         public event EventHandler JumpAction;
         public event EventHandler StopJumpAction;
@@ -19,6 +18,7 @@ namespace Adam.Player
         public event EventHandler LeftMove;
         public event EventHandler InteractAction;
         public event EventHandler DuckAction;
+        public event EventHandler DuckActionStop;
         public event EventHandler AttackAction;
         public event EventHandler DefendAction;
         public event EventHandler DashAction;
@@ -26,7 +26,6 @@ namespace Adam.Player
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
         public event EventHandler NotIdle;
-        public event EventHandler ClimbingAction;
 
         private void InitializeInput()
         {
@@ -38,6 +37,7 @@ namespace Adam.Player
                 LeftMove += Player_LeftMove;
                 InteractAction += Player_InteractAction;
                 DuckAction += Player_DuckAction;
+                DuckActionStop += Player_DuckActionStop; ;
                 AttackAction += Player_AttackAction;
                 DefendAction += Player_DefendAction;
                 DashAction += Player_DashAction;
@@ -45,13 +45,13 @@ namespace Adam.Player
                 FastRunActive += Player_FastRunActive;
                 FastRunInactive += Player_FastRunInactive;
                 NotIdle += Player_NotIdle;
-                ClimbingAction += Player_ClimbingAction;
+                _hasInitialized = true;
             }
         }
 
-        private void Player_ClimbingAction()
+        private void Player_DuckActionStop()
         {
-            throw new NotImplementedException();
+            script.OnDuckActionStop(this);
         }
 
         private void Player_NotIdle()
@@ -116,46 +116,40 @@ namespace Adam.Player
             script.OnJumpAction(this);
         }
 
-        private void CheckInput()
-        {
-            if (_isController)
-                UpdateWithController();
-            else UpdateWithKeyboard();
-        }
-
         /// <summary>
         ///     Check keyboard input and fire events according to what was pressed.
         /// </summary>
-        private void UpdateWithKeyboard()
+        private void CheckInput()
         {
-            StillUpdate();
+            StillUpdate?.Invoke();
 
-            if (InputHelper.IsKeyUp(Keys.H))
+            if (!IsPunchPressed())
             {
                 _attackIsPressed = false;
             }
 
-            if (InputHelper.IsKeyDown(Keys.H) && !_attackIsPressed)
+            if (IsPunchPressed() && !_attackIsPressed)
             {
                 PlayerScript.TimeSinceLastPunch.Reset();
             }
 
             if (!PlayerScript.IsDoingAction)
             {
-                if (InputHelper.IsKeyDown(Keys.A))
-                    LeftMove();
-                if (InputHelper.IsKeyDown(Keys.D))
-                    RightMove();
-                if (InputHelper.IsKeyDown(Keys.S))
-                    DuckAction();
-                if (InputHelper.IsKeyDown(Keys.W))
-                    InteractAction();
+                if (IsMoveLeftPressed())
+                    LeftMove?.Invoke();
+                if (IsMoveRightPressed())
+                    RightMove?.Invoke();
+                if (IsMoveDownPressed())
+                    DuckAction?.Invoke();
+                else DuckActionStop?.Invoke();
+                if (IsInteractPressed())
+                    InteractAction?.Invoke();
 
-                if (InputHelper.IsKeyDown(Keys.H))
+                if (IsPunchPressed())
                 {
                     if (!_attackIsPressed)
                     {
-                        AttackAction();
+                        AttackAction?.Invoke();
                         _attackIsPressed = true;
                     }
                 }
@@ -166,37 +160,69 @@ namespace Adam.Player
 
 
                 if (InputHelper.IsKeyDown(Keys.J))
-                    DefendAction();
+                    DefendAction?.Invoke();
                 if (InputHelper.IsKeyDown(Keys.K))
-                    DashAction();
+                    DashAction?.Invoke();
                 if (InputHelper.IsKeyDown(Keys.L))
-                    UltimateAction();
-                if (InputHelper.IsKeyDown(Keys.Space))
+                    UltimateAction?.Invoke();
+                if (IsJumpButtonPressed())
                 {
-                    if (!_spaceIsPressed)
+                    if (!_jumpButtonIsPressed)
                     {
-                        JumpAction();
-                        _spaceIsPressed = true;
+                        JumpAction?.Invoke();
+                        _jumpButtonIsPressed = true;
                     }
                 }
                 else
                 {
-                    _spaceIsPressed = false;
+                    _jumpButtonIsPressed = false;
                 }
-                if (InputHelper.IsKeyDown(Keys.LeftShift) || InputHelper.IsKeyDown(Keys.RightShift))
-                    FastRunActive();
+                if (IsSprinting())
+                    FastRunActive?.Invoke();
                 else
                 {
-                    FastRunInactive();
+                    FastRunInactive?.Invoke();
                 }
             }
 
             if (InputHelper.IsAnyInputPressed())
-                NotIdle();
+                NotIdle?.Invoke();
         }
 
-        private void UpdateWithController()
+        private bool IsJumpButtonPressed()
         {
+            return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
         }
+
+        private bool IsMoveRightPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
+        }
+
+        private bool IsMoveLeftPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
+        }
+
+        private bool IsMoveDownPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
+        }
+
+        private bool IsInteractPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+        }
+
+        private bool IsPunchPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+        }
+
+        private bool IsSprinting()
+        {
+            return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+        }
+
     }
 }

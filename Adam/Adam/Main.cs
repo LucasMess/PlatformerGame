@@ -31,7 +31,14 @@ namespace Adam
     {
         None,
         Edit,
-        Play
+        Play,
+    }
+
+    public enum LevelType
+    {
+        Free,
+        ChaseUp,
+        ChaseRight,
     }
 
     public class Main : Game

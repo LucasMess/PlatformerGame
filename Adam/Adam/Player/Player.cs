@@ -36,7 +36,7 @@ namespace Adam.Player
             var edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_darker");
             var idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             var ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
-            var standupTexture = ContentHelper.LoadTexture("Characters/adam_standup");
+            var fallStandTexture = ContentHelper.LoadTexture("Characters/adam_fall");
             var fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
 
             AttackSound = new SoundFx("Player/attackSound");
@@ -59,7 +59,9 @@ namespace Adam.Player
             ComplexAnim.AddAnimationData("run",
                 new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("standup",
-                new ComplexAnimData(155, standupTexture, new Rectangle(15, 11, 12, 66), 0, 45, 40, 125, 3, false));
+                new ComplexAnimData(155, fallStandTexture, new Rectangle(15, 7, 12, 66), 0, 45, 40, 125, 3, false));
+            ComplexAnim.AddAnimationData("duck",
+                new ComplexAnimData(156, fallStandTexture, new Rectangle(15, 7, 12, 66), 40, 45, 40, 125, 3, false));
             ComplexAnim.AddAnimationData("jump",
                 new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
             ComplexAnim.AddAnimationData("climb",

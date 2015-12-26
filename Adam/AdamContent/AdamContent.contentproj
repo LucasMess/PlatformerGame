@@ -1680,13 +1680,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\adam_fall.png">
-      <Name>adam_fall</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Characters\adam_standup.png">
       <Name>adam_standup</Name>
       <Importer>TextureImporter</Importer>
@@ -1757,6 +1750,13 @@
   <ItemGroup>
     <Compile Include="Tiles\spritemap_18.png">
       <Name>spritemap_18</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Characters\adam_fall.png">
+      <Name>adam_fall</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
