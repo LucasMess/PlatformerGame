@@ -10,6 +10,7 @@ using Adam.Misc;
 using Adam.UI.Elements;
 using Adam.Misc.Helpers;
 using Adam.Interactables;
+using Adam.Misc.Sound;
 
 namespace Adam.Levels
 {
@@ -108,7 +109,7 @@ namespace Adam.Levels
             CheckIfPositioningPlayer();
             CheckIfChangedToWallMode();
 
-            float deltaOpacity = .05f;
+            const float deltaOpacity = .05f;
 
             if (!OnInventory)
             {
@@ -197,7 +198,7 @@ namespace Adam.Levels
         private void CheckForCameraMovement()
         {
             _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight, true);
-            int speed = 15;
+            const int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
             {

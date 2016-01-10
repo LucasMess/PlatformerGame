@@ -244,7 +244,6 @@ namespace Adam
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<SpriteFont>("debug");
-            _menu.Load(Content);
             _cutscene.Load(Content);
 
             _debug = new GameDebug(_debugFont, new Vector2(UserResWidth, UserResHeight), _blackScreen);
@@ -259,7 +258,6 @@ namespace Adam
             CurrentGameState = GameState.LoadingScreen;
             _desiredGameState = desiredGameState;
             IsLoadingContent = true;
-            _loadingScreen.Restart();
 
             if (desiredGameState == GameState.GameWorld)
             {
@@ -277,7 +275,6 @@ namespace Adam
             CurrentGameMode = mode;
             _desiredGameState = GameState.GameWorld;
             IsLoadingContent = true;
-            _loadingScreen.Restart();
 
             _reloadThread = new Thread(BackgroundThread_FileLoad);
             _reloadThread.IsBackground = true;
@@ -415,9 +412,9 @@ namespace Adam
                     _menu.Update(this, gameTime, GameData.Settings);
                     break;
                 case GameState.LoadingScreen:
-                    _loadingScreen.Update(gameTime);
+                    _loadingScreen.Update();
 
-                    if (!IsLoadingContent && _loadingScreen.IsReady)
+                    if (!IsLoadingContent)
                     {
                         CurrentGameState = _desiredGameState;
                         _overlay.FadeIn();

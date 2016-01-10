@@ -812,6 +812,7 @@ namespace Adam
             Velocity = new Vector2(0, 0);
             IsDead = false;
             IsAboutToDie = false;
+            ComplexAnim?.RemoveFromQueue("death");
         }
 
         /// <summary>

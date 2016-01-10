@@ -1734,13 +1734,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\adam_eden_darker.png">
-      <Name>adam_eden_darker</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tiles\spritemap_17.png">
       <Name>spritemap_17</Name>
       <Importer>TextureImporter</Importer>
@@ -1757,6 +1750,20 @@
   <ItemGroup>
     <Compile Include="Characters\adam_fall.png">
       <Name>adam_fall</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Characters\adam_eden_darker.png">
+      <Name>adam_eden_darker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Backgrounds\Main Menu\menu_background_temp.png">
+      <Name>menu_background_temp</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

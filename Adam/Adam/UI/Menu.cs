@@ -13,11 +13,15 @@ using Adam.Network;
 using Adam.UI;
 using Adam.GameData;
 using Adam.Misc;
+using Adam.Misc.Helpers;
+using Adam.Misc.Sound;
 
 namespace Adam
 {
     public class Menu
     {
+        private Texture2D background;
+
         Vector2 _first;
         Vector2 _second;
         Vector2 _third;
@@ -49,21 +53,12 @@ namespace Adam
         Button _backButton;
         List<Button> _buttons = new List<Button>();
 
-        Texture2D _background, _foreground, _adam, _apple;
-        Rectangle _adamRect, _sourceRect;
-        Rectangle _appleRect, _appleSource;
         GameTime _gameTime;
-        double _frameTimer;
-        double _appleTimer;
-        int _switchFrame, _currentFrame;
         bool _isSongPlaying;
-        SpriteFont _font;
+        SpriteFont _font32, _font64;
         Main _game1;
 
         LevelSelection _levelSelection;
-
-        List<Particle> _zzzList = new List<Particle>();
-        double _zzzTimer;
 
         public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession  }
         public static MenuState CurrentMenuState = MenuState.Main;
@@ -72,7 +67,7 @@ namespace Adam
         {
             this._game1 = game1;
 
-            int width = (int)(530 / Main.WidthRatio);
+            int width = (int)(Main.DefaultResWidth / 2f / Main.WidthRatio);
             int height = (int)(200 / Main.HeightRatio);
             int diff = (int)(40 / Main.HeightRatio);
             _first = new Vector2(width, height + (diff * 0));
@@ -80,6 +75,10 @@ namespace Adam
             _third = new Vector2(width, height + (diff * 2));
             _fourth = new Vector2(width, height + (diff * 3));
             _fifth = new Vector2(width, height + (diff * 4));
+
+            background = ContentHelper.LoadTexture("Backgrounds/Main Menu/menu_background_temp");
+            _font32 = ContentHelper.LoadFont("Fonts/x32");
+            _font64 = ContentHelper.LoadFont("Fonts/x64");
 
             _chooseLevel = new Button(_second, "Choose a Level");
             _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
@@ -287,49 +286,8 @@ namespace Adam
             CurrentMenuState = MenuState.Options;
         }
 
-        public void Load(ContentManager content)
-        {
-            _background = ContentHelper.LoadTexture("Menu/menu_back");
-            _adam = ContentHelper.LoadTexture("Menu/menu_adam");
-            _foreground = ContentHelper.LoadTexture("Menu/menu_front");
-            _apple = ContentHelper.LoadTexture("Menu/menu_apple");
-            _font = content.Load<SpriteFont>("Fonts/x32");
-
-
-
-            double scaleWidth = 8 / Main.WidthRatio;
-            double scaleHeight = 8 / Main.HeightRatio;
-
-            _appleRect = new Rectangle((int)(5 * scaleWidth), (int)(36 * scaleHeight), (int)(16 * scaleWidth), (int)(16 * scaleHeight));
-            _appleSource = new Rectangle(0, 0, 16, 16);
-            _adamRect = new Rectangle((int)(20 * scaleWidth), (int)(16 * scaleHeight), (int)(_adam.Width*.25* scaleWidth), (int)(_adam.Height * scaleHeight));
-            _sourceRect = new Rectangle(0, 0, 24, 36);
-
-        }
-
         public void Update(Main game1, GameTime gameTime, Settings settings)
         {
-            _zzzTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (_zzzTimer > 1)
-            {
-                _zzzList.Add(new Particle(_adamRect));
-                _zzzTimer = 0;
-            }
-
-            foreach (var z in _zzzList)
-            {
-                z.Update(gameTime);
-            }
-            foreach (var z in _zzzList)
-            {
-                if (z.ToDelete)
-                {
-                    _zzzList.Remove(z);
-                    break;
-                }
-            }
-
-
             this._gameTime = gameTime;
             switch (CurrentMenuState)
             {
@@ -366,60 +324,18 @@ namespace Adam
                     break;
             }
 
-            AnimateSprites();
-
             if (game1.CurrentGameState == GameState.MainMenu)
             SoundtrackManager.PlayMainTheme();
 
         }
 
-        int _appleFrame;
-        public void AnimateSprites()
-        {
-            _switchFrame = 600;
-            _frameTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
-            _appleTimer += _gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (_frameTimer > _switchFrame)
-            {
-                _frameTimer = 0;
-                _sourceRect.X += _sourceRect.Width;
-                _currentFrame++;
-            }
-
-            if (_currentFrame > 3)
-            {
-                _sourceRect.X = 0;
-                _currentFrame = 0;
-            }
-
-            if (_appleTimer > 150)
-            {
-                _appleSource.X += _appleSource.Width;
-                _appleTimer = 0;
-                _appleFrame++;
-            }
-
-            if (_appleFrame > 3)
-            {
-                _appleSource.X = 0;
-                _appleFrame = 0;
-            }
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_background, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
-            spriteBatch.Draw(_foreground, new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White);
-            spriteBatch.Draw(_adam, _adamRect, _sourceRect, Color.White);
-            spriteBatch.Draw(_apple, _appleRect, _appleSource, Color.White);
+            spriteBatch.Draw(background,new Rectangle(0,0,Main.UserResWidth,Main.UserResHeight),Color.White);
 
-            spriteBatch.DrawString(_font, Main.Producers, new Vector2(5, (float)(5 / Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5/Main.HeightRatio), SpriteEffects.None, 0);
-            spriteBatch.DrawString(_font, Main.Version, new Vector2(5, (float)(30/Main.HeightRatio)), Color.White, 0, new Vector2(0, 0), (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
-
-
-            foreach (var z in _zzzList)
-                z.Draw(spriteBatch);
+            FontHelper.DrawWithOutline(spriteBatch,_font32,Main.Producers,new Vector2((float)(5 / Main.WidthRatio), (float)(5 / Main.HeightRatio)),3,Color.White,Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, Main.Version, new Vector2((float)(5 / Main.WidthRatio), (float)(30 / Main.HeightRatio)), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2((float)(400 / Main.WidthRatio), (float)(60 / Main.HeightRatio)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)
             {

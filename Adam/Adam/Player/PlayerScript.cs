@@ -75,6 +75,10 @@ namespace Adam
             {
                 player.RemoveAnimationFromQueue("run");
             }
+            if (Math.Abs(player.GetVelocity().X) < 1)
+            {
+                player.RemoveAnimationFromQueue("slide");
+            }
 
             if (player.GetVelocity().Y > 2)
             {
@@ -148,6 +152,11 @@ namespace Adam
                 acc /= 2;
             }
 
+            if (player.GetVelocity().X < -3 && player.IsRunningFast)
+            {
+                player.AddAnimationToQueue("slide");
+            }
+
             player.IsFacingRight = true;
             player.SetVelX(player.GetVelocity().X + acc);
             player.CreateMovingParticles();
@@ -174,6 +183,11 @@ namespace Adam
             {
                 acc = RunAcc;
                 player.AddAnimationToQueue("run");
+            }
+
+            if (player.GetVelocity().X > 3 && player.IsRunningFast)
+            {
+                player.AddAnimationToQueue("slide");
             }
 
             player.IsFacingRight = false;

@@ -1,12 +1,8 @@
-﻿using Adam.Misc.Databases;
+﻿using Adam.Levels;
+using Adam.Misc.Databases;
 using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Levels;
 
-namespace Adam.Misc
+namespace Adam.Misc.Sound
 {
     public static class SoundtrackManager
     {
@@ -22,8 +18,11 @@ namespace Adam.Misc
         /// Plays the specified track.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="repeating"></param>
         public static void PlayTrack(byte id, bool repeating)
         {
+            if (Main.IsMusicMuted)
+                return;
             if (id != CurrentId)
             {
                 MediaPlayer.Stop();

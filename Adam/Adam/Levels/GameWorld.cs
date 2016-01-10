@@ -6,6 +6,7 @@ using Adam.Characters.Non_Playable;
 using Adam.Interactables;
 using Adam.Lights;
 using Adam.Misc;
+using Adam.Misc.Sound;
 using Adam.Network;
 using Adam.Obstacles;
 using Adam.Particles;
@@ -101,10 +102,11 @@ namespace Adam.Levels
 
         public bool TryLoadFromFile(GameMode currentGameMode)
         {
-
+            LoadingScreen.LoadingText = "Where did I put that file?";
             byte[] tileIDs = WorldData.TileIDs;
             byte[] wallIDs = WorldData.WallIDs;
 
+            LoadingScreen.LoadingText = "Starting up world...";
             this.CurrentGameMode = currentGameMode;
             Main.ObjectiveTracker.Clear();
             CloudList = new List<Cloud>();
@@ -130,16 +132,20 @@ namespace Adam.Levels
             TileArray = new Tile[tileIDs.Length];
             WallArray = new Tile[tileIDs.Length];
 
+            LoadingScreen.LoadingText = "Getting tiles from junkyard...";
             ConvertToTiles(TileArray, tileIDs);
             ConvertToTiles(WallArray, wallIDs);
 
+            LoadingScreen.LoadingText = "Lighting up the world...";
             LightEngine.Load();
 
             _playerLight = new Light();
             _playerLight.Load();
 
+            LoadingScreen.LoadingText = "Finding cardboard backgrounds...";
             Background.Load();
 
+            LoadingScreen.LoadingText = "Wait, you are editing it???";
             if (currentGameMode == GameMode.Edit)
                 LevelEditor.Load();
 

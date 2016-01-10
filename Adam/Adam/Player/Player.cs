@@ -58,6 +58,8 @@ namespace Adam.Player
                 new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("run",
                 new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("slide",
+               new ComplexAnimData(153, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("standup",
                 new ComplexAnimData(155, fallStandTexture, new Rectangle(15, 7, 12, 66), 0, 45, 40, 125, 3, false));
             ComplexAnim.AddAnimationData("duck",
@@ -74,6 +76,8 @@ namespace Adam.Player
                 new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
             ComplexAnim.AddAnimationData("punch2",
                 new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
+            ComplexAnim.AddAnimationData("death",
+                new ComplexAnimData(int.MaxValue, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
 
             // Sounds
             Sounds.AddSoundRef("hurt", "Player/hurtSound");
@@ -193,15 +197,15 @@ namespace Adam.Player
             var gameWorld = GameWorld.Instance;
             if (CollRectangle.X < 0)
                 CollRectangle.X = 0;
-            if (CollRectangle.X > (gameWorld.WorldData.LevelWidth*Main.Tilesize - CollRectangle.Width))
-                CollRectangle.X = (gameWorld.WorldData.LevelWidth*Main.Tilesize - CollRectangle.Width);
+            if (CollRectangle.X > (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
+                CollRectangle.X = (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
                 CollRectangle.Y = 0;
-            if (CollRectangle.Y > (gameWorld.WorldData.LevelHeight*Main.Tilesize - CollRectangle.Width) + 100)
+            if (CollRectangle.Y > (gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
                 if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    CollRectangle.Y = gameWorld.WorldData.LevelHeight*Main.Tilesize - CollRectangle.Height;
+                    CollRectangle.Y = gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
                 else
                 {
                     TakeDamage(null, MaxHealth);
@@ -215,11 +219,11 @@ namespace Adam.Player
             {
                 if (Math.Abs(Velocity.X) < .1f)
                     return;
-                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000/Math.Abs(Velocity.X))
+                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000 / Math.Abs(Velocity.X))
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
-                        new Vector2(0, (float) (GameWorld.RandGen.Next(-1, 1)*GameWorld.RandGen.NextDouble())));
+                        new Vector2(0, (float)(GameWorld.RandGen.Next(-1, 1) * GameWorld.RandGen.NextDouble())));
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -308,8 +312,8 @@ namespace Adam.Player
 
         public void MoveTo(Vector2 position)
         {
-            CollRectangle.X = (int) position.X;
-            CollRectangle.Y = (int) position.Y;
+            CollRectangle.X = (int)position.X;
+            CollRectangle.Y = (int)position.Y;
             Overlay.Instance.FadeIn();
         }
 
@@ -321,7 +325,7 @@ namespace Adam.Player
 
         public void SetRespawnPoint(int x, int y)
         {
-            RespawnPos = new Vector2(x,y);
+            RespawnPos = new Vector2(x, y);
         }
     }
 }
