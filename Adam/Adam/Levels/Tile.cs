@@ -125,8 +125,6 @@ namespace Adam
 
             Vector2 startingPoint;
 
-            Destroy();
-
             #region DefiningTextures
 
             switch (Id)
@@ -247,7 +245,7 @@ namespace Adam
                 case 17: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
-                    _positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3)*2);
+                    _positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3) * 2);
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     _hasRandomStartingPoint = true;
                     break;
@@ -271,7 +269,7 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     _animationPlaysOnce = true;
-                    DrawRectangle.X = _originalPosition.X + Main.Tilesize/4;
+                    DrawRectangle.X = _originalPosition.X + Main.Tilesize / 4;
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     var chest = new Chest(this);
                     break;
@@ -342,8 +340,8 @@ namespace Adam
                     _sizeOfTile.X = 4;
                     _sizeOfTile.Y = 6;
 
-                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     _positionInSpriteSheet = new Vector2(16, 0);
                     break;
                 case 32: //Small Rock
@@ -508,15 +506,20 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
-                    DrawRectangle.Height = (int) _sizeOfTile.Y*Main.Tilesize;
-                    DrawRectangle.Width = (int) _sizeOfTile.X*Main.Tilesize;
+                    DrawRectangle.Height = (int)_sizeOfTile.Y * Main.Tilesize;
+                    DrawRectangle.Width = (int)_sizeOfTile.X * Main.Tilesize;
                     switch (SubId)
                     {
                         case 0:
                             _positionInSpriteSheet = new Vector2(8, 30);
                             break;
                     }
-                    new Portal(this);
+
+                    if (!_isSampleTile && !_wasInitialized)
+                    {
+                        new Portal(this);
+                        _wasInitialized = true;
+                    }
                     break;
                 case 59: // Bed.
                     _frameCount = new Vector2(1, 0);
@@ -537,7 +540,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(10, 32);
                     break;
 
-                    #region Wall Textures
+                #region Wall Textures
 
                 case 100: //Gold Brick Wall
                     _hasConnectPattern = true;
@@ -610,7 +613,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(13, 9);
                     break;
 
-                    #endregion
+                #endregion
 
                 case 200: //Player
                     SunlightPassesThrough = true;
@@ -780,8 +783,8 @@ namespace Adam
 
             if (_hasRandomStartingPoint)
             {
-                var randX = GameWorld.RandGen.Next(0, (int) _frameCount.X);
-                SourceRectangle.X += randX*SmallTileSize;
+                var randX = GameWorld.RandGen.Next(0, (int)_frameCount.X);
+                SourceRectangle.X += randX * SmallTileSize;
                 _currentFrame += randX;
             }
         }
@@ -793,9 +796,9 @@ namespace Adam
         private void DefineSourceRectangle()
         {
             //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
-            SourceRectangle = new Rectangle((int) (_positionInSpriteSheet.X*SmallTileSize),
-                (int) (_positionInSpriteSheet.Y*SmallTileSize), (int) (SmallTileSize*_sizeOfTile.X),
-                (int) (SmallTileSize*_sizeOfTile.Y));
+            SourceRectangle = new Rectangle((int)(_positionInSpriteSheet.X * SmallTileSize),
+                (int)(_positionInSpriteSheet.Y * SmallTileSize), (int)(SmallTileSize * _sizeOfTile.X),
+                (int)(SmallTileSize * _sizeOfTile.Y));
         }
 
         /// <summary>
@@ -806,17 +809,17 @@ namespace Adam
         {
             if (_isSampleTile)
             {
-                var width = (int) (_sizeOfTile.X*Main.Tilesize);
-                var height = (int) (_sizeOfTile.Y*Main.Tilesize);
+                var width = (int)(_sizeOfTile.X * Main.Tilesize);
+                var height = (int)(_sizeOfTile.Y * Main.Tilesize);
 
                 if (width > height)
                 {
                     width = Main.Tilesize;
-                    height = (int) (Main.Tilesize/_sizeOfTile.X);
+                    height = (int)(Main.Tilesize / _sizeOfTile.X);
                 }
                 if (height > width)
                 {
-                    width = (int) (Main.Tilesize/_sizeOfTile.Y);
+                    width = (int)(Main.Tilesize / _sizeOfTile.Y);
                     height = Main.Tilesize;
                 }
                 if (height == width)
@@ -828,8 +831,8 @@ namespace Adam
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
             }
             else
-                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int) (_sizeOfTile.X*Main.Tilesize),
-                    (int) (_sizeOfTile.Y*Main.Tilesize));
+                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * Main.Tilesize),
+                    (int)(_sizeOfTile.Y * Main.Tilesize));
         }
 
         /// <summary>
@@ -878,7 +881,7 @@ namespace Adam
                         if (_currentFrame >= _frameCount.X)
                         {
                             _currentFrame = 0;
-                            SourceRectangle.X = 12*16;
+                            SourceRectangle.X = 12 * 16;
                             _restartTimer = 0;
                         }
                         break;
@@ -950,7 +953,7 @@ namespace Adam
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
 
-
+            _wasInitialized = false;
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();
             DefineSourceRectangle();
@@ -959,7 +962,7 @@ namespace Adam
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null && !_isInvisible)
-                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color*_opacity);
+                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
             if (_hasConnectPattern)
             {
                 foreach (var c in _cornerPieces)
@@ -1330,7 +1333,7 @@ namespace Adam
             // Random decorations for sand.
             if (Id == 5 && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth*2;
+                var indexAbove = TileIndex - mapWidth * 2;
                 var indexToRight = TileIndex - mapWidth + 1;
                 var indexTopRight = indexAbove + 1;
                 if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
@@ -1490,7 +1493,8 @@ namespace Adam
 
         private bool _hasRandomStartingPoint;
         private Rectangle _originalPosition;
-        private Vector2 _sizeOfTile;
+        private Vector2 _sizeOfTile = new Vector2(1,1);
+        private bool _wasInitialized;
 
         private int _mapWidth;
         protected const int SmallTileSize = 16;

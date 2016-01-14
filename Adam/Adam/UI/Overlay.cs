@@ -31,16 +31,18 @@ namespace Adam
         float _blackOpacity;
         double _fadingTimer;
 
+        public static Color CornerColor = Color.Black;
+
         public Overlay()
         {
             _instance = this;
-            Font = ContentHelper.LoadFont("Fonts/x64");
+            Font = ContentHelper.LoadFont("Fonts/splashNumber");
 
-            _heart = new Heart(new Vector2(40,40));
+            _heart = new Heart(new Vector2(40, 40));
             _coin = new Coin(new Vector2(40, 120));
 
             //Black corners of the screen
-            _blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/blackCorners");
+            _blackCorners.Texture = ContentHelper.LoadTexture("Backgrounds/ui_whiteCorners");
             _blackCorners.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
 
             _blackScreen.Texture = ContentHelper.LoadTexture("Tiles/black");
@@ -85,13 +87,13 @@ namespace Adam
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
                 goto Fade;
 
-            spriteBatch.Draw(_blackCorners.Texture, _blackCorners.Rectangle, Color.White * .6f);
+            spriteBatch.Draw(_blackCorners.Texture, _blackCorners.Rectangle, CornerColor * .6f);
 
             _heart.Draw(spriteBatch);
             _coin.Draw(spriteBatch);
 
-        Fade:
-            if (_fadeIn || _fadeOut)
+            Fade:
+
             spriteBatch.Draw(_blackScreen.Texture, _blackScreen.Rectangle, Color.White * _blackOpacity);
         }
     }

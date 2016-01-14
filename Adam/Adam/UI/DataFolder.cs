@@ -173,7 +173,7 @@ namespace Adam.UI
             }
             catch (FileNotFoundException)
             {
-                Main.Dialog.Show("Error: File not found.");
+                Main.Dialog.Say("Error: File not found.");
                 throw new Exception();
             }
 
@@ -243,6 +243,16 @@ namespace Adam.UI
             }
 
             return levelNames;
+        }
+
+        /// <summary>
+        /// Returns true if there is a level with this name.
+        /// </summary>
+        /// <param name="levelName"></param>
+        /// <returns></returns>
+        public static bool LevelExists(string levelName)
+        {
+            return (GetLevelNames().Contains(levelName));
         }
 
         /// <summary>

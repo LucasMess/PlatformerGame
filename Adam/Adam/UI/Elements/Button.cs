@@ -50,7 +50,7 @@ namespace Adam.UI
             MouseOut += OnMouseOut;
 
             Texture = ContentHelper.LoadTexture("Menu/menu_button_new") ;
-            Font = ContentHelper.LoadFont("Fonts/x32");
+            Font = ContentHelper.LoadFont("Fonts/x16");
 
             ErrorSound = ContentHelper.LoadSound("Sounds/Menu/error_style_2_001");
             ConfirmSound = ContentHelper.LoadSound("Sounds/Menu/confirm_style_4_001");

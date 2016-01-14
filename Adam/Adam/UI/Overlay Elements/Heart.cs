@@ -91,13 +91,13 @@ namespace Adam.UI.Overlay_Elements
 
             if (_oldCurrentHealth < player.Health)
             {
-                GameWorld.Instance.Particles.Add(new SplashNumber(player, player.Health - _oldCurrentHealth, Color.Green));
+                GameWorld.ParticleSystem.Add(new SplashNumber(player, player.Health - _oldCurrentHealth, Color.Green));
                 _oldCurrentHealth = player.Health;
             }
 
             if (_oldCurrentHealth > player.Health)
             {
-                GameWorld.Instance.Particles.Add(new SplashNumber(player, player.Health - _oldCurrentHealth, Color.Red));
+                GameWorld.ParticleSystem.Add(new SplashNumber(player, player.Health - _oldCurrentHealth, Color.Red));
                 _oldCurrentHealth = player.Health;
             }
         }

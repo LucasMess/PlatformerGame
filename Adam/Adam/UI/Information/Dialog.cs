@@ -21,10 +21,11 @@ namespace Adam.UI
 
         bool _isActive;
         bool _isQuestion;
-        string _text = "";
+        string _fullText = "";
+        private string _partialText = "";
         StringBuilder _sb;
         SoundFx _popSound;
-        ITalkable _currentSender;
+        private SoundFx _letterPopSound;
 
         public delegate void EventHandler();
         public event EventHandler NextDialog;
@@ -37,9 +38,13 @@ namespace Adam.UI
 
 
         float _opacity = 0;
-        double _skipTimer;
+        private Timer _skipTimer = new Timer();
+        private Timer _letterPopTimer = new Timer();
 
         int _originalY;
+        private int _currentLetterIndex;
+        private int _letterPopResetTime = 30;
+        private char[] _pauseChars = new[] {'!', '.', ',', '?'};
 
         Rectangle _yesBox;
         Rectangle _noBox;
@@ -57,29 +62,23 @@ namespace Adam.UI
 
             _font = ContentHelper.LoadFont("Fonts/x16");
             _popSound = new SoundFx("Sounds/message_show");
+            _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
 
             _yesBox = new Rectangle(_drawRectangle.X, _drawRectangle.Bottom, _drawRectangle.Width/2, 20);
             _noBox = new Rectangle(_drawRectangle.X + _drawRectangle.Width/2, _drawRectangle.Bottom, _drawRectangle.Width/2, 20);
         }
 
-        public void Say(string text, ITalkable sender)
+        /// <summary>
+        /// Changes the text displayed in the dialog box and shows it.
+        /// </summary>
+        /// <param name="text"></param>
+        public void Say(string text)
         {
-            _currentSender = sender;
-            sender.CurrentConversation++;
-
-            Prepare(text);
-        }
-
-        public void Show(string text)
-        {
-            _currentSender = null;
-
             Prepare(text);
         }
 
         public void AskQuestion(string question)
         {
-            _currentSender = null;
             _isQuestion = true;
             Prepare(question);
         }
@@ -87,23 +86,25 @@ namespace Adam.UI
         private void Prepare(string text)
         {
             _isActive = true;
-            this._text = FontHelper.WrapText(_font, text, _drawRectangle.Width - 60);
-            _skipTimer = 0;
+            _fullText = FontHelper.WrapText(_font, text, _drawRectangle.Width - 60);
+            _skipTimer.Reset();
+            _letterPopTimer.Reset();
             _opacity = 0;
             _drawRectangle.Y -= 40;
             _popSound.Reset();
+            _partialText = "";
+            _currentLetterIndex = 0;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             float deltaOpacity = .03f;
             if (_isActive)
             {
                 _popSound.PlayOnce();
-                _skipTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (_skipTimer > .5)
+                // Checks to see if player wants to move on to the next dialog.
+                if (_skipTimer.TimeElapsedInSeconds > .5)
                 {
-                    
                     if (InputHelper.IsLeftMousePressed())
                     {
                         if (_isQuestion)
@@ -111,19 +112,18 @@ namespace Adam.UI
                             if (InputHelper.MouseRectangle.Intersects(_yesBox))
                             {
                                 _isActive = false;
-                                YesResult();
+                                YesResult?.Invoke();
                             }
                             else if (InputHelper.MouseRectangle.Intersects(_noBox))
                             {
                                 _isActive = false;
-                                NoResult();
+                                NoResult?.Invoke();
                             }
                         }
                         else
                         {
                             _isActive = false;
-                            if (_currentSender != null)
-                                _currentSender.OnNextDialog();
+                            NextDialog?.Invoke();
                         }
                     }
                 }
@@ -140,7 +140,33 @@ namespace Adam.UI
                 float velocity = -3f;
                 _opacity -= deltaOpacity;
                 _drawRectangle.Y += (int)velocity;
-                _skipTimer = 0;
+                _skipTimer.Reset();
+            }
+
+            if (_letterPopTimer.TimeElapsedInMilliSeconds > _letterPopResetTime && _currentLetterIndex < _fullText.Length)
+            {
+                char nextLetter = _fullText.ToCharArray()[_currentLetterIndex];
+                _partialText += nextLetter;
+                _currentLetterIndex++;
+
+                bool _isPause = false;
+                foreach (char pauseChar in _pauseChars)
+                {
+                    if (pauseChar == nextLetter)
+                    {
+                        _letterPopResetTime = 200;
+                        _isPause = true;
+                        break;
+                    }
+                }
+                if (!_isPause || nextLetter == ' ')
+                {
+                    _letterPopResetTime = 30;
+                    _letterPopTimer.Reset();
+                    _letterPopSound.PlayNewInstanceOnce();
+                    _letterPopSound.Reset();
+                }
+               
             }
 
             if (_opacity > 1)
@@ -155,8 +181,8 @@ namespace Adam.UI
         {
             if (_texture != null)
             spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White * _opacity);
-            spriteBatch.DrawString(_font, _text, new Vector2(_drawRectangle.X + 30, _drawRectangle.Y + 30), Color.Black * _opacity);
-            if (_isActive && _skipTimer > .5)
+            spriteBatch.DrawString(_font, _partialText, new Vector2(_drawRectangle.X + 30, _drawRectangle.Y + 30), Color.Black * _opacity);
+            if (_isActive && _skipTimer.TimeElapsedInSeconds > .5)
             {
                 if (_isQuestion)
                 {

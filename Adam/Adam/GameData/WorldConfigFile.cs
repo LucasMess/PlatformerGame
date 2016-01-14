@@ -85,15 +85,6 @@ namespace Adam.GameData
             HasClouds = gw.WorldData.HasClouds;
         }
 
-        ///// <summary>
-        ///// Converts Adam Dictionary into a Adam Smart String.
-        ///// </summary>
-        ///// <returns></returns>
-        //private string ToAss(AdamDictionary ad)
-        //{
-            
-        //}
-
         public void LoadIntoEditor()
         {
             TransferDataToWorldData();

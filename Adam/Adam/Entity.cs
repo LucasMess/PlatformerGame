@@ -33,6 +33,8 @@ namespace Adam
         public delegate void Entityhandler(Entity entity);
 
         public event Entityhandler HasFinishedDying;
+        public event EventHandler HasTakenDamage;
+        public event EventHandler HasRevived;
 
         const float FrictionConstant = 94f / 90f;
 
@@ -813,6 +815,7 @@ namespace Adam
             IsDead = false;
             IsAboutToDie = false;
             ComplexAnim?.RemoveFromQueue("death");
+            HasRevived?.Invoke();
         }
 
         /// <summary>
@@ -846,7 +849,7 @@ namespace Adam
             if (IsTakingDamage || IsAboutToDie)
                 return;
 
-            //Main.TimeFreeze.AddFrozenTime(50);
+            Main.TimeFreeze.AddFrozenTime(damage*3);
 
             IsTakingDamage = true;
             Health -= damage;
@@ -870,6 +873,8 @@ namespace Adam
             Velocity.X = (Weight / 2f);
             if (!damageDealer.IsFacingRight)
                 Velocity.X *= -1;
+
+            HasTakenDamage?.Invoke();
 
         }
 

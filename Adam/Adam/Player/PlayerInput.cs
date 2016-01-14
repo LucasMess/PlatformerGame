@@ -99,6 +99,7 @@ namespace Adam.Player
 
         private void Player_InteractAction()
         {
+            script.OnInteractAction(this);
         }
 
         private void Player_LeftMove()

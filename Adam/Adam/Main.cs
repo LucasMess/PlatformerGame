@@ -76,6 +76,7 @@ namespace Adam
         public static double HeightRatio;
         public static float MaxVolume = .1f;
         public static bool IsMusicMuted = true;
+        public static bool HasLighting = true;
         public static ObjectiveTracker ObjectiveTracker;
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
@@ -428,7 +429,7 @@ namespace Adam
                     Player.Update(gameTime);
                     _gameWorld.Update(gameTime, CurrentGameMode, _camera);
                     _overlay.Update(gameTime, Player, _gameWorld);
-                    Dialog.Update(gameTime);
+                    Dialog.Update();
                     ObjectiveTracker.Update(gameTime);
                     break;
             }
@@ -445,11 +446,10 @@ namespace Adam
                 case GameState.GameWorld:
                     DrawToMainRenderTarget(_mainRenderTarget);
 
-                    //lightWatch.Start();
-                    //DrawLightingRenderTarget(lightingRenderTarget);
-                    //lightTime = lightWatch.ElapsedMilliseconds;
-                    //lightWatch.Reset();
-
+                    if (HasLighting)
+                    {
+                        DrawLightingRenderTarget(_lightingRenderTarget);
+                    }
                     break;
                 case GameState.Cutscene:
                     DrawToMainRenderTarget(_mainRenderTarget);
@@ -568,15 +568,29 @@ namespace Adam
                     SpriteBatch.End();
                     break;
                 case GameState.GameWorld:
+
+                    Overlay.CornerColor = Color.Black;
+                    if (TimeFreeze.IsTimeFrozen())
+                    {
+                        if (Player.IsTakingDamage)
+                            Overlay.CornerColor = Color.Red;
+                        else Overlay.CornerColor = Color.White;
+                    }
+
                     //Draw the rendertarget
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, RasterizerState.CullNone);
                     SpriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     SpriteBatch.End();
 
-                    //SpriteBatch.Begin(SpriteSortMode.Immediate, LightBlendState, GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    //SpriteBatch.Draw(lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), SunnyPreset);
-                    //SpriteBatch.End();
+                    if (HasLighting)
+                    {
+                        SpriteBatch.Begin(SpriteSortMode.Immediate, _lightBlendState,
+                            GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
+                        SpriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight),
+                            Color.White);
+                        SpriteBatch.End();
+                    }
 
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
@@ -643,7 +657,7 @@ namespace Adam
                     SpriteBatch.DrawString(_debugFont,
                         "Dynamic Lights Count: " + _gameWorld.LightEngine?.DynamicLights.Count, new Vector2(0, 220),
                         Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Particle Count: " + _gameWorld.Particles?.Count,
+                    SpriteBatch.DrawString(_debugFont, "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
                         new Vector2(0, 240), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Entity Count: " + _gameWorld.Entities?.Count,
                         new Vector2(0, 260), Color.White);

@@ -29,7 +29,15 @@ namespace Adam.Player
         {
             get
             {
-                return (GameWorld.Instance.TileArray[GetTileIndex()].IsClimbable);
+                int index = GetTileIndex();
+                Tile tile1 = GameWorld.Instance.TileArray[index];
+                Tile tile2 = GameWorld.Instance.TileArray[index + GameWorld.Instance.WorldData.LevelWidth];
+                if (tile1.IsClimbable || tile2.IsClimbable)
+                {
+                    return true;
+                }
+                ObeysGravity = true;
+                return false;
             }
         }
 
@@ -41,7 +49,7 @@ namespace Adam.Player
         /// <summary>
         /// The area in which the player deals damage.
         /// </summary>
-        private Rectangle DamageArea { get; set; } 
+        private Rectangle DamageArea { get; set; }
 
     }
 }

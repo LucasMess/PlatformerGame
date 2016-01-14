@@ -15,21 +15,25 @@ namespace Adam.Lights
     {
         Vector2 _position;
         static Texture2D _texture = GameWorld.SpriteSheet;
-        static Rectangle _sourceRectangle =new Rectangle(380, 0, Width, Height);
+        static Rectangle _sourceRectangle = new Rectangle(256, 240, Width, Height);
+        private Rectangle _drawRectangle;
 
-        const int Width = 256;
-        const int Height = 256;
+        const int Width = 64;
+        const int Height = 64;
+
+        private const int ScaledWidth = Width*4;
+        private const int ScaledHeight = Height*4;
 
         public SunLight(Rectangle tileDrawRectangle)
         {
-            _position = new Vector2(tileDrawRectangle.Center.X, tileDrawRectangle.Center.Y);
-            _position.X -= Width/2;
-            _position.Y -= Height /2;
+
+
+            _drawRectangle = new Rectangle(tileDrawRectangle.Center.X - (ScaledWidth/2), tileDrawRectangle.Center.Y - (ScaledHeight/2), ScaledWidth, ScaledHeight);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White);
+            spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White);
         }
     }
 }

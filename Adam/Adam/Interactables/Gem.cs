@@ -67,7 +67,7 @@ namespace Adam
         {
             e.Player.Score += GetValue();
 
-            GameWorld.Instance.Particles.Add(new SplashNumber(this, GetValue(), Color.Yellow));
+            GameWorld.ParticleSystem.Add(new SplashNumber(this, GetValue(), Color.Yellow));
         }
 
         private int GetValue()

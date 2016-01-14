@@ -41,6 +41,13 @@ namespace Adam.Lights
 
             base.Update();
         }
+
+        public void Update(Rectangle collRectangle)
+        {
+            SetPosition(collRectangle);
+            if (IsShaky) Shake();
+            base.Update();
+        }
     }
 
     /// <summary>

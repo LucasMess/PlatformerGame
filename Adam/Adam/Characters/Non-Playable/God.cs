@@ -51,7 +51,7 @@ namespace Adam.Noobs
         protected override void ShowMessage()
         {
             SoundFx fx;
-            Main.Dialog.Say("What are you up to Adam?", this);
+            Main.Dialog.Say("What are you up to Adam? I hope you got your shit together now, because Eve needs you to save her before something really, really bad happens to her. I don't want you to waster your time doing nothing. GO!");
             EndConversation = true;
         }
 

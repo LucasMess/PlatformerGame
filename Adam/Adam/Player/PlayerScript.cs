@@ -52,10 +52,13 @@ namespace Adam
 
         public void OnStill(Player.Player player)
         {
-            // Friction.
-            if (player.IsJumping)
+            if (!player.IsOnVines)
             {
-                
+                player.RemoveAnimationFromQueue("climb");
+            }
+            else
+            {
+                player.RemoveAnimationFromQueue("fall");
             }
 
             // Toggle idle animations.
@@ -208,13 +211,16 @@ namespace Adam
 
         public void OnInteractAction(Player.Player player)
         {
-
+            if (player.IsOnVines)
+            {
+                OnClimbingAction(player);
+            }
         }
 
         public void OnClimbingAction(Player.Player player)
         {
             player.AddAnimationToQueue("climb");
-            player.SetVelY(-10);
+            player.SetVelY(-5);
             player.ObeysGravity = false;
         }
 

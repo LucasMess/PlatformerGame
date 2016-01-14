@@ -10,6 +10,7 @@ namespace Adam.UI
     public class TextInputBox : MessageBox
     {
         Textbox _textBox;
+        private string lastMessage;
 
         public delegate void TextInputHandler(TextInputArgs e);
         public event TextInputHandler OnInputEntered;
@@ -27,7 +28,16 @@ namespace Adam.UI
         {
             _textBox.Reset();
             _textBox.IsSelected = true;
+            lastMessage = message;
             base.Show(message);
+        }
+
+        /// <summary>
+        /// Used to make the text input box appear once again as it was before.
+        /// </summary>
+        public void ShowSameMessage()
+        {
+            Show(lastMessage);
         }
 
         public override void Update()
@@ -47,7 +57,7 @@ namespace Adam.UI
                 // If state changed, tell subscriber that input has been entered.
                 if (!IsActive)
                 {
-                    OnInputEntered(new TextInputArgs(_textBox.Text));
+                    OnInputEntered?.Invoke(new TextInputArgs(_textBox.Text));
                 }
 
 

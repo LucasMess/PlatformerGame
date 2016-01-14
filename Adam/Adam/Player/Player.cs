@@ -26,6 +26,8 @@ namespace Adam.Player
         public bool CanFly;
         public bool IsGhost;
         public bool IsInvulnerable;
+        public bool IsClimbing { get; set; }
+        private string _spawnPointNextLevel;
 
         public Player(Main game1)
         {
@@ -84,6 +86,7 @@ namespace Adam.Player
             Sounds.AddSoundRef("jump", "Player/jumpSound");
             Sounds.AddSoundRef("stomp", "Player/jumpSound");
             Sounds.AddSoundRef("punch", "Sounds/punch");
+            Sounds.AddSoundRef("fail", "Sounds/Menu/level_fail");
 
             ComplexAnim.AddToQueue("idle");
 
@@ -92,6 +95,13 @@ namespace Adam.Player
 
             PlayerAttacked += OnPlayerAttack;
             HasFinishedDying += OnPlayerDeath;
+            HasTakenDamage += OnDamageTaken;
+            HasRevived += OnPlayerRevive;
+        }
+
+        private void OnPlayerRevive()
+        {
+            Overlay.Instance.FadeIn();
         }
 
         protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
@@ -149,10 +159,27 @@ namespace Adam.Player
         /// <param name="setY"> The y-Coordinate</param>
         public void Initialize(int setX, int setY)
         {
-            //Set the player position according to where in the map he is supposed to be
+            if (_spawnPointNextLevel != null)
+            {
+                int spawnIndex;
+                if (int.TryParse(_spawnPointNextLevel, out spawnIndex))
+                {
+                    int x = (spawnIndex % GameWorld.Instance.WorldData.LevelWidth)*Main.Tilesize;
+                    int y = (spawnIndex / GameWorld.Instance.WorldData.LevelWidth)*Main.Tilesize;
+                    CollRectangle.X = x;
+                    CollRectangle.Y = y;
+                    RespawnPos = new Vector2(x, y);
+                    _spawnPointNextLevel = null;
+                    goto NoError;
+                }
+
+            }
+            //Set the player position according to where in the map his default spawn point is.
             CollRectangle.X = setX;
             CollRectangle.Y = setY;
             RespawnPos = new Vector2(setX, setY);
+
+            NoError:
 
             //Animation information
             CollRectangle.Width = 32;
@@ -219,11 +246,11 @@ namespace Adam.Player
             {
                 if (Math.Abs(Velocity.X) < .1f)
                     return;
-                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 10000 / Math.Abs(Velocity.X))
+                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / Math.Abs(Velocity.X))
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
-                        new Vector2(0, (float)(GameWorld.RandGen.Next(-1, 1) * GameWorld.RandGen.NextDouble())));
+                        new Vector2(0, (float)(GameWorld.RandGen.Next(-5, 5) / 10f)));
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -319,13 +346,29 @@ namespace Adam.Player
 
         private void OnPlayerDeath(Entity entity)
         {
-            _respawnTimer.ResetAndWaitFor(1000);
+            _respawnTimer.ResetAndWaitFor(4000);
             _respawnTimer.SetTimeReached += Revive;
+            Sounds.Get("fail").Play();
+            Overlay.Instance.FadeOut();
+        }
+
+        private void OnDamageTaken()
+        {
+            Sounds.Get("hurt").Play();
         }
 
         public void SetRespawnPoint(int x, int y)
         {
             RespawnPos = new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// Sets the spawn point for the player when the next level loads.
+        /// </summary>
+        /// <param name="spawnPoint"></param>
+        public void SetSpawnPointForNextLevel(string spawnPoint)
+        {
+            _spawnPointNextLevel = spawnPoint;
         }
     }
 }

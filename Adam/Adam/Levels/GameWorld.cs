@@ -88,7 +88,7 @@ namespace Adam.Levels
 
             _placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_18");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_19");
             UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
@@ -140,7 +140,6 @@ namespace Adam.Levels
             LightEngine.Load();
 
             _playerLight = new Light();
-            _playerLight.Load();
 
             LoadingScreen.LoadingText = "Finding cardboard backgrounds...";
             Background.Load();

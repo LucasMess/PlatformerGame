@@ -3,6 +3,8 @@ using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
@@ -19,8 +21,16 @@ namespace Adam.Interactables
         Line _line;
         bool _locked = true;
         int _tileIndex;
-        int _linkedPortalIndex;
-        string _linkedLevelName = "Tutorial";
+        private string _linkedPortalIndex;
+        private string _linkedLevelName;
+
+        /// <summary>
+        /// Creates blank Portal for UI and other stuff.
+        /// </summary>
+        public Portal()
+        {
+
+        }
 
         public Portal(Tile sourceTile)
         {
@@ -33,14 +43,70 @@ namespace Adam.Interactables
                 string metadata = GameWorld.Instance.WorldData.MetaData[_tileIndex];
                 if (metadata.StartsWith("pl:nl:"))
                 {
-                    //linkedLevelName = metadata.Substring(7);
+                    _linkedLevelName = metadata.Substring(6);
+                    if (_linkedLevelName.Contains("/"))
+                    {
+                        string[] data = _linkedLevelName.Split('/');
+                        _linkedLevelName = data[0];
+                        _linkedPortalIndex = data[1];
+                    }
                 }
+                Console.WriteLine("Creating a Portal that was in the level already. Index:" + _tileIndex);
             }
-            Console.WriteLine("Creating a Portal");
+            else
+            {
+                Main.TextInputBox.Show("Please enter the name of the level this portal links to");
+                Main.TextInputBox.OnInputEntered += OnLevelNameEntered;
+                Console.WriteLine("Creating a brand new Portal.Index:" + _tileIndex);
+            }
+
+        }
+
+        /// <summary>
+        /// Checks if level exists and creates links.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnLevelNameEntered(TextInputArgs e)
+        {
+            // If the input has an index to teleport to, then include it.
+            if (e.Input.Contains("/"))
+            {
+                string[] data = e.Input.Split('/');
+                _linkedLevelName = data[0];
+                _linkedPortalIndex = data[1];
+            }
+            else
+            {
+                _linkedLevelName = e.Input;
+                _linkedPortalIndex = null;
+            }
+
+            if (DataFolder.LevelExists(_linkedLevelName))
+            {
+                GameWorld.Instance.WorldData.MetaData[_tileIndex] = "pl:nl:" + e.Input;
+                Main.TextInputBox.OnInputEntered -= OnLevelNameEntered;
+                string message = "Portal link created to level: " + _linkedLevelName + " on index: " +
+                                 (_linkedPortalIndex ?? "SPAWN") +
+                                 ". This portal index is: " + _tileIndex;
+                Main.MessageBox.Show(message);
+                Console.WriteLine(message);
+            }
+            else
+            {
+                Main.MessageBox.Show("Level does not exist. Try again.");
+                Main.TextInputBox.ShowSameMessage();
+            }
         }
 
         private void SourceTile_OnPlayerInteraction(Tile t)
         {
+            if (_linkedLevelName == null)
+            {
+                Main.MessageBox.Show("There is no level linked to this portal. Try placing it again.");
+                return;
+            }
+
+            GameWorld.Instance.Player.SetSpawnPointForNextLevel(_linkedPortalIndex);
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
             DataFolder.PlayLevel(DataFolder.LevelDirectory + "/" + _linkedLevelName + ".lvl");
         }

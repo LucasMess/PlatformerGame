@@ -23,7 +23,7 @@ namespace Adam.Particles
             }
         }
 
-        NewParticle[] _particles;
+        readonly NewParticle[] _particles;
 
         public ParticleSystem()
         {
@@ -56,12 +56,15 @@ namespace Adam.Particles
             _particles[NextIndex] = par;
         }
 
+        public int GetCurrentParticleIndex()
+        {
+            return _nextInt;
+        }
 
     }
 
     public class NewParticle
     {
-        public bool InUse { get; set; } = true;
         protected Vector2 Position { get; set; }
         protected Rectangle SourceRectangle { get; set; }
         protected Vector2 Velocity { get; set; }
@@ -70,6 +73,7 @@ namespace Adam.Particles
         protected Texture2D Texture { get; set; } = Main.DefaultTexture;
         protected int Width { get; set; } = 8;
         protected int Height { get; set; } = 8;
+        protected float Scale { get; set; } = 1;
 
         public virtual void Update()
         {
@@ -105,10 +109,10 @@ namespace Adam.Particles
             NoOpacityDefaultBehavior();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null)
-                spriteBatch.Draw(Texture, new Rectangle((int)Position.X, (int)Position.Y, Width, Height), SourceRectangle, Color * Opacity);
+                spriteBatch.Draw(Texture, new Rectangle((int)Position.X, (int)Position.Y, (int)(Width * Scale), (int)(Height * Scale)), SourceRectangle, Color * Opacity);
         }
 
     }
@@ -136,22 +140,25 @@ namespace Adam.Particles
         Timer _animationTimer = new Timer();
         int _currentFrame;
         int _frames;
+        private int frameChange;
 
         public SmokeParticle(int x, int y, Vector2 velocity)
         {
-            Position = new Vector2(x - 4, y);
+            Position = new Vector2(x - 4, y - GameWorld.RandGen.Next(0, 80) / 10f);
             SourceRectangle = new Rectangle(256, 104, 8, 8);
             Velocity = velocity;
             Opacity = 1;
             Color = Color.White;
             Texture = GameWorld.SpriteSheet;
-
+            Scale = GameWorld.RandGen.Next(5, 30) / 10f;
+            Position = new Vector2(x - 4, y - (Scale * Height)/2);
+            frameChange = GameWorld.RandGen.Next(100, 200);
             _frames = 4;
         }
 
         public override void Update()
         {
-            if (_animationTimer.TimeElapsedInMilliSeconds > 500)
+            if (_animationTimer.TimeElapsedInMilliSeconds > frameChange)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
                 _currentFrame++;
@@ -171,6 +178,7 @@ namespace Adam.Particles
         Timer _animationTimer = new Timer();
         int _currentFrame;
         int _frames;
+        private int _animationTime = GameWorld.RandGen.Next(50, 200);
 
         public RoundCommonParticle(int x, int y, Vector2 vel, Color color)
         {
@@ -180,6 +188,7 @@ namespace Adam.Particles
             Opacity = 1;
             Color = color;
             Texture = GameWorld.SpriteSheet;
+            Scale = GameWorld.RandGen.Next(5, 30)/10f;
 
             _frames = 4;
 
@@ -187,7 +196,7 @@ namespace Adam.Particles
 
         public override void Update()
         {
-            if (_animationTimer.TimeElapsedInMilliSeconds > 250)
+            if (_animationTimer.TimeElapsedInMilliSeconds > _animationTime)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
                 _currentFrame++;
@@ -202,11 +211,11 @@ namespace Adam.Particles
         }
     }
 
-    class EntityTextureParticle :NewParticle
+    class EntityTextureParticle : NewParticle
     {
         public EntityTextureParticle(int x, int y, Rectangle rect, Vector2 vel, Entity entity)
         {
-            Position = new Vector2(x,y);
+            Position = new Vector2(x, y);
             SourceRectangle = rect;
             Texture = entity.Texture;
             Velocity = vel;
