@@ -326,8 +326,8 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            // Debugging tools
-            //spriteBatch.Draw(Main.DefaultTexture, collRectangle, Color.Red);
+            
+            //spriteBatch.Draw(Main.DefaultTexture, GetCollRectangle(), Color.Red * .5f);
 
             // Complex animations.
             if (ComplexAnim != null)

@@ -115,6 +115,14 @@ namespace Adam
                     break;
                 case "set level":
                     break;
+                case "has clouds true":
+                    GameWorld.Instance.WorldData.HasClouds = true;
+                    _definitionFound = true;
+                    break;
+                case "has clouds false":
+                    GameWorld.Instance.WorldData.HasClouds = false;
+                    _definitionFound = true;
+                    break;
             }
 
             String text = _textString;

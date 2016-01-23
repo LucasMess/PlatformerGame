@@ -11,7 +11,7 @@ using Adam.Levels;
 
 namespace Adam.Noobs
 {
-    public class God : NonPlayableCharacter, ITalkable, IAnimated
+    public class God : NonPlayableCharacter, IAnimated
     {
         GameTime _gameTime;
         int _spawnPoint;
@@ -22,6 +22,9 @@ namespace Adam.Noobs
             Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
             CollRectangle = new Rectangle(x, y, 48, 80);
             SourceRectangle = new Rectangle(0, 0, 24, 40);
+            ObeysGravity = true;
+            IsCollidable = true;
+            Weight = 10;
 
             _spawnPoint = CollRectangle.X;
 

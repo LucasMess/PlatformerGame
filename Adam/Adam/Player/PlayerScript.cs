@@ -213,19 +213,31 @@ namespace Adam
         {
             if (player.IsOnVines)
             {
-                OnClimbingAction(player);
+                OnClimbingUpAction(player);
             }
         }
 
-        public void OnClimbingAction(Player.Player player)
+        public void OnClimbingUpAction(Player.Player player)
         {
             player.AddAnimationToQueue("climb");
             player.SetVelY(-5);
             player.ObeysGravity = false;
         }
 
+        public void OnClimbingDownAction(Player.Player player)
+        {
+            player.AddAnimationToQueue("climb");
+            player.SetVelY(5);
+            player.ObeysGravity = false;
+        }
+
         public void OnDuckAction(Player.Player player)
         {
+            if (player.IsOnVines)
+            {
+                OnClimbingDownAction(player);
+                return;
+            }
             player.AddAnimationToQueue("duck");
             _isDucking = true;
         }

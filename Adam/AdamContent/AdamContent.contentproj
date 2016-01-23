@@ -1727,13 +1727,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tiles\spritemap_20.png">
-      <Name>spritemap_20</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tiles\spritemap_17.png">
       <Name>spritemap_17</Name>
       <Importer>TextureImporter</Importer>
@@ -1792,6 +1785,20 @@
   <ItemGroup>
     <Compile Include="Tiles\spritemap_19.png">
       <Name>spritemap_19</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\spritemap_20.png">
+      <Name>spritemap_20</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Backgrounds\sky_fog.png">
+      <Name>sky_fog</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

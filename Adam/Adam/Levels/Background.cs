@@ -19,9 +19,11 @@ namespace Adam
         private Texture2D _backgroundTexture;
         private Texture2D _middlegroundTexture;
         private Texture2D _foregroundTexture;
+        private Texture2D _skyFog = ContentHelper.LoadTexture("Backgrounds/sky_fog");
 
         private Vector2[] middleCoords = new Vector2[3];
         private Vector2[] foreCoords = new Vector2[3];
+        private const float FogGradient = .25f;
 
         /// <summary>
         /// The current background Id.
@@ -103,14 +105,21 @@ namespace Adam
 
             spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
 
+            spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
+
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
+
+            spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
+
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
             }
+
+            spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
         }
     }
 

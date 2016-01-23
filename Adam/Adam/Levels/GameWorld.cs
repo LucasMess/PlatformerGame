@@ -88,7 +88,7 @@ namespace Adam.Levels
 
             _placeNotification = new PlaceNotification();
             RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_19");
+            SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_20");
             UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 

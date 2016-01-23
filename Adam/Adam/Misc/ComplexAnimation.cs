@@ -61,6 +61,10 @@ namespace Adam.Misc
                 // y = 1020/(x + 1) - 20
                 _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
             }
+            if (_currentName == "climb")
+            {
+                _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().Y) + 1));
+            }
 
            
 
