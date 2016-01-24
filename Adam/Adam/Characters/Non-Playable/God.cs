@@ -1,5 +1,4 @@
-﻿using Adam.Characters.Non_Playable;
-using Adam.Misc;
+﻿using Adam.Misc;
 using Adam.Misc.Interfaces;
 using Adam.UI.Information;
 using Microsoft.Xna.Framework;
@@ -7,142 +6,67 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Characters;
 using Adam.Levels;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.Noobs
 {
-    public class God : NonPlayableCharacter, IAnimated
+    public class God : NonPlayableCharacter
     {
-        GameTime _gameTime;
-        int _spawnPoint;
+        private bool _introducedSelf = false;
 
+        /// <summary>
+        /// God NPC. 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public God(int x, int y)
         {
-            CanTalk = true;
-            Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
-            CollRectangle = new Rectangle(x, y, 48, 80);
-            SourceRectangle = new Rectangle(0, 0, 24, 40);
             ObeysGravity = true;
             IsCollidable = true;
-            Weight = 10;
-
-            _spawnPoint = CollRectangle.X;
-
-            _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
+            ComplexAnim = new ComplexAnimation();
+            Texture = ContentHelper.LoadTexture("Characters/NPCs/god");
+            CollRectangle = new Rectangle(x, y, 48, 80);
+            ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 4, true));
+            AddAnimationToQueue("still");
+            Main.Dialog.NextDialog += Dialog_NextDialog;
         }
 
-        public override void Update(GameTime gameTime, Player.Player player)
+        protected override void ShowDialog()
         {
-            this._gameTime = gameTime;
-            base.Update(gameTime, player);
-
-            WalkAroundSpawnPoint(_spawnPoint);
-
-            if (Velocity.X != 0)
+            if (!Main.LevelProgression.HasMetGod)
             {
-                CurrentAnimationState = AnimationState.Walking;
-            }
-            else CurrentAnimationState = AnimationState.Still;
-
-            if (Velocity.X > 0)
-                _animation.IsFlipped = false;
-            if (Velocity.X < 0)
-                _animation.IsFlipped = true;
-
-        }
-
-        protected override void ShowMessage()
-        {
-            SoundFx fx;
-            Main.Dialog.Say("What are you up to Adam? I hope you got your shit together now, because Eve needs you to save her before something really, really bad happens to her. I don't want you to waster your time doing nothing. GO!");
-            EndConversation = true;
-        }
-
-        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            _animation.Draw(spriteBatch);
-        }
-
-        public int StartingConversation { get; set; }
-
-        public int CurrentConversation { get; set; }
-
-
-        public void OnNextDialog()
-        {
-            if (EndConversation)
-            {
-                //No more messages to show.
-                EndConversation = false;
-                IsTalking = false;
-                CurrentConversation = StartingConversation;
+                Say("Hello Adam. You know who I am.", "god-background-info-1", new[] { "What are you talking about?", "Pizza!" });
+                Main.LevelProgression.HasMetGod = true;
             }
             else
             {
-                //The dialog is not over and there is more.
-                ShowMessage();
+                Dialog_NextDialog("god-background-info-1", 0);
             }
         }
 
-        void IAnimated.Animate()
+        private void Dialog_NextDialog(string code, int selectedOption)
         {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
-            switch (CurrentAnimationState)
+            switch (code)
             {
-                case AnimationState.Still:
-                    _animation.Update(gameTime, DrawRectangle, _animationData[0]);
+                case "god-background-info-1":
+                    Say("Yesterday I was going to the bathroom and got lost. I found a very strange room full of pictures, but they I don't recall every buying those. Well I never found the place again.", "god-background-info-2", new[] { "Do you know if this room still exists?", "I don't care, what am I supposed to do now?", "Ok, bye." });
                     break;
-                case AnimationState.Walking:
-                    _animation.Update(gameTime, DrawRectangle, _animationData[1]);
-                    break;
-                case AnimationState.Sleeping:
-                    break;
-                case AnimationState.Talking:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public bool EndConversation { get; set; }
-
-        Animation _animation;
-        public Animation Animation
-        {
-            get
-            {
-                if (_animation == null)
-                    _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
-                return _animation;
-            }
-        }
-
-        AnimationData[] _animationData;
-        public AnimationData[] AnimationData
-        {
-            get
-            {
-                if (_animationData == null)
-                    _animationData = new Adam.AnimationData[]
+                case "god-background-info-2":
+                    switch (selectedOption)
                     {
-                        new Adam.AnimationData(250,4,0,AnimationType.Loop),
-                        new Adam.AnimationData(250,4,1,AnimationType.Loop),
-                    };
-                return _animationData;
-            }
-        }
-
-        public Adam.Misc.Interfaces.AnimationState CurrentAnimationState
-        {
-            get; set;
-        }
-
-        protected override Rectangle DrawRectangle
-        {
-            get
-            {
-                return new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
+                        case 0:
+                            Say("What room?", null, null);
+                            break;
+                        case 1:
+                            Say("I don't know. I haven't made up the future just yet and you have free will. That reminds me! I have something in the oven. See you later, Adam.",null, null);
+                            break;
+                        case 2:
+                            Say("Farewell.", null, null);
+                            break;
+                    }
+                    break;
             }
         }
     }

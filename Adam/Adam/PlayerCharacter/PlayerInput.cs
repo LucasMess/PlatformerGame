@@ -122,6 +122,9 @@ namespace Adam.Player
         /// </summary>
         private void CheckInput()
         {
+            if (Main.Dialog.IsActive)
+                return;
+
             StillUpdate?.Invoke();
 
             if (!IsPunchPressed())

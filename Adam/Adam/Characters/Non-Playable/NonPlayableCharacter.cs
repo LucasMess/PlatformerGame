@@ -1,122 +1,53 @@
-﻿using Adam.Network;
-using Adam.UI.Elements;
+﻿using Adam.Levels;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Levels;
 
-namespace Adam.Characters.Non_Playable
+namespace Adam.Characters
 {
-    public abstract class NonPlayableCharacter : Entity
+    /// <summary>
+    /// Subset of characters that cannot be played and are not enemies. These characters can sometimes be talked to.
+    /// </summary>
+    public abstract class NonPlayableCharacter : Character
     {
-        bool _destinationFound;
-        bool _toTheRight;
-        double _destinationTimer;
-        int _destinationX;
-        GameTime _gameTime;
-        Player.Player _player;
-        protected bool CanTalk;
-        protected bool IsTalking;
+        public string CharacterId { get; set; }
 
-        KeyPopUp _key;
-        public NonPlayableCharacter()
+        protected NonPlayableCharacter()
         {
-            Texture = Main.DefaultTexture;
-
-            _key = new KeyPopUp();
+            GameWorld.Instance.Player.InteractAction += Player_InteractAction;
         }
 
-        public virtual void Update(GameTime gameTime, Player.Player player)
+        /// <summary>
+        /// If the player sends an interact event and is colliding with the NPC, the NPC will talk.
+        /// </summary>
+        private void Player_InteractAction()
         {
-            _key.Update(CollRectangle);
-
-            CollRectangle.X += (int)Velocity.X;
-            CollRectangle.Y += (int)Velocity.Y;
-
-            this._player = player;
-            this._gameTime = gameTime;
-            base.Update();
-
-            if (CanTalk)
-                CheckForPlayer();
-        }
-
-        private void CheckForPlayer()
-        {
-            if (CollRectangle.Intersects(_player.GetCollRectangle()))
+            Player.Player player = GameWorld.Instance.Player;
+            if (player.GetCollRectangle().Intersects(GetCollRectangle()))
             {
-                if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W) && !IsTalking)
-                {
-                    IsTalking = true;
-                    ShowMessage();
-                }
+                ShowDialog();
             }
         }
 
-        protected virtual void ShowMessage()
+        /// <summary>
+        /// Makes the NPC say whatever it has to say and plays talk aniamtion.
+        /// </summary>
+        protected virtual void ShowDialog()
         {
-
+            //TODO: Add talking animation.
+            //ComplexAnim.AddToQueue("talk");
         }
 
-        protected void WalkAroundSpawnPoint(int spawnX)
+        /// <summary>
+        /// Shortcut to dialog method.
+        /// </summary>
+        /// <param name="s"></param>
+        protected void Say(string text, string nextDialogCode, string[] options)
         {
-            if (Session.IsActive && !Session.IsHost)
-                return;
-
-            int speed = 1;
-            if (IsTalking)
-            {
-                Velocity.X = 0;
-                return;
-            }
-            if (!_destinationFound)
-            {
-                Velocity.X = 0;
-                _destinationTimer += _gameTime.ElapsedGameTime.TotalSeconds;
-                if (_destinationTimer > 2)
-                {
-                    _destinationTimer = 0;
-                    _destinationX = GameWorld.RandGen.Next(-3, 4);
-                    _destinationX *= Main.Tilesize;
-                    _destinationX += spawnX;
-                    _destinationFound = true;
-
-                    if (_destinationX > CollRectangle.X)
-                    {
-                        _toTheRight = true;
-                    }
-                    else _toTheRight = false;
-                }
-            }
-
-            if (_destinationFound)
-            {
-                if (_toTheRight)
-                {
-                    Velocity.X = speed;
-                    if (CollRectangle.X > _destinationX)
-                    {
-                        _destinationFound = false;
-                    }
-                }
-                else
-                {
-                    Velocity.X = -speed;
-                    if (CollRectangle.X < _destinationX)
-                    {
-                        _destinationFound = false;
-                    }
-                }
-            }
+            Main.Dialog.Say(text, nextDialogCode, options);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (!IsTalking)
-                _key.Draw(spriteBatch);
-        }
+        /// <summary>
+        /// Returns complex animation draw rectangle because all NPCs have complex anims.
+        /// </summary>
+        protected override Rectangle DrawRectangle => ComplexAnim.GetDrawRectangle();
     }
 }

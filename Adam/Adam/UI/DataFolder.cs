@@ -173,7 +173,7 @@ namespace Adam.UI
             }
             catch (FileNotFoundException)
             {
-                Main.Dialog.Say("Error: File not found.");
+                Main.MessageBox.Show("Error: File not found.");
                 throw new Exception();
             }
 

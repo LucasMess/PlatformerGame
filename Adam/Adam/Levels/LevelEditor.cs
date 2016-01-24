@@ -365,7 +365,7 @@ namespace Adam.Levels
         {
             UpdateTilesAround(t.TileIndex);
             _construction[GameWorld.RandGen.Next(0, 3)].Play();
-            CreateConstructionParticles(t.DrawRectangle);
+            //CreateConstructionParticles(t.DrawRectangle);
         }
 
         private void Destroy(Tile t)

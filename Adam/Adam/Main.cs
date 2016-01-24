@@ -81,6 +81,7 @@ namespace Adam
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
         public static DataFolder DataFolder = new DataFolder();
+        public static LevelProgression LevelProgression = new LevelProgression();
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
         private Camera _camera;

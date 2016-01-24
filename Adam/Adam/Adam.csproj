@@ -161,13 +161,14 @@
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="EntityProperties.cs" />
+    <Compile Include="GameData\LevelProgression.cs" />
     <Compile Include="Interactables\Portal.cs" />
     <Compile Include="Misc\Interfaces\ISpecialTile.cs" />
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Particles\NewParticle.cs" />
-    <Compile Include="Player\PlayerInput.cs" />
-    <Compile Include="Player\PlayerProperties.cs" />
+    <Compile Include="PlayerCharacter\PlayerInput.cs" />
+    <Compile Include="PlayerCharacter\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\Crystal.cs" />
@@ -214,8 +215,8 @@
     <Compile Include="Obstacles\Liquid.cs" />
     <Compile Include="Obstacles\MachineGun.cs" />
     <Compile Include="Obstacles\WidePlatformUp.cs" />
-    <Compile Include="Player\PlayerScript.cs" />
-    <Compile Include="Player\Script.cs" />
+    <Compile Include="PlayerCharacter\PlayerScript.cs" />
+    <Compile Include="PlayerCharacter\Script.cs" />
     <Compile Include="UI\ActionBar.cs" />
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
@@ -267,7 +268,7 @@
     <Compile Include="UI\Cursor.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Levels\Tile.cs" />
-    <Compile Include="Player\Player.cs" />
+    <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="UI\Information\PlaceNotification.cs" />
     <Compile Include="UI\PopUp.cs" />
     <Compile Include="Interactables\Projectile.cs" />

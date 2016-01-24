@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Adam.Characters;
 using Adam.Characters.Enemies;
-using Adam.Characters.Non_Playable;
 using Adam.Interactables;
 using Adam.Lights;
 using Adam.Misc;
@@ -275,7 +275,7 @@ namespace Adam.Levels
                     if (entity is NonPlayableCharacter)
                     {
                         NonPlayableCharacter npc = (NonPlayableCharacter)entity;
-                        npc.Update(gameTime, Player);
+                        npc.Update();
                     }
                     if (entity is Sign)
                     {
