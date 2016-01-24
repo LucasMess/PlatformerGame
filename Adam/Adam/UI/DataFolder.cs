@@ -138,6 +138,9 @@ namespace Adam.UI
         public static void SaveLevel()
         {
             XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
+
+            DeleteFile(CurrentLevelFilePath);
+
             using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
             {
                 xs.Serialize(fs, new WorldConfigFile(GameWorld.Instance));

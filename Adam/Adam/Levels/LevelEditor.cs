@@ -23,6 +23,7 @@ namespace Adam.Levels
         public ActionBar ActionBar = new ActionBar();
         TileDescription _tileDescription = new TileDescription();
         public Brush Brush = new Brush();
+        private bool _hasChangedSinceLastSave;
         public bool OnInventory;
         public bool OnWallMode;
         bool _inventoryKeyPressed;
@@ -44,7 +45,7 @@ namespace Adam.Levels
         SoundFx _close, _open, _select;
         Rectangle _mouseRect;
 
-        Timer _autoSaveTimer = new Timer();
+        Timer _idleTimerForSave = new Timer();
 
         public void Load()
         {
@@ -127,9 +128,9 @@ namespace Adam.Levels
             if (_blackScreenOpacity < 0) _blackScreenOpacity = 0;
 
             // Auto-save functionality.
-            if (_autoSaveTimer.TimeElapsedInSeconds > 1)
+            if (_idleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
             {
-                _autoSaveTimer.Reset();
+                _hasChangedSinceLastSave = false;
                 DataFolder.SaveLevel();
             }
         }
@@ -202,18 +203,22 @@ namespace Adam.Levels
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
+                _idleTimerForSave.Reset();
                 EditorRectangle.X -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.D))
             {
+                _idleTimerForSave.Reset();
                 EditorRectangle.X += speed;
             }
             if (InputHelper.IsKeyDown(Keys.W))
             {
+                _idleTimerForSave.Reset();
                 EditorRectangle.Y -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.S))
             {
+                _idleTimerForSave.Reset();
                 EditorRectangle.Y += speed;
             }
 
@@ -363,6 +368,8 @@ namespace Adam.Levels
 
         private void Construct(Tile t)
         {
+            _idleTimerForSave.Reset();
+            _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
             _construction[GameWorld.RandGen.Next(0, 3)].Play();
             //CreateConstructionParticles(t.DrawRectangle);
@@ -370,6 +377,8 @@ namespace Adam.Levels
 
         private void Destroy(Tile t)
         {
+            _idleTimerForSave.Reset();
+            _hasChangedSinceLastSave = true;
             _destruction.Play();
             CreateDestructionParticles(t);
             UpdateTilesAround(t.TileIndex);
