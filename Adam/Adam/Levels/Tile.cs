@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Enemies;
 using Adam.Interactables;
@@ -661,20 +662,14 @@ namespace Adam
                         }
                     }
                     break;
-                case 203: //God
+                case 203: // NPC
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    _positionInSpriteSheet = new Vector2(18, 13);
+                    _isInvisible = true;
+                    if (!_isSampleTile && !_wasInitialized)
                     {
-                        _positionInSpriteSheet = new Vector2(18, 13);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Instance.Entities.Add(new God(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
+                        new NonPlayableCharacter(this);
+                        _wasInitialized = true;
                     }
                     break;
                 case 204: //Lost
@@ -957,12 +952,16 @@ namespace Adam
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();
             DefineSourceRectangle();
+            GameWorld.Instance.WorldData.MetaData[TileIndex] = null;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (Texture != null && !_isInvisible)
-                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
+            if (Texture != null)
+            {
+                if (!_isInvisible || (_isInvisible && GameWorld.Instance.CurrentGameMode == GameMode.Edit))
+                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
+            }
             if (_hasConnectPattern)
             {
                 foreach (var c in _cornerPieces)
@@ -1493,7 +1492,7 @@ namespace Adam
 
         private bool _hasRandomStartingPoint;
         private Rectangle _originalPosition;
-        private Vector2 _sizeOfTile = new Vector2(1,1);
+        private Vector2 _sizeOfTile = new Vector2(1, 1);
         private bool _wasInitialized;
 
         private int _mapWidth;

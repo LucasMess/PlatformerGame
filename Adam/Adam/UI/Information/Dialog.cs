@@ -124,7 +124,7 @@ namespace Adam.UI.Information
                             NextDialog?.Invoke(_nextDialogCode, _dialogOptions.SelectedOption);
                         }
                     }
-                    if (InputHelper.IsKeyUp(Keys.Space)) _enterPressed = false;
+                    if (InputHelper.IsKeyUp(Keys.Enter)) _enterPressed = false;
                 }
 
                 // Move the selector leaves around depending on keys pressed.

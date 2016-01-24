@@ -1,18 +1,75 @@
-﻿using Adam.Levels;
+﻿using System;
+using Adam.Levels;
+using Adam.Noobs;
+using Adam.UI;
 using Microsoft.Xna.Framework;
 
 namespace Adam.Characters
 {
     /// <summary>
     /// Subset of characters that cannot be played and are not enemies. These characters can sometimes be talked to.
+    /// 
+    /// Created by Lucas Message a long time ago.
+    /// Cleaned up on 1/24/2016
     /// </summary>
-    public abstract class NonPlayableCharacter : Character
+    public class NonPlayableCharacter : Character
     {
         public string CharacterId { get; set; }
+        private readonly int _xCoord;
+        private readonly int _yCoord;
+        private readonly int _sourceTileIndex;
+        private NonPlayableCharacter _npc;
 
         protected NonPlayableCharacter()
         {
+        }
+
+        public NonPlayableCharacter(Tile sourceTile)
+        {
+            _xCoord = sourceTile.GetDrawRectangle().X;
+            _yCoord = sourceTile.GetDrawRectangle().Y;
+            _sourceTileIndex = sourceTile.TileIndex;
+
+            if (GameWorld.Instance.WorldData.MetaData[sourceTile.TileIndex] != null)
+            {
+                string metadata = GameWorld.Instance.WorldData.MetaData[sourceTile.TileIndex];
+                if (metadata.StartsWith("npc:"))
+                {
+                    var npcName = metadata.Substring(4);
+                    Console.WriteLine("Creating NPC with name {0}", npcName);
+                    CreateNpc(npcName);
+                }
+            }
+            else
+            {
+                Main.TextInputBox.Show("Please enter the name of the NPC you would like to put here.");
+                Main.TextInputBox.OnInputEntered += OnNpcNameEntered;
+                Console.WriteLine("Creating brand new NPC");
+            }
+        }
+
+        private void OnNpcNameEntered(TextInputArgs e)
+        {
+            string npcName = e.Input.ToLower();
+            GameWorld.Instance.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
+            CreateNpc(npcName);
+        }
+
+        private void CreateNpc(string npcName)
+        {
+            switch (npcName)
+            {
+                case "god":
+                    _npc = new God(_xCoord, _yCoord);
+                    break;
+                default:
+                    Main.MessageBox.Show("This NPC does not exist.");
+                    Main.TextInputBox.ShowSameMessage();
+                    return;
+            }
+            GameWorld.Instance.Entities.Add(_npc);
             GameWorld.Instance.Player.InteractAction += Player_InteractAction;
+            Console.WriteLine("NPC created successfully.");
         }
 
         /// <summary>
@@ -21,9 +78,9 @@ namespace Adam.Characters
         private void Player_InteractAction()
         {
             Player.Player player = GameWorld.Instance.Player;
-            if (player.GetCollRectangle().Intersects(GetCollRectangle()))
+            if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
             {
-                ShowDialog();
+                _npc.ShowDialog();
             }
         }
 
@@ -39,7 +96,9 @@ namespace Adam.Characters
         /// <summary>
         /// Shortcut to dialog method.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="text">The text the character will say.</param>
+        /// <param name="nextDialogCode">The code that defines what the next dialog should be.</param>
+        /// <param name="options">The options the player has to choose from.</param>
         protected void Say(string text, string nextDialogCode, string[] options)
         {
             Main.Dialog.Say(text, nextDialogCode, options);
