@@ -10,7 +10,7 @@ namespace Adam.Levels
     /// </summary>
     public class Chunk
     {
-        public const int DefaultSize = 32;
+        public const int DefaultSize = 16;
         private int[] _indexes = new int[DefaultSize * DefaultSize];
         private int[] _indexesAround;
 
@@ -43,8 +43,8 @@ namespace Adam.Levels
         {
             // Put the surrounding chunks in a list.
             List<Chunk> surroundingChunks = new List<Chunk>();
-            int startingChunk = Index - maxChunksX - 1;
-            int selectionSize = 4;
+            int startingChunk = Index - maxChunksX - 4;
+            int selectionSize = 8;
 
             for (int h = 0; h < selectionSize; h++)
             {

@@ -158,7 +158,13 @@
     <Compile Include="Characters\Enemies\Frog.cs" />
     <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
+    <Compile Include="Characters\Non-Playable\Charlie.cs" />
+    <Compile Include="Characters\Non-Playable\Harry Potter.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
+    <Compile Include="Characters\Non-Playable\Rose.cs" />
+    <Compile Include="Characters\Non-Playable\Scooter.cs" />
+    <Compile Include="Characters\Non-Playable\Vladimir.cs" />
+    <Compile Include="Characters\Non-Playable\Will.cs" />
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="GameData\LevelProgression.cs" />

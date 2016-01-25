@@ -236,7 +236,6 @@ namespace Adam
             if (player.IsOnVines)
             {
                 OnClimbingDownAction(player);
-                return;
             }
             player.AddAnimationToQueue("duck");
             _isDucking = true;

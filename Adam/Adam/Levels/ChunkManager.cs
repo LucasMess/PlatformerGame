@@ -134,6 +134,7 @@ namespace Adam.Levels
             // Finds where the top left visible chunk is.
             int startingChunk = cameraChunk - (int)Math.Ceiling((double)(visibleChunksX / 2)) - 1;
 
+
             // Makes an array of visible chunks.
             List<Chunk> visibleChunks = new List<Chunk>();
             for (int h = 0; h < visibleChunksY; h++)

@@ -14,8 +14,6 @@ namespace Adam.Noobs
 {
     public class God : NonPlayableCharacter
     {
-        private bool _introducedSelf = false;
-
         /// <summary>
         /// God NPC. 
         /// </summary>

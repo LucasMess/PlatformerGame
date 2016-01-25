@@ -50,6 +50,7 @@ namespace Adam.Characters
 
         private void OnNpcNameEntered(TextInputArgs e)
         {
+            Main.TextInputBox.OnInputEntered -= OnNpcNameEntered;
             string npcName = e.Input.ToLower();
             GameWorld.Instance.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
             CreateNpc(npcName);
@@ -61,6 +62,24 @@ namespace Adam.Characters
             {
                 case "god":
                     _npc = new God(_xCoord, _yCoord);
+                    break;
+                case "charlie":
+                    _npc = new Charlie(_xCoord, _yCoord);
+                    break;
+                case "harrypotter":
+                    _npc = new HarryPotter(_xCoord, _yCoord);
+                    break;
+                case "rose":
+                    _npc = new Rose(_xCoord, _yCoord);
+                    break;
+                case "scooter":
+                    _npc = new Scooter(_xCoord, _yCoord);
+                    break;
+                case "vladimir":
+                    _npc = new Vladimir(_xCoord, _yCoord);
+                    break;
+                case "will":
+                    _npc = new Will(_xCoord, _yCoord);
                     break;
                 default:
                     Main.MessageBox.Show("This NPC does not exist.");

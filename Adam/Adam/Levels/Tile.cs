@@ -78,6 +78,7 @@ namespace Adam
             {59, "Bed"},
             {60, "Bookshelf"},
             {61, "Painting"},
+            {62,  "Tree of Knowledge" },
             {100, "Gold Brick Wall"},
             {101, "Stone Wall"},
             {102, "Dirt Wall"},
@@ -539,6 +540,15 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(10, 32);
+                    break;
+                case 62: // Tree of Knowledge
+                    _sizeOfTile.X = 50;
+                    _sizeOfTile.Y = 25;
+                    Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
+                    _positionInSpriteSheet = new Vector2(0,0);
+
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     break;
 
                 #region Wall Textures

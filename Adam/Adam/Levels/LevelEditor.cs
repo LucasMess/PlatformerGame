@@ -29,8 +29,6 @@ namespace Adam.Levels
         bool _inventoryKeyPressed;
         float _blackScreenOpacity;
         bool _recentlyChanged;
-        bool _onPortalLinkMode;
-        Portal _selectedPortal;
 
         public Rectangle EditorRectangle;
         public int IndexOfMouse;
@@ -444,12 +442,6 @@ namespace Adam.Levels
         public void DrawBehindTiles(SpriteBatch spriteBatch)
         {
             Brush.DrawBehind(spriteBatch);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            Brush.Draw(spriteBatch);
-            _selectedPortal?.ConnectingLine?.Draw(spriteBatch);
         }
 
         public void DrawUi(SpriteBatch spriteBatch)

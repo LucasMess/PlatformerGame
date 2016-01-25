@@ -62,7 +62,7 @@ namespace Adam.UI
                 tile.Id = id;
                 tile.DefineTexture();
 
-                tile.DrawRectangle = new Rectangle(ActiveX, (int)((Main.Tilesize / Main.HeightRatio) * Tiles.Count), (int)(tile.DrawRectangle.Width / Main.HeightRatio), (int)(tile.DrawRectangle.Height / Main.HeightRatio));
+                tile.DrawRectangle = new Rectangle(ActiveX, (int)((Main.Tilesize / Main.HeightRatio) * Tiles.Count), (int)(Main.Tilesize/ Main.HeightRatio), (int)(Main.Tilesize / Main.HeightRatio));
                 Tiles.Add(tile);
 
                 TileName tileName = new TileName();
@@ -252,7 +252,7 @@ namespace Adam.UI
             {
                 byte[] ds = new byte[]
                 {
-               1,2,5,6,4,39,40,38,20,10,41,57,8,21,3,18,29,30,14,15,16,23,24,25,26,37,11,12,22,31,32,34,33,19,42,43,45,46,47,48,49,50,51,52,53,54,58,59,60,61                };
+               1,2,5,6,4,39,40,38,20,10,41,57,8,21,3,18,29,30,14,15,16,23,24,25,26,37,11,12,22,31,32,34,33,19,42,43,45,46,47,48,49,50,51,52,53,54,58,59,60,61,62                };
                 return ds;
             }
         }
