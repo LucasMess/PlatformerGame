@@ -20,7 +20,7 @@ namespace Adam.Lights
         int _width;
         int _height;
 
-        
+
 
         public LightEngine()
         {
@@ -37,7 +37,6 @@ namespace Adam.Lights
 
             CreateArray();
             GenerateSunLight();
-            TransferNewLights();
 
             DynamicLights = new List<Light>();
             _newLights = new List<Light>();
@@ -45,12 +44,7 @@ namespace Adam.Lights
 
         private void CreateArray()
         {
-            //Creates light array that will be used in GameWorld.
             _sunLights = new SunLight[_width * _height];
-            //for (int i = 0; i < sunLights.Length; i++)
-            //{
-            //    sunLights[i] = new SunLight();
-            //}
         }
 
         public void GenerateSunLight()
@@ -66,68 +60,19 @@ namespace Adam.Lights
 
         }
 
-        private void TransferNewLights()
-        {
-            //for (int i = newLights.Count - 1; i >= 0; i--)
-            //{
-            //    sunLights[newLights[i].index] = newLights[i];
-            //    newLights.Remove(newLights[i]);
-            //}
-        }
-
-        public void UpdateSunLight(int index)
-        {
-            //if (tiles[index].sunlightPassesThrough && walls[index].sunlightPassesThrough)
-            //{
-            //    lights[index] = new SunLight(tiles[index].drawRectangle);
-            //}
-            //else lights[index] = new Light();
-        }
-
-
         public void AddFixedLightSource(Tile tile, Light light)
         {
-            light.Index = tile.TileIndex;
-            _newLights.Add(light);
+            DynamicLights.Add(light);
         }
 
         public void Update()
         {
-            if (_newLights.Count > 0)
-            {
-                TransferNewLights();
-            }
-
             _visibleLights = GameWorld.Instance.ChunkManager.GetVisibleIndexes();
-
-            //Camera camera = GameWorld.Instance.camera;
-            //WorldData worldData = GameWorld.Instance.worldData;
-            //int initial = camera.tileIndex - 17 * 2 * worldData.LevelWidth - 25 * 2;
-            //int maxHoriz = 100;
-            //int maxVert = 60;
-            //int i = 0;
-            //for (int v = 0; v < maxVert; v++)
-            //{
-            //    for (int h = 0; h < maxHoriz; h++)
-            //    {
-            //        visibleLights[i] = initial + worldData.LevelWidth * v + h;
-            //        i++;
-            //    }
-            //}
-
-            //foreach (int index in visibleLights)
-            //{
-            //    if (index >= 0 && index < lights.Length)
-            //    {
-            //        lights[index].Update();
-            //    }
-            //}
 
             foreach (Light l in DynamicLights)
             {
-                l.Update(l.source.Get());
+                l.Update();
             }
-
 
             // Limit the maximum amount of lights that can exist at the same time.
             if (DynamicLights.Count > 1000)

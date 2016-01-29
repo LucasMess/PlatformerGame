@@ -290,8 +290,6 @@ namespace Adam.Levels
                 }
             }
 
-            _playerLight.Update(Player);
-
             foreach (Key key in KeyList)
             {
                 key.Update(Player);
@@ -384,6 +382,8 @@ namespace Adam.Levels
                 if (!Entities[i].IsDead)
                     Entities[i].Draw(spriteBatch);
             }
+            if (CurrentGameMode == GameMode.Edit)
+                LevelEditor.Draw(spriteBatch);
         }
 
         public void DrawParticles(SpriteBatch spriteBatch)

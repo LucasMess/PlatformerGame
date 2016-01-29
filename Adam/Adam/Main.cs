@@ -76,7 +76,7 @@ namespace Adam
         public static double HeightRatio;
         public static float MaxVolume = .1f;
         public static bool IsMusicMuted = true;
-        public static bool HasLighting = true;
+        public static bool HasLighting = false;
         public static ObjectiveTracker ObjectiveTracker;
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;

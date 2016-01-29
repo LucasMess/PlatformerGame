@@ -33,7 +33,7 @@ namespace Adam.Lights
 
         }
 
-        public override void Update(Entity source)
+        public void Update(Entity source)
         {
             SetPosition(source.GetCollRectangle());
 

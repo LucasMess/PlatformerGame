@@ -33,14 +33,13 @@ namespace Adam.Noobs
 
         protected override void ShowDialog()
         {
-            if (!Main.LevelProgression.HasMetGod)
+            if (!Main.LevelProgression.HasStartedMainQuest)
             {
-                Say("Hello Adam. You know who I am.", "god-background-info-1", new[] { "What are you talking about?", "Pizza!" });
-                Main.LevelProgression.HasMetGod = true;
+                Say("You are finally awake!.", "god-mainstory-1", new[] { "What are you talking about?", "What are you cooking there?" });
             }
             else
             {
-                Dialog_NextDialog("god-background-info-1", 0);
+                Dialog_NextDialog("god-mainstory-1", 0);
             }
         }
 
@@ -48,22 +47,50 @@ namespace Adam.Noobs
         {
             switch (code)
             {
-                case "god-background-info-1":
-                    Say("Yesterday I was going to the bathroom and got lost. I found a very strange room full of pictures, but they I don't recall every buying those. Well I never found the place again.", "god-background-info-2", new[] { "Do you know if this room still exists?", "I don't care, what am I supposed to do now?", "Ok, bye." });
-                    break;
-                case "god-background-info-2":
+                case "god-mainstory-1":
                     switch (selectedOption)
                     {
                         case 0:
-                            Say("What room?", null, null);
+                            Say("You have been asleep for nearly two days now. Ever since Eve was kidnapped you have not left you room for anything!", "god-mainstory-2", new []{"Eve was... kidnapped?", "NO! HOW COULD THIS BE?"});
                             break;
                         case 1:
-                            Say("I don't know. I haven't made up the future just yet and you have free will. That reminds me! I have something in the oven. See you later, Adam.",null, null);
-                            break;
-                        case 2:
-                            Say("Farewell.", null, null);
+                            Say("I'm baking this awesome brand new recipe that will revolutionize the cake industry. I will call it \"The Cake\" and everyone will love it. Thanks for asking. Now, aren't you going to do anything about Eve? ", "god-mainstory-1.5", new [] { "Yes, we are going to meet this afternoon.", "Do I have to?"});
                             break;
                     }
+                    break;
+                case "god-mainstory-1.5":
+                    switch (selectedOption)
+                    {
+                        default:
+                            Say("What do you mean?!\nEve has been kidnapped!\nDid you forget already?", "god-mainstory-2", new []{"Eve was taken hostage? NOOOOOOO!", "Why can I not remember this?"});
+                            break;
+                    }
+                    break;
+                case "god-mainstory-2":
+                    switch (selectedOption)
+                    {
+                        case 0:
+                            Say("Yes! You need to go find her before it is too late!", "god-mainstory-3", new [] {"This is so cliche.", "I'm on it, just tell me where to go."});
+                            break;
+                        case 1:
+                            Say("You... had too much honey yesterday. But the point is, you need to rescue her!","god-mainstory-3", new []{"This is so cliche.","I'm on it just tell me where to go."});
+                            break;
+                    }
+                    break;
+                case "god-mainstory-3":
+                    switch (selectedOption)
+                    {
+                        default:
+                            Say("Eve was captured by Satan! This means you must find him in his lair: \nPANDEMONIUM!\nIt will be a difficult journey, so take this.","god-mainstory-4",null);
+                            break;
+                    }
+                    break;
+                case "god-mainstory-4":
+                    Say("God gives you a toothpick.","god-mainstory-5",null);
+                    break;
+                case "god-mainstory-5":
+                    Say("Be very careful with it.\nNow Go!",null,null);
+                    Main.LevelProgression.HasStartedMainQuest = true;
                     break;
             }
         }

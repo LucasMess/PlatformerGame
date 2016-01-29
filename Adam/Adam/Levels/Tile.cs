@@ -79,6 +79,7 @@ namespace Adam
             {60, "Bookshelf"},
             {61, "Painting"},
             {62,  "Tree of Knowledge" },
+            {63,  "Tree Bark" },
             {100, "Gold Brick Wall"},
             {101, "Stone Wall"},
             {102, "Dirt Wall"},
@@ -90,6 +91,7 @@ namespace Adam
             {108, "Mesa Wall"},
             {109, "Wallpaper"},
             {110, "Nothing"},
+            {111, "Tree Bark" },
             {200, "Player"},
             {201, "Snake"},
             {202, "Frog"},
@@ -226,8 +228,8 @@ namespace Adam
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
                     SunlightPassesThrough = true;
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
+                    //GameWorld.Instance.LightEngine.AddFixedLightSource(this, new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
+                    GameWorld.Instance.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(),true,Color.White,.4f,.1f));
                     break;
                 case 13: //Door
                     IsSolid = true;
@@ -550,6 +552,12 @@ namespace Adam
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     break;
+                case 63: // Tree Bark
+                    _hasConnectPattern = true;
+                    IsSolid = true;
+                    startingPoint = new Vector2(28, 0);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
 
                 #region Wall Textures
 
@@ -622,6 +630,14 @@ namespace Adam
                     break;
                 case 110: // Black.
                     _positionInSpriteSheet = new Vector2(13, 9);
+                    break;
+                case 111: // Tree of Knowledge
+                    _sizeOfTile.X = 10;
+                    _sizeOfTile.Y = 10;
+                    _positionInSpriteSheet = new Vector2(24, 5);
+
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     break;
 
                 #endregion

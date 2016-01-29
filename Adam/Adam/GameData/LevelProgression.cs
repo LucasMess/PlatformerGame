@@ -17,7 +17,8 @@ namespace Adam.GameData
 
         // Garden of Eden
         public bool HasRetrievedMap = false;
-        public bool HasMetGod = false;
+        public bool HasStartedMainQuest = false;
+        public bool HasStartedCharlieCollectingQuest = false;
 
         // Player stats
         public int PlayerHealth = 0;

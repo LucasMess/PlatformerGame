@@ -46,11 +46,6 @@ namespace Adam
             Origin = new Vector2(32, 32);
         }
 
-        public virtual void Update(Entity source)
-        {
-            Glow?.Update(this);
-        }
-
         protected void SetPosition(Rectangle parentRectangle)
         {
             DrawRectangle = new Rectangle(parentRectangle.Center.X, parentRectangle.Center.Y, Size, Size);
@@ -79,8 +74,7 @@ namespace Adam
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (LightHere)
-                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White * Opacity);
+            spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White * Opacity);
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)

@@ -317,7 +317,6 @@ namespace Adam
                     Velocity.Y += .3f;
                     Opacity -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Velocity.X = Velocity.X * 0.99f;
-                    light.Update(this);
                     break;
                 case ParticleType.Impact:
                     Animate(gameTime);
@@ -365,7 +364,7 @@ namespace Adam
                     Velocity.Y = Velocity.Y * 0.99f;
                     if (Opacity < 0)
                         ToDelete = true;
-                    light.Update(this);
+        
                     break;
                 case ParticleType.EnemyDesintegration:
                     CollRectangle.X += (int)Velocity.X;

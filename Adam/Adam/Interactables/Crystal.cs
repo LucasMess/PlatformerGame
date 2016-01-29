@@ -47,7 +47,6 @@ namespace Adam.Interactables
                 Gem.GenerateIdentical(_gemId, _sourceTile, GameWorld.RandGen.Next(6, 15));
                 _sourceTile.Id = 0;
                 _sourceTile.DefineTexture();
-                GameWorld.Instance.LightEngine.UpdateSunLight(_sourceTile.TileIndex);
             }
         }
     }

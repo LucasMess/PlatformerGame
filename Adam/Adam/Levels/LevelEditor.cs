@@ -406,7 +406,6 @@ namespace Adam.Levels
                     t.FindConnectedTextures(CurrentArray,
                     _gameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    GameWorld.Instance.LightEngine.UpdateSunLight(ind);
                 }
             }
 
@@ -437,6 +436,11 @@ namespace Adam.Levels
             {
                 _gameWorld.Particles.Add(new DestructionTileParticle(tile, r));
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            Brush.Draw(spriteBatch);
         }
 
         public void DrawBehindTiles(SpriteBatch spriteBatch)

@@ -17,9 +17,32 @@ namespace Adam.Characters
             Main.Dialog.NextDialog += Dialog_NextDialog;
         }
 
+        protected override void ShowDialog()
+        {
+            if (!Main.LevelProgression.HasStartedCharlieCollectingQuest)
+            {
+                Say("ZZZ...\nHmmm? What?!\nOh hiya.", "charlie-honeyquest-1", new []{"You seem tired.", "Who are you?", "I have to go."});
+            }
+            else
+            {
+                Say("ZZZ...\nHave you found my honey yet?",null,null);
+            }
+            base.ShowDialog();
+        }
+
         private void Dialog_NextDialog(string code, int optionChosen)
         {
-            
+            switch (code)
+            {
+                case "charlie-honeyquest-1":
+                    switch (optionChosen)
+                    {
+                        case 0:
+
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }
