@@ -164,6 +164,11 @@ namespace Adam.UI
             {
                 b.Draw(spriteBatch);
             }
+
+            foreach (FunctionButton b in _buttons)
+            {
+                b.DrawOnTop(spriteBatch);
+            }
         }
 
     }

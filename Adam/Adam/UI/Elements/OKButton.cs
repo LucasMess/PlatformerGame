@@ -26,7 +26,7 @@ namespace Adam.UI.Elements
 
         protected void Initialize()
         {
-            MouseOver += OnMouseOver;
+            MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
             MouseClicked += YesButton_MouseClicked;
             SourceRectangle = new Rectangle(320, 20, 19, 6);
@@ -63,7 +63,7 @@ namespace Adam.UI.Elements
 
         protected void Initialize()
         {
-            MouseOver += OnMouseOver;
+            MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
             SourceRectangle = new Rectangle(320, 20, 19, 6);
             Texture = GameWorld.SpriteSheet;

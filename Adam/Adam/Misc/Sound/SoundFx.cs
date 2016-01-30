@@ -31,14 +31,20 @@ namespace Adam.Misc
             _isGlobal = false;
         }
 
+        /// <summary>
+        /// Plays a new instance of the sound and automatically resets it.
+        /// </summary>
         public void Play()
         {
-            if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
-            if (_instance.Volume > MaxVolume)
-            {
-                _instance.Volume = MaxVolume;
-            }
-            _instance.Play();
+            PlayNewInstanceOnce();
+            Reset();
+
+            //if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+            //if (_instance.Volume > MaxVolume)
+            //{
+            //    _instance.Volume = MaxVolume;
+            //}
+            //_instance.Play();
         }
 
         public void PlayNewInstanceOnce()

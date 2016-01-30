@@ -252,6 +252,7 @@
     <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Elements\Line.cs" />
     <Compile Include="UI\Elements\OKButton.cs" />
+    <Compile Include="UI\Elements\TextButton.cs" />
     <Compile Include="UI\EntityScroll.cs" />
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />

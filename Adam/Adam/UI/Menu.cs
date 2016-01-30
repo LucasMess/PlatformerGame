@@ -15,6 +15,7 @@ using Adam.GameData;
 using Adam.Misc;
 using Adam.Misc.Helpers;
 using Adam.Misc.Sound;
+using Adam.UI.Elements;
 
 namespace Adam
 {
@@ -80,23 +81,23 @@ namespace Adam
             _font32 = ContentHelper.LoadFont("Fonts/x32");
             _font64 = ContentHelper.LoadFont("Fonts/x64");
 
-            _chooseLevel = new Button(_second, "Choose a Level");
+            _chooseLevel = new TextButton(_second, "Choose a Level");
             _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
             _buttons.Add(_chooseLevel);
 
-            _quit = new Button(_fifth, "Quit");
+            _quit = new TextButton(_fifth, "Quit");
             _quit.MouseClicked += quit_MouseClicked;
             _buttons.Add(_quit);
 
-            _options = new Button(_third, "Options");
+            _options = new TextButton(_third, "Options");
             _options.MouseClicked += options_MouseClicked;
             _buttons.Add(_options);
 
-            _multiplayer = new Button(_fourth, "Multiplayer");
+            _multiplayer = new TextButton(_fourth, "Multiplayer");
             _multiplayer.MouseClicked += multiplayer_MouseClicked;
             _buttons.Add(_multiplayer);
 
-            _storyMode = new Button(_first, "Story Mode");
+            _storyMode = new TextButton(_first, "Story Mode");
             _storyMode.MouseClicked += storyMode_MouseClicked;
             _buttons.Add(_storyMode);
 
@@ -108,12 +109,12 @@ namespace Adam
             //lighting.MouseClicked += lighting_MouseClicked;
             //buttons.Add(lighting);
 
-            _fullscreen = new Button(_first, "Borderless Mode: ");
+            _fullscreen = new TextButton(_first, "Borderless Mode: ");
             _fullscreen.MouseClicked += fullscreen_MouseClicked;
             _fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
             _buttons.Add(_fullscreen);
 
-            _backButton = new Button(_fifth, "Back");
+            _backButton = new TextButton(_fifth, "Back");
             _backButton.MouseClicked += backButton_MouseClicked;
             _buttons.Add(_backButton);
 
@@ -129,15 +130,15 @@ namespace Adam
             //save3.MouseClicked += level3_MouseClicked;
             //buttons.Add(save3);
 
-            _hostGame = new Button(_first, "Host Game");
+            _hostGame = new TextButton(_first, "Host Game");
             _hostGame.MouseClicked += hostGame_MouseClicked;
             _buttons.Add(_hostGame);
 
-            _joinGame = new Button(_second, "Join Game");
+            _joinGame = new TextButton(_second, "Join Game");
             _joinGame.MouseClicked += joinGame_MouseClicked;
             _buttons.Add(_joinGame);
 
-            _startMultiplayerGame = new Button(_third, "Start Game");
+            _startMultiplayerGame = new TextButton(_third, "Start Game");
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
             _buttons.Add(_startMultiplayerGame);
 

@@ -15,10 +15,11 @@ namespace Adam.UI.Elements
         protected string HoverText="";
         bool _showHoverText;
         SpriteFont _font;
+        private Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
 
         protected void Initialize()
         {
-            MouseOver += OnMouseOver;
+            MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
             CollRectangle = new Rectangle(0, 0, (int)(Main.Tilesize / Main.WidthRatio), (int)(Main.Tilesize / Main.HeightRatio));
             SourceRectangle = new Rectangle(0, 0, 16, 16);
@@ -36,17 +37,21 @@ namespace Adam.UI.Elements
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
+        }
 
+        public void DrawOnTop(SpriteBatch spriteBatch)
+        {
             if (_showHoverText)
             {
                 Rectangle mouse = InputHelper.MouseRectangle;
+                spriteBatch.Draw(_black, new Rectangle(mouse.X - 5, mouse.Y - 52, (int)_font.MeasureString(HoverText).X + 10, (int)_font.MeasureString(HoverText).Y + 4), Color.Black);
                 FontHelper.DrawWithOutline(spriteBatch, _font, HoverText, new Vector2(mouse.X, mouse.Y - 50), 1, Color.White, Color.Black);
             }
         }
 
-        protected override void OnMouseOver()
+        protected override void OnMouseHover()
         {
-            base.OnMouseOver();
+            base.OnMouseHover();
 
             _showHoverText = true;
         }
@@ -69,7 +74,7 @@ namespace Adam.UI.Elements
             CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            HoverText = "Test level [F5]";
+            HoverText = "Play level";
         }
     }
 
@@ -83,7 +88,7 @@ namespace Adam.UI.Elements
             CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            HoverText = "Save level [F2]";
+            HoverText = "Save level";
         }
     }
 
@@ -97,7 +102,7 @@ namespace Adam.UI.Elements
             CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            HoverText = "Open level [F1]";
+            HoverText = "Open level";
         }
     }
 
@@ -125,7 +130,7 @@ namespace Adam.UI.Elements
             CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            HoverText = "Erase level [Ctrl + W]";
+            HoverText = "Erase level";
         }
     }
 
@@ -143,16 +148,16 @@ namespace Adam.UI.Elements
             CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
             CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
-            HoverText = "Switch to Wall Mode [L]";
+            HoverText = "Switch to Wall Mode";
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (GameWorld.Instance.LevelEditor.OnWallMode)
             {
-                HoverText = "Switch to Tile Mode [L]";
+                HoverText = "Switch to Tile Mode";
             }
-            else HoverText = "Switch to Wall Mode [L]";
+            else HoverText = "Switch to Wall Mode";
 
             base.Draw(spriteBatch);
         }

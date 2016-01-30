@@ -303,6 +303,10 @@ namespace Adam.UI
             {
                 b.Draw(spriteBatch);
             }
+            foreach (FunctionButton b in _buttons)
+            {
+                b.DrawOnTop(spriteBatch);
+            }
 
             // Draw header text.
             FontHelper.DrawWithOutline(spriteBatch, _headerFont, _headerText, _headerPos, 2, Color.Yellow, Color.Black);
