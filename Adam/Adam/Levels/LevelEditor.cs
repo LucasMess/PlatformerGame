@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -11,6 +12,7 @@ using Adam.UI.Elements;
 using Adam.Misc.Helpers;
 using Adam.Interactables;
 using Adam.Misc.Sound;
+using Adam.Particles;
 
 namespace Adam.Levels
 {
@@ -370,7 +372,8 @@ namespace Adam.Levels
             _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
             _construction[GameWorld.RandGen.Next(0, 3)].Play();
-            //CreateConstructionParticles(t.DrawRectangle);
+            Main.Camera.Shake();
+            CreateConstructionParticles(t.DrawRectangle);
         }
 
         private void Destroy(Tile t)
@@ -378,8 +381,9 @@ namespace Adam.Levels
             _idleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             _destruction.Play();
-            CreateDestructionParticles(t);
+            CreateDestructionParticles(t.GetDrawRectangle());
             UpdateTilesAround(t.TileIndex);
+            Main.Camera.Shake();
         }
 
         private void UpdateTilesAround(int index)
@@ -413,29 +417,35 @@ namespace Adam.Levels
 
         private void CreateConstructionParticles(Rectangle rect)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
-                _gameWorld.Particles.Add(new ConstructionSmokeParticle(rect));
+                GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
+                    new Vector2(GameWorld.RandGen.Next(-10, 10)/10f, GameWorld.RandGen.Next(-10, 10)/10f)));
             }
         }
 
-        private void CreateDestructionParticles(Tile tile)
+        private void CreateDestructionParticles(Rectangle rect)
         {
-            Rectangle[] rects = new Rectangle[16];
-            int i = 0;
-            for (int w = 0; w < 4; w++)
+            for (int i = 0; i < 3; i++)
             {
-                for (int h = 0; h < 4; h++)
-                {
-                    rects[i] = new Rectangle((w * 4) + tile.SourceRectangle.X, (h * 4) + tile.SourceRectangle.Y, 4, 4);
-                    i++;
-                }
+                GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
+                    new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
             }
+            //Rectangle[] rects = new Rectangle[16];
+            //int i = 0;
+            //for (int w = 0; w < 4; w++)
+            //{
+            //    for (int h = 0; h < 4; h++)
+            //    {
+            //        rects[i] = new Rectangle((w * 4) + tile.SourceRectangle.X, (h * 4) + tile.SourceRectangle.Y, 4, 4);
+            //        i++;
+            //    }
+            //}
 
-            foreach (Rectangle r in rects)
-            {
-                _gameWorld.Particles.Add(new DestructionTileParticle(tile, r));
-            }
+            //foreach (Rectangle r in rects)
+            //{
+            //    _gameWorld.Particles.Add(new DestructionTileParticle(tile, r));
+            //}
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,9 +30,11 @@ namespace Adam
 
         Vector2 _prefRes;
         Vector2 _defRes;
+        private Timer _shakeTimer = new Timer();
         public Vector3 Velocity;
         public Vector3 LastCameraLeftCorner;
         public Vector2 InvertedCoords;
+        public Vector2 InvertedCoordsBeforeShake;
 
         public Camera(Viewport newViewport)
         {
@@ -94,8 +97,31 @@ namespace Adam
             InvertedCoords.Y += Main.DefaultResHeight * 2 / 3;
             TileIndex = (int)((int)InvertedCoords.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)((int)InvertedCoords.X / Main.Tilesize);
 
+
             LastCameraLeftCorner = cameraLeftCorner;
             _lastVelocity = Velocity;
+
+            int shakeOffset = 1;
+            if (_shakeTimer.TimeElapsedInMilliSeconds < 100)
+            {
+                switch (GameWorld.RandGen.Next(0, 5))
+                {
+                    case 0:
+                        cameraLeftCorner.X += shakeOffset;
+                        break;
+                    case 1:
+                        cameraLeftCorner.X -= shakeOffset;
+                        break;
+                    case 2:
+                        cameraLeftCorner.Y += shakeOffset;
+                        break;
+                    case 3:
+                        cameraLeftCorner.Y -= shakeOffset;
+                        break;
+                }
+            }
+
+
 
 
             _translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(_zoom, _zoom, 0));
@@ -142,6 +168,11 @@ namespace Adam
         public float GetZoom()
         {
             return _zoom;
+        }
+
+        public void Shake()
+        {
+            _shakeTimer.Reset();
         }
 
         public void UpdateWithZoom(Vector2 position)

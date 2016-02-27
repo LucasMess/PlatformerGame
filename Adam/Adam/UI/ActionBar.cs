@@ -99,6 +99,7 @@ namespace Adam.UI
 
         private void PlayButton_MouseClicked()
         {
+            DataFolder.SaveLevel();
             GameWorld.Instance.LevelEditor.OnWallMode = false;
             TestLevel();
         }

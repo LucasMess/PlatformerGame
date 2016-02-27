@@ -947,24 +947,28 @@ namespace Adam
 
         private void ChangeOpacity()
         {
-            if (GameWorld.Instance.LevelEditor.OnWallMode)
+            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
             {
-                if (!IsWall)
-                {
-                    _opacity -= .05f;
 
-                    if (_opacity < MaxOpacity)
+                if (GameWorld.Instance.LevelEditor.OnWallMode)
+                {
+                    if (!IsWall)
                     {
-                        _opacity = MaxOpacity;
+                        _opacity -= .05f;
+
+                        if (_opacity < MaxOpacity)
+                        {
+                            _opacity = MaxOpacity;
+                        }
                     }
                 }
-            }
-            else
-            {
-                _opacity += .05f;
-                if (_opacity > DefaultOpacity)
+                else
                 {
-                    _opacity = DefaultOpacity;
+                    _opacity += .05f;
+                    if (_opacity > DefaultOpacity)
+                    {
+                        _opacity = DefaultOpacity;
+                    }
                 }
             }
         }
@@ -1594,6 +1598,15 @@ namespace Adam
         public virtual Rectangle GetDrawRectangle()
         {
             return DrawRectangle;
+        }
+
+        /// <summary>
+        /// Returns the size of this tile as a ratio of the default tile size.
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetSize()
+        {
+            return _sizeOfTile;
         }
 
         #endregion

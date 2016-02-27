@@ -11,11 +11,23 @@ namespace Adam.UI
 {
     public class Brush
     {
-        const int MaxSize = 12;
+        protected int MaxSize
+        {
+            get
+            {
+                if (_selectedBrushTiles[0]?.GetSize() == new Vector2(1, 1))
+                {
+                    return 12;
+                }
+                return 1;
+            }
+        }
+
         const int MinSize = 1;
 
         public int Size = 1;
         int _index;
+        Image hoverBrushSquare = new Image();
         Image[] _selectionSquares = new Image[1];
         Tile[] _selectedBrushTiles = new Tile[1];
         public int[] SelectedIndexes;
@@ -44,7 +56,7 @@ namespace Adam.UI
                     if (Size > MaxSize) Size = MaxSize;
                     else
                     {
-                        _selectionSquares = new Image[Size * Size];
+                        //_selectionSquares = new Image[Size * Size];
                         _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged();
                     }
@@ -55,7 +67,7 @@ namespace Adam.UI
                     if (Size < MinSize) Size = MinSize;
                     else
                     {
-                        _selectionSquares = new Image[Size * Size];
+                        //_selectionSquares = new Image[Size * Size];
                         _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged();
                     }
@@ -69,27 +81,27 @@ namespace Adam.UI
         {
             GameWorld gameWorld = GameWorld.Instance;
             SelectedIndexes = GetTilesCoveredByBrush();
-            
-            for (int i = 0; i < _selectionSquares.Length; i++)
+
+            // Create grid.
+            Tile hoveredTile = gameWorld.TileArray[SelectedIndexes[0]];
+            hoverBrushSquare.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X, hoveredTile.GetDrawRectangle().Y, Size * (int)hoveredTile.GetSize().X * Main.Tilesize, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize);
+            hoverBrushSquare.SourceRectangle = new Rectangle(21 * 16, 7 * 16, 16, 16);
+            hoverBrushSquare.Texture = GameWorld.SpriteSheet;
+
+            for (int i = 0; i < _selectedBrushTiles.Length; i++)
             {
                 if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < gameWorld.TileArray.Length)
                 {
-                    //Create grid
-                    _selectionSquares[i] = new Image();
-                    Tile hovered = gameWorld.TileArray[SelectedIndexes[i]];
-                    _selectionSquares[i].Rectangle = hovered.DrawRectangle;
-                    _selectionSquares[i].SourceRectangle = new Microsoft.Xna.Framework.Rectangle(21 * 16, 7 * 16, 16, 16);
-                    _selectionSquares[i].Texture = GameWorld.SpriteSheet;
-
                     //Create transparent tiles to show selected tile
-                    Tile fakeTile = new Tile(true); 
+                    hoveredTile = gameWorld.TileArray[SelectedIndexes[i]];
+                    Tile fakeTile = new Tile(true);
                     fakeTile.Id = gameWorld.LevelEditor.SelectedId;
-                    fakeTile.DrawRectangle = hovered.DrawRectangle;
+                    fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
                     fakeTile.IsBrushTile = true;
                     fakeTile.DefineTexture();
                     fakeTile.Texture = GameWorld.SpriteSheet;
                     _selectedBrushTiles[i] = fakeTile;
-                   
+
                 }
             }
 
@@ -119,21 +131,23 @@ namespace Adam.UI
         public void DrawBehind(SpriteBatch spriteBatch)
         {
             if (_selectedBrushTiles == null) return;
-            foreach(Tile t in _selectedBrushTiles)
+            foreach (Tile t in _selectedBrushTiles)
             {
                 if (t != null)
-                spriteBatch.Draw(t.Texture, t.DrawRectangle, t.SourceRectangle, t.Color * .5f);
+                    spriteBatch.Draw(t.Texture, t.DrawRectangle, t.SourceRectangle, t.Color * .5f);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_selectionSquares == null) return;
-            foreach(Image i in _selectionSquares)
-            {
-                if (i.Texture != null)
-                spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);
-            }
+            //if (_selectionSquares == null) return;
+            //foreach (Image i in _selectionSquares)
+            //{
+            //    if (i.Texture != null)
+            //        spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);
+            //}
+            if (hoverBrushSquare.Texture != null)
+                spriteBatch.Draw(hoverBrushSquare.Texture, hoverBrushSquare.Rectangle, hoverBrushSquare.SourceRectangle, Color.White);
 
         }
     }

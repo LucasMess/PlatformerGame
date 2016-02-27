@@ -66,7 +66,6 @@ namespace Adam
         // Rendering variables.
         public static SpriteBatch SpriteBatch;
         public static bool IsLoadingContent;
-        public static float TimeDelta;
         public static int UserResWidth;
         public static int UserResHeight;
         public static Texture2D DefaultTexture;
@@ -75,8 +74,8 @@ namespace Adam
         public static double WidthRatio;
         public static double HeightRatio;
         public static float MaxVolume = .1f;
-        public static bool IsMusicMuted = true;
-        public static bool HasLighting = false;
+        public static bool IsMusicMuted = false;
+        public static bool HasLighting = true;
         public static ObjectiveTracker ObjectiveTracker;
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
@@ -84,7 +83,7 @@ namespace Adam
         public static LevelProgression LevelProgression = new LevelProgression();
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
-        private Camera _camera;
+        public static Camera Camera;
         private Cutscene _cutscene;
         private GameDebug _debug;
         private SpriteFont _debugFont;
@@ -132,8 +131,10 @@ namespace Adam
             }
             else
             {
-                UserResWidth = (int)monitorRes.X;
-                UserResHeight = (int)monitorRes.Y;
+                //UserResWidth = (int)monitorRes.X;
+                //UserResHeight = (int)monitorRes.Y;
+                UserResWidth = DefaultResWidth;
+                UserResHeight = DefaultResHeight;
             }
 #pragma warning restore 0162
 
@@ -155,23 +156,23 @@ namespace Adam
             IsFixedTimeStep = true;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
-            // Set window to borderless.
-            var hWnd = Window.Handle;
-            var control = Control.FromHandle(hWnd);
-            var form = control.FindForm();
-#pragma warning disable
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (IsTestingMultiplayer)
-            {
-                form.WindowState = FormWindowState.Normal;
-            }
-            else
-            {
-                // ReSharper disable once PossibleNullReferenceException
-                form.FormBorderStyle = FormBorderStyle.None;
-                form.WindowState = FormWindowState.Maximized;
-            }
-#pragma warning restore
+//            // Set window to borderless.
+//            var hWnd = Window.Handle;
+//            var control = Control.FromHandle(hWnd);
+//            var form = control.FindForm();
+//#pragma warning disable
+//            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+//            if (IsTestingMultiplayer)
+//            {
+//                form.WindowState = FormWindowState.Normal;
+//            }
+//            else
+//            {
+//                // ReSharper disable once PossibleNullReferenceException
+//                form.FormBorderStyle = FormBorderStyle.None;
+//                form.WindowState = FormWindowState.Maximized;
+//            }
+//#pragma warning restore
 
 
             //MediaPlayer Settings
@@ -202,7 +203,7 @@ namespace Adam
 
         protected override void Initialize()
         {
-            _camera = new Camera(GraphicsDevice.Viewport);
+            Camera = new Camera(GraphicsDevice.Viewport);
             _menu = new Menu(this);
             _gameWorld = new GameWorld(this);
             Player = new Player.Player(this);
@@ -309,8 +310,6 @@ namespace Adam
             GameUpdateCalled?.Invoke(gameTime);
 
             GameTime = gameTime;
-
-            TimeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
             if (TimeFreeze.IsTimeFrozen())
             {
@@ -428,7 +427,7 @@ namespace Adam
                         break;
 
                     Player.Update(gameTime);
-                    _gameWorld.Update(gameTime, CurrentGameMode, _camera);
+                    _gameWorld.Update(gameTime, CurrentGameMode, Camera);
                     _overlay.Update(gameTime, Player, _gameWorld);
                     Dialog.Update();
                     ObjectiveTracker.Update(gameTime);
@@ -486,7 +485,7 @@ namespace Adam
                     SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                        null, null, _camera.Translate);
+                        null, null, Camera.Translate);
                     _gameWorld.DrawInBack(SpriteBatch);
                     _gameWorld.Draw(SpriteBatch);
                     if (!Player.IsDead)
@@ -495,7 +494,7 @@ namespace Adam
                     SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
-                        null, _camera.Translate);
+                        null, Camera.Translate);
                     _gameWorld.DrawGlows(SpriteBatch);
                     SpriteBatch.End();
                     break;
@@ -521,7 +520,7 @@ namespace Adam
                     SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
-                        null, _camera.Translate);
+                        null, Camera.Translate);
                     _gameWorld.DrawLights(SpriteBatch);
                     SpriteBatch.End();
                     break;
@@ -637,12 +636,12 @@ namespace Adam
                     SpriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
                     SpriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
                     SpriteBatch.DrawString(_debugFont,
-                        "Camera Position:" + _camera.InvertedCoords.X + "," + _camera.InvertedCoords.Y,
+                        "Camera Position:" + Camera.InvertedCoords.X + "," + Camera.InvertedCoords.Y,
                         new Vector2(0, 40), Color.White);
                     SpriteBatch.DrawString(_debugFont,
                         "Editor Rectangle Position:" + _gameWorld.LevelEditor.EditorRectangle.X + "," +
                         _gameWorld.LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Camera Zoom:" + _camera.GetZoom(), new Vector2(0, 80),
+                    SpriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
                         Color.White);
                     SpriteBatch.DrawString(_debugFont, "Times Updated: " + _gameWorld.TimesUpdated, new Vector2(0, 100),
                         Color.White);
