@@ -131,10 +131,8 @@ namespace Adam
             }
             else
             {
-                //UserResWidth = (int)monitorRes.X;
-                //UserResHeight = (int)monitorRes.Y;
-                UserResWidth = DefaultResWidth;
-                UserResHeight = DefaultResHeight;
+                UserResWidth = (int)monitorRes.X;
+                UserResHeight = (int)monitorRes.Y;
             }
 #pragma warning restore 0162
 
@@ -156,23 +154,23 @@ namespace Adam
             IsFixedTimeStep = true;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 
-//            // Set window to borderless.
-//            var hWnd = Window.Handle;
-//            var control = Control.FromHandle(hWnd);
-//            var form = control.FindForm();
-//#pragma warning disable
-//            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-//            if (IsTestingMultiplayer)
-//            {
-//                form.WindowState = FormWindowState.Normal;
-//            }
-//            else
-//            {
-//                // ReSharper disable once PossibleNullReferenceException
-//                form.FormBorderStyle = FormBorderStyle.None;
-//                form.WindowState = FormWindowState.Maximized;
-//            }
-//#pragma warning restore
+            // Set window to borderless.
+            var hWnd = Window.Handle;
+            var control = Control.FromHandle(hWnd);
+            var form = control.FindForm();
+#pragma warning disable
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (IsTestingMultiplayer)
+            {
+                form.WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                form.FormBorderStyle = FormBorderStyle.None;
+                form.WindowState = FormWindowState.Maximized;
+            }
+#pragma warning restore
 
 
             //MediaPlayer Settings
@@ -491,7 +489,23 @@ namespace Adam
                     if (!Player.IsDead)
                         Player.Draw(SpriteBatch);
                     _gameWorld.DrawParticles(SpriteBatch);
+
                     SpriteBatch.End();
+
+
+                    //SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                    //    null, null);
+                    //_overlay.Draw(SpriteBatch);
+
+                    //if (!_gameWorld.LevelEditor.OnInventory)
+                    //    ObjectiveTracker.Draw(SpriteBatch);
+
+                    //_gameWorld.DrawUi(SpriteBatch);
+                    //Dialog.Draw(SpriteBatch);
+                    //TextInputBox.Draw(SpriteBatch);
+                    //MessageBox.Draw(SpriteBatch);
+
+                    //SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
                         null, Camera.Translate);

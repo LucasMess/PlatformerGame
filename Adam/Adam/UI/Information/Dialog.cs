@@ -53,7 +53,7 @@ namespace Adam.UI.Information
             _playerDialogBox = _nonPlayerDialogBox;
             _playerDialogBox.Y = Main.UserResHeight - 40 - _playerDialogBox.Height;
 
-            _font = ContentHelper.LoadFont("Fonts/x16");
+            _font = ContentHelper.LoadFont("Fonts/x24");
             _popSound = new SoundFx("Sounds/message_show");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
         }
@@ -327,7 +327,7 @@ namespace Adam.UI.Information
     /// </summary>
     public class LeafSelectors
     {
-        private const int Size = 16;
+        private const int Size = 24;
         private readonly Rectangle _sourceRectangle = new Rectangle(128, 288, 16, 16);
         private readonly Texture2D _texture = GameWorld.SpriteSheet;
         private Rectangle _drawRectangle;
