@@ -609,7 +609,7 @@ namespace Adam
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
-                    _overlay.Draw(SpriteBatch);
+                    //_overlay.Draw(SpriteBatch);
 
                     if (!_gameWorld.LevelEditor.OnInventory)
                         ObjectiveTracker.Draw(SpriteBatch);
