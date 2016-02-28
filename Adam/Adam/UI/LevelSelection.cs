@@ -336,10 +336,16 @@ namespace Adam.UI
             LastModifiedDate = lastModDate;
 
             // Define how big each info section will be.
-            _nameFont = ContentHelper.LoadFont("Fonts/x32");
-            _infoFont = ContentHelper.LoadFont("Fonts/x16");
+            //_nameFont = ContentHelper.LoadFont("Fonts/x32");
+            //_infoFont = ContentHelper.LoadFont("Fonts/x16");
+
+            _drawRectangle = new Rectangle(Main.UserResWidth / 2 - LevelSelection.WidthOfBounds / 2 + (int)(16 / Main.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / Main.WidthRatio), (int)(50 / Main.HeightRatio));
+
+            _nameFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 2);
+            _infoFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 3);
+
             _spacing = _infoFont.LineSpacing + 4;
-            _drawRectangle = new Rectangle(Main.DefaultResWidth - LevelSelection.WidthOfBounds / 2 + (int)(16 / Main.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / Main.WidthRatio), (int)(50 / Main.HeightRatio));
+
             _sourceRectangle = new Rectangle(128, 0, 284, 25);
             _boxTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
         }
