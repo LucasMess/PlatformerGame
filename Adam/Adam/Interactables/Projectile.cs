@@ -36,9 +36,16 @@ namespace Adam
 
         public Projectile()
         {
+            IsCollidable = true;
             expirationTimer.ResetAndWaitFor(2000);
             expirationTimer.SetTimeReached += Destroy;
             GameWorld.Instance.Entities.Add(this);
+            CollidedWithTerrain += OnTerrainCollision;
+        }
+
+        protected virtual void OnTerrainCollision(Entity entity, Tile tile)
+        {
+            entity.Destroy();
         }
 
         protected void CreateParticleEffect(GameTime gameTime)
@@ -106,12 +113,13 @@ namespace Adam
             CurrentProjectileSource = ProjectileSource.Player;
             Player player = GameWorld.Instance.GetPlayer();
             Texture = ContentHelper.LoadTexture("Projectile");
-            CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 8, 16, 16);
+            CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 4, 16, 8);
+            CurrentCollisionType = CollisionType.Bouncy;
+            
+            float xVel = 8;
+            float yVel = -10;
 
-            float xVel = 10;
-            float yVel = 0;
-
-            DamageOnHit = 100;
+            DamageOnHit = 5;
 
             if (!player.IsFacingRight) xVel *= -1;
             Velocity = new Vector2(xVel, yVel);
@@ -188,6 +196,11 @@ namespace Adam
             }
         }
 
+        protected override void OnTerrainCollision(Entity entity, Tile tile)
+        {
+            // DO NOTHING.
+        }
+
         public override void Update(Player player, GameTime gameTime)
         {
 
@@ -195,9 +208,9 @@ namespace Adam
             CollRectangle.X += (int)Velocity.X;
             CollRectangle.Y += (int)Velocity.Y;
 
-            
-
             CreateTrailEffect();
+
+            base.Update();
         }
 
 

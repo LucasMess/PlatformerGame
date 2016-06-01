@@ -17,7 +17,10 @@ namespace Adam
         public static bool IsDoingAction = false;
         private bool _isDucking;
 
-        const float JumpAcc = -17f;
+        private const float MaxWalkVelX = 6.5f;
+        private const float MaxRunVelX = 9f;
+        private const float MoveJumpAcc = .1f;
+        const float JumpAcc = -14f;
         const float WalkAcc = .35f;
         const float RunAcc = .50f;
         const float DashSpeed = 40f;
@@ -64,7 +67,7 @@ namespace Adam
             }
 
             // Toggle idle animations.
-           
+
             if (_idleTimer.TimeElapsedInSeconds > 10)
             {
                 player.AddAnimationToQueue("smellPoop");
@@ -115,7 +118,7 @@ namespace Adam
 
                 for (int i = 0; i < 10; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()),player.GetCollRectangle().Bottom,new Vector2(GameWorld.RandGen.Next((int)player.GetVelocity().X - 1,(int)player.GetVelocity().X + 1)/10f,-GameWorld.RandGen.Next(1,10)/10f));
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(GameWorld.RandGen.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -GameWorld.RandGen.Next(1, 10) / 10f));
                     GameWorld.ParticleSystem.Add(par);
                 }
 
@@ -152,9 +155,9 @@ namespace Adam
                 player.AddAnimationToQueue("run");
             }
 
-            if (player.IsJumping)
+            if (!player.IsTouchingGround)
             {
-                acc /= 2;
+                acc = MoveJumpAcc;
             }
 
             if (player.GetVelocity().X < -3 && player.IsRunningFast)
@@ -164,6 +167,15 @@ namespace Adam
 
             player.IsFacingRight = true;
             player.SetVelX(player.GetVelocity().X + acc);
+
+            if (player.IsRunningFast)
+            {
+                if (player.GetVelocity().X > MaxRunVelX)
+                    player.SetVelX(MaxRunVelX);
+            }
+            else if (player.GetVelocity().X > MaxWalkVelX)
+                player.SetVelX(MaxWalkVelX);
+
             player.CreateMovingParticles();
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
@@ -190,6 +202,11 @@ namespace Adam
                 player.AddAnimationToQueue("run");
             }
 
+            if (!player.IsTouchingGround)
+            {
+                acc = MoveJumpAcc;
+            }
+
             if (player.GetVelocity().X > 3 && player.IsRunningFast)
             {
                 player.AddAnimationToQueue("slide");
@@ -198,6 +215,14 @@ namespace Adam
             player.IsFacingRight = false;
             player.SetVelX(player.GetVelocity().X - acc);
             player.CreateMovingParticles();
+
+            if (player.IsRunningFast)
+            {
+                if (player.GetVelocity().X < -MaxRunVelX)
+                    player.SetVelX(-MaxRunVelX);
+            }
+            else if (player.GetVelocity().X < -MaxWalkVelX)
+                player.SetVelX(-MaxWalkVelX);
 
             if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
             {
@@ -255,10 +280,6 @@ namespace Adam
             {
                 new PlayerWeaponProjectile();
                 _weaponFireRateTimer.Reset();
-
-                
-                player.SetVelX(-1);
-                player.SetVelY(-1);
             }
         }
 
@@ -274,7 +295,8 @@ namespace Adam
 
         private void OnPunchFrameChange(Player player)
         {
-            if(player.CurrentAnimationFrame == 2){
+            if (player.CurrentAnimationFrame == 2)
+            {
                 int speed = 2;
                 if (!player.IsFacingRight)
                     speed *= -1;

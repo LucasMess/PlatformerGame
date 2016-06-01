@@ -151,7 +151,7 @@ namespace Adam
 
             // Change game settings here.
             _graphics.SynchronizeWithVerticalRetrace = true;
-            _graphics.PreferMultiSampling = false;
+            _graphics.PreferMultiSampling = true;
             IsFixedTimeStep = true;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
 

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Adam.Levels;
 using Adam.Particles;
 
@@ -36,7 +37,7 @@ namespace Adam
         public event EventHandler HasTakenDamage;
         public event EventHandler HasRevived;
 
-        const float FrictionConstant = 94f / 90f;
+        const float AirFrictionConstant = 98f / 99f;
 
         // Collision with terrain events.
         public event TileHandler CollidedWithTileAbove;
@@ -59,6 +60,7 @@ namespace Adam
         private Color _color = Color.White;
 
         private bool _healthGiven;
+        public bool IsTouchingGround { get; set; }
 
         private DynamicPointLight _light;
 
@@ -290,9 +292,7 @@ namespace Adam
                 CheckTerrainCollision();
             }
 
-            // y = (499/45) * (x / (x + 1)
-            var friction = FrictionConstant * (Weight / ((float)Weight + 1));
-            Velocity *= friction;
+            ApplyAirFriction();
 
             //Animate entity if applicable.
             if (this is IAnimated)
@@ -308,6 +308,18 @@ namespace Adam
             // Update complex animations if this entity has it.
             ComplexAnim?.Update(this);
 
+        }
+
+        private void ApplyAirFriction()
+        {
+            IsTouchingGround = false;
+            Tile below = GameWorld.Instance.GetTileBelow(GetTileIndex());
+            if (below != null)
+                if ((CollRectangle.Y + CollRectangle.Height) - below.GetDrawRectangle().Y < 1)
+                {
+                    IsTouchingGround = true;
+                    Velocity *= below.GetFrictionConstant();
+                }
         }
 
         /// <summary>
@@ -326,7 +338,7 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            
+
             //spriteBatch.Draw(Main.DefaultTexture, GetCollRectangle(), Color.Red * .5f);
 
             // Complex animations.
@@ -570,19 +582,11 @@ namespace Adam
                         {
                             if (Velocity.Y > 0)
                             {
-                                while (CollRectangle.Intersects(tileRect))
-                                {
-                                    CollRectangle.Y--;
-                                }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
                             else if (Velocity.Y < 0)
                             {
-                                while (CollRectangle.Intersects(tileRect))
-                                {
-                                    CollRectangle.Y++;
-                                }
                                 CollidedWithTileAbove(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
@@ -605,19 +609,11 @@ namespace Adam
                         {
                             if (Velocity.X > 0)
                             {
-                                while (CollRectangle.Intersects(tileRect))
-                                {
-                                    CollRectangle.X--;
-                                }
                                 CollidedWithTileToRight(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
                             else if (Velocity.X < 0)
                             {
-                                while (CollRectangle.Intersects(tileRect))
-                                {
-                                    CollRectangle.X++;
-                                }
                                 CollidedWithTileToLeft(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
@@ -726,6 +722,9 @@ namespace Adam
                 case CollisionType.Bouncy:
                     Velocity.Y = -Velocity.Y;
                     break;
+                case CollisionType.SuperBouncy:
+                    Velocity.Y = -Velocity.Y;
+                    break;
             }
         }
 
@@ -740,7 +739,7 @@ namespace Adam
 
             if (Math.Abs(Velocity.Y) > 5)
             {
-                CreateStompParticles(CollRectangle.Width/10);
+                CreateStompParticles(CollRectangle.Width / 10);
             }
 
             switch (CurrentCollisionType)
@@ -749,6 +748,9 @@ namespace Adam
                     Velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
+                    Velocity.Y = -Velocity.Y;
+                    break;
+                case CollisionType.SuperBouncy:
                     Velocity.Y = -Velocity.Y;
                     break;
             }
@@ -770,6 +772,10 @@ namespace Adam
                 case CollisionType.Bouncy:
                     Velocity.X = -Velocity.X;
                     break;
+                case CollisionType.SuperBouncy:
+                    Velocity.X = -Velocity.X;
+                    break;
+
             }
 
         }
@@ -788,6 +794,9 @@ namespace Adam
                     Velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
+                    Velocity.X = -Velocity.X;
+                    break;
+                case CollisionType.SuperBouncy:
                     Velocity.X = -Velocity.X;
                     break;
             }
@@ -821,7 +830,7 @@ namespace Adam
             _respawnTimer.SetTimeReached -= Revive;
             CollRectangle = new Rectangle((int)RespawnPos.X, (int)RespawnPos.Y, CollRectangle.Width,
                 CollRectangle.Height);
-            Console.WriteLine("Respawned at location: {0}, {1}",RespawnPos.X,RespawnPos.Y);
+            Console.WriteLine("Respawned at location: {0}, {1}", RespawnPos.X, RespawnPos.Y);
             Health = MaxHealth;
             Velocity = new Vector2(0, 0);
             IsDead = false;
@@ -861,7 +870,7 @@ namespace Adam
             if (IsTakingDamage || IsAboutToDie)
                 return;
 
-           // Main.TimeFreeze.AddFrozenTime(damage*3);
+            // Main.TimeFreeze.AddFrozenTime(damage*3);
 
             IsTakingDamage = true;
             Health -= damage;

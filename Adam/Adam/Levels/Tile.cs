@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Enemies;
@@ -1607,6 +1608,21 @@ namespace Adam
         public Vector2 GetSize()
         {
             return _sizeOfTile;
+        }
+
+        /// <summary>
+        /// Returns the friction constant for this tile.
+        /// </summary>
+        /// <returns></returns>
+        public float GetFrictionConstant()
+        {
+            switch (Id)
+            {
+                case 0:
+                    return .99f;
+                default:
+                    return .95f;
+            }
         }
 
         #endregion
