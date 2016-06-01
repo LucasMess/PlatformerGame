@@ -10,6 +10,7 @@ using Adam.Misc.Sound;
 using Adam.Network;
 using Adam.Obstacles;
 using Adam.Particles;
+using Adam.PlayerCharacter;
 using Adam.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,7 +42,7 @@ namespace Adam.Levels
 
         public static ParticleSystem ParticleSystem = new ParticleSystem();
         public GameMode CurrentGameMode;
-        public Player.Player Player;
+        public Player Player;
         public bool DebuggingMode;
         public Background Background = new Background();
 
@@ -76,6 +77,8 @@ namespace Adam.Levels
         public List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
         public List<Entity> Entities;
         public List<Particle> Particles;
+        public List<Projectile> PlayerProjectiles;
+        public List<Projectile> EnemyProjectiles; 
         public GameTime GameTime;
         public WorldData WorldData;
         public GameWorld() { }
@@ -113,6 +116,8 @@ namespace Adam.Levels
             KeyList = new List<Key>();
             Entities = new List<Entity>();
             Particles = new List<Particle>();
+            PlayerProjectiles = new List<Projectile>();
+            EnemyProjectiles = new List<Projectile>();
             ChunkManager = new ChunkManager();
 
             Player = Game1.Player;
@@ -321,11 +326,7 @@ namespace Adam.Levels
                 Entity entity = Entities[i];
                 if (entity.ToDelete)
                 {
-                    if (entity.Light != null)
-                    {
-                        LightEngine.RemoveDynamicLight(entity.Light);
-                    }
-                    Entities.Remove(entity);
+                    entity.Destroy();
                 }
 
             }
@@ -495,7 +496,7 @@ namespace Adam.Levels
             return null;
         }
 
-        public Player.Player GetPlayer()
+        public Player GetPlayer()
         {
             return Player;
         }

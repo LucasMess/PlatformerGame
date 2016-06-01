@@ -3,7 +3,7 @@ using Adam.Levels;
 using Adam.Misc;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Player
+namespace Adam.PlayerCharacter
 {
     public partial class Player : Character
     {

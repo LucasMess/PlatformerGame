@@ -13,6 +13,7 @@ using Adam.Lights;
 using Adam.Characters.Enemies;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -38,7 +39,7 @@ namespace Adam
         float _rotation, _rotationSpeed, _rotationDelta;
         Color color = Color.White;
         public Light light;
-        Player.Player _player;
+        Player _player;
 
         public enum ParticleType
         {
@@ -115,7 +116,7 @@ namespace Adam
             Opacity = 1f;
         }
 
-        public Particle(Player.Player player)
+        public Particle(Player player)
         {
             _randGen = new Random();
             SourceRectangle = new Rectangle(0, 0, 14, 14);
@@ -140,7 +141,7 @@ namespace Adam
             CollRectangle = new Rectangle((int)Position.X, (int)Position.Y, 32, 32);
         }
 
-        public void CreateWeaponBurstEffect(Player.Player player, Projectile proj, ContentManager content)
+        public void CreateWeaponBurstEffect(Player player, Projectile proj, ContentManager content)
         {
             //position = player.weapon.tipPos;
             Velocity = new Vector2(0, 0);
@@ -178,7 +179,7 @@ namespace Adam
             Velocity = new Vector2(GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed), GameWorld.RandGen.Next(-maxTanSpeed, maxTanSpeed));
         }
 
-        public void CreateBloodEffect(Player.Player player, GameWorld map)
+        public void CreateBloodEffect(Player player, GameWorld map)
         {
             CurrentParticle = ParticleType.Blood;
             Texture = ContentHelper.LoadTexture("Effects/blood");
@@ -189,13 +190,13 @@ namespace Adam
             Position = new Vector2(CollRectangle.X, CollRectangle.Y);
         }
 
-        public void CreatePlayerChronoshiftEffect(Player.Player player, Rectangle sourceRectangle)
+        public void CreatePlayerChronoshiftEffect(Player player, Rectangle sourceRectangle)
         {
             CurrentParticle = ParticleType.PlayerChronoshift;
 
         }
 
-        public void CreateTileParticleEffect(Tile tile, Player.Player player)
+        public void CreateTileParticleEffect(Tile tile, Player player)
         {
             CurrentParticle = ParticleType.TileParticle;
             Texture = tile.Texture;
@@ -242,7 +243,7 @@ namespace Adam
             Opacity = 1f;
         }
 
-        public void CreateJetPackSmokeParticle(Player.Player player)
+        public void CreateJetPackSmokeParticle(Player player)
         {
             CurrentParticle = ParticleType.JetpackSmoke;
             Texture = ContentHelper.LoadTexture("Effects/smoke");

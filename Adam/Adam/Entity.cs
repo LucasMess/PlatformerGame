@@ -435,6 +435,18 @@ namespace Adam
         }
 
         /// <summary>
+        /// Removes all references from this object.
+        /// </summary>
+        public virtual void Destroy()
+        {
+            if (Light != null)
+            {
+                GameWorld.Instance.LightEngine.RemoveDynamicLight(Light);
+            }
+            GameWorld.Instance.Entities.Remove(this);
+        }
+
+        /// <summary>
         /// Creates death particles and calls event to do other death related things.
         /// </summary>
         private void DeathAnimationEnded()
@@ -849,7 +861,7 @@ namespace Adam
             if (IsTakingDamage || IsAboutToDie)
                 return;
 
-            Main.TimeFreeze.AddFrozenTime(damage*3);
+           // Main.TimeFreeze.AddFrozenTime(damage*3);
 
             IsTakingDamage = true;
             Health -= damage;

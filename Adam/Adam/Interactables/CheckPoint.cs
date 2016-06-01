@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Interactables
 {
@@ -102,7 +103,7 @@ namespace Adam.Interactables
             _openSound.PlayIfStopped();
 
             //Sets respawn point;
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             player.SetRespawnPoint(DrawRectangle.X, DrawRectangle.Y);
 
             //Particle effects

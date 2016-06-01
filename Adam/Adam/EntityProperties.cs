@@ -12,9 +12,9 @@ namespace Adam
     {
         protected ComplexAnimation ComplexAnim = new ComplexAnimation();
 
-        readonly Timer _hitRecentlyTimer = new Timer();
-        readonly Timer _deathAnimationTimer = new Timer();
-        protected readonly Timer _respawnTimer = new Timer();
+        readonly Timer _hitRecentlyTimer = new Timer(true);
+        readonly Timer _deathAnimationTimer = new Timer(true);
+        protected readonly Timer _respawnTimer = new Timer(true);
 
         public SoundFxManager Sounds { get; set; }
         /// <summary>

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Interactables
 {
@@ -73,7 +74,7 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             CollRectangle.X += (int)Velocity.X;
             CollRectangle.Y += (int)Velocity.Y;
 

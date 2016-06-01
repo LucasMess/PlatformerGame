@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -92,7 +93,7 @@ namespace Adam
             _objOrigin = new Vector2(8, 8);
         }
 
-        public void Update(GameTime gameTime, Player.Player player)
+        public void Update(GameTime gameTime, Player player)
         {
 
             if (!IsVisible)

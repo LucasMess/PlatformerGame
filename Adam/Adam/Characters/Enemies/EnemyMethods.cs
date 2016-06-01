@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Adam.Misc;
 using Adam.Interactables;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Characters.Enemies
 {
@@ -75,12 +76,21 @@ namespace Adam.Characters.Enemies
         /// </summary>
         private void CheckInteractionsWithPlayer()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
 
             //Deals damage to player if he is touching.
             if (IsIntersectingPlayer() && !IsAboutToDie)
             {
                 player.TakeDamage(this, GetTouchDamage());
+            }
+
+            foreach (Projectile proj in GameWorld.Instance.PlayerProjectiles)
+            {
+                if (proj.GetCollRectangle().Intersects(CollRectangle))
+                {
+                    TakeDamage(player,proj.DamageOnHit);
+                    proj.ToDelete = true;
+                }
             }
 
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -22,7 +23,7 @@ namespace Adam
         Vector2 _monitorRes;
         Vector2 _position;
         Main _game1;
-        Player.Player _player;
+        Player _player;
         bool _definitionFound;
 
         public GameDebug(SpriteFont font, Vector2 monitorRes, Texture2D black)
@@ -35,7 +36,7 @@ namespace Adam
             _rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
-        public void Update(Main game1, Player.Player player, GameWorld map, bool isOnDebug)
+        public void Update(Main game1, Player player, GameWorld map, bool isOnDebug)
         {
             if (!isOnDebug)
             {

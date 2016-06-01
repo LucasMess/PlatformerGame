@@ -5,6 +5,7 @@ using System.Text;
 using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 
 namespace Adam.Obstacles
 {
@@ -56,7 +57,7 @@ namespace Adam.Obstacles
                 _flameSound.Stop();
             }
 
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             if (_isFlaming && AttackBox.Intersects(player.GetCollRectangle()))
             {
                 player.IsOnFire = true;

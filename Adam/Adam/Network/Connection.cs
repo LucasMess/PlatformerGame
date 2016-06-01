@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
+using Adam.PlayerCharacter;
 
 namespace Adam.Network
 {
@@ -145,7 +146,7 @@ namespace Adam.Network
             return true; //Allow untrusted certificates.
         }
 
-        public void SendPlayerDataPacket(Player.Player player)
+        public void SendPlayerDataPacket(Player player)
         {
             PlayerPacket pl = new PlayerPacket(player);
             byte[] packet = CalcHelper.ToByteArray(pl);

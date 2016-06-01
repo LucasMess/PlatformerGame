@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Obstacles
 {
@@ -22,7 +23,7 @@ namespace Adam.Obstacles
         public bool IsTouchingPlayer { get; set; }
         public bool IsCollidable { get; set; }
         public DamageType CurrentDamageType;
-        protected Player.Player Player;
+        protected Player Player;
         protected Rectangle AttackBox;
 
         protected List<Particle> Particles = new List<Particle>();

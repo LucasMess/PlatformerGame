@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Characters.Enemies
 {
@@ -119,7 +120,7 @@ namespace Adam.Characters.Enemies
                 return;
 
             GameWorld gameWorld = GameWorld.Instance;
-            Player.Player player = GameWorld.Instance.GetPlayer();
+            Player player = GameWorld.Instance.GetPlayer();
 
             if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out _rects))
             {

@@ -1,41 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Adam;
-using Microsoft.Xna.Framework.Input;
 using Adam.Lights;
-using Adam.Misc.Interfaces;
 using Adam.Characters.Enemies;
 using Adam.Levels;
+using Adam.PlayerCharacter;
+using Timer = Adam.Misc.Timer;
 
 namespace Adam
 {
     public enum ProjectileSource
     {
-        Player, Snake,
+        Player, Enemy,
     }
 
     public abstract class Projectile : Entity
     {
+        private Timer expirationTimer = new Timer();
+
+
         public int TileHit;
         protected bool IsInactive;
         public ProjectileSource CurrentProjectileSource;
 
+        public int DamageOnHit { get; set; }
         protected float Rotation;
         protected bool IsFlipped;
         protected double EffTimer;
         protected GameTime GameTime;
-        protected Player.Player Player;
+        protected Player Player;
         protected Enemy Enemy;
 
 
         public Projectile()
         {
-
+            expirationTimer.ResetAndWaitFor(2000);
+            expirationTimer.SetTimeReached += Destroy;
+            GameWorld.Instance.Entities.Add(this);
         }
 
         protected void CreateParticleEffect(GameTime gameTime)
@@ -48,7 +51,7 @@ namespace Adam
             }
         }
 
-        public virtual void Update(Player.Player player, GameTime gameTime)
+        public virtual void Update(Player player, GameTime gameTime)
         {
             base.Update();
         }
@@ -57,7 +60,7 @@ namespace Adam
         {
             switch (CurrentProjectileSource)
             {
-                case ProjectileSource.Snake:
+                case ProjectileSource.Enemy:
                     //animation.Draw(spriteBatch);
                     break;
                 case ProjectileSource.Player:
@@ -83,11 +86,11 @@ namespace Adam
 
         }
 
-        protected void Destroy()
+        public override void Destroy()
         {
-            if (Light != null)
-                GameWorld.Instance.LightEngine.RemoveDynamicLight(Light);
-            GameWorld.Instance.Entities.Remove(this);
+            expirationTimer.Destroy();
+            expirationTimer.SetTimeReached -= Destroy;
+            base.Destroy();
         }
 
         public void Animate()
@@ -98,7 +101,25 @@ namespace Adam
 
     public class PlayerWeaponProjectile : Projectile
     {
-        public PlayerWeaponProjectile(Player.Player player, ContentManager content)
+        public PlayerWeaponProjectile()
+        {
+            CurrentProjectileSource = ProjectileSource.Player;
+            Player player = GameWorld.Instance.GetPlayer();
+            Texture = ContentHelper.LoadTexture("Projectile");
+            CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 8, 16, 16);
+
+            float xVel = 10;
+            float yVel = 0;
+
+            DamageOnHit = 100;
+
+            if (!player.IsFacingRight) xVel *= -1;
+            Velocity = new Vector2(xVel, yVel);
+
+            GameWorld.Instance.PlayerProjectiles.Add(this);
+        }
+
+        public PlayerWeaponProjectile(Player player, ContentManager content)
         { 
         //{
         //    CurrentProjectileSource = ProjectileSource.Player;
@@ -167,11 +188,14 @@ namespace Adam
             }
         }
 
-        public override void Update(Player.Player player, GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime)
         {
+
             this.GameTime = gameTime;
             CollRectangle.X += (int)Velocity.X;
             CollRectangle.Y += (int)Velocity.Y;
+
+            
 
             CreateTrailEffect();
         }
@@ -180,6 +204,12 @@ namespace Adam
         private void CreateTrailEffect()
         {
 
+        }
+
+        public override void Destroy()
+        {
+            GameWorld.Instance.PlayerProjectiles.Remove(this);
+            base.Destroy();
         }
 
     }
@@ -218,7 +248,7 @@ namespace Adam
             Destroy();
         }
 
-        public override void Update(Player.Player player, GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime)
         {
             GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
             GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
@@ -237,7 +267,7 @@ namespace Adam
 
             switch (currentProjectileSource)
             {
-                case ProjectileSource.Snake:
+                case ProjectileSource.Enemy:
                     Texture = ContentHelper.LoadTexture("Projectiles/venom_dark");
                     CollRectangle = new Rectangle(enemy.GetCollRectangle().X, enemy.GetCollRectangle().Y, 32, 32);
                    // animation = new Animation(Texture, collRectangle, 200, 0, AnimationType.Loop);
@@ -260,14 +290,14 @@ namespace Adam
             }
         }
 
-        public override void Update(Player.Player player, GameTime gameTime)
+        public override void Update(Player player, GameTime gameTime)
         {
             this.Player = player;
             this.GameTime = gameTime;
 
             switch (CurrentProjectileSource)
             {
-                case ProjectileSource.Snake:
+                case ProjectileSource.Enemy:
                     CollRectangle.X += (int)Velocity.X;
                     CollRectangle.Y += (int)Velocity.Y;
 

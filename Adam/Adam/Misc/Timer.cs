@@ -8,16 +8,27 @@ namespace Adam.Misc
 {
     public class Timer
     {
-        double _currentTimeInSeconds;
-        double _currentTimeInMilliSeconds;
-        double _notificationTime;
+        public static int ActiveTimers = 0;
+
+        private double _currentTimeInSeconds;
+        private double _currentTimeInMilliSeconds;
+        private int _notificationTime;
+        public bool IsInfinite { get; set; }
 
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
 
+        public Timer(bool isInfinite)
+        {
+            IsInfinite = isInfinite;
+            Main.GameUpdateCalled += Increment;
+            ActiveTimers++;
+        }
         public Timer()
         {
+            IsInfinite = true;
             Main.GameUpdateCalled += Increment;
+            ActiveTimers++;
         }
 
         /// <summary>
@@ -33,9 +44,19 @@ namespace Adam.Misc
             _currentTimeInSeconds += gameTime.ElapsedGameTime.TotalSeconds;
             _currentTimeInMilliSeconds += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (SetTimeReached != null && _currentTimeInMilliSeconds > _notificationTime)
+            if (_currentTimeInMilliSeconds > _notificationTime)
             {
-                SetTimeReached();
+                SetTimeReached?.Invoke();
+                if (!IsInfinite)
+                {
+                    Destroy();
+                }
+            }
+
+            // Destroys timer if it is running for too long.
+            if (_notificationTime == 0 && _currentTimeInSeconds > 60 && !IsInfinite)
+            {
+                Destroy();
             }
         }
 
@@ -62,7 +83,7 @@ namespace Adam.Misc
         /// Resets the timer and sets a time in which the timer will fire an event.
         /// </summary>
         /// <param name="time"></param>
-        public void ResetAndWaitFor(double time)
+        public void ResetAndWaitFor(int time)
         {
             Reset();
             _notificationTime = time;
@@ -88,6 +109,15 @@ namespace Adam.Misc
             {
                 return _currentTimeInMilliSeconds;
             }
+        }
+
+        /// <summary>
+        /// Clears all references and events.
+        /// </summary>
+        public void Destroy()
+        {
+            Main.GameUpdateCalled -= Increment;
+            ActiveTimers--;
         }
     }
 }

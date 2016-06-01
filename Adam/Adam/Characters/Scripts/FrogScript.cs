@@ -9,9 +9,9 @@ namespace Adam.Characters.Scripts
 {
     public class FrogScript : Script
     {
-        Timer _jumpTimer = new Timer();
+        Timer _jumpTimer = new Timer(true);
 
-        double _timeBetweenJumps = 2000;
+        int _timeBetweenJumps = 2000;
         const float JumpVel = -14f;
         const float MoveVel = 5f;
 

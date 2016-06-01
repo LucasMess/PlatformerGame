@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using Adam.Levels;
 using Adam.Particles;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
     public class PlayerScript : Script
     {
-        Player.Player _player;
+        Player _player;
         public static bool IsDoingAction = false;
         private bool _isDucking;
 
@@ -23,12 +24,13 @@ namespace Adam
 
         Timer _idleTimer = new Timer();
         Timer _airTimer = new Timer();
+        Timer _weaponFireRateTimer = new Timer();
 
         public static Timer TimeSinceLastPunch = new Timer();
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
 
-        public void Initialize(Player.Player player)
+        public void Initialize(Player player)
         {
             this._player = player;
             player.PlayerDamaged += OnPlayerDamaged;
@@ -42,7 +44,7 @@ namespace Adam
 
         protected override void OnGameTick()
         {
-            _player = (Player.Player)_player.Get();
+            _player = (Player)_player.Get();
         }
 
         private void OnPlayerDamaged(Rectangle damageArea, int damage)
@@ -50,7 +52,7 @@ namespace Adam
             _player.Sounds.Get("hurt").Play();
         }
 
-        public void OnStill(Player.Player player)
+        public void OnStill(Player player)
         {
             if (!player.IsOnVines)
             {
@@ -93,14 +95,14 @@ namespace Adam
 
         }
 
-        private void OnSmellPoopAnimationEnd(Player.Player player)
+        private void OnSmellPoopAnimationEnd(Player player)
         {
             player.RemoveAnimationFromQueue("smellPoop");
             _idleTimer.Reset();
             player.AnimationEnded -= OnSmellPoopAnimationEnd;
         }
 
-        public void OnJumpAction(Player.Player player)
+        public void OnJumpAction(Player player)
         {
             if (!player.IsJumping)
             {
@@ -138,7 +140,7 @@ namespace Adam
             entity.RemoveAnimationFromQueue("jump");
         }
 
-        public void OnRightMove(Player.Player player)
+        public void OnRightMove(Player player)
         {
             if (_isDucking)
                 return;
@@ -176,7 +178,7 @@ namespace Adam
             player.AddAnimationToQueue("walk");
         }
 
-        public void OnLeftMove(Player.Player player)
+        public void OnLeftMove(Player player)
         {
             if (_isDucking)
                 return;
@@ -209,7 +211,7 @@ namespace Adam
             player.AddAnimationToQueue("walk");
         }
 
-        public void OnInteractAction(Player.Player player)
+        public void OnInteractAction(Player player)
         {
             if (player.IsOnVines)
             {
@@ -217,21 +219,21 @@ namespace Adam
             }
         }
 
-        public void OnClimbingUpAction(Player.Player player)
+        public void OnClimbingUpAction(Player player)
         {
             player.AddAnimationToQueue("climb");
             player.SetVelY(-5);
             player.ObeysGravity = false;
         }
 
-        public void OnClimbingDownAction(Player.Player player)
+        public void OnClimbingDownAction(Player player)
         {
             player.AddAnimationToQueue("climb");
             player.SetVelY(5);
             player.ObeysGravity = false;
         }
 
-        public void OnDuckAction(Player.Player player)
+        public void OnDuckAction(Player player)
         {
             if (player.IsOnVines)
             {
@@ -241,13 +243,26 @@ namespace Adam
             _isDucking = true;
         }
 
-        public void OnDuckActionStop(Player.Player player)
+        public void OnDuckActionStop(Player player)
         {
             player.RemoveAnimationFromQueue("duck");
             _isDucking = false;
         }
 
-        public void OnAttackAction(Player.Player player)
+        public void OnWeaponFire(Player player)
+        {
+            if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 200)
+            {
+                new PlayerWeaponProjectile();
+                _weaponFireRateTimer.Reset();
+
+                
+                player.SetVelX(-1);
+                player.SetVelY(-1);
+            }
+        }
+
+        public void OnAttackAction(Player player)
         {
             IsDoingAction = true;
             player.AttackSound.Play();
@@ -257,7 +272,7 @@ namespace Adam
             player.SetVelX(0);
         }
 
-        private void OnPunchFrameChange(Player.Player player)
+        private void OnPunchFrameChange(Player player)
         {
             if(player.CurrentAnimationFrame == 2){
                 int speed = 2;
@@ -276,7 +291,7 @@ namespace Adam
             }
         }
 
-        private void OnPunchEnded(Player.Player player)
+        private void OnPunchEnded(Player player)
         {
             player.RemoveAnimationFromQueue("punch");
             player.AnimationEnded -= OnPunchEnded;
@@ -292,19 +307,19 @@ namespace Adam
             }
         }
 
-        private void OnPunch2Ended(Player.Player player)
+        private void OnPunch2Ended(Player player)
         {
             player.RemoveAnimationFromQueue("punch2");
             player.AnimationEnded -= OnPunch2Ended;
             IsDoingAction = false;
         }
 
-        public void OnDefendAction(Player.Player player)
+        public void OnDefendAction(Player player)
         {
 
         }
 
-        public void OnDashAction(Player.Player player)
+        public void OnDashAction(Player player)
         {
             if (!IsDoingAction)
             {
@@ -319,7 +334,7 @@ namespace Adam
             }
         }
 
-        private void OnNinjaDashEnd(Player.Player player)
+        private void OnNinjaDashEnd(Player player)
         {
             IsDoingAction = false;
             player.RemoveAnimationFromQueue("ninjaDash");
@@ -327,17 +342,17 @@ namespace Adam
             TestSmokeParticle.Generate(100, player);
         }
 
-        public void OnUltimateAction(Player.Player player)
+        public void OnUltimateAction(Player player)
         {
 
         }
 
-        public void OnFastRunTrigger(Player.Player player)
+        public void OnFastRunTrigger(Player player)
         {
 
         }
 
-        public void OnDeath(Player.Player player)
+        public void OnDeath(Player player)
         {
 
         }

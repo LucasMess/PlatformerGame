@@ -19,7 +19,7 @@ namespace Adam.Misc
             _isTimeFrozen = false;
         }
 
-        public void AddFrozenTime(double time)
+        public void AddFrozenTime(int time)
         {
             _isTimeFrozen = true;
             _freezeTimer.ResetAndWaitFor(time);

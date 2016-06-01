@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.PlayerCharacter;
 
 namespace Adam.UI.Overlay_Elements
 {
@@ -38,7 +39,7 @@ namespace Adam.UI.Overlay_Elements
             _animation = new Animation(_texture, _drawRectangle, 100, 0, AnimationType.Loop);
         }
 
-        public void Update(Player.Player player, GameTime gameTime)
+        public void Update(Player player, GameTime gameTime)
         {
             this._gameTime = gameTime;
 

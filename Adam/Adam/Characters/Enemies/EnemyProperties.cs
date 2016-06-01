@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Characters.Enemies
 {
@@ -17,7 +18,7 @@ namespace Adam.Characters.Enemies
         const int MeanResetTime = 500000;
         bool _isTakingDamage = false;
 
-        Timer _wasMeanTimer = new Timer();
+        Timer _wasMeanTimer = new Timer(true);
 
         protected Enemy()
         {
@@ -144,7 +145,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsInRange()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             return (RangeRect.Intersects(player.GetCollRectangle()));
         }
 
@@ -173,7 +174,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerToTheRight()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().X > CollRectangle.X)
                 return true;
             else return false;
@@ -185,7 +186,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsPlayerAbove()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().Y < CollRectangle.Y)
                 return true;
             else return false;
@@ -197,7 +198,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsIntersectingPlayer()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             return (player.GetCollRectangle().Intersects(CollRectangle));
         }
 
@@ -207,7 +208,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected bool IsBeingAttacked()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1);
         }
 

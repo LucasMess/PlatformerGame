@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.PlayerCharacter;
 
 namespace Adam.Network.Packets
 {
@@ -12,7 +13,7 @@ namespace Adam.Network.Packets
         Vector2 _position;
         Vector2 _velocity;
 
-        public PlayerPacket(Player.Player player)
+        public PlayerPacket(Player player)
         {
             _position = new Vector2(player.GetCollRectangle().X, player.GetCollRectangle().Y);
             _velocity = player.GetVelocity();

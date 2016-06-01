@@ -1,6 +1,7 @@
 ﻿using System;
 using Adam.Levels;
 using Adam.Noobs;
+using Adam.PlayerCharacter;
 using Adam.UI;
 using Microsoft.Xna.Framework;
 
@@ -96,7 +97,7 @@ namespace Adam.Characters
         /// </summary>
         private void Player_InteractAction()
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
             {
                 _npc.ShowDialog();

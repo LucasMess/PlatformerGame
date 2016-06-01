@@ -5,6 +5,7 @@ using Adam.GameData;
 using Adam.Levels;
 using Adam.Misc;
 using Adam.Network;
+using Adam.PlayerCharacter;
 using Adam.UI;
 using Adam.UI.Information;
 using Microsoft.Xna.Framework;
@@ -108,7 +109,7 @@ namespace Adam
         public GameState CurrentGameState;
         public SamplerState DesiredSamplerState;
         public GameDataManager GameData;
-        public Player.Player Player;
+        public Player Player;
         public bool WasPressed, DebugOn, DebugPressed;
 
         public delegate void UpdateHandler(GameTime gameTime);
@@ -204,7 +205,7 @@ namespace Adam
             Camera = new Camera(GraphicsDevice.Viewport);
             _menu = new Menu(this);
             _gameWorld = new GameWorld(this);
-            Player = new Player.Player(this);
+            Player = new Player(this);
             _overlay = new Overlay();
             _cutscene = new Cutscene();
             Dialog = new Dialog();
@@ -682,6 +683,8 @@ namespace Adam
                         new Vector2(0, 320), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Is MessageBox Active: " + MessageBox.IsActive,
                         new Vector2(0, 340), Color.White);
+                    SpriteBatch.DrawString(_debugFont, "Timers called: " + Adam.Misc.Timer.ActiveTimers,
+                        new Vector2(0, 360), Color.White);
 
                     _debug.Draw(SpriteBatch);
                     SpriteBatch.End();

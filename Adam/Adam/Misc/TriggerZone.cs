@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -27,7 +28,7 @@ namespace Adam
 
         }
 
-        public void Update(Player.Player player, GameMode currentLevel)
+        public void Update(Player player, GameMode currentLevel)
         {
         }
 

@@ -140,7 +140,7 @@ namespace Adam.Enemies
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
-                    GameWorld.Instance.Entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Snake));
+                    GameWorld.Instance.Entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Enemy));
                     PlayAttackSound();
                     _projCooldownTimer = 0;
                 }

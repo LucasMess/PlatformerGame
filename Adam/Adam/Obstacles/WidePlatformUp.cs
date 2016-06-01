@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.PlayerCharacter;
 
 namespace Adam.Obstacles
 {
@@ -24,7 +25,7 @@ namespace Adam.Obstacles
             }
         }
 
-        public WidePlatformUp(Player.Player player)
+        public WidePlatformUp(Player player)
         {            
             player.PlayerRespawned += player_PlayerRespawned;
             Texture = ContentHelper.LoadTexture("Tiles/Obstacles/goldbrick_platform_wide");

@@ -5,6 +5,7 @@ using System.Text;
 using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 
 namespace Adam.Interactables
 {
@@ -38,7 +39,7 @@ namespace Adam.Interactables
 
         public void Update(Tile t)
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
 
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_broken)
             {

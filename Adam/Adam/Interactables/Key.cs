@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -28,7 +29,7 @@ namespace Adam
             _pickSound = content.Load<SoundEffect>("Sounds/key_get");
         }
 
-        public void Update(Player.Player player)
+        public void Update(Player player)
         {
             if (player.GetCollRectangle().Intersects(_rectangle) && Keyboard.GetState().IsKeyDown(Keys.W))
             {

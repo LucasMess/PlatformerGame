@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.Obstacles
 {
@@ -56,7 +57,7 @@ namespace Adam.Obstacles
 
             if (IsTouchingPlayer)
             {
-                Player.Player player = GameWorld.Instance.Player;
+                Player player = GameWorld.Instance.Player;
                 player.TakeDamage(this, player.MaxHealth);
             }
 

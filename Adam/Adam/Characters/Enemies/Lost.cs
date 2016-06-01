@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam
 {
@@ -117,7 +118,7 @@ namespace Adam
 
         public override void Update()
         {
-            Player.Player player = GameWorld.Instance.GetPlayer();
+            Player player = GameWorld.Instance.GetPlayer();
             GameTime gameTime = GameWorld.Instance.GetGameTime();
 
             CollRectangle.X += (int)Velocity.X;

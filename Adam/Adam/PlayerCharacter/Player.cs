@@ -7,7 +7,7 @@ using Adam.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.Player
+namespace Adam.PlayerCharacter
 {
     public partial class Player : Character
     {

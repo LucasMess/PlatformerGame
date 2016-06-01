@@ -1,9 +1,8 @@
-﻿using System;
-using Adam.Characters;
+﻿using Adam.Characters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam.Player
+namespace Adam.PlayerCharacter
 {
     public partial class Player : Character
     {
@@ -19,7 +18,7 @@ namespace Adam.Player
         public event EventHandler InteractAction;
         public event EventHandler DuckAction;
         public event EventHandler DuckActionStop;
-        public event EventHandler AttackAction;
+        public event EventHandler FireWeaponAction;
         public event EventHandler DefendAction;
         public event EventHandler DashAction;
         public event EventHandler UltimateAction;
@@ -38,15 +37,21 @@ namespace Adam.Player
                 InteractAction += Player_InteractAction;
                 DuckAction += Player_DuckAction;
                 DuckActionStop += Player_DuckActionStop; ;
-                AttackAction += Player_AttackAction;
-                DefendAction += Player_DefendAction;
-                DashAction += Player_DashAction;
-                UltimateAction += Player_UltimateAction;
+                FireWeaponAction += Player_FireWeaponAction;
+                //AttackAction += Player_AttackAction;
+                //DefendAction += Player_DefendAction;
+                //DashAction += Player_DashAction;
+                //UltimateAction += Player_UltimateAction;
                 FastRunActive += Player_FastRunActive;
                 FastRunInactive += Player_FastRunInactive;
                 NotIdle += Player_NotIdle;
                 _hasInitialized = true;
             }
+        }
+
+        private void Player_FireWeaponAction()
+        {
+            script.OnWeaponFire(this);
         }
 
         private void Player_DuckActionStop()
@@ -153,7 +158,7 @@ namespace Adam.Player
                 {
                     if (!_attackIsPressed)
                     {
-                        AttackAction?.Invoke();
+                        //FireWeaponAction?.Invoke();
                         _attackIsPressed = true;
                     }
                 }
@@ -162,7 +167,8 @@ namespace Adam.Player
                     _attackIsPressed = false;
                 }
 
-
+                if (InputHelper.IsLeftMousePressed())
+                    FireWeaponAction?.Invoke();
                 if (InputHelper.IsKeyDown(Keys.J))
                     DefendAction?.Invoke();
                 if (InputHelper.IsKeyDown(Keys.K))

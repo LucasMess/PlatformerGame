@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.PlayerCharacter;
 
 namespace Adam.UI.Overlay_Elements
 {
@@ -33,7 +34,7 @@ namespace Adam.UI.Overlay_Elements
         SoundEffect _heartBeat1, _heartBeat2;
         SoundEffectInstance _h1I, _h2I;
         GameTime _gameTime;
-        Player.Player _player;
+        Player _player;
         GameWorld _gameWorld;
 
         public Heart(Vector2 position)
@@ -61,7 +62,7 @@ namespace Adam.UI.Overlay_Elements
             _h2I = _heartBeat2.CreateInstance();
         }
 
-        public void Update(GameTime gameTime, Player.Player player, GameWorld map)
+        public void Update(GameTime gameTime, Player player, GameWorld map)
         {
             this._gameTime = gameTime;
             this._player = player;

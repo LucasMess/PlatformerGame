@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Audio;
 using Adam;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 using Adam.UI.Elements;
 
 namespace Adam
@@ -42,7 +43,7 @@ namespace Adam
 
         public void Update(Tile t)
         {
-            Player.Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Instance.Player;
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
             {
                 // If player presses open button, open chest.
