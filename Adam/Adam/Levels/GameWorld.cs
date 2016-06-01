@@ -457,6 +457,44 @@ namespace Adam.Levels
             }
         }
 
+        /// <summary>
+        /// Returns the tile at the given index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Tile GetTile(int index)
+        {
+            if (index >= 0 && index < TileArray.Length)
+                return TileArray[index];
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the tile below the given index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Tile GetTileBelow(int index)
+        {
+            index += WorldData.LevelWidth;
+            if (index >= 0 && index < TileArray.Length)
+                return TileArray[index];
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the tile above the given index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Tile GetTileAbove(int index)
+        {
+            index += WorldData.LevelHeight;
+            if (index >= 0 && index < TileArray.Length)
+                return TileArray[index];
+            return null;
+        }
+
         public Player.Player GetPlayer()
         {
             return Player;
