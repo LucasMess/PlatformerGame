@@ -59,7 +59,7 @@ namespace Adam.Misc
             if (_currentName == "walk" || _currentName == "run")
             {
                 // y = 1020/(x + 1) - 20
-                _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().X) + 1));
+                _currentAnimationData.Speed = (int)(-20 + 500f / (Math.Abs(entity.GetVelocity().X) + 1));
             }
             if (_currentName == "climb")
             {

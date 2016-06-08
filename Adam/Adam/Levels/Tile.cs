@@ -1527,7 +1527,7 @@ namespace Adam
         private bool _wasInitialized;
 
         private int _mapWidth;
-        protected const int SmallTileSize = 16;
+        protected const int SmallTileSize = 32;
         public bool SunlightPassesThrough;
         public bool LevelEditorTransparency;
         public string Name = "";
@@ -1619,7 +1619,7 @@ namespace Adam
             switch (Id)
             {
                 case 0:
-                    return .99f;
+                    return 1f;
                 default:
                     return .95f;
             }

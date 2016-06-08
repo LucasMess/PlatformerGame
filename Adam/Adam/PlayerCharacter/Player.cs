@@ -57,7 +57,7 @@ namespace Adam.PlayerCharacter
             ComplexAnim.AddAnimationData("fightIdle",
                 new ComplexAnimData(50, fightTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("walk",
-                new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
+                new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 25, 4, true));
             ComplexAnim.AddAnimationData("run",
                 new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("slide",

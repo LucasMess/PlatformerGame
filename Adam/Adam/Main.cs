@@ -46,7 +46,7 @@ namespace Adam
     {
         public const bool InDebugMode = true;
         public const bool IsTestingMultiplayer = false;
-        public const int Tilesize = 32;
+        public const int Tilesize = 48;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;
         public const string Version = "Version 0.8.0 Beta";
@@ -75,7 +75,7 @@ namespace Adam
         public static double WidthRatio;
         public static double HeightRatio;
         public static float MaxVolume = .1f;
-        public static bool IsMusicMuted = true;
+        public static bool IsMusicMuted = false;
         public static bool HasLighting = false;
         public static ObjectiveTracker ObjectiveTracker;
         public static ContentManager Content;
@@ -610,7 +610,7 @@ namespace Adam
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
-                    //_overlay.Draw(SpriteBatch);
+                   // _overlay.Draw(SpriteBatch);
 
                     if (!_gameWorld.LevelEditor.OnInventory)
                         ObjectiveTracker.Draw(SpriteBatch);

@@ -20,6 +20,7 @@ namespace Adam.Characters.Enemies
         {
             PlayMeanSound();
             CheckInteractionsWithPlayer();
+            if (IsCollidableWithEnemies) CheckCollisionWithOtherEnemies();
 
             base.Update();
         }
@@ -93,6 +94,33 @@ namespace Adam.Characters.Enemies
                 }
             }
 
+        }
+
+        private void CheckCollisionWithOtherEnemies()
+        {
+            foreach (Entity en in GameWorld.Instance.Entities)
+            {
+                if (en is Enemy && en != this)
+                {
+                    Enemy enemy = (Enemy) en;
+                    if (!enemy.IsCollidableWithEnemies) continue;
+                    if (en.GetCollRectangle().Intersects(CollRectangle))
+                    {
+                        int collResolve = 1;
+                        // If en is to the right.
+                        if (en.GetCollRectangle().X > CollRectangle.X)
+                        {
+                            en.SetVelX(collResolve);
+                            SetVelX(-collResolve);
+                        }
+                        else
+                        {
+                            en.SetVelX(-collResolve);
+                            SetVelX(collResolve);
+                        };
+                    }
+                }
+            }
         }
     }
 }

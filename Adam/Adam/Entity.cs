@@ -310,16 +310,18 @@ namespace Adam
 
         }
 
+        /// <summary>
+        /// Reduces the entities velocity based on what tile it is touching.
+        /// </summary>
         private void ApplyAirFriction()
         {
             IsTouchingGround = false;
             Tile below = GameWorld.Instance.GetTileBelow(GetTileIndex());
-            if (below != null)
-                if ((CollRectangle.Y + CollRectangle.Height) - below.GetDrawRectangle().Y < 1)
-                {
-                    IsTouchingGround = true;
-                    Velocity *= below.GetFrictionConstant();
-                }
+            if ((CollRectangle.Y + CollRectangle.Height) - below?.GetDrawRectangle().Y < 1)
+            {
+                IsTouchingGround = true;
+                Velocity *= below.GetFrictionConstant();
+            }
         }
 
         /// <summary>
@@ -916,6 +918,10 @@ namespace Adam
             Vector2 size = new Vector2(GetDrawRectangle().Width / Main.Tilesize, GetDrawRectangle().Height / Main.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
+
+            if (xSize == 0) xSize = 1;
+            if (ySize == 0) ySize = 1;
+
             int width = SourceRectangle.Width / xSize;
             int height = SourceRectangle.Height / ySize;
             rectangles = new Rectangle[xSize * ySize];

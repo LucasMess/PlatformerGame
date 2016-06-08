@@ -27,6 +27,8 @@ namespace Adam.Characters.Enemies
             RespawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
         }
 
+        public bool IsCollidableWithEnemies { get; set; } = true;
+
         /// <summary>
         /// Makes the enemy drop gems.
         /// </summary>

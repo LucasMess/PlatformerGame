@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Adam.Levels;
+using Adam.Misc;
 
 namespace Adam.UI
 {
     public class Brush
     {
+        Timer gridOpacityTimer = new Timer();
+
         protected int MaxSize
         {
             get
@@ -27,7 +30,8 @@ namespace Adam.UI
 
         public int Size = 1;
         int _index;
-        Image hoverBrushSquare = new Image();
+        private Image grid;
+        private Rectangle bright, dim, middle;
         Image[] _selectionSquares = new Image[1];
         Tile[] _selectedBrushTiles = new Tile[1];
         public int[] SelectedIndexes;
@@ -36,6 +40,13 @@ namespace Adam.UI
 
         public delegate void EventHandler();
         public event EventHandler SizeChanged;
+
+        public Brush()
+        {
+            bright = new Rectangle(412,0,36,36);
+            middle = new Rectangle(412 + 36, 0, 36, 36);
+            dim = new Rectangle(412 + 36 + 36, 0, 36, 36);
+        }
 
         public void Update()
         {
@@ -84,9 +95,8 @@ namespace Adam.UI
 
             // Create grid.
             Tile hoveredTile = gameWorld.TileArray[SelectedIndexes[0]];
-            hoverBrushSquare.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X, hoveredTile.GetDrawRectangle().Y, Size * (int)hoveredTile.GetSize().X * Main.Tilesize, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize);
-            hoverBrushSquare.SourceRectangle = new Rectangle(21 * 16, 7 * 16, 16, 16);
-            hoverBrushSquare.Texture = GameWorld.SpriteSheet;
+            grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * Main.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize + 8);
+            grid.Texture = GameWorld.UiSpriteSheet;
 
             for (int i = 0; i < _selectedBrushTiles.Length; i++)
             {
@@ -146,8 +156,16 @@ namespace Adam.UI
             //    if (i.Texture != null)
             //        spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);
             //}
-            if (hoverBrushSquare.Texture != null)
-                spriteBatch.Draw(hoverBrushSquare.Texture, hoverBrushSquare.Rectangle, hoverBrushSquare.SourceRectangle, Color.White);
+
+            float opacity = (float)( .6 + .4 *(Math.Sin(gridOpacityTimer.TimeElapsedInSeconds * 5)));
+            Color gridColor = Color.White*opacity;
+
+            if (grid.Texture != null)
+                spriteBatch.Draw(grid.Texture, grid.Rectangle, dim, gridColor);
+            if (grid.Texture != null)
+                spriteBatch.Draw(grid.Texture, grid.Rectangle, middle, gridColor);
+            if (grid.Texture != null)
+                spriteBatch.Draw(grid.Texture, grid.Rectangle, bright, gridColor);
 
         }
     }

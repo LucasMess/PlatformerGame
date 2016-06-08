@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Characters.Enemies;
 using Adam.Levels;
 
 namespace Adam.Characters.Scripts
@@ -30,6 +31,8 @@ namespace Adam.Characters.Scripts
         {
             if (entity.IsJumping)
             {
+                Enemy enemy = (Enemy) entity;
+                enemy.IsCollidableWithEnemies = true;
                 entity.SetVelY(0);
                 _jumpTimer.Reset();
                 entity.RemoveAnimationFromQueue("jump");
@@ -41,6 +44,9 @@ namespace Adam.Characters.Scripts
         {
             if (!Entity.IsJumping)
             {
+                Enemy enemy = (Enemy)Entity;
+                enemy.IsCollidableWithEnemies = false;
+
                 Entity.ChangePosBy(0, -1);
                 Entity.SetVelY(JumpVel);
                 Entity.IsJumping = true;
