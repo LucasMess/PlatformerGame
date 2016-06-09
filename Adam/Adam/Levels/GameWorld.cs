@@ -92,7 +92,7 @@ namespace Adam.Levels
             _placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
-            UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap");
+            UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
             ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
 
             LightEngine = new LightEngine();

@@ -80,9 +80,9 @@ namespace Adam
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static int ApplyWidthRatio(int number)
+        public static int ApplyUiRatio(int number)
         {
-            return (int)(number / Main.WidthRatio);
+            return (int)(number * GetUiScale());
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Adam
         /// <returns></returns>
         public static int ApplyHeightRatio(int number)
         {
-            return (int)(number / Main.HeightRatio);
+            return (int)(number * GetUiScale());
         }
 
         /// <summary>
@@ -113,6 +113,15 @@ namespace Adam
         public static int GetRandomY(Rectangle rect)
         {
             return GameWorld.RandGen.Next(rect.Y, rect.Y + rect.Height);
+        }
+
+        /// <summary>
+        /// Returns the size of the User Interface depending on what the resolution is.
+        /// </summary>
+        /// <returns></returns>
+        public static int GetUiScale()
+        {
+           return Main.UserResWidth/(Main.DefaultResWidth/2);
         }
     }
 }

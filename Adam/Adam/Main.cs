@@ -49,8 +49,8 @@ namespace Adam
         public const int Tilesize = 48;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;
-        public const string Version = "Version 0.8.0 Beta";
-        public const string Producers = "Duck Knight Duel Games";
+        public const string Version = "Version 0.10.0 Beta";
+        public const string Producers = "BitBite Games";
         public const float Gravity = .90f;
 
         /// <summary>
@@ -612,8 +612,8 @@ namespace Adam
                         DepthStencilState.None, rs);
                    // _overlay.Draw(SpriteBatch);
 
-                    if (!_gameWorld.LevelEditor.OnInventory)
-                        ObjectiveTracker.Draw(SpriteBatch);
+                    //if (!_gameWorld.LevelEditor.OnInventory)
+                    //    ObjectiveTracker.Draw(SpriteBatch);
 
                     _gameWorld.DrawUi(SpriteBatch);
                     Dialog.Draw(SpriteBatch);

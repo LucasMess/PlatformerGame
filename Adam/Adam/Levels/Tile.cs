@@ -230,7 +230,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(0, 17);
                     SunlightPassesThrough = true;
                     //GameWorld.Instance.LightEngine.AddFixedLightSource(this, new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
-                    GameWorld.Instance.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(),true,Color.White,.4f,.1f));
+                    GameWorld.Instance.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(), true, Color.White, .4f, .1f));
                     break;
                 case 13: //Door
                     IsSolid = true;
@@ -548,7 +548,7 @@ namespace Adam
                     _sizeOfTile.X = 50;
                     _sizeOfTile.Y = 25;
                     Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
-                    _positionInSpriteSheet = new Vector2(0,0);
+                    _positionInSpriteSheet = new Vector2(0, 0);
 
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
@@ -983,6 +983,7 @@ namespace Adam
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();
             DefineSourceRectangle();
+            SetToDefaultSourceRect();
             GameWorld.Instance.WorldData.MetaData[TileIndex] = null;
         }
 
@@ -1564,6 +1565,7 @@ namespace Adam
         /// </summary>
         public Tile()
         {
+            SetToDefaultSourceRect();
         }
 
         /// <summary>
@@ -1575,6 +1577,7 @@ namespace Adam
         {
             _originalPosition = new Rectangle(x, y, 0, 0);
             DrawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            SetToDefaultSourceRect();
         }
 
         /// <summary>
@@ -1584,6 +1587,15 @@ namespace Adam
         public Tile(bool sampleTile)
         {
             _isSampleTile = true;
+            SetToDefaultSourceRect();
+        }
+
+        /// <summary>
+        /// Sets the source rectangle to the no texture found texture.
+        /// </summary>
+        private void SetToDefaultSourceRect()
+        {
+            SourceRectangle = new Rectangle(12 * SmallTileSize, 8 * SmallTileSize, SmallTileSize, SmallTileSize);
         }
 
 

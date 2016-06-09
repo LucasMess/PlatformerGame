@@ -11,6 +11,7 @@ namespace Adam.UI.Elements
 {
     public class FunctionButton : Button
     {
+        private const int buttonSize = 32;
         protected Vector2 RelativePosition;
         protected string HoverText="";
         bool _showHoverText;
@@ -21,7 +22,7 @@ namespace Adam.UI.Elements
         {
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
-            CollRectangle = new Rectangle(0, 0, (int)(Main.Tilesize / Main.WidthRatio), (int)(Main.Tilesize / Main.HeightRatio));
+            CollRectangle = new Rectangle(0, 0, (int)(buttonSize / Main.WidthRatio), (int)(buttonSize / Main.HeightRatio));
             SourceRectangle = new Rectangle(0, 0, 16, 16);
             _font = ContentHelper.LoadFont("Fonts/x32");
         }
@@ -71,8 +72,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 0;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Play level";
         }
@@ -85,8 +86,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 32;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Save level";
         }
@@ -99,8 +100,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 48;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Open level";
         }
@@ -113,8 +114,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 16;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "New level";
         }
@@ -127,8 +128,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 64;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Erase level";
         }
@@ -145,8 +146,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 64;
             SourceRectangle.Y = 16;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Switch to Wall Mode";
         }
@@ -170,8 +171,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 80;
             SourceRectangle.Y = 0;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Rename Level";
         }
@@ -184,8 +185,8 @@ namespace Adam.UI.Elements
             Initialize();
             SourceRectangle.X = 80;
             SourceRectangle.Y = 16;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Edit level in Level Editor";
         }
@@ -199,11 +200,25 @@ namespace Adam.UI.Elements
             SourceRectangle.X = 80;
             SourceRectangle.Y = 32;
             SourceRectangle.Width = SourceRectangle.Width * 2;
-            CollRectangle.X = (int)(position.X / Main.WidthRatio) + box.X;
-            CollRectangle.Y = (int)(position.Y / Main.HeightRatio) + box.Y;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             CollRectangle.Width = CollRectangle.Width * 2;
             RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
             HoverText = "Return";
+        }
+    }
+
+    public class ExpandButton : FunctionButton
+    {
+        public ExpandButton(Vector2 position, Rectangle box)
+        {
+            Initialize();
+            SourceRectangle.X = 0;
+            SourceRectangle.Y = 48;
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
+            RelativePosition = new Vector2((float)(position.X / Main.WidthRatio), (float)(position.Y / Main.HeightRatio));
+            HoverText = "Expand";
         }
     }
 }

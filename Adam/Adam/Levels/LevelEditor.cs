@@ -13,15 +13,15 @@ using Adam.Misc.Helpers;
 using Adam.Interactables;
 using Adam.Misc.Sound;
 using Adam.Particles;
+using Adam.UI.Level_Editor;
 
 namespace Adam.Levels
 {
     public class LevelEditor
     {
         GameWorld _gameWorld;
-        TileScroll _tileScroll = new TileScroll();
-        EntityScroll _entityScroll = new EntityScroll();
         Minimap _miniMap;
+        private Inventory _inventory;
         public ActionBar ActionBar = new ActionBar();
         TileDescription _tileDescription = new TileDescription();
         public Brush Brush = new Brush();
@@ -31,6 +31,8 @@ namespace Adam.Levels
         bool _inventoryKeyPressed;
         float _blackScreenOpacity;
         bool _recentlyChanged;
+
+        private ButtonBar _buttonBar;
 
         public Rectangle EditorRectangle;
         public int IndexOfMouse;
@@ -49,14 +51,16 @@ namespace Adam.Levels
 
         public void Load()
         {
+            _inventory = new Inventory();
+            _buttonBar = new ButtonBar();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
             OnInventory = false;
-            _tileScroll.Load();
-            _tileScroll.TileSelected += TileScroll_TileSelected;
+            //_tileScroll.Load();
+            //_tileScroll.TileSelected += TileScroll_TileSelected;
 
-            _entityScroll.Load();
-            _entityScroll.TileSelected += EntityScroll_TileSelected;
+            //_entityScroll.Load();
+            //_entityScroll.TileSelected += EntityScroll_TileSelected;
 
             for (int i = 1; i <= _construction.Length; i++)
             {
@@ -100,8 +104,10 @@ namespace Adam.Levels
             SoundtrackManager.PlayLevelEditorTheme();
 
             _gameWorld = GameWorld.Instance;
-            _tileScroll.Update();
-            _entityScroll.Update();
+            //_tileScroll.Update();
+            //_entityScroll.Update();
+            _inventory.Update();
+            _buttonBar.Update();
             ActionBar.Update();
             Brush.Update();
             _tileDescription.Update();
@@ -153,7 +159,7 @@ namespace Adam.Levels
             }
 
 
-            _tileScroll.Load();
+            //_tileScroll.Load();
         }
 
         private void CheckIfChangedToWallMode()
@@ -420,7 +426,7 @@ namespace Adam.Levels
             for (int i = 0; i < 3; i++)
             {
                 GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
-                    new Vector2(GameWorld.RandGen.Next(-10, 10)/10f, GameWorld.RandGen.Next(-10, 10)/10f)));
+                    new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
             }
         }
 
@@ -460,15 +466,20 @@ namespace Adam.Levels
 
         public void DrawUi(SpriteBatch spriteBatch)
         {
+            _inventory.Draw(spriteBatch);
+            _buttonBar.Draw(spriteBatch);
+
+
             if (!OnInventory)
                 FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/x32"), "On Wall Mode: " + OnWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
 
             _miniMap.Draw(spriteBatch);
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * _blackScreenOpacity);
             _tileDescription.Draw(spriteBatch);
-            _tileScroll.Draw(spriteBatch);
-            _entityScroll.Draw(spriteBatch);
+            //_tileScroll.Draw(spriteBatch);
+            //_entityScroll.Draw(spriteBatch);
             ActionBar.Draw(spriteBatch);
+
         }
 
         public Tile[] CurrentArray
