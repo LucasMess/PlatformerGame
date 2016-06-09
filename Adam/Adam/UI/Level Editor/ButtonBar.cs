@@ -42,6 +42,8 @@ namespace Adam.UI.Level_Editor
             var optionsButton = new FunctionButton(new Vector2(354, 11), _drawRectangle, "More options",
                 ButtonImage.Settings);
 
+            expandButton.MouseClicked += OpenInventory;
+
             buttons.Add(wallButton);
             buttons.Add(playButton);
             buttons.Add(deleteButton);
@@ -52,6 +54,11 @@ namespace Adam.UI.Level_Editor
             buttons.Add(optionsButton);
 
             _container = new Container(0, 0, 100, 200);
+        }
+
+        private void OpenInventory()
+        {
+            Inventory.IsOpen = !Inventory.IsOpen;
         }
 
         public void Update()

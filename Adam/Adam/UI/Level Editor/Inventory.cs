@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Markup;
@@ -15,72 +16,108 @@ namespace Adam.UI.Level_Editor
     class Inventory
     {
         private const int SpacingBetweenTiles = 2;
-        private const int SpacingBetweenSquareAndTile = 3;
         private const int defaultX = 159;
-        private const int activeY = 51;
+        private const int defaultY = 51;
+        private int _activeY;
+        private int _inactiveY;
+        private int _midway;
         private const int tilesPerRow = 9;
+
+        private const float Acceleration = 13f;
+        private const float Deceleration = 13f;
 
         /// <summary>
         /// Returns true if the inventory is visible and active.
         /// </summary>
-        public bool IsOpen { get; set; }
+        public static bool IsOpen { get; set; }
 
-        List<Tile> _grid = new List<Tile>();
-        List<Rectangle> _gridSquares = new List<Rectangle>();
-        private Rectangle _gridRectSource = new Rectangle(297, 189, 22, 23);
-        private Rectangle _backDrop;
+        private List<TileHolder> _tileHolders = new List<TileHolder>();
+        private static Rectangle _backDrop;
+        private static float _velocityY;
         private Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
 
         public Inventory()
         {
             _backDrop = new Rectangle(CalcHelper.ApplyUiRatio(87), CalcHelper.ApplyUiRatio(38), CalcHelper.ApplyUiRatio(305), CalcHelper.ApplyUiRatio(204));
+            _inactiveY = _backDrop.Y - _backDrop.Height;
+            _activeY = _backDrop.Y;
+            _midway = _inactiveY + _backDrop.Height/2;
 
             for (int i = 1; i < 60; i++)
             {
-                Tile tile = new Tile(true) { Id = (byte)i };
-                tile.DefineTexture();
-                _grid.Add(tile);
+                _tileHolders.Add(new TileHolder(i));
             }
 
             int counter = 0;
-            foreach (var tile in _grid)
+            foreach (var tile in _tileHolders)
             {
-                tile.DrawRectangle.Width = CalcHelper.ApplyUiRatio(16);
-                tile.DrawRectangle.Height = CalcHelper.ApplyUiRatio(16);
+                int x = CalcHelper.ApplyUiRatio(defaultX) +
+                        (counter % tilesPerRow) * CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Width + SpacingBetweenTiles);
+                int y = CalcHelper.ApplyUiRatio(defaultY) +
+                        (counter / tilesPerRow) * CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Height + SpacingBetweenTiles);
 
-                tile.DrawRectangle.X = CalcHelper.ApplyUiRatio(defaultX) + (counter % tilesPerRow) * CalcHelper.ApplyUiRatio(_gridRectSource.Width + SpacingBetweenTiles);
-                tile.DrawRectangle.Y = CalcHelper.ApplyUiRatio(activeY) + (counter / tilesPerRow) * CalcHelper.ApplyUiRatio(_gridRectSource.Height + SpacingBetweenTiles);
+                tile.SetPosition(x, y);
+                tile.BindTo(new Vector2(_backDrop.X, _backDrop.Y));
 
                 counter++;
             }
 
         }
 
+        private void Animate()
+        {
+            if (!IsOpen)
+            {
+                if (_backDrop.Y > _inactiveY)
+                {
+                    if (_backDrop.Y > _midway)
+                        _velocityY -= Acceleration;
+                    else _velocityY += Deceleration;
+                }
+                else
+                {
+                    _velocityY = 0;
+                    _backDrop.Y = _inactiveY;
+                }
+            }
+            else
+            {
+                if (_backDrop.Y < _activeY)
+                {
+                    if (_backDrop.Y < _midway)
+                        _velocityY += Acceleration;
+                    else _velocityY -= Deceleration;
+                }
+                else
+                {
+                    _velocityY = 0;
+                    _backDrop.Y = _activeY;
+                }
+            }
+        }
+
         public void Update()
         {
+            Animate();
+            _backDrop.Y += (int)_velocityY;
 
+            foreach (var tile in _tileHolders)
+            {
+                tile.Update(new Vector2(_backDrop.X, _backDrop.Y));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _backDrop, _backDropSource, Color.White);
 
-            foreach (var tile in _grid)
+            foreach (var tile in _tileHolders)
             {
-                DrawSquareBehindTile(tile, spriteBatch);
-                tile.DrawByForce(spriteBatch);
-
+                tile.Draw(spriteBatch);
             }
         }
 
-        private void DrawSquareBehindTile(Tile tile, SpriteBatch spriteBatch)
-        {
-            Color squareColor = Color.White;
-            if (InputHelper.MouseRectangle.Intersects(tile.DrawRectangle))
-                squareColor = Color.Gray;
 
-            spriteBatch.Draw(GameWorld.UiSpriteSheet, new Rectangle(tile.DrawRectangle.X - CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile), tile.DrawRectangle.Y - CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile), CalcHelper.ApplyUiRatio(_gridRectSource.Width), CalcHelper.ApplyUiRatio(_gridRectSource.Height)), _gridRectSource, squareColor);
-        }
 
 
     }
