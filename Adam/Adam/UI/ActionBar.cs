@@ -17,8 +17,8 @@ namespace Adam.UI
     public class ActionBar
     {
         Rectangle _box;
-        PlayButton _playButton;
-        WallButton _wallButton;
+        FunctionButton _playButton;
+        FunctionButton _wallButton;
         List<FunctionButton> _buttons = new List<FunctionButton>();
 
         LevelEditor _levelEditor;
@@ -37,9 +37,9 @@ namespace Adam.UI
             _originalY = _box.Y;
             _box.Y = Main.UserResHeight + 300;
 
-            _playButton = new PlayButton(new Vector2(12 + 64, 4), _box);
-           
-            _wallButton = new WallButton(new Vector2(20 + 128, 4), _box);
+            _playButton = new FunctionButton(new Vector2(12 + 64, 4), _box, "", ButtonImage.Back);
+
+            _wallButton = new FunctionButton(new Vector2(20 + 128, 4), _box, "", ButtonImage.Save);
 
             _playButton.MouseClicked += PlayButton_MouseClicked;
             _wallButton.MouseClicked += WallButton_MouseClicked;

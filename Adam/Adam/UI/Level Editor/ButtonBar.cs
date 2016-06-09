@@ -32,16 +32,24 @@ namespace Adam.UI.Level_Editor
             int x = Main.UserResWidth / 2 - _drawRectangle.Width / 2;
             _drawRectangle.X = x;
 
-
-            var wallButton = new WallButton(new Vector2(100, 8), _drawRectangle);
-            var playButton = new PlayButton(new Vector2(346, 11), _drawRectangle);
-            var deleteButton = new DeleteButton(new Vector2(364, 11), _drawRectangle);
-            var expandButton = new ExpandButton(new Vector2(322, 11), _drawRectangle);
+            var brushButton = new FunctionButton(new Vector2(11, 11), _drawRectangle, "Brush", ButtonImage.Brush);
+            var eraserButton = new FunctionButton(new Vector2(29, 11), _drawRectangle, "Eraser", ButtonImage.Eraser);
+            var undoButton = new FunctionButton(new Vector2(47, 11), _drawRectangle, "Undo", ButtonImage.Undo);
+            var wallButton = new FunctionButton(new Vector2(65, 11), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
+            var expandButton = new FunctionButton(new Vector2(293, 17), _drawRectangle, "More tiles", ButtonImage.Expand);
+            var playButton = new FunctionButton(new Vector2(336, 11), _drawRectangle, "Play test level", ButtonImage.Play);
+            var deleteButton = new FunctionButton(new Vector2(318, 11), _drawRectangle, "Reset level", ButtonImage.Delete);
+            var optionsButton = new FunctionButton(new Vector2(354, 11), _drawRectangle, "More options",
+                ButtonImage.Settings);
 
             buttons.Add(wallButton);
             buttons.Add(playButton);
             buttons.Add(deleteButton);
             buttons.Add(expandButton);
+            buttons.Add(brushButton);
+            buttons.Add(eraserButton);
+            buttons.Add(undoButton);
+            buttons.Add(optionsButton);
 
             _container = new Container(0, 0, 100, 200);
         }

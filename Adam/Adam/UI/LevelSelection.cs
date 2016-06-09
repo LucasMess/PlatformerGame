@@ -27,12 +27,12 @@ namespace Adam.UI
 
         private Rectangle _functionButtonContainer;
 
-        private PlayButton _playButton;
-        private EditButton _editButton;
-        private RenameButton _renameButton;
-        private DeleteButton _deleteButton;
-        private NewButton _newButton;
-        private BackButton _backButton;
+        private FunctionButton _playButton;
+        private FunctionButton _editButton;
+        private FunctionButton _renameButton;
+        private FunctionButton _deleteButton;
+        private FunctionButton _newButton;
+        private FunctionButton _backButton;
         private List<FunctionButton> _buttons;
 
         private List<LevelInfo> _levelInfos;
@@ -65,12 +65,12 @@ namespace Adam.UI
 
             // Defines where the function buttons will be.
             _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - CalcHelper.ApplyHeightRatio(4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + (int)(8 / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
-            _playButton = new PlayButton(new Vector2(4, 4), _functionButtonContainer);
-            _editButton = new EditButton(new Vector2(4 + 32 + 4, 4), _functionButtonContainer);
-            _renameButton = new RenameButton(new Vector2(4 + 64 + 8, 4), _functionButtonContainer);
-            _deleteButton = new DeleteButton(new Vector2(4 + 96 + 12, 4), _functionButtonContainer);
-            _newButton = new NewButton(new Vector2(4 + 128 + 16, 4), _functionButtonContainer);
-            _backButton = new BackButton(new Vector2(-500 + 96 + 4, 4), _functionButtonContainer);
+            _playButton = new FunctionButton(new Vector2(4, 4), _functionButtonContainer, "Play level", ButtonImage.Play);
+            _editButton = new FunctionButton(new Vector2(4 + 32 + 4, 4), _functionButtonContainer, "Edit level", ButtonImage.Edit);
+            _renameButton = new FunctionButton(new Vector2(4 + 64 + 8, 4), _functionButtonContainer, "Rename level", ButtonImage.Rename);
+            _deleteButton = new FunctionButton(new Vector2(4 + 96 + 12, 4), _functionButtonContainer, "Delete level", ButtonImage.Delete);
+            _newButton = new FunctionButton(new Vector2(4 + 128 + 16, 4), _functionButtonContainer, "Create a new level", ButtonImage.New);
+            _backButton = new FunctionButton(new Vector2(-500 + 96 + 4, 4), _functionButtonContainer, "Return", ButtonImage.Back);
 
             _buttons = new List<FunctionButton>();
             _buttons.Add(_playButton);

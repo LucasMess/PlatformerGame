@@ -111,7 +111,7 @@ namespace Adam
 
             _fullscreen = new TextButton(_first, "Borderless Mode: ");
             _fullscreen.MouseClicked += fullscreen_MouseClicked;
-            _fullscreen.IsActive = game1.GameData.Settings.IsFullscreen;
+            _fullscreen.IsOn = game1.GameData.Settings.IsFullscreen;
             _buttons.Add(_fullscreen);
 
             _backButton = new TextButton(_fifth, "Back");
@@ -217,16 +217,16 @@ namespace Adam
         void fullscreen_MouseClicked()
         {
 
-            switch (_fullscreen.IsActive)
+            switch (_fullscreen.IsOn)
             {
                 case true:
-                    _fullscreen.IsActive = false;
+                    _fullscreen.IsOn = false;
                     _game1.GameData.Settings.IsFullscreen = false;
                     _game1.GameData.Settings.NeedsRestart = true;
                     _game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
-                    _fullscreen.IsActive = true;
+                    _fullscreen.IsOn = true;
                     _game1.GameData.Settings.IsFullscreen = true;
                     _game1.GameData.Settings.NeedsRestart = true;
                     _game1.GameData.Settings.HasChanged = true;
@@ -238,16 +238,16 @@ namespace Adam
 
         void lighting_MouseClicked()
         {
-            switch (_lighting.IsActive)
+            switch (_lighting.IsOn)
             {
                 case true:
-                    _lighting.IsActive = false;
+                    _lighting.IsOn = false;
                     _game1.GameData.Settings.DesiredLight = false;
                     _game1.GameData.Settings.NeedsRestart = true;
                     _game1.GameData.Settings.HasChanged = true;
                     break;
                 case false:
-                    _lighting.IsActive = true;
+                    _lighting.IsOn = true;
                     _game1.GameData.Settings.DesiredLight = true;
                     _game1.GameData.Settings.NeedsRestart = true;
                     _game1.GameData.Settings.HasChanged = true;
@@ -305,7 +305,7 @@ namespace Adam
                 case MenuState.Options:
                     //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
                     //lighting.Text = "Lighting: " + lighting.IsActive;
-                    _fullscreen.Text = "Borderless Mode: " + !_fullscreen.IsActive;
+                    _fullscreen.Text = "Borderless Mode: " + !_fullscreen.IsOn;
 
                     //smoothPixels.Update();
                     //lighting.Update();

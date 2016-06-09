@@ -1,5 +1,6 @@
 ﻿using Adam.Levels;
 using Adam.Misc;
+using Microsoft.Win32.SafeHandles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,8 @@ namespace Adam.UI
         private bool _mouseIsOver;
         private bool _wasPressed, _wasReleased;
         protected Color Color = Color.White;
+        protected Vector2 Origin = new Vector2();
+        protected float Rotation = 0f;
 
         protected SoundFx ErrorFx = new SoundFx("Sounds/Menu/error_style_2_001");
         protected SoundFx ConfirmFx = new SoundFx("Sounds/Menu/confirm_style_4_001");
@@ -23,9 +26,10 @@ namespace Adam.UI
         {
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
+            Origin = new Vector2(CollRectangle.Width / 2, CollRectangle.Height / 2);
         }
 
-        public bool IsActive { get; set; }
+        public bool IsOn { get; set; }
         protected Texture2D Texture { get; set; }
         protected Rectangle CollRectangle;
         protected Rectangle SourceRectangle;
@@ -81,7 +85,7 @@ namespace Adam.UI
         {
             spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
             spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
-                Color.White, 0, Font.MeasureString(Text)/2, (float) (.5/Main.HeightRatio), SpriteEffects.None, 0);
+                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
         }
     }
 }
