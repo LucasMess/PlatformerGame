@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Markup;
 using Adam.Levels;
+using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -20,11 +21,13 @@ namespace Adam.UI.Level_Editor
         private const int defaultY = 51;
         private int _activeY;
         private int _inactiveY;
+        private static int posAtStartOfAnimation;
         private int _midway;
         private const int tilesPerRow = 9;
 
         private const float Acceleration = 13f;
         private const float Deceleration = 13f;
+        private static Timer _animationTimer = new Timer();
 
         /// <summary>
         /// Returns true if the inventory is visible and active.
@@ -42,6 +45,7 @@ namespace Adam.UI.Level_Editor
             _inactiveY = _backDrop.Y - _backDrop.Height;
             _activeY = _backDrop.Y;
             _midway = _inactiveY + _backDrop.Height/2;
+            posAtStartOfAnimation = _backDrop.Y;
 
             for (int i = 1; i < 60; i++)
             {
@@ -64,35 +68,53 @@ namespace Adam.UI.Level_Editor
 
         }
 
+        public static void StartAnimation()
+        {
+            IsOpen = !IsOpen;
+            _animationTimer.Reset();
+            posAtStartOfAnimation = _backDrop.Y;
+        }
+
         private void Animate()
         {
-            if (!IsOpen)
+            if (IsOpen)
             {
-                if (_backDrop.Y > _inactiveY)
-                {
-                    if (_backDrop.Y > _midway)
-                        _velocityY -= Acceleration;
-                    else _velocityY += Deceleration;
-                }
-                else
-                {
-                    _velocityY = 0;
-                    _backDrop.Y = _inactiveY;
-                }
+                _backDrop.Y =
+                    (int)
+                        CalcHelper.EaseInAndOut((int) _animationTimer.TimeElapsedInMilliSeconds, posAtStartOfAnimation,
+                            Math.Abs(posAtStartOfAnimation - _activeY), 200);
+                // CalcHelper.SharpAnimationY(_inactiveY, _activeY, ref _backDrop, ref _velocityY);
+                //if (_backDrop.Y < _activeY)
+                //{
+                //    if (_backDrop.Y < _midway)
+                //        _velocityY += Acceleration;
+                //    else _velocityY -= Deceleration;
+                //}
+                //else
+                //{
+                //    _velocityY = 0;
+                //    _backDrop.Y = _activeY;
+                //}
             }
             else
             {
-                if (_backDrop.Y < _activeY)
-                {
-                    if (_backDrop.Y < _midway)
-                        _velocityY += Acceleration;
-                    else _velocityY -= Deceleration;
-                }
-                else
-                {
-                    _velocityY = 0;
-                    _backDrop.Y = _activeY;
-                }
+                _backDrop.Y =
+                    (int)
+                        CalcHelper.EaseInAndOut((int)_animationTimer.TimeElapsedInMilliSeconds, posAtStartOfAnimation,
+                            -Math.Abs(posAtStartOfAnimation - _inactiveY), 200);
+                //CalcHelper.SharpAnimationY(_activeY, _inactiveY, ref _backDrop, ref _velocityY);
+
+                //if (_backDrop.Y > _inactiveY)
+                //{
+                //    if (_backDrop.Y > _midway)
+                //        _velocityY -= Acceleration;
+                //    else _velocityY += Deceleration;
+                //}
+                //else
+                //{
+                //    _velocityY = 0;
+                //    _backDrop.Y = _inactiveY;
+                //}
             }
         }
 

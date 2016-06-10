@@ -121,7 +121,58 @@ namespace Adam
         /// <returns></returns>
         public static int GetUiScale()
         {
-           return Main.UserResWidth/(Main.DefaultResWidth/2);
+            return Main.UserResWidth / (Main.DefaultResWidth / 2);
+        }
+
+        /// <summary>
+        /// Returns an integer for position animation.
+        /// </summary>
+        /// <param name="time">Time since start of animation.</param>
+        /// <param name="startValue">Starting position.</param>
+        /// <param name="delta">Distance to be travelled.</param>
+        /// <param name="duration">Target duration of transition.</param>
+        /// <returns></returns>
+        public static float EaseInAndOut(float time, float startValue, float delta, float duration)
+        {
+            if (time > duration)
+            {
+                return startValue + delta;
+            }
+            time /= duration / 2;
+            if (time < 1) return (delta / 2) * (time * time) + startValue;
+            time--;
+            return -delta / 2 * (time * (time - 2) - 1) + startValue;
+        }
+
+        public static void SharpAnimationY(int start, int finish, ref Rectangle rectangle, ref float velocityY)
+        {
+            int direction = 1;
+            int middle = 0;
+            if (finish > start)
+            {
+                middle = start + (finish - start) / 2;
+            }
+            else
+            {
+                middle = finish + (finish - start) / 2;
+                direction = -1;
+            }
+
+
+            if (rectangle.Y < finish)
+            {
+                if (rectangle.Y < middle)
+                {
+                    velocityY -= 13f * direction;
+                }
+                else velocityY += 13f * direction;
+            }
+
+            else
+            {
+                velocityY = 0;
+                rectangle.Y = finish;
+            }
         }
     }
 }

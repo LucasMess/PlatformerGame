@@ -58,7 +58,7 @@ namespace Adam.UI.Level_Editor
 
         private void OpenInventory()
         {
-            Inventory.IsOpen = !Inventory.IsOpen;
+            Inventory.StartAnimation();
         }
 
         public void Update()
