@@ -1,5 +1,4 @@
 ﻿using Adam;
-using Adam.Lights;
 using Adam.Misc.Errors;
 using Adam.Misc.Interfaces;
 using Adam.Misc.Sound;
@@ -61,8 +60,6 @@ namespace Adam
 
         private bool _healthGiven;
         public bool IsTouchingGround { get; set; }
-
-        private DynamicPointLight _light;
 
         private int _health;
         private float _opacity = 1f;
@@ -205,22 +202,6 @@ namespace Adam
         /// The rectangle that specifies the part of the texture to draw.
         /// </summary>
         protected Rectangle SourceRectangle;
-
-        /// <summary>
-        /// The light that the entity gives off. Default is none.
-        /// </summary>
-        public DynamicPointLight Light
-        {
-            get
-            {
-                return _light;
-            }
-
-            set
-            {
-                _light = value;
-            }
-        }
 
         /// <summary>
         /// Returns true if the entity is dead.
@@ -453,10 +434,6 @@ namespace Adam
         /// </summary>
         public virtual void Destroy()
         {
-            if (Light != null)
-            {
-                GameWorld.LightEngine.RemoveDynamicLight(Light);
-            }
             GameWorld.Entities.Remove(this);
         }
 

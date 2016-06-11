@@ -1,13 +1,8 @@
 ﻿using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Adam.Levels;
-using Adam.Lights;
 using Adam.Particles;
 
 namespace Adam.UI
@@ -21,8 +16,6 @@ namespace Adam.UI
         int _number;
         private int _offset ;
         float _scale, _normScale;
-        private Light light;
-        private Glow glow;
         private Color _borderColor = Microsoft.Xna.Framework.Color.White;
 
         public SplashNumber(Entity entity, int number, Color color)
@@ -33,7 +26,6 @@ namespace Adam.UI
             Color = color;
             const int offset = 150;
             _borderColor = new Color(color.R - offset, color.G - offset, color.B - offset);
-            light = new DynamicPointLight(entity,1,false,Color.White,3);
 
             if (this._number < 0)
                 _isNegative = true;

@@ -1,9 +1,0 @@
-diff a/Adam/Adam/Lights/Light.cs b/Adam/Adam/Lights/Light.cs	(rejected hunks)
-@@ -39,6 +39,7 @@
-         {
-             this.Content = Content;
-             texture = Content.Load<Texture2D>("Tiles/shadow_pixel");
-+            origin = new Vector2(128, 128);
-         }
- 
-         public void CreateProjectileLight(int intensity, Projectile proj, ContentManager Content)

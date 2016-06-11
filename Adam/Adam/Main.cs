@@ -502,10 +502,10 @@ namespace Adam
 
                     //SpriteBatch.End();
 
-                    SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
-                        null, Camera.Translate);
-                    GameWorld.DrawGlows(SpriteBatch);
-                    SpriteBatch.End();
+                    //SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
+                    //    null, Camera.Translate);
+                    //// Glows go here.
+                    //SpriteBatch.End();
                     break;
             }
 
@@ -530,7 +530,9 @@ namespace Adam
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
                         null, Camera.Translate);
-                    GameWorld.DrawLights(SpriteBatch);
+
+                    // Lighting code goes here.
+
                     SpriteBatch.End();
                     break;
             }
@@ -663,9 +665,6 @@ namespace Adam
                     SpriteBatch.DrawString(_debugFont,
                         "Total Chunks: " + GameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
                         GameWorld.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
-                    SpriteBatch.DrawString(_debugFont,
-                        "Dynamic Lights Count: " + GameWorld.LightEngine?.DynamicLights.Count, new Vector2(0, 220),
-                        Color.White);
                     SpriteBatch.DrawString(_debugFont, "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
                         new Vector2(0, 240), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Entity Count: " + GameWorld.Entities?.Count,

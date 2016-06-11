@@ -54,7 +54,7 @@ namespace Adam.GameData
             IsRaining = false;
         }
 
-        public void NewConfigFromGameWorld()
+        public void GetDataFromGameWorld()
         {
             //Creates arrays for the tiles.
             int size = GameWorld.TileArray.Length;

@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Adam.Lights;
 using Adam.Characters.Enemies;
 using Adam.Levels;
 using Adam.PlayerCharacter;
@@ -71,26 +70,13 @@ namespace Adam
                     //animation.Draw(spriteBatch);
                     break;
                 case ProjectileSource.Player:
-                    spriteBatch.Draw(Texture, CollRectangle, null, Color.White, Rotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
-                    if (Light != null)
-                        Light.DrawGlow(spriteBatch);
+                    spriteBatch.Draw(Texture, CollRectangle, null, Color.White, Rotation, new Vector2(0, 0),
+                        SpriteEffects.FlipHorizontally, 0);
                     break;
                 default:
                     base.Draw(spriteBatch);
                     break;
             }
-        }
-
-        public void DrawLights(SpriteBatch spriteBatch)
-        {
-            switch (CurrentProjectileSource)
-            {
-                case ProjectileSource.Player:
-                    if (Light != null)
-                        Light.Draw(spriteBatch);
-                    break;
-            }
-
         }
 
         public override void Destroy()
@@ -243,8 +229,6 @@ namespace Adam
             Texture = Main.DefaultTexture;
             CollRectangle = new Rectangle(x, y, 16, 16);
             Velocity = new Vector2(xVel, yVel);
-            Light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
-            GameWorld.LightEngine.AddDynamicLight(Light);
 
         }
 

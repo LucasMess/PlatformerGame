@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Adam;
 using Adam.Interactables;
-using Adam.Misc.Interfaces;
 using Adam.Obstacles;
-using Adam.Lights;
 using Adam.Characters.Enemies;
 using Adam.Levels;
 using Adam.Misc;
@@ -38,7 +32,6 @@ namespace Adam
         bool _dead;
         float _rotation, _rotationSpeed, _rotationDelta;
         Color color = Color.White;
-        public Light light;
         Player _player;
 
         public enum ParticleType
@@ -254,8 +247,6 @@ namespace Adam
             Velocity.Y = -10f;
             Position = new Vector2(CollRectangle.X, CollRectangle.Y);
             Opacity = 1f;
-            light = new Lights.DynamicPointLight(this, 1, true, Color.Orange, .3f);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public void CreateDeathSmoke(Entity entity)
@@ -559,12 +550,6 @@ namespace Adam
 
         }
 
-        public void DrawLights(SpriteBatch spriteBatch)
-        {
-            if (light != null)
-                light.Draw(spriteBatch);
-        }
-
     }
 
     public class JumpSmokeParticle : Particle
@@ -708,9 +693,6 @@ namespace Adam
             Velocity.Y = GameWorld.RandGen.Next((int)-source.GetVelocity().Y - buffer, (int)-source.GetVelocity().Y + buffer + 1);
             Position = new Vector2(CollRectangle.X, CollRectangle.Y);
             Opacity = .5f;
-
-            light = new Lights.DynamicPointLight(this, .5f, false, color, 1);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
@@ -736,9 +718,6 @@ namespace Adam
 
             Velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
             Velocity.Y = -3f;
-
-            light = new DynamicPointLight(this, .5f, false, color, .5f);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
@@ -761,9 +740,6 @@ namespace Adam
 
             Velocity.X = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
             Velocity.Y = -3f;
-
-            light = new DynamicPointLight(this, .5f, false, color, .5f);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
@@ -785,9 +761,6 @@ namespace Adam
             Opacity = 1f;
             Velocity.Y = -8f;
             _hitSound = new SoundFx("Sounds/Machine Gun/bulletHit",this);
-
-            light = new DynamicPointLight(this, .05f, false, Color.White, .5f);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
@@ -812,9 +785,6 @@ namespace Adam
             Opacity = 1;
             SourceRectangle = new Rectangle(32 * 8, 12 * 8, 8, 8);
             Texture = GameWorld.SpriteSheet;
-
-            light = new DynamicPointLight(this, intensity, false, color, intensity);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)
@@ -836,9 +806,6 @@ namespace Adam
             Velocity.X = GameWorld.RandGen.Next(-6, 7);
             Position = new Vector2(CollRectangle.X, CollRectangle.Y);
             Opacity = .7f;
-
-            light = new DynamicPointLight(this, .05f, false, color, .5f);
-            GameWorld.LightEngine.AddDynamicLight(light);
         }
 
         public override void Update(GameTime gameTime)

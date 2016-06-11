@@ -4,7 +4,6 @@ using System.Linq;
 using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Interactables;
-using Adam.Lights;
 using Adam.Misc;
 using Adam.Misc.Sound;
 using Adam.Network;
@@ -20,14 +19,12 @@ namespace Adam.Levels
     [Serializable]
     public static class GameWorld
     {
-        public static ParticleSystem ParticleSystem = new ParticleSystem();
+        public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         public static Texture2D UiSpriteSheet;
         public static Texture2D ParticleSpriteSheet;
         private static PlaceNotification _placeNotification;
-        private static Light[] _lightArray;
-        private static Light _playerLight;
         private static bool _playerMovingRight;
         private static Timer _stopMovingTimer = new Timer();
         public static Background Background = new Background();
@@ -45,7 +42,6 @@ namespace Adam.Levels
         public static bool IsOnDebug;
         public static List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
         public static bool LevelComplete;
-        public static LightEngine LightEngine;
         public static List<Particle> Particles;
         public static Player Player;
         public static List<Projectile> PlayerProjectiles;
@@ -66,7 +62,6 @@ namespace Adam.Levels
             UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
             ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
             Player = new Player();
-            LightEngine = new LightEngine();
             WorldData = new WorldData();
         }
 
@@ -111,9 +106,6 @@ namespace Adam.Levels
             ConvertToTiles(WallArray, wallIDs);
 
             LoadingScreen.LoadingText = "Lighting up the world...";
-            LightEngine.Load();
-
-            _playerLight = new Light();
 
             LoadingScreen.LoadingText = "Finding cardboard backgrounds...";
             Background.Load();
@@ -203,7 +195,6 @@ namespace Adam.Levels
             Background.Update(camera);
             _placeNotification.Update(gameTime);
             WorldData.Update(gameTime);
-            LightEngine.Update();
             UpdateInBackground();
 
             Player.Update();
@@ -300,7 +291,6 @@ namespace Adam.Levels
                 var p = Particles[i];
                 if (p.ToDelete)
                 {
-                    LightEngine.RemoveDynamicLight(p.light);
                     Particles.Remove(p);
                 }
             }
@@ -317,11 +307,6 @@ namespace Adam.Levels
         private static void UpdateVisibleIndexes()
         {
             VisibleTileArray = ChunkManager.GetVisibleIndexes();
-        }
-
-        public static void DrawLights(SpriteBatch spriteBatch)
-        {
-            LightEngine.DrawLights(spriteBatch);
         }
 
         public static void Draw(SpriteBatch spriteBatch)
@@ -386,11 +371,6 @@ namespace Adam.Levels
 
         public static void DrawAfterLights(SpriteBatch spriteBatch)
         {
-        }
-
-        public static void DrawGlows(SpriteBatch spriteBatch)
-        {
-            LightEngine.DrawGlows(spriteBatch);
         }
 
         public static void DrawBackground(SpriteBatch spriteBatch)

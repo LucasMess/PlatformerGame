@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
 using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Enemies;
 using Adam.Interactables;
 using Adam.Levels;
-using Adam.Lights;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -220,16 +218,12 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     SunlightPassesThrough = true;
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, true, Color.Orange, 2, .6f));
                     break;
                 case 12: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
                     SunlightPassesThrough = true;
-                    //GameWorld.LightEngine.AddFixedLightSource(this, new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
-                    GameWorld.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(), true, Color.White, .4f, .1f));
                     break;
                 case 13: //Door
                     IsSolid = true;
@@ -305,8 +299,6 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(0, 15);
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 25);
-                    var light = new FixedPointLight(DrawRectangle, false, Color.OrangeRed, 3, .3f);
-                    GameWorld.LightEngine.AddFixedLightSource(this, light);
                     new Liquid(this, Liquid.Type.Lava);
                     break;
                 case 25: // Poisoned Water.
@@ -448,49 +440,35 @@ namespace Adam
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
                     new Crystal(this, 3);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Aqua, 1, .8f));
                     break;
                 case 49: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
                     new Crystal(this, 1);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Yellow, 1, .8f));
                     break;
                 case 50: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
                     new Crystal(this, 2);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 51: // Void FireSpitter.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 28);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Red, 1, .8f));
                     break;
                 case 52: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
                     new Crystal(this, 3);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Blue, 1, .8f));
                     break;
                 case 53: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
                     new Crystal(this, 4);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Red, 1, .8f));
                     break;
                 case 54: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
                     new Crystal(this, 2);
-                    GameWorld.LightEngine.AddFixedLightSource(this,
-                        new FixedPointLight(DrawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 55: // Skull.
                     _positionInSpriteSheet = new Vector2(22, 24);
