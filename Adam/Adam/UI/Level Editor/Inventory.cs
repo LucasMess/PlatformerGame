@@ -131,6 +131,10 @@ namespace Adam.UI.Level_Editor
             {
                 tile.Draw(spriteBatch);
             }
+            foreach (var tile in _tileHolders)
+            {
+                tile.DrawToolTip(spriteBatch);
+            }
         }
     }
 }

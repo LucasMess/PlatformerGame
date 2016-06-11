@@ -45,7 +45,7 @@ namespace Adam
     public class Main : Game
     {
         public const bool InDebugMode = true;
-        public const bool IsTestingMultiplayer = false;
+        public const bool IsTestingMultiplayer = true;
         public const int Tilesize = 48;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;

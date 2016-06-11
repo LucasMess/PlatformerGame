@@ -43,9 +43,9 @@ namespace Adam.UI.Elements
         public IconButton(Vector2 position, Rectangle box, string hoverText, ButtonImage buttonImage)
         {
             Initialize();
-            
-            CollRectangle.X = CalcHelper.ApplyUiRatio((int) position.X) + box.X;
-            CollRectangle.Y = CalcHelper.ApplyUiRatio((int) position.Y) + box.Y;
+
+            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
+            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
             _buttonImage = buttonImage;
             _hoverText = hoverText;
 
@@ -90,8 +90,8 @@ namespace Adam.UI.Elements
                 case ButtonImage.Back:
                     SourceRectangle.X = 80;
                     SourceRectangle.Y = 32;
-                    SourceRectangle.Width = SourceRectangle.Width*2;
-                    CollRectangle.Width = CollRectangle.Width*2;
+                    SourceRectangle.Width = SourceRectangle.Width * 2;
+                    CollRectangle.Width = CollRectangle.Width * 2;
                     break;
                 case ButtonImage.Save:
                     SourceRectangle.X = 32;
@@ -169,16 +169,11 @@ namespace Adam.UI.Elements
             }
         }
 
-        public void DrawOnTop(SpriteBatch spriteBatch)
+        public void DrawTooltip(SpriteBatch spriteBatch)
         {
             if (_showHoverText)
             {
-                var mouse = InputHelper.MouseRectangle;
-                spriteBatch.Draw(_black,
-                    new Rectangle(mouse.X - 5, mouse.Y - 52, (int) _font.MeasureString(_hoverText).X + 10,
-                        (int) _font.MeasureString(_hoverText).Y + 4), Color.Black);
-                FontHelper.DrawWithOutline(spriteBatch, _font, _hoverText, new Vector2(mouse.X, mouse.Y - 50), 1,
-                    Color.White, Color.Black);
+                FontHelper.DrawTooltip(spriteBatch, _hoverText);
             }
         }
 

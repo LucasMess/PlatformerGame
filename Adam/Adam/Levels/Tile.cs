@@ -6,7 +6,6 @@ using Adam.Enemies;
 using Adam.Interactables;
 using Adam.Levels;
 using Adam.Lights;
-using Adam.Noobs;
 using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Adam
 {
-    public class Tile
+    public sealed class Tile
     {
         public static Dictionary<int, string> Names = new Dictionary<int, string>
         {
@@ -113,7 +112,7 @@ namespace Adam
         /// <summary>
         ///     After the IDs have been defined, this will give the tile the correct location of its texture in the spritemap.
         /// </summary>
-        public virtual void DefineTexture()
+        public void DefineTexture()
         {
             //Air ID is 0, so it can emit sunlight.
             if (Id != 0)
@@ -861,7 +860,7 @@ namespace Adam
         ///     This updates the animation of the tile.
         /// </summary>
         /// <param name="gameTime"></param>
-        public virtual void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             if (OnTileUpdate != null)
             {
@@ -987,7 +986,7 @@ namespace Adam
             GameWorld.Instance.WorldData.MetaData[TileIndex] = null;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null)
             {
@@ -1528,7 +1527,7 @@ namespace Adam
         private bool _wasInitialized;
 
         private int _mapWidth;
-        protected const int SmallTileSize = 32;
+        private const int SmallTileSize = 32;
         public bool SunlightPassesThrough;
         public bool LevelEditorTransparency;
         public string Name = "";
@@ -1608,7 +1607,7 @@ namespace Adam
             return _positionInSpriteSheet;
         }
 
-        public virtual Rectangle GetDrawRectangle()
+        public Rectangle GetDrawRectangle()
         {
             return DrawRectangle;
         }

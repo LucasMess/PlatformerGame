@@ -112,5 +112,21 @@ namespace Adam.Misc.Helpers
             // Return largest font if the container is big enough.
             return Fonts[Fonts.Length - 1];
         }
+
+        /// <summary>
+        /// Draws tooltip above mouse cursor.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="text"></param>
+        public static void DrawTooltip(SpriteBatch spriteBatch, string text)
+        {
+            var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
+            var mouse = InputHelper.MouseRectangle;
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"),
+                new Rectangle(mouse.X - 5, mouse.Y - (int)font.MeasureString(text).Y - 2, (int)font.MeasureString(text).X + 10,
+                    (int)font.MeasureString(text).Y + 4), Color.Black);
+            DrawWithOutline(spriteBatch, font, text, new Vector2(mouse.X, mouse.Y - (int)font.MeasureString(text).Y), 1,
+                Color.White, Color.Purple);
+        }
     }
 }

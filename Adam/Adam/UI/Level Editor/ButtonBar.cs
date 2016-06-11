@@ -83,7 +83,7 @@ namespace Adam.UI.Level_Editor
             // Tooltips are always drawn on top.
             foreach (var button in _buttons)
             {
-                button.DrawOnTop(spriteBatch);
+                button.DrawTooltip(spriteBatch);
             }
         }
     }

@@ -305,7 +305,7 @@ namespace Adam.UI
             }
             foreach (IconButton b in _buttons)
             {
-                b.DrawOnTop(spriteBatch);
+                b.DrawTooltip(spriteBatch);
             }
 
             // Draw header text.
