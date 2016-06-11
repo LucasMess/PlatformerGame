@@ -44,8 +44,8 @@ namespace Adam
 
     public class Main : Game
     {
-        public const bool InDebugMode = true;
-        public const bool IsTestingMultiplayer = true;
+        private const bool InDebugMode = true;
+        private const bool IsTestingMultiplayer = false;
         public const int Tilesize = 48;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;
@@ -654,8 +654,8 @@ namespace Adam
                         "Camera Position:" + Camera.InvertedCoords.X + "," + Camera.InvertedCoords.Y,
                         new Vector2(0, 40), Color.White);
                     SpriteBatch.DrawString(_debugFont,
-                        "Editor Rectangle Position:" + _gameWorld.LevelEditor.EditorRectangle.X + "," +
-                        _gameWorld.LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
+                        "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
+                        LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
                         Color.White);
                     SpriteBatch.DrawString(_debugFont, "Times Updated: " + _gameWorld.TimesUpdated, new Vector2(0, 100),

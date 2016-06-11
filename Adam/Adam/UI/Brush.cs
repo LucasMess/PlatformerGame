@@ -106,7 +106,7 @@ namespace Adam.UI
                     //Create transparent tiles to show selected tile
                     hoveredTile = gameWorld.TileArray[SelectedIndexes[i]];
                     Tile fakeTile = new Tile(true);
-                    fakeTile.Id = gameWorld.LevelEditor.SelectedId;
+                    fakeTile.Id = LevelEditor.SelectedId;
                     fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
                     fakeTile.IsBrushTile = true;
                     fakeTile.DefineTexture();
@@ -120,7 +120,7 @@ namespace Adam.UI
 
         private int[] GetTilesCoveredByBrush()
         {
-            _index = GameWorld.Instance.LevelEditor.IndexOfMouse;
+            _index = LevelEditor.IndexOfMouse;
 
             GameWorld gameWorld = GameWorld.Instance;
 

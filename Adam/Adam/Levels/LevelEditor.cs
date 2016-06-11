@@ -14,41 +14,41 @@ namespace Adam.Levels
     /// <summary>
     /// Responsible for user interface and input for the level editor.
     /// </summary>
-    public class LevelEditor
+    public static class LevelEditor
     {
-        private readonly SoundFx[] _construction = new SoundFx[3];
-        private readonly Timer _idleTimerForSave = new Timer();
-        private ButtonBar _buttonBar;
-        private SoundFx _close, _open, _select;
-        private SoundFx _destruction;
-        private GameWorld _gameWorld;
-        private bool _hasChangedSinceLastSave;
-        private Inventory _inventory;
-        private bool _inventoryKeyPressed;
-        private byte _lastUsedTile = 1;
-        private byte _lastUsedWall = 100;
-        private Minimap _miniMap;
-        private Rectangle _mouseRectInGameWorld;
-        private bool _recentlyChanged;
-        private SoundFx _wallMode;
-        public readonly Brush Brush = new Brush();
-        public Rectangle EditorRectangle;
-        public int IndexOfMouse;
-        public bool OnWallMode;
-        public byte SelectedId = 1;
+        private static readonly SoundFx[] Construction = new SoundFx[3];
+        private static readonly Timer IdleTimerForSave = new Timer();
+        private static ButtonBar _buttonBar;
+        private static SoundFx _close, _open, _select;
+        private static SoundFx _destruction;
+        private static GameWorld _gameWorld;
+        private static bool _hasChangedSinceLastSave;
+        private static Inventory _inventory;
+        private static bool _inventoryKeyPressed;
+        private static byte _lastUsedTile = 1;
+        private static byte _lastUsedWall = 100;
+        private static Minimap _miniMap;
+        private static Rectangle _mouseRectInGameWorld;
+        private static bool _recentlyChanged;
+        private static SoundFx _wallMode;
+        public static readonly Brush Brush = new Brush();
+        public static Rectangle EditorRectangle;
+        public static int IndexOfMouse;
+        public static bool OnWallMode;
+        public static byte SelectedId = 1;
 
-        private Tile[] CurrentArray => OnWallMode ? _gameWorld.WallArray : _gameWorld.TileArray;
+        private static Tile[] CurrentArray => OnWallMode ? _gameWorld.WallArray : _gameWorld.TileArray;
 
-        public void Load()
+        public static void Load()
         {
             _inventory = new Inventory();
             _buttonBar = new ButtonBar();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
 
-            for (var i = 1; i <= _construction.Length; i++)
+            for (var i = 1; i <= Construction.Length; i++)
             {
-                _construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
+                Construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
             _destruction = new SoundFx("Sounds/Level Editor/destroy1");
 
@@ -86,7 +86,7 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="currentLevel"></param>
-        public void Update(GameTime gameTime, GameMode currentLevel)
+        public static void Update(GameTime gameTime, GameMode currentLevel)
         {
             GameWorld.Instance.Player.Health = GameWorld.Instance.Player.MaxHealth;
 
@@ -103,7 +103,7 @@ namespace Adam.Levels
             CheckForMouseInput();
 
             // Auto-save functionality.
-            if (_idleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
+            if (IdleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
             {
                 _hasChangedSinceLastSave = false;
                 DataFolder.SaveLevel();
@@ -113,7 +113,7 @@ namespace Adam.Levels
         /// <summary>
         /// Changes the array that will be modified and changes the opacity of the foreground tiles.
         /// </summary>
-        public void ChangeToWallMode()
+        public static void ChangeToWallMode()
         {
             OnWallMode = !OnWallMode;
             _wallMode.PlayNewInstanceOnce();
@@ -134,7 +134,7 @@ namespace Adam.Levels
         /// <summary>
         /// Checks for input to change to wall mode.
         /// </summary>
-        private void CheckIfChangedToWallMode()
+        private static void CheckIfChangedToWallMode()
         {
             if (InputHelper.IsKeyDown(Keys.L) && !_recentlyChanged)
             {
@@ -150,7 +150,7 @@ namespace Adam.Levels
         /// <summary>
         /// Checks for input to change to open or close the inventory.
         /// </summary>
-        private void CheckIfOnInventory()
+        private static void CheckIfOnInventory()
         {
             if (InputHelper.IsKeyDown(Keys.E))
             {
@@ -179,7 +179,7 @@ namespace Adam.Levels
         /// <summary>
         /// Checks for input to move the camera.
         /// </summary>
-        private void CheckForCameraMovement()
+        private static void CheckForCameraMovement()
         {
             _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth,
                 GameWorld.Instance.WorldData.LevelHeight, true);
@@ -187,22 +187,22 @@ namespace Adam.Levels
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
-                _idleTimerForSave.Reset();
+                IdleTimerForSave.Reset();
                 EditorRectangle.X -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.D))
             {
-                _idleTimerForSave.Reset();
+                IdleTimerForSave.Reset();
                 EditorRectangle.X += speed;
             }
             if (InputHelper.IsKeyDown(Keys.W))
             {
-                _idleTimerForSave.Reset();
+                IdleTimerForSave.Reset();
                 EditorRectangle.Y -= speed;
             }
             if (InputHelper.IsKeyDown(Keys.S))
             {
-                _idleTimerForSave.Reset();
+                IdleTimerForSave.Reset();
                 EditorRectangle.Y += speed;
             }
 
@@ -229,7 +229,7 @@ namespace Adam.Levels
         /// <summary>
         /// Checks for input to draw, erase or select tiles using the mouse.
         /// </summary>
-        private void CheckForMouseInput()
+        private static void CheckForMouseInput()
         {
             InputHelper.GetMouseRectGameWorld(ref _mouseRectInGameWorld);
             IndexOfMouse = (_mouseRectInGameWorld.Center.Y / Main.Tilesize * _gameWorld.WorldData.LevelWidth) +
@@ -257,7 +257,7 @@ namespace Adam.Levels
         /// <summary>
         /// Checks to see if shortcut to put player spawn point is pressed.
         /// </summary>
-        private void CheckIfPositioningPlayer()
+        private static void CheckIfPositioningPlayer()
         {
             if (InputHelper.IsKeyDown(Keys.P))
             {
@@ -280,7 +280,7 @@ namespace Adam.Levels
         /// Updates all the tiles highlighted by the brush.
         /// </summary>
         /// <param name="desiredId"></param>
-        private void UpdateSelectedTiles(int desiredId)
+        private static void UpdateSelectedTiles(int desiredId)
         {
             foreach (var i in Brush.SelectedIndexes)
             {
@@ -328,12 +328,12 @@ namespace Adam.Levels
         /// Provides sound and effects for construction.
         /// </summary>
         /// <param name="t"></param>
-        private void Construct(Tile t)
+        private static void Construct(Tile t)
         {
-            _idleTimerForSave.Reset();
+            IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
-            _construction[GameWorld.RandGen.Next(0, 3)].Play();
+            Construction[GameWorld.RandGen.Next(0, 3)].Play();
             Main.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
         }
@@ -342,9 +342,9 @@ namespace Adam.Levels
         /// Provides sound and effects for destruction.
         /// </summary>
         /// <param name="t"></param>
-        private void Destroy(Tile t)
+        private static void Destroy(Tile t)
         {
-            _idleTimerForSave.Reset();
+            IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             _destruction.Play();
             CreateDestructionParticles(t.GetDrawRectangle());
@@ -356,7 +356,7 @@ namespace Adam.Levels
         /// Updates all the tiles around the tiles that have just been updated by the brush tool.
         /// </summary>
         /// <param name="index"></param>
-        private void UpdateTilesAround(int index)
+        private static void UpdateTilesAround(int index)
         {
             var indexes = new List<int>();
             var diameterOfSquare = 2 + Brush.Size;
@@ -391,7 +391,7 @@ namespace Adam.Levels
         /// Creates construction specific particles around an area.
         /// </summary>
         /// <param name="rect"></param>
-        private void CreateConstructionParticles(Rectangle rect)
+        private static void CreateConstructionParticles(Rectangle rect)
         {
             for (var i = 0; i < 3; i++)
             {
@@ -404,7 +404,7 @@ namespace Adam.Levels
         /// Creates destruction specific particles around an area.
         /// </summary>
         /// <param name="rect"></param>
-        private void CreateDestructionParticles(Rectangle rect)
+        private static void CreateDestructionParticles(Rectangle rect)
         {
             for (var i = 0; i < 3; i++)
             {
@@ -417,7 +417,7 @@ namespace Adam.Levels
         /// Draw in gameworld.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             if (!IsIntersectingUi())
                 Brush.Draw(spriteBatch);
@@ -427,7 +427,7 @@ namespace Adam.Levels
         /// Draws behind gameworld tiles.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void DrawBehindTiles(SpriteBatch spriteBatch)
+        public static void DrawBehindTiles(SpriteBatch spriteBatch)
         {
             if (!IsIntersectingUi())
                 Brush.DrawBehind(spriteBatch);
@@ -437,7 +437,7 @@ namespace Adam.Levels
         /// Draws on screen.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void DrawUi(SpriteBatch spriteBatch)
+        public static void DrawUi(SpriteBatch spriteBatch)
         {
             _inventory.Draw(spriteBatch);
             _buttonBar.Draw(spriteBatch);
@@ -448,7 +448,7 @@ namespace Adam.Levels
         /// Check if mouse is not over UI elements that cannot be clicked through.
         /// </summary>
         /// <returns></returns>
-        private bool IsIntersectingUi()
+        private static bool IsIntersectingUi()
         {
             if (InputHelper.MouseRectangle.Intersects(_buttonBar.GetCollRectangle()))
                 return true;

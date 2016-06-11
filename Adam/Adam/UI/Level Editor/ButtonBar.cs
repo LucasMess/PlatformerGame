@@ -23,7 +23,7 @@ namespace Adam.UI.Level_Editor
             _drawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(_sourceRectangle.Width),
                 CalcHelper.ApplyHeightRatio(_sourceRectangle.Height));
 
-            _drawRectangle.X = Main.UserResWidth/2 - _drawRectangle.Width/2;
+            _drawRectangle.X = Main.UserResWidth / 2 - _drawRectangle.Width / 2;
 
             // Buttons cannot be called individually outside the constructor.
             var brushButton = new IconButton(new Vector2(11, 11), _drawRectangle, "Brush", ButtonImage.Brush);
@@ -36,7 +36,8 @@ namespace Adam.UI.Level_Editor
             var optionsButton = new IconButton(new Vector2(354, 11), _drawRectangle, "More options",
                 ButtonImage.Settings);
 
-            expandButton.MouseClicked += OpenInventory;
+            wallButton.MouseClicked += LevelEditor.ChangeToWallMode;
+            expandButton.MouseClicked += Inventory.StartAnimation;
 
             _buttons.Add(wallButton);
             _buttons.Add(playButton);
@@ -46,11 +47,6 @@ namespace Adam.UI.Level_Editor
             _buttons.Add(eraserButton);
             _buttons.Add(undoButton);
             _buttons.Add(optionsButton);
-        }
-
-        private void OpenInventory()
-        {
-            Inventory.StartAnimation();
         }
 
         /// <summary>

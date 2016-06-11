@@ -950,7 +950,7 @@ namespace Adam
             if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
             {
 
-                if (GameWorld.Instance.LevelEditor.OnWallMode)
+                if (LevelEditor.OnWallMode)
                 {
                     if (!IsWall)
                     {
@@ -997,7 +997,7 @@ namespace Adam
             {
                 foreach (var c in _cornerPieces)
                 {
-                    if (GameWorld.Instance.LevelEditor.OnWallMode)
+                    if (LevelEditor.OnWallMode)
                     {
                         c._opacity = GetOpacity();
                     }

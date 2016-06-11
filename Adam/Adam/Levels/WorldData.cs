@@ -62,7 +62,7 @@ namespace Adam.Levels
 
         public WorldData()
         {
-            GameWorld.Instance.LevelEditor.Brush.SizeChanged += Brush_SizeChanged;
+            LevelEditor.Brush.SizeChanged += Brush_SizeChanged;
         }
 
         private void Brush_SizeChanged()
