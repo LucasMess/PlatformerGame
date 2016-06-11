@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.UI.Level_Editor;
 
 namespace Adam.UI
 {
@@ -59,7 +60,7 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
-            if (!GameWorld.Instance.LevelEditor.OnInventory)
+            if (!Inventory.IsOpen)
             {
                 if (scrollWheel > _lastScrollWheel)
                 {

@@ -1,53 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Adam.UI;
-using Microsoft.Xna.Framework.Graphics;
 using Adam.Misc;
-using Adam.UI.Elements;
-using Adam.Misc.Helpers;
-using Adam.Interactables;
 using Adam.Misc.Sound;
 using Adam.Particles;
+using Adam.UI;
 using Adam.UI.Level_Editor;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Adam.Levels
 {
+    /// <summary>
+    /// Responsible for user interface and input for the level editor.
+    /// </summary>
     public class LevelEditor
     {
-        GameWorld _gameWorld;
-        Minimap _miniMap;
-        private Inventory _inventory;
-        public ActionBar ActionBar = new ActionBar();
-        TileDescription _tileDescription = new TileDescription();
-        public Brush Brush = new Brush();
-        private bool _hasChangedSinceLastSave;
-        public bool OnInventory;
-        public bool OnWallMode;
-        bool _inventoryKeyPressed;
-        float _blackScreenOpacity;
-        bool _recentlyChanged;
-
+        private readonly SoundFx[] _construction = new SoundFx[3];
+        private readonly Timer _idleTimerForSave = new Timer();
         private ButtonBar _buttonBar;
-
+        private SoundFx _close, _open, _select;
+        private SoundFx _destruction;
+        private GameWorld _gameWorld;
+        private bool _hasChangedSinceLastSave;
+        private Inventory _inventory;
+        private bool _inventoryKeyPressed;
+        private byte _lastUsedTile = 1;
+        private byte _lastUsedWall = 100;
+        private Minimap _miniMap;
+        private Rectangle _mouseRectInGameWorld;
+        private bool _recentlyChanged;
+        private SoundFx _wallMode;
+        public readonly Brush Brush = new Brush();
         public Rectangle EditorRectangle;
         public int IndexOfMouse;
+        public bool OnWallMode;
         public byte SelectedId = 1;
 
-        byte _lastUsedTile = 1;
-        byte _lastUsedWall = 100;
-
-        SoundFx[] _construction = new SoundFx[3];
-        SoundFx _destruction;
-        SoundFx _wallMode;
-        SoundFx _close, _open, _select;
-        Rectangle _mouseRect;
-
-        Timer _idleTimerForSave = new Timer();
+        private Tile[] CurrentArray => OnWallMode ? _gameWorld.WallArray : _gameWorld.TileArray;
 
         public void Load()
         {
@@ -55,14 +45,8 @@ namespace Adam.Levels
             _buttonBar = new ButtonBar();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
-            OnInventory = false;
-            //_tileScroll.Load();
-            //_tileScroll.TileSelected += TileScroll_TileSelected;
 
-            //_entityScroll.Load();
-            //_entityScroll.TileSelected += EntityScroll_TileSelected;
-
-            for (int i = 1; i <= _construction.Length; i++)
+            for (var i = 1; i <= _construction.Length; i++)
             {
                 _construction[i - 1] = new SoundFx("Sounds/Level Editor/construct" + i);
             }
@@ -73,30 +57,35 @@ namespace Adam.Levels
             _open = new SoundFx("Sounds/Level Editor/close");
             _select = new SoundFx("Sounds/Level Editor/select");
 
-            EditorRectangle = new Rectangle(GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize / 2, GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+            EditorRectangle = new Rectangle(GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize / 2,
+                GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
 
-        private void EntityScroll_TileSelected(TileSelectedArgs e)
-        {
-            if (e.Id != SelectedId)
-            {
-                _select.Reset();
-                _select.PlayNewInstanceOnce();
-                SelectedId = (byte)e.Id;
-            }
+        //private void EntityScroll_TileSelected(TileSelectedArgs e)
+        //{
+        //    if (e.Id != SelectedId)
+        //    {
+        //        _select.Reset();
+        //        _select.PlayNewInstanceOnce();
+        //        SelectedId = (byte) e.Id;
+        //    }
+        //}
 
-        }
+        //private void TileScroll_TileSelected(TileSelectedArgs e)
+        //{
+        //    if (e.Id != SelectedId)
+        //    {
+        //        _select.Reset();
+        //        _select.PlayNewInstanceOnce();
+        //        SelectedId = (byte) e.Id;
+        //    }
+        //}
 
-        private void TileScroll_TileSelected(TileSelectedArgs e)
-        {
-            if (e.Id != SelectedId)
-            {
-                _select.Reset();
-                _select.PlayNewInstanceOnce();
-                SelectedId = (byte)e.Id;
-            }
-        }
-
+        /// <summary>
+        /// Updates all UI components and checks for input.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="currentLevel"></param>
         public void Update(GameTime gameTime, GameMode currentLevel)
         {
             GameWorld.Instance.Player.Health = GameWorld.Instance.Player.MaxHealth;
@@ -104,34 +93,14 @@ namespace Adam.Levels
             SoundtrackManager.PlayLevelEditorTheme();
 
             _gameWorld = GameWorld.Instance;
-            //_tileScroll.Update();
-            //_entityScroll.Update();
             _inventory.Update();
             _buttonBar.Update();
-            ActionBar.Update();
             Brush.Update();
-            _tileDescription.Update();
-
             CheckIfOnInventory();
             CheckIfPositioningPlayer();
             CheckIfChangedToWallMode();
-
-            const float deltaOpacity = .05f;
-
-            if (!OnInventory)
-            {
-                CheckForCameraMovement();
-                CheckForInput();
-
-                _blackScreenOpacity -= deltaOpacity;
-            }
-            else
-            {
-                _blackScreenOpacity += deltaOpacity;
-            }
-
-            if (_blackScreenOpacity > .7) _blackScreenOpacity = .7f;
-            if (_blackScreenOpacity < 0) _blackScreenOpacity = 0;
+            CheckForCameraMovement();
+            CheckForMouseInput();
 
             // Auto-save functionality.
             if (_idleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
@@ -141,6 +110,9 @@ namespace Adam.Levels
             }
         }
 
+        /// <summary>
+        /// Changes the array that will be modified and changes the opacity of the foreground tiles.
+        /// </summary>
         public void ChangeToWallMode()
         {
             OnWallMode = !OnWallMode;
@@ -157,18 +129,17 @@ namespace Adam.Levels
                 _lastUsedWall = SelectedId;
                 SelectedId = _lastUsedTile;
             }
-
-
-            //_tileScroll.Load();
         }
 
+        /// <summary>
+        /// Checks for input to change to wall mode.
+        /// </summary>
         private void CheckIfChangedToWallMode()
         {
             if (InputHelper.IsKeyDown(Keys.L) && !_recentlyChanged)
             {
                 ChangeToWallMode();
                 _recentlyChanged = true;
-
             }
             if (InputHelper.IsKeyUp(Keys.L))
             {
@@ -176,23 +147,26 @@ namespace Adam.Levels
             }
         }
 
+        /// <summary>
+        /// Checks for input to change to open or close the inventory.
+        /// </summary>
         private void CheckIfOnInventory()
         {
             if (InputHelper.IsKeyDown(Keys.E))
             {
                 if (!_inventoryKeyPressed)
                 {
-                    if (!OnInventory)
-                    {
-                        _open.PlayNewInstanceOnce();
-                        _open.Reset();
-                    }
-                    else
+                    Inventory.StartAnimation();
+                    if (Inventory.IsOpen)
                     {
                         _close.PlayNewInstanceOnce();
                         _close.Reset();
                     }
-                    OnInventory = !OnInventory;
+                    else
+                    {
+                        _open.PlayNewInstanceOnce();
+                        _open.Reset();
+                    }
                     _inventoryKeyPressed = true;
                 }
             }
@@ -202,9 +176,13 @@ namespace Adam.Levels
             }
         }
 
+        /// <summary>
+        /// Checks for input to move the camera.
+        /// </summary>
         private void CheckForCameraMovement()
         {
-            _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight, true);
+            _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth,
+                GameWorld.Instance.WorldData.LevelHeight, true);
             const int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
@@ -248,62 +226,47 @@ namespace Adam.Levels
             }
         }
 
-        private void CheckForInput()
+        /// <summary>
+        /// Checks for input to draw, erase or select tiles using the mouse.
+        /// </summary>
+        private void CheckForMouseInput()
         {
-            InputHelper.GetMouseRectGameWorld(ref _mouseRect);
-            IndexOfMouse = (_mouseRect.Center.Y / Main.Tilesize * _gameWorld.WorldData.LevelWidth) + (_mouseRect.Center.X / Main.Tilesize);
+            InputHelper.GetMouseRectGameWorld(ref _mouseRectInGameWorld);
+            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / Main.Tilesize * _gameWorld.WorldData.LevelWidth) +
+                           (_mouseRectInGameWorld.Center.X / Main.Tilesize);
 
-            //if (onPortalLinkMode)
-            //{
-            //    selectedPortal.ConnectingLine = new Line(selectedPortal.Position, new Vector2(mouseRect.X, mouseRect.Y));
-
-            //    if (InputHelper.IsLeftMousePressed())
-            //    {
-            //        // If mouse is on portal.
-            //        if (CurrentArray[IndexOfMouse].ID == 58)
-            //        {
-            //            Portal link = (Portal)GameWorld.Instance.worldData.PortalLinks.TryGetValue(IndexOfMouse);
-            //            if (link.PortalID != selectedPortal.PortalID)
-            //            {
-            //                selectedPortal.LinkTo(link);
-            //                onPortalLinkMode = false;
-            //            }
-            //        }
-            //    }
-            //    return;
-            //}
-
-            if (InputHelper.IsLeftMousePressed())
+            if (!IsIntersectingUi())
             {
-                if (InputHelper.IsKeyDown(Keys.LeftAlt))
-                    SpecialInteractionTile();
-                else UpdateSelectedTiles(SelectedId);
+                if (InputHelper.IsLeftMousePressed())
+                {
+                    UpdateSelectedTiles(SelectedId);
+                }
+
+                if (InputHelper.IsRightMousePressed())
+                {
+                    UpdateSelectedTiles(0);
+                }
+
+                if (InputHelper.IsMiddleMousePressed())
+                {
+                    SelectedId = CurrentArray[IndexOfMouse].Id;
+                }
             }
-
-            if (InputHelper.IsRightMousePressed())
-            {
-                UpdateSelectedTiles(0);
-            }
-
-            if (InputHelper.IsMiddleMousePressed())
-            {
-                SelectedId = CurrentArray[IndexOfMouse].Id;
-            }
-
-
         }
 
-
+        /// <summary>
+        /// Checks to see if shortcut to put player spawn point is pressed.
+        /// </summary>
         private void CheckIfPositioningPlayer()
         {
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                foreach (int index in _gameWorld.VisibleTileArray)
+                foreach (var index in _gameWorld.VisibleTileArray)
                 {
                     if (index >= 0 && index < _gameWorld.TileArray.Length)
                     {
                         //Check index of mouse
-                        if (_gameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRect))
+                        if (_gameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRectInGameWorld))
                         {
                             _gameWorld.TileArray[index].Id = 200;
                             _gameWorld.TileArray[index].DefineTexture();
@@ -313,9 +276,13 @@ namespace Adam.Levels
             }
         }
 
+        /// <summary>
+        /// Updates all the tiles highlighted by the brush.
+        /// </summary>
+        /// <param name="desiredId"></param>
         private void UpdateSelectedTiles(int desiredId)
         {
-            foreach (int i in Brush.SelectedIndexes)
+            foreach (var i in Brush.SelectedIndexes)
             {
                 if (i < 0 || i > CurrentArray.Length)
                     continue;
@@ -327,19 +294,16 @@ namespace Adam.Levels
                     //Check to see if block is already air.
                     if (tileId == 0)
                         continue;
-                    else
+                    CurrentArray[i].Destroy();
+                    CurrentArray[i].Id = (byte)desiredId;
+                    if (OnWallMode)
                     {
-                        CurrentArray[i].Destroy();
-                        CurrentArray[i].Id = (byte)desiredId;
-                        if (OnWallMode)
-                        {
-                            CurrentArray[i].IsWall = true;
-                        }
-                        else
-                            CurrentArray[i].IsWall = false;
-
-                        Destroy(CurrentArray[i]);
+                        CurrentArray[i].IsWall = true;
                     }
+                    else
+                        CurrentArray[i].IsWall = false;
+
+                    Destroy(CurrentArray[i]);
                 }
 
                 //Wants to build, but only if there is air.
@@ -356,22 +320,14 @@ namespace Adam.Levels
                             CurrentArray[i].IsWall = false;
                         Construct(CurrentArray[i]);
                     }
-                    else continue;
                 }
             }
         }
 
-        private void SpecialInteractionTile()
-        {
-            // Portal
-            //if (CurrentArray[IndexOfMouse].ID == 58)
-            //{
-            //    onPortalLinkMode = true;
-            //    selectedPortal = (Portal)GameWorld.Instance.worldData.PortalLinks.TryGetValue(IndexOfMouse);
-            //    Console.WriteLine("On portal link mode!");   
-            //}
-        }
-
+        /// <summary>
+        /// Provides sound and effects for construction.
+        /// </summary>
+        /// <param name="t"></param>
         private void Construct(Tile t)
         {
             _idleTimerForSave.Reset();
@@ -382,6 +338,10 @@ namespace Adam.Levels
             CreateConstructionParticles(t.DrawRectangle);
         }
 
+        /// <summary>
+        /// Provides sound and effects for destruction.
+        /// </summary>
+        /// <param name="t"></param>
         private void Destroy(Tile t)
         {
             _idleTimerForSave.Reset();
@@ -392,111 +352,110 @@ namespace Adam.Levels
             Main.Camera.Shake();
         }
 
+        /// <summary>
+        /// Updates all the tiles around the tiles that have just been updated by the brush tool.
+        /// </summary>
+        /// <param name="index"></param>
         private void UpdateTilesAround(int index)
         {
-            List<int> indexes = new List<int>();
-            int diameterOfSquare = 2 + Brush.Size;
-            for (int h = 0; h < diameterOfSquare; h++)
+            var indexes = new List<int>();
+            var diameterOfSquare = 2 + Brush.Size;
+            for (var h = 0; h < diameterOfSquare; h++)
             {
-                for (int w = 0; w < diameterOfSquare; w++)
+                for (var w = 0; w < diameterOfSquare; w++)
                 {
-                    int brushSize = Brush.Size;
-                    int startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) - (int)(Math.Truncate((double)(brushSize / 2)) * _gameWorld.WorldData.LevelWidth);
-                    int i = startingIndex - 1 - _gameWorld.WorldData.LevelWidth + (h * _gameWorld.WorldData.LevelWidth) + w;
+                    var brushSize = Brush.Size;
+                    var startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) -
+                                        (int)(Math.Truncate((double)(brushSize / 2)) * _gameWorld.WorldData.LevelWidth);
+                    var i = startingIndex - 1 - _gameWorld.WorldData.LevelWidth + (h * _gameWorld.WorldData.LevelWidth) +
+                            w;
                     indexes.Add(i);
                 }
             }
 
-            foreach (int ind in indexes)
+            foreach (var ind in indexes)
             {
                 if (ind >= 0 && ind < _gameWorld.TileArray.Length)
                 {
-                    Tile t = CurrentArray[ind];
+                    var t = CurrentArray[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(CurrentArray,
-                    _gameWorld.WorldData.LevelWidth);
+                        _gameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
+                    //t.AddRandomlyGeneratedDecoration(CurrentArray,+_gameWorld.WorldData.LevelWidth);
                 }
             }
-
         }
 
+        /// <summary>
+        /// Creates construction specific particles around an area.
+        /// </summary>
+        /// <param name="rect"></param>
         private void CreateConstructionParticles(Rectangle rect)
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
                     new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
             }
         }
 
+        /// <summary>
+        /// Creates destruction specific particles around an area.
+        /// </summary>
+        /// <param name="rect"></param>
         private void CreateDestructionParticles(Rectangle rect)
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
                     new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
             }
-            //Rectangle[] rects = new Rectangle[16];
-            //int i = 0;
-            //for (int w = 0; w < 4; w++)
-            //{
-            //    for (int h = 0; h < 4; h++)
-            //    {
-            //        rects[i] = new Rectangle((w * 4) + tile.SourceRectangle.X, (h * 4) + tile.SourceRectangle.Y, 4, 4);
-            //        i++;
-            //    }
-            //}
-
-            //foreach (Rectangle r in rects)
-            //{
-            //    _gameWorld.Particles.Add(new DestructionTileParticle(tile, r));
-            //}
         }
 
+        /// <summary>
+        /// Draw in gameworld.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            Brush.Draw(spriteBatch);
+            if (!IsIntersectingUi())
+                Brush.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Draws behind gameworld tiles.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawBehindTiles(SpriteBatch spriteBatch)
         {
-            Brush.DrawBehind(spriteBatch);
+            if (!IsIntersectingUi())
+                Brush.DrawBehind(spriteBatch);
         }
 
+        /// <summary>
+        /// Draws on screen.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawUi(SpriteBatch spriteBatch)
         {
             _inventory.Draw(spriteBatch);
             _buttonBar.Draw(spriteBatch);
-
-
-            if (!OnInventory)
-                FontHelper.DrawWithOutline(spriteBatch, ContentHelper.LoadFont("Fonts/x32"), "On Wall Mode: " + OnWallMode, new Vector2(5, 5), 2, Color.Yellow, Color.Black);
-
             _miniMap.Draw(spriteBatch);
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.White * _blackScreenOpacity);
-            _tileDescription.Draw(spriteBatch);
-            //_tileScroll.Draw(spriteBatch);
-            //_entityScroll.Draw(spriteBatch);
-            ActionBar.Draw(spriteBatch);
-
         }
 
-        public Tile[] CurrentArray
+        /// <summary>
+        /// Check if mouse is not over UI elements that cannot be clicked through.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsIntersectingUi()
         {
-            get
-            {
-                if (OnWallMode)
-                {
-                    return _gameWorld.WallArray;
-                }
-                else
-                {
-                    return _gameWorld.TileArray;
-                }
+            if (InputHelper.MouseRectangle.Intersects(_buttonBar.GetCollRectangle()))
+                return true;
+            if (Inventory.IsOpen && InputHelper.MouseRectangle.Intersects(_inventory.GetCollRectangle()))
+                return true;
 
-            }
+            return false;
         }
     }
-
 }

@@ -223,7 +223,6 @@
     <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="PlayerCharacter\PlayerScript.cs" />
     <Compile Include="PlayerCharacter\Script.cs" />
-    <Compile Include="UI\ActionBar.cs" />
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
@@ -253,7 +252,6 @@
     <Compile Include="UI\Elements\Line.cs" />
     <Compile Include="UI\Elements\OKButton.cs" />
     <Compile Include="UI\Elements\TextButton.cs" />
-    <Compile Include="UI\EntityScroll.cs" />
     <Compile Include="UI\Information\Objective.cs" />
     <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\DataFolder.cs" />
@@ -293,8 +291,6 @@
     <Compile Include="UI\SplashNumber.cs" />
     <Compile Include="UI\Textbox.cs" />
     <Compile Include="UI\TextInputBox.cs" />
-    <Compile Include="UI\TileDescription.cs" />
-    <Compile Include="UI\TileScroll.cs" />
     <Compile Include="UI\Timer.cs" />
     <Compile Include="Misc\TriggerZone.cs" />
     <Compile Include="UI\WorldProperties.cs">

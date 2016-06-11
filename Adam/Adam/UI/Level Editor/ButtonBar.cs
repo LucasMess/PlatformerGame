@@ -53,6 +53,15 @@ namespace Adam.UI.Level_Editor
             Inventory.StartAnimation();
         }
 
+        /// <summary>
+        /// Returns the space occupied by this element where it cannot be clicked through.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetCollRectangle()
+        {
+            return _drawRectangle;
+        }
+
         public void Update()
         {
             foreach (var button in _buttons)
