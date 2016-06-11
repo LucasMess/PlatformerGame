@@ -95,29 +95,29 @@ namespace Adam.Characters.Enemies
         public void OnCollisionWithTerrainAbove(Entity entity, Tile tile)
         {
             Velocity.Y = -Velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, ProjSpeed);
-            GameWorld.Instance.Entities.Add(proj);
+            LinearProjectile proj = new FlyinGameWorldheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, ProjSpeed);
+            GameWorld.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
             Velocity.Y = -Velocity.Y;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, -ProjSpeed);
-            GameWorld.Instance.Entities.Add(proj);
+            LinearProjectile proj = new FlyinGameWorldheelProjectile(DrawRectangle.X, DrawRectangle.Y, 0, -ProjSpeed);
+            GameWorld.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainLeft(Entity entity, Tile tile)
         {
             Velocity.X = -Velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, ProjSpeed, 0);
-            GameWorld.Instance.Entities.Add(proj);
+            LinearProjectile proj = new FlyinGameWorldheelProjectile(DrawRectangle.X, DrawRectangle.Y, ProjSpeed, 0);
+            GameWorld.Entities.Add(proj);
         }
 
         public void OnCollisionWithTerrainRight(Entity entity, Tile tile)
         {
             Velocity.X = -Velocity.X;
-            LinearProjectile proj = new FlyingWheelProjectile(DrawRectangle.X, DrawRectangle.Y, -ProjSpeed, 0);
-            GameWorld.Instance.Entities.Add(proj);
+            LinearProjectile proj = new FlyinGameWorldheelProjectile(DrawRectangle.X, DrawRectangle.Y, -ProjSpeed, 0);
+            GameWorld.Entities.Add(proj);
         }
     }
 }

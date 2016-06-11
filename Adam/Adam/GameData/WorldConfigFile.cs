@@ -54,72 +54,70 @@ namespace Adam.GameData
             IsRaining = false;
         }
 
-        public WorldConfigFile(GameWorld gw)
+        public void NewConfigFromGameWorld()
         {
             //Creates arrays for the tiles.
-            int size = gw.TileArray.Length;
+            int size = GameWorld.TileArray.Length;
             TileIDs = new byte[size];
             WallIDs = new byte[size];
 
             //Sets the dimensions of the level.
-            LevelWidth = (short)gw.WorldData.LevelWidth;
-            LevelHeight = (short)gw.WorldData.LevelHeight;
-            LevelName = gw.WorldData.LevelName;
+            LevelWidth = (short)GameWorld.WorldData.LevelWidth;
+            LevelHeight = (short)GameWorld.WorldData.LevelHeight;
+            LevelName = GameWorld.WorldData.LevelName;
 
             //Sets soundtrack and background.
-            BackgroundId = gw.WorldData.BackgroundId;
-            SoundtrackId = gw.WorldData.SoundtrackId;
+            BackgroundId = GameWorld.WorldData.BackgroundId;
+            SoundtrackId = GameWorld.WorldData.SoundtrackId;
 
-            MetaData = gw.WorldData.MetaData;
+            MetaData = GameWorld.WorldData.MetaData;
 
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
-                TileIDs[i] = gw.TileArray[i].Id;
-                WallIDs[i] = gw.WallArray[i].Id;
+                TileIDs[i] = GameWorld.TileArray[i].Id;
+                WallIDs[i] = GameWorld.WallArray[i].Id;
             }
 
             //Level conditions
-            IsRaining = gw.WorldData.IsRaining;
-            IsSnowing = gw.WorldData.IsSnowing;
-            HasClouds = gw.WorldData.HasClouds;
+            IsRaining = GameWorld.WorldData.IsRaining;
+            IsSnowing = GameWorld.WorldData.IsSnowing;
+            HasClouds = GameWorld.WorldData.HasClouds;
         }
 
         public void LoadIntoEditor()
         {
             TransferDataToWorldData();
-            //GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Edit);
+            //GameWorld.game1.LoadWorldFromFile(GameMode.Edit);
             Main.Instance.ChangeState(GameState.GameWorld, GameMode.Edit);
         }
 
         public void LoadIntoPlay()
         {
             TransferDataToWorldData();
-            //GameWorld.Instance.game1.LoadWorldFromFile(GameMode.Play);
+            //GameWorld.game1.LoadWorldFromFile(GameMode.Play);
             Main.Instance.ChangeState(GameState.GameWorld, GameMode.Play);
         }
 
         public void TransferDataToWorldData()
         {
-            GameWorld gw = GameWorld.Instance;
+            GameWorld.WorldData.TileIDs = TileIDs;
+            GameWorld.WorldData.WallIDs = WallIDs;
 
-            gw.WorldData.TileIDs = TileIDs;
-            gw.WorldData.WallIDs = WallIDs;
+            GameWorld.WorldData.LevelWidth = LevelWidth;
+            GameWorld.WorldData.LevelHeight = LevelHeight;
 
-            gw.WorldData.LevelWidth = LevelWidth;
-            gw.WorldData.LevelHeight = LevelHeight;
+            GameWorld.WorldData.BackgroundId = BackgroundId;
+            GameWorld.WorldData.SoundtrackId = SoundtrackId;
 
-            gw.WorldData.BackgroundId = BackgroundId;
-            gw.WorldData.SoundtrackId = SoundtrackId;
+            GameWorld.WorldData.MetaData = MetaData;
 
-            gw.WorldData.MetaData = MetaData;
+            GameWorld.WorldData.LevelName = LevelName;
+            GameWorld.WorldData.HasClouds = HasClouds;
+            GameWorld.WorldData.IsRaining = IsRaining;
+            GameWorld.WorldData.IsSnowing = IsSnowing;
 
-            gw.WorldData.LevelName = LevelName;
-            gw.WorldData.HasClouds = HasClouds;
-            gw.WorldData.IsRaining = IsRaining;
-            gw.WorldData.IsSnowing = IsSnowing;
-
-            gw.WorldData.Song = SoundtrackDb.GetSong(1);
+            GameWorld.WorldData.Song = SoundtrackDb.GetSong(1);
         }
 
         /// <summary>

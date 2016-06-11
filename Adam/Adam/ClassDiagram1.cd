@@ -193,7 +193,7 @@
   <Class Name="Adam.Main" Collapsed="true">
     <Position X="78.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>OAcElARAEoKJhwN1AA2E6VgCAQ0QgwkjkBECkAKggEQ=</HashCode>
+      <HashCode>OAcElARAEoKJhwN1AA2E6VgCAQ0QGameWorldkjkBECkAKggEQ=</HashCode>
       <FileName>Main.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -326,7 +326,7 @@
   <Class Name="Adam.LoadingScreen" Collapsed="true">
     <Position X="76.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAYBAABAAAAAEgwABIDQCCAAAAAoAEIABAQAoIEAIBA=</HashCode>
+      <HashCode>EAYBAABAAAAAEGameWorldABIDQCCAAAAAoAEIABAQAoIEAIBA=</HashCode>
       <FileName>UI\LoadingScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -340,7 +340,7 @@
   <Class Name="Adam.Overlay" Collapsed="true">
     <Position X="74.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgWAAAAAgQCAAgEAgAAAAAABAARAAAAAQAAAIAACAAA=</HashCode>
+      <HashCode>AGameWorldAAAAAgQCAAgEAgAAAAAABAARAAAAAQAAAIAACAAA=</HashCode>
       <FileName>UI\Overlay.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -891,7 +891,7 @@
   <Class Name="Adam.UI.Overlay_Elements.Heart" Collapsed="true">
     <Position X="73" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CDRABEAYwAACCgwAQBAACQCQAQAFAAIBAIYAJAACAAA=</HashCode>
+      <HashCode>CDRABEAYwAACCGameWorldAQBAACQCQAQAFAAIBAIYAJAACAAA=</HashCode>
       <FileName>UI\Overlay Elements\Heart.cs</FileName>
     </TypeIdentifier>
   </Class>

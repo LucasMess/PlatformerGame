@@ -316,7 +316,7 @@ namespace Adam
         private void ApplyAirFriction()
         {
             IsTouchingGround = false;
-            Tile below = GameWorld.Instance.GetTileBelow(GetTileIndex());
+            Tile below = GameWorld.GetTileBelow(GetTileIndex());
             if ((CollRectangle.Y + CollRectangle.Height) - below?.GetDrawRectangle().Y < 1)
             {
                 IsTouchingGround = true;
@@ -455,9 +455,9 @@ namespace Adam
         {
             if (Light != null)
             {
-                GameWorld.Instance.LightEngine.RemoveDynamicLight(Light);
+                GameWorld.LightEngine.RemoveDynamicLight(Light);
             }
-            GameWorld.Instance.Entities.Remove(this);
+            GameWorld.Entities.Remove(this);
         }
 
         /// <summary>
@@ -488,17 +488,16 @@ namespace Adam
         /// <summary>
         /// Whether the entity is simply intersecting terrain.
         /// </summary>
-        /// <param name="map">Map the entity is in.</param>
         /// <returns></returns>
-        public bool IsTouchingTerrain(GameWorld map)
+        public bool IsTouchingTerrain()
         {
-            int[] q = GetNearbyTileIndexes(map);
+            int[] q = GetNearbyTileIndexes();
 
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant <= map.TileArray.Length - 1 && map.TileArray[quadrant].IsSolid == true)
+                if (quadrant >= 0 && quadrant <= GameWorld.TileArray.Length - 1 && GameWorld.TileArray[quadrant].IsSolid)
                 {
-                    if (CollRectangle.Intersects(map.TileArray[quadrant].DrawRectangle))
+                    if (CollRectangle.Intersects(GameWorld.TileArray[quadrant].DrawRectangle))
                         return true;
                 }
             }
@@ -522,9 +521,7 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex()
         {
-            if (GameWorld.Instance != null)
-                return (int)(CollRectangle.Center.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)(CollRectangle.Center.X / Main.Tilesize);
-            else return 0;
+            return (int)(CollRectangle.Center.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(CollRectangle.Center.X / Main.Tilesize);
         }
 
         /// <summary>
@@ -534,19 +531,16 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex(Vector2 coord)
         {
-            if (GameWorld.Instance != null)
-                return (int)((int)coord.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
-            else throw new Exception("Map is null");
+            return (int)((int)coord.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)coord.X / Main.Tilesize);
         }
 
         /// <summary>
         /// Returns all of the tile indexes of the tiles surrounding the entity.
         /// </summary>
-        /// <param name="map">The map the entity is in.</param>
         /// <returns></returns>
-        public int[] GetNearbyTileIndexes(GameWorld map)
+        public int[] GetNearbyTileIndexes()
         {
-            int width = map.WorldData.LevelWidth;
+            int width = GameWorld.WorldData.LevelWidth;
             int startingIndex = GetTileIndex(new Vector2(CollRectangle.Center.X, CollRectangle.Y)) - width - 1;
             int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / Main.Tilesize) + 2);
             int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / Main.Tilesize) + 2);
@@ -568,16 +562,16 @@ namespace Adam
         /// </summary>
         private void CheckTerrainCollision()
         {
-            int[] q = GetNearbyTileIndexes(GameWorld.Instance);
+            int[] q = GetNearbyTileIndexes();
 
             //Solve Y collisions
             CollRectangle.Y += (int)(Velocity.Y);
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
                 {
-                    Tile tile = GameWorld.Instance.TileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length && tile.IsSolid == true)
+                    Tile tile = GameWorld.TileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid == true)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tileRect))
@@ -601,10 +595,10 @@ namespace Adam
             CollRectangle.X += (int)(Velocity.X);
             foreach (int quadrant in q)
             {
-                if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length)
+                if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
                 {
-                    Tile tile = GameWorld.Instance.TileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.Instance.TileArray.Length && tile.IsSolid == true)
+                    Tile tile = GameWorld.TileArray[quadrant];
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid == true)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tile.DrawRectangle))
@@ -630,18 +624,17 @@ namespace Adam
         /// <summary>
         /// If the entity is simply colliding with terrain anywhere, it will raise an event.
         /// </summary>
-        /// <param name="map">The map the entity is in.</param>
-        public void CheckSimpleTerrainCollision(GameWorld map)
+        public void CheckSimpleTerrainCollision()
         {
-            int[] q = GetNearbyTileIndexes(map);
+            int[] q = GetNearbyTileIndexes();
 
             foreach (int index in q)
             {
-                if (index >= 0 && index <= map.TileArray.Length - 1 && map.TileArray[index].IsSolid == true)
+                if (index >= 0 && index <= GameWorld.TileArray.Length - 1 && GameWorld.TileArray[index].IsSolid == true)
                 {
-                    if (CollRectangle.Intersects(map.TileArray[index].DrawRectangle))
+                    if (CollRectangle.Intersects(GameWorld.TileArray[index].DrawRectangle))
                     {
-                        CollidedWithTerrain(this, map.TileArray[index]);
+                        CollidedWithTerrain(this, GameWorld.TileArray[index]);
                         break;
                     }
                 }
@@ -689,14 +682,12 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public void DrawSurroundIndexes(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance == null) return;
-            foreach (int i in GetNearbyTileIndexes(GameWorld.Instance))
+            foreach (int i in GetNearbyTileIndexes())
             {
-                if (i < GameWorld.Instance.TileArray.Length && i >= 0)
-                {
-                    Tile t = GameWorld.Instance.TileArray[i];
-                    spriteBatch.Draw(Main.DefaultTexture, t.DrawRectangle, t.SourceRectangle, Color.Red);
-                }
+                if (i >= GameWorld.TileArray.Length || i < 0) continue;
+                Tile t = GameWorld.TileArray[i];
+                if (t == null) throw new NullReferenceException("t");
+                spriteBatch.Draw(Main.DefaultTexture, t.DrawRectangle, t.SourceRectangle, Color.Red);
             }
         }
 

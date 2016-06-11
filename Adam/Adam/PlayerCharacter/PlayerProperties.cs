@@ -30,8 +30,8 @@ namespace Adam.PlayerCharacter
             get
             {
                 int index = GetTileIndex();
-                Tile tile1 = GameWorld.Instance.GetTile(index);
-                Tile tile2 = GameWorld.Instance.GetTileBelow(index);
+                Tile tile1 = GameWorld.GetTile(index);
+                Tile tile2 = GameWorld.GetTileBelow(index);
                 if ((tile1 != null && tile1.IsClimbable) || (tile2 != null && tile2.IsClimbable))
                 {
                     return true;

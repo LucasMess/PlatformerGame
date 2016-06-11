@@ -45,9 +45,9 @@ namespace Adam.Obstacles
                     FlameParticle par = new FlameParticle(this, Color.LightBlue);
                     FlameParticle par2 = new FlameParticle(this, Color.Red);
                     FlameParticle par3 = new FlameParticle(this, Color.Yellow);
-                    GameWorld.Instance.Particles.Add(par);
-                    GameWorld.Instance.Particles.Add(par2);
-                    GameWorld.Instance.Particles.Add(par3);
+                    GameWorld.Particles.Add(par);
+                    GameWorld.Particles.Add(par2);
+                    GameWorld.Particles.Add(par3);
                     _particleTimer.Reset();
                     _flameSound.PlayIfStopped();
                 }
@@ -57,7 +57,7 @@ namespace Adam.Obstacles
                 _flameSound.Stop();
             }
 
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
             if (_isFlaming && AttackBox.Intersects(player.GetCollRectangle()))
             {
                 player.IsOnFire = true;

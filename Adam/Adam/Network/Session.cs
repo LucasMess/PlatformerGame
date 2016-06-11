@@ -20,8 +20,6 @@ namespace Adam.Network
         Connection _connection;
         IPEndPoint _serverIp;
 
-        GameWorld _gameWorld;
-
         string _playerName;
 
         /// <summary>
@@ -108,7 +106,7 @@ namespace Adam.Network
                 Console.WriteLine("Updating...");
                 if (IsHost)
                 {
-                    _server.SendEntityPacket(GameWorld.Instance);
+                    _server.SendEntityPacket();
                     Console.WriteLine("Entity packet sent.");
                     //PlayerPacket = connection.ReceivePlayerPacket();
                 }

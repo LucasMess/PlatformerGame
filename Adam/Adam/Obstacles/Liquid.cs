@@ -50,10 +50,9 @@ namespace Adam.Obstacles
 
         public void Update(Tile t)
         {
-            GameWorld gameWorld = GameWorld.Instance;
-            this.Player = GameWorld.Instance.Player;
+            Player = GameWorld.GetPlayer();
 
-            if (CollRectangle.Intersects(GameWorld.Instance.Player.GetCollRectangle()))
+            if (CollRectangle.Intersects(GameWorld.Player.GetCollRectangle()))
             {
                 Player.TakeDamage(this, Player.MaxHealth);
             }
@@ -63,30 +62,20 @@ namespace Adam.Obstacles
 
             if (_currentType == Type.Lava)
             {
-                if (GameWorld.Instance.TileArray[GetTileIndex() - GameWorld.Instance.WorldData.LevelWidth].Id == 0)
+                if (GameWorld.TileArray[GetTileIndex() - GameWorld.WorldData.LevelWidth].Id == 0)
                 {
-                    _particleTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
+                    _particleTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalSeconds;
                     if (_particleTimer > _restartTime)
                     {
                         Particle par = new Particle();
-                        par.CreateLavaParticle(this, gameWorld);
-                        gameWorld.Particles.Add(par);
+                        par.CreateLavaParticle(this);
+                        GameWorld.Particles.Add(par);
                         _particleTimer = 0;
                     }
                 }
             }
             
 
-        }
-
-        public void CheckOnTop(Tile[] array, GameWorld gameWorld)
-        {
-            //this.gameWorld = gameWorld;
-            //int indexAbove = TileIndex - gameWorld.worldData.LevelWidth;
-            //if (array[indexAbove].ID == 0)
-            //{
-            //    this.isOnTop = true;
-            //}
         }
     }
 }

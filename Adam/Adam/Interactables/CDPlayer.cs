@@ -63,8 +63,7 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            GameWorld gameWorld = GameWorld.Instance;
-            GameTime gameTime = gameWorld.GameTime;
+            GameTime gameTime = Main.GameTime;
 
             Velocity.Y += .3f;
             if (Velocity.Y > 5f)
@@ -75,7 +74,7 @@ namespace Adam.Interactables
             {
                 Particle eff = new Particle();
                 eff.CreateMusicNotesEffect(this);
-                GameWorld.Instance.Particles.Add(eff);
+                GameWorld.Particles.Add(eff);
                 EffectTimer = 0;
             }
 

@@ -74,7 +74,7 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
             CollRectangle.X += (int)Velocity.X;
             CollRectangle.Y += (int)Velocity.Y;
 

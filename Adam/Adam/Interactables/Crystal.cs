@@ -28,7 +28,7 @@ namespace Adam.Interactables
             _collRectangle = sourceTile.DrawRectangle;
 
             int rand = GameWorld.RandGen.Next(1, 9);
-            _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Instance.Player);
+            _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
         }
 
         private void SourceTile_OnTileDestroyed(Tile t)
@@ -39,7 +39,7 @@ namespace Adam.Interactables
 
         public void Update(Tile t)
         {
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
 
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_broken)
             {

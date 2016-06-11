@@ -91,20 +91,19 @@ namespace Adam.UI
 
         private void CreateBrush()
         {
-            GameWorld gameWorld = GameWorld.Instance;
             SelectedIndexes = GetTilesCoveredByBrush();
 
             // Create grid.
-            Tile hoveredTile = gameWorld.TileArray[SelectedIndexes[0]];
+            Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[0]];
             grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * Main.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize + 8);
             grid.Texture = GameWorld.UiSpriteSheet;
 
             for (int i = 0; i < _selectedBrushTiles.Length; i++)
             {
-                if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < gameWorld.TileArray.Length)
+                if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
                 {
                     //Create transparent tiles to show selected tile
-                    hoveredTile = gameWorld.TileArray[SelectedIndexes[i]];
+                    hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
                     Tile fakeTile = new Tile(true);
                     fakeTile.Id = LevelEditor.SelectedId;
                     fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
@@ -122,16 +121,14 @@ namespace Adam.UI
         {
             _index = LevelEditor.IndexOfMouse;
 
-            GameWorld gameWorld = GameWorld.Instance;
-
             //Get indexes around brush
             List<int> indexes = new List<int>();
             for (int h = 0; h < Size; h++)
             {
                 for (int w = 0; w < Size; w++)
                 {
-                    int startingIndex = _index - (int)(Math.Truncate((double)(Size / 2))) - (int)(Math.Truncate((double)(Size / 2)) * gameWorld.WorldData.LevelWidth);
-                    int i = startingIndex + (h * gameWorld.WorldData.LevelHeight) + w;
+                    int startingIndex = _index - (int)(Math.Truncate((double)(Size / 2))) - (int)(Math.Truncate((double)(Size / 2)) * GameWorld.WorldData.LevelWidth);
+                    int i = startingIndex + (h * GameWorld.WorldData.LevelHeight) + w;
                     indexes.Add(i);
                 }
             }

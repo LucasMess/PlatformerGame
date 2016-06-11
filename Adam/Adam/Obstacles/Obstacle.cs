@@ -55,7 +55,7 @@ namespace Adam.Obstacles
                     break;
             }
 
-            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(AttackBox))
+            if (GameWorld.Player.GetCollRectangle().Intersects(AttackBox))
                 IsTouchingPlayer = true;
             else IsTouchingPlayer = false;
 

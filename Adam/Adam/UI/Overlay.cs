@@ -50,10 +50,10 @@ namespace Adam
             _blackScreen.Rectangle = new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight);
         }
 
-        public void Update(GameTime gameTime, Player player, GameWorld map)
+        public void Update()
         {
-            _heart.Update(gameTime, player, map);
-            _coin.Update(player, gameTime);
+            _heart.Update(Main.GameTime, GameWorld.GetPlayer());
+            _coin.Update(GameWorld.GetPlayer(), Main.GameTime);
 
             if (_fadeIn)
             {
@@ -85,7 +85,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+            if (GameWorld.CurrentGameMode == GameMode.Edit)
                 goto Fade;
 
             spriteBatch.Draw(_blackCorners.Texture, _blackCorners.Rectangle, CornerColor * .6f);

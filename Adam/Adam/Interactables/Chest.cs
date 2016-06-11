@@ -43,7 +43,7 @@ namespace Adam
 
         public void Update(Tile t)
         {
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
             {
                 // If player presses open button, open chest.
@@ -63,7 +63,7 @@ namespace Adam
             int maxGems = GameWorld.RandGen.Next(10, 20);
             for (int i = 0; i < maxGems; i++)
             {
-                GameWorld.Instance.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));
+                GameWorld.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));
             }
         }
     }

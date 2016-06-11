@@ -18,87 +18,64 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Adam.Levels
 {
     [Serializable]
-    public sealed class GameWorld
+    public static class GameWorld
     {
-        private static GameWorld _instance;
         public static ParticleSystem ParticleSystem = new ParticleSystem();
         public static Random RandGen;
         public static Texture2D SpriteSheet;
         public static Texture2D UiSpriteSheet;
         public static Texture2D ParticleSpriteSheet;
-        private readonly PlaceNotification _placeNotification;
-        private Light[] _lightArray;
-        private Light _playerLight;
-        private bool _playerMovingRight;
-        private Timer _stopMovingTimer = new Timer();
-        public Background Background = new Background();
-        public Camera Camera;
-        public ChunkManager ChunkManager = new ChunkManager();
+        private static PlaceNotification _placeNotification;
+        private static Light[] _lightArray;
+        private static Light _playerLight;
+        private static bool _playerMovingRight;
+        private static Timer _stopMovingTimer = new Timer();
+        public static Background Background = new Background();
+        public static Camera Camera;
+        public static ChunkManager ChunkManager = new ChunkManager();
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
-        public List<Cloud> CloudList;
-        public GameMode CurrentGameMode;
-        public bool DebuggingMode;
-        public List<Projectile> EnemyProjectiles;
-        public List<Entity> Entities;
-        public Main Game1;
-        public GameTime GameTime;
-        public bool IsOnDebug;
-        public List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
-        public bool LevelComplete;
-        public LightEngine LightEngine;
-        public List<Particle> Particles;
-        public Player Player;
-        public List<Projectile> PlayerProjectiles;
-        public bool SimulationPaused;
+        public static List<Cloud> CloudList;
+        public static GameMode CurrentGameMode;
+        public static bool DebuggingMode;
+        public static List<Projectile> EnemyProjectiles;
+        public static List<Entity> Entities;
+        public static Main Game1;
+        public static GameTime GameTime;
+        public static bool IsOnDebug;
+        public static List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
+        public static bool LevelComplete;
+        public static LightEngine LightEngine;
+        public static List<Particle> Particles;
+        public static Player Player;
+        public static List<Projectile> PlayerProjectiles;
+        public static bool SimulationPaused;
         //Basic tile grid and the visible tile grid
-        public Tile[] TileArray;
-        public int TimesUpdated;
-        public int[] VisibleLightArray = new int[0];
-        public int[] VisibleTileArray = new int[0];
-        public Tile[] WallArray;
-        public WorldData WorldData;
+        public static Tile[] TileArray;
+        public static int TimesUpdated;
+        public static int[] VisibleLightArray = new int[0];
+        public static int[] VisibleTileArray = new int[0];
+        public static Tile[] WallArray;
+        public static WorldData WorldData;
 
-        public GameWorld()
+        public static void Initialize()
         {
-        }
-
-        public GameWorld(Main game1)
-        {
-            _instance = this;
-
-            Game1 = game1;
-
             _placeNotification = new PlaceNotification();
             RandGen = new Random();
             SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
             UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
             ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
-
+            Player = new Player();
             LightEngine = new LightEngine();
             WorldData = new WorldData();
-
-            //tilesThread = new Thread(new ThreadStart(UpdateVisibleIndexes));
-            //tilesThread.IsBackground = true;
-            //tilesThread.Start();
         }
 
-        public static GameWorld Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    throw new Exception("The instance of Gameworld has not yet been created.");
-                return _instance;
-            }
-        }
-
-        public GameTime GetGameTime()
+        public static GameTime GetGameTime()
         {
             return GameTime;
         }
 
-        public bool TryLoadFromFile(GameMode currentGameMode)
+        public static bool TryLoadFromFile(GameMode currentGameMode)
         {
             LoadingScreen.LoadingText = "Where did I put that file?";
             var tileIDs = WorldData.TileIDs;
@@ -113,9 +90,6 @@ namespace Adam.Levels
             Particles = new List<Particle>();
             PlayerProjectiles = new List<Projectile>();
             EnemyProjectiles = new List<Projectile>();
-            ChunkManager = new ChunkManager();
-
-            Player = Game1.Player;
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -163,7 +137,7 @@ namespace Adam.Levels
             return true;
         }
 
-        private void ConvertToTiles(Tile[] array, byte[] ds)
+        private static void ConvertToTiles(Tile[] array, byte[] ds)
         {
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -193,7 +167,7 @@ namespace Adam.Levels
             }
         }
 
-        public void Update(GameTime gameTime, GameMode currentLevel, Camera camera)
+        public static void Update(GameTime gameTime, GameMode currentLevel, Camera camera)
         {
             ParticleSystem.Update();
 
@@ -204,7 +178,7 @@ namespace Adam.Levels
                 }
                 else
                 {
-                    Session.EntityPacket?.ExtractTo(this);
+                    Session.EntityPacket?.ExtractTo();
                 }
             }
 
@@ -232,6 +206,7 @@ namespace Adam.Levels
             LightEngine.Update();
             UpdateInBackground();
 
+            Player.Update();
 
             foreach (var c in CloudList)
             {
@@ -304,7 +279,7 @@ namespace Adam.Levels
             }
         }
 
-        public void UpdateInBackground()
+        public static void UpdateInBackground()
         {
             for (var i = 0; i < Particles.Count; i++)
             {
@@ -339,17 +314,17 @@ namespace Adam.Levels
                 UpdateVisibleIndexes();
         }
 
-        private void UpdateVisibleIndexes()
+        private static void UpdateVisibleIndexes()
         {
             VisibleTileArray = ChunkManager.GetVisibleIndexes();
         }
 
-        public void DrawLights(SpriteBatch spriteBatch)
+        public static void DrawLights(SpriteBatch spriteBatch)
         {
             LightEngine.DrawLights(spriteBatch);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             if (CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
@@ -362,6 +337,8 @@ namespace Adam.Levels
                         TileArray[tileNumber].Draw(spriteBatch);
                 }
             }
+
+            Player.Draw(spriteBatch);
 
             foreach (var key in KeyList)
             {
@@ -376,7 +353,7 @@ namespace Adam.Levels
                 LevelEditor.Draw(spriteBatch);
         }
 
-        public void DrawParticles(SpriteBatch spriteBatch)
+        public static void DrawParticles(SpriteBatch spriteBatch)
         {
             ParticleSystem.Draw(spriteBatch);
 
@@ -386,7 +363,7 @@ namespace Adam.Levels
             }
         }
 
-        public void DrawClouds(SpriteBatch spriteBatch)
+        public static void DrawClouds(SpriteBatch spriteBatch)
         {
             foreach (var c in CloudList)
             {
@@ -395,7 +372,7 @@ namespace Adam.Levels
             }
         }
 
-        public void DrawInBack(SpriteBatch spriteBatch)
+        public static void DrawInBack(SpriteBatch spriteBatch)
         {
             foreach (var tileNumber in VisibleTileArray)
             {
@@ -407,21 +384,21 @@ namespace Adam.Levels
             }
         }
 
-        public void DrawAfterLights(SpriteBatch spriteBatch)
+        public static void DrawAfterLights(SpriteBatch spriteBatch)
         {
         }
 
-        public void DrawGlows(SpriteBatch spriteBatch)
+        public static void DrawGlows(SpriteBatch spriteBatch)
         {
             LightEngine.DrawGlows(spriteBatch);
         }
 
-        public void DrawBackground(SpriteBatch spriteBatch)
+        public static void DrawBackground(SpriteBatch spriteBatch)
         {
             Background.Draw(spriteBatch);
         }
 
-        public void DrawUi(SpriteBatch spriteBatch)
+        public static void DrawUi(SpriteBatch spriteBatch)
         {
             _placeNotification.Draw(spriteBatch);
 
@@ -429,7 +406,7 @@ namespace Adam.Levels
                 LevelEditor.DrawUi(spriteBatch);
         }
 
-        public void ResetWorld()
+        public static void ResetWorld()
         {
             for (var i = Entities.Count - 1; i >= 0; i--)
             {
@@ -451,7 +428,7 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Tile GetTile(int index)
+        public static Tile GetTile(int index)
         {
             if (index >= 0 && index < TileArray.Length)
                 return TileArray[index];
@@ -463,7 +440,7 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Tile GetTileBelow(int index)
+        public static Tile GetTileBelow(int index)
         {
             index += WorldData.LevelWidth;
             if (index >= 0 && index < TileArray.Length)
@@ -476,7 +453,7 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public Tile GetTileAbove(int index)
+        public static Tile GetTileAbove(int index)
         {
             index += WorldData.LevelHeight;
             if (index >= 0 && index < TileArray.Length)
@@ -484,7 +461,7 @@ namespace Adam.Levels
             return null;
         }
 
-        public Player GetPlayer()
+        public static Player GetPlayer()
         {
             return Player;
         }

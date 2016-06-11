@@ -68,7 +68,7 @@ namespace Adam.Characters.Enemies
 
         private void CheckIfCharging()
         {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            GameTime gameTime = GameWorld.GetGameTime();
 
             if (!_isAngry)
             {
@@ -119,10 +119,9 @@ namespace Adam.Characters.Enemies
             if (_isCharging)
                 return;
 
-            GameWorld gameWorld = GameWorld.Instance;
-            Player player = GameWorld.Instance.GetPlayer();
+            Player player = GameWorld.GetPlayer();
 
-            if (CollisionRay.IsPlayerInSight(this, player, gameWorld, out _rects))
+            if (CollisionRay.IsPlayerInSight(this, player, out _rects))
             {
                 _isAngry = true;
                 _playerSeen.PlayOnce();
@@ -140,7 +139,7 @@ namespace Adam.Characters.Enemies
 
         private void WalkRandomly()
         {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            GameTime gameTime = GameWorld.GetGameTime();
             if (_isAngry && !_isCharging)
             {
                 CurrentAnimationState = AnimationState.Transforming;
@@ -212,7 +211,7 @@ namespace Adam.Characters.Enemies
 
         void IAnimated.Animate()
         {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            GameTime gameTime = GameWorld.GetGameTime();
             switch (CurrentAnimationState)
             {
                 case AnimationState.Still:

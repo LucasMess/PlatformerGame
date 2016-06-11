@@ -95,7 +95,7 @@ namespace Adam
             InvertedCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
             InvertedCoords.X += Main.DefaultResWidth / 2;
             InvertedCoords.Y += Main.DefaultResHeight * 2 / 3;
-            TileIndex = (int)((int)InvertedCoords.Y / Main.Tilesize * GameWorld.Instance.WorldData.LevelWidth) + (int)((int)InvertedCoords.X / Main.Tilesize);
+            TileIndex = (int)((int)InvertedCoords.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)InvertedCoords.X / Main.Tilesize);
 
 
             LastCameraLeftCorner = cameraLeftCorner;

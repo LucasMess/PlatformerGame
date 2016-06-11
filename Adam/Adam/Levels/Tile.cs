@@ -220,7 +220,7 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     SunlightPassesThrough = true;
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, true, Color.Orange, 2, .6f));
                     break;
                 case 12: //Chandelier
@@ -228,8 +228,8 @@ namespace Adam
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
                     SunlightPassesThrough = true;
-                    //GameWorld.Instance.LightEngine.AddFixedLightSource(this, new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
-                    GameWorld.Instance.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(), true, Color.White, .4f, .1f));
+                    //GameWorld.LightEngine.AddFixedLightSource(this, new FixedPointLight(DrawRectangle, true, Color.White, 4, .1f));
+                    GameWorld.LightEngine.AddDynamicLight(new FixedPointLight(GetDrawRectangle(), true, Color.White, .4f, .1f));
                     break;
                 case 13: //Door
                     IsSolid = true;
@@ -306,7 +306,7 @@ namespace Adam
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 25);
                     var light = new FixedPointLight(DrawRectangle, false, Color.OrangeRed, 3, .3f);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this, light);
+                    GameWorld.LightEngine.AddFixedLightSource(this, light);
                     new Liquid(this, Liquid.Type.Lava);
                     break;
                 case 25: // Poisoned Water.
@@ -365,7 +365,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(12, 4);
                     break;
                 case 37: //Checkpoint
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(8, 29);
                     }
@@ -373,7 +373,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new CheckPoint(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new CheckPoint(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                         }
                     }
@@ -448,48 +448,48 @@ namespace Adam
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
                     new Crystal(this, 3);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Aqua, 1, .8f));
                     break;
                 case 49: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
                     new Crystal(this, 1);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Yellow, 1, .8f));
                     break;
                 case 50: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
                     new Crystal(this, 2);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 51: // Void FireSpitter.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 28);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Red, 1, .8f));
                     break;
                 case 52: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
                     new Crystal(this, 3);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Blue, 1, .8f));
                     break;
                 case 53: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
                     new Crystal(this, 4);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Red, 1, .8f));
                     break;
                 case 54: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
                     new Crystal(this, 2);
-                    GameWorld.Instance.LightEngine.AddFixedLightSource(this,
+                    GameWorld.LightEngine.AddFixedLightSource(this,
                         new FixedPointLight(DrawRectangle, false, Color.Green, 1, .8f));
                     break;
                 case 55: // Skull.
@@ -644,13 +644,13 @@ namespace Adam
 
                 case 200: //Player
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                         _positionInSpriteSheet = new Vector2(17, 12);
                     else
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Game1.Player.Initialize(DrawRectangle.X, DrawRectangle.Y);
+                            GameWorld.GetPlayer().Initialize(DrawRectangle.X, DrawRectangle.Y);
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -658,7 +658,7 @@ namespace Adam
                     break;
                 case 201: //Snake
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(18, 12);
                     }
@@ -666,7 +666,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -674,7 +674,7 @@ namespace Adam
                     break;
                 case 202: //Frog
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
                     }
@@ -682,7 +682,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Frog(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Frog(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -700,7 +700,7 @@ namespace Adam
                     break;
                 case 204: //Lost
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(19, 12);
                     }
@@ -708,7 +708,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Lost(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Lost(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -716,7 +716,7 @@ namespace Adam
                     break;
                 case 205: //Hellboar
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(20, 12);
                     }
@@ -724,7 +724,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Hellboar(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Hellboar(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -732,7 +732,7 @@ namespace Adam
                     break;
                 case 206: //Falling Boulder
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(19, 13);
                     }
@@ -740,7 +740,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -748,7 +748,7 @@ namespace Adam
                     break;
                 case 207: //Bat
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(22, 12);
                     }
@@ -756,7 +756,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Bat(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Bat(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -764,7 +764,7 @@ namespace Adam
                     break;
                 case 208: //Duck
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(22, 13);
                     }
@@ -772,7 +772,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new Duck(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new Duck(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -780,7 +780,7 @@ namespace Adam
                     break;
                 case 209: //Flying Wheel
                     SunlightPassesThrough = true;
-                    if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+                    if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(20, 13);
                     }
@@ -788,7 +788,7 @@ namespace Adam
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.Instance.Entities.Add(new BeingOfSight(DrawRectangle.X, DrawRectangle.Y));
+                            GameWorld.Entities.Add(new BeingOfSight(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
                             _isInvisible = true;
                         }
@@ -867,7 +867,7 @@ namespace Adam
                 OnTileUpdate(this);
             }
             if (OnPlayerInteraction != null &&
-                GameWorld.Instance.GetPlayer().GetCollRectangle().Intersects(DrawRectangle) &&
+                GameWorld.GetPlayer().GetCollRectangle().Intersects(DrawRectangle) &&
                 InputHelper.IsKeyDown(Keys.W))
                 OnPlayerInteraction(this);
 
@@ -884,8 +884,8 @@ namespace Adam
                     case 8: //Metal
                         _switchFrame = 100;
                         _restartWait = 2000;
-                        _frameTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalMilliseconds;
-                        _restartTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalMilliseconds;
+                        _frameTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalMilliseconds;
+                        _restartTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalMilliseconds;
 
                         if (_restartTimer < _restartWait)
                             break;
@@ -915,7 +915,7 @@ namespace Adam
 
         private void DefaultAnimation()
         {
-            var gameTime = GameWorld.Instance.GetGameTime();
+            var gameTime = GameWorld.GetGameTime();
 
             _switchFrame = 120;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -947,7 +947,7 @@ namespace Adam
 
         private void ChangeOpacity()
         {
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+            if (GameWorld.CurrentGameMode == GameMode.Edit)
             {
 
                 if (LevelEditor.OnWallMode)
@@ -983,14 +983,14 @@ namespace Adam
             DefineDrawRectangle();
             DefineSourceRectangle();
             SetToDefaultSourceRect();
-            GameWorld.Instance.WorldData.MetaData[TileIndex] = null;
+            GameWorld.WorldData.MetaData[TileIndex] = null;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null)
             {
-                if (!_isInvisible || (_isInvisible && GameWorld.Instance.CurrentGameMode == GameMode.Edit))
+                if (!_isInvisible || (_isInvisible && GameWorld.CurrentGameMode == GameMode.Edit))
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
             }
             if (_hasConnectPattern)

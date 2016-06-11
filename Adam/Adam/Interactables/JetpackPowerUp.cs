@@ -74,8 +74,7 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            GameWorld gameWorld = GameWorld.Instance;
-            _gameTime = gameWorld.GameTime;
+            _gameTime = Main.GameTime;
 
             _animation.UpdateRectangle(DrawRectangle);
             _animation.Update(_gameTime);
@@ -87,7 +86,7 @@ namespace Adam.Interactables
             {
                 Particle eff = new Particle();
                 eff.CreateJetPackSmokeParticle(this);
-                GameWorld.Instance.Particles.Add(eff);
+                GameWorld.Particles.Add(eff);
                 EffectTimer = 0;
             }
 

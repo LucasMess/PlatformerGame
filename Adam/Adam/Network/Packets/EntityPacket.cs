@@ -24,11 +24,10 @@ namespace Adam.Network.Packets
         /// <summary>
         /// Creates a new entity packet from the current gameworld.
         /// </summary>
-        /// <param name="gameWorld"></param>
         /// <returns></returns>
-        public EntityPacket(GameWorld gameWorld)
+        public EntityPacket()
         {
-            Entity[] entities = gameWorld.Entities.ToArray();
+            Entity[] entities = GameWorld.Entities.ToArray();
 
             _positions = new Vector2[entities.Length];
             _velocities = new Vector2[entities.Length];
@@ -40,17 +39,17 @@ namespace Adam.Network.Packets
             }
         }
 
-        public void ExtractTo(GameWorld gameWorld)
+        public void ExtractTo()
         {
             for (int i = 0; i < _positions.Length; i++)
             {
-                if (i > gameWorld.Entities.Count)
+                if (i > GameWorld.Entities.Count)
                 {
-                    Console.WriteLine("There is no entity number {0} in this gameworld. There are only {1}", i, gameWorld.Entities.Count);
+                    Console.WriteLine("There is no entity number {0} in this GameWorld. There are only {1}", i, GameWorld.Entities.Count);
                     break;
                 }
 
-                gameWorld.Entities[i].UpdateFromPacket(_positions[i], _velocities[i]);
+                GameWorld.Entities[i].UpdateFromPacket(_positions[i], _velocities[i]);
             }
         }
     }

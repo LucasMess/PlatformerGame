@@ -143,7 +143,7 @@ namespace Adam.UI
 
             using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
             {
-                xs.Serialize(fs, new WorldConfigFile(GameWorld.Instance));
+                xs.Serialize(fs, new WorldConfigFile());
             }
         }
 

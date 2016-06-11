@@ -31,9 +31,9 @@ namespace Adam.Characters
             _yCoord = sourceTile.GetDrawRectangle().Y;
             _sourceTileIndex = sourceTile.TileIndex;
 
-            if (GameWorld.Instance.WorldData.MetaData[sourceTile.TileIndex] != null)
+            if (GameWorld.WorldData.MetaData[sourceTile.TileIndex] != null)
             {
-                string metadata = GameWorld.Instance.WorldData.MetaData[sourceTile.TileIndex];
+                string metadata = GameWorld.WorldData.MetaData[sourceTile.TileIndex];
                 if (metadata.StartsWith("npc:"))
                 {
                     var npcName = metadata.Substring(4);
@@ -53,7 +53,7 @@ namespace Adam.Characters
         {
             Main.TextInputBox.OnInputEntered -= OnNpcNameEntered;
             string npcName = e.Input.ToLower();
-            GameWorld.Instance.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
+            GameWorld.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
             CreateNpc(npcName);
         }
 
@@ -87,8 +87,8 @@ namespace Adam.Characters
                     Main.TextInputBox.ShowSameMessage();
                     return;
             }
-            GameWorld.Instance.Entities.Add(_npc);
-            GameWorld.Instance.Player.InteractAction += Player_InteractAction;
+            GameWorld.Entities.Add(_npc);
+            GameWorld.Player.InteractAction += Player_InteractAction;
             Console.WriteLine("NPC created successfully.");
         }
 
@@ -97,7 +97,7 @@ namespace Adam.Characters
         /// </summary>
         private void Player_InteractAction()
         {
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
             if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
             {
                 _npc.ShowDialog();

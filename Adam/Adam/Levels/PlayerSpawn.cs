@@ -14,8 +14,8 @@ namespace Adam.Levels
                         
         public void TrySetSpawn(int index)
         {
-            WorldData data = GameWorld.Instance.WorldData;
-            Tile[] tiles = GameWorld.Instance.TileArray;
+            WorldData data = GameWorld.WorldData;
+            Tile[] tiles = GameWorld.TileArray;
             int width = data.LevelWidth;
 
             //if (tiles[index].isSolid)

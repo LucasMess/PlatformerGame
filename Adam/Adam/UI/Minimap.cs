@@ -23,8 +23,8 @@ namespace Adam.UI
         public Minimap()
         {
             _temp = Main.DefaultTexture;
-            _texture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight);
-            _antiTexture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.Instance.WorldData.LevelWidth, GameWorld.Instance.WorldData.LevelHeight);
+            _texture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth, GameWorld.WorldData.LevelHeight);
+            _antiTexture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth, GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
             _rectangle = new Rectangle(Main.UserResWidth - _texture.Width, Main.UserResHeight - _texture.Height, _texture.Width, _texture.Height);
         }
@@ -51,8 +51,8 @@ namespace Adam.UI
                 if (Main.IsLoadingContent)
                     continue;
 
-                Tile[] tileArray = GameWorld.Instance.TileArray;
-                Tile[] wallArray = GameWorld.Instance.WallArray;
+                Tile[] tileArray = GameWorld.TileArray;
+                Tile[] wallArray = GameWorld.WallArray;
 
                 for (int i = 0; i < tileArray.Length; i++)
                 {

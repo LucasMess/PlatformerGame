@@ -118,8 +118,8 @@ namespace Adam
 
         public override void Update()
         {
-            Player player = GameWorld.Instance.GetPlayer();
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            Player player = GameWorld.GetPlayer();
+            GameTime gameTime = GameWorld.GetGameTime();
 
             CollRectangle.X += (int)Velocity.X;
             CollRectangle.Y += (int)Velocity.Y;
@@ -187,7 +187,7 @@ namespace Adam
 
         void IAnimated.Animate()
         {           
-            _animation.Update(GameWorld.Instance.GameTime, DrawRectangle, _animationData[0]);
+            _animation.Update(GameWorld.GameTime, DrawRectangle, _animationData[0]);
         }
     }
 }

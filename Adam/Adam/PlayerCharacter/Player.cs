@@ -29,10 +29,8 @@ namespace Adam.PlayerCharacter
         public bool IsClimbing { get; set; }
         private string _spawnPointNextLevel;
 
-        public Player(Main game1)
+        public Player()
         {
-            _game1 = game1;
-
             script.Initialize(this);
 
             var edenTexture = ContentHelper.LoadTexture("Characters/adam_eden_darker");
@@ -164,8 +162,8 @@ namespace Adam.PlayerCharacter
                 int spawnIndex;
                 if (int.TryParse(_spawnPointNextLevel, out spawnIndex))
                 {
-                    int x = (spawnIndex % GameWorld.Instance.WorldData.LevelWidth)*Main.Tilesize;
-                    int y = (spawnIndex / GameWorld.Instance.WorldData.LevelWidth)*Main.Tilesize;
+                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth)*Main.Tilesize;
+                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth)*Main.Tilesize;
                     CollRectangle.X = x;
                     CollRectangle.Y = y;
                     RespawnPos = new Vector2(x, y);
@@ -192,12 +190,11 @@ namespace Adam.PlayerCharacter
         /// <summary>
         ///     Update player information, checks for collision and input, and many other things.
         /// </summary>
-        /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
+        public override void Update()
         {
             script.Run();
 
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+            if (GameWorld.CurrentGameMode == GameMode.Edit)
             {
                 ContainInGameWorld();
                 return;
@@ -207,8 +204,6 @@ namespace Adam.PlayerCharacter
             Burn();
             UpdatePlayerPosition();
             base.Update();
-
-            _jetpack.Update(this, gameTime);
         }
 
         /// <summary>
@@ -221,18 +216,17 @@ namespace Adam.PlayerCharacter
 
         private void ContainInGameWorld()
         {
-            var gameWorld = GameWorld.Instance;
             if (CollRectangle.X < 0)
                 CollRectangle.X = 0;
-            if (CollRectangle.X > (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
-                CollRectangle.X = (gameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
+            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
+                CollRectangle.X = (GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
                 CollRectangle.Y = 0;
-            if (CollRectangle.Y > (gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
+            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
-                if (gameWorld.CurrentGameMode == GameMode.Edit)
-                    CollRectangle.Y = gameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
+                if (GameWorld.CurrentGameMode == GameMode.Edit)
+                    CollRectangle.Y = GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
                 else
                 {
                     TakeDamage(null, MaxHealth);
@@ -272,8 +266,8 @@ namespace Adam.PlayerCharacter
                     {
                         var flame = new EntityFlameParticle(this, Color.Yellow);
                         var flame2 = new EntityFlameParticle(this, Color.Red);
-                        GameWorld.Instance.Particles.Add(flame);
-                        GameWorld.Instance.Particles.Add(flame2);
+                        GameWorld.Particles.Add(flame);
+                        GameWorld.Particles.Add(flame2);
                         _fireSpawnTimer.Reset();
                     }
                 }
@@ -288,7 +282,7 @@ namespace Adam.PlayerCharacter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.Instance.CurrentGameMode == GameMode.Edit)
+            if (GameWorld.CurrentGameMode == GameMode.Edit)
                 return;
             ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
             base.Draw(spriteBatch);
@@ -307,7 +301,7 @@ namespace Adam.PlayerCharacter
         {
             for (var i = 0; i < 20; i++)
             {
-                GameWorld.Instance.Particles.Add(new JumpSmokeParticle(this));
+                GameWorld.Particles.Add(new JumpSmokeParticle(this));
             }
         }
 
@@ -315,7 +309,7 @@ namespace Adam.PlayerCharacter
         {
             for (var i = 0; i < 20; i++)
             {
-                GameWorld.Instance.Particles.Add(new StompSmokeParticle(this));
+                GameWorld.Particles.Add(new StompSmokeParticle(this));
             }
         }
 

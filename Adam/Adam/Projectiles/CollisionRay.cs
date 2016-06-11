@@ -12,7 +12,7 @@ namespace Adam.Projectiles
 {
     static class CollisionRay
     {
-        public static bool IsPlayerInSight(Enemy enemy, Player player, GameWorld gameWorld, out List<Rectangle> rects)
+        public static bool IsPlayerInSight(Enemy enemy, Player player, out List<Rectangle> rects)
         {
             Rectangle rect = new Rectangle(enemy.GetCollRectangle().Center.X, enemy.GetCollRectangle().Center.Y, 1, 1);
             rects = new List<Rectangle>();
@@ -28,13 +28,13 @@ namespace Adam.Projectiles
             {
                 rects.Add(rect);
 
-                int index = (int)(rect.Y / Main.Tilesize * gameWorld.WorldData.LevelWidth) + (int)(rect.X / Main.Tilesize);
+                int index = (int)(rect.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(rect.X / Main.Tilesize);
 
                 if (rect.Intersects(player.GetCollRectangle()))
                     return true;
-                if (index > GameWorld.Instance.TileArray.Length - 1 || index < 0)
+                if (index > GameWorld.TileArray.Length - 1 || index < 0)
                     return false;
-                if (gameWorld.TileArray[index].IsSolid)
+                if (GameWorld.TileArray[index].IsSolid)
                     return false;
 
                 rect.X += (int)newVelocity.X;

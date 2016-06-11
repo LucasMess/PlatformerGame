@@ -28,7 +28,7 @@ namespace Adam.UI.Elements
         {
             _drawRectangle = new Rectangle(collRectangle.X , collRectangle.Y - 48, 32, 32);
 
-            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(collRectangle))
+            if (GameWorld.Player.GetCollRectangle().Intersects(collRectangle))
                 _playerOn = true;
             else _playerOn = false;
         }

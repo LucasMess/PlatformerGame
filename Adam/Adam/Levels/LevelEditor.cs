@@ -21,7 +21,6 @@ namespace Adam.Levels
         private static ButtonBar _buttonBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
-        private static GameWorld _gameWorld;
         private static bool _hasChangedSinceLastSave;
         private static Inventory _inventory;
         private static bool _inventoryKeyPressed;
@@ -37,7 +36,7 @@ namespace Adam.Levels
         public static bool OnWallMode;
         public static byte SelectedId = 1;
 
-        private static Tile[] CurrentArray => OnWallMode ? _gameWorld.WallArray : _gameWorld.TileArray;
+        private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
 
         public static void Load()
         {
@@ -57,8 +56,8 @@ namespace Adam.Levels
             _open = new SoundFx("Sounds/Level Editor/close");
             _select = new SoundFx("Sounds/Level Editor/select");
 
-            EditorRectangle = new Rectangle(GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize / 2,
-                GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+            EditorRectangle = new Rectangle(GameWorld.WorldData.LevelWidth * Main.Tilesize / 2,
+                GameWorld.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
         }
 
         //private void EntityScroll_TileSelected(TileSelectedArgs e)
@@ -88,11 +87,10 @@ namespace Adam.Levels
         /// <param name="currentLevel"></param>
         public static void Update(GameTime gameTime, GameMode currentLevel)
         {
-            GameWorld.Instance.Player.Health = GameWorld.Instance.Player.MaxHealth;
+            GameWorld.Player.Health = GameWorld.Player.MaxHealth;
 
             SoundtrackManager.PlayLevelEditorTheme();
 
-            _gameWorld = GameWorld.Instance;
             _inventory.Update();
             _buttonBar.Update();
             Brush.Update();
@@ -108,6 +106,14 @@ namespace Adam.Levels
                 _hasChangedSinceLastSave = false;
                 DataFolder.SaveLevel();
             }
+        }
+
+        /// <summary>
+        /// Tests level as the player.
+        /// </summary>
+        public static void TestLevel()
+        {
+            DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
         }
 
         /// <summary>
@@ -181,8 +187,8 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            _gameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.Instance.WorldData.LevelWidth,
-                GameWorld.Instance.WorldData.LevelHeight, true);
+            GameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.WorldData.LevelWidth,
+                GameWorld.WorldData.LevelHeight, true);
             const int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
@@ -212,17 +218,17 @@ namespace Adam.Levels
             {
                 EditorRectangle.X = 0;
             }
-            if (EditorRectangle.X > (GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width)
+            if (EditorRectangle.X > (GameWorld.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width)
             {
-                EditorRectangle.X = (GameWorld.Instance.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width;
+                EditorRectangle.X = (GameWorld.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width;
             }
             if (EditorRectangle.Y < 0)
             {
                 EditorRectangle.Y = 0;
             }
-            if (EditorRectangle.Y > (GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height)
+            if (EditorRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height)
             {
-                EditorRectangle.Y = (GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height;
+                EditorRectangle.Y = (GameWorld.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height;
             }
         }
 
@@ -232,7 +238,7 @@ namespace Adam.Levels
         private static void CheckForMouseInput()
         {
             InputHelper.GetMouseRectGameWorld(ref _mouseRectInGameWorld);
-            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / Main.Tilesize * _gameWorld.WorldData.LevelWidth) +
+            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) +
                            (_mouseRectInGameWorld.Center.X / Main.Tilesize);
 
             if (!IsIntersectingUi())
@@ -261,15 +267,15 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                foreach (var index in _gameWorld.VisibleTileArray)
+                foreach (var index in GameWorld.VisibleTileArray)
                 {
-                    if (index >= 0 && index < _gameWorld.TileArray.Length)
+                    if (index >= 0 && index < GameWorld.TileArray.Length)
                     {
                         //Check index of mouse
-                        if (_gameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRectInGameWorld))
+                        if (GameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRectInGameWorld))
                         {
-                            _gameWorld.TileArray[index].Id = 200;
-                            _gameWorld.TileArray[index].DefineTexture();
+                            GameWorld.TileArray[index].Id = 200;
+                            GameWorld.TileArray[index].DefineTexture();
                         }
                     }
                 }
@@ -366,8 +372,8 @@ namespace Adam.Levels
                 {
                     var brushSize = Brush.Size;
                     var startingIndex = index - (int)(Math.Truncate((double)(brushSize / 2))) -
-                                        (int)(Math.Truncate((double)(brushSize / 2)) * _gameWorld.WorldData.LevelWidth);
-                    var i = startingIndex - 1 - _gameWorld.WorldData.LevelWidth + (h * _gameWorld.WorldData.LevelWidth) +
+                                        (int)(Math.Truncate((double)(brushSize / 2)) * GameWorld.WorldData.LevelWidth);
+                    var i = startingIndex - 1 - GameWorld.WorldData.LevelWidth + (h * GameWorld.WorldData.LevelWidth) +
                             w;
                     indexes.Add(i);
                 }
@@ -375,14 +381,14 @@ namespace Adam.Levels
 
             foreach (var ind in indexes)
             {
-                if (ind >= 0 && ind < _gameWorld.TileArray.Length)
+                if (ind >= 0 && ind < GameWorld.TileArray.Length)
                 {
                     var t = CurrentArray[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(CurrentArray,
-                        _gameWorld.WorldData.LevelWidth);
+                        GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    //t.AddRandomlyGeneratedDecoration(CurrentArray,+_gameWorld.WorldData.LevelWidth);
+                    //t.AddRandomlyGeneratedDecoration(CurrentArray,+GameWorld.WorldData.LevelWidth);
                 }
             }
         }

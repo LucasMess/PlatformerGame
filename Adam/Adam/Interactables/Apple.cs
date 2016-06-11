@@ -20,7 +20,7 @@ namespace Adam
 
         public void Update()
         {
-            var player = GameWorld.Instance.Player;
+            var player = GameWorld.Player;
             if (player.GetCollRectangle().Intersects(_collRectangle))
             {
                 _levelFinishedSound.PlayOnce();

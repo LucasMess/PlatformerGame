@@ -68,7 +68,7 @@ namespace Adam.Interactables
         }
         public override void Update()
         {
-            if (GameWorld.Instance.Player.GetCollRectangle().Intersects(CollRectangle))
+            if (GameWorld.Player.GetCollRectangle().Intersects(CollRectangle))
             {
                 if (!_isOpen)
                 {
@@ -78,16 +78,16 @@ namespace Adam.Interactables
 
             if (_isOpen)
             {
-                _animation.Update(GameWorld.Instance.GameTime, DrawRectangle, _opening);
+                _animation.Update(GameWorld.GameTime, DrawRectangle, _opening);
             }
         }
 
         private void Open()
         {
             //Closes all other checkpoints.
-            for (int i = 0; i < GameWorld.Instance.Entities.Count; i++)
+            for (int i = 0; i < GameWorld.Entities.Count; i++)
             {
-                Entity en = GameWorld.Instance.Entities[i];
+                Entity en = GameWorld.Entities[i];
                 if (en is CheckPoint)
                 {
                     if (en == this)
@@ -103,7 +103,7 @@ namespace Adam.Interactables
             _openSound.PlayIfStopped();
 
             //Sets respawn point;
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
             player.SetRespawnPoint(DrawRectangle.X, DrawRectangle.Y);
 
             //Particle effects
@@ -111,7 +111,7 @@ namespace Adam.Interactables
             {
                 Particle par = new Particle();
                 par.CreateSparkles(this);
-                GameWorld.Instance.Particles.Add(par);
+                GameWorld.Particles.Add(par);
             }
 
         }

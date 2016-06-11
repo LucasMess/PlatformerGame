@@ -46,7 +46,7 @@ namespace Adam.Levels
         bool _privTrig0;
 
         bool _editMode;
-        public bool IsDealingWithData { get; set; }
+        public bool IsDealinGameWorldithData { get; set; }
 
         public byte[] TileIDs { get; set; }
         public byte[] WallIDs { get; set; }
@@ -76,7 +76,7 @@ namespace Adam.Levels
 
             _ambience?.PlayIfStopped();
 
-            switch (GameWorld.Instance.CurrentGameMode)
+            switch (GameWorld.CurrentGameMode)
             {
                 //case GameMode.Level1and1:
                 //    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))

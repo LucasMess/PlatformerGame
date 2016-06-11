@@ -279,7 +279,7 @@ namespace Adam
             CurrentMenuState = MenuState.LevelSelector;
 
             //game1.CurrentGameMode = GameMode.Play;
-            //GameWorld.Instance.worldData.OpenLevelLocally(false);
+            //GameWorld.worldData.OpenLevelLocally(false);
         }
 
         void options_MouseClicked()

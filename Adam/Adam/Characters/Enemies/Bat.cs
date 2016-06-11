@@ -83,7 +83,7 @@ namespace Adam.Characters.Enemies
 
         public override void Update()
         {
-            var player = GameWorld.Instance.GetPlayer();
+            var player = GameWorld.GetPlayer();
 
             _rangeRect = new Rectangle(CollRectangle.X - 100, CollRectangle.Y - 100, CollRectangle.Width + 200,
                 CollRectangle.Height + 200);

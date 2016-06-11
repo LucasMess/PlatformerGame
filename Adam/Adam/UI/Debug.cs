@@ -36,19 +36,19 @@ namespace Adam
             _rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
         }
 
-        public void Update(Main game1, Player player, GameWorld map, bool isOnDebug)
+        public void Update(Main game1, bool isOnDebug)
         {
             if (!isOnDebug)
             {
                 _textString = "";
                 IsWritingCommand = false;
-                map.IsOnDebug = false;
+                GameWorld.IsOnDebug = false;
                 return;
             }
 
             if (!IsWritingCommand)
             {
-                map.IsOnDebug = false;
+                GameWorld.IsOnDebug = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
                     && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
                     && Keyboard.GetState().IsKeyDown(Keys.C))
@@ -61,7 +61,7 @@ namespace Adam
             }
             else
             {
-                map.IsOnDebug = true;
+                GameWorld.IsOnDebug = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
@@ -75,7 +75,7 @@ namespace Adam
                 _textString = "";
 
             this._game1 = game1;
-            this._player = player;
+            this._player = GameWorld.GetPlayer();
 
             _oldKeyboardState = _currentKeyboardState;
             _currentKeyboardState = Keyboard.GetState();
@@ -117,11 +117,11 @@ namespace Adam
                 case "set level":
                     break;
                 case "has clouds true":
-                    GameWorld.Instance.WorldData.HasClouds = true;
+                    GameWorld.WorldData.HasClouds = true;
                     _definitionFound = true;
                     break;
                 case "has clouds false":
-                    GameWorld.Instance.WorldData.HasClouds = false;
+                    GameWorld.WorldData.HasClouds = false;
                     _definitionFound = true;
                     break;
             }
@@ -133,7 +133,7 @@ namespace Adam
                 string newString = text.Remove(0, keyword.Length);
                 int number;
                 Int32.TryParse(newString, out number);
-                GameWorld.Instance.WorldData.BackgroundId = (byte)number;
+                GameWorld.WorldData.BackgroundId = (byte)number;
                 _definitionFound = true;
             }
             keyword = "set soundtrack ";
@@ -142,7 +142,7 @@ namespace Adam
                 string newString = text.Remove(0, keyword.Length);
                 int number;
                 Int32.TryParse(newString, out number);
-                GameWorld.Instance.WorldData.SoundtrackId = (byte)number;
+                GameWorld.WorldData.SoundtrackId = (byte)number;
                 _definitionFound = true;
             }
 
@@ -152,7 +152,7 @@ namespace Adam
             //    string newString = text.Remove(0, keyword.Length);
             //    int number;
             //    Int32.TryParse(newString, out number);
-            //    GameWorld.Instance.worldData.SoundtrackID = (byte)number;
+            //    GameWorld.worldData.SoundtrackID = (byte)number;
             //    definitionFound = true;
             //}
 

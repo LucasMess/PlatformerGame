@@ -39,7 +39,7 @@ namespace Adam.Misc
             PlayNewInstanceOnce();
             Reset();
 
-            //if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+            //if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
             //if (_instance.Volume > MaxVolume)
             //{
             //    _instance.Volume = MaxVolume;
@@ -52,7 +52,7 @@ namespace Adam.Misc
             if (!_isPlaying)
             {
                 SoundEffectInstance newInstance = _soundEffect.CreateInstance();
-                if (!_isGlobal) newInstance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+                if (!_isGlobal) newInstance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
                 if (newInstance.Volume > MaxVolume)
                 {
                     newInstance.Volume = MaxVolume;
@@ -66,7 +66,7 @@ namespace Adam.Misc
         {
             if (!_isPlaying)
             {
-                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
                 if (_instance.Volume > MaxVolume)
                 {
                     _instance.Volume = MaxVolume;
@@ -85,7 +85,7 @@ namespace Adam.Misc
         {
             if (_instance.State == SoundState.Stopped)
             {
-                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Instance.Player, MaxVolume);
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
                 if (_instance.Volume > MaxVolume)
                 {
                     _instance.Volume = MaxVolume;

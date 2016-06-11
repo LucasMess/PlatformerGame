@@ -36,10 +36,10 @@ namespace Adam
         /// </summary>
         public void Load()
         {
-            BackgroundId = GameWorld.Instance.WorldData.BackgroundId;
+            BackgroundId = GameWorld.WorldData.BackgroundId;
             if (BackgroundId == 0)
             {
-                GameWorld.Instance.WorldData.BackgroundId = 1;
+                GameWorld.WorldData.BackgroundId = 1;
                 BackgroundId = 1;
             }
 
@@ -82,7 +82,7 @@ namespace Adam
         public void Update(Camera camera)
         {
             // Checks if background changes.
-            BackgroundId = GameWorld.Instance.WorldData.BackgroundId;
+            BackgroundId = GameWorld.WorldData.BackgroundId;
 
             if (_lastBackgroundId != BackgroundId)
             {

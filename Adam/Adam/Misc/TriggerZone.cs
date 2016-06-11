@@ -12,9 +12,8 @@ namespace Adam
     public class TriggerZone
     {
         Rectangle _rectangle;
-        GameWorld _map;
         int _id;
-        int _incrementingWidth;
+        int _incrementinGameWorldidth;
         int _incrementingHeight;
 
         public TriggerZone(int x, int y, int id)

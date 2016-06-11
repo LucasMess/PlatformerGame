@@ -39,7 +39,7 @@ namespace Adam
             SourceRectangle = GetSourceRectangle();
             Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
-            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
+            GameWorld.LightEngine.AddDynamicLight(Light);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -55,7 +55,7 @@ namespace Adam
             SourceRectangle = GetSourceRectangle();
             Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
             Light = new Lights.DynamicPointLight(this, .5f, false, GetGemColor(), .8f);
-            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
+            GameWorld.LightEngine.AddDynamicLight(Light);
 
             PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -180,7 +180,7 @@ namespace Adam
             BounceSound?.Reset();
             for (int i = 0; i < 5; i++)
             {
-                GameWorld.Instance.Particles.Add(new StompSmokeParticle(this));
+                GameWorld.Particles.Add(new StompSmokeParticle(this));
             }
         }
 
@@ -194,7 +194,7 @@ namespace Adam
             for (int i = 0; i < count; i++)
             {
                 Gem gem = new Gem(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y);
-                GameWorld.Instance.Entities.Add(gem);
+                GameWorld.Entities.Add(gem);
             }
         }
 
@@ -209,7 +209,7 @@ namespace Adam
             for (int i = 0; i < count; i++)
             {
                 Gem gem = new Gem(tile.DrawRectangle.Center.X, tile.DrawRectangle.Y - Main.Tilesize / 2, gemId);
-                GameWorld.Instance.Entities.Add(gem);
+                GameWorld.Entities.Add(gem);
             }
         }
     }

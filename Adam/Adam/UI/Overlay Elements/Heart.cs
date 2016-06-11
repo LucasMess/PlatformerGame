@@ -35,7 +35,6 @@ namespace Adam.UI.Overlay_Elements
         SoundEffectInstance _h1I, _h2I;
         GameTime _gameTime;
         Player _player;
-        GameWorld _gameWorld;
 
         public Heart(Vector2 position)
         {
@@ -62,11 +61,10 @@ namespace Adam.UI.Overlay_Elements
             _h2I = _heartBeat2.CreateInstance();
         }
 
-        public void Update(GameTime gameTime, Player player, GameWorld map)
+        public void Update(GameTime gameTime, Player player)
         {
             this._gameTime = gameTime;
             this._player = player;
-            this._gameWorld = map;
 
             AnimateHeart();
             RotateHeart();

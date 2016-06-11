@@ -39,7 +39,7 @@ namespace Adam
             IsCollidable = true;
             expirationTimer.ResetAndWaitFor(2000);
             expirationTimer.SetTimeReached += Destroy;
-            GameWorld.Instance.Entities.Add(this);
+            GameWorld.Entities.Add(this);
             CollidedWithTerrain += OnTerrainCollision;
         }
 
@@ -53,7 +53,7 @@ namespace Adam
             EffTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (EffTimer > 20 && !IsInactive)
             {
-                GameWorld.Instance.Particles.Add(new Particle(this));
+                GameWorld.Particles.Add(new Particle(this));
                 EffTimer = 0;
             }
         }
@@ -111,7 +111,7 @@ namespace Adam
         public PlayerWeaponProjectile()
         {
             CurrentProjectileSource = ProjectileSource.Player;
-            Player player = GameWorld.Instance.GetPlayer();
+            Player player = GameWorld.GetPlayer();
             Texture = ContentHelper.LoadTexture("Projectile");
             CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 4, 16, 8);
             CurrentCollisionType = CollisionType.Bouncy;
@@ -124,7 +124,7 @@ namespace Adam
             if (!player.IsFacingRight) xVel *= -1;
             Velocity = new Vector2(xVel, yVel);
 
-            GameWorld.Instance.PlayerProjectiles.Add(this);
+            GameWorld.PlayerProjectiles.Add(this);
         }
 
         public PlayerWeaponProjectile(Player player, ContentManager content)
@@ -221,7 +221,7 @@ namespace Adam
 
         public override void Destroy()
         {
-            GameWorld.Instance.PlayerProjectiles.Remove(this);
+            GameWorld.PlayerProjectiles.Remove(this);
             base.Destroy();
         }
 
@@ -236,15 +236,15 @@ namespace Adam
         }
     }
 
-    public class FlyingWheelProjectile : LinearProjectile
+    public class FlyinGameWorldheelProjectile : LinearProjectile
     {
-        public FlyingWheelProjectile(int x, int y, int xVel, int yVel)
+        public FlyinGameWorldheelProjectile(int x, int y, int xVel, int yVel)
         {
             Texture = Main.DefaultTexture;
             CollRectangle = new Rectangle(x, y, 16, 16);
             Velocity = new Vector2(xVel, yVel);
             Light = new DynamicPointLight(this, 1, true, Color.MediumPurple, 1);
-            GameWorld.Instance.LightEngine.AddDynamicLight(Light);
+            GameWorld.LightEngine.AddDynamicLight(Light);
 
         }
 
@@ -263,8 +263,8 @@ namespace Adam
 
         public override void Update(Player player, GameTime gameTime)
         {
-            GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
-            GameWorld.Instance.Particles.Add(new TrailParticle(this, Color.MediumPurple));
+            GameWorld.Particles.Add(new TrailParticle(this, Color.MediumPurple));
+            GameWorld.Particles.Add(new TrailParticle(this, Color.MediumPurple));
 
             base.Update(player, gameTime);
         }
@@ -273,7 +273,7 @@ namespace Adam
     //Only use this with enemies
     public class ParabolicProjectile : Projectile
     {
-        public ParabolicProjectile(Enemy enemy, GameWorld map, ProjectileSource currentProjectileSource)
+        public ParabolicProjectile(Enemy enemy, ProjectileSource currentProjectileSource)
         {
             this.CurrentProjectileSource = currentProjectileSource;
             this.Enemy = enemy;
@@ -346,7 +346,7 @@ namespace Adam
 
         private void CheckIfOutsideBoundaries()
         {
-            if (CollRectangle.Y > GameWorld.Instance.WorldData.LevelHeight * Main.Tilesize)
+            if (CollRectangle.Y > GameWorld.WorldData.LevelHeight * Main.Tilesize)
                 IsInactive = true;
         }
     }

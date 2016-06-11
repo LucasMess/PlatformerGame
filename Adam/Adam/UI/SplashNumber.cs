@@ -63,7 +63,7 @@ namespace Adam.UI
         {
             Opacity -= .01f;
             Position += Velocity;
-            Velocity = new Vector2((float)Math.Cos(_offset + GameWorld.Instance.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
+            Velocity = new Vector2((float)Math.Cos(_offset + GameWorld.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
 
             if (_scale > _normScale * 2)
             {

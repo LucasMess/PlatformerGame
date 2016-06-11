@@ -57,9 +57,8 @@ namespace Adam.Interactables
 
         public override void Update()
         {
-            GameWorld gameWorld = GameWorld.Instance;
-            Player player = gameWorld.Player;
-            GameTime gameTime = gameWorld.GameTime;
+            Player player = GameWorld.GetPlayer();
+            GameTime gameTime = Main.GameTime;
 
             ElapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 

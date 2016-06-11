@@ -34,7 +34,7 @@ namespace Adam.Characters.Enemies
         {
             if (damageArea.Intersects(CollRectangle))
             {
-                TakeDamage(GameWorld.Instance.GetPlayer(), damage);
+                TakeDamage(GameWorld.GetPlayer(), damage);
                 HitSound?.Play();
             }
         }
@@ -69,7 +69,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         protected void CreateFoodItem()
         {
-            GameWorld.Instance.Entities.Add(new Food(this));
+            GameWorld.Entities.Add(new Food(this));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         private void CheckInteractionsWithPlayer()
         {
-            Player player = GameWorld.Instance.Player;
+            Player player = GameWorld.Player;
 
             //Deals damage to player if he is touching.
             if (IsIntersectingPlayer() && !IsAboutToDie)
@@ -85,7 +85,7 @@ namespace Adam.Characters.Enemies
                 player.TakeDamage(this, GetTouchDamage());
             }
 
-            foreach (Projectile proj in GameWorld.Instance.PlayerProjectiles)
+            foreach (Projectile proj in GameWorld.PlayerProjectiles)
             {
                 if (proj.GetCollRectangle().Intersects(CollRectangle))
                 {
@@ -98,7 +98,7 @@ namespace Adam.Characters.Enemies
 
         private void CheckCollisionWithOtherEnemies()
         {
-            foreach (Entity en in GameWorld.Instance.Entities)
+            foreach (Entity en in GameWorld.Entities)
             {
                 if (en is Enemy && en != this)
                 {

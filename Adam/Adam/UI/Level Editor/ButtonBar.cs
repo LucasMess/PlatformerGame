@@ -36,6 +36,7 @@ namespace Adam.UI.Level_Editor
             var optionsButton = new IconButton(new Vector2(354, 11), _drawRectangle, "More options",
                 ButtonImage.Settings);
 
+            playButton.MouseClicked += LevelEditor.TestLevel;
             wallButton.MouseClicked += LevelEditor.ChangeToWallMode;
             expandButton.MouseClicked += Inventory.StartAnimation;
 

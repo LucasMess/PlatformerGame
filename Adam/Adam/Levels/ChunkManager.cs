@@ -89,7 +89,7 @@ namespace Adam.Levels
         /// <returns>Visible indexes of tiles in chunks.</returns>
         public int[] GetVisibleIndexes()
         {
-            Camera camera = GameWorld.Instance.Camera;
+            Camera camera = GameWorld.Camera;
             if (camera == null)
                 return new int[0];
 
@@ -121,15 +121,15 @@ namespace Adam.Levels
         /// <returns>Visible chunks.</returns>
         private Chunk[] GetVisibleChunks()
         {
-            if (GameWorld.Instance.Player == null || _chunks == null || GameWorld.Instance.Camera == null) return new Chunk[0];
+            if (GameWorld.Player == null || _chunks == null || GameWorld.Camera == null) return new Chunk[0];
 
             // Gets the chunk the camera is in.
 
-            int cameraChunk = GetChunk((int)GameWorld.Instance.Camera.LastCameraLeftCorner.X, (int)GameWorld.Instance.Camera.LastCameraLeftCorner.Y).Index;
+            int cameraChunk = GetChunk((int)GameWorld.Camera.LastCameraLeftCorner.X, (int)GameWorld.Camera.LastCameraLeftCorner.Y).Index;
 
             // Defines how many chunks are visible in either direction.
-            int visibleChunksY = (int)(3 / GameWorld.Instance.Camera.GetZoom());
-            int visibleChunksX = (int)(3 / GameWorld.Instance.Camera.GetZoom());
+            int visibleChunksY = (int)(3 / GameWorld.Camera.GetZoom());
+            int visibleChunksX = (int)(3 / GameWorld.Camera.GetZoom());
 
             // Finds where the top left visible chunk is.
             int startingChunk = cameraChunk - (int)Math.Ceiling((double)(visibleChunksX / 2)) - 1;

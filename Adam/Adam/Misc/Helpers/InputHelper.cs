@@ -103,10 +103,10 @@ namespace Adam
         public static void GetMouseRectGameWorld(ref Rectangle rectangle)
         {
             GetMouseRectRenderTarget(ref rectangle);
-            rectangle.X = (int)(rectangle.X / GameWorld.Instance.Camera.GetZoom());
-            rectangle.Y = (int)(rectangle.Y / GameWorld.Instance.Camera.GetZoom());
-            rectangle.X -= (int)(GameWorld.Instance.Camera.LastCameraLeftCorner.X);
-            rectangle.Y -= (int)(GameWorld.Instance.Camera.LastCameraLeftCorner.Y);
+            rectangle.X = (int)(rectangle.X / GameWorld.Camera.GetZoom());
+            rectangle.Y = (int)(rectangle.Y / GameWorld.Camera.GetZoom());
+            rectangle.X -= (int)(GameWorld.Camera.LastCameraLeftCorner.X);
+            rectangle.Y -= (int)(GameWorld.Camera.LastCameraLeftCorner.Y);
         }
 
         /// <summary>

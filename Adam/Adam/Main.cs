@@ -92,7 +92,6 @@ namespace Adam
         private int _fps, _totalFrames;
         private double _frameRateTimer;
         //Game Variables
-        private GameWorld _gameWorld;
         private bool _hasQuacked;
         private BlendState _lightBlendState;
         private RenderTarget2D _lightingRenderTarget;
@@ -109,7 +108,6 @@ namespace Adam
         public GameState CurrentGameState;
         public SamplerState DesiredSamplerState;
         public GameDataManager GameData;
-        public Player Player;
         public bool WasPressed, DebugOn, DebugPressed;
 
         public delegate void UpdateHandler(GameTime gameTime);
@@ -202,10 +200,9 @@ namespace Adam
 
         protected override void Initialize()
         {
+            GameWorld.Initialize();
             Camera = new Camera(GraphicsDevice.Viewport);
             _menu = new Menu(this);
-            _gameWorld = new GameWorld(this);
-            Player = new Player(this);
             _overlay = new Overlay();
             _cutscene = new Cutscene();
             Dialog = new Dialog();
@@ -286,7 +283,7 @@ namespace Adam
         private void BackgroundThread_FileLoad()
         {
             IsLoadingContent = true;
-            if (_gameWorld.TryLoadFromFile(CurrentGameMode))
+            if (GameWorld.TryLoadFromFile(CurrentGameMode))
             {
                 ObjectiveTracker = GameData.CurrentSave.ObjTracker;
             }
@@ -372,10 +369,10 @@ namespace Adam
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu &&
                 CurrentGameState != GameState.LoadingScreen)
             {
-                if (CurrentGameState == GameState.GameWorld && _gameWorld.DebuggingMode)
+                if (CurrentGameState == GameState.GameWorld && GameWorld.DebuggingMode)
                 {
                     ChangeState(GameState.GameWorld, GameMode.Edit);
-                    _gameWorld.DebuggingMode = false;
+                    GameWorld.DebuggingMode = false;
                 }
                 else
                 {
@@ -422,19 +419,18 @@ namespace Adam
                     break;
                 case GameState.GameWorld:
                     if (IsLoadingContent) return;
-                    if (_gameWorld.IsOnDebug)
+                    if (GameWorld.IsOnDebug)
                         break;
 
-                    Player.Update(gameTime);
-                    _gameWorld.Update(gameTime, CurrentGameMode, Camera);
-                    _overlay.Update(gameTime, Player, _gameWorld);
+                    GameWorld.Update(gameTime, CurrentGameMode, Camera);
+                    _overlay.Update();
                     Dialog.Update();
                     ObjectiveTracker.Update(gameTime);
                     break;
             }
 
             base.Update(gameTime);
-            _debug.Update(this, Player, _gameWorld, DebugOn);
+            _debug.Update(this, DebugOn);
         }
 
         protected void PrepareRenderTargets()
@@ -479,17 +475,15 @@ namespace Adam
                         break;
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-                    _gameWorld.DrawBackground(SpriteBatch);
-                    _gameWorld.DrawClouds(SpriteBatch);
+                    GameWorld.DrawBackground(SpriteBatch);
+                    GameWorld.DrawClouds(SpriteBatch);
                     SpriteBatch.End();
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                         null, null, Camera.Translate);
-                    _gameWorld.DrawInBack(SpriteBatch);
-                    _gameWorld.Draw(SpriteBatch);
-                    if (!Player.IsDead)
-                        Player.Draw(SpriteBatch);
-                    _gameWorld.DrawParticles(SpriteBatch);
+                    GameWorld.DrawInBack(SpriteBatch);
+                    GameWorld.Draw(SpriteBatch);
+                    GameWorld.DrawParticles(SpriteBatch);
 
                     SpriteBatch.End();
 
@@ -498,10 +492,10 @@ namespace Adam
                     //    null, null);
                     //_overlay.Draw(SpriteBatch);
 
-                    //if (!_gameWorld.LevelEditor.OnInventory)
+                    //if (!GameWorld.LevelEditor.OnInventory)
                     //    ObjectiveTracker.Draw(SpriteBatch);
 
-                    //_gameWorld.DrawUi(SpriteBatch);
+                    //GameWorld.DrawUi(SpriteBatch);
                     //Dialog.Draw(SpriteBatch);
                     //TextInputBox.Draw(SpriteBatch);
                     //MessageBox.Draw(SpriteBatch);
@@ -510,7 +504,7 @@ namespace Adam
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
                         null, Camera.Translate);
-                    _gameWorld.DrawGlows(SpriteBatch);
+                    GameWorld.DrawGlows(SpriteBatch);
                     SpriteBatch.End();
                     break;
             }
@@ -536,7 +530,7 @@ namespace Adam
 
                     SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
                         null, Camera.Translate);
-                    _gameWorld.DrawLights(SpriteBatch);
+                    GameWorld.DrawLights(SpriteBatch);
                     SpriteBatch.End();
                     break;
             }
@@ -587,7 +581,7 @@ namespace Adam
                     Overlay.CornerColor = Color.Black;
                     if (TimeFreeze.IsTimeFrozen())
                     {
-                        if (Player.IsTakingDamage)
+                        if (GameWorld.GetPlayer().IsTakingDamage)
                             Overlay.CornerColor = Color.Red;
                         else Overlay.CornerColor = Color.White;
                     }
@@ -612,10 +606,10 @@ namespace Adam
                         DepthStencilState.None, rs);
                    // _overlay.Draw(SpriteBatch);
 
-                    //if (!_gameWorld.LevelEditor.OnInventory)
+                    //if (!GameWorld.LevelEditor.OnInventory)
                     //    ObjectiveTracker.Draw(SpriteBatch);
 
-                    _gameWorld.DrawUi(SpriteBatch);
+                    GameWorld.DrawUi(SpriteBatch);
                     Dialog.Draw(SpriteBatch);
                     TextInputBox.Draw(SpriteBatch);
                     MessageBox.Draw(SpriteBatch);
@@ -658,25 +652,25 @@ namespace Adam
                         LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
                         Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Times Updated: " + _gameWorld.TimesUpdated, new Vector2(0, 100),
+                    SpriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
                         Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Player is dead: " + Player.IsDead, new Vector2(0, 120),
+                    SpriteBatch.DrawString(_debugFont, "Player is dead: " + GameWorld.GetPlayer().IsDead, new Vector2(0, 120),
                         Color.White);
                     //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Player Velocity" + Player.GetVelocity(), new Vector2(0, 180),
+                    SpriteBatch.DrawString(_debugFont, "Player Velocity" + GameWorld.GetPlayer().GetVelocity(), new Vector2(0, 180),
                         Color.White);
                     SpriteBatch.DrawString(_debugFont,
-                        "Total Chunks: " + _gameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
-                        GameWorld.Instance.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
+                        "Total Chunks: " + GameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
+                        GameWorld.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
                     SpriteBatch.DrawString(_debugFont,
-                        "Dynamic Lights Count: " + _gameWorld.LightEngine?.DynamicLights.Count, new Vector2(0, 220),
+                        "Dynamic Lights Count: " + GameWorld.LightEngine?.DynamicLights.Count, new Vector2(0, 220),
                         Color.White);
                     SpriteBatch.DrawString(_debugFont, "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
                         new Vector2(0, 240), Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Entity Count: " + _gameWorld.Entities?.Count,
+                    SpriteBatch.DrawString(_debugFont, "Entity Count: " + GameWorld.Entities?.Count,
                         new Vector2(0, 260), Color.White);
-                    SpriteBatch.DrawString(_debugFont, "Visible Tiles: " + _gameWorld.VisibleTileArray?.Length,
+                    SpriteBatch.DrawString(_debugFont, "Visible Tiles: " + GameWorld.VisibleTileArray?.Length,
                         new Vector2(0, 280), Color.White);
                     SpriteBatch.DrawString(_debugFont, "", new Vector2(0, 300), Color.White);
                     SpriteBatch.DrawString(_debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive,

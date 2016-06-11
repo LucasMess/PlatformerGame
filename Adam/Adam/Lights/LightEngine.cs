@@ -29,11 +29,11 @@ namespace Adam.Lights
 
         public void Load()
         {
-            _tiles = GameWorld.Instance.TileArray;
-            _walls = GameWorld.Instance.WallArray;
+            _tiles = GameWorld.TileArray;
+            _walls = GameWorld.WallArray;
 
-            _width = GameWorld.Instance.WorldData.LevelWidth;
-            _height = GameWorld.Instance.WorldData.LevelHeight;
+            _width = GameWorld.WorldData.LevelWidth;
+            _height = GameWorld.WorldData.LevelHeight;
 
             CreateArray();
             GenerateSunLight();
@@ -67,7 +67,7 @@ namespace Adam.Lights
 
         public void Update()
         {
-            _visibleLights = GameWorld.Instance.ChunkManager.GetVisibleIndexes();
+            _visibleLights = GameWorld.ChunkManager.GetVisibleIndexes();
 
             foreach (Light l in DynamicLights)
             {

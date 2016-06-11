@@ -50,8 +50,8 @@ namespace Adam.Obstacles
                     {
                         MachineGunParticle par = new MachineGunParticle(this, 8);
                         ExplosionParticle exp = new ExplosionParticle(CollRectangle.X + 8, CollRectangle.Y, Color.White, .7f);
-                        GameWorld.Instance.Particles.Add(exp);
-                        GameWorld.Instance.Particles.Add(par);
+                        GameWorld.Particles.Add(exp);
+                        GameWorld.Particles.Add(par);
                         _firingSound.PlayNewInstanceOnce();
                         _firingSound.Reset();
                         _firingRight = !_firingRight;
@@ -60,8 +60,8 @@ namespace Adam.Obstacles
                     {                      
                         MachineGunParticle par = new MachineGunParticle(this, 24);
                         ExplosionParticle exp = new ExplosionParticle(CollRectangle.X + 24, CollRectangle.Y, Color.White,.7f);
-                        GameWorld.Instance.Particles.Add(exp);
-                        GameWorld.Instance.Particles.Add(par);
+                        GameWorld.Particles.Add(exp);
+                        GameWorld.Particles.Add(par);
                         _firingRight = !_firingRight;
                         _firingSound.PlayNewInstanceOnce();
                         _firingSound.Reset();

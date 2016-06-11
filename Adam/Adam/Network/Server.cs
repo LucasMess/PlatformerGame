@@ -68,10 +68,9 @@ namespace Adam.Network
         /// <summary>
         /// Sends an entity packet to all clients.
         /// </summary>
-        /// <param name="gameWorld"></param>
-        public void SendEntityPacket(GameWorld gameWorld)
+        public void SendEntityPacket()
         {
-            EntityPacket en = new EntityPacket(gameWorld);
+            EntityPacket en = new EntityPacket();
             byte[] packet = CalcHelper.ToByteArray(en);
             SendToClients(packet);
         }

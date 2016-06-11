@@ -38,9 +38,9 @@ namespace Adam.Interactables
             sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
             sourceTile.OnPlayerInteraction += SourceTile_OnPlayerInteraction;
 
-            if (GameWorld.Instance.WorldData.MetaData[_tileIndex] != null)
+            if (GameWorld.WorldData.MetaData[_tileIndex] != null)
             {
-                string metadata = GameWorld.Instance.WorldData.MetaData[_tileIndex];
+                string metadata = GameWorld.WorldData.MetaData[_tileIndex];
                 if (metadata.StartsWith("pl:nl:"))
                 {
                     _linkedLevelName = metadata.Substring(6);
@@ -83,7 +83,7 @@ namespace Adam.Interactables
 
             if (DataFolder.LevelExists(_linkedLevelName))
             {
-                GameWorld.Instance.WorldData.MetaData[_tileIndex] = "pl:nl:" + e.Input;
+                GameWorld.WorldData.MetaData[_tileIndex] = "pl:nl:" + e.Input;
                 Main.TextInputBox.OnInputEntered -= OnLevelNameEntered;
                 string message = "Portal link created to level: " + _linkedLevelName + " on index: " +
                                  (_linkedPortalIndex ?? "SPAWN") +
@@ -106,7 +106,7 @@ namespace Adam.Interactables
                 return;
             }
 
-            GameWorld.Instance.Player.SetSpawnPointForNextLevel(_linkedPortalIndex);
+            GameWorld.Player.SetSpawnPointForNextLevel(_linkedPortalIndex);
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
             DataFolder.PlayLevel(DataFolder.LevelDirectory + "/" + _linkedLevelName + ".lvl");
         }
@@ -115,7 +115,7 @@ namespace Adam.Interactables
         {
             t.OnTileDestroyed -= SourceTile_OnTileDestroyed;
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
-            GameWorld.Instance.WorldData.MetaData[_tileIndex] = null;
+            GameWorld.WorldData.MetaData[_tileIndex] = null;
         }
 
         /// <summary>

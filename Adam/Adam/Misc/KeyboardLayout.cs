@@ -124,7 +124,7 @@ namespace Adam.Misc
         static IntPtr _hImc;
 
         //various Win32 constants that we need
-        const int GwlWndproc = -4;
+        const int GameWorldlWndproc = -4;
         const int WmKeydown = 0x100;
         const int WmKeyup = 0x101;
         const int WmChar = 0x102;
@@ -160,7 +160,7 @@ namespace Adam.Misc
                 throw new InvalidOperationException("TextInput.Initialize can only be called once!");
 
             _hookProcDelegate = new WndProc(HookProc);
-            _prevWndProc = (IntPtr)SetWindowLong(window.Handle, GwlWndproc,
+            _prevWndProc = (IntPtr)SetWindowLong(window.Handle, GameWorldlWndproc,
                 (int)Marshal.GetFunctionPointerForDelegate(_hookProcDelegate));
 
             _hImc = ImmGetContext(window.Handle);

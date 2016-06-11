@@ -140,17 +140,17 @@ namespace Adam.Enemies
             {
                 if (GameWorld.RandGen.Next(0, 1000) < 50)
                 {
-                    GameWorld.Instance.Entities.Add(new ParabolicProjectile(this, GameWorld.Instance, ProjectileSource.Enemy));
+                    GameWorld.Entities.Add(new ParabolicProjectile(this, ProjectileSource.Enemy));
                     PlayAttackSound();
                     _projCooldownTimer = 0;
                 }
             }
-            _projCooldownTimer += GameWorld.Instance.GetGameTime().ElapsedGameTime.TotalSeconds;
+            _projCooldownTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalSeconds;
         }
 
         public void Animate()
         {
-            GameTime gameTime = GameWorld.Instance.GetGameTime();
+            GameTime gameTime = GameWorld.GetGameTime();
             _animation.Update(gameTime, DrawRectangle, _animationData[0]);
         }
     }

@@ -31,7 +31,7 @@ namespace Adam.Obstacles
 
             if (IsTouchingPlayer)
             {
-                Player player = GameWorld.Instance.Player;
+                Player player = GameWorld.Player;
                 player.TakeDamage(this,player.MaxHealth);
             }
         }
