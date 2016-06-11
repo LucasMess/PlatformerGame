@@ -447,7 +447,7 @@ namespace Adam
 
             for (int i = 0; i < 20; i++)
             {
-                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -GameWorld.RandGen.Next(1, 5) / 10f));
+                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(1, 5) / 10f));
                 GameWorld.ParticleSystem.Add(par);
             }
 
@@ -455,7 +455,7 @@ namespace Adam
             GetDisintegratedRectangles(out desinRectangles);
             foreach (Rectangle rect in desinRectangles)
             {
-                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(GameWorld.RandGen.Next(-5, 5) / 10f, -GameWorld.RandGen.Next(-5, 5) / 10f), this);
+                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(-5, 5) / 10f), this);
                 GameWorld.ParticleSystem.Add(par);
             }
 
@@ -853,7 +853,7 @@ namespace Adam
                 particleCount = 100;
             for (int i = 0; i < particleCount; i++)
             {
-                RoundCommonParticle par = new RoundCommonParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -GameWorld.RandGen.Next(1, 5) / 10f), Color.Red);
+                RoundCommonParticle par = new RoundCommonParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(1, 5) / 10f), Color.Red);
                 GameWorld.ParticleSystem.Add(par);
             }
 
@@ -913,7 +913,7 @@ namespace Adam
         {
             for (int i = 0; i < count; i++)
             {
-                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(GameWorld.RandGen.Next(-5, 5) / 10f, -GameWorld.RandGen.Next(1, 5) / 10f));
+                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(1, 5) / 10f));
                 GameWorld.ParticleSystem.Add(par);
             }
         }

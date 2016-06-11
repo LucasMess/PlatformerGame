@@ -60,7 +60,7 @@ namespace Adam
             _openSound.PlayOnce();
             _isOpen = true;
 
-            int maxGems = GameWorld.RandGen.Next(10, 20);
+            int maxGems = Main.Random.Next(10, 20);
             for (int i = 0; i < maxGems; i++)
             {
                 GameWorld.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));

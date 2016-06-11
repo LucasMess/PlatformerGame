@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
 using Adam.Characters;
 using Adam.Characters.Enemies;
-using Adam.Enemies;
 using Adam.Interactables;
 using Adam.Levels;
-using Adam.Obstacles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Adam
 {
     public sealed class Tile
     {
+        public delegate void TileHandler(Tile t);
+
+        private const int SmallTileSize = 32;
+        private const float DefaultOpacity = 1;
+        private const float MaxOpacity = .5f;
+
         public static Dictionary<int, string> Names = new Dictionary<int, string>
         {
             {1, "Grass"},
@@ -76,8 +79,8 @@ namespace Adam
             {59, "Bed"},
             {60, "Bookshelf"},
             {61, "Painting"},
-            {62,  "Tree of Knowledge" },
-            {63,  "Tree Bark" },
+            {62, "Tree of Knowledge"},
+            {63, "Tree Bark"},
             {100, "Gold Brick Wall"},
             {101, "Stone Wall"},
             {102, "Dirt Wall"},
@@ -89,7 +92,7 @@ namespace Adam
             {108, "Mesa Wall"},
             {109, "Wallpaper"},
             {110, "Nothing"},
-            {111, "Tree Bark" },
+            {111, "Tree Bark"},
             {200, "Player"},
             {201, "Snake"},
             {202, "Frog"},
@@ -102,10 +105,73 @@ namespace Adam
             {209, "Being of Sight"}
         };
 
+        private readonly bool _isSampleTile;
+        private bool _animationPlaysOnce;
+        private List<Tile> _cornerPieces = new List<Tile>();
+        private int _currentFrame;
+        private Vector2 _frameCount;
+        private double _frameTimer;
+        private bool _hasAddedEntity;
+        private bool _hasConnectPattern;
+        private bool _hasRandomStartingPoint;
+        private bool _isInvisible;
+        private float _opacity = 1;
+        private Rectangle _originalPosition;
+        private Vector2 _positionInSpriteSheet;
+        private double _restartTimer;
+        private double _restartWait;
+        private Vector2 _sizeOfTile = new Vector2(1, 1);
+        private Rectangle _startingPosition;
+        private Rectangle _startingRectangle;
+        private int _switchFrame;
+        private bool _wasInitialized;
+        public Color Color = Color.White;
+        public Rectangle DrawRectangle;
+        public byte Id;
+        public bool IsClimbable;
+        public bool IsSolid;
+        public bool IsWall;
+        public Rectangle SourceRectangle;
+        public byte SubId;
+        public Texture2D Texture;
+
+        /// <summary>
+        ///     Constructor used when DefineTexture() will NOT be called.
+        /// </summary>
+        private Tile()
+        {
+            SetToDefaultSourceRect();
+        }
+
+        /// <summary>
+        ///     Default constructor for game world tiles.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public Tile(int x, int y)
+        {
+            _originalPosition = new Rectangle(x, y, 0, 0);
+            DrawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            SetToDefaultSourceRect();
+        }
+
+        /// <summary>
+        ///     Constructor used when the tile will be used in the UI.
+        /// </summary>
+        /// <param name="sampleTile"></param>
+        public Tile(bool sampleTile)
+        {
+            _isSampleTile = true;
+            SetToDefaultSourceRect();
+        }
+
         /// <summary>
         ///     Returns true if the animation was specifically told not to run.
         /// </summary>
         public bool AnimationStopped { get; set; }
+
+        public bool IsBrushTile { get; set; }
+        public int TileIndex { get; set; }
 
         /// <summary>
         ///     After the IDs have been defined, this will give the tile the correct location of its texture in the spritemap.
@@ -116,11 +182,9 @@ namespace Adam
             if (Id != 0)
             {
                 Texture = GameWorld.SpriteSheet;
-                SunlightPassesThrough = false;
             }
             else
             {
-                SunlightPassesThrough = true;
                 Texture = null;
                 return;
             }
@@ -195,7 +259,6 @@ namespace Adam
                 case 7: //ShortGrass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(12, 16);
-                    SunlightPassesThrough = true;
                     break;
                 case 8: //Metal
                     _frameCount = new Vector2(4, 0);
@@ -205,7 +268,6 @@ namespace Adam
                 case 9: //Tall Grass
                     _frameCount = new Vector2(12, 0);
                     _positionInSpriteSheet = new Vector2(0, 16);
-                    SunlightPassesThrough = true;
                     break;
                 case 10: // Gold.
                     _hasConnectPattern = true;
@@ -217,13 +279,11 @@ namespace Adam
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
-                    SunlightPassesThrough = true;
                     break;
                 case 12: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
-                    SunlightPassesThrough = true;
                     break;
                 case 13: //Door
                     IsSolid = true;
@@ -243,7 +303,7 @@ namespace Adam
                 case 17: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
-                    _positionInSpriteSheet = new Vector2(12, 10 + GameWorld.RandGen.Next(0, 3) * 2);
+                    _positionInSpriteSheet = new Vector2(12, 10 + Main.Random.Next(0, 3)*2);
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     _hasRandomStartingPoint = true;
                     break;
@@ -267,7 +327,7 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     _animationPlaysOnce = true;
-                    DrawRectangle.X = _originalPosition.X + Main.Tilesize / 4;
+                    DrawRectangle.X = _originalPosition.X + Main.Tilesize/4;
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     var chest = new Chest(this);
                     break;
@@ -291,7 +351,6 @@ namespace Adam
 
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 24);
-                    new Liquid(this, Liquid.Type.Water);
                     break;
                 case 24: //lava
                     _frameCount = new Vector2(4, 0);
@@ -299,7 +358,6 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(0, 15);
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 25);
-                    new Liquid(this, Liquid.Type.Lava);
                     break;
                 case 25: // Poisoned Water.
                     _frameCount = new Vector2(4, 0);
@@ -336,8 +394,8 @@ namespace Adam
                     _sizeOfTile.X = 4;
                     _sizeOfTile.Y = 6;
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
                     _positionInSpriteSheet = new Vector2(16, 0);
                     break;
                 case 32: //Small Rock
@@ -409,7 +467,7 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.X = 2;
                     _sizeOfTile.Y = 2;
-                    switch (GameWorld.RandGen.Next(0, 4))
+                    switch (Main.Random.Next(0, 4))
                     {
                         case 0: // One branch normal.
                             _positionInSpriteSheet = new Vector2(20, 2);
@@ -488,8 +546,8 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
-                    DrawRectangle.Height = (int)_sizeOfTile.Y * Main.Tilesize;
-                    DrawRectangle.Width = (int)_sizeOfTile.X * Main.Tilesize;
+                    DrawRectangle.Height = (int) _sizeOfTile.Y*Main.Tilesize;
+                    DrawRectangle.Width = (int) _sizeOfTile.X*Main.Tilesize;
                     switch (SubId)
                     {
                         case 0:
@@ -527,8 +585,8 @@ namespace Adam
                     Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
                     _positionInSpriteSheet = new Vector2(0, 0);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
                     break;
                 case 63: // Tree Bark
                     _hasConnectPattern = true;
@@ -537,7 +595,7 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
-                #region Wall Textures
+                    #region Wall Textures
 
                 case 100: //Gold Brick Wall
                     _hasConnectPattern = true;
@@ -555,7 +613,6 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 103: //Fences
-                    SunlightPassesThrough = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -592,7 +649,6 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case 109: // Wallpaper.
-                    SunlightPassesThrough = false;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -614,14 +670,13 @@ namespace Adam
                     _sizeOfTile.Y = 10;
                     _positionInSpriteSheet = new Vector2(24, 5);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
                     break;
 
-                #endregion
+                    #endregion
 
                 case 200: //Player
-                    SunlightPassesThrough = true;
                     if (GameWorld.CurrentGameMode == GameMode.Edit)
                         _positionInSpriteSheet = new Vector2(17, 12);
                     else
@@ -635,23 +690,9 @@ namespace Adam
                     }
                     break;
                 case 201: //Snake
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(18, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                    
                     break;
                 case 202: //Frog
-                    SunlightPassesThrough = true;
                     if (GameWorld.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
@@ -667,7 +708,6 @@ namespace Adam
                     }
                     break;
                 case 203: // NPC
-                    SunlightPassesThrough = true;
                     _positionInSpriteSheet = new Vector2(18, 13);
                     _isInvisible = true;
                     if (!_isSampleTile && !_wasInitialized)
@@ -677,100 +717,22 @@ namespace Adam
                     }
                     break;
                 case 204: //Lost
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(19, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Lost(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                   
                     break;
                 case 205: //Hellboar
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(20, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Hellboar(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                  
                     break;
                 case 206: //Falling Boulder
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(19, 13);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                   
                     break;
                 case 207: //Bat
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(22, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Bat(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                   
                     break;
                 case 208: //Duck
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(22, 13);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Duck(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                   
                     break;
                 case 209: //Flying Wheel
-                    SunlightPassesThrough = true;
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(20, 13);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new BeingOfSight(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                   
                     break;
             }
 
@@ -782,8 +744,8 @@ namespace Adam
 
             if (_hasRandomStartingPoint)
             {
-                var randX = GameWorld.RandGen.Next(0, (int)_frameCount.X);
-                SourceRectangle.X += randX * SmallTileSize;
+                var randX = Main.Random.Next(0, (int) _frameCount.X);
+                SourceRectangle.X += randX*SmallTileSize;
                 _currentFrame += randX;
             }
         }
@@ -795,9 +757,9 @@ namespace Adam
         private void DefineSourceRectangle()
         {
             //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
-            SourceRectangle = new Rectangle((int)(_positionInSpriteSheet.X * SmallTileSize),
-                (int)(_positionInSpriteSheet.Y * SmallTileSize), (int)(SmallTileSize * _sizeOfTile.X),
-                (int)(SmallTileSize * _sizeOfTile.Y));
+            SourceRectangle = new Rectangle((int) (_positionInSpriteSheet.X*SmallTileSize),
+                (int) (_positionInSpriteSheet.Y*SmallTileSize), (int) (SmallTileSize*_sizeOfTile.X),
+                (int) (SmallTileSize*_sizeOfTile.Y));
         }
 
         /// <summary>
@@ -808,17 +770,17 @@ namespace Adam
         {
             if (_isSampleTile)
             {
-                var width = (int)(_sizeOfTile.X * Main.Tilesize);
-                var height = (int)(_sizeOfTile.Y * Main.Tilesize);
+                var width = (int) (_sizeOfTile.X*Main.Tilesize);
+                var height = (int) (_sizeOfTile.Y*Main.Tilesize);
 
                 if (width > height)
                 {
                     width = Main.Tilesize;
-                    height = (int)(Main.Tilesize / _sizeOfTile.X);
+                    height = (int) (Main.Tilesize/_sizeOfTile.X);
                 }
                 if (height > width)
                 {
-                    width = (int)(Main.Tilesize / _sizeOfTile.Y);
+                    width = (int) (Main.Tilesize/_sizeOfTile.Y);
                     height = Main.Tilesize;
                 }
                 if (height == width)
@@ -830,24 +792,16 @@ namespace Adam
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
             }
             else
-                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * Main.Tilesize),
-                    (int)(_sizeOfTile.Y * Main.Tilesize));
+                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int) (_sizeOfTile.X*Main.Tilesize),
+                    (int) (_sizeOfTile.Y*Main.Tilesize));
         }
 
         /// <summary>
         ///     This updates the animation of the tile.
         /// </summary>
-        /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            if (OnTileUpdate != null)
-            {
-                OnTileUpdate(this);
-            }
-            if (OnPlayerInteraction != null &&
-                GameWorld.GetPlayer().GetCollRectangle().Intersects(DrawRectangle) &&
-                InputHelper.IsKeyDown(Keys.W))
-                OnPlayerInteraction(this);
+            OnTileUpdate?.Invoke(this);
 
             Animate();
             ChangeOpacity();
@@ -862,8 +816,8 @@ namespace Adam
                     case 8: //Metal
                         _switchFrame = 100;
                         _restartWait = 2000;
-                        _frameTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalMilliseconds;
-                        _restartTimer += GameWorld.GetGameTime().ElapsedGameTime.TotalMilliseconds;
+                        _frameTimer += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+                        _restartTimer += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
 
                         if (_restartTimer < _restartWait)
                             break;
@@ -880,7 +834,7 @@ namespace Adam
                         if (_currentFrame >= _frameCount.X)
                         {
                             _currentFrame = 0;
-                            SourceRectangle.X = 12 * 16;
+                            SourceRectangle.X = 12*16;
                             _restartTimer = 0;
                         }
                         break;
@@ -893,7 +847,7 @@ namespace Adam
 
         private void DefaultAnimation()
         {
-            var gameTime = GameWorld.GetGameTime();
+            var gameTime = Main.GameTime;
 
             _switchFrame = 120;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -927,7 +881,6 @@ namespace Adam
         {
             if (GameWorld.CurrentGameMode == GameMode.Edit)
             {
-
                 if (LevelEditor.OnWallMode)
                 {
                     if (!IsWall)
@@ -969,7 +922,7 @@ namespace Adam
             if (Texture != null)
             {
                 if (!_isInvisible || (_isInvisible && GameWorld.CurrentGameMode == GameMode.Edit))
-                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
+                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color*_opacity);
             }
             if (_hasConnectPattern)
             {
@@ -1090,9 +1043,6 @@ namespace Adam
 
             if (!_hasConnectPattern)
                 return;
-
-            _mapWidth = mapWidth;
-            _array = array;
 
             var m = TileIndex;
             var t = m - mapWidth;
@@ -1320,7 +1270,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = GameWorld.RandGen.Next(0, 10);
+                    var rand = Main.Random.Next(0, 10);
                     if (rand == 0) //flower
                     {
                         array[indexAbove].Id = 17;
@@ -1341,12 +1291,12 @@ namespace Adam
             // Random decorations for sand.
             if (Id == 5 && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth * 2;
+                var indexAbove = TileIndex - mapWidth*2;
                 var indexToRight = TileIndex - mapWidth + 1;
                 var indexTopRight = indexAbove + 1;
                 if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
                 {
-                    var rand = GameWorld.RandGen.Next(0, 100);
+                    var rand = Main.Random.Next(0, 100);
                     if (rand > 80)
                         array[indexAbove].Id = 44;
 
@@ -1360,7 +1310,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = GameWorld.RandGen.Next(0, 10);
+                    var rand = Main.Random.Next(0, 10);
 
                     // Skull.
                     if (rand == 0)
@@ -1374,7 +1324,7 @@ namespace Adam
             // Hellstone stalagmmite.
             if (Id == 4 && SubId == 13)
             {
-                if (GameWorld.RandGen.Next(0, 5) == 1)
+                if (Main.Random.Next(0, 5) == 1)
                 {
                     var indexBelow = TileIndex + mapWidth;
                     var indexTwoBelow = indexBelow + mapWidth;
@@ -1388,9 +1338,9 @@ namespace Adam
 
             // Randomly generate different plain textures for certain tiles.
             // Grass
-            if (Id == 1 && SubId == 0 && GameWorld.RandGen.Next(0, 100) > 80)
+            if (Id == 1 && SubId == 0 && Main.Random.Next(0, 100) > 80)
             {
-                switch (GameWorld.RandGen.Next(0, 4))
+                switch (Main.Random.Next(0, 4))
                 {
                     case 0:
                         SubId = 101;
@@ -1484,97 +1434,17 @@ namespace Adam
             return _opacity;
         }
 
-        #region Variables
-
-        public Texture2D Texture;
-        public Rectangle DrawRectangle;
-        public Rectangle SourceRectangle;
-        private Vector2 _frameCount;
-
-        public bool IsBrushTile { get; set; }
-        public bool IsSolid;
-        public bool IsClimbable;
-        public bool IsWall;
-        public byte Id;
-        public byte SubId;
-        public int TileIndex { get; set; }
-
-        private bool _hasRandomStartingPoint;
-        private Rectangle _originalPosition;
-        private Vector2 _sizeOfTile = new Vector2(1, 1);
-        private bool _wasInitialized;
-
-        private int _mapWidth;
-        private const int SmallTileSize = 32;
-        public bool SunlightPassesThrough;
-        public bool LevelEditorTransparency;
-        public string Name = "";
-        private Tile[] _array;
-        public Color Color = Color.White;
-        private float _opacity = 1;
-        private const float DefaultOpacity = 1;
-        private const float MaxOpacity = .5f;
-        private bool _hasConnectPattern;
-        private bool _hasAddedEntity;
-        private readonly bool _isSampleTile;
-        private bool _animationPlaysOnce;
-        private bool _isInvisible;
-        private Vector2 _positionInSpriteSheet;
-
-        private int _currentFrame;
-        private double _frameTimer;
-        private double _restartTimer;
-        private double _restartWait;
-        private int _switchFrame;
-        private Rectangle _startingRectangle;
-        private Rectangle _startingPosition;
-
-        private List<Tile> _cornerPieces = new List<Tile>();
-
-        public delegate void TileHandler(Tile t);
-
         public event TileHandler OnTileUpdate;
         public event TileHandler OnTileDestroyed;
         public event TileHandler OnPlayerInteraction;
 
         /// <summary>
-        ///     Constructor used when DefineTexture() will NOT be called.
-        /// </summary>
-        public Tile()
-        {
-            SetToDefaultSourceRect();
-        }
-
-        /// <summary>
-        ///     Default constructor for game world tiles.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public Tile(int x, int y)
-        {
-            _originalPosition = new Rectangle(x, y, 0, 0);
-            DrawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
-            SetToDefaultSourceRect();
-        }
-
-        /// <summary>
-        ///     Constructor used when the tile will be used in the UI.
-        /// </summary>
-        /// <param name="sampleTile"></param>
-        public Tile(bool sampleTile)
-        {
-            _isSampleTile = true;
-            SetToDefaultSourceRect();
-        }
-
-        /// <summary>
-        /// Sets the source rectangle to the no texture found texture.
+        ///     Sets the source rectangle to the no texture found texture.
         /// </summary>
         private void SetToDefaultSourceRect()
         {
-            SourceRectangle = new Rectangle(12 * SmallTileSize, 8 * SmallTileSize, SmallTileSize, SmallTileSize);
+            SourceRectangle = new Rectangle(12*SmallTileSize, 8*SmallTileSize, SmallTileSize, SmallTileSize);
         }
-
 
         /// <summary>
         ///     Returns the tile's texture position in the spritesheet. This needs to be multiplied by 16 to get the coordinates.
@@ -1591,7 +1461,7 @@ namespace Adam
         }
 
         /// <summary>
-        /// Returns the size of this tile as a ratio of the default tile size.
+        ///     Returns the size of this tile as a ratio of the default tile size.
         /// </summary>
         /// <returns></returns>
         public Vector2 GetSize()
@@ -1600,7 +1470,7 @@ namespace Adam
         }
 
         /// <summary>
-        /// Returns the friction constant for this tile.
+        ///     Returns the friction constant for this tile.
         /// </summary>
         /// <returns></returns>
         public float GetFrictionConstant()
@@ -1613,7 +1483,5 @@ namespace Adam
                     return .95f;
             }
         }
-
-        #endregion
     }
 }

@@ -52,7 +52,7 @@ namespace Adam.Characters.Scripts
                 Entity.IsJumping = true;
 
                 float speed = MoveVel;
-                if (GameWorld.RandGen.Next(0, 2) == 0)
+                if (Main.Random.Next(0, 2) == 0)
                 {
                     speed *= -1;
                 }

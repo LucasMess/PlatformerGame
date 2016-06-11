@@ -10,7 +10,9 @@ namespace Adam.Levels
     /// </summary>
     public class Chunk
     {
-        public const int DefaultSize = 16;
+        // At 48 pixels tilesize, 20x12 tiles are visible.
+
+        public const int DefaultSize = 4;
         private int[] _indexes = new int[DefaultSize * DefaultSize];
         private int[] _indexesAround;
 
@@ -43,12 +45,13 @@ namespace Adam.Levels
         {
             // Put the surrounding chunks in a list.
             List<Chunk> surroundingChunks = new List<Chunk>();
-            int startingChunk = Index - maxChunksX - 4;
-            int selectionSize = 8;
+            int startingChunk = Index - maxChunksX * 2 - 3;
+            int width = 12;
+            int height = 7;
 
-            for (int h = 0; h < selectionSize; h++)
+            for (int h = 0; h < height; h++)
             {
-                for (int w = 0; w < selectionSize; w++)
+                for (int w = 0; w < width; w++)
                 {
                     int current = startingChunk + (h * maxChunksX + w);
                     if (current >= 0 && current < chunks.Length)

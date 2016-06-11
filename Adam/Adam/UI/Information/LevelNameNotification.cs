@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Adam.UI
 {
-    public class PlaceNotification
+    public class LevelNameNotification
     {
 
         SpriteFont _font;
@@ -19,7 +19,7 @@ namespace Adam.UI
         float _opacity = 0;
         Vector2 _textPos, _original;
 
-        public PlaceNotification()
+        public LevelNameNotification()
         {
             _texture = ContentHelper.LoadTexture("Tiles/black");
             _font = ContentHelper.LoadFont("Fonts/x64");
@@ -37,14 +37,14 @@ namespace Adam.UI
             _textPos.X += _font.MeasureString(text).X / 2;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             float deltaOpacity = .03f;
 
             if (_isActive)
             {
                 _opacity += deltaOpacity;
-                _timer += gameTime.ElapsedGameTime.TotalSeconds;
+                _timer += Main.GameTime.ElapsedGameTime.TotalSeconds;
                 if (_textPos.X >= _original.X)
                 {
                     _textPos.X += (_original.X - _textPos.X) / 10;

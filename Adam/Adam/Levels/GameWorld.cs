@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Adam.Characters;
 using Adam.Characters.Enemies;
 using Adam.Interactables;
 using Adam.Misc;
 using Adam.Misc.Sound;
 using Adam.Network;
-using Adam.Obstacles;
 using Adam.Particles;
 using Adam.PlayerCharacter;
 using Adam.UI;
@@ -20,55 +18,26 @@ namespace Adam.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        public static Random RandGen;
-        public static Texture2D SpriteSheet;
-        public static Texture2D UiSpriteSheet;
-        public static Texture2D ParticleSpriteSheet;
-        private static PlaceNotification _placeNotification;
-        private static bool _playerMovingRight;
+        public static Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
+        public static Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
+        public static Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
         private static Timer _stopMovingTimer = new Timer();
-        public static Background Background = new Background();
-        public static Camera Camera;
-        public static ChunkManager ChunkManager = new ChunkManager();
+        private static readonly Background Background = new Background();
+        public static readonly ChunkManager ChunkManager = new ChunkManager();
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
-        public static List<Cloud> CloudList;
+        private static List<Cloud> _clouds;
         public static GameMode CurrentGameMode;
-        public static bool DebuggingMode;
-        public static List<Projectile> EnemyProjectiles;
+        public static bool TestingFromLevelEditor;
         public static List<Entity> Entities;
-        public static Main Game1;
-        public static GameTime GameTime;
         public static bool IsOnDebug;
-        public static List<Key> KeyList; //This one is tricky... it could be moved to the WorldData.
-        public static bool LevelComplete;
-        public static List<Particle> Particles;
-        public static Player Player;
+        public static readonly Player Player = new Player();
         public static List<Projectile> PlayerProjectiles;
-        public static bool SimulationPaused;
         //Basic tile grid and the visible tile grid
         public static Tile[] TileArray;
         public static int TimesUpdated;
-        public static int[] VisibleLightArray = new int[0];
-        public static int[] VisibleTileArray = new int[0];
         public static Tile[] WallArray;
-        public static WorldData WorldData;
-
-        public static void Initialize()
-        {
-            _placeNotification = new PlaceNotification();
-            RandGen = new Random();
-            SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
-            UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
-            ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
-            Player = new Player();
-            WorldData = new WorldData();
-        }
-
-        public static GameTime GetGameTime()
-        {
-            return GameTime;
-        }
+        public static WorldData WorldData = new WorldData();
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
         {
@@ -78,13 +47,9 @@ namespace Adam.Levels
 
             LoadingScreen.LoadingText = "Starting up world...";
             CurrentGameMode = currentGameMode;
-            Main.ObjectiveTracker.Clear();
-            CloudList = new List<Cloud>();
-            KeyList = new List<Key>();
+            _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            Particles = new List<Particle>();
             PlayerProjectiles = new List<Projectile>();
-            EnemyProjectiles = new List<Projectile>();
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -95,7 +60,7 @@ namespace Adam.Levels
             var maxClouds = width/100;
             for (var i = 0; i < maxClouds; i++)
             {
-                CloudList.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
+                _clouds.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
             }
 
             TileArray = new Tile[tileIDs.Length];
@@ -113,9 +78,6 @@ namespace Adam.Levels
             LoadingScreen.LoadingText = "Wait, you are editing it???";
             if (currentGameMode == GameMode.Edit)
                 LevelEditor.Load();
-
-            _placeNotification.Show(WorldData.LevelName);
-
             try
             {
                 ChunkManager.ConvertToChunks(WorldData.LevelWidth, WorldData.LevelHeight);
@@ -159,7 +121,7 @@ namespace Adam.Levels
             }
         }
 
-        public static void Update(GameTime gameTime, GameMode currentLevel, Camera camera)
+        public static void Update()
         {
             ParticleSystem.Update();
 
@@ -174,12 +136,9 @@ namespace Adam.Levels
                 }
             }
 
-            GameTime = gameTime;
-            Camera = camera;
-
-            if (currentLevel == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
             {
-                LevelEditor.Update(gameTime, currentLevel);
+                LevelEditor.Update();
             }
             else
             {
@@ -187,22 +146,29 @@ namespace Adam.Levels
 
                 var cameraRect = Player.GetCollRectangle();
 
-                camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
+                Main.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
             }
 
             TimesUpdated++;
 
-            Background.Update(camera);
-            _placeNotification.Update(gameTime);
-            WorldData.Update(gameTime);
-            UpdateInBackground();
+            Background.Update();
+            WorldData.Update();
+
+            for (var i = Entities.Count - 1; i >= 0; i--)
+            {
+                var entity = Entities[i];
+                if (entity.ToDelete)
+                {
+                    entity.Destroy();
+                }
+            }
 
             Player.Update();
 
-            foreach (var c in CloudList)
+            foreach (var c in _clouds)
             {
                 c.CheckOutOfRange();
-                c.Update(gameTime);
+                c.Update();
             }
 
             if (CurrentGameMode == GameMode.Play)
@@ -218,11 +184,6 @@ namespace Adam.Levels
                         var enemy = (Enemy) entity;
                         enemy.Update();
                     }
-                    if (entity is Obstacle)
-                    {
-                        var obstacle = (Obstacle) entity;
-                        obstacle.Update();
-                    }
                     if (entity is Item)
                     {
                         var power = (Item) entity;
@@ -231,7 +192,7 @@ namespace Adam.Levels
                     if (entity is Projectile)
                     {
                         var proj = (Projectile) entity;
-                        proj.Update(Player, gameTime);
+                        proj.Update();
                     }
                     if (entity is NonPlayableCharacter)
                     {
@@ -251,62 +212,13 @@ namespace Adam.Levels
                 }
             }
 
-            foreach (var key in KeyList)
-            {
-                key.Update(Player);
-                if (key.ToDelete)
-                {
-                    KeyList.Remove(key);
-                    break;
-                }
-            }
-
-            foreach (var tileNumber in VisibleTileArray)
+            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
                 if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
-                    TileArray[tileNumber]?.Update(gameTime);
+                    TileArray[tileNumber]?.Update();
                 }
             }
-        }
-
-        public static void UpdateInBackground()
-        {
-            for (var i = 0; i < Particles.Count; i++)
-            {
-                Particles[i].Update(GameTime);
-            }
-
-            for (var i = Entities.Count - 1; i >= 0; i--)
-            {
-                var entity = Entities[i];
-                if (entity.ToDelete)
-                {
-                    entity.Destroy();
-                }
-            }
-
-            for (var i = Particles.Count - 1; i >= 0; i--)
-            {
-                var p = Particles[i];
-                if (p.ToDelete)
-                {
-                    Particles.Remove(p);
-                }
-            }
-
-            while (Particles.Count > 10000000)
-            {
-                Particles.Remove(Particles.ElementAt(0));
-            }
-
-            if (Camera != null)
-                UpdateVisibleIndexes();
-        }
-
-        private static void UpdateVisibleIndexes()
-        {
-            VisibleTileArray = ChunkManager.GetVisibleIndexes();
         }
 
         public static void Draw(SpriteBatch spriteBatch)
@@ -314,7 +226,22 @@ namespace Adam.Levels
             if (CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
 
-            foreach (var tileNumber in VisibleTileArray)
+            foreach (var c in _clouds)
+            {
+                if (WorldData.HasClouds)
+                    c.Draw(spriteBatch);
+            }
+
+            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            {
+                if (tileNumber > 0 && tileNumber < TileArray.Length)
+                {
+                    if (WallArray[tileNumber].Texture != null)
+                        WallArray[tileNumber].Draw(spriteBatch);
+                }
+            }
+
+            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
                 if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
@@ -325,52 +252,16 @@ namespace Adam.Levels
 
             Player.Draw(spriteBatch);
 
-            foreach (var key in KeyList)
-            {
-                key.Draw(spriteBatch);
-            }
             for (var i = 0; i < Entities.Count; i++)
             {
                 if (!Entities[i].IsDead)
                     Entities[i].Draw(spriteBatch);
             }
-            if (CurrentGameMode == GameMode.Edit)
-                LevelEditor.Draw(spriteBatch);
-        }
 
-        public static void DrawParticles(SpriteBatch spriteBatch)
-        {
             ParticleSystem.Draw(spriteBatch);
 
-            for (var i = 0; i < Particles.Count; i++)
-            {
-                Particles[i].Draw(spriteBatch);
-            }
-        }
-
-        public static void DrawClouds(SpriteBatch spriteBatch)
-        {
-            foreach (var c in CloudList)
-            {
-                if (WorldData.HasClouds)
-                    c.Draw(spriteBatch);
-            }
-        }
-
-        public static void DrawInBack(SpriteBatch spriteBatch)
-        {
-            foreach (var tileNumber in VisibleTileArray)
-            {
-                if (tileNumber > 0 && tileNumber < TileArray.Length)
-                {
-                    if (WallArray[tileNumber].Texture != null)
-                        WallArray[tileNumber].Draw(spriteBatch);
-                }
-            }
-        }
-
-        public static void DrawAfterLights(SpriteBatch spriteBatch)
-        {
+            if (CurrentGameMode == GameMode.Edit)
+                LevelEditor.Draw(spriteBatch);
         }
 
         public static void DrawBackground(SpriteBatch spriteBatch)
@@ -380,8 +271,6 @@ namespace Adam.Levels
 
         public static void DrawUi(SpriteBatch spriteBatch)
         {
-            _placeNotification.Draw(spriteBatch);
-
             if (CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
         }

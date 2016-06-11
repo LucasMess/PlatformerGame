@@ -78,7 +78,7 @@ namespace Adam.Interactables
 
             if (_isOpen)
             {
-                _animation.Update(GameWorld.GameTime, DrawRectangle, _opening);
+                _animation.Update(Main.GameTime, DrawRectangle, _opening);
             }
         }
 
@@ -105,14 +105,6 @@ namespace Adam.Interactables
             //Sets respawn point;
             Player player = GameWorld.Player;
             player.SetRespawnPoint(DrawRectangle.X, DrawRectangle.Y);
-
-            //Particle effects
-            for (int i = 0; i < 100; i++)
-            {
-                Particle par = new Particle();
-                par.CreateSparkles(this);
-                GameWorld.Particles.Add(par);
-            }
 
         }
 

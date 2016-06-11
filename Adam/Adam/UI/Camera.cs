@@ -104,7 +104,7 @@ namespace Adam
             int shakeOffset = 1;
             if (_shakeTimer.TimeElapsedInMilliSeconds < 100)
             {
-                switch (GameWorld.RandGen.Next(0, 5))
+                switch (Main.Random.Next(0, 5))
                 {
                     case 0:
                         cameraLeftCorner.X += shakeOffset;

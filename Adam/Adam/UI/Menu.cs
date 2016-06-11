@@ -54,7 +54,6 @@ namespace Adam
         Button _backButton;
         List<Button> _buttons = new List<Button>();
 
-        GameTime _gameTime;
         bool _isSongPlaying;
         SpriteFont _font32, _font64;
         Main _game1;
@@ -111,7 +110,7 @@ namespace Adam
 
             _fullscreen = new TextButton(_first, "Borderless Mode: ");
             _fullscreen.MouseClicked += fullscreen_MouseClicked;
-            _fullscreen.IsOn = game1.GameData.Settings.IsFullscreen;
+            _fullscreen.IsOn = Main.GameData.Settings.IsFullscreen;
             _buttons.Add(_fullscreen);
 
             _backButton = new TextButton(_fifth, "Back");
@@ -221,15 +220,15 @@ namespace Adam
             {
                 case true:
                     _fullscreen.IsOn = false;
-                    _game1.GameData.Settings.IsFullscreen = false;
-                    _game1.GameData.Settings.NeedsRestart = true;
-                    _game1.GameData.Settings.HasChanged = true;
+                    Main.GameData.Settings.IsFullscreen = false;
+                    Main.GameData.Settings.NeedsRestart = true;
+                    Main.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     _fullscreen.IsOn = true;
-                    _game1.GameData.Settings.IsFullscreen = true;
-                    _game1.GameData.Settings.NeedsRestart = true;
-                    _game1.GameData.Settings.HasChanged = true;
+                    Main.GameData.Settings.IsFullscreen = true;
+                    Main.GameData.Settings.NeedsRestart = true;
+                    Main.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -242,15 +241,15 @@ namespace Adam
             {
                 case true:
                     _lighting.IsOn = false;
-                    _game1.GameData.Settings.DesiredLight = false;
-                    _game1.GameData.Settings.NeedsRestart = true;
-                    _game1.GameData.Settings.HasChanged = true;
+                    Main.GameData.Settings.DesiredLight = false;
+                    Main.GameData.Settings.NeedsRestart = true;
+                    Main.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     _lighting.IsOn = true;
-                    _game1.GameData.Settings.DesiredLight = true;
-                    _game1.GameData.Settings.NeedsRestart = true;
-                    _game1.GameData.Settings.HasChanged = true;
+                    Main.GameData.Settings.DesiredLight = true;
+                    Main.GameData.Settings.NeedsRestart = true;
+                    Main.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -287,9 +286,8 @@ namespace Adam
             CurrentMenuState = MenuState.Options;
         }
 
-        public void Update(Main game1, GameTime gameTime, Settings settings)
+        public void Update()
         {
-            this._gameTime = gameTime;
             switch (CurrentMenuState)
             {
                 case MenuState.Main:
@@ -325,7 +323,7 @@ namespace Adam
                     break;
             }
 
-            if (game1.CurrentGameState == GameState.MainMenu)
+            if (Main.CurrentGameState == GameState.MainMenu)
             SoundtrackManager.PlayMainTheme();
 
         }

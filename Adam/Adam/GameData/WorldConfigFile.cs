@@ -89,14 +89,14 @@ namespace Adam.GameData
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Edit);
-            Main.Instance.ChangeState(GameState.GameWorld, GameMode.Edit);
+            Main.ChangeState(GameState.GameWorld, GameMode.Edit);
         }
 
         public void LoadIntoPlay()
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Play);
-            Main.Instance.ChangeState(GameState.GameWorld, GameMode.Play);
+            Main.ChangeState(GameState.GameWorld, GameMode.Play);
         }
 
         public void TransferDataToWorldData()

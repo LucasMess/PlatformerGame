@@ -151,12 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
-    <Compile Include="Characters\Enemies\Bat.cs" />
-    <Compile Include="Characters\Enemies\Duck.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
-    <Compile Include="Characters\Enemies\BeingOfSight.cs" />
     <Compile Include="Characters\Enemies\Frog.cs" />
-    <Compile Include="Characters\Enemies\Hellboar.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
     <Compile Include="Characters\Non-Playable\Charlie.cs" />
     <Compile Include="Characters\Non-Playable\Harry Potter.cs" />
@@ -215,30 +211,18 @@
     <Compile Include="Network\Packets\PlayerPacket.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
-    <Compile Include="Obstacles\FlameSpitter.cs" />
-    <Compile Include="Obstacles\Liquid.cs" />
-    <Compile Include="Obstacles\MachineGun.cs" />
-    <Compile Include="Obstacles\WidePlatformUp.cs" />
     <Compile Include="PlayerCharacter\PlayerScript.cs" />
     <Compile Include="PlayerCharacter\Script.cs" />
     <Compile Include="UI\Brush.cs" />
     <Compile Include="UI\Cutscene.cs" />
     <Compile Include="UI\Debug.cs" />
-    <Compile Include="Characters\Enemies\Bloodless.cs" />
-    <Compile Include="Characters\Enemies\Drone.cs" />
-    <Compile Include="Characters\Enemies\Snake.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="UI\Camera.cs" />
-    <Compile Include="Interactables\CDPlayer.cs" />
     <Compile Include="Interactables\Chest.cs" />
     <Compile Include="Levels\Cloud.cs" />
     <Compile Include="Interactables\Door.cs" />
-    <Compile Include="Particles\Particle.cs" />
     <Compile Include="Interactables\Gem.cs" />
-    <Compile Include="Interactables\Jetpack.cs" />
-    <Compile Include="Interactables\JetpackPowerUp.cs" />
-    <Compile Include="Interactables\Key.cs" />
     <Compile Include="Misc\Helpers\InputHelper.cs" />
     <Compile Include="Interactables\Item.cs" />
     <Compile Include="UI\Elements\Container.cs" />
@@ -247,8 +231,6 @@
     <Compile Include="UI\Elements\Line.cs" />
     <Compile Include="UI\Elements\OKButton.cs" />
     <Compile Include="UI\Elements\TextButton.cs" />
-    <Compile Include="UI\Information\Objective.cs" />
-    <Compile Include="UI\Information\ObjectiveTracker.cs" />
     <Compile Include="UI\DataFolder.cs" />
     <Compile Include="UI\Level Editor\ButtonBar.cs" />
     <Compile Include="UI\Level Editor\Inventory.cs" />
@@ -256,9 +238,6 @@
     <Compile Include="UI\LevelSelection.cs" />
     <Compile Include="UI\LoadingScreen.cs" />
     <Compile Include="Characters\Non-Playable\God.cs" />
-    <Compile Include="Obstacles\FallingBoulder.cs" />
-    <Compile Include="Obstacles\Obstacle.cs" />
-    <Compile Include="Obstacles\Spikes.cs" />
     <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="UI\MessageBox.cs" />
@@ -272,7 +251,7 @@
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
-    <Compile Include="UI\Information\PlaceNotification.cs" />
+    <Compile Include="UI\Information\LevelNameNotification.cs" />
     <Compile Include="UI\PopUp.cs" />
     <Compile Include="Interactables\Projectile.cs" />
     <Compile Include="Projectiles\CollisionRay.cs" />
@@ -280,8 +259,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GameData\Settings.cs" />
-    <Compile Include="Characters\Enemies\Lost.cs" />
-    <Compile Include="Interactables\Tech.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
     <Compile Include="UI\SplashNumber.cs" />
     <Compile Include="UI\Textbox.cs" />

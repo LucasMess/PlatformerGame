@@ -27,7 +27,6 @@ namespace Adam.Levels
         public bool HasClouds;
         public bool IsRaining;
         public bool IsSnowing;
-        double _gameTimer;
 
         bool _obj0;
         bool _obj1;
@@ -70,72 +69,9 @@ namespace Adam.Levels
             _privTrig0 = true;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            _gameTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
             _ambience?.PlayIfStopped();
-
-            switch (GameWorld.CurrentGameMode)
-            {
-                //case GameMode.Level1and1:
-                //    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A) || InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
-                //    {
-                //        privTrig0 = true;
-                //        Game1.ObjectiveTracker.CompleteObjective(0);
-                //    }
-                //    if (gameTimer > 5 && !privTrig0)
-                //    {
-                //        if (!obj0)
-                //        {
-                //            Objective obj = new Objective();
-                //            obj.Create("Press 'A' and 'D' to move.", 0);
-                //            Game1.ObjectiveTracker.AddObjective(obj);
-                //            obj0 = true;
-                //        }
-                //    }
-                //    break;
-                case GameMode.Edit:
-                    if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
-                    {
-                        Main.ObjectiveTracker.CompleteObjective(0);
-                    }
-
-                    if (_privTrig0)
-                    {
-                        Main.ObjectiveTracker.CompleteObjective(1);
-                    }
-
-                    if (_gameTimer > 0)
-                    {
-                        if (!_obj0)
-                        {
-                            Objective obj = new Objective();
-                            obj.Create("Press 'E' to open inventory.", 0);
-                            Main.ObjectiveTracker.AddObjective(obj);
-                            _obj0 = true;
-                        }
-                        if (!_obj1)
-                        {
-                            Objective obj = new Objective();
-                            obj.Create("Use the scroll wheel to change brush size.", 1);
-                            Main.ObjectiveTracker.AddObjective(obj);
-                            _obj1 = true;
-                        }
-                    }
-                    break;
-            }
-        }
-
-        public void CreateNewWorld(string levelName)
-        {
-            WorldConfigFile config = new WorldConfigFile(levelName,256, 256);
-            config.LoadIntoEditor();
-        }
-
-        public void WipeWorld()
-        {
-
         }
     }
 }

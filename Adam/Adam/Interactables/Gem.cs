@@ -37,7 +37,7 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
+            Velocity = new Vector2(Main.Random.Next(-100, 100) / 10f, -Main.Random.Next(100, 180) / 10f);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -51,9 +51,9 @@ namespace Adam
             Texture = GameWorld.SpriteSheet;
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(GameWorld.RandGen.Next(-100, 100) / 10f, -GameWorld.RandGen.Next(100, 180) / 10f);
+            Velocity = new Vector2(Main.Random.Next(-100, 100) / 10f, -Main.Random.Next(100, 180) / 10f);
 
-            PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
+            PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + Main.Random.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
@@ -93,7 +93,7 @@ namespace Adam
         /// <returns>ID</returns>
         private byte GenerateId()
         {
-            int rand = GameWorld.RandGen.Next(0, 100);
+            int rand = Main.Random.Next(0, 100);
             if (rand > 95) //5% - Diamond
             {
                 return 5;
@@ -174,10 +174,6 @@ namespace Adam
         {
             BounceSound?.PlayNewInstanceOnce();
             BounceSound?.Reset();
-            for (int i = 0; i < 5; i++)
-            {
-                GameWorld.Particles.Add(new StompSmokeParticle(this));
-            }
         }
 
         /// <summary>

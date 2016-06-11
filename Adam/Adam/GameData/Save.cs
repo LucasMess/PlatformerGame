@@ -13,11 +13,9 @@ namespace Adam.GameData
         double _maxprogress = 1000;
         GameMode _currentLevel;
         PlayerStats _playerStats;
-        ObjectiveTracker _objTracker;
 
         public Save()
         {
-            _objTracker = new ObjectiveTracker();
             _playerStats = new PlayerStats();
             _playerStats.SetToDefault();
             _currentLevel = GameMode.None;
@@ -53,12 +51,6 @@ namespace Adam.GameData
                 if (_progress > _maxprogress)
                     throw new Exception("Progress set is bigger than maximum allowed progress!");
             }
-        }
-
-        public ObjectiveTracker ObjTracker
-        {
-            get { return _objTracker; }
-            set { _objTracker = value; }
         }
     }
 

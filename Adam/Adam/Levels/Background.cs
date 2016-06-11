@@ -78,8 +78,7 @@ namespace Adam
         /// <summary>
         /// Moves the backgrounds and sets their position, and also checks if the background changed.
         /// </summary>
-        /// <param name="camera"></param>
-        public void Update(Camera camera)
+        public void Update()
         {
             // Checks if background changes.
             BackgroundId = GameWorld.WorldData.BackgroundId;
@@ -90,8 +89,8 @@ namespace Adam
             }
 
 
-            middleCoords[0] = new Vector2((camera.LastCameraLeftCorner.X / 10) % Main.DefaultResWidth, 0);
-            foreCoords[0] = new Vector2((camera.LastCameraLeftCorner.X / 5) % Main.DefaultResWidth, 0);
+            middleCoords[0] = new Vector2((Main.Camera.LastCameraLeftCorner.X / 10) % Main.DefaultResWidth, 0);
+            foreCoords[0] = new Vector2((Main.Camera.LastCameraLeftCorner.X / 5) % Main.DefaultResWidth, 0);
 
             middleCoords[1] = middleCoords[0] + new Vector2(Main.DefaultResWidth, 0);
             foreCoords[1] = foreCoords[0] + new Vector2(Main.DefaultResWidth, 0);

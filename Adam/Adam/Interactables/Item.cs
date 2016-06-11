@@ -48,8 +48,8 @@ namespace Adam.Interactables
 
             for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(GameWorld.RandGen.Next(-1, 0) * GameWorld.RandGen.NextDouble());
-                float randX = (float)(GameWorld.RandGen.Next(-1, 2) * GameWorld.RandGen.NextDouble());
+                float randY = (float)(Main.Random.Next(-1, 0) * Main.Random.NextDouble());
+                float randX = (float)(Main.Random.Next(-1, 2) * Main.Random.NextDouble());
                 RoundCommonParticle par = new RoundCommonParticle(CollRectangle.Center.X, CollRectangle.Center.Y, new Vector2(randX,randY), Color.Yellow);
                 GameWorld.ParticleSystem.Add(par);
             }

@@ -46,7 +46,7 @@ namespace Adam.UI
 
             _normScale = _scale;
             _scale = .01f;
-            _offset = GameWorld.RandGen.Next(0, 100);
+            _offset = Main.Random.Next(0, 100);
             Opacity = 2;
         }
 
@@ -55,7 +55,7 @@ namespace Adam.UI
         {
             Opacity -= .01f;
             Position += Velocity;
-            Velocity = new Vector2((float)Math.Cos(_offset + GameWorld.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
+            Velocity = new Vector2((float)Math.Cos(_offset + Main.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
 
             if (_scale > _normScale * 2)
             {

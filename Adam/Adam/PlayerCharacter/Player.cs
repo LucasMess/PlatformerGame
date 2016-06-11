@@ -12,13 +12,9 @@ namespace Adam.PlayerCharacter
     public partial class Player : Character
     {
         public delegate void DamageHandler(Rectangle damageArea, int damage);
-
         public delegate void Eventhandler();
-
         public delegate void PlayerHandler(Player player);
 
-        private readonly Main _game1;
-        private readonly Jetpack _jetpack = new Jetpack();
         private readonly PlayerScript script = new PlayerScript();
         public Rectangle AttackBox;
         public SoundFx AttackSound;
@@ -110,14 +106,14 @@ namespace Adam.PlayerCharacter
             {
                 try
                 {
-                    return _game1.GameData.CurrentSave.PlayerStats.Score;
+                    return Main.GameData.CurrentSave.PlayerStats.Score;
                 }
                 catch
                 {
                     return 0;
                 }
             }
-            set { _game1.GameData.CurrentSave.PlayerStats.Score = value; }
+            set { Main.GameData.CurrentSave.PlayerStats.Score = value; }
         }
 
         public override int MaxHealth => 100;
@@ -244,7 +240,7 @@ namespace Adam.PlayerCharacter
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
-                        new Vector2(0, (float)(GameWorld.RandGen.Next(-5, 5) / 10f)));
+                        new Vector2(0, (float)(Main.Random.Next(-5, 5) / 10f)));
                     GameWorld.ParticleSystem.Add(par);
                 }
             }
@@ -264,10 +260,6 @@ namespace Adam.PlayerCharacter
                     }
                     if (_fireSpawnTimer.TimeElapsedInMilliSeconds > 100)
                     {
-                        var flame = new EntityFlameParticle(this, Color.Yellow);
-                        var flame2 = new EntityFlameParticle(this, Color.Red);
-                        GameWorld.Particles.Add(flame);
-                        GameWorld.Particles.Add(flame2);
                         _fireSpawnTimer.Reset();
                     }
                 }
@@ -295,22 +287,6 @@ namespace Adam.PlayerCharacter
         public void TakeDps(int damage)
         {
             Health -= damage;
-        }
-
-        private void CreateJumpParticles()
-        {
-            for (var i = 0; i < 20; i++)
-            {
-                GameWorld.Particles.Add(new JumpSmokeParticle(this));
-            }
-        }
-
-        private void CreateStompParticles()
-        {
-            for (var i = 0; i < 20; i++)
-            {
-                GameWorld.Particles.Add(new StompSmokeParticle(this));
-            }
         }
 
         public void Heal(int amount)

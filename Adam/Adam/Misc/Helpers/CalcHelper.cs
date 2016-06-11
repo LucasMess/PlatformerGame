@@ -102,7 +102,7 @@ namespace Adam
         /// <returns></returns>
         public static int GetRandomX(Rectangle rect)
         {
-            return GameWorld.RandGen.Next(rect.X, rect.X + rect.Width);
+            return Main.Random.Next(rect.X, rect.X + rect.Width);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Adam
         /// <returns></returns>
         public static int GetRandomY(Rectangle rect)
         {
-            return GameWorld.RandGen.Next(rect.Y, rect.Y + rect.Height);
+            return Main.Random.Next(rect.Y, rect.Y + rect.Height);
         }
 
         /// <summary>

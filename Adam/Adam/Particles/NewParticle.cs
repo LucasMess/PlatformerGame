@@ -128,7 +128,7 @@ namespace Adam.Particles
                 randX *= -1;
             Velocity = new Vector2(randX, 0);
             Opacity = .2f;
-            Color = Color.Blue * (float)GameWorld.RandGen.NextDouble();
+            Color = Color.Blue * (float)Main.Random.NextDouble();
             Texture = texture;
             Width = sourceRectangle.Width * 2;
             Height = sourceRectangle.Height * 2;
@@ -144,15 +144,15 @@ namespace Adam.Particles
 
         public SmokeParticle(int x, int y, Vector2 velocity)
         {
-            Position = new Vector2(x - 4, y - GameWorld.RandGen.Next(0, 80) / 10f);
+            Position = new Vector2(x - 4, y - Main.Random.Next(0, 80) / 10f);
             SourceRectangle = new Rectangle(256, 104, 8, 8);
             Velocity = velocity;
             Opacity = 1;
             Color = Color.White;
             Texture = GameWorld.SpriteSheet;
-            Scale = GameWorld.RandGen.Next(5, 30) / 10f;
+            Scale = Main.Random.Next(5, 30) / 10f;
             Position = new Vector2(x - 4, y - (Scale * Height)/2);
-            frameChange = GameWorld.RandGen.Next(100, 200);
+            frameChange = Main.Random.Next(100, 200);
             _frames = 4;
         }
 
@@ -178,7 +178,7 @@ namespace Adam.Particles
         Timer _animationTimer = new Timer();
         int _currentFrame;
         int _frames;
-        private int _animationTime = GameWorld.RandGen.Next(50, 200);
+        private int _animationTime = Main.Random.Next(50, 200);
 
         public RoundCommonParticle(int x, int y, Vector2 vel, Color color)
         {
@@ -188,7 +188,7 @@ namespace Adam.Particles
             Opacity = 1;
             Color = color;
             Texture = GameWorld.SpriteSheet;
-            Scale = GameWorld.RandGen.Next(5, 30)/10f;
+            Scale = Main.Random.Next(5, 30)/10f;
 
             _frames = 4;
 

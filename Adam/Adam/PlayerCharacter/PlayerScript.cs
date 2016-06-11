@@ -118,7 +118,7 @@ namespace Adam
 
                 for (int i = 0; i < 10; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(GameWorld.RandGen.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -GameWorld.RandGen.Next(1, 10) / 10f));
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(1, 10) / 10f));
                     GameWorld.ParticleSystem.Add(par);
                 }
 
@@ -352,7 +352,6 @@ namespace Adam
                 player.SetVelX(speed);
                 player.AddAnimationToQueue("ninjaDash");
                 player.AnimationEnded += OnNinjaDashEnd;
-                TestSmokeParticle.Generate(100, player);
             }
         }
 
@@ -361,7 +360,6 @@ namespace Adam
             IsDoingAction = false;
             player.RemoveAnimationFromQueue("ninjaDash");
             player.AnimationEnded -= OnNinjaDashEnd;
-            TestSmokeParticle.Generate(100, player);
         }
 
         public void OnUltimateAction(Player player)

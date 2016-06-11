@@ -57,7 +57,7 @@ namespace Adam
 
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             _position.X += _velocity.X;
             Rectangle.X = (int)_position.X;

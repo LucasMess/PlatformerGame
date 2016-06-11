@@ -83,9 +83,7 @@ namespace Adam.Levels
         /// <summary>
         /// Updates all UI components and checks for input.
         /// </summary>
-        /// <param name="gameTime"></param>
-        /// <param name="currentLevel"></param>
-        public static void Update(GameTime gameTime, GameMode currentLevel)
+        public static void Update()
         {
             GameWorld.Player.Health = GameWorld.Player.MaxHealth;
 
@@ -187,7 +185,7 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            GameWorld.Camera.UpdateSmoothly(EditorRectangle, GameWorld.WorldData.LevelWidth,
+            Main.Camera.UpdateSmoothly(EditorRectangle, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
             const int speed = 15;
 
@@ -267,18 +265,8 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.P))
             {
-                foreach (var index in GameWorld.VisibleTileArray)
-                {
-                    if (index >= 0 && index < GameWorld.TileArray.Length)
-                    {
-                        //Check index of mouse
-                        if (GameWorld.TileArray[index].DrawRectangle.Intersects(_mouseRectInGameWorld))
-                        {
-                            GameWorld.TileArray[index].Id = 200;
-                            GameWorld.TileArray[index].DefineTexture();
-                        }
-                    }
-                }
+                Brush.Size = 1;
+                UpdateSelectedTiles(200);
             }
         }
 
@@ -339,7 +327,7 @@ namespace Adam.Levels
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
-            Construction[GameWorld.RandGen.Next(0, 3)].Play();
+            Construction[Main.Random.Next(0, 3)].Play();
             Main.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
         }
@@ -402,7 +390,7 @@ namespace Adam.Levels
             for (var i = 0; i < 3; i++)
             {
                 GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
-                    new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
+                    new Vector2(Main.Random.Next(-10, 10) / 10f, Main.Random.Next(-10, 10) / 10f)));
             }
         }
 
@@ -415,7 +403,7 @@ namespace Adam.Levels
             for (var i = 0; i < 3; i++)
             {
                 GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
-                    new Vector2(GameWorld.RandGen.Next(-10, 10) / 10f, GameWorld.RandGen.Next(-10, 10) / 10f)));
+                    new Vector2(Main.Random.Next(-10, 10) / 10f, Main.Random.Next(-10, 10) / 10f)));
             }
         }
 

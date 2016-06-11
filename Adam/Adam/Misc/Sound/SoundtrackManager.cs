@@ -54,12 +54,12 @@ namespace Adam.Misc.Sound
             byte newId = 0;
             if (CurrentId < 101 || CurrentId > 103)
             {
-                newId = (byte)GameWorld.RandGen.Next(101, 103);
+                newId = (byte)Main.Random.Next(101, 103);
                 PlayTrack(newId, false);
             }
             else if (MediaPlayer.State == MediaState.Stopped)
             {
-                newId = (byte)GameWorld.RandGen.Next(101, 103);
+                newId = (byte)Main.Random.Next(101, 103);
                 PlayTrack(newId, false);
             }
         }
