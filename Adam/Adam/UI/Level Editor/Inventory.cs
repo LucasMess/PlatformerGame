@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows.Markup;
 using Adam.Levels;
 using Adam.Misc;
 using Microsoft.Xna.Framework;
@@ -12,116 +8,105 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Adam.UI.Level_Editor
 {
     /// <summary>
-    /// Contains all tiles and entities in grid format, and also contains a hotbar for quick selection of items.
+    ///     Contains all tiles and entities in grid format.
     /// </summary>
-    class Inventory
+    internal class Inventory
     {
         private const int SpacingBetweenTiles = 2;
-        private const int defaultX = 159;
-        private const int defaultY = 51;
-        private int _activeY;
-        private int _inactiveY;
-        private static int posAtStartOfAnimation;
-        private int _midway;
-        private const int tilesPerRow = 9;
+        
+        // The starting coordinates for the first tile in the grid.
+        private const int DefaultX = 159;
+        private const int DefaultY = 51;
 
-        private const float Acceleration = 13f;
-        private const float Deceleration = 13f;
-        private static Timer _animationTimer = new Timer();
+        private const int TilesPerRow = 9;
 
-        /// <summary>
-        /// Returns true if the inventory is visible and active.
-        /// </summary>
-        public static bool IsOpen { get; set; }
+        // This is used to keep track of where the backdrop was when the animation started.
+        private static int _posAtStartOfAnimation;
 
-        private List<TileHolder> _tileHolders = new List<TileHolder>();
+        private static readonly Timer AnimationTimer = new Timer();
         private static Rectangle _backDrop;
-        private static float _velocityY;
-        private Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
+        private readonly Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
+
+        // The position the backdrop should be in when open or closed.
+        private readonly int _activeY;
+        private readonly int _inactiveY;
+
+        private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
 
         public Inventory()
         {
-            _backDrop = new Rectangle(CalcHelper.ApplyUiRatio(87), CalcHelper.ApplyUiRatio(38), CalcHelper.ApplyUiRatio(305), CalcHelper.ApplyUiRatio(204));
+            _backDrop = new Rectangle(CalcHelper.ApplyUiRatio(87), CalcHelper.ApplyUiRatio(38),
+                CalcHelper.ApplyUiRatio(305), CalcHelper.ApplyUiRatio(204));
             _inactiveY = _backDrop.Y - _backDrop.Height;
             _activeY = _backDrop.Y;
-            _midway = _inactiveY + _backDrop.Height/2;
-            posAtStartOfAnimation = _backDrop.Y;
+            _posAtStartOfAnimation = _backDrop.Y;
 
-            for (int i = 1; i < 60; i++)
+            // Testing with every tile.
+            for (var i = 1; i < 60; i++)
             {
                 _tileHolders.Add(new TileHolder(i));
             }
 
-            int counter = 0;
+            // Places the tile holders in their proper positions in the grid.
+            var counter = 0;
             foreach (var tile in _tileHolders)
             {
-                int x = CalcHelper.ApplyUiRatio(defaultX) +
-                        (counter % tilesPerRow) * CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Width + SpacingBetweenTiles);
-                int y = CalcHelper.ApplyUiRatio(defaultY) +
-                        (counter / tilesPerRow) * CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Height + SpacingBetweenTiles);
+                var x = CalcHelper.ApplyUiRatio(DefaultX) +
+                        (counter%TilesPerRow)*
+                        CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Width + SpacingBetweenTiles);
+                var y = CalcHelper.ApplyUiRatio(DefaultY) +
+                        (counter/TilesPerRow)*
+                        CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Height + SpacingBetweenTiles);
 
                 tile.SetPosition(x, y);
                 tile.BindTo(new Vector2(_backDrop.X, _backDrop.Y));
 
                 counter++;
             }
-
         }
 
+        /// <summary>
+        ///     Returns true if the inventory is visible and active.
+        /// </summary>
+        public static bool IsOpen { get; private set; }
+
+        /// <summary>
+        /// Changes the state of the inventory and triggers the animation to start.
+        /// </summary>
         public static void StartAnimation()
         {
             IsOpen = !IsOpen;
-            _animationTimer.Reset();
-            posAtStartOfAnimation = _backDrop.Y;
+            AnimationTimer.Reset();
+            _posAtStartOfAnimation = _backDrop.Y;
         }
 
+        /// <summary>
+        /// Provides animation for the backdrop and the tiles depending on whether the inventory is open or not.
+        /// </summary>
         private void Animate()
         {
             if (IsOpen)
             {
                 _backDrop.Y =
                     (int)
-                        CalcHelper.EaseInAndOut((int) _animationTimer.TimeElapsedInMilliSeconds, posAtStartOfAnimation,
-                            Math.Abs(posAtStartOfAnimation - _activeY), 200);
-                // CalcHelper.SharpAnimationY(_inactiveY, _activeY, ref _backDrop, ref _velocityY);
-                //if (_backDrop.Y < _activeY)
-                //{
-                //    if (_backDrop.Y < _midway)
-                //        _velocityY += Acceleration;
-                //    else _velocityY -= Deceleration;
-                //}
-                //else
-                //{
-                //    _velocityY = 0;
-                //    _backDrop.Y = _activeY;
-                //}
+                        CalcHelper.EaseInAndOut((int) AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
+                            Math.Abs(_posAtStartOfAnimation - _activeY), 200);
             }
             else
             {
                 _backDrop.Y =
                     (int)
-                        CalcHelper.EaseInAndOut((int)_animationTimer.TimeElapsedInMilliSeconds, posAtStartOfAnimation,
-                            -Math.Abs(posAtStartOfAnimation - _inactiveY), 200);
-                //CalcHelper.SharpAnimationY(_activeY, _inactiveY, ref _backDrop, ref _velocityY);
-
-                //if (_backDrop.Y > _inactiveY)
-                //{
-                //    if (_backDrop.Y > _midway)
-                //        _velocityY -= Acceleration;
-                //    else _velocityY += Deceleration;
-                //}
-                //else
-                //{
-                //    _velocityY = 0;
-                //    _backDrop.Y = _inactiveY;
-                //}
+                        CalcHelper.EaseInAndOut((int) AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
+                            -Math.Abs(_posAtStartOfAnimation - _inactiveY), 200);
             }
         }
 
+        /// <summary>
+        /// Updates animations and tiles.
+        /// </summary>
         public void Update()
         {
             Animate();
-            _backDrop.Y += (int)_velocityY;
 
             foreach (var tile in _tileHolders)
             {
@@ -138,9 +123,5 @@ namespace Adam.UI.Level_Editor
                 tile.Draw(spriteBatch);
             }
         }
-
-
-
-
     }
 }

@@ -248,7 +248,7 @@
     <Compile Include="Lights\Light.cs" />
     <Compile Include="Lights\PointLight.cs" />
     <Compile Include="UI\Elements\Container.cs" />
-    <Compile Include="UI\Elements\FunctionButton.cs" />
+    <Compile Include="UI\Elements\IconButton.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Elements\Line.cs" />
     <Compile Include="UI\Elements\OKButton.cs" />

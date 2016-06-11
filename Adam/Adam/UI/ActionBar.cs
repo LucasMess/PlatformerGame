@@ -17,9 +17,9 @@ namespace Adam.UI
     public class ActionBar
     {
         Rectangle _box;
-        FunctionButton _playButton;
-        FunctionButton _wallButton;
-        List<FunctionButton> _buttons = new List<FunctionButton>();
+        IconButton _playButton;
+        IconButton _wallButton;
+        List<IconButton> _buttons = new List<IconButton>();
 
         LevelEditor _levelEditor;
         GameWorld _gameWorld;
@@ -37,9 +37,9 @@ namespace Adam.UI
             _originalY = _box.Y;
             _box.Y = Main.UserResHeight + 300;
 
-            _playButton = new FunctionButton(new Vector2(12 + 64, 4), _box, "", ButtonImage.Back);
+            _playButton = new IconButton(new Vector2(12 + 64, 4), _box, "", ButtonImage.Back);
 
-            _wallButton = new FunctionButton(new Vector2(20 + 128, 4), _box, "", ButtonImage.Save);
+            _wallButton = new IconButton(new Vector2(20 + 128, 4), _box, "", ButtonImage.Save);
 
             _playButton.MouseClicked += PlayButton_MouseClicked;
             _wallButton.MouseClicked += WallButton_MouseClicked;
@@ -146,9 +146,9 @@ namespace Adam.UI
 
             _box.Y += (int)_velocityY;
 
-            foreach (FunctionButton b in _buttons)
+            foreach (IconButton b in _buttons)
             {
-                b.Update(_box);
+                b.Update();
             }
         }
 
@@ -161,12 +161,12 @@ namespace Adam.UI
                 PlayButton_MouseClicked();
             }
 
-            foreach (FunctionButton b in _buttons)
+            foreach (IconButton b in _buttons)
             {
                 b.Draw(spriteBatch);
             }
 
-            foreach (FunctionButton b in _buttons)
+            foreach (IconButton b in _buttons)
             {
                 b.DrawOnTop(spriteBatch);
             }
