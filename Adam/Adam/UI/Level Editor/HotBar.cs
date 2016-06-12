@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.UI.Level_Editor
@@ -23,7 +24,21 @@ namespace Adam.UI.Level_Editor
             {
                 TileHolder tile = new TileHolder(0);
                 tile.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tile.Size + SpacingBetweenTiles))),CalcHelper.ApplyUiRatio(StartingY));
+                tile.BindTo(new Vector2(0,0));
                 _tiles.Add(tile);
+            }
+
+            Inventory.TileBeingMoved.WasReleased += ReplaceHotBar;
+        }
+
+        private void ReplaceHotBar(TileHolder tile)
+        {
+            foreach (var tileHolder in _tiles)
+            {
+                if (tile.IsIntersectingWithSlotOf(tileHolder))
+                {
+                    
+                }
             }
         }
 
@@ -31,7 +46,15 @@ namespace Adam.UI.Level_Editor
         {
             foreach (var tileHolder in _tiles)
             {
-                tileHolder.Update();
+                tileHolder.Update(new Vector2(0,0));
+                if (Inventory.TileBeingMoved.IsIntersectingWithSlotOf(tileHolder))
+                {
+                    tileHolder.StepAside();
+                }
+                else
+                {
+                    tileHolder.ReturnToDefaultPosition();
+                }
             }
         }
 

@@ -440,6 +440,7 @@ namespace Adam.Levels
             _buttonBar.Draw(spriteBatch);
             _hotBar.Draw(spriteBatch);
             _miniMap.Draw(spriteBatch);
+            _inventory.DrawOnTop(spriteBatch);
         }
 
         /// <summary>
