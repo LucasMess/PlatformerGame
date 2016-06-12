@@ -18,9 +18,9 @@ namespace Adam.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        public static Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
-        public static Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
-        public static Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
+        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
+        public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
+        public static readonly Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
         private static Timer _stopMovingTimer = new Timer();
         private static readonly Background Background = new Background();
         public static readonly ChunkManager ChunkManager = new ChunkManager();

@@ -66,14 +66,13 @@ namespace Adam.UI.Elements
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
             SourceRectangle = new Rectangle(320, 20, 19, 6);
-            Texture = GameWorld.SpriteSheet;
             Font = ContentHelper.LoadFont("Fonts/x32");
         }
 
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color);
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
             spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
                 Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
         }

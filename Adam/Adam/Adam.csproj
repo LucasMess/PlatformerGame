@@ -213,8 +213,7 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="PlayerCharacter\PlayerScript.cs" />
     <Compile Include="PlayerCharacter\Script.cs" />
-    <Compile Include="UI\Brush.cs" />
-    <Compile Include="UI\Cutscene.cs" />
+    <Compile Include="UI\Level Editor\Brush.cs" />
     <Compile Include="UI\Debug.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Entity.cs" />
@@ -225,7 +224,6 @@
     <Compile Include="Interactables\Gem.cs" />
     <Compile Include="Misc\Helpers\InputHelper.cs" />
     <Compile Include="Interactables\Item.cs" />
-    <Compile Include="UI\Elements\Container.cs" />
     <Compile Include="UI\Elements\IconButton.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Elements\Line.cs" />
@@ -240,19 +238,13 @@
     <Compile Include="Characters\Non-Playable\God.cs" />
     <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Information\Dialog.cs" />
-    <Compile Include="UI\MessageBox.cs" />
-    <Compile Include="UI\Minimap.cs" />
-    <Compile Include="UI\Overlay Elements\Coin.cs" />
-    <Compile Include="UI\Overlay Elements\Heart.cs" />
-    <Compile Include="UI\Overlay Elements\Hourglass.cs" />
-    <Compile Include="UI\Overlay.cs" />
+    <Compile Include="UI\Information\MessageBox.cs" />
+    <Compile Include="UI\Level Editor\Minimap.cs" />
     <Compile Include="Levels\GameWorld.cs" />
-    <Compile Include="UI\Cursor.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="UI\Information\LevelNameNotification.cs" />
-    <Compile Include="UI\PopUp.cs" />
     <Compile Include="Interactables\Projectile.cs" />
     <Compile Include="Projectiles\CollisionRay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -260,17 +252,10 @@
     <Compile Include="Main.cs" />
     <Compile Include="GameData\Settings.cs" />
     <Compile Include="Misc\Databases\TextDB.cs" />
-    <Compile Include="UI\SplashNumber.cs" />
-    <Compile Include="UI\Textbox.cs" />
-    <Compile Include="UI\TextInputBox.cs" />
-    <Compile Include="UI\Timer.cs" />
+    <Compile Include="UI\Information\SplashNumber.cs" />
+    <Compile Include="UI\Elements\Textbox.cs" />
+    <Compile Include="UI\Elements\TextInputBox.cs" />
     <Compile Include="Misc\TriggerZone.cs" />
-    <Compile Include="UI\WorldProperties.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\WorldProperties.Designer.cs">
-      <DependentUpon>WorldProperties.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="thumbnail.ico" />
@@ -304,7 +289,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="CodenameAdam_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>
@@ -322,11 +306,6 @@
       <Progid>adam.lvlfile</Progid>
       <DefaultIcon>thumbnail.ico</DefaultIcon>
     </FileAssociation>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WorldProperties.resx">
-      <DependentUpon>WorldProperties.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

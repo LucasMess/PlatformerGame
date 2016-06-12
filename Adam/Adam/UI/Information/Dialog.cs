@@ -20,12 +20,10 @@ namespace Adam.UI.Information
         public delegate void TextHandler(string code, int optionSelected);
 
         private readonly Rectangle _dialogBoxSourceRectangle;
-        private readonly Texture2D _dialogBoxTexture;
         private readonly SpriteFont _font;
         private readonly SoundFx _letterPopSound;
         private readonly Timer _letterPopTimer = new Timer();
         private readonly char[] _pauseChars = {'!', '.', ',', '?'};
-        private readonly SoundFx _popSound;
         private readonly Timer _selectBufferTimer = new Timer();
         private readonly Timer _skipTimer = new Timer();
         private int _currentLetterIndex;
@@ -43,7 +41,6 @@ namespace Adam.UI.Information
         /// </summary>
         public Dialog()
         {
-            _dialogBoxTexture = GameWorld.SpriteSheet;
             _nonPlayerDialogBox = new Rectangle(Main.UserResWidth/2, 40, 600, 200);
             _dialogBoxSourceRectangle = new Rectangle(16*16, 14*16, 16*3, 16);
 
@@ -54,7 +51,6 @@ namespace Adam.UI.Information
             _playerDialogBox.Y = Main.UserResHeight - 40 - _playerDialogBox.Height;
 
             _font = ContentHelper.LoadFont("Fonts/x24");
-            _popSound = new SoundFx("Sounds/message_show");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
         }
 
@@ -96,7 +92,6 @@ namespace Adam.UI.Information
             _fullText = FontHelper.WrapText(_font, text, _nonPlayerDialogBox.Width - 60);
             _skipTimer.Reset();
             _letterPopTimer.Reset();
-            _popSound.Reset();
             _partialText = "";
             _currentLetterIndex = 0;
         }
@@ -105,7 +100,6 @@ namespace Adam.UI.Information
         {
             if (IsActive)
             {
-                _popSound.PlayOnce();
                 // Checks to see if player wants to move on to the next dialog.
                 if (_skipTimer.TimeElapsedInSeconds > .5)
                 {
@@ -202,7 +196,7 @@ namespace Adam.UI.Information
             if (IsActive)
             {
                 // Drawing for non-player dialog box.
-                spriteBatch.Draw(_dialogBoxTexture, _nonPlayerDialogBox, _dialogBoxSourceRectangle, Color.White);
+                spriteBatch.Draw(GameWorld.UiSpriteSheet, _nonPlayerDialogBox, _dialogBoxSourceRectangle, Color.White);
                 spriteBatch.DrawString(_font, _partialText,
                     new Vector2(_nonPlayerDialogBox.X + 30, _nonPlayerDialogBox.Y + 30),
                     Color.Black);
@@ -210,7 +204,7 @@ namespace Adam.UI.Information
                 if (!IsWritingText())
                 {
                     // Displays options to choose from when the whole text has been displayed.
-                    spriteBatch.Draw(_dialogBoxTexture, _playerDialogBox, _dialogBoxSourceRectangle, Color.White);
+                    spriteBatch.Draw(GameWorld.UiSpriteSheet, _playerDialogBox, _dialogBoxSourceRectangle, Color.White);
                     if (_dialogOptions.Count > 0)
                     {
                         _dialogOptions.Draw(spriteBatch, _font, _playerDialogBox.Center.X, _playerDialogBox.Y + 30);

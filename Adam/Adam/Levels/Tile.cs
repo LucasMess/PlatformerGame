@@ -582,7 +582,7 @@ namespace Adam
                 case 62: // Tree of Knowledge
                     _sizeOfTile.X = 50;
                     _sizeOfTile.Y = 25;
-                    Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
+                    //Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
                     _positionInSpriteSheet = new Vector2(0, 0);
 
                     DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));

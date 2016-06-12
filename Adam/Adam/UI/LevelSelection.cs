@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.UI
 {
@@ -19,7 +20,6 @@ namespace Adam.UI
         private Rectangle _scissorRectangle;
         private Rectangle _boundsDrawRectangle;
         private Rectangle _boundsSourceRectangle;
-        private Texture2D _boundsTexture;
 
         private SpriteFont _headerFont;
         private Vector2 _headerPos;
@@ -51,7 +51,6 @@ namespace Adam.UI
             // Defines the bounding box for the Level Info List.
             int widthOfBounds = (int)(600 / Main.WidthRatio);
             int heightOfBounds = (int)(300 / Main.HeightRatio);
-            _boundsTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
             _boundsDrawRectangle = new Rectangle(Main.UserResWidth / 2, Main.UserResHeight / 2, widthOfBounds, heightOfBounds);
             _boundsDrawRectangle.X -= widthOfBounds / 2;
             _boundsDrawRectangle.Y -= heightOfBounds / 2;
@@ -284,7 +283,7 @@ namespace Adam.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.Black * .7f);
-            spriteBatch.Draw(_boundsTexture, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
 
             // Sets the scrolling levels to disappear if they are not inside of this bounding box.
             Rectangle originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
@@ -320,7 +319,6 @@ namespace Adam.UI
     {
         Rectangle _drawRectangle;
         Rectangle _sourceRectangle;
-        Texture2D _boxTexture;
         SpriteFont _infoFont;
         SpriteFont _nameFont;
 
@@ -347,7 +345,6 @@ namespace Adam.UI
             _spacing = _infoFont.LineSpacing + 4;
 
             _sourceRectangle = new Rectangle(128, 0, 284, 25);
-            _boxTexture = ContentHelper.LoadTexture("Tiles/ui_spritemap");
         }
 
         public string Name
@@ -391,7 +388,7 @@ namespace Adam.UI
             }
             else color = Color.White;
 
-            spriteBatch.Draw(_boxTexture, _drawRectangle, _sourceRectangle, color);
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, _drawRectangle, _sourceRectangle, color);
 
             Vector2 namePos = new Vector2(_drawRectangle.X + _spacing, _drawRectangle.Y + _drawRectangle.Height / 2 - _nameFont.LineSpacing / 2);
             FontHelper.DrawWithOutline(spriteBatch, _nameFont, Name, namePos, 2, Color.LightGray, Color.Black);

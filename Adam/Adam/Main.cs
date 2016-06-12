@@ -21,8 +21,6 @@ namespace Adam
 {
     public enum GameState
     {
-        SplashScreen,
-        Cutscene,
         MainMenu,
         LoadingScreen,
         GameWorld
@@ -80,7 +78,6 @@ namespace Adam
         public static bool WasPressed, DebugOn, DebugPressed;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
-        private Cutscene _cutscene;
         private GameDebug _debug;
         private SpriteFont _debugFont;
         private int _fps, _totalFrames;
@@ -90,10 +87,7 @@ namespace Adam
         private LoadingScreen _loadingScreen;
         private RenderTarget2D _mainRenderTarget;
         private Menu _menu;
-        private Overlay _overlay;
-        private SoundEffect _quack;
         private Session _session;
-        private Texture2D _splashDkd;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
 
@@ -110,12 +104,12 @@ namespace Adam
                 UserResWidth = 960;
                 UserResHeight = 540;
             }
-            UserResWidth = (int) monitorRes.X;
-            UserResHeight = (int) monitorRes.Y;
+            UserResWidth = (int)monitorRes.X;
+            UserResHeight = (int)monitorRes.Y;
 #pragma warning restore 0162
 
-            WidthRatio = (DefaultResWidth/(double) UserResWidth);
-            HeightRatio = (DefaultResHeight/(double) UserResHeight);
+            WidthRatio = (DefaultResWidth / (double)UserResWidth);
+            HeightRatio = (DefaultResHeight / (double)UserResHeight);
 
             // Important services that need to be instanstiated before other things.
             _graphics = new GraphicsDeviceManager(this);
@@ -167,13 +161,11 @@ namespace Adam
         {
             Camera = new Camera(GraphicsDevice.Viewport);
             _menu = new Menu(this);
-            _overlay = new Overlay();
-            _cutscene = new Cutscene();
             Dialog = new Dialog();
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
 
-            DefaultTexture = ContentHelper.LoadTexture("Tiles/temp tile");
+            DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
             GraphicsDeviceInstance = _graphics.GraphicsDevice;
 
             //Initialize the game render target
@@ -194,14 +186,10 @@ namespace Adam
 
         protected override void LoadContent()
         {
-            CurrentGameState = GameState.SplashScreen;
             _loadingScreen = new LoadingScreen(new Vector2(UserResWidth, UserResHeight), Content);
-            _splashDkd = ContentHelper.LoadTexture("Backgrounds/Splash/DKD_new");
-            _quack = Content.Load<SoundEffect>("Backgrounds/Splash/quack");
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<SpriteFont>("debug");
-            _cutscene.Load(Content);
 
             _debug = new GameDebug(_debugFont, new Vector2(UserResWidth, UserResHeight), _blackScreen);
 
@@ -320,26 +308,6 @@ namespace Adam
             //Update the game based on what GameState it is
             switch (CurrentGameState)
             {
-                case GameState.SplashScreen:
-                    CurrentGameState = GameState.Cutscene;
-                    break;
-                case GameState.Cutscene:
-                    if (InDebugMode)
-                    {
-                        CurrentGameState = GameState.MainMenu;
-                        _cutscene.Stop();
-                    }
-                    if (_cutscene.WasPlayed == false)
-                    {
-                        _cutscene.Update(CurrentGameState);
-                    }
-                    else CurrentGameState = GameState.MainMenu;
-                    if (InputHelper.IsAnyInputPressed())
-                    {
-                        CurrentGameState = GameState.MainMenu;
-                        _cutscene.Stop();
-                    }
-                    break;
                 case GameState.MainMenu:
                     _menu.Update();
                     break;
@@ -349,7 +317,6 @@ namespace Adam
                     if (!IsLoadingContent)
                     {
                         CurrentGameState = _desiredGameState;
-                        _overlay.FadeIn();
                     }
                     break;
                 case GameState.GameWorld:
@@ -358,7 +325,6 @@ namespace Adam
                         break;
 
                     GameWorld.Update();
-                    _overlay.Update();
                     Dialog.Update();
                     break;
             }
@@ -377,11 +343,6 @@ namespace Adam
             //Draw what is needed based on GameState
             switch (CurrentGameState)
             {
-                case GameState.Cutscene:
-                    _spriteBatch.Begin();
-                    _cutscene.Draw(_spriteBatch);
-                    _spriteBatch.End();
-                    break;
                 case GameState.GameWorld:
                     if (IsLoadingContent)
                         break;
@@ -432,16 +393,6 @@ namespace Adam
             //Draw what is needed based on GameState
             switch (CurrentGameState)
             {
-                case GameState.SplashScreen:
-                    _spriteBatch.Begin();
-                    _spriteBatch.Draw(_splashDkd, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.End();
-                    break;
-                case GameState.Cutscene:
-                    _spriteBatch.Begin();
-                    _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.End();
-                    break;
                 case GameState.LoadingScreen:
                     _spriteBatch.Begin();
                     _loadingScreen.Draw(_spriteBatch);
@@ -450,7 +401,7 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.MainMenu:
-                    var rs2 = new RasterizerState {ScissorTestEnable = true};
+                    var rs2 = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs2);
                     _menu.Draw(_spriteBatch);
@@ -459,15 +410,6 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.GameWorld:
-
-                    Overlay.CornerColor = Color.Black;
-                    if (TimeFreeze.IsTimeFrozen())
-                    {
-                        if (GameWorld.GetPlayer().IsTakingDamage)
-                            Overlay.CornerColor = Color.Red;
-                        else Overlay.CornerColor = Color.White;
-                    }
-
                     //Draw the rendertarget
                     _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, RasterizerState.CullNone);
@@ -480,7 +422,7 @@ namespace Adam
                     //    Color.White);
                     //_spriteBatch.End();
 
-                    var rs = new RasterizerState {ScissorTestEnable = true};
+                    var rs = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
                     // _overlay.Draw(SpriteBatch);
@@ -494,71 +436,69 @@ namespace Adam
             }
             base.Draw(gameTime);
 
-            if (CurrentGameState != GameState.SplashScreen)
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && !DebugOn)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && !DebugOn)
-                {
-                    DebugOn = true;
-                    DebugPressed = true;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && DebugOn)
-                {
-                    DebugOn = false;
-                    DebugPressed = true;
-                }
-
-                if (Keyboard.GetState().IsKeyUp(Keys.F3))
-                {
-                    DebugPressed = false;
-                }
-
-                if (DebugOn)
-                {
-                    _spriteBatch.Begin();
-                    _spriteBatch.Draw(_blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White*.3f);
-                    _spriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
-                    _spriteBatch.DrawString(_debugFont,
-                        "Camera Position:" + Camera.InvertedCoords.X + "," + Camera.InvertedCoords.Y,
-                        new Vector2(0, 40), Color.White);
-                    _spriteBatch.DrawString(_debugFont,
-                        "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
-                        LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
-                        Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
-                        Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Player is dead: " + GameWorld.GetPlayer().IsDead,
-                        new Vector2(0, 120),
-                        Color.White);
-                    //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Player Velocity" + GameWorld.GetPlayer().GetVelocity(),
-                        new Vector2(0, 180),
-                        Color.White);
-                    _spriteBatch.DrawString(_debugFont,
-                        "Total Chunks: " + GameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
-                        GameWorld.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
-                    _spriteBatch.DrawString(_debugFont,
-                        "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
-                        new Vector2(0, 240), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Entity Count: " + GameWorld.Entities?.Count,
-                        new Vector2(0, 260), Color.White);
-                    _spriteBatch.DrawString(_debugFont,
-                        "Visible Tiles: " + GameWorld.ChunkManager.GetVisibleIndexes()?.Length,
-                        new Vector2(0, 280), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 300), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive,
-                        new Vector2(0, 320), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Is MessageBox Active: " + MessageBox.IsActive,
-                        new Vector2(0, 340), Color.White);
-                    _spriteBatch.DrawString(_debugFont, "Timers called: " + Timer.ActiveTimers,
-                        new Vector2(0, 360), Color.White);
-
-                    _debug.Draw(_spriteBatch);
-                    _spriteBatch.End();
-                }
+                DebugOn = true;
+                DebugPressed = true;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && DebugOn)
+            {
+                DebugOn = false;
+                DebugPressed = true;
+            }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.F3))
+            {
+                DebugPressed = false;
+            }
+
+            if (DebugOn)
+            {
+                _spriteBatch.Begin();
+                _spriteBatch.Draw(_blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White * .3f);
+                _spriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
+                _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
+                _spriteBatch.DrawString(_debugFont,
+                    "Camera Position:" + Camera.InvertedCoords.X + "," + Camera.InvertedCoords.Y,
+                    new Vector2(0, 40), Color.White);
+                _spriteBatch.DrawString(_debugFont,
+                    "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
+                    LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
+                    Color.White);
+                _spriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
+                    Color.White);
+                _spriteBatch.DrawString(_debugFont, "Player is dead: " + GameWorld.GetPlayer().IsDead,
+                    new Vector2(0, 120),
+                    Color.White);
+                //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Player Velocity" + GameWorld.GetPlayer().GetVelocity(),
+                    new Vector2(0, 180),
+                    Color.White);
+                _spriteBatch.DrawString(_debugFont,
+                    "Total Chunks: " + GameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
+                    GameWorld.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
+                _spriteBatch.DrawString(_debugFont,
+                    "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
+                    new Vector2(0, 240), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Entity Count: " + GameWorld.Entities?.Count,
+                    new Vector2(0, 260), Color.White);
+                _spriteBatch.DrawString(_debugFont,
+                    "Visible Tiles: " + GameWorld.ChunkManager.GetVisibleIndexes()?.Length,
+                    new Vector2(0, 280), Color.White);
+                _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 300), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive,
+                    new Vector2(0, 320), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Is MessageBox Active: " + MessageBox.IsActive,
+                    new Vector2(0, 340), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Timers called: " + Timer.ActiveTimers,
+                    new Vector2(0, 360), Color.White);
+
+                _debug.Draw(_spriteBatch);
+                _spriteBatch.End();
+            }
+
         }
 
         protected override void OnExiting(object sender, EventArgs args)

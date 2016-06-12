@@ -79,7 +79,6 @@ namespace Adam.PlayerCharacter
             Sounds.AddSoundRef("hurt", "Player/hurtSound");
             Sounds.AddSoundRef("jump", "Player/jumpSound");
             Sounds.AddSoundRef("stomp", "Player/jumpSound");
-            Sounds.AddSoundRef("punch", "Sounds/punch");
             Sounds.AddSoundRef("fail", "Sounds/Menu/level_fail");
 
             ComplexAnim.AddToQueue("idle");
@@ -95,7 +94,6 @@ namespace Adam.PlayerCharacter
 
         private void OnPlayerRevive()
         {
-            Overlay.Instance.FadeIn();
         }
 
         protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
@@ -311,15 +309,12 @@ namespace Adam.PlayerCharacter
         {
             CollRectangle.X = (int)position.X;
             CollRectangle.Y = (int)position.Y;
-            Overlay.Instance.FadeIn();
         }
 
         private void OnPlayerDeath(Entity entity)
         {
             _respawnTimer.ResetAndWaitFor(4000);
             _respawnTimer.SetTimeReached += Revive;
-            Sounds.Get("fail").Play();
-            Overlay.Instance.FadeOut();
         }
 
         private void OnDamageTaken()
