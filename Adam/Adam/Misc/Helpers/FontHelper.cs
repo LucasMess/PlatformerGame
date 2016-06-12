@@ -120,6 +120,7 @@ namespace Adam.Misc.Helpers
         /// <param name="text"></param>
         public static void DrawTooltip(SpriteBatch spriteBatch, string text)
         {
+            if (text == null) return;
             var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
             var mouse = InputHelper.MouseRectangle;
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"),

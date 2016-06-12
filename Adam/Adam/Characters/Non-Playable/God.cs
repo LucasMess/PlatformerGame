@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Adam.Characters;
 using Adam.Levels;
+using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.Noobs

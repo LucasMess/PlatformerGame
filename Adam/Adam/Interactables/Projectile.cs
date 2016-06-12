@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Adam.Characters.Enemies;
 using Adam.Levels;
+using Adam.Misc.Helpers;
 using Adam.PlayerCharacter;
 using Timer = Adam.Misc.Timer;
 
@@ -78,7 +79,7 @@ namespace Adam
         {
             CurrentProjectileSource = ProjectileSource.Player;
             Player player = GameWorld.GetPlayer();
-            Texture = ContentHelper.LoadTexture("Projectile");
+            Texture = Main.DefaultTexture;
             CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 4, 16, 8);
             CurrentCollisionType = CollisionType.Bouncy;
             

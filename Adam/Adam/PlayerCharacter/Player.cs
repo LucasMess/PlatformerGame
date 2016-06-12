@@ -3,6 +3,7 @@ using Adam.Characters;
 using Adam.Interactables;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.Misc.Helpers;
 using Adam.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

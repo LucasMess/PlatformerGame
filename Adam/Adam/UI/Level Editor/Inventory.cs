@@ -4,6 +4,7 @@ using Adam.Levels;
 using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Adam.UI.Level_Editor
 {
@@ -13,7 +14,7 @@ namespace Adam.UI.Level_Editor
     internal class Inventory
     {
         private const int SpacingBetweenTiles = 2;
-        
+
         // The starting coordinates for the first tile in the grid.
         private const int DefaultX = 159;
         private const int DefaultY = 51;
@@ -32,6 +33,8 @@ namespace Adam.UI.Level_Editor
         private readonly int _inactiveY;
 
         private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
+        private TileHolder _tileBeingMoved = new TileHolder(0);
+        public static bool IsMovingTile { get; private set; }
 
         public Inventory()
         {
@@ -52,15 +55,16 @@ namespace Adam.UI.Level_Editor
             foreach (var tile in _tileHolders)
             {
                 var x = CalcHelper.ApplyUiRatio(DefaultX) +
-                        (counter%TilesPerRow)*
+                        (counter % TilesPerRow) *
                         CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Width + SpacingBetweenTiles);
                 var y = CalcHelper.ApplyUiRatio(DefaultY) +
-                        (counter/TilesPerRow)*
+                        (counter / TilesPerRow) *
                         CalcHelper.ApplyUiRatio(TileHolder.SourceRectangle.Height + SpacingBetweenTiles);
 
                 tile.SetPosition(x, y);
                 tile.BindTo(new Vector2(_backDrop.X, _backDrop.Y));
-
+                tile.WasClicked += OnTileClicked;
+                tile.WasReleased += OnTileReleased;
                 counter++;
             }
         }
@@ -89,14 +93,14 @@ namespace Adam.UI.Level_Editor
             {
                 _backDrop.Y =
                     (int)
-                        CalcHelper.EaseInAndOut((int) AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
+                        CalcHelper.EaseInAndOut((int)AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
                             Math.Abs(_posAtStartOfAnimation - _activeY), 200);
             }
             else
             {
                 _backDrop.Y =
                     (int)
-                        CalcHelper.EaseInAndOut((int) AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
+                        CalcHelper.EaseInAndOut((int)AnimationTimer.TimeElapsedInMilliSeconds, _posAtStartOfAnimation,
                             -Math.Abs(_posAtStartOfAnimation - _inactiveY), 200);
             }
         }
@@ -116,11 +120,29 @@ namespace Adam.UI.Level_Editor
         public void Update()
         {
             Animate();
-
             foreach (var tile in _tileHolders)
             {
                 tile.Update(new Vector2(_backDrop.X, _backDrop.Y));
             }
+
+            if (InputHelper.IsLeftMousePressed() && !IsMovingTile)
+            {
+                foreach (var tile in _tileHolders)
+                {
+                    tile.CheckIfClickedOn();
+                }
+            }
+        }
+
+        private void OnTileClicked(TileHolder tile)
+        {
+            IsMovingTile = true;
+            _tileBeingMoved = tile;
+        }
+
+        private void OnTileReleased(TileHolder tile)
+        {
+            IsMovingTile = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -129,11 +151,16 @@ namespace Adam.UI.Level_Editor
 
             foreach (var tile in _tileHolders)
             {
-                tile.Draw(spriteBatch);
+                if (tile != _tileBeingMoved)
+                    tile.Draw(spriteBatch);
             }
+
+            _tileBeingMoved.Draw(spriteBatch);
+
             foreach (var tile in _tileHolders)
             {
-                tile.DrawToolTip(spriteBatch);
+                if (!IsMovingTile)
+                    tile.DrawToolTip(spriteBatch);
             }
         }
     }

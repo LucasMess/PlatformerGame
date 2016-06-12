@@ -19,6 +19,7 @@ namespace Adam.Levels
         private static readonly SoundFx[] Construction = new SoundFx[3];
         private static readonly Timer IdleTimerForSave = new Timer();
         private static ButtonBar _buttonBar;
+        private static HotBar _hotBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
         private static bool _hasChangedSinceLastSave;
@@ -42,6 +43,7 @@ namespace Adam.Levels
         {
             _inventory = new Inventory();
             _buttonBar = new ButtonBar();
+            _hotBar = new HotBar();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
 
@@ -91,6 +93,7 @@ namespace Adam.Levels
 
             _inventory.Update();
             _buttonBar.Update();
+            _hotBar.Update();
             Brush.Update();
             CheckIfOnInventory();
             CheckIfPositioningPlayer();
@@ -435,6 +438,7 @@ namespace Adam.Levels
         {
             _inventory.Draw(spriteBatch);
             _buttonBar.Draw(spriteBatch);
+            _hotBar.Draw(spriteBatch);
             _miniMap.Draw(spriteBatch);
         }
 

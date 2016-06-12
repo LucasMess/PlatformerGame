@@ -1,14 +1,10 @@
-﻿using Adam;
+﻿using System;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Adam
+namespace Adam.Misc.Helpers
 {
     /// <summary>
     /// Provides simple loading of assets that is easier to type.
@@ -29,7 +25,7 @@ namespace Adam
             catch (ContentLoadException)
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
-                throw;
+                return Main.DefaultTexture;
             }            
         }
 
@@ -82,7 +78,7 @@ namespace Adam
             }
             catch (ContentLoadException)
             {
-                Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists. @{1}", file);
+                Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 throw;
             }
         }

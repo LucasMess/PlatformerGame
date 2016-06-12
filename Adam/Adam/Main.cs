@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Adam.GameData;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.Misc.Helpers;
 using Adam.Network;
 using Adam.UI;
 using Adam.UI.Information;
