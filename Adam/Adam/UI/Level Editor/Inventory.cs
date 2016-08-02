@@ -121,18 +121,24 @@ namespace Adam.UI.Level_Editor
         public void Update()
         {
             Animate();
+
+            if (IsOpen)
+            {
+                if (InputHelper.IsLeftMousePressed() && !IsMovingTile)
+                {
+                    foreach (var tile in _tileHolders)
+                    {
+                        tile.CheckIfClickedOn();
+                    }
+                }
+            }
+
+            TileBeingMoved.Update();
             foreach (var tile in _tileHolders)
             {
                 tile.Update(new Vector2(_backDrop.X, _backDrop.Y));
             }
-
-            if (InputHelper.IsLeftMousePressed() && !IsMovingTile)
-            {
-                foreach (var tile in _tileHolders)
-                {
-                    tile.CheckIfClickedOn();
-                }
-            }
+           
         }
 
         private void OnTileClicked(TileHolder tile)
@@ -143,6 +149,7 @@ namespace Adam.UI.Level_Editor
 
         private void OnTileReleased(TileHolder tile)
         {
+            
         }
 
         private void OnTileReturned(TileHolder tile)

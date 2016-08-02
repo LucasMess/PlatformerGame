@@ -56,8 +56,9 @@ namespace Adam.UI.Elements
             Text = "OK";
             int width = 19 * 5;
             int height = 6 * 5;
-            int x = containerRectangle.X + containerRectangle.Width / 2;
-            int y = containerRectangle.Y + containerRectangle.Height;
+            ContainerDiff = new Rectangle(containerRectangle.Width/2, containerRectangle.Y/2,0,0);
+            int x = containerRectangle.X + ContainerDiff.X;
+            int y = containerRectangle.Y + ContainerDiff.Y;
             CollRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
             Initialize();
         }

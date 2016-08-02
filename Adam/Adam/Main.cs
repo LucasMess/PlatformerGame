@@ -40,7 +40,7 @@ namespace Adam
 
         private const bool InDebugMode = true;
         private const bool IsTestingMultiplayer = false;
-        public const int Tilesize = 48;
+        public const int Tilesize = 32;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;
         public const string Version = "Version 0.10.0 Beta";
@@ -86,7 +86,9 @@ namespace Adam
         //Game Variables
         private BlendState _lightBlendState;
         private LoadingScreen _loadingScreen;
-        private RenderTarget2D _mainRenderTarget;
+        private RenderTarget2D _frontRT;
+        private RenderTarget2D _shadowRT;
+        private RenderTarget2D _backRT;
         private Menu _menu;
         private Session _session;
         public SamplerState DesiredSamplerState;
@@ -170,7 +172,13 @@ namespace Adam
             GraphicsDeviceInstance = _graphics.GraphicsDevice;
 
             //Initialize the game render target
-            _mainRenderTarget = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
+            _frontRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
+                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            _backRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
+               GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
+               GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            _shadowRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
                 GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -267,14 +275,15 @@ namespace Adam
                     break;
             }
 
+            MessageBox.Update();
             if (MessageBox.IsActive)
             {
-                MessageBox.Update();
                 return;
             }
+
+            TextInputBox.Update();
             if (TextInputBox.IsActive)
             {
-                TextInputBox.Update();
                 return;
             }
 
@@ -339,7 +348,7 @@ namespace Adam
             //Change RenderTarget to this from the default
             GraphicsDevice.SetRenderTarget(renderTarget);
             //Set up the background color
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Transparent);
 
             //Draw what is needed based on GameState
             switch (CurrentGameState)
@@ -347,35 +356,11 @@ namespace Adam
                 case GameState.GameWorld:
                     if (IsLoadingContent)
                         break;
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-                    GameWorld.DrawBackground(_spriteBatch);
-                    _spriteBatch.End();
 
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                        null, null, Camera.Translate);
-                    GameWorld.Draw(_spriteBatch);
-                    _spriteBatch.End();
+                    
 
 
-                    //SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                    //    null, null);
-                    //_overlay.Draw(SpriteBatch);
-
-                    //if (!GameWorld.LevelEditor.OnInventory)
-                    //    ObjectiveTracker.Draw(SpriteBatch);
-
-                    //GameWorld.DrawUi(SpriteBatch);
-                    //Dialog.Draw(SpriteBatch);
-                    //TextInputBox.Draw(SpriteBatch);
-                    //MessageBox.Draw(SpriteBatch);
-
-                    //SpriteBatch.End();
-
-                    //SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, null, null,
-                    //    null, Camera.Translate);
-                    //// Glows go here.
-                    //SpriteBatch.End();
+                    
                     break;
             }
 
@@ -386,7 +371,7 @@ namespace Adam
         protected override void Draw(GameTime gameTime)
         {
             _totalFrames++;
-            DrawToMainRenderTarget(_mainRenderTarget);
+            //DrawToMainRenderTarget(_mainRenderTarget);
 
             //Set background color
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -411,11 +396,64 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.GameWorld:
-                    //Draw the rendertarget
+
+                    // Draw background and walls to normal render target.
+                    GraphicsDevice.SetRenderTarget(_backRT);
+                    GraphicsDevice.Clear(Color.Green);
+
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
+                        DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+                    GameWorld.DrawBackground(_spriteBatch);
+                    _spriteBatch.End();
+
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                        null, null, Camera.Translate);
+                    GameWorld.DrawWalls(_spriteBatch);
+                    _spriteBatch.End();
+
+
+
+                    ////Draw the front tiles as usual.
+                    GraphicsDevice.SetRenderTarget(_frontRT);
+                    GraphicsDevice.Clear(Color.Transparent);
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                        null, null, Camera.Translate);
+                    GameWorld.Draw(_spriteBatch);
+                    _spriteBatch.End();
+
+
+                    //// Draw walls to another render target so that the shadows are only drawn when there is a wall.
+                    GraphicsDevice.SetRenderTarget(_shadowRT);
+                    GraphicsDevice.Clear(Color.Transparent);
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                        null, null, Camera.Translate);
+                    GameWorld.DrawWalls(_spriteBatch);
+                    _spriteBatch.End();
+
+                    // Draw shadow of front tiles and entities when there is a wall.
+                    BlendState bs = new BlendState
+                    {
+                        AlphaSourceBlend = Blend.DestinationAlpha,
+                        AlphaDestinationBlend = Blend.Zero,
+                        ColorSourceBlend = Blend.SourceColor,
+                        ColorDestinationBlend = Blend.Zero
+                    };
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, null,
+                        null, null);
+                    _spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight ), Color.Black * 1f);
+                    _spriteBatch.End();
+
+                    GraphicsDevice.SetRenderTarget(null);
+
                     _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, RasterizerState.CullNone);
-                    _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.Draw(_backRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.Draw(_shadowRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.Black * .5f);
+                    _spriteBatch.Draw(_frontRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.End();
+
+
+                    /////////////////////////////////////////////////////
 
                     //_spriteBatch.Begin(SpriteSortMode.Immediate, _lightBlendState,
                     //    GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);

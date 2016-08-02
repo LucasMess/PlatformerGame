@@ -9,17 +9,24 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Adam;
+using Adam.Levels;
+using Adam.Misc;
+using Adam.UI;
+using Adam.UI.Elements;
+using Adam.UI.Level_Editor;
+using Adam.UI.Level_Editor;
+
 namespace Adam.Levels
 {
     /// <summary>
-    /// Responsible for user interface and input for the level editor.
+    /// Resposible for user interface and input for the level editor.
     /// </summary>
     public static class LevelEditor
     {
         private static readonly SoundFx[] Construction = new SoundFx[3];
         private static readonly Timer IdleTimerForSave = new Timer();
         private static ButtonBar _buttonBar;
-        private static HotBar _hotBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
         private static bool _hasChangedSinceLastSave;
@@ -36,6 +43,7 @@ namespace Adam.Levels
         public static int IndexOfMouse;
         public static bool OnWallMode;
         public static byte SelectedId = 1;
+        private static InGameWindow _window = new InGameWindow(125,50);
 
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
 
@@ -43,7 +51,7 @@ namespace Adam.Levels
         {
             _inventory = new Inventory();
             _buttonBar = new ButtonBar();
-            _hotBar = new HotBar();
+            HotBar.Initialize();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
 
@@ -88,12 +96,18 @@ namespace Adam.Levels
         public static void Update()
         {
             GameWorld.Player.Health = GameWorld.Player.MaxHealth;
+            _window.Update();
+
+            if (InputHelper.IsKeyDown(Keys.U))
+                _window.Show();
+            if (InputHelper.IsKeyDown(Keys.Y))
+                _window.Hide();
 
             SoundtrackManager.PlayLevelEditorTheme();
 
             _inventory.Update();
             _buttonBar.Update();
-            _hotBar.Update();
+            HotBar.Update();
             Brush.Update();
             CheckIfOnInventory();
             CheckIfPositioningPlayer();
@@ -438,9 +452,10 @@ namespace Adam.Levels
         {
             _inventory.Draw(spriteBatch);
             _buttonBar.Draw(spriteBatch);
-            _hotBar.Draw(spriteBatch);
+            HotBar.Draw(spriteBatch);
             _miniMap.Draw(spriteBatch);
             _inventory.DrawOnTop(spriteBatch);
+            _window.Draw(spriteBatch);
         }
 
         /// <summary>

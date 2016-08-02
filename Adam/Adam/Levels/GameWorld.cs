@@ -19,7 +19,7 @@ namespace Adam.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/new spritemap");
+        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_21");
         public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
         public static readonly Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
         private static Timer _stopMovingTimer = new Timer();
@@ -56,9 +56,9 @@ namespace Adam.Levels
             var height = WorldData.LevelHeight;
 
             if (WorldData.MetaData == null)
-                WorldData.MetaData = new string[width*height];
+                WorldData.MetaData = new string[width * height];
 
-            var maxClouds = width/100;
+            var maxClouds = width / 100;
             for (var i = 0; i < maxClouds; i++)
             {
                 _clouds.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
@@ -99,8 +99,8 @@ namespace Adam.Levels
 
             for (var i = 0; i < ds.Length; i++)
             {
-                var xcoor = (i%width)*Main.Tilesize;
-                var ycoor = ((i - (i%width))/width)*Main.Tilesize;
+                var xcoor = (i % width) * Main.Tilesize;
+                var ycoor = ((i - (i % width)) / width) * Main.Tilesize;
 
 
                 array[i] = new Tile(xcoor, ycoor);
@@ -182,32 +182,32 @@ namespace Adam.Levels
 
                     if (entity is Enemy)
                     {
-                        var enemy = (Enemy) entity;
+                        var enemy = (Enemy)entity;
                         enemy.Update();
                     }
                     if (entity is Item)
                     {
-                        var power = (Item) entity;
+                        var power = (Item)entity;
                         power.Update();
                     }
                     if (entity is Projectile)
                     {
-                        var proj = (Projectile) entity;
+                        var proj = (Projectile)entity;
                         proj.Update();
                     }
                     if (entity is NonPlayableCharacter)
                     {
-                        var npc = (NonPlayableCharacter) entity;
+                        var npc = (NonPlayableCharacter)entity;
                         npc.Update();
                     }
                     if (entity is Sign)
                     {
-                        var sign = (Sign) entity;
+                        var sign = (Sign)entity;
                         sign.Update();
                     }
                     if (entity is CheckPoint)
                     {
-                        var ch = (CheckPoint) entity;
+                        var ch = (CheckPoint)entity;
                         ch.Update();
                     }
                 }
@@ -218,6 +218,17 @@ namespace Adam.Levels
                 if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
                     TileArray[tileNumber]?.Update();
+                }
+            }
+        }
+
+        public static void DrawWalls(SpriteBatch spriteBatch)
+        {
+             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            {
+                if (tileNumber > 0 && tileNumber < TileArray.Length)
+                {
+                    WallArray[tileNumber].Draw(spriteBatch);
                 }
             }
         }
@@ -233,21 +244,13 @@ namespace Adam.Levels
                     c.Draw(spriteBatch);
             }
 
-            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
-            {
-                if (tileNumber > 0 && tileNumber < TileArray.Length)
-                {
-                    if (WallArray[tileNumber].Texture != null)
-                        WallArray[tileNumber].Draw(spriteBatch);
-                }
-            }
+           
 
             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
                 if (tileNumber >= 0 && tileNumber < TileArray.Length)
                 {
-                    if (TileArray[tileNumber].Texture != null)
-                        TileArray[tileNumber].Draw(spriteBatch);
+                    TileArray[tileNumber].Draw(spriteBatch);
                 }
             }
 
@@ -283,7 +286,7 @@ namespace Adam.Levels
                 var entity = Entities[i];
                 if (entity is Enemy)
                 {
-                    var enemy = (Enemy) entity;
+                    var enemy = (Enemy)entity;
                     enemy.Revive();
                 }
                 if (entity is Food)

@@ -1,4 +1,5 @@
-﻿using Adam.Levels;
+﻿using System.Dynamic;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
 using Microsoft.Win32.SafeHandles;
@@ -40,6 +41,8 @@ namespace Adam.UI
         public event EventHandler MouseHover;
         public event EventHandler MouseOut;
 
+        protected Rectangle ContainerDiff { get; set; }
+
         protected virtual void OnMouseHover()
         {
             if (!_mouseIsOver)
@@ -55,6 +58,17 @@ namespace Adam.UI
         {
             _mouseIsOver = false;
             Color = Color.White;
+        }
+
+        /// <summary>
+        /// Updates the position of the button according to where the container is.
+        /// </summary>
+        /// <param name="container"></param>
+        public void Update(Rectangle container)
+        {
+            CollRectangle.X = container.X + ContainerDiff.X;
+            CollRectangle.Y = container.Y + ContainerDiff.Y;
+            Update();
         }
 
         public virtual void Update()

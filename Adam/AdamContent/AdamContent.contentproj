@@ -818,7 +818,6 @@
       <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="Characters\adam_ninja.png">
       <Name>adam_ninja</Name>
@@ -983,6 +982,13 @@
   <ItemGroup>
     <Compile Include="Tiles\ui_spritemap_4.png">
       <Name>ui_spritemap_4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tiles\spritemap_21.png">
+      <Name>spritemap_21</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

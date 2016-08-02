@@ -17,8 +17,8 @@ namespace Adam
         public static bool IsDoingAction = false;
         private bool _isDucking;
 
-        private const float MaxWalkVelX = 3.5f;
-        private const float MaxRunVelX = 5f;
+        private const float MaxWalkVelX = 5.5f;
+        private const float MaxRunVelX = 7.5f;
         private const float MoveJumpAcc = .1f;
         const float JumpAcc = -14f;
         const float WalkAcc = .35f;

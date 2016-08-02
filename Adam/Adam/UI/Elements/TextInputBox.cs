@@ -20,8 +20,8 @@ namespace Adam.UI
         /// </summary>
         public TextInputBox()
         {
-            _textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
-            Button = new OkButton(DrawRectangle);
+            //_textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
+            //Button = new OkButton(DrawRectangle);
         }
 
         public override void Show(string message)

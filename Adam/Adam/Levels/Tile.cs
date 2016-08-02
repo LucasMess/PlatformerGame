@@ -12,7 +12,7 @@ namespace Adam
     {
         public delegate void TileHandler(Tile t);
 
-        private const int SmallTileSize = 32;
+        private const int SmallTileSize = 16;
         private const float DefaultOpacity = 1;
         private const float MaxOpacity = .5f;
 
@@ -134,6 +134,7 @@ namespace Adam
         public Rectangle SourceRectangle;
         public byte SubId;
         public Texture2D Texture;
+        private static Rectangle _gridSourceRectangle = new Rectangle(352, 160, 32, 32);
 
         /// <summary>
         ///     Constructor used when DefineTexture() will NOT be called.
@@ -919,6 +920,8 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //DrawShadowVersion(spriteBatch);
+
             if (Texture != null)
             {
                 if (!_isInvisible || (_isInvisible && GameWorld.CurrentGameMode == GameMode.Edit))
@@ -936,12 +939,22 @@ namespace Adam
                     c.Draw(spriteBatch);
                 }
             }
+            if (Main.CurrentGameMode == GameMode.Edit)
+            {
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, Main.Tilesize,Main.Tilesize),_gridSourceRectangle, Color.CornflowerBlue * .5f);
+            }
         }
 
         public void DrawByForce(SpriteBatch spriteBatch)
         {
             if (Texture != null)
                 spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color);
+        }
+
+        public void DrawShadowVersion(SpriteBatch spriteBatch)
+        {
+            if (Texture != null)
+                spriteBatch.Draw(Texture, new Rectangle(DrawRectangle.X + 4, DrawRectangle.Y + 4, DrawRectangle.Width, DrawRectangle.Height), SourceRectangle, Color.Black * .4f);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)

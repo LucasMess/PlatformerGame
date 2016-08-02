@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using Adam.UI.Elements;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace Adam.Misc.Helpers
@@ -16,6 +17,9 @@ namespace Adam.Misc.Helpers
             ContentHelper.LoadFont("Fonts/x32"),
             ContentHelper.LoadFont("Fonts/x64")
         };
+
+        private static InGameWindow _window;
+
         /// <summary>
         /// This draws a string with a black outline around the letters.
         /// </summary>
@@ -49,17 +53,20 @@ namespace Adam.Misc.Helpers
             if (text == null)
                 text = "";
 
-            int i = outlineWidth;
-            float lostWidth = font.MeasureString(text).X * scale / 2;
-            if (scale == 1) lostWidth = 0;
+            spriteBatch.DrawString(font, text, new Vector2(position.X + 3, position.Y + 3), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y), fontColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            //spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            //spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            //int i = outlineWidth;
+            //float lostWidth = font.MeasureString(text).X * scale / 2;
+            //if (scale == 1) lostWidth = 0;
 
-            spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y), fontColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            ////spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            ////spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            //spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+
+            //spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y), fontColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -120,14 +127,24 @@ namespace Adam.Misc.Helpers
         /// <param name="text"></param>
         public static void DrawTooltip(SpriteBatch spriteBatch, string text)
         {
-            if (text == null) return;
+
+            if (text == null) text = "";
             var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
             var mouse = InputHelper.MouseRectangle;
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"),
-                new Rectangle(mouse.X - 5, mouse.Y - (int)font.MeasureString(text).Y - 2, (int)font.MeasureString(text).X + 10,
-                    (int)font.MeasureString(text).Y + 4), Color.Black);
+
+            _window = new InGameWindow(mouse.X - CalcHelper.ApplyUiRatio(4), mouse.Y - (int) font.MeasureString(text).Y - CalcHelper.ApplyUiRatio(2),
+                (int) font.MeasureString(text).X + CalcHelper.ApplyUiRatio(8),
+                (int) font.MeasureString(text).Y + CalcHelper.ApplyUiRatio(4), false);
+            _window.Color = new Color(196,69,69);
+            _window.DisableAnimation();
+            _window.Draw(spriteBatch);
+
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"),
+            //    new Rectangle(mouse.X - 5, mouse.Y - (int)font.MeasureString(text).Y - 2, (int)font.MeasureString(text).X + 10,
+            //        (int)font.MeasureString(text).Y + 4), Color.Black);
+
             DrawWithOutline(spriteBatch, font, text, new Vector2(mouse.X, mouse.Y - (int)font.MeasureString(text).Y), 1,
-                Color.White, Color.Purple);
+                Color.White, Color.Black);
         }
     }
 }

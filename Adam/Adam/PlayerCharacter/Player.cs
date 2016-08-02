@@ -43,17 +43,17 @@ namespace Adam.PlayerCharacter
             ComplexAnim.FrameChanged += ComplexAnim_FrameChanged;
 
             // Animation textures.
-            ComplexAnim.AddAnimationData("idle",
-                new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
+            //ComplexAnim.AddAnimationData("idle",
+                //new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
             ComplexAnim.AddAnimationData("smellPoop",
                 new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
             ComplexAnim.AddAnimationData("sleep",
                 new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("fightIdle",
-                new ComplexAnimData(50, fightTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("walk",
+            ComplexAnim.AddAnimationData("idle",
+                new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 400, 24, 40, 125, 4, true));
+            ComplexAnim.AddAnimationData("oldWalk",
                 new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 25, 4, true));
-            ComplexAnim.AddAnimationData("run",
+            ComplexAnim.AddAnimationData("walk",
                 new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("slide",
                new ComplexAnimData(153, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));

@@ -18,9 +18,8 @@ namespace Adam.UI.Level_Editor
         private readonly Tile _tile;
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
         private Rectangle _squareRectangle;
-        private readonly Color _selectedColor = new Color(69, 96, 198);
-        private readonly Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
-        private readonly SpriteFont _font = FontHelper.ChooseBestFont(CalcHelper.ApplyUiRatio(16));
+        private readonly Color _hoveredColor = new Color(69, 96, 198);
+        private readonly Color _selectedColor = new Color(196,69,69);
 
         public delegate void TileHandler(TileHolder tile);
         public event TileHandler WasClicked;
@@ -129,15 +128,21 @@ namespace Adam.UI.Level_Editor
                 SetPosition(mouse.X - (int)_mouseDifferential.X, mouse.Y - (int)_mouseDifferential.Y);
 
                 if (InputHelper.IsLeftMouseReleased())
+                {
                     WasReleased?.Invoke(this);
+                    HotBar.ReplaceHotBar(this);
+                }
             }
 
             _squareRectangle = new Rectangle(_tile.DrawRectangle.X - CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile), _tile.DrawRectangle.Y - CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile), CalcHelper.ApplyUiRatio(SourceRectangle.Width), CalcHelper.ApplyUiRatio(SourceRectangle.Height));
         }
 
+        /// <summary>
+        /// Invokes click event if the tile is being clicked on.
+        /// </summary>
         public void CheckIfClickedOn()
         {
-            if (IsHovered())
+            if (IsHovered() && InputHelper.IsLeftMousePressed())
             {
                 WasClicked?.Invoke(this);
             }
@@ -146,6 +151,7 @@ namespace Adam.UI.Level_Editor
         public void Draw(SpriteBatch spriteBatch)
         {
             DrawSquareBehindTile(spriteBatch);
+            _tile.DrawShadowVersion(spriteBatch);
             _tile.DrawByForce(spriteBatch);
         }
 
@@ -154,9 +160,13 @@ namespace Adam.UI.Level_Editor
             Color squareColor = Color.White;
             if (_isBeingMoved || _isReturningToDefaultPos || _isSteppingAside)
             {
-                squareColor = _selectedColor;
+                squareColor = _hoveredColor;
             }
             if (!Inventory.IsMovingTile && IsHovered())
+            {
+                squareColor = _hoveredColor;
+            }
+            if (Id == LevelEditor.SelectedId && Id != 0)
             {
                 squareColor = _selectedColor;
             }
@@ -175,6 +185,10 @@ namespace Adam.UI.Level_Editor
             }
         }
 
+        /// <summary>
+        /// Returns true if the tile is being hovered.
+        /// </summary>
+        /// <returns></returns>
         private bool IsHovered()
         {
             return InputHelper.MouseRectangle.Intersects(_squareRectangle);
@@ -195,6 +209,11 @@ namespace Adam.UI.Level_Editor
         public Rectangle SlotRectangle { get; private set; }
         public Rectangle CollRectangle => _squareRectangle;
 
+        /// <summary>
+        /// Returns true if the tile is intersecting with the middle of the slot of another tile.
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
         public bool IsIntersectingWithSlotOf(TileHolder tile)
         {
             Rectangle r = new Rectangle(_squareRectangle.X + _squareRectangle.Width/2 - 1, _squareRectangle.Y, 1,
@@ -202,6 +221,9 @@ namespace Adam.UI.Level_Editor
             return r.Intersects(tile.SlotRectangle);
         }
 
+        /// <summary>
+        /// Makes the tile step aside.
+        /// </summary>
         public void StepAside()
         {
             _isSteppingAside = true;
@@ -210,9 +232,12 @@ namespace Adam.UI.Level_Editor
             _movementTimer.Reset();
         }
 
+        /// <summary>
+        /// Makes the tile return to its default position is it is not doing so already.
+        /// </summary>
         public void ReturnToDefaultPosition()
         {
-            if (!IsAtDefaultPosition() && !_isReturningToDefaultPos)
+            if (!_isReturningToDefaultPos)
             {
                 _isReturningToDefaultPos = true;
                 _isSteppingAside = false;
@@ -221,10 +246,22 @@ namespace Adam.UI.Level_Editor
             }
         }
 
+        /// <summary>
+        /// Returns true if the tile is in the position it is supposed to be.
+        /// </summary>
+        /// <returns></returns>
         private bool IsAtDefaultPosition()
         {
-            return (_tile.DrawRectangle.X == (int)(_positionDifferential.X + _containerPosition.X) &&
-                    _tile.DrawRectangle.Y == (int)(_positionDifferential.Y + _containerPosition.Y));
+           return (Math.Abs(_tile.DrawRectangle.X - (_positionDifferential.X + _containerPosition.X)) < 1) &&
+                   (Math.Abs(_tile.DrawRectangle.Y - (_positionDifferential.Y + _containerPosition.Y)) < 1);
+        }
+
+        public void ChangeId(byte newId)
+        {
+            _tile.Id = newId;
+            _tile.DefineTexture();
+            _tile.DrawRectangle.Width = CalcHelper.ApplyUiRatio(16);
+            _tile.DrawRectangle.Height = CalcHelper.ApplyUiRatio(16);
         }
     }
 }
