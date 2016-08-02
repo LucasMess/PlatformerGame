@@ -498,7 +498,7 @@ namespace Adam
                 _spriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
                 _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
                 _spriteBatch.DrawString(_debugFont,
-                    "Camera Position:" + Camera.InvertedCoords.X + "," + Camera.InvertedCoords.Y,
+                    "Camera Position:" + Camera.CenterGameCoords.X + "," + Camera.CenterGameCoords.Y,
                     new Vector2(0, 40), Color.White);
                 _spriteBatch.DrawString(_debugFont,
                     "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +

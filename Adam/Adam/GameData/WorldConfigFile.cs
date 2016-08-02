@@ -49,7 +49,7 @@ namespace Adam.GameData
             TileIDs = new byte[LevelWidth * LevelHeight];
             WallIDs = new byte[LevelWidth * LevelHeight];
 
-            HasClouds = false;
+            HasClouds = true;
             IsSnowing = false;
             IsRaining = false;
         }

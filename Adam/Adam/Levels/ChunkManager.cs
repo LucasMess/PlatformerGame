@@ -92,7 +92,7 @@ namespace Adam.Levels
             if (Main.Camera == null)
                 return new int[0];
 
-            _activeChunk = GetChunk((int)Main.Camera.InvertedCoords.X, (int)Main.Camera.InvertedCoords.Y);
+            _activeChunk = GetChunk((int)Main.Camera.CenterGameCoords.X, (int)Main.Camera.CenterGameCoords.Y);
             // Chunk activeChunk = GetChunk(128 * Main.Tilesize, 128 * Main.Tilesize);
             return _activeChunk.GetSurroundIndexes();
         }

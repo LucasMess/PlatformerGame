@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Adam.Misc.Helpers;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam
 {
     public class Cloud
     {
-        public Texture2D Texture1, Texture2, Texture3, Texture4, CurrentTexture;
-        Vector2 _velocity;
-        Vector2 _position;
+        private readonly int _distance;
+        private Vector2 _position;
+        private Vector2 _prefRes;
+        private Vector2 _velocity;
         public Rectangle Rectangle;
-        int _maxClouds;
-        int _distance;
-        Random _randGen;
-
-        Vector2 _prefRes;
+        public Texture2D Texture1, Texture2, Texture3, Texture4, CurrentTexture;
+        private bool _flipH, _flipV;
 
         public Cloud(Vector2 monitorResolution, int maxClouds, int i)
         {
@@ -27,20 +20,21 @@ namespace Adam
             Texture2 = ContentHelper.LoadTexture("Backgrounds/cloud_2");
             Texture3 = ContentHelper.LoadTexture("Backgrounds/cloud_3");
             Texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
-            this._maxClouds = maxClouds;
             _prefRes = monitorResolution;
-            _randGen = new Random(i);
-            _velocity = new Vector2(-.1f, 0);
-            _distance = (int)monitorResolution.X * 2/ maxClouds;
+            _velocity = new Vector2(-.03f, 0);
+            _distance = (int)(monitorResolution.X * 2 / maxClouds * Main.Random.NextDouble());
+            _flipH = Main.Random.Next(0, 2) == 0;
+            _flipV = Main.Random.Next(0, 2) == 0;
+
             Create(i);
         }
 
         public void Create(int i)
         {
-            Rectangle = new Rectangle(i * _distance, _randGen.Next(0, 200), Texture1.Width, Texture1.Height);
+            Rectangle = new Rectangle(i * _distance, Main.Random.Next(0, 50), Texture1.Width, Texture1.Height);
             _position = new Vector2(Rectangle.X, Rectangle.Y);
 
-            switch (_randGen.Next(0, 3))
+            switch (Main.Random.Next(0, 3))
             {
                 case 0:
                     CurrentTexture = Texture1;
@@ -55,7 +49,6 @@ namespace Adam
                     CurrentTexture = Texture4;
                     break;
             }
-
         }
 
         public void Update()
@@ -74,7 +67,12 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(CurrentTexture, Rectangle, Color.White);
+            SpriteEffects h  =SpriteEffects.None , v = SpriteEffects.None;
+            if (_flipH) h = SpriteEffects.FlipHorizontally;
+            if (_flipV) v = SpriteEffects.FlipVertically;
+
+            spriteBatch.Draw(CurrentTexture, Rectangle, null, Color.White * .5f, 0, Vector2.Zero, h | v, 0);
+            
         }
     }
 }

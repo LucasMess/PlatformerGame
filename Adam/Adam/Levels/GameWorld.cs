@@ -58,7 +58,7 @@ namespace Adam.Levels
             if (WorldData.MetaData == null)
                 WorldData.MetaData = new string[width * height];
 
-            var maxClouds = width / 100;
+            var maxClouds = width / 20;
             for (var i = 0; i < maxClouds; i++)
             {
                 _clouds.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
@@ -237,12 +237,7 @@ namespace Adam.Levels
         {
             if (CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
-
-            foreach (var c in _clouds)
-            {
-                if (WorldData.HasClouds)
-                    c.Draw(spriteBatch);
-            }
+            
 
            
 
@@ -271,6 +266,12 @@ namespace Adam.Levels
         public static void DrawBackground(SpriteBatch spriteBatch)
         {
             Background.Draw(spriteBatch);
+
+            foreach (var c in _clouds)
+            {
+                //if (WorldData.HasClouds)
+                c.Draw(spriteBatch);
+            }
         }
 
         public static void DrawUi(SpriteBatch spriteBatch)

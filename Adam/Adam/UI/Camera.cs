@@ -33,7 +33,8 @@ namespace Adam
         private Timer _shakeTimer = new Timer();
         public Vector3 Velocity;
         public Vector3 LastCameraLeftCorner;
-        public Vector2 InvertedCoords;
+        public Vector2 CenterGameCoords;
+        public Vector2 LeftTopGameCoords;
         public Vector2 InvertedCoordsBeforeShake;
 
         public Camera(Viewport newViewport)
@@ -92,10 +93,15 @@ namespace Adam
                 cameraLeftCorner.Z++;
             }
 
-            InvertedCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
-            InvertedCoords.X += Main.DefaultResWidth / 2;
-            InvertedCoords.Y += Main.DefaultResHeight * 2 / 3;
-            TileIndex = (int)((int)InvertedCoords.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)InvertedCoords.X / Main.Tilesize);
+            CenterGameCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
+
+            LeftTopGameCoords = CenterGameCoords;
+            //LeftTopGameCoords.X -= Main.DefaultResWidth;
+            //LeftTopGameCoords.Y -= Main.DefaultResHeight;
+
+            CenterGameCoords.X += Main.DefaultResWidth / 2;
+            CenterGameCoords.Y += Main.DefaultResHeight * 2 / 3;
+            TileIndex = (int)((int)CenterGameCoords.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)CenterGameCoords.X / Main.Tilesize);
 
 
             LastCameraLeftCorner = cameraLeftCorner;

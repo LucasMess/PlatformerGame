@@ -267,7 +267,7 @@ namespace Adam
                     IsSolid = true;
                     break;
                 case 9: //Tall Grass
-                    _frameCount = new Vector2(12, 0);
+                    _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(0, 16);
                     break;
                 case 10: // Gold.
