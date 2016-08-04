@@ -22,7 +22,7 @@ namespace Adam.UI.Level_Editor
         private static Rectangle _selectorSourceRect = new Rectangle(283, 142, 26, 26);
         private static Rectangle _selectorDrawRect;
         public static TileHolder SelectedTile { get; private set; }
-
+        private static TileHolder _deletedTile = new TileHolder(0);
 
         public static void Initialize()
         {
@@ -56,20 +56,23 @@ namespace Adam.UI.Level_Editor
         /// <param name="tileHolder"></param>
         public static void ReplaceHotBar(TileHolder tileHolder)
         {
-            // Check for a tile of the same id already on the hotbar and delete it.
-            for (int i = 0; i < _tileHolders.Count; i++)
-            {
-                if (tileHolder.Id == _tileHolders[i].Id)
-                {
-                    _tileHolders[i].ChangeId(0);
-                }
-            }
-
             for (int i = 0; i < _tileHolders.Count; i++)
             {
                 if (tileHolder.IsIntersectingWithSlotOf(_tileHolders[i]))
                 {
+                    // It's all an optical illusion. The tile in the hot bar replaces the tile being moved, and a temporary tile is created to animate the deletion of the tile in the hotbar.
+
+                    _deletedTile = new TileHolder(_tileHolders[i].Id);
+                    _deletedTile.SetPosition(_tileHolders[i].GetPosition());
+                    _deletedTile.MoveTo(new Vector2(_deletedTile.GetPosition().X, -_deletedTile.DrawRectangle.Height), 200);
+
                     _tileHolders[i].ChangeId(tileHolder.Id);
+                    _tileHolders[i].SetPosition(tileHolder.GetPosition());
+                    _tileHolders[i].ReturnToDefaultPosition();
+
+                    tileHolder.SetPosition(Main.UserResWidth, Main.UserResHeight);
+                    tileHolder.ReturnToDefaultPosition(500);
+
                     break;
                 }
             }
@@ -85,13 +88,13 @@ namespace Adam.UI.Level_Editor
                 _selectorDrawRect.Width = CalcHelper.ApplyUiRatio(_selectorSourceRect.Width);
                 _selectorDrawRect.Height = CalcHelper.ApplyUiRatio(_selectorSourceRect.Height);
             }
-
+            
 
             foreach (var tileHolder in _tileHolders)
             {
                 if (Inventory.IsOpen && Inventory.TileBeingMoved.IsIntersectingWithSlotOf(tileHolder))
                 {
-                    tileHolder.StepAside();
+                   // tileHolder.StepAside();
                 }
                 else
                 {
@@ -109,6 +112,8 @@ namespace Adam.UI.Level_Editor
             {
                 tileHolder.Draw(spriteBatch);
             }
+
+            _deletedTile.Draw(spriteBatch);
 
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _selectorDrawRect, _selectorSourceRect, Color.White);
 

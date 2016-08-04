@@ -64,6 +64,7 @@ namespace Adam.UI.Elements
         public virtual void SetPosition(Vector2 position)
         {
             IsMovingToNewPosition = false;
+            _newPosition = position;
             _drawRectangle.X = (int)position.X;
             _drawRectangle.Y = (int)position.Y;
         }

@@ -242,17 +242,16 @@ namespace Adam.UI.Level_Editor
         }
 
         private Vector2 StepAsidePosition
-            => new Vector2(_containerPosition.X +_positionRelativeToContainer.X, _positionRelativeToContainer.Y + _containerPosition.Y - DrawRectangle.Height -
-                              CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
+            => new Vector2(_containerPosition.X +_positionRelativeToContainer.X, _positionRelativeToContainer.Y + _containerPosition.Y - DrawRectangle.Height / 2);
 
         /// <summary>
-        /// Makes the tile return to its default position is it is not doing so already.
+        /// Makes the tile return to its default position if it is not doing so already.
         /// </summary>
-        public void ReturnToDefaultPosition()
+        public void ReturnToDefaultPosition(int duration = 100)
         {
             _isReturningToDefaultPos = true;
             _isSteppingAside = false;
-            MoveTo(DefaultPosition, 100);
+            MoveTo(DefaultPosition, duration);
         }
 
         private Vector2 DefaultPosition => new Vector2(_containerPosition.X + _positionRelativeToContainer.X, _containerPosition.Y + _positionRelativeToContainer.Y);
