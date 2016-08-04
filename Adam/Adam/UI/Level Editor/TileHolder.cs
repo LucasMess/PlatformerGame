@@ -5,23 +5,22 @@ using System.Security.Permissions;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Ink;
 using Adam.Levels;
 using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timer = Adam.Misc.Timer;
+using Adam.UI.Elements;
 
 namespace Adam.UI.Level_Editor
 {
-    internal class TileHolder
+    internal class TileHolder : UiElement
     {
         private const int SpacingBetweenSquareAndTile = 3;
         private Vector2 _positionRelativeToContainer;
         private readonly Tile _tile;
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
-
-        public Rectangle DrawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(SourceRectangle.Width),
-            CalcHelper.ApplyUiRatio(SourceRectangle.Height));
 
         private readonly Color _hoveredColor = new Color(69, 96, 198);
         private readonly Color _altHoveredColor = Color.LightGray;
@@ -30,7 +29,6 @@ namespace Adam.UI.Level_Editor
 
         public event TileHandler WasClicked;
         public event TileHandler WasReleased;
-        public event TileHandler WasReturned;
         private bool _isBeingMoved;
         private bool _isReturningToDefaultPos;
         private bool _isSteppingAside;
@@ -38,19 +36,18 @@ namespace Adam.UI.Level_Editor
         private Vector2 _mouseDifferential;
         private Vector2 _positionAtStartOfMovement;
         private Vector2 _containerPosition;
-        private readonly Timer _movementTimer = new Timer();
         private Vector2 _tileTextureDifferential;
 
         public TileHolder(int id)
         {
-            _tile = new Tile(true) {Id = (byte) id};
+            DrawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(SourceRectangle.Width),
+            CalcHelper.ApplyUiRatio(SourceRectangle.Height));
+            _tile = new Tile(true) { Id = (byte)id };
             _tile.DefineTexture();
             Size = SourceRectangle.Width;
             AdjustTileInside();
 
             WasClicked += TileHolder_WasClicked;
-            WasReleased += TileHolder_WasReleased;
-            WasReturned += TileHolder_WasReturned;
         }
 
         private void AdjustTileInside()
@@ -86,17 +83,6 @@ namespace Adam.UI.Level_Editor
             _tile.DrawRectangle.Height = height;
         }
 
-    private void TileHolder_WasReturned(TileHolder tile)
-        {
-            _isReturningToDefaultPos = false;
-        }
-
-        private void TileHolder_WasReleased(TileHolder tile)
-        {
-            _isBeingMoved = false;
-            ReturnToDefaultPosition();
-        }
-
         private void TileHolder_WasClicked(TileHolder tile)
         {
             if (CanBeMoved)
@@ -114,10 +100,14 @@ namespace Adam.UI.Level_Editor
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SetPosition(float x, float y)
+        public override void SetPosition(float x, float y)
         {
-            DrawRectangle.X = (int)(x);
-            DrawRectangle.Y = (int)(y);
+            UpdateTilePosition(x, y);
+            base.SetPosition(x, y);
+        }
+
+        private void UpdateTilePosition(float x, float y)
+        {
             _tile.DrawRectangle.X = (int)(x + _tileTextureDifferential.X + CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
             _tile.DrawRectangle.Y = (int)(y + _tileTextureDifferential.Y + CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
         }
@@ -156,50 +146,30 @@ namespace Adam.UI.Level_Editor
             }
 
             _containerPosition = containerPos;
-            if (_isSteppingAside)
+
+            if (!_isBeingMoved && !_isReturningToDefaultPos && !_isSteppingAside)
             {
-                float deltaY = _positionRelativeToContainer.Y + containerPos.Y - DrawRectangle.Height -
-                               CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile) - _positionAtStartOfMovement.Y;
-                SetY(CalcHelper.EaseInAndOut((float) _movementTimer.TimeElapsedInMilliSeconds,
-                    _positionAtStartOfMovement.Y, deltaY, 50));
-
-                if (DrawRectangle.Y == (int) (containerPos.Y + _positionRelativeToContainer.Y + deltaY))
-                {
-                    _isSteppingAside = false;
-                }
+                SetPosition(DefaultPosition);
             }
-            else if (_isReturningToDefaultPos)
+
+            if (_isReturningToDefaultPos)
             {
-                float deltaX = _positionRelativeToContainer.X + containerPos.X - _positionAtStartOfMovement.X;
-                float deltaY = _positionRelativeToContainer.Y + containerPos.Y - _positionAtStartOfMovement.Y;
-
-                SetX(CalcHelper.EaseInAndOut((float) _movementTimer.TimeElapsedInMilliSeconds,
-                    _positionAtStartOfMovement.X, deltaX, 200));
-                SetY(CalcHelper.EaseInAndOut((float) _movementTimer.TimeElapsedInMilliSeconds,
-                    _positionAtStartOfMovement.Y, deltaY, 200));
-
-                if (IsAtDefaultPosition())
-                    WasReturned?.Invoke(this);
+                if (!IsMovingToNewPosition)
+                    _isReturningToDefaultPos = false;
             }
-            else
-            {
-                SetX(_positionRelativeToContainer.X + containerPos.X);
-                SetY(_positionRelativeToContainer.Y + containerPos.Y);
-                //}
-                Update();
-            }
-        }
 
-        public void Update()
-        {
+
             if (_isBeingMoved)
             {
+                Inventory.IsMovingTile = true;
                 Rectangle mouse = InputHelper.MouseRectangle;
                 SetPosition(mouse.X - (int)_mouseDifferential.X, mouse.Y - (int)_mouseDifferential.Y);
 
                 if (InputHelper.IsLeftMouseReleased())
                 {
-                    WasReleased?.Invoke(this);
+                    ReturnToDefaultPosition();
+                    _isBeingMoved = false;
+                    Inventory.IsMovingTile = false;
                     HotBar.ReplaceHotBar(this);
                 }
             }
@@ -267,50 +237,39 @@ namespace Adam.UI.Level_Editor
         /// </summary>
         public void StepAside()
         {
+            MoveTo(StepAsidePosition, 50);
             _isSteppingAside = true;
-            _isReturningToDefaultPos = false;
-            _positionAtStartOfMovement = new Vector2(Position.X, Position.Y);
-            _movementTimer.Reset();
         }
+
+        private Vector2 StepAsidePosition
+            => new Vector2(_containerPosition.X +_positionRelativeToContainer.X, _positionRelativeToContainer.Y + _containerPosition.Y - DrawRectangle.Height -
+                              CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
 
         /// <summary>
         /// Makes the tile return to its default position is it is not doing so already.
         /// </summary>
         public void ReturnToDefaultPosition()
         {
-            if (!_isReturningToDefaultPos)
-            {
-                _isReturningToDefaultPos = true;
-                _isSteppingAside = false;
-                _positionAtStartOfMovement = new Vector2(Position.X, Position.Y);
-                _movementTimer.Reset();
-            }
+            _isReturningToDefaultPos = true;
+            _isSteppingAside = false;
+            MoveTo(DefaultPosition, 100);
         }
 
-        /// <summary>
-        /// Returns true if the tile is in the position it is supposed to be.
-        /// </summary>
-        /// <returns></returns>
-        private bool IsAtDefaultPosition()
-        {
-            return (Math.Abs(DrawRectangle.X - (_positionRelativeToContainer.X + _containerPosition.X)) < 1) &&
-                    (Math.Abs(DrawRectangle.Y - (_positionRelativeToContainer.Y + _containerPosition.Y)) < 1);
-        }
+        private Vector2 DefaultPosition => new Vector2(_containerPosition.X + _positionRelativeToContainer.X, _containerPosition.Y + _positionRelativeToContainer.Y);
 
         public void ChangeId(byte newId)
         {
             _tile.Id = newId;
             _tile.DefineTexture();
-            _tile.DrawRectangle.Width = CalcHelper.ApplyUiRatio(16);
-            _tile.DrawRectangle.Height = CalcHelper.ApplyUiRatio(16);
+            AdjustTileInside();
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //if (Id != 0)
+            UpdateTilePosition(DrawRectangle.X, DrawRectangle.Y);
+            if (Id != 0)
             {
-
                 DrawSquareBehindTile(spriteBatch);
                 _tile.DrawShadowVersion(spriteBatch);
                 _tile.DrawByForce(spriteBatch);

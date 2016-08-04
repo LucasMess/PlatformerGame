@@ -34,7 +34,7 @@ namespace Adam.UI.Level_Editor
 
         private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
-        public static bool IsMovingTile { get; private set; }
+        public static bool IsMovingTile { get;  set; }
 
         public Inventory()
         {
@@ -64,8 +64,6 @@ namespace Adam.UI.Level_Editor
                 tile.SetPosition(x, y);
                 tile.BindTo(new Vector2(_backDrop.X, _backDrop.Y));
                 tile.WasClicked += OnTileClicked;
-                tile.WasReleased += OnTileReleased;
-                tile.WasReturned += OnTileReturned;
                 counter++;
             }
         }
@@ -133,7 +131,7 @@ namespace Adam.UI.Level_Editor
                 }
             }
 
-            TileBeingMoved.Update();
+            TileBeingMoved.Update(new Vector2(_backDrop.X, _backDrop.Y));
             foreach (var tile in _tileHolders)
             {
                 tile.Update(new Vector2(_backDrop.X, _backDrop.Y));
@@ -143,18 +141,7 @@ namespace Adam.UI.Level_Editor
 
         private void OnTileClicked(TileHolder tile)
         {
-            IsMovingTile = true;
             TileBeingMoved = tile;
-        }
-
-        private void OnTileReleased(TileHolder tile)
-        {
-            
-        }
-
-        private void OnTileReturned(TileHolder tile)
-        {
-            IsMovingTile = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)

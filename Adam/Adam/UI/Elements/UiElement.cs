@@ -16,14 +16,14 @@ namespace Adam.UI.Elements
         private Vector2 _newPosition;
         private Vector2 _delta;
         private int _duration;
-        private bool _isMovingToNewPosition;
+        public bool IsMovingToNewPosition { get; private set; }
 
         private Rectangle _drawRectangle;
         public Rectangle DrawRectangle
         {
             get
             {
-                if (_isMovingToNewPosition)
+                if (IsMovingToNewPosition)
                 {
                     _drawRectangle.X = (int)CalcHelper.EaseInAndOut((float)_movementTimer.TimeElapsedInMilliSeconds,
                         _previousPosition.X, _delta.X, _duration);
@@ -32,7 +32,7 @@ namespace Adam.UI.Elements
 
                     if (Math.Abs(_drawRectangle.X - _newPosition.X) < .1f &&
                         Math.Abs(_drawRectangle.Y - _newPosition.Y) < .1f)
-                        _isMovingToNewPosition = false;
+                        IsMovingToNewPosition = false;
                 }
                 return _drawRectangle;
             }
@@ -46,23 +46,33 @@ namespace Adam.UI.Elements
 
         public void MoveTo(float x, float y, int duration)
         {
-            _previousPosition = new Vector2(DrawRectangle.X, DrawRectangle.Y);
-            _newPosition = new Vector2(x, y);
-            _delta = _newPosition - _previousPosition;
-            _duration = duration;
-            _movementTimer.Reset();
-            _isMovingToNewPosition = true;
+            if (_newPosition != new Vector2(x, y))
+            {
+                _previousPosition = new Vector2(DrawRectangle.X, DrawRectangle.Y);
+                _newPosition = new Vector2(x, y);
+                _delta = _newPosition - _previousPosition;
+                _duration = duration;
+                _movementTimer.Reset();
+                IsMovingToNewPosition = true;
+            }
         }
 
         /// <summary>
         /// Sets the position without animating.
         /// </summary>
         /// <param name="position"></param>
-        public void SetPosition(Vector2 position)
+        public virtual void SetPosition(Vector2 position)
         {
-            _isMovingToNewPosition = false;
-            _drawRectangle.X = (int) position.X;
-            _drawRectangle.Y = (int) position.Y;
+            IsMovingToNewPosition = false;
+            _drawRectangle.X = (int)position.X;
+            _drawRectangle.Y = (int)position.Y;
         }
+
+        public virtual void SetPosition(float x, float y)
+        {
+            SetPosition(new Vector2(x, y));
+        }
+
+        public Vector2 GetPosition() { return new Vector2(DrawRectangle.X, DrawRectangle.Y); }
     }
 }
