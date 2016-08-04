@@ -128,7 +128,8 @@ namespace Adam.Misc.Helpers
         public static void DrawTooltip(SpriteBatch spriteBatch, string text)
         {
 
-            if (text == null) text = "";
+            if (string.IsNullOrEmpty(text))
+                return;
             var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
             var mouse = InputHelper.MouseRectangle;
 

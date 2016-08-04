@@ -19,7 +19,7 @@ namespace Adam.UI.Level_Editor
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
         private Rectangle _squareRectangle;
         private readonly Color _hoveredColor = new Color(69, 96, 198);
-        private readonly Color _selectedColor = new Color(196,69,69);
+        private readonly Color _altHoveredColor = Color.LightGray;
 
         public delegate void TileHandler(TileHolder tile);
         public event TileHandler WasClicked;
@@ -28,6 +28,7 @@ namespace Adam.UI.Level_Editor
         private bool _isBeingMoved;
         private bool _isReturningToDefaultPos;
         private bool _isSteppingAside;
+        public bool CanBeMoved { get; set; } = true;
         private Vector2 _mouseDifferential;
         private Vector2 _positionAtStartOfMovement;
         private Vector2 _containerPosition;
@@ -60,11 +61,14 @@ namespace Adam.UI.Level_Editor
 
         private void TileHolder_WasClicked(TileHolder tile)
         {
-            _isBeingMoved = true;
-            Rectangle mouse = InputHelper.MouseRectangle;
-            float x = mouse.X - Position.X;
-            float y = mouse.Y - Position.Y;
-            _mouseDifferential = new Vector2(x, y);
+            if (CanBeMoved)
+            {
+                _isBeingMoved = true;
+                Rectangle mouse = InputHelper.MouseRectangle;
+                float x = mouse.X - Position.X;
+                float y = mouse.Y - Position.Y;
+                _mouseDifferential = new Vector2(x, y);
+            }
         }
 
         public void SetPosition(int x, int y)
@@ -82,7 +86,7 @@ namespace Adam.UI.Level_Editor
 
         public void Update(Vector2 containerPos)
         {
-            if (SlotRectangle == new Rectangle(0,0,0,0))
+            if (SlotRectangle == new Rectangle(0, 0, 0, 0))
             {
                 SlotRectangle = _squareRectangle;
             }
@@ -94,7 +98,7 @@ namespace Adam.UI.Level_Editor
                 _tile.DrawRectangle.Y = (int)CalcHelper.EaseInAndOut((float)_movementTimer.TimeElapsedInMilliSeconds,
                    _positionAtStartOfMovement.Y, deltaY, 50);
 
-                if (_tile.DrawRectangle.Y == (int) (containerPos.Y + _positionDifferential.Y + deltaY))
+                if (_tile.DrawRectangle.Y == (int)(containerPos.Y + _positionDifferential.Y + deltaY))
                 {
                     _isSteppingAside = false;
                 }
@@ -150,9 +154,13 @@ namespace Adam.UI.Level_Editor
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            DrawSquareBehindTile(spriteBatch);
-            _tile.DrawShadowVersion(spriteBatch);
-            _tile.DrawByForce(spriteBatch);
+            if (Id != 0)
+            {
+
+                DrawSquareBehindTile(spriteBatch);
+                _tile.DrawShadowVersion(spriteBatch);
+                _tile.DrawByForce(spriteBatch);
+            }
         }
 
         private void DrawSquareBehindTile(SpriteBatch spriteBatch)
@@ -166,11 +174,11 @@ namespace Adam.UI.Level_Editor
             {
                 squareColor = _hoveredColor;
             }
-            if (Id == LevelEditor.SelectedId && Id != 0)
-            {
-                squareColor = _selectedColor;
-            }
 
+            if (IsHovered() && !CanBeMoved)
+            {
+                squareColor = _altHoveredColor;
+            }
 
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _squareRectangle, SourceRectangle, squareColor);
         }
@@ -216,7 +224,7 @@ namespace Adam.UI.Level_Editor
         /// <returns></returns>
         public bool IsIntersectingWithSlotOf(TileHolder tile)
         {
-            Rectangle r = new Rectangle(_squareRectangle.X + _squareRectangle.Width/2 - 1, _squareRectangle.Y, 1,
+            Rectangle r = new Rectangle(_squareRectangle.X + _squareRectangle.Width / 2 - 1, _squareRectangle.Y, 1,
                 _squareRectangle.Height);
             return r.Intersects(tile.SlotRectangle);
         }
@@ -252,8 +260,8 @@ namespace Adam.UI.Level_Editor
         /// <returns></returns>
         private bool IsAtDefaultPosition()
         {
-           return (Math.Abs(_tile.DrawRectangle.X - (_positionDifferential.X + _containerPosition.X)) < 1) &&
-                   (Math.Abs(_tile.DrawRectangle.Y - (_positionDifferential.Y + _containerPosition.Y)) < 1);
+            return (Math.Abs(_tile.DrawRectangle.X - (_positionDifferential.X + _containerPosition.X)) < 1) &&
+                    (Math.Abs(_tile.DrawRectangle.Y - (_positionDifferential.Y + _containerPosition.Y)) < 1);
         }
 
         public void ChangeId(byte newId)

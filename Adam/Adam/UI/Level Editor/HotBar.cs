@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Markup;
 using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,15 +19,20 @@ namespace Adam.UI.Level_Editor
         private const int StartingX = 148;
         private const int StartingY = 11;
         private static List<TileHolder> _tileHolders = new List<TileHolder>();
+        private static Rectangle _selectorSourceRect = new Rectangle(283, 142, 26, 26);
+        private static Rectangle _selectorDrawRect;
+        public static TileHolder SelectedTile { get; private set; }
+
 
         public static void Initialize()
         {
             for (int i = 0; i < 8; i++)
             {
                 TileHolder tile = new TileHolder(0);
-                tile.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tile.Size + SpacingBetweenTiles))),CalcHelper.ApplyUiRatio(StartingY));
-                tile.BindTo(new Vector2(0,0));
+                tile.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tile.Size + SpacingBetweenTiles))), CalcHelper.ApplyUiRatio(StartingY));
+                tile.BindTo(new Vector2(0, 0));
                 tile.WasClicked += Tile_WasClicked;
+                tile.CanBeMoved = false;
                 _tileHolders.Add(tile);
             }
         }
@@ -37,6 +43,10 @@ namespace Adam.UI.Level_Editor
         /// <param name="tile"></param>
         private static void Tile_WasClicked(TileHolder tile)
         {
+            if (tile.Id == 0)
+                return;
+
+            SelectedTile = tile;
             LevelEditor.SelectedId = tile.Id;
         }
 
@@ -46,6 +56,15 @@ namespace Adam.UI.Level_Editor
         /// <param name="tileHolder"></param>
         public static void ReplaceHotBar(TileHolder tileHolder)
         {
+            // Check for a tile of the same id already on the hotbar and delete it.
+            for (int i = 0; i < _tileHolders.Count; i++)
+            {
+                if (tileHolder.Id == _tileHolders[i].Id)
+                {
+                    _tileHolders[i].ChangeId(0);
+                }
+            }
+
             for (int i = 0; i < _tileHolders.Count; i++)
             {
                 if (tileHolder.IsIntersectingWithSlotOf(_tileHolders[i]))
@@ -58,6 +77,16 @@ namespace Adam.UI.Level_Editor
 
         public static void Update()
         {
+            if (SelectedTile != null)
+            {
+                _selectorDrawRect = SelectedTile.CollRectangle;
+                _selectorDrawRect.X -= CalcHelper.ApplyUiRatio(2);
+                _selectorDrawRect.Y -= CalcHelper.ApplyUiRatio(2);
+                _selectorDrawRect.Width = CalcHelper.ApplyUiRatio(_selectorSourceRect.Width);
+                _selectorDrawRect.Height = CalcHelper.ApplyUiRatio(_selectorSourceRect.Height);
+            }
+
+
             foreach (var tileHolder in _tileHolders)
             {
                 if (Inventory.IsOpen && Inventory.TileBeingMoved.IsIntersectingWithSlotOf(tileHolder))
@@ -80,6 +109,8 @@ namespace Adam.UI.Level_Editor
             {
                 tileHolder.Draw(spriteBatch);
             }
+
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, _selectorDrawRect, _selectorSourceRect, Color.White);
 
             foreach (var tileHolder in _tileHolders)
             {
