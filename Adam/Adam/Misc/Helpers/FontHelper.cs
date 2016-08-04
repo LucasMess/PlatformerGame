@@ -18,7 +18,7 @@ namespace Adam.Misc.Helpers
             ContentHelper.LoadFont("Fonts/x64")
         };
 
-        private static InGameWindow _window;
+        private static PopUpWindow _window;
 
         /// <summary>
         /// This draws a string with a black outline around the letters.
@@ -133,7 +133,7 @@ namespace Adam.Misc.Helpers
             var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
             var mouse = InputHelper.MouseRectangle;
 
-            _window = new InGameWindow(mouse.X - CalcHelper.ApplyUiRatio(4), mouse.Y - (int) font.MeasureString(text).Y - CalcHelper.ApplyUiRatio(2),
+            _window = new PopUpWindow(mouse.X - CalcHelper.ApplyUiRatio(4), mouse.Y - (int) font.MeasureString(text).Y - CalcHelper.ApplyUiRatio(2),
                 (int) font.MeasureString(text).X + CalcHelper.ApplyUiRatio(8),
                 (int) font.MeasureString(text).Y + CalcHelper.ApplyUiRatio(4), false);
             _window.Color = new Color(196,69,69);

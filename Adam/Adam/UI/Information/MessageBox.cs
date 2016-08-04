@@ -11,14 +11,14 @@ namespace Adam.UI
     public class MessageBox
     {
         protected const int BezelSize = 25;
-        private readonly InGameWindow _window = new InGameWindow(125, 50);
+        private readonly PopUpWindow _window = new PopUpWindow(125, 50);
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.
         /// </summary>
         public MessageBox()
         {
-            Button = new OkButton(_window.Bounds);
+            Button = new OkButton(_window.DrawRectangle);
         }
 
         /// <summary>
@@ -56,22 +56,21 @@ namespace Adam.UI
         {
             _window.Show();
             Button.MouseClicked += Button_MouseClicked;
-            var wrapped = FontHelper.WrapText(Font, message, _window.Bounds.Width - BezelSize*2);
+            var wrapped = FontHelper.WrapText(Font, message, _window.DrawRectangle.Width - BezelSize*2);
             Message = wrapped;
             IsActive = true;
         }
 
         public virtual void Update()
         {
-            Button.Update(_window.Bounds);
-            _window.Update();
+            Button.Update(_window.DrawRectangle);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             _window.Draw(spriteBatch);
             spriteBatch.DrawString(Font, Message,
-                new Vector2(_window.Bounds.X + BezelSize, _window.Bounds.Y + BezelSize), Color.Black);
+                new Vector2(_window.DrawRectangle.X + BezelSize, _window.DrawRectangle.Y + BezelSize), Color.Black);
             Button.Draw(spriteBatch);
         }
     }

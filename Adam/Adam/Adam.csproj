@@ -213,7 +213,8 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="PlayerCharacter\PlayerScript.cs" />
     <Compile Include="PlayerCharacter\Script.cs" />
-    <Compile Include="UI\Elements\InGameWindow.cs" />
+    <Compile Include="UI\Elements\PopUpWindow.cs" />
+    <Compile Include="UI\Elements\UiElement.cs" />
     <Compile Include="UI\Level Editor\Brush.cs" />
     <Compile Include="UI\Debug.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
