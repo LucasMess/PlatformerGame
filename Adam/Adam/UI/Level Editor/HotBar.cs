@@ -16,8 +16,8 @@ namespace Adam.UI.Level_Editor
     {
         private const int NumberOfVisible = 8;
         private const int SpacingBetweenTiles = 2;
-        private const int StartingX = 148;
-        private const int StartingY = 11;
+        private const int StartingX = 145;
+        private const int StartingY = 8;
         private static List<TileHolder> _tileHolders = new List<TileHolder>();
         private static Rectangle _selectorSourceRect = new Rectangle(283, 142, 26, 26);
         private static Rectangle _selectorDrawRect;
@@ -28,12 +28,12 @@ namespace Adam.UI.Level_Editor
         {
             for (int i = 0; i < 8; i++)
             {
-                TileHolder tile = new TileHolder(0);
-                tile.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tile.Size + SpacingBetweenTiles))), CalcHelper.ApplyUiRatio(StartingY));
-                tile.BindTo(new Vector2(0, 0));
-                tile.WasClicked += Tile_WasClicked;
-                tile.CanBeMoved = false;
-                _tileHolders.Add(tile);
+                TileHolder tileHolder = new TileHolder(0);
+                tileHolder.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tileHolder.Size + SpacingBetweenTiles))), CalcHelper.ApplyUiRatio(StartingY));
+                tileHolder.BindTo(new Vector2(0, 0));
+                tileHolder.WasClicked += Tile_WasClicked;
+                tileHolder.CanBeMoved = false;
+                _tileHolders.Add(tileHolder);
             }
         }
 

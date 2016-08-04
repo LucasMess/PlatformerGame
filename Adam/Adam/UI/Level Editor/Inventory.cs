@@ -16,8 +16,8 @@ namespace Adam.UI.Level_Editor
         private const int SpacingBetweenTiles = 2;
 
         // The starting coordinates for the first tile in the grid.
-        private const int DefaultX = 159;
-        private const int DefaultY = 51;
+        private const int DefaultX = 155;
+        private const int DefaultY = 47;
 
         private const int TilesPerRow = 9;
 

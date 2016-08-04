@@ -1375,6 +1375,7 @@ namespace Adam
 
         private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
         {
+            if (_isSampleTile) SubId = 5;
             var position = new Vector2();
             switch (SubId)
             {
