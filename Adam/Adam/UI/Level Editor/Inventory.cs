@@ -35,6 +35,7 @@ namespace Adam.UI.Level_Editor
         private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
         public static bool IsMovingTile { get;  set; }
+        private Rectangle _scissorRectangle = new Rectangle(CalcHelper.ApplyUiRatio(150),CalcHelper.ApplyUiRatio(42), CalcHelper.ApplyUiRatio(236), CalcHelper.ApplyUiRatio(195));
 
         public Inventory()
         {
@@ -144,15 +145,28 @@ namespace Adam.UI.Level_Editor
             TileBeingMoved = tile;
         }
 
+        public void DrawInScissorsRectangle(SpriteBatch spriteBatch)
+        {
+            
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _backDrop, _backDropSource, Color.White);
+
+            // Sets the scrolling levels to disappear if they are not inside of this bounding box.
+            Rectangle originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            spriteBatch.GraphicsDevice.ScissorRectangle = _scissorRectangle;
 
             foreach (var tile in _tileHolders)
             {
                 if (tile != TileBeingMoved || !IsMovingTile)
                     tile.Draw(spriteBatch);
             }
+
+            // Returns the scissor rectangle to original.
+            spriteBatch.GraphicsDevice.ScissorRectangle = originalScissorRectangle;
+            
 
             foreach (var tile in _tileHolders)
             {

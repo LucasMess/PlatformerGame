@@ -910,6 +910,9 @@ namespace Adam
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
 
+            IsSolid = false;
+            SubId = 0;
+            _frameCount = Vector2.Zero;
             _wasInitialized = false;
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();

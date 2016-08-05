@@ -140,6 +140,8 @@ namespace Adam.UI.Level_Editor
 
         public void Update(Vector2 containerPos)
         {
+            _tile.Update();
+
             if (SlotRectangle == new Rectangle(0, 0, 0, 0))
             {
                 SlotRectangle = DrawRectangle;
@@ -258,6 +260,7 @@ namespace Adam.UI.Level_Editor
 
         public void ChangeId(byte newId)
         {
+            _tile.Destroy();
             _tile.Id = newId;
             _tile.DefineTexture();
             AdjustTileInside();

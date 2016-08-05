@@ -73,7 +73,6 @@ namespace Adam.UI.Level_Editor
                     tileHolder.SetPosition(Main.UserResWidth, Main.UserResHeight);
                     tileHolder.ReturnToDefaultPosition(500);
 
-                    break;
                 }
             }
         }
@@ -94,7 +93,7 @@ namespace Adam.UI.Level_Editor
             {
                 if (Inventory.IsOpen && Inventory.TileBeingMoved.IsIntersectingWithSlotOf(tileHolder))
                 {
-                   // tileHolder.StepAside();
+                   tileHolder.StepAside();
                 }
                 else
                 {

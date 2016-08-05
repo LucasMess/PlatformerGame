@@ -75,8 +75,7 @@ namespace Adam.UI
                     texture.GetData(colors);
 
                 }
-                catch (ObjectDisposedException)
-                {
+                catch{
                     return;
                 }
 
