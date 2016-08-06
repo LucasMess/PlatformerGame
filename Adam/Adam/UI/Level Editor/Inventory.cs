@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Adam.Levels;
-using Adam.Misc;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Timer = Adam.Misc.Timer;
 
 namespace Adam.UI.Level_Editor
 {
@@ -27,6 +29,8 @@ namespace Adam.UI.Level_Editor
         private static readonly Timer AnimationTimer = new Timer();
         private static Rectangle _backDrop;
         private readonly Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
+        private CategorySelector _categorySelector = new CategorySelector();
+        private Button[] _categoryButtons;
 
         // The position the backdrop should be in when open or closed.
         private readonly int _activeY;
@@ -67,6 +71,10 @@ namespace Adam.UI.Level_Editor
                 tile.WasClicked += OnTileClicked;
                 counter++;
             }
+
+            // Category buttons on the side.
+            //Button button = new TextButton(new Vector2(), );
+
         }
 
         /// <summary>

@@ -104,11 +104,11 @@ namespace Adam
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (IsTestingMultiplayer)
             {
-                UserResWidth = 960;
-                UserResHeight = 540;
+                 monitorRes = new Vector2(1366, 768);
             }
             UserResWidth = (int)monitorRes.X;
             UserResHeight = (int)monitorRes.Y;
+
 #pragma warning restore 0162
 
             WidthRatio = (DefaultResWidth / (double)UserResWidth);
@@ -128,6 +128,7 @@ namespace Adam
             _graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
             _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
+            if (IsTestingMultiplayer) _graphics.IsFullScreen = false;
 
             // Set window to borderless.
             var hWnd = Window.Handle;
@@ -144,6 +145,8 @@ namespace Adam
             form.WindowState = FormWindowState.Maximized;
 #pragma warning restore
 
+
+            _graphics.ApplyChanges();
 
             //MediaPlayer Settings
             MediaPlayer.Volume = MaxVolume;

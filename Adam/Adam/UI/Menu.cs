@@ -67,9 +67,9 @@ namespace Adam
         {
             this._game1 = game1;
 
-            int width = (int)(Main.DefaultResWidth / 2f / Main.WidthRatio);
-            int height = (int)(200 / Main.HeightRatio);
-            int diff = (int)(40 / Main.HeightRatio);
+            int width = Main.DefaultResWidth/2;
+            int height = Main.DefaultResHeight * 2/5;
+            int diff = CalcHelper.ApplyScreenScale(TextButton.Height + 2);
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
             _third = new Vector2(width, height + (diff * 2));
@@ -334,7 +334,7 @@ namespace Adam
 
             FontHelper.DrawWithOutline(spriteBatch,_font32,Main.Producers,new Vector2((float)(5 / Main.WidthRatio), (float)(5 / Main.HeightRatio)),3,Color.White,Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, _font32, Main.Version, new Vector2((float)(5 / Main.WidthRatio), (float)(30 / Main.HeightRatio)), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2((float)(400 / Main.WidthRatio), (float)(60 / Main.HeightRatio)), 3, Color.DarkRed, Color.MediumVioletRed);
+            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(Main.DefaultResWidth/2f) - _font64.MeasureString("Adam").X/2, CalcHelper.ApplyScreenScale(Main.DefaultResHeight * 1/5f)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)
             {

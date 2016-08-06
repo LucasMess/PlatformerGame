@@ -13,14 +13,20 @@ namespace Adam.UI.Elements
     /// </summary>
     public class TextButton : Button
     {
-        private const int Width = 89;
-        private const int Height = 16;
+        public const int Width = 89;
+        public const int Height = 16;
 
+        /// <summary>
+        /// The button is created using game coordinates.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="text"></param>
         public TextButton(Vector2 position, string text)
         {
             Text = text;
-            CollRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(Width*2 / Main.WidthRatio),
-                (int)(Height*2 / Main.HeightRatio));
+            int width = CalcHelper.ApplyUiRatio(Width);
+            CollRectangle = new Rectangle(CalcHelper.ApplyScreenScale((int)position.X) - width/2, CalcHelper.ApplyScreenScale((int)position.Y), width,
+                CalcHelper.ApplyUiRatio(Height));
             SourceRectangle = new Rectangle(112, 32, Width, Height);
             Font = FontHelper.ChooseBestFont(CollRectangle.Height);
         }

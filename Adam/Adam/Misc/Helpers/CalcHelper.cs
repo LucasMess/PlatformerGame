@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Adam.Levels;
@@ -76,23 +77,24 @@ namespace Adam
         }
 
         /// <summary>
-        /// Takes a number and applies the ratio of screen expansion to it.
+        /// Takes a number and applies the ratio of screen expansion to it. This is the same as GetScreenScale, except it multiplies the ratio by two, which is useful for UI elements that were made at half size.
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
         public static int ApplyUiRatio(int number)
         {
-            return (int)(number * GetUiScale());
+            return (int)(ApplyScreenScale(number) * 2);
         }
 
         /// <summary>
+        /// DEPRECATED DO NOT USE
         /// Takes a number and applies the ratio of the screen expansion to it.
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
         public static int ApplyHeightRatio(int number)
         {
-            return (int)(number * GetUiScale());
+            return ApplyScreenScale(number);
         }
 
         /// <summary>
@@ -116,12 +118,23 @@ namespace Adam
         }
 
         /// <summary>
-        /// Returns the size of the User Interface depending on what the resolution is.
-        /// </summary>
+        /// Returns the ratio of the screen to the game depending on what the resolution is.
+        ///  </summary>
         /// <returns></returns>
-        public static int GetUiScale()
+        public static float GetScreenScale()
         {
-            return Main.UserResWidth / (Main.DefaultResWidth / 2);
+            return ((float)Main.UserResWidth / Main.DefaultResWidth);
+        }
+
+
+        /// <summary>
+        /// Applies the ratio of the screen to the game to the number.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ApplyScreenScale(float number)
+        {
+            return (int)(GetScreenScale() * number);
         }
 
         /// <summary>

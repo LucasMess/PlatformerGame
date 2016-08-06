@@ -233,6 +233,7 @@
     <Compile Include="UI\Elements\TextButton.cs" />
     <Compile Include="UI\DataFolder.cs" />
     <Compile Include="UI\Level Editor\ButtonBar.cs" />
+    <Compile Include="UI\Level Editor\CategorySelector.cs" />
     <Compile Include="UI\Level Editor\HotBar.cs" />
     <Compile Include="UI\Level Editor\Inventory.cs" />
     <Compile Include="UI\Level Editor\TileHolder.cs" />
