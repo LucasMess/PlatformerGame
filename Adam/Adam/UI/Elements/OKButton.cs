@@ -48,35 +48,4 @@ namespace Adam.UI.Elements
 
         }
     }
-
-    public class OkButton : Button
-    {
-        public OkButton(Rectangle containerRectangle)
-        {
-            Text = "OK";
-            int width = 19 * 5;
-            int height = 6 * 5;
-            //_containerDiff = new Rectangle(containerRectangle.Width/2, containerRectangle.Y/2,0,0);
-            //int x = containerRectangle.X + _containerDiff.X;
-            //int y = containerRectangle.Y + _containerDiff.Y;
-            CollRectangle = new Rectangle(containerRectangle.X - width / 2, containerRectangle.Y - height - 20, width, height);
-            Initialize();
-        }
-
-        protected void Initialize()
-        {
-            MouseHover += OnMouseHover;
-            MouseOut += OnMouseOut;
-            SourceRectangle = new Rectangle(320, 20, 19, 6);
-            Font = ContentHelper.LoadFont("Fonts/x32");
-        }
-
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
-            spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
-                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
-        }
-    }
 }

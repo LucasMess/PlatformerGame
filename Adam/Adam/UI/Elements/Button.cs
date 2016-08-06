@@ -61,7 +61,7 @@ namespace Adam.UI
 
         public delegate void ButtonHandler(Button button);
 
-        private Rectangle _containerDiff;
+        protected Rectangle ContainerDiff;
 
         protected virtual void OnMouseHover()
         {
@@ -86,25 +86,31 @@ namespace Adam.UI
         /// <param name="container"></param>
         public void Update(Rectangle container)
         {
-            CollRectangle.X = container.X + _containerDiff.X;
-            CollRectangle.Y = container.Y + _containerDiff.Y;
+            CollRectangle.X = container.X + ContainerDiff.X;
+            CollRectangle.Y = container.Y + ContainerDiff.Y;
             Update();
         }
 
         public void BindTo(Rectangle container)
         {
-            _containerDiff.X = (int)GetPosition().X - container.X;
-            _containerDiff.Y = (int)GetPosition().Y - container.Y;
+            ContainerDiff.X = (int)GetPosition().X - container.X;
+            ContainerDiff.Y = (int)GetPosition().Y - container.Y;
         }
 
         /// <summary>
         /// Makes the size of the collision rectangle of the button be indentical to the given rectangle.
         /// </summary>
         /// <param name="rectangle"></param>
-        public void ChangeDimenstions(Rectangle rectangle)
+        public void ChangeDimensions(Rectangle rectangle)
         {
-            CollRectangle.Width = rectangle.Width;
-            CollRectangle.Height = rectangle.Height;
+            ChangeDimensions(new Vector2(rectangle.Width, rectangle.Height));
+        }
+
+
+        public void ChangeDimensions(Vector2 dimensions)
+        {
+            CollRectangle.Width = (int)dimensions.X;
+            CollRectangle.Height = (int) dimensions.Y;
             _backdrop = null;
         }
 

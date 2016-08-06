@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using Adam.UI.Elements;
 
 namespace Adam.UI
 {
-    class Textbox
+    class Textbox : UiElement
     {
-        Rectangle _bounds;
-        Texture2D _black;
+        Texture2D _white;
         SpriteFont _font;
         Timer _flashingTimer = new Timer();
 
@@ -30,12 +31,12 @@ namespace Adam.UI
         /// <param name="width">THe width of the textbox.</param>
         public Textbox(int x, int y, int width)
         {
-            _black = ContentHelper.LoadTexture("Tiles/white");
-            _font = ContentHelper.LoadFont("Fonts/x32");
-            _bounds = new Rectangle(x - width / 2, y - _font.LineSpacing / 2, width, _font.LineSpacing);
+            _white = ContentHelper.LoadTexture("Tiles/white");
+            _font = ContentHelper.LoadFont("Fonts/x16");
+            DrawRectangle = new Rectangle(x, y, width, CalcHelper.ApplyScreenScale(20));
         }
 
-        public void Update()
+        public override void Update(Rectangle container)
         {
             _currentKbState = Keyboard.GetState();
 
@@ -48,7 +49,9 @@ namespace Adam.UI
             }
 
             _oldKbState = _currentKbState;
+            base.Update(container);
         }
+
 
         /// <summary>
         /// When the mouse is clicked, the textbox checks to see if it is being selected or deselected.
@@ -57,7 +60,7 @@ namespace Adam.UI
         {
             if (InputHelper.IsLeftMousePressed())
             {
-                if (InputHelper.MouseRectangle.Intersects(_bounds))
+                if (InputHelper.MouseRectangle.Intersects(DrawRectangle))
                 {
                     _isSelected = true;
                 }
@@ -73,7 +76,7 @@ namespace Adam.UI
         /// </summary>
         private void FlashEditLine()
         {
-            
+
             if (_flashingTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _editLineFlashing = !_editLineFlashing;
@@ -111,22 +114,24 @@ namespace Adam.UI
             if (IsSelected)
                 opacity = .7f;
             else opacity = .3f;
+            int spacing = CalcHelper.ApplyScreenScale(2);
+            spriteBatch.Draw(_white, new Rectangle(InputHelper.MouseRectangle.X, InputHelper.MouseRectangle.Y, 10, 10), Color.Black);
+            spriteBatch.Draw(_white, new Rectangle(DrawRectangle.X - spacing, DrawRectangle.Y - spacing, DrawRectangle.Width + spacing * 2, DrawRectangle.Height + spacing * 2), new Color(153, 153, 153));
+            spriteBatch.Draw(_white, DrawRectangle, new Color(224, 224, 224));
 
-            spriteBatch.Draw(_black, new Rectangle(InputHelper.MouseRectangle.X, InputHelper.MouseRectangle.Y, 10, 10), Color.Black);
-            spriteBatch.Draw(_black, _bounds, Color.Black * opacity);
 
 
             // Sets the scissor rectangle so that the text is only drawn in the textbox.
             Rectangle currentScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-            spriteBatch.GraphicsDevice.ScissorRectangle = _bounds;
+            spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(DrawRectangle.X + spacing, DrawRectangle.Y, DrawRectangle.Width - spacing * 2, DrawRectangle.Height);
 
             if (_editLineFlashing)
             {
-                spriteBatch.DrawString(_font, Text + "|", new Vector2(_bounds.X, _bounds.Y), Color.White);
+                spriteBatch.DrawString(_font, Text + "|", new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
             }
             else
             {
-               spriteBatch.DrawString(_font, Text, new Vector2(_bounds.X, _bounds.Y), Color.White);
+                spriteBatch.DrawString(_font, Text, new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
             }
 
             // Returns the scissor rectangle to its original size.

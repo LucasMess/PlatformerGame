@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using System.Windows;
+using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,14 +12,22 @@ namespace Adam.UI
     public class MessageBox
     {
         protected const int BezelSize = 25;
-        private readonly Backdrop _window = new Backdrop(125, 50);
+        protected readonly Backdrop Window = new Backdrop(125, 50);
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.
         /// </summary>
         public MessageBox()
         {
-            Button = new OkButton(_window.DrawRectangle);
+            int buttonWidth = CalcHelper.ApplyUiRatio(40);
+            int buttonHeight = CalcHelper.ApplyUiRatio(15);
+            int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
+            int y = Window.DrawRectangle.Bottom - buttonHeight - CalcHelper.ApplyScreenScale(4);
+
+            Button = new TextButton(new Vector2(x, y), "Ok", false);
+            Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));
+            Button.BindTo(Window.DrawRectangle);
+            Button.Color = new Color(196,69,69);
         }
 
         /// <summary>
@@ -44,7 +53,7 @@ namespace Adam.UI
         protected void Button_MouseClicked(Button button)
         {
             IsActive = false;
-            _window.Hide();
+            Window.Hide();
             Button.MouseClicked -= Button_MouseClicked;
         }
 
@@ -54,23 +63,23 @@ namespace Adam.UI
         /// <param name="message"></param>
         public virtual void Show(string message)
         {
-            _window.Show();
+            Window.Show();
             Button.MouseClicked += Button_MouseClicked;
-            var wrapped = FontHelper.WrapText(Font, message, _window.DrawRectangle.Width - BezelSize*2);
+            var wrapped = FontHelper.WrapText(Font, message, Window.DrawRectangle.Width - BezelSize*2);
             Message = wrapped;
             IsActive = true;
         }
 
         public virtual void Update()
         {
-            Button.Update(_window.DrawRectangle);
+            Button.Update(Window.DrawRectangle);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            _window.Draw(spriteBatch);
+            Window.Draw(spriteBatch);
             spriteBatch.DrawString(Font, Message,
-                new Vector2(_window.DrawRectangle.X + BezelSize, _window.DrawRectangle.Y + BezelSize), Color.Black);
+                new Vector2(Window.DrawRectangle.X + BezelSize, Window.DrawRectangle.Y + BezelSize), Color.Black);
             Button.Draw(spriteBatch);
         }
     }

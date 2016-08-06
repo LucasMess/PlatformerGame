@@ -121,7 +121,14 @@ namespace Adam.Levels
         /// </summary>
         public static void TestLevel()
         {
-            DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
+            try
+            {
+                DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
+            }
+            catch (Exception e)
+            {
+                Main.MessageBox.Show(e.Message);
+            }
         }
 
         /// <summary>

@@ -21,11 +21,19 @@ namespace Adam.UI.Elements
         /// </summary>
         /// <param name="position"></param>
         /// <param name="text"></param>
-        public TextButton(Vector2 position, string text)
+        /// <param name="convertCoordinates"></param>
+        public TextButton(Vector2 position, string text, bool convertCoordinates = true)
         {
             Text = text;
             int width = CalcHelper.ApplyUiRatio(Width);
-            CollRectangle = new Rectangle(CalcHelper.ApplyScreenScale((int)position.X), CalcHelper.ApplyScreenScale((int)position.Y), width,
+
+            if (convertCoordinates)
+            {
+                position.X = CalcHelper.ApplyScreenScale((int) position.X);
+                position.Y = CalcHelper.ApplyScreenScale((int) position.Y);
+            }
+
+            CollRectangle = new Rectangle((int)position.X, (int)position.Y, width,
                 CalcHelper.ApplyUiRatio(Height));
             SourceRectangle = new Rectangle(112, 32, Width, Height);
             Font = FontHelper.ChooseBestFont(CollRectangle.Height);

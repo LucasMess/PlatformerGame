@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.UI
@@ -20,8 +21,18 @@ namespace Adam.UI
         /// </summary>
         public TextInputBox()
         {
-            //_textBox = new Textbox(DrawRectangle.X + DrawRectangle.Width / 2, DrawRectangle.Y + DrawRectangle.Height / 2, DrawRectangle.Width - BezelSize * 2);
-            //Button = new OkButton(DrawRectangle);
+            _textBox = new Textbox(Window.DrawRectangle.X + CalcHelper.ApplyScreenScale(BezelSize), Window.DrawRectangle.Y + Window.DrawRectangle.Height / 2 - CalcHelper.ApplyScreenScale(20), Window.DrawRectangle.Width - CalcHelper.ApplyScreenScale(BezelSize*2));
+            _textBox.BindTo(Window.DrawRectangle);
+
+            int buttonWidth = CalcHelper.ApplyUiRatio(40);
+            int buttonHeight = CalcHelper.ApplyUiRatio(15);
+            int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
+            int y = Window.DrawRectangle.Bottom - buttonHeight - CalcHelper.ApplyScreenScale(4);
+
+            Button = new TextButton(new Vector2(x, y), "Ok", false);
+            Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));
+            Button.BindTo(Window.DrawRectangle);
+            Button.Color = new Color(196, 69, 69);
         }
 
         public override void Show(string message)
@@ -50,7 +61,8 @@ namespace Adam.UI
                 }
                 else
                 {
-                    _textBox.Update();
+                    _textBox.Update(Window.DrawRectangle);
+                    _textBox.ForceStayRelativeToContainer();
                     base.Update();
                 }
 
@@ -69,6 +81,7 @@ namespace Adam.UI
             if (IsActive)
             {
                 base.Draw(spriteBatch);
+                if (_textBox.DrawRectangle.Bottom < Main.UserResHeight)
                 _textBox.Draw(spriteBatch);
             }
         }

@@ -166,7 +166,7 @@ namespace Adam.UI.Level_Editor
             button2.MouseClicked += WallCatClicked;
             _categoryButtons.Add(button2);
 
-            Button button3 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 3 + 15 * 3 ), "Objects");
+            Button button3 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 3 + 15 * 3), "Objects");
             button3.MouseClicked += ObjectsCatClicked; ;
             _categoryButtons.Add(button3);
 
@@ -181,8 +181,8 @@ namespace Adam.UI.Level_Editor
             foreach (var button in _categoryButtons)
             {
                 button.BindTo(_backDrop);
-                button.ChangeDimenstions(new Rectangle(0, 0, CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
-                button.Color = new Color(95,95,95);
+                button.ChangeDimensions(new Rectangle(0, 0, CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
+                button.Color = new Color(95, 95, 95);
             }
         }
 
@@ -226,7 +226,7 @@ namespace Adam.UI.Level_Editor
         {
             _tileHolders = new List<TileHolder>();
 
-            byte[] ids = {0};
+            byte[] ids = { 0 };
             switch (CurrentCategory)
             {
                 case Category.Building:
@@ -351,11 +351,6 @@ namespace Adam.UI.Level_Editor
             TileBeingMoved = tile;
         }
 
-        public void DrawInScissorsRectangle(SpriteBatch spriteBatch)
-        {
-
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _backDrop, _backDropSource, Color.White);
@@ -380,7 +375,8 @@ namespace Adam.UI.Level_Editor
                     tile.DrawToolTip(spriteBatch);
             }
 
-            _categorySelector.Draw(spriteBatch);
+            if (IsOpen)
+                _categorySelector.Draw(spriteBatch);
             foreach (var button in _categoryButtons)
             {
                 button.Draw(spriteBatch);
