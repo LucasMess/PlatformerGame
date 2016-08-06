@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using Adam.Levels;
 using Adam.UI.Elements;
@@ -17,9 +18,9 @@ namespace Adam.UI.Level_Editor
     {
         public enum Category
         {
-            Tile, Wall
+            Building, Wall, Special, Objects, Characters
         }
-        public static Category CurrentCategory { get; private set; } = Category.Tile;
+        public static Category CurrentCategory { get; private set; } = Category.Building;
 
         private const int SpacingBetweenTiles = 2;
 
@@ -42,10 +43,105 @@ namespace Adam.UI.Level_Editor
         private readonly int _activeY;
         private readonly int _inactiveY;
 
-        private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
+        private List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
         public static bool IsMovingTile { get; set; }
         private Rectangle _scissorRectangle = new Rectangle(CalcHelper.ApplyUiRatio(150), CalcHelper.ApplyUiRatio(42), CalcHelper.ApplyUiRatio(236), CalcHelper.ApplyUiRatio(195));
+
+        private byte[] _buildingTiles =
+        {
+            1, // Grass
+            2, // Stone
+            38, // Stone Brick
+            5, // Sand
+            39, // Ice
+            40, // Snow Grass
+            57, // Mud
+            6, // Mesa
+            41, // Void Tile
+            4, // Hellrock
+            10, // Gold Brick
+            8, // Metal
+            21, // Scaffolding
+        };
+
+        private byte[] _specialTiles =
+        {
+            3, // Marble Floor
+            18, // Marble Column
+            29, // Marble Ceiling
+            47, // Wooden Platform
+            14, // Vines
+            15, // Ladder
+            16, // Chain
+            22, // Spikes
+            46, // Void Ladder
+            23, // Water
+            24, // Lava
+            25, // Poisoned Water
+            55, // Skull TODO: Make automatic.
+            56, // Stalagmite TODO: Make automatic.
+        };
+
+        private byte[] _objects =
+        {
+            11, // Torch
+            12, // Chandelier
+            13, // Door
+            19, // Chest
+            36, // Sign
+            58, // Portal
+            37, // Checkpoint
+            31, // Tree
+            59, // Bed
+            60, // Bookshelf
+            61, // Painting
+            20, // Tech -- OBSOLETE
+            42, // Flame Spitter
+            43, // Machine Gun
+            41, // Void Fire Spitter
+            45, // Mushroom Booster
+            21, // Golden Apple
+            22, // Health Apple
+            32, // Small Rock
+            34, // Medium Rock
+            33, // Big Rock
+            52, // Sapphire Crystal
+            53, // Ruby Crystal
+            54, // Emerald Crystal
+            48, // Aquaant Crystal
+            49, // Heliaura Crystal
+            50, // Sentistract Sludge
+        };
+
+        private byte[] _wallTiles =
+        {
+            100, // Dirt Wall
+            101, // Stone Wall
+            107, // Stone Brick Wall
+            105, // Sand Wall
+            108, // Mesa Wall
+            104, // Marble Wall
+            109, // Wallpaper
+            100, // Gold Brick Wall
+            106, // Hellstone Wall
+            103, // Fence
+            110, // Black
+        };
+
+        private byte[] _characters =
+        {
+            200, // Player
+            203, // NPC
+            201, // Snake
+            202, // Frog
+            204, // Lost
+            205, // Hellboar
+            206, // Falling Boulder
+            207, // Bay
+            208, // Duck
+            209, // Being of Sight
+        };
 
         public Inventory()
         {
@@ -55,10 +151,105 @@ namespace Adam.UI.Level_Editor
             _activeY = _backDrop.Y;
             _posAtStartOfAnimation = _backDrop.Y;
 
-            // Testing with every tile.
-            for (var i = 1; i < 60; i++)
+            CreateTileHolders();
+
+            int buttonWidth = 46;
+            int buttonHeight = 15;
+
+            // Category buttons on the side.
+            Button button1 = new TextButton(new Vector2(99 * 2, 60 * 2), "Building");
+            button1.MouseClicked += BuldingCatClicked;
+            BuldingCatClicked(button1);
+            _categoryButtons.Add(button1);
+
+            Button button2 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 2 + 15), "Wall");
+            button2.MouseClicked += WallCatClicked;
+            _categoryButtons.Add(button2);
+
+            Button button3 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 3 + 15 * 3 ), "Objects");
+            button3.MouseClicked += ObjectsCatClicked; ;
+            _categoryButtons.Add(button3);
+
+            Button button4 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 4 + 15 * 5), "Entities");
+            button4.MouseClicked += CharactersCatClicked; ;
+            _categoryButtons.Add(button4);
+
+            Button button5 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight * 5 + 15 * 7), "Special");
+            button5.MouseClicked += SpecialCatClicked;
+            _categoryButtons.Add(button5);
+
+            foreach (var button in _categoryButtons)
             {
-                _tileHolders.Add(new TileHolder(i));
+                button.BindTo(_backDrop);
+                button.ChangeDimenstions(new Rectangle(0, 0, CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
+                button.Color = new Color(95,95,95);
+            }
+        }
+
+        private void SpecialCatClicked(Button button)
+        {
+            ChangeCategory(Category.Special);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void CharactersCatClicked(Button button)
+        {
+            ChangeCategory(Category.Characters);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void ObjectsCatClicked(Button button)
+        {
+            ChangeCategory(Category.Objects);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void BuldingCatClicked(Button button)
+        {
+            ChangeCategory(Category.Building);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void WallCatClicked(Button button)
+        {
+            ChangeCategory(Category.Wall);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void ChangeCategory(Category cat)
+        {
+            CurrentCategory = cat;
+            CreateTileHolders();
+        }
+
+        private void CreateTileHolders()
+        {
+            _tileHolders = new List<TileHolder>();
+
+            byte[] ids = {0};
+            switch (CurrentCategory)
+            {
+                case Category.Building:
+                    ids = _buildingTiles;
+                    break;
+                case Category.Wall:
+                    ids = _wallTiles;
+                    break;
+                case Category.Special:
+                    ids = _specialTiles;
+                    break;
+                case Category.Objects:
+                    ids = _objects;
+                    break;
+                case Category.Characters:
+                    ids = _characters;
+                    break;
+
+            }
+
+            foreach (byte id in ids)
+            {
+                _tileHolders.Add(new TileHolder(id));
             }
 
             // Places the tile holders in their proper positions in the grid.
@@ -77,46 +268,6 @@ namespace Adam.UI.Level_Editor
                 tile.WasClicked += OnTileClicked;
                 counter++;
             }
-
-            int buttonWidth = 46;
-            int buttonHeight = 15;
-
-            // Category buttons on the side.
-            Button button1 = new TextButton(new Vector2(99 * 2, 60 * 2), "Tile");
-            button1.MouseClicked += TileCatClicked;
-            //button1.ShowBackground = false;
-            button1.ChangeDimenstions(new Rectangle(0, 0, CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
-            TileCatClicked(button1);
-            _categoryButtons.Add(button1);
-
-            Button button2 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight *2 + 15), "Wall");
-            button2.MouseClicked += WallCatClicked;
-            //button2.ShowBackground = false;
-            button2.ChangeDimenstions(new Rectangle(0, 0,CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
-            _categoryButtons.Add(button2);
-
-            foreach (var button in _categoryButtons)
-            {
-                button.BindTo(_backDrop);
-                button.Color = new Color(95,95,95);
-            }
-        }
-
-        private void TileCatClicked(Button button)
-        {
-            ChangeCategory(Category.Tile);
-            _categorySelector.MoveTo(button.GetPosition(), 100);
-        }
-
-        private void WallCatClicked(Button button)
-        {
-            ChangeCategory(Category.Wall);
-            _categorySelector.MoveTo(button.GetPosition(), 100);
-        }
-
-        private void ChangeCategory(Category cat)
-        {
-            CurrentCategory = cat;
         }
 
         /// <summary>

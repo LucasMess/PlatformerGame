@@ -28,7 +28,7 @@ namespace Adam.UI.Level_Editor
         public override void MoveTo(Vector2 position, int duration)
         {
             position.X -= CalcHelper.ApplyUiRatio(6);
-            position.Y -= CalcHelper.ApplyUiRatio(8);
+            position.Y -= CalcHelper.ApplyUiRatio(9);
             base.MoveTo(position, duration);
         }
     }

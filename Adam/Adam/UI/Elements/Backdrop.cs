@@ -14,13 +14,13 @@ namespace Adam.UI.Elements
     {
         private static Rectangle[] _sourceRectangles =
         {
-            new Rectangle(320, 198, 4, 4), // top left
-            new Rectangle(325, 198, 1, 4), // top
-            new Rectangle(327, 198, 4, 4), // top right
-            new Rectangle(320, 203, 11, 4), // middle fill
-            new Rectangle(320, 208, 4, 4), // bot left
-            new Rectangle(325, 208, 1, 4), // bot
-            new Rectangle(327, 208, 4, 4), // bot right
+            new Rectangle(320, 197, 4, 4), // top left
+            new Rectangle(325, 197, 1, 4), // top
+            new Rectangle(327, 197, 4, 4), // top right
+            new Rectangle(320, 202, 11, 4), // middle fill
+            new Rectangle(320, 207, 4, 5), // bot left
+            new Rectangle(325, 207, 1, 5), // bot
+            new Rectangle(327, 207, 4, 5), // bot right
         };
 
         private Vector2 _hiddenPos;
