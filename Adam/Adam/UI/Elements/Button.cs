@@ -2,6 +2,7 @@
 using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
+using Adam.UI.Elements;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -15,9 +16,24 @@ namespace Adam.UI
 
         private bool _mouseIsOver;
         private bool _wasPressed, _wasReleased;
-        protected Color Color = Color.White;
+        public Color Color { get; set; } = Color.White;
+        private Color _currentColor;
         protected Vector2 Origin = new Vector2();
         protected float Rotation = 0f;
+        private Backdrop _backdrop;
+        protected Backdrop Backdrop
+        {
+            get
+            {
+                if (_backdrop == null)
+                {
+                    _backdrop = new Backdrop(CollRectangle.X, CollRectangle.Y, CollRectangle.Width, CollRectangle.Height,
+                        false);
+                    _backdrop.DisableAnimation();
+                }
+                return _backdrop;
+            }
+        }
 
         protected SoundFx ErrorFx = new SoundFx("Sounds/Menu/error_style_2_001");
         protected SoundFx ConfirmFx = new SoundFx("Sounds/Menu/confirm_style_4_001");
@@ -37,11 +53,15 @@ namespace Adam.UI
         protected Rectangle SourceRectangle;
         protected SpriteFont Font { get; set; } = ContentHelper.LoadFont("Fonts/x16");
         public string Text { get; set; }
-        public event EventHandler MouseClicked;
+        public event ButtonHandler MouseClicked;
         public event EventHandler MouseHover;
         public event EventHandler MouseOut;
+        public bool ShowBackground { get; set; } = true;
+        public Color TextColor { get; set; } = Color.White;
 
-        protected Rectangle ContainerDiff { get; set; }
+        public delegate void ButtonHandler(Button button);
+
+        private Rectangle _containerDiff;
 
         protected virtual void OnMouseHover()
         {
@@ -51,13 +71,13 @@ namespace Adam.UI
                 _mouseIsOver = true;
             }
 
-            Color = new Color(200, 200, 200);
+            _currentColor = new Color(Color.R - 50, Color.G - 50, Color.B - 50);
         }
 
         protected virtual void OnMouseOut()
         {
             _mouseIsOver = false;
-            Color = Color.White;
+            _currentColor = Color;
         }
 
         /// <summary>
@@ -66,13 +86,33 @@ namespace Adam.UI
         /// <param name="container"></param>
         public void Update(Rectangle container)
         {
-            CollRectangle.X = container.X + ContainerDiff.X;
-            CollRectangle.Y = container.Y + ContainerDiff.Y;
+            CollRectangle.X = container.X + _containerDiff.X;
+            CollRectangle.Y = container.Y + _containerDiff.Y;
             Update();
+        }
+
+        public void BindTo(Rectangle container)
+        {
+            _containerDiff.X = (int)GetPosition().X - container.X;
+            _containerDiff.Y = (int)GetPosition().Y - container.Y;
+        }
+
+        /// <summary>
+        /// Makes the size of the collision rectangle of the button be indentical to the given rectangle.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        public void ChangeDimenstions(Rectangle rectangle)
+        {
+            CollRectangle.Width = rectangle.Width;
+            CollRectangle.Height = rectangle.Height;
+            _backdrop = null;
         }
 
         public virtual void Update()
         {
+            Backdrop.SetPosition(new Vector2(CollRectangle.X, CollRectangle.Y));
+            Backdrop.Color = _currentColor;
+
             if (InputHelper.MouseRectangle.Intersects(CollRectangle))
             {
                 MouseHover?.Invoke();
@@ -88,7 +128,7 @@ namespace Adam.UI
                 }
                 if (_wasPressed && _wasReleased)
                 {
-                    MouseClicked?.Invoke();
+                    MouseClicked?.Invoke(this);
                     _wasReleased = false;
                     _wasPressed = false;
                 }
@@ -96,11 +136,16 @@ namespace Adam.UI
             else MouseOut?.Invoke();
         }
 
+        public Vector2 GetPosition()
+        {
+            return new Vector2(CollRectangle.X, CollRectangle.Y);
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
-            spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
-                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+            if (ShowBackground)
+                Backdrop.Draw(spriteBatch);
+            //spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
         }
     }
 }

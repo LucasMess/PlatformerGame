@@ -144,7 +144,7 @@ namespace Adam
             _levelSelection = new LevelSelection();
         }
 
-        private void StartMultiplayerGame_MouseClicked()
+        private void StartMultiplayerGame_MouseClicked(Button button)
         {
            if (Session.IsHost)
             {
@@ -152,18 +152,18 @@ namespace Adam
             }
         }
 
-        private void storyMode_MouseClicked()
+        private void storyMode_MouseClicked(Button button)
         {
             Main.MessageBox.Show("Coming Soon...");
         }
 
-        void joinGame_MouseClicked()
+        void joinGame_MouseClicked(Button button)
         {
             Main.Session = new Session(false, "Client");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
-        void hostGame_MouseClicked()
+        void hostGame_MouseClicked(Button button)
         {
             Main.Session = new Session(true, "Host");
             CurrentMenuState = MenuState.MultiplayerSession;
@@ -190,7 +190,7 @@ namespace Adam
         //    game1.ChangeState(GameState.GameWorld);
         //}
 
-        void backButton_MouseClicked()
+        void backButton_MouseClicked(Button button)
         {
             switch (CurrentMenuState)
             {
@@ -213,7 +213,7 @@ namespace Adam
             }
         }
 
-        void fullscreen_MouseClicked()
+        void fullscreen_MouseClicked(Button button)
         {
 
             switch (_fullscreen.IsOn)
@@ -261,18 +261,18 @@ namespace Adam
             throw new NotImplementedException();
         }
 
-        void multiplayer_MouseClicked()
+        void multiplayer_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.HostJoin;
         }
 
-        void quit_MouseClicked()
+        void quit_MouseClicked(Button button)
         {
             // game1.GameData.SaveGame();
             _game1.Exit();
         }
 
-        void chooseLevel_MouseClicked()
+        void chooseLevel_MouseClicked(Button button)
         {
             _levelSelection.LoadLevels();
             CurrentMenuState = MenuState.LevelSelector;
@@ -281,7 +281,7 @@ namespace Adam
             //GameWorld.worldData.OpenLevelLocally(false);
         }
 
-        void options_MouseClicked()
+        void options_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.Options;
         }

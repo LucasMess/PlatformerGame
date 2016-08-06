@@ -15,6 +15,12 @@ namespace Adam.UI.Level_Editor
     /// </summary>
     internal class Inventory
     {
+        public enum Category
+        {
+            Tile, Wall
+        }
+        public static Category CurrentCategory { get; private set; } = Category.Tile;
+
         private const int SpacingBetweenTiles = 2;
 
         // The starting coordinates for the first tile in the grid.
@@ -30,7 +36,7 @@ namespace Adam.UI.Level_Editor
         private static Rectangle _backDrop;
         private readonly Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
         private CategorySelector _categorySelector = new CategorySelector();
-        private Button[] _categoryButtons;
+        private List<Button> _categoryButtons = new List<Button>();
 
         // The position the backdrop should be in when open or closed.
         private readonly int _activeY;
@@ -38,8 +44,8 @@ namespace Adam.UI.Level_Editor
 
         private readonly List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
-        public static bool IsMovingTile { get;  set; }
-        private Rectangle _scissorRectangle = new Rectangle(CalcHelper.ApplyUiRatio(150),CalcHelper.ApplyUiRatio(42), CalcHelper.ApplyUiRatio(236), CalcHelper.ApplyUiRatio(195));
+        public static bool IsMovingTile { get; set; }
+        private Rectangle _scissorRectangle = new Rectangle(CalcHelper.ApplyUiRatio(150), CalcHelper.ApplyUiRatio(42), CalcHelper.ApplyUiRatio(236), CalcHelper.ApplyUiRatio(195));
 
         public Inventory()
         {
@@ -72,9 +78,45 @@ namespace Adam.UI.Level_Editor
                 counter++;
             }
 
-            // Category buttons on the side.
-            //Button button = new TextButton(new Vector2(), );
+            int buttonWidth = 46;
+            int buttonHeight = 15;
 
+            // Category buttons on the side.
+            Button button1 = new TextButton(new Vector2(99 * 2, 60 * 2), "Tile");
+            button1.MouseClicked += TileCatClicked;
+            //button1.ShowBackground = false;
+            button1.ChangeDimenstions(new Rectangle(0, 0, CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
+            TileCatClicked(button1);
+            _categoryButtons.Add(button1);
+
+            Button button2 = new TextButton(new Vector2(99 * 2, 58 * 2 + buttonHeight *2 + 15), "Wall");
+            button2.MouseClicked += WallCatClicked;
+            //button2.ShowBackground = false;
+            button2.ChangeDimenstions(new Rectangle(0, 0,CalcHelper.ApplyUiRatio(buttonWidth), CalcHelper.ApplyUiRatio(buttonHeight)));
+            _categoryButtons.Add(button2);
+
+            foreach (var button in _categoryButtons)
+            {
+                button.BindTo(_backDrop);
+                button.Color = new Color(95,95,95);
+            }
+        }
+
+        private void TileCatClicked(Button button)
+        {
+            ChangeCategory(Category.Tile);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void WallCatClicked(Button button)
+        {
+            ChangeCategory(Category.Wall);
+            _categorySelector.MoveTo(button.GetPosition(), 100);
+        }
+
+        private void ChangeCategory(Category cat)
+        {
+            CurrentCategory = cat;
         }
 
         /// <summary>
@@ -145,7 +187,12 @@ namespace Adam.UI.Level_Editor
             {
                 tile.Update(new Vector2(_backDrop.X, _backDrop.Y));
             }
-           
+
+            foreach (var button in _categoryButtons)
+            {
+                button.Update(_backDrop);
+            }
+
         }
 
         private void OnTileClicked(TileHolder tile)
@@ -155,7 +202,7 @@ namespace Adam.UI.Level_Editor
 
         public void DrawInScissorsRectangle(SpriteBatch spriteBatch)
         {
-            
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -174,19 +221,31 @@ namespace Adam.UI.Level_Editor
 
             // Returns the scissor rectangle to original.
             spriteBatch.GraphicsDevice.ScissorRectangle = originalScissorRectangle;
-            
+
 
             foreach (var tile in _tileHolders)
             {
                 if (!IsMovingTile)
                     tile.DrawToolTip(spriteBatch);
             }
+
+            _categorySelector.Draw(spriteBatch);
+            foreach (var button in _categoryButtons)
+            {
+                button.Draw(spriteBatch);
+            }
+
         }
 
         public void DrawOnTop(SpriteBatch spriteBatch)
         {
             if (IsMovingTile)
                 TileBeingMoved.Draw(spriteBatch);
+        }
+
+        public static void StartAnimation(Button button)
+        {
+            StartAnimation();
         }
     }
 }

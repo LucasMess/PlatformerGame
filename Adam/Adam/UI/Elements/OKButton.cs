@@ -35,7 +35,7 @@ namespace Adam.UI.Elements
             Font = ContentHelper.LoadFont("Fonts/x32");
         }
 
-        private void YesButton_MouseClicked()
+        private void YesButton_MouseClicked(Button button)
         {
             _sender.IsActive = false;
         }
@@ -56,10 +56,10 @@ namespace Adam.UI.Elements
             Text = "OK";
             int width = 19 * 5;
             int height = 6 * 5;
-            ContainerDiff = new Rectangle(containerRectangle.Width/2, containerRectangle.Y/2,0,0);
-            int x = containerRectangle.X + ContainerDiff.X;
-            int y = containerRectangle.Y + ContainerDiff.Y;
-            CollRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
+            //_containerDiff = new Rectangle(containerRectangle.Width/2, containerRectangle.Y/2,0,0);
+            //int x = containerRectangle.X + _containerDiff.X;
+            //int y = containerRectangle.Y + _containerDiff.Y;
+            CollRectangle = new Rectangle(containerRectangle.X - width / 2, containerRectangle.Y - height - 20, width, height);
             Initialize();
         }
 

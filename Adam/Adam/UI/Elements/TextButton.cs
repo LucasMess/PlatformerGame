@@ -25,11 +25,24 @@ namespace Adam.UI.Elements
         {
             Text = text;
             int width = CalcHelper.ApplyUiRatio(Width);
-            CollRectangle = new Rectangle(CalcHelper.ApplyScreenScale((int)position.X) - width/2, CalcHelper.ApplyScreenScale((int)position.Y), width,
+            CollRectangle = new Rectangle(CalcHelper.ApplyScreenScale((int)position.X), CalcHelper.ApplyScreenScale((int)position.Y), width,
                 CalcHelper.ApplyUiRatio(Height));
             SourceRectangle = new Rectangle(112, 32, Width, Height);
             Font = FontHelper.ChooseBestFont(CollRectangle.Height);
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            //spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
+            // TextColor, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+
+            float x = CollRectangle.Center.X - Font.MeasureString(Text).X / 2;
+            float y = CollRectangle.Center.Y - Font.MeasureString(Text).Y / 2;
+
+            FontHelper.DrawWithOutline(spriteBatch, Font, Text,
+                new Vector2(x,y), 1, TextColor, Color.Black);
+
+        }
     }
 }

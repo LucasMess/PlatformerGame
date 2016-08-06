@@ -11,7 +11,7 @@ namespace Adam.UI
     public class MessageBox
     {
         protected const int BezelSize = 25;
-        private readonly PopUpWindow _window = new PopUpWindow(125, 50);
+        private readonly Backdrop _window = new Backdrop(125, 50);
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.
@@ -41,7 +41,7 @@ namespace Adam.UI
             get { return ContentHelper.LoadFont("Fonts/x16"); }
         }
 
-        protected void Button_MouseClicked()
+        protected void Button_MouseClicked(Button button)
         {
             IsActive = false;
             _window.Hide();

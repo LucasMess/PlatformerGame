@@ -46,7 +46,7 @@ namespace Adam.UI
             {
                 if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter))
                 {
-                    Button_MouseClicked();
+                    Button_MouseClicked(Button);
                 }
                 else
                 {

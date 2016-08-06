@@ -92,7 +92,7 @@ namespace Adam.UI
             _headerPos = new Vector2(Main.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineSpacing - CalcHelper.ApplyHeightRatio(10));
         }
 
-        private void NewButton_MouseClicked()
+        private void NewButton_MouseClicked(Button button)
         {
             Main.TextInputBox.Show("Please enter the name for your new level:");
             Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
@@ -116,12 +116,12 @@ namespace Adam.UI
             DataFolder.EditLevel(newPath);
         }
 
-        private void BackButton_MouseClicked()
+        private void BackButton_MouseClicked(Button button)
         {
             Menu.CurrentMenuState = Menu.MenuState.Main;
         }
 
-        private void DeleteButton_MouseClicked()
+        private void DeleteButton_MouseClicked(Button button)
         {
             if (_selectedLevel == null)
             {
@@ -132,7 +132,7 @@ namespace Adam.UI
             LoadLevels();
         }
 
-        private void RenameButton_MouseClicked()
+        private void RenameButton_MouseClicked(Button button)
         {
             if (_selectedLevel == null)
             {
@@ -151,7 +151,7 @@ namespace Adam.UI
             LoadLevels();
         }
 
-        private void EditButton_MouseClicked()
+        private void EditButton_MouseClicked(Button button)
         {
             if (_selectedLevel == null)
             {
@@ -161,7 +161,7 @@ namespace Adam.UI
             DataFolder.EditLevel(_selectedLevel.FilePath);
         }
 
-        private void PlayButton_MouseClicked()
+        private void PlayButton_MouseClicked(Button button)
         {
             try
             {

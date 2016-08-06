@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace Adam.UI.Elements
 {
-    class UiElement
+    public class UiElement
     {
 
         private Timer _movementTimer = new Timer();
@@ -39,7 +39,7 @@ namespace Adam.UI.Elements
             set { _drawRectangle = value; }
         }
 
-        public void MoveTo(Vector2 position, int duration)
+        public virtual void MoveTo(Vector2 position, int duration)
         {
             MoveTo(position.X, position.Y, duration);
         }

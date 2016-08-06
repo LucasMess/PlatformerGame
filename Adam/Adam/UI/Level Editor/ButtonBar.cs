@@ -21,7 +21,7 @@ namespace Adam.UI.Level_Editor
             _texture = GameWorld.UiSpriteSheet;
             _sourceRectangle = new Rectangle(0, 212, 382, 40);
             _drawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(_sourceRectangle.Width),
-                CalcHelper.ApplyHeightRatio(_sourceRectangle.Height));
+                CalcHelper.ApplyUiRatio(_sourceRectangle.Height));
 
             _drawRectangle.X = Main.UserResWidth / 2 - _drawRectangle.Width / 2;
 

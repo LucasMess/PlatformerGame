@@ -463,5 +463,15 @@ namespace Adam.Levels
 
             return false;
         }
+
+        public static void TestLevel(Button button)
+        {
+            TestLevel();
+        }
+
+        public static void ChangeToWallMode(Button button)
+        {
+            ChangeToWallMode();
+        }
     }
 }

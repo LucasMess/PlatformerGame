@@ -10,7 +10,7 @@ namespace Adam.UI.Elements
     /// <summary>
     /// Used to contain UI elements.
     /// </summary>
-    class PopUpWindow : UiElement
+    public class Backdrop : UiElement
     {
         private static Rectangle[] _sourceRectangles =
         {
@@ -35,7 +35,7 @@ namespace Adam.UI.Elements
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public PopUpWindow(int width, int height)
+        public Backdrop(int width, int height)
         {
             width = CalcHelper.ApplyUiRatio(width);
             height = CalcHelper.ApplyUiRatio(height);
@@ -60,7 +60,7 @@ namespace Adam.UI.Elements
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="convertCoords"></param>
-        public PopUpWindow(int x, int y, int width, int height, bool convertCoords)
+        public Backdrop(int x, int y, int width, int height, bool convertCoords)
         {
             if (convertCoords)
             {
