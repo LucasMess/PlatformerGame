@@ -17,7 +17,7 @@ namespace Adam.UI
         private bool _mouseIsOver;
         private bool _wasPressed, _wasReleased;
         public Color Color { get; set; } = Color.White;
-        private Color _currentColor;
+        protected Color CurrentColor;
         protected Vector2 Origin = new Vector2();
         protected float Rotation = 0f;
         private Backdrop _backdrop;
@@ -71,13 +71,13 @@ namespace Adam.UI
                 _mouseIsOver = true;
             }
 
-            _currentColor = new Color(Color.R - 50, Color.G - 50, Color.B - 50);
+            CurrentColor = new Color(Color.R - 50, Color.G - 50, Color.B - 50);
         }
 
         protected virtual void OnMouseOut()
         {
             _mouseIsOver = false;
-            _currentColor = Color;
+            CurrentColor = Color;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Adam.UI
         public virtual void Update()
         {
             Backdrop.SetPosition(new Vector2(CollRectangle.X, CollRectangle.Y));
-            Backdrop.Color = _currentColor;
+            Backdrop.Color = CurrentColor;
 
             if (InputHelper.MouseRectangle.Intersects(CollRectangle))
             {

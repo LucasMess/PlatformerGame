@@ -35,6 +35,9 @@ namespace Adam.UI.Level_Editor
                 tileHolder.CanBeMoved = false;
                 _tileHolders.Add(tileHolder);
             }
+
+            _tileHolders[0].ChangeId(1);
+            Tile_WasClicked(_tileHolders[0]);
         }
 
         /// <summary>
@@ -48,6 +51,58 @@ namespace Adam.UI.Level_Editor
 
             SelectedTile = tile;
             LevelEditor.SelectedId = tile.Id;
+            tile.LastTimeUsed.Reset();
+        }
+
+
+        public static void AddToHotBarFromWorld(byte id)
+        {
+            // Checks if already on hotbar.
+            foreach (var tileHolder in _tileHolders)
+            {
+                if (tileHolder.Id == id)
+                {
+                    Tile_WasClicked(tileHolder);
+                    return;
+                }
+            }
+
+
+            // Checks for an empty slot, otherwise replaces least used tile.
+            foreach (var tileHolder in _tileHolders)
+            {
+                if (tileHolder.Id == 0)
+                {
+                    ReplaceHotBarWithMiddleMouse(tileHolder, id);
+                    Tile_WasClicked(tileHolder);
+                    return;
+                }
+            }
+
+            TileHolder tileHolderWithHighestTime = new TileHolder(0);
+            foreach (var tileHolder in _tileHolders)
+            {
+                if (tileHolder.LastTimeUsed.TimeElapsedInMilliSeconds > tileHolderWithHighestTime.LastTimeUsed.TimeElapsedInMilliSeconds)
+                {
+                    tileHolderWithHighestTime = tileHolder;
+                }
+            }
+
+            ReplaceHotBarWithMiddleMouse(tileHolderWithHighestTime, id);
+            Tile_WasClicked(tileHolderWithHighestTime);
+
+        }
+
+        public static void ReplaceHotBarWithMiddleMouse(TileHolder tileHolder, byte newId)
+        {
+            _deletedTile = new TileHolder(tileHolder.Id);
+            _deletedTile.SetPosition(tileHolder.GetPosition());
+            _deletedTile.MoveTo(new Vector2(_deletedTile.GetPosition().X, -_deletedTile.DrawRectangle.Height), 200);
+
+            tileHolder.ChangeId(newId);
+            tileHolder.SetPosition(tileHolder.GetPosition().X, -tileHolder.DrawRectangle.Height);
+            tileHolder.ReturnToDefaultPosition();
+
         }
 
         /// <summary>
@@ -87,13 +142,13 @@ namespace Adam.UI.Level_Editor
                 _selectorDrawRect.Width = CalcHelper.ApplyUiRatio(_selectorSourceRect.Width);
                 _selectorDrawRect.Height = CalcHelper.ApplyUiRatio(_selectorSourceRect.Height);
             }
-            
+
 
             foreach (var tileHolder in _tileHolders)
             {
                 if (Inventory.IsOpen && Inventory.TileBeingMoved.IsIntersectingWithSlotOf(tileHolder))
                 {
-                   tileHolder.StepAside();
+                    tileHolder.StepAside();
                 }
                 else
                 {

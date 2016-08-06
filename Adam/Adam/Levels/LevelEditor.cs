@@ -264,6 +264,7 @@ namespace Adam.Levels
                 if (InputHelper.IsMiddleMousePressed())
                 {
                     SelectedId = CurrentArray[IndexOfMouse].Id;
+                    HotBar.AddToHotBarFromWorld(SelectedId);
                 }
             }
         }

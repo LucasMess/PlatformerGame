@@ -152,7 +152,7 @@ namespace Adam.UI.Elements
             switch (_buttonImage)
             {
                 default:
-                    spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color);
+                    spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, CurrentColor);
                     spriteBatch.Draw(GameWorld.UiSpriteSheet,
                         new Rectangle(CollRectangle.X, CollRectangle.Y + CalcHelper.ApplyUiRatio(11),
                             CalcHelper.ApplyUiRatio(_shadowSource.Width), CalcHelper.ApplyUiRatio(_shadowSource.Height)),
@@ -163,7 +163,7 @@ namespace Adam.UI.Elements
                         spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color, Rotation,
                             Origin, SpriteEffects.FlipVertically, 0);
                     else
-                        spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, Color, Rotation,
+                        spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, CurrentColor, Rotation,
                             Origin, SpriteEffects.None, 0);
                     break;
             }

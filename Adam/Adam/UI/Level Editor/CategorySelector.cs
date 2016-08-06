@@ -11,8 +11,7 @@ namespace Adam.UI.Level_Editor
 {
     class CategorySelector : UiElement
     {
-        public const int Height = 32;
-        private Rectangle _sourceRectangle = new Rectangle(148, 180, 57, Height);
+        private Rectangle _sourceRectangle = new Rectangle(148, 180, 57, 32);
 
         public CategorySelector()
         {
