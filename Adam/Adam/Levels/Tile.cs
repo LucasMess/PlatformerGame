@@ -188,6 +188,7 @@ namespace Adam
             }
             else
             {
+                IsTransparent = true;
                 Texture = null;
                 return;
             }
@@ -936,6 +937,7 @@ namespace Adam
             DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
             _wasInitialized = false;
+            IsTransparent = false;
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();
             DefineSourceRectangle();
@@ -1522,5 +1524,10 @@ namespace Adam
                     return .95f;
             }
         }
+
+        /// <summary>
+        /// Returns true if light can pass through it.
+        /// </summary>
+        public bool IsTransparent { get; set; }
     }
 }

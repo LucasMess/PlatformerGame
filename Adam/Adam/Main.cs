@@ -89,6 +89,7 @@ namespace Adam
         private RenderTarget2D _frontRT;
         private RenderTarget2D _shadowRT;
         private RenderTarget2D _backRT;
+        private RenderTarget2D _lightRT;
         private Menu _menu;
         private Session _session;
         public SamplerState DesiredSamplerState;
@@ -104,7 +105,7 @@ namespace Adam
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (IsTestingMultiplayer)
             {
-                 monitorRes = new Vector2(1366, 768);
+                monitorRes = new Vector2(1366, 768);
             }
             UserResWidth = (int)monitorRes.X;
             UserResHeight = (int)monitorRes.Y;
@@ -182,6 +183,10 @@ namespace Adam
                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _shadowRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
+                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _lightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
                 GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -366,10 +371,10 @@ namespace Adam
                     if (IsLoadingContent)
                         break;
 
-                    
 
 
-                    
+
+
                     break;
             }
 
@@ -449,8 +454,16 @@ namespace Adam
                     };
                     _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, null,
                         null, null);
-                    _spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight ), Color.Black * 1f);
+                    _spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight), Color.Black * 1f);
                     _spriteBatch.End();
+
+                    GraphicsDevice.SetRenderTarget(_lightRT);
+                    GraphicsDevice.Clear(Color.Transparent);
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                       null, null, Camera.Translate);
+                    GameWorld.DrawLights(_spriteBatch);
+                    _spriteBatch.End();
+
 
                     GraphicsDevice.SetRenderTarget(null);
 
@@ -462,6 +475,18 @@ namespace Adam
                     _spriteBatch.End();
 
 
+                    BlendState bsLight = new BlendState
+                    {
+                        AlphaSourceBlend = Blend.Zero,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+                        ColorSourceBlend = Blend.DestinationColor,
+                    };
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, bsLight, SamplerState.PointClamp,
+                        DepthStencilState.None, RasterizerState.CullNone);
+                    _spriteBatch.Draw(_lightRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.End();
+
+
                     /////////////////////////////////////////////////////
 
                     //_spriteBatch.Begin(SpriteSortMode.Immediate, _lightBlendState,
@@ -469,6 +494,7 @@ namespace Adam
                     //_spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight),
                     //    Color.White);
                     //_spriteBatch.End();
+
 
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,

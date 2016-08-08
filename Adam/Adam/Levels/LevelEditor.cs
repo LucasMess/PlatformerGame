@@ -179,17 +179,6 @@ namespace Adam.Levels
             OnWallMode = !OnWallMode;
             _wallMode.PlayNewInstanceOnce();
             _wallMode.Reset();
-
-            if (OnWallMode)
-            {
-                _lastUsedTile = SelectedId;
-                SelectedId = _lastUsedWall;
-            }
-            else
-            {
-                _lastUsedWall = SelectedId;
-                SelectedId = _lastUsedTile;
-            }
         }
 
         /// <summary>
@@ -206,6 +195,9 @@ namespace Adam.Levels
             {
                 _recentlyChanged = false;
             }
+
+
+
         }
 
         /// <summary>
@@ -441,7 +433,8 @@ namespace Adam.Levels
                     t.FindConnectedTextures(WorldDataIds,
                         GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    t.AddRandomlyGeneratedDecoration(CurrentArray,GameWorld.WorldData.LevelWidth);
+                    t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
+                    LightingEngine.UpdateLightAt(ind);
                 }
             }
         }
