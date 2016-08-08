@@ -416,7 +416,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(12, 4);
                     break;
                 case 37: //Checkpoint
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
+                    if (Main.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(8, 29);
                     }
@@ -678,7 +678,7 @@ namespace Adam
                     #endregion
 
                 case 200: //Player
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
+                    if (Main.CurrentGameMode == GameMode.Edit)
                         _positionInSpriteSheet = new Vector2(17, 12);
                     else
                     {
@@ -694,7 +694,7 @@ namespace Adam
                     
                     break;
                 case 202: //Frog
-                    if (GameWorld.CurrentGameMode == GameMode.Edit)
+                    if (Main.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
                     }
@@ -880,7 +880,7 @@ namespace Adam
 
         private void ChangeOpacity()
         {
-            if (GameWorld.CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
             {
                 if (LevelEditor.OnWallMode)
                 {
@@ -927,7 +927,7 @@ namespace Adam
 
             if (Texture != null)
             {
-                if (!_isInvisible || (_isInvisible && GameWorld.CurrentGameMode == GameMode.Edit))
+                if (!_isInvisible || (_isInvisible && Main.CurrentGameMode == GameMode.Edit))
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color*_opacity);
             }
             if (_hasConnectPattern)

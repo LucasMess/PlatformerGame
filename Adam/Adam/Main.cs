@@ -305,10 +305,9 @@ namespace Adam
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu &&
                 CurrentGameState != GameState.LoadingScreen)
             {
-                if (CurrentGameState == GameState.GameWorld && GameWorld.TestingFromLevelEditor)
+                if (CurrentGameState == GameState.GameWorld && GameWorld.IsTestingLevel)
                 {
-                    ChangeState(GameState.GameWorld, GameMode.Edit);
-                    GameWorld.TestingFromLevelEditor = false;
+                    //ChangeState(GameState.GameWorld, GameMode.Edit);
                 }
                 else
                 {
@@ -316,6 +315,12 @@ namespace Adam
                     Menu.CurrentMenuState = Menu.MenuState.Main;
                     ChangeState(GameState.MainMenu, GameMode.None);
                 }
+            }
+
+            if (InputHelper.IsKeyDown(Keys.Enter) && CurrentGameState == GameState.GameWorld &&
+                CurrentGameMode == GameMode.Play && GameWorld.IsTestingLevel)
+            {
+                LevelEditor.GoBackToEditing();
             }
 
             //Update the game based on what GameState it is
@@ -344,6 +349,7 @@ namespace Adam
 
             base.Update(gameTime);
             _debug.Update(this, DebugOn);
+            Overlay.Update();
         }
 
         private void DrawToMainRenderTarget(RenderTarget2D renderTarget)
@@ -467,8 +473,8 @@ namespace Adam
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
-                    // _overlay.Draw(SpriteBatch);
                     GameWorld.DrawUi(_spriteBatch);
+                    Overlay.Draw(_spriteBatch);
                     Dialog.Draw(_spriteBatch);
                     TextInputBox.Draw(_spriteBatch);
                     MessageBox.Draw(_spriteBatch);

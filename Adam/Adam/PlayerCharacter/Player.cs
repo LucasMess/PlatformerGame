@@ -189,7 +189,7 @@ namespace Adam.PlayerCharacter
         {
             script.Run();
 
-            if (GameWorld.CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
             {
                 ContainInGameWorld();
                 return;
@@ -220,7 +220,7 @@ namespace Adam.PlayerCharacter
             if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
-                if (GameWorld.CurrentGameMode == GameMode.Edit)
+                if (Main.CurrentGameMode == GameMode.Edit)
                     CollRectangle.Y = GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
                 else
                 {
@@ -273,7 +273,7 @@ namespace Adam.PlayerCharacter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (GameWorld.CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
                 return;
             ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
             base.Draw(spriteBatch);

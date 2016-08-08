@@ -28,8 +28,7 @@ namespace Adam.Levels
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
         //performance.
         private static List<Cloud> _clouds;
-        public static GameMode CurrentGameMode;
-        public static bool TestingFromLevelEditor;
+        public static bool IsTestingLevel;
         public static List<Entity> Entities;
         public static bool IsOnDebug;
         public static readonly Player Player = new Player();
@@ -47,7 +46,6 @@ namespace Adam.Levels
             var wallIDs = WorldData.WallIDs;
 
             LoadingScreen.LoadingText = "Starting up world...";
-            CurrentGameMode = currentGameMode;
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
             PlayerProjectiles = new List<Projectile>();
@@ -92,12 +90,18 @@ namespace Adam.Levels
             return true;
         }
 
-        private static void ConvertToTiles(Tile[] array, byte[] ds)
+        public static void PrepareLevelForTesting()
+        {
+            ConvertToTiles(TileArray, WorldData.TileIDs);
+            ConvertToTiles(WallArray, WorldData.WallIDs);
+        } 
+
+        private static void ConvertToTiles(Tile[] array, byte[] ids)
         {
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
 
-            for (var i = 0; i < ds.Length; i++)
+            for (var i = 0; i < ids.Length; i++)
             {
                 var xcoor = (i % width) * Main.Tilesize;
                 var ycoor = ((i - (i % width)) / width) * Main.Tilesize;
@@ -105,7 +109,7 @@ namespace Adam.Levels
 
                 array[i] = new Tile(xcoor, ycoor);
                 var t = array[i];
-                t.Id = ds[i];
+                t.Id = ids[i];
                 t.TileIndex = i;
             }
 
@@ -114,7 +118,7 @@ namespace Adam.Levels
                 t.DefineTexture();
                 t.FindConnectedTextures(array, width);
                 t.DefineTexture();
-                if (CurrentGameMode == GameMode.Play)
+                if (Main.CurrentGameMode == GameMode.Play)
                 {
                     t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                     t.DefineTexture();
@@ -172,7 +176,7 @@ namespace Adam.Levels
                 c.Update();
             }
 
-            if (CurrentGameMode == GameMode.Play)
+            if (Main.CurrentGameMode == GameMode.Play)
             {
                 for (var i = 0; i < Entities.Count; i++)
                 {
@@ -235,7 +239,7 @@ namespace Adam.Levels
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            if (CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
             
 
@@ -259,7 +263,7 @@ namespace Adam.Levels
 
             ParticleSystem.Draw(spriteBatch);
 
-            if (CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
                 LevelEditor.Draw(spriteBatch);
         }
 
@@ -276,7 +280,7 @@ namespace Adam.Levels
 
         public static void DrawUi(SpriteBatch spriteBatch)
         {
-            if (CurrentGameMode == GameMode.Edit)
+            if (Main.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
         }
 

@@ -24,6 +24,7 @@ namespace Adam.Levels
     /// </summary>
     public static class LevelEditor
     {
+        private static Timer _switchEditAndPlayTimer = new Timer();
         private static readonly SoundFx[] Construction = new SoundFx[3];
         private static readonly Timer IdleTimerForSave = new Timer();
         private static ButtonBar _buttonBar;
@@ -111,9 +112,14 @@ namespace Adam.Levels
             // Auto-save functionality.
             if (IdleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
             {
-                _hasChangedSinceLastSave = false;
-                DataFolder.SaveLevel();
+                SaveLevel();
             }
+        }
+
+        public static void SaveLevel()
+        {
+            _hasChangedSinceLastSave = false;
+            DataFolder.SaveLevel();
         }
 
         /// <summary>
@@ -121,13 +127,43 @@ namespace Adam.Levels
         /// </summary>
         public static void TestLevel()
         {
-            try
+            if (Main.CurrentGameMode != GameMode.Play && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
-                DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
+
+                try
+                {
+                    SaveLevel();
+                    GameWorld.IsTestingLevel = true;
+                    Main.CurrentGameMode = GameMode.Play;
+                    GameWorld.PrepareLevelForTesting();
+                    Overlay.FlashWhite();
+                    _switchEditAndPlayTimer.Reset();
+                    // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
+                }
+                catch (Exception e)
+                {
+                    Main.MessageBox.Show(e.Message);
+                }
             }
-            catch (Exception e)
+        }
+
+        public static void GoBackToEditing()
+        {
+            if (Main.CurrentGameMode != GameMode.Edit && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
-                Main.MessageBox.Show(e.Message);
+                try
+                {
+                    GameWorld.IsTestingLevel = false;
+                    Main.CurrentGameMode = GameMode.Edit;
+                    GameWorld.PrepareLevelForTesting();
+                    Overlay.FlashWhite();
+                    _switchEditAndPlayTimer.Reset();
+                    // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
+                }
+                catch (Exception e)
+                {
+                    Main.MessageBox.Show(e.Message);
+                }
             }
         }
 
@@ -226,6 +262,10 @@ namespace Adam.Levels
                 IdleTimerForSave.Reset();
                 EditorRectangle.Y += speed;
             }
+            if (InputHelper.IsKeyDown(Keys.Enter))
+            {
+                TestLevel();
+            }
 
 
             //Prevent camera box from moving out of screen
@@ -285,6 +325,7 @@ namespace Adam.Levels
             {
                 Brush.Size = 1;
                 UpdateSelectedTiles(200);
+                _hasChangedSinceLastSave = true;
             }
         }
 
