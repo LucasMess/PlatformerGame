@@ -9,7 +9,6 @@ using Adam.Misc.Sound;
 using Adam.Network;
 using Adam.Particles;
 using Adam.PlayerCharacter;
-using Adam.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -31,7 +30,7 @@ namespace Adam.Levels
         public static bool IsTestingLevel;
         public static List<Entity> Entities;
         public static bool IsOnDebug;
-        public static readonly Player Player = new Player();
+        public static PlayerCharacter.Player Player = new PlayerCharacter.Player();
         public static List<Projectile> PlayerProjectiles;
         //Basic tile grid and the visible tile grid
         public static Tile[] TileArray;
@@ -55,9 +54,9 @@ namespace Adam.Levels
             var height = WorldData.LevelHeight;
 
             if (WorldData.MetaData == null)
-                WorldData.MetaData = new string[width * height];
+                WorldData.MetaData = new string[width*height];
 
-            var maxClouds = width / 20;
+            var maxClouds = width/20;
             for (var i = 0; i < maxClouds; i++)
             {
                 _clouds.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
@@ -104,8 +103,8 @@ namespace Adam.Levels
 
             for (var i = 0; i < ids.Length; i++)
             {
-                var xcoor = (i % width) * Main.Tilesize;
-                var ycoor = ((i - (i % width)) / width) * Main.Tilesize;
+                var xcoor = (i%width)*Main.Tilesize;
+                var ycoor = ((i - (i%width))/width)*Main.Tilesize;
 
 
                 array[i] = new Tile(xcoor, ycoor);
@@ -141,6 +140,8 @@ namespace Adam.Levels
 
             if (Main.CurrentGameMode == GameMode.Edit)
             {
+                Player.ComplexAnimation.RemoveAllFromQueue();
+                Player.AddAnimationToQueue("editMode");
                 LevelEditor.Update();
             }
             else
@@ -186,32 +187,32 @@ namespace Adam.Levels
 
                     if (entity is Enemy)
                     {
-                        var enemy = (Enemy)entity;
+                        var enemy = (Enemy) entity;
                         enemy.Update();
                     }
                     if (entity is Item)
                     {
-                        var power = (Item)entity;
+                        var power = (Item) entity;
                         power.Update();
                     }
                     if (entity is Projectile)
                     {
-                        var proj = (Projectile)entity;
+                        var proj = (Projectile) entity;
                         proj.Update();
                     }
                     if (entity is NonPlayableCharacter)
                     {
-                        var npc = (NonPlayableCharacter)entity;
+                        var npc = (NonPlayableCharacter) entity;
                         npc.Update();
                     }
                     if (entity is Sign)
                     {
-                        var sign = (Sign)entity;
+                        var sign = (Sign) entity;
                         sign.Update();
                     }
                     if (entity is CheckPoint)
                     {
-                        var ch = (CheckPoint)entity;
+                        var ch = (CheckPoint) entity;
                         ch.Update();
                     }
                 }
@@ -241,8 +242,6 @@ namespace Adam.Levels
         {
             if (Main.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
-
-
 
 
             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
@@ -291,7 +290,7 @@ namespace Adam.Levels
                 var entity = Entities[i];
                 if (entity is Enemy)
                 {
-                    var enemy = (Enemy)entity;
+                    var enemy = (Enemy) entity;
                     enemy.Revive();
                 }
                 if (entity is Food)

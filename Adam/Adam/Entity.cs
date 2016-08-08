@@ -256,25 +256,28 @@ namespace Adam
         /// </summary>
         public virtual void Update()
         {
-
-            if (Health <= 0 && MaxHealth > 0 && !IsAboutToDie)
+            if (Main.CurrentGameMode == GameMode.Play)
             {
-                Kill();
-            }
+                if (Health <= 0 && MaxHealth > 0 && !IsAboutToDie)
+                {
+                    Kill();
+                }
 
-            //Check for physics, if applicable.
-            if (ObeysGravity && !IsAboutToDie)
-            {
-                ApplyGravity();
-            }
+                //Check for physics, if applicable.
+                if (ObeysGravity && !IsAboutToDie)
+                {
+                    ApplyGravity();
+                }
 
-            //Check for collision, if applicable.
-            if (IsCollidable)
-            {
-                CheckTerrainCollision();
-            }
+                //Check for collision, if applicable.
+                if (IsCollidable)
+                {
+                    CheckTerrainCollision();
+                }
 
-            ApplyAirFriction();
+                ApplyAirFriction();
+
+            }
 
             //Animate entity if applicable.
             if (this is IAnimated)
@@ -920,6 +923,12 @@ namespace Adam
         }
 
         public ComplexAnimation ComplexAnimation => ComplexAnim;
+
+        public void SetPosition(Vector2 position)
+        {
+            CollRectangle.X = (int) position.X;
+            CollRectangle.Y = (int) position.Y;
+        }
 
     }
 }

@@ -139,6 +139,7 @@ namespace Adam.Levels
                     GameWorld.PlayerTrail = new PlayerTrail();
                     Main.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
+                    GameWorld.Player.ComplexAnimation.RemoveAllFromQueue();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
@@ -241,29 +242,29 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            Main.Camera.UpdateSmoothly(EditorRectangle, GameWorld.WorldData.LevelWidth,
+            Main.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
             const int speed = 15;
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
                 IdleTimerForSave.Reset();
-                EditorRectangle.X -= speed;
+                GameWorld.Player.ChangePosBy(-speed, 0);
             }
             if (InputHelper.IsKeyDown(Keys.D))
             {
                 IdleTimerForSave.Reset();
-                EditorRectangle.X += speed;
+                GameWorld.Player.ChangePosBy(speed, 0);
             }
             if (InputHelper.IsKeyDown(Keys.W))
             {
                 IdleTimerForSave.Reset();
-                EditorRectangle.Y -= speed;
+                GameWorld.Player.ChangePosBy(0, -speed);
             }
             if (InputHelper.IsKeyDown(Keys.S))
             {
                 IdleTimerForSave.Reset();
-                EditorRectangle.Y += speed;
+                GameWorld.Player.ChangePosBy(0, speed);
             }
             if (InputHelper.IsKeyDown(Keys.Enter))
             {
@@ -480,6 +481,7 @@ namespace Adam.Levels
             if (!IsIntersectingUi())
                 Brush.Draw(spriteBatch);
 
+            //spriteBatch.Draw(Main.DefaultTexture, EditorRectangle, Color.White);
             GameWorld.PlayerTrail.Draw(spriteBatch);
         }
 

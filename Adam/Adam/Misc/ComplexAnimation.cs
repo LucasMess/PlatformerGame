@@ -16,6 +16,7 @@ namespace Adam.Misc
         ComplexAnimData _currentAnimationData = new ComplexAnimData();
         int _currentFrame;
         string _currentName;
+        public bool IsActive { get; set; } = true;
 
         public delegate void FrameHandler(FrameArgs e);
         public delegate void EventHandler();
@@ -191,8 +192,13 @@ namespace Adam.Misc
         /// <param name="name"></param>
         public void RemoveFromQueue(string name)
         {
-            if (name.Contains(name))
+            if (_queue.Contains(name))
                 _queue.Remove(name);
+        }
+
+        public void RemoveAllFromQueue()
+        {
+            _queue = new List<string>();
         }
 
         /// <summary>

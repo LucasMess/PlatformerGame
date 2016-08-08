@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Adam.Levels;
 
 namespace Adam.Characters
 {
@@ -12,7 +13,7 @@ namespace Adam.Characters
 
         public override void Update()
         {
-            if (Session.IsActive && Session.IsHost)
+            if (Session.IsActive && Session.IsHost && Main.CurrentGameMode == GameMode.Play)
                 Script?.Run();
             base.Update();
         }

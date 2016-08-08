@@ -43,8 +43,8 @@ namespace Adam.PlayerCharacter
             ComplexAnim.FrameChanged += ComplexAnim_FrameChanged;
 
             // Animation textures.
-            //ComplexAnim.AddAnimationData("idle",
-                //new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
+            ComplexAnim.AddAnimationData("editMode",
+            new ComplexAnimData(9999, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
             ComplexAnim.AddAnimationData("smellPoop",
                 new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
             ComplexAnim.AddAnimationData("sleep",
@@ -157,8 +157,8 @@ namespace Adam.PlayerCharacter
                 int spawnIndex;
                 if (int.TryParse(_spawnPointNextLevel, out spawnIndex))
                 {
-                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth)*Main.Tilesize;
-                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth)*Main.Tilesize;
+                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * Main.Tilesize;
+                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * Main.Tilesize;
                     CollRectangle.X = x;
                     CollRectangle.Y = y;
                     RespawnPos = new Vector2(x, y);
@@ -187,26 +187,12 @@ namespace Adam.PlayerCharacter
         /// </summary>
         public override void Update()
         {
-            script.Run();
 
-            if (Main.CurrentGameMode == GameMode.Edit)
-            {
-                ContainInGameWorld();
-                return;
-            }
+            ContainInGameWorld();
 
             CheckInput();
             Burn();
-            UpdatePlayerPosition();
             base.Update();
-        }
-
-        /// <summary>
-        ///     This method updates all of the rectangles and applies velocity.
-        /// </summary>
-        private void UpdatePlayerPosition()
-        {
-            ContainInGameWorld();
         }
 
         private void ContainInGameWorld()
@@ -269,14 +255,6 @@ namespace Adam.PlayerCharacter
                     _fireTickTimer.Reset();
                 }
             }
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (Main.CurrentGameMode == GameMode.Edit)
-                return;
-            ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
-            base.Draw(spriteBatch);
         }
 
         /// <summary>
