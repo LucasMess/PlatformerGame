@@ -356,8 +356,12 @@ namespace Adam
                         _positionInSpriteSheet = new Vector2(8, 24);
                     break;
                 case 24: //lava
+                    Lava lava = new Lava();
+                    OnTileUpdate += lava.OnTileUpdate;
+                    _switchFrame = 1000;
+
                     _frameCount = new Vector2(4, 0);
-                    _hasRandomStartingPoint = true;
+                    _hasRandomStartingPoint = false;
                     _positionInSpriteSheet = new Vector2(0, 15);
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 25);
@@ -763,6 +767,11 @@ namespace Adam
             }
         }
 
+        private void Tile_OnTileUpdate(Tile t)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         ///     Takes all the variables given in DefineTexture method and returns the appropriate source rectangle.
         /// </summary>
@@ -815,7 +824,6 @@ namespace Adam
         public void Update()
         {
             OnTileUpdate?.Invoke(this);
-
             Animate();
             ChangeOpacity();
         }
@@ -862,7 +870,7 @@ namespace Adam
         {
             var gameTime = Main.GameTime;
 
-            _switchFrame = 120;
+            if (_switchFrame == 0) _switchFrame = 130;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (_frameTimer >= _switchFrame)
@@ -924,6 +932,7 @@ namespace Adam
 
             IsSolid = false;
             SubId = 0;
+            _switchFrame = 0;
             DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
             _wasInitialized = false;

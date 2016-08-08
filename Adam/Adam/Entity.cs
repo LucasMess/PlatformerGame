@@ -837,7 +837,7 @@ namespace Adam
         /// <summary>
         /// Deals a certain amount of damage to the entity.
         /// </summary>
-        /// <param name="damageDealer"></param>
+        /// <param name="damageDealer">Can be null.</param>
         /// <param name="damage"></param>
         public void TakeDamage(Entity damageDealer, int damage)
         {

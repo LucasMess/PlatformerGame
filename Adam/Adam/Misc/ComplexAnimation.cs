@@ -199,6 +199,7 @@ namespace Adam.Misc
         public void RemoveAllFromQueue()
         {
             _queue = new List<string>();
+            AddToQueue("idle");
         }
 
         /// <summary>
