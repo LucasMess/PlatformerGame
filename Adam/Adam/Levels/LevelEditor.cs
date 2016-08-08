@@ -45,6 +45,7 @@ namespace Adam.Levels
         public static bool OnWallMode;
         public static byte SelectedId = 1;
 
+        private static byte[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
 
         public static void Load()
@@ -310,7 +311,7 @@ namespace Adam.Levels
 
                 if (InputHelper.IsMiddleMousePressed())
                 {
-                    SelectedId = CurrentArray[IndexOfMouse].Id;
+                    SelectedId = WorldDataIds[IndexOfMouse];
                     HotBar.AddToHotBarFromWorld(SelectedId);
                 }
             }
@@ -337,9 +338,9 @@ namespace Adam.Levels
         {
             foreach (var i in Brush.SelectedIndexes)
             {
-                if (i < 0 || i > CurrentArray.Length)
+                if (i < 0 || i > WorldDataIds.Length)
                     continue;
-                int tileId = CurrentArray[i].Id;
+                int tileId = WorldDataIds[i];
 
                 //Wants to destroy. Any block can be destroyed.
                 if (desiredId == 0)
@@ -348,7 +349,7 @@ namespace Adam.Levels
                     if (tileId == 0)
                         continue;
                     CurrentArray[i].Destroy();
-                    CurrentArray[i].Id = (byte)desiredId;
+                    WorldDataIds[i] = (byte)desiredId;
                     if (OnWallMode)
                     {
                         CurrentArray[i].IsWall = true;
@@ -364,7 +365,7 @@ namespace Adam.Levels
                 {
                     if (tileId == 0)
                     {
-                        CurrentArray[i].Id = (byte)desiredId;
+                        WorldDataIds[i] = (byte)desiredId;
                         if (OnWallMode)
                         {
                             CurrentArray[i].IsWall = true;
@@ -431,11 +432,13 @@ namespace Adam.Levels
                 if (ind >= 0 && ind < GameWorld.TileArray.Length)
                 {
                     var t = CurrentArray[ind];
+                    t.Destroy();
+                    t.Id = WorldDataIds[ind];
                     t.DefineTexture();
-                    t.FindConnectedTextures(CurrentArray,
+                    t.FindConnectedTextures(WorldDataIds,
                         GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    //t.AddRandomlyGeneratedDecoration(CurrentArray,+GameWorld.WorldData.LevelWidth);
+                    t.AddRandomlyGeneratedDecoration(CurrentArray,GameWorld.WorldData.LevelWidth);
                 }
             }
         }

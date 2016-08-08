@@ -94,7 +94,7 @@ namespace Adam.Levels
         {
             ConvertToTiles(TileArray, WorldData.TileIDs);
             ConvertToTiles(WallArray, WorldData.WallIDs);
-        } 
+        }
 
         private static void ConvertToTiles(Tile[] array, byte[] ids)
         {
@@ -116,13 +116,10 @@ namespace Adam.Levels
             foreach (var t in array)
             {
                 t.DefineTexture();
-                t.FindConnectedTextures(array, width);
+                t.FindConnectedTextures(ids, width);
                 t.DefineTexture();
-                if (Main.CurrentGameMode == GameMode.Play)
-                {
-                    t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
-                    t.DefineTexture();
-                }
+                t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
+                t.DefineTexture();
             }
         }
 
@@ -228,7 +225,7 @@ namespace Adam.Levels
 
         public static void DrawWalls(SpriteBatch spriteBatch)
         {
-             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
                 if (tileNumber > 0 && tileNumber < TileArray.Length)
                 {
@@ -241,9 +238,9 @@ namespace Adam.Levels
         {
             if (Main.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
-            
 
-           
+
+
 
             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {

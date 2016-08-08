@@ -127,6 +127,7 @@ namespace Adam
         private bool _wasInitialized;
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
+        private Rectangle _defaultDrawRectangle;
         public byte Id;
         public bool IsClimbable;
         public bool IsSolid;
@@ -153,6 +154,7 @@ namespace Adam
         {
             _originalPosition = new Rectangle(x, y, 0, 0);
             DrawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            _defaultDrawRectangle = DrawRectangle;
             SetToDefaultSourceRect();
         }
 
@@ -912,6 +914,7 @@ namespace Adam
 
             IsSolid = false;
             SubId = 0;
+            DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
             _wasInitialized = false;
             _sizeOfTile = new Vector2(1, 1);
@@ -970,9 +973,9 @@ namespace Adam
         ///     This is used for the tiles that have special textures for corners. In the spritesheet they are arranged in the same
         ///     way. This includes grass, sand, stone, and mesa.
         /// </summary>
-        /// <param name="array">The tile array that will be analyzed.</param>
+        /// <param name="ids">The tile array that will be analyzed.</param>
         /// <param name="mapWidth">The width of the map in tiles.</param>
-        public void FindConnectedTextures(Tile[] array, int mapWidth)
+        public void FindConnectedTextures(byte[] ids, int mapWidth)
         {
             _cornerPieces = new List<Tile>();
 
@@ -981,11 +984,11 @@ namespace Adam
             {
                 var indexAbove = TileIndex - mapWidth;
                 var indexBelow = TileIndex + mapWidth;
-                if (array[indexAbove].Id != 109)
+                if (ids[indexAbove] != 109)
                 {
                     SubId = 1;
                 }
-                else if (array[indexBelow].Id != 109)
+                else if (ids[indexBelow] != 109)
                 {
                     SubId = 2;
                 }
@@ -997,11 +1000,11 @@ namespace Adam
             {
                 var indexAbove = TileIndex - mapWidth;
                 var indexBelow = TileIndex + mapWidth;
-                if (array[indexAbove].Id != 18)
+                if (ids[indexAbove] != 18)
                 {
                     SubId = 1;
                 }
-                else if (array[indexBelow].Id != 18)
+                else if (ids[indexBelow] != 18)
                 {
                     SubId = 2;
                 }
@@ -1011,9 +1014,9 @@ namespace Adam
             //Marble Floor
             else if (Id == 3)
             {
-                if (array[TileIndex - 1].Id != 3)
+                if (ids[TileIndex - 1] != 3)
                     SubId = 2;
-                else if (array[TileIndex + 1].Id != 3)
+                else if (ids[TileIndex + 1] != 3)
                     SubId = 1;
                 else SubId = 0;
             }
@@ -1022,9 +1025,9 @@ namespace Adam
             //Marble Ceiling
             else if (Id == 29)
             {
-                if (array[TileIndex + 1].Id != 29)
+                if (ids[TileIndex + 1] != 29)
                     SubId = 1;
-                else if (array[TileIndex - 1].Id != 29)
+                else if (ids[TileIndex - 1] != 29)
                     SubId = 2;
                 else SubId = 0;
             }
@@ -1032,7 +1035,7 @@ namespace Adam
             //Fences
             else if (Id == 103)
             {
-                if (array[TileIndex - mapWidth].Id != 103)
+                if (ids[TileIndex - mapWidth] != 103)
                     SubId = 1;
                 else SubId = 0;
             }
@@ -1040,7 +1043,7 @@ namespace Adam
             // Water.
             else if (Id == 23)
             {
-                if (array[TileIndex - mapWidth].Id == 0)
+                if (ids[TileIndex - mapWidth] == 0)
                     SubId = 1;
                 else SubId = 0;
             }
@@ -1048,7 +1051,7 @@ namespace Adam
             // Lava.
             else if (Id == 24)
             {
-                if (array[TileIndex - mapWidth].Id == 0)
+                if (ids[TileIndex - mapWidth] == 0)
                     SubId = 1;
                 else SubId = 0;
             }
@@ -1070,202 +1073,202 @@ namespace Adam
             var bl = b - 1;
             var br = b + 1;
 
-            if (br >= array.Length || tl < 0)
+            if (br >= ids.Length || tl < 0)
                 return;
 
-            var topLeft = array[tl];
-            var top = array[t];
-            var topRight = array[tr];
-            var midLeft = array[ml];
-            var mid = array[m];
-            var midRight = array[mr];
-            var botLeft = array[bl];
-            var bot = array[b];
-            var botRight = array[br];
+            var topLeft = ids[tl];
+            var top = ids[t];
+            var topRight = ids[tr];
+            var midLeft = ids[ml];
+            var mid = ids[m];
+            var midRight = ids[mr];
+            var botLeft = ids[bl];
+            var bot = ids[b];
+            var botRight = ids[br];
 
-            if (topLeft.Id == mid.Id &&
-                top.Id == mid.Id &&
-                topRight.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                botLeft.Id == mid.Id &&
-                bot.Id == mid.Id &&
-                botRight.Id == mid.Id)
+            if (topLeft == mid &&
+                top == mid &&
+                topRight == mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                botLeft == mid &&
+                bot == mid &&
+                botRight == mid)
                 SubId = 0;
 
-            if (topLeft.Id == mid.Id &&
-                top.Id == mid.Id &&
-                topRight.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                botLeft.Id == mid.Id &&
-                bot.Id == mid.Id &&
-                botRight.Id != mid.Id)
+            if (topLeft == mid &&
+                top == mid &&
+                topRight == mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                botLeft == mid &&
+                bot == mid &&
+                botRight != mid)
                 SubId = 0;
 
-            if (topLeft.Id == mid.Id &&
-                top.Id == mid.Id &&
-                topRight.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                botLeft.Id != mid.Id &&
-                bot.Id == mid.Id &&
-                botRight.Id == mid.Id)
+            if (topLeft == mid &&
+                top == mid &&
+                topRight == mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                botLeft != mid &&
+                bot == mid &&
+                botRight == mid)
                 SubId = 0;
 
-            if (topLeft.Id != mid.Id &&
-                top.Id == mid.Id &&
-                topRight.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                botLeft.Id == mid.Id &&
-                bot.Id == mid.Id &&
-                botRight.Id == mid.Id)
+            if (topLeft != mid &&
+                top == mid &&
+                topRight == mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                botLeft == mid &&
+                bot == mid &&
+                botRight == mid)
                 SubId = 0;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id == mid.Id)
+            if (top != mid &&
+                midLeft != mid &&
+                midRight == mid &&
+                bot == mid)
                 SubId = 4;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id == mid.Id)
+            if (top != mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                bot == mid)
                 SubId = 5;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id == mid.Id)
+            if (top != mid &&
+                midLeft == mid &&
+                midRight != mid &&
+                bot == mid)
                 SubId = 6;
 
-            if (topLeft.Id == mid.Id &&
-                top.Id == mid.Id &&
-                topRight.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                botLeft.Id == mid.Id &&
-                bot.Id == mid.Id &&
-                botRight.Id == mid.Id)
+            if (topLeft == mid &&
+                top == mid &&
+                topRight != mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                botLeft == mid &&
+                bot == mid &&
+                botRight == mid)
                 SubId = 0;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id == mid.Id)
+            if (top == mid &&
+                midLeft != mid &&
+                midRight == mid &&
+                bot == mid)
                 SubId = 8;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id != mid.Id)
+            if (top != mid &&
+                midLeft != mid &&
+                midRight != mid &&
+                bot != mid)
                 SubId = 9;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id == mid.Id)
+            if (top == mid &&
+                midLeft == mid &&
+                midRight != mid &&
+                bot == mid)
                 SubId = 10;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id == mid.Id)
+            if (top != mid &&
+                midLeft != mid &&
+                midRight != mid &&
+                bot == mid)
                 SubId = 11;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id != mid.Id)
+            if (top == mid &&
+                midLeft != mid &&
+                midRight == mid &&
+                bot != mid)
                 SubId = 12;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id != mid.Id)
+            if (top == mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                bot != mid)
                 SubId = 13;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id != mid.Id)
+            if (top == mid &&
+                midLeft == mid &&
+                midRight != mid &&
+                bot != mid)
                 SubId = 14;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id == mid.Id)
+            if (top == mid &&
+                midLeft != mid &&
+                midRight != mid &&
+                bot == mid)
                 SubId = 15;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id != mid.Id)
+            if (top != mid &&
+                midLeft != mid &&
+                midRight == mid &&
+                bot != mid)
                 SubId = 16;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id != mid.Id)
+            if (top != mid &&
+                midLeft == mid &&
+                midRight == mid &&
+                bot != mid)
                 SubId = 17;
 
-            if (top.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id != mid.Id)
+            if (top != mid &&
+                midLeft == mid &&
+                midRight != mid &&
+                bot != mid)
                 SubId = 18;
 
-            if (top.Id == mid.Id &&
-                midLeft.Id != mid.Id &&
-                midRight.Id != mid.Id &&
-                bot.Id != mid.Id)
+            if (top == mid &&
+                midLeft != mid &&
+                midRight != mid &&
+                bot != mid)
                 SubId = 19;
 
             //Special
-            if (botRight.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                bot.Id == mid.Id)
+            if (botRight != mid &&
+                midRight == mid &&
+                bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid.Id;
+                corner.Id = mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 1;
                 _cornerPieces.Add(corner);
             }
 
-            if (botLeft.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                bot.Id == mid.Id)
+            if (botLeft != mid &&
+                midLeft == mid &&
+                bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid.Id;
+                corner.Id = mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 2;
                 _cornerPieces.Add(corner);
             }
 
-            if (topLeft.Id != mid.Id &&
-                midLeft.Id == mid.Id &&
-                top.Id == mid.Id)
+            if (topLeft != mid &&
+                midLeft == mid &&
+                top == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid.Id;
+                corner.Id = mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 3;
                 _cornerPieces.Add(corner);
             }
 
-            if (topRight.Id != mid.Id &&
-                midRight.Id == mid.Id &&
-                top.Id == mid.Id)
+            if (topRight != mid &&
+                midRight == mid &&
+                top == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid.Id;
+                corner.Id = mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 7;

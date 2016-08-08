@@ -75,8 +75,8 @@ namespace Adam.GameData
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
-                TileIDs[i] = GameWorld.TileArray[i].Id;
-                WallIDs[i] = GameWorld.WallArray[i].Id;
+                TileIDs[i] = GameWorld.WorldData.TileIDs[i];
+                WallIDs[i] = GameWorld.WorldData.WallIDs[i];
             }
 
             //Level conditions
