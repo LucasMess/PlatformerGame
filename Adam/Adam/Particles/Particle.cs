@@ -23,15 +23,15 @@ namespace Adam.Particles
             }
         }
 
-        readonly NewParticle[] _particles;
+        readonly Particle[] _particles;
 
         public ParticleSystem()
         {
-            _particles = new NewParticle[10000];
+            _particles = new Particle[10000];
 
             for (int i = 0; i < _particles.Length; i++)
             {
-                _particles[i] = new NewParticle();
+                _particles[i] = new Particle();
             }
         }
 
@@ -51,7 +51,7 @@ namespace Adam.Particles
             }
         }
 
-        public void Add(NewParticle par)
+        public void Add(Particle par)
         {
             _particles[NextIndex] = par;
         }
@@ -63,7 +63,7 @@ namespace Adam.Particles
 
     }
 
-    public class NewParticle
+    public class Particle
     {
         protected Vector2 Position { get; set; }
         protected Rectangle SourceRectangle { get; set; }
@@ -117,7 +117,7 @@ namespace Adam.Particles
 
     }
 
-    class SpeedParticle : NewParticle
+    class SpeedParticle : Particle
     {
         public SpeedParticle(Texture2D texture, int x, int y, Rectangle sourceRectangle, bool isFacingRight)
         {
@@ -135,23 +135,23 @@ namespace Adam.Particles
         }
     }
 
-    class SmokeParticle : NewParticle
+    class SmokeParticle : Particle
     {
         Timer _animationTimer = new Timer();
         int _currentFrame;
         int _frames;
         private int frameChange;
 
-        public SmokeParticle(int x, int y, Vector2 velocity)
+        public SmokeParticle(int x, int y, Vector2 velocity, Color color)
         {
             Position = new Vector2(x - 4, y - Main.Random.Next(0, 80) / 10f);
             SourceRectangle = new Rectangle(256, 104, 8, 8);
             Velocity = velocity;
             Opacity = 1;
-            Color = Color.White;
+            Color = color;
             Texture = GameWorld.SpriteSheet;
             Scale = Main.Random.Next(5, 30) / 10f;
-            Position = new Vector2(x - 4, y - (Scale * Height)/2);
+            Position = new Vector2(x - (Scale * Width) / 2, y - (Scale * Height)/2);
             frameChange = Main.Random.Next(100, 200);
             _frames = 4;
         }
@@ -173,7 +173,46 @@ namespace Adam.Particles
         }
     }
 
-    class RoundCommonParticle : NewParticle
+    class FlameParticle : Particle
+    {
+        Timer _animationTimer = new Timer();
+        int _currentFrame;
+        int _frames;
+        private int frameChange;
+
+        public FlameParticle(int x, int y, Vector2 velocity)
+        {
+            Position = new Vector2(x - 4, y - Main.Random.Next(0, 80) / 10f);
+            SourceRectangle = new Rectangle(288, 96, 8, 8);
+            Velocity = velocity;
+            Opacity = 1;
+            Color = Color.White;
+            Texture = GameWorld.SpriteSheet;
+            Scale = Main.Random.Next(5, 30) / 10f;
+            Position = new Vector2(x - (Scale * Width) / 2, y - (Scale * Height) / 2);
+            frameChange = Main.Random.Next(100, 200);
+            _frames = 4;
+        }
+
+        public override void Update()
+        {
+            if (_animationTimer.TimeElapsedInMilliSeconds > frameChange)
+            {
+                SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
+                _currentFrame++;
+                _animationTimer.Reset();
+            }
+            if (_currentFrame >= _frames)
+            {
+                Opacity = 0;
+            }
+
+            NoOpacityDefaultBehavior();
+        }
+    }
+
+
+    class RoundCommonParticle : Particle
     {
         Timer _animationTimer = new Timer();
         int _currentFrame;
@@ -211,7 +250,7 @@ namespace Adam.Particles
         }
     }
 
-    class EntityTextureParticle : NewParticle
+    class EntityTextureParticle : Particle
     {
         public EntityTextureParticle(int x, int y, Rectangle rect, Vector2 vel, Entity entity)
         {

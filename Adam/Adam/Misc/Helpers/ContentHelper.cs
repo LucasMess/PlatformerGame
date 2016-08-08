@@ -43,7 +43,7 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("SoundEffect location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
-                throw;
+                return LoadSound("Sounds/Items/item_pop");
             }
         }
 

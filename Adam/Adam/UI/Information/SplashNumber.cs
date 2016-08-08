@@ -7,7 +7,7 @@ using Adam.Particles;
 
 namespace Adam.UI
 {
-    public class SplashNumber : NewParticle
+    public class SplashNumber : Particle
     {
         SpriteFont _font;
         string _text;

@@ -225,7 +225,7 @@ namespace Adam.PlayerCharacter
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
-                        new Vector2(0, (float)(Main.Random.Next(-5, 5) / 10f)));
+                        new Vector2(0, (float)(Main.Random.Next(-5, 5) / 10f)), Color.White);
                     GameWorld.ParticleSystem.Add(par);
                 }
             }

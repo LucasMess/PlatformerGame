@@ -128,6 +128,7 @@ namespace Adam
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
         private Rectangle _defaultDrawRectangle;
+        private Interactable _interactable;
         public byte Id;
         public bool IsClimbable;
         public bool IsSolid;
@@ -283,6 +284,7 @@ namespace Adam
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
+                    _interactable = new Torch();
                     break;
                 case 12: //Chandelier
                     _frameCount = new Vector2(4, 0);
@@ -357,8 +359,7 @@ namespace Adam
                         _positionInSpriteSheet = new Vector2(8, 24);
                     break;
                 case 24: //lava
-                    Lava lava = new Lava();
-                    OnTileUpdate += lava.OnTileUpdate;
+                    _interactable = new Lava();
                     _switchFrame = 1000;
 
                     _frameCount = new Vector2(4, 0);
@@ -825,6 +826,7 @@ namespace Adam
         public void Update()
         {
             OnTileUpdate?.Invoke(this);
+            _interactable?.OnTileUpdate(this);
             Animate();
             ChangeOpacity();
         }
@@ -931,6 +933,7 @@ namespace Adam
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
 
+            _interactable = null;
             IsSolid = false;
             SubId = 0;
             _switchFrame = 0;

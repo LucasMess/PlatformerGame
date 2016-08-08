@@ -79,8 +79,6 @@ namespace Adam.UI.Level_Editor
             23, // Water
             24, // Lava
             25, // Poisoned Water
-            55, // Skull TODO: Make automatic.
-            56, // Stalagmite TODO: Make automatic.
         };
 
         private byte[] _objects =
@@ -116,7 +114,7 @@ namespace Adam.UI.Level_Editor
 
         private byte[] _wallTiles =
         {
-            100, // Dirt Wall
+            102, // Dirt Wall
             101, // Stone Wall
             107, // Stone Brick Wall
             105, // Sand Wall
