@@ -38,6 +38,7 @@ namespace Adam.Levels
         public static int TimesUpdated;
         public static Tile[] WallArray;
         public static WorldData WorldData = new WorldData();
+        public static PlayerTrail PlayerTrail = new PlayerTrail();
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
         {
@@ -166,6 +167,8 @@ namespace Adam.Levels
             }
 
             Player.Update();
+            if (Main.CurrentGameMode == GameMode.Play)
+                PlayerTrail.Add(Player);
 
             foreach (var c in _clouds)
             {

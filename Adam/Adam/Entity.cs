@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Adam.Levels;
+using Adam.Misc;
 using Adam.Particles;
 
 namespace Adam
@@ -917,6 +918,8 @@ namespace Adam
                 GameWorld.ParticleSystem.Add(par);
             }
         }
+
+        public ComplexAnimation ComplexAnimation => ComplexAnim;
 
     }
 }

@@ -251,6 +251,11 @@ namespace Adam.Misc
             return _drawRectangle;
         }
 
+        public Rectangle GetSourceRectangle()
+        {
+            return _sourceRectangle;
+        }
+
     }
 
     /// <summary>

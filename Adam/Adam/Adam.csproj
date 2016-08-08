@@ -169,6 +169,7 @@
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Particles\NewParticle.cs" />
+    <Compile Include="PlayerCharacter\PlayerTrail.cs" />
     <Compile Include="PlayerCharacter\PlayerInput.cs" />
     <Compile Include="PlayerCharacter\PlayerProperties.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />

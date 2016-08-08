@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Adam;
 using Adam.Levels;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 using Adam.UI;
 using Adam.UI.Elements;
 using Adam.UI.Level_Editor;
@@ -135,6 +136,7 @@ namespace Adam.Levels
                 {
                     SaveLevel();
                     GameWorld.IsTestingLevel = true;
+                    GameWorld.PlayerTrail = new PlayerTrail();
                     Main.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
@@ -477,6 +479,8 @@ namespace Adam.Levels
         {
             if (!IsIntersectingUi())
                 Brush.Draw(spriteBatch);
+
+            GameWorld.PlayerTrail.Draw(spriteBatch);
         }
 
         /// <summary>
