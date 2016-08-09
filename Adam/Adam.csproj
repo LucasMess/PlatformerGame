@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Adam</RootNamespace>
+    <AssemblyName>Adam</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Adam.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\Enemies\EnemyMethods.cs" />
+    <Compile Include="Characters\Enemies\EnemyProperties.cs" />
+    <Compile Include="Characters\Enemies\Frog.cs" />
+    <Compile Include="Characters\Non-Playable\Charlie.cs" />
+    <Compile Include="Characters\Non-Playable\God.cs" />
+    <Compile Include="Characters\Non-Playable\Harry Potter.cs" />
+    <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />
+    <Compile Include="Characters\Non-Playable\Rose.cs" />
+    <Compile Include="Characters\Non-Playable\Scooter.cs" />
+    <Compile Include="Characters\Non-Playable\Vladimir.cs" />
+    <Compile Include="Characters\Non-Playable\Will.cs" />
+    <Compile Include="Characters\Scripts\FrogScript.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityProperties.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="GameData\GameDataManager.cs" />
+    <Compile Include="GameData\LevelProgression.cs" />
+    <Compile Include="GameData\Save.cs" />
+    <Compile Include="GameData\Settings.cs" />
+    <Compile Include="GameData\WorldConfigFile.cs" />
+    <Compile Include="Interactables\Apple.cs" />
+    <Compile Include="Interactables\CheckPoint.cs" />
+    <Compile Include="Interactables\Chest.cs" />
+    <Compile Include="Interactables\Crystal.cs" />
+    <Compile Include="Interactables\Door.cs" />
+    <Compile Include="Interactables\Food.cs" />
+    <Compile Include="Interactables\Gem.cs" />
+    <Compile Include="Interactables\Interactable.cs" />
+    <Compile Include="Interactables\Item.cs" />
+    <Compile Include="Interactables\Lava.cs" />
+    <Compile Include="Interactables\MushroomBooster.cs" />
+    <Compile Include="Interactables\Portal.cs" />
+    <Compile Include="Interactables\Projectile.cs" />
+    <Compile Include="Interactables\Sign.cs" />
+    <Compile Include="Interactables\Torch.cs" />
+    <Compile Include="Levels\Background.cs" />
+    <Compile Include="Levels\Chunk.cs" />
+    <Compile Include="Levels\ChunkManager.cs" />
+    <Compile Include="Levels\Cloud.cs" />
+    <Compile Include="Levels\GameWorld.cs" />
+    <Compile Include="Levels\LevelEditor.cs" />
+    <Compile Include="Levels\Light.cs" />
+    <Compile Include="Levels\LightingEngine.cs" />
+    <Compile Include="Levels\PlayerSpawn.cs" />
+    <Compile Include="Levels\Tile.cs" />
+    <Compile Include="Levels\WorldData.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Misc\Animation.cs" />
+    <Compile Include="Misc\ComplexAnimation.cs" />
+    <Compile Include="Misc\Countdown.cs" />
+    <Compile Include="Misc\Databases\EnemyDB.cs" />
+    <Compile Include="Misc\Databases\InputDB.cs" />
+    <Compile Include="Misc\Databases\SoundtrackDB.cs" />
+    <Compile Include="Misc\Databases\TextDB.cs" />
+    <Compile Include="Misc\Errors\Exceptions.cs" />
+    <Compile Include="Misc\Helpers\CalcHelper.cs" />
+    <Compile Include="Misc\Helpers\ContentHelper.cs" />
+    <Compile Include="Misc\Helpers\FontHelper.cs" />
+    <Compile Include="Misc\Helpers\InputHelper.cs" />
+    <Compile Include="Misc\Interfaces\IAnimated.cs" />
+    <Compile Include="Misc\Interfaces\INewtonian.cs" />
+    <Compile Include="Misc\Interfaces\ISpecialTile.cs" />
+    <Compile Include="Misc\Interfaces\ITalkable.cs" />
+    <Compile Include="Misc\KeyboardDispatcher.cs" />
+    <Compile Include="Misc\KeyboardLayout.cs" />
+    <Compile Include="Misc\Sound\SoundFx.cs" />
+    <Compile Include="Misc\Sound\SoundFxManager.cs" />
+    <Compile Include="Misc\Sound\SoundtrackManager.cs" />
+    <Compile Include="Misc\TimeFreeze.cs" />
+    <Compile Include="Misc\Timer.cs" />
+    <Compile Include="Misc\TriggerZone.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\Connection.cs" />
+    <Compile Include="Network\Packets\DataPacket.cs" />
+    <Compile Include="Network\Packets\EntityPacket.cs" />
+    <Compile Include="Network\Packets\LevelPacket.cs" />
+    <Compile Include="Network\Packets\PlayerPacket.cs" />
+    <Compile Include="Network\Server.cs" />
+    <Compile Include="Network\Session.cs" />
+    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="PlayerCharacter\Player.cs" />
+    <Compile Include="PlayerCharacter\PlayerInput.cs" />
+    <Compile Include="PlayerCharacter\PlayerProperties.cs" />
+    <Compile Include="PlayerCharacter\PlayerScript.cs" />
+    <Compile Include="PlayerCharacter\PlayerTrail.cs" />
+    <Compile Include="PlayerCharacter\Script.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Projectiles\CollisionRay.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Camera.cs" />
+    <Compile Include="UI\DataFolder.cs" />
+    <Compile Include="UI\Debug.cs" />
+    <Compile Include="UI\Elements\Backdrop.cs" />
+    <Compile Include="UI\Elements\Button.cs" />
+    <Compile Include="UI\Elements\IconButton.cs" />
+    <Compile Include="UI\Elements\KeyPopUp.cs" />
+    <Compile Include="UI\Elements\Line.cs" />
+    <Compile Include="UI\Elements\OKButton.cs" />
+    <Compile Include="UI\Elements\Textbox.cs" />
+    <Compile Include="UI\Elements\TextButton.cs" />
+    <Compile Include="UI\Elements\TextInputBox.cs" />
+    <Compile Include="UI\Elements\UiElement.cs" />
+    <Compile Include="UI\Information\Dialog.cs" />
+    <Compile Include="UI\Information\LevelNameNotification.cs" />
+    <Compile Include="UI\Information\MessageBox.cs" />
+    <Compile Include="UI\Information\SplashNumber.cs" />
+    <Compile Include="UI\Level Editor\Brush.cs" />
+    <Compile Include="UI\Level Editor\ButtonBar.cs" />
+    <Compile Include="UI\Level Editor\CategorySelector.cs" />
+    <Compile Include="UI\Level Editor\HotBar.cs" />
+    <Compile Include="UI\Level Editor\Inventory.cs" />
+    <Compile Include="UI\Level Editor\Minimap.cs" />
+    <Compile Include="UI\Level Editor\TileHolder.cs" />
+    <Compile Include="UI\LevelSelection.cs" />
+    <Compile Include="UI\LoadingScreen.cs" />
+    <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\Overlay.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\NVorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="thumbnail.ico" />
+    <Content Include="thumbnail.png" />
+    <EmbeddedResource Include="Icon.ico" />
+    <Content Include="OpenTK.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodenameAdam_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

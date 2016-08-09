@@ -1,0 +1,30 @@
+﻿using Adam.Levels;
+using Adam.UI.Elements;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace Adam.UI.Level_Editor
+{
+    class CategorySelector : UiElement
+    {
+        private Rectangle _sourceRectangle = new Rectangle(148, 180, 57, 32);
+
+        public CategorySelector()
+        {
+            DrawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(_sourceRectangle.Width)
+            , CalcHelper.ApplyUiRatio(_sourceRectangle.Height));
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(GameWorld.UiSpriteSheet, DrawRectangle, _sourceRectangle, Color.White);
+        }
+
+        public override void MoveTo(Vector2 position, int duration)
+        {
+            position.X -= CalcHelper.ApplyUiRatio(6);
+            position.Y -= CalcHelper.ApplyUiRatio(9);
+            base.MoveTo(position, duration);
+        }
+    }
+}
