@@ -23,9 +23,9 @@ namespace Adam.UI.Elements
             {
                 if (IsMovingToNewPosition)
                 {
-                    _drawRectangle.X = (int) CalcHelper.EaseInAndOut((float) _movementTimer.TimeElapsedInMilliSeconds,
+                    _drawRectangle.X = (int)CalcHelper.EaseInAndOut((float)_movementTimer.TimeElapsedInMilliSeconds,
                         _previousPosition.X, _delta.X, _duration);
-                    _drawRectangle.Y = (int) CalcHelper.EaseInAndOut((float) _movementTimer.TimeElapsedInMilliSeconds,
+                    _drawRectangle.Y = (int)CalcHelper.EaseInAndOut((float)_movementTimer.TimeElapsedInMilliSeconds,
                         _previousPosition.Y, _delta.Y, _duration);
 
                     if (Math.Abs(_drawRectangle.X - _newPosition.X) < .1f &&
@@ -60,15 +60,18 @@ namespace Adam.UI.Elements
 
         public void MoveTo(float x, float y, int duration)
         {
-            if (_newPosition != new Vector2(x, y))
+            // If has not finished moving, the destination is simply altered.
+            if (!IsMovingToNewPosition)
             {
                 _previousPosition = new Vector2(DrawRectangle.X, DrawRectangle.Y);
-                _newPosition = new Vector2(x, y);
-                _delta = _newPosition - _previousPosition;
-                _duration = duration;
                 _movementTimer.Reset();
                 IsMovingToNewPosition = true;
             }
+
+            _newPosition = new Vector2(x, y);
+            _delta = _newPosition - _previousPosition;
+            _duration = duration;
+
         }
 
         /// <summary>

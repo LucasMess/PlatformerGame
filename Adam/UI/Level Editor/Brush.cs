@@ -92,27 +92,29 @@ namespace Adam.UI
             SelectedIndexes = GetTilesCoveredByBrush();
 
             // Create grid.
-            Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[0]];
-            grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * Main.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize + 8);
-            grid.Texture = GameWorld.UiSpriteSheet;
-
-            for (int i = 0; i < _selectedBrushTiles.Length; i++)
+            if (SelectedIndexes[0] >= 0 && SelectedIndexes[0] < GameWorld.TileArray.Length)
             {
-                if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
-                {
-                    //Create transparent tiles to show selected tile
-                    hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
-                    Tile fakeTile = new Tile(true);
-                    fakeTile.Id = LevelEditor.SelectedId;
-                    fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
-                    fakeTile.IsBrushTile = true;
-                    fakeTile.DefineTexture();
-                    fakeTile.Texture = GameWorld.SpriteSheet;
-                    _selectedBrushTiles[i] = fakeTile;
+                Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[0]];
+                grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * Main.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize + 8);
+                grid.Texture = GameWorld.UiSpriteSheet;
 
+                for (int i = 0; i < _selectedBrushTiles.Length; i++)
+                {
+                    if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
+                    {
+                        //Create transparent tiles to show selected tile
+                        hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
+                        Tile fakeTile = new Tile(true);
+                        fakeTile.Id = LevelEditor.SelectedId;
+                        fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
+                        fakeTile.IsBrushTile = true;
+                        fakeTile.DefineTexture();
+                        fakeTile.Texture = GameWorld.SpriteSheet;
+                        _selectedBrushTiles[i] = fakeTile;
+
+                    }
                 }
             }
-
         }
 
         private int[] GetTilesCoveredByBrush()

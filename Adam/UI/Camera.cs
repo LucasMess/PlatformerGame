@@ -71,24 +71,29 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 
-            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 50;
+
+            //MoveTo(new Vector2(currentLeftCorner.X, currentLeftCorner.Y), 2000);
+
+
+            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 30;
             Vector3 cameraLeftCorner = LastCameraLeftCorner;
             cameraLeftCorner += Velocity * Main.TimeSinceLastUpdate;
-            cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
+            
 
             // Make sure mult of 2.
-            if (cameraLeftCorner.X % 2 != 0)
-            {
-                cameraLeftCorner.X++;
-            }
-            if (cameraLeftCorner.Y % 2 != 0)
-            {
-                cameraLeftCorner.Y++;
-            }
-            if (cameraLeftCorner.Z % 2 != 0)
-            {
-                cameraLeftCorner.Z++;
-            }
+            //double mult = .5;
+            //if (cameraLeftCorner.X % mult != 0)
+            //{
+            //    cameraLeftCorner.X = (int)(cameraLeftCorner.X*2)/ 2;
+            //}
+            //if (cameraLeftCorner.Y % mult != 0)
+            //{
+            //    cameraLeftCorner.Y = (int)(cameraLeftCorner.Y * 2) / 2;
+            //}
+            //if (cameraLeftCorner.Z % mult != 0)
+            //{
+            //    cameraLeftCorner.Z++;
+            //}
 
             CenterGameCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
 
@@ -125,8 +130,8 @@ namespace Adam
             }
 
 
-
-
+            //cameraLeftCorner = new Vector3(DrawRectangle.X, DrawRectangle.Y, 0);
+            cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
             _translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(_zoom, _zoom, 0));
         }
 

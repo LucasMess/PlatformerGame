@@ -540,7 +540,7 @@ namespace Adam
                 _spriteBatch.DrawString(_debugFont,
                     "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
                     LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Camera Velocity:" + Camera.Velocity, new Vector2(0, 80),
+                _spriteBatch.DrawString(_debugFont, "Camera DrawRect:" + Camera.DrawRectangle, new Vector2(0, 80),
                     Color.White);
                 _spriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
                     Color.White);
