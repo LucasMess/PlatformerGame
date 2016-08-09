@@ -7,7 +7,7 @@ namespace Adam
 {
     public static class InputHelper
     {
-        static Timer _keyPressedTimer = new Timer();
+        static Timer _keyPressedTimer = new Timer(true);
 
         public static bool IsAnyInputPressed()
         {

@@ -7,10 +7,10 @@ namespace Adam.PlayerCharacter
 {
     public partial class Player : Character
     {
-        Timer _onFireTimer = new Timer();
-        Timer _fireTickTimer = new Timer();
-        Timer _fireSpawnTimer = new Timer();
-        Timer _movementParticlesTimer = new Timer();
+        Timer _onFireTimer = new Timer(true);
+        Timer _fireTickTimer = new Timer(true);
+        Timer _fireSpawnTimer = new Timer(true);
+        Timer _movementParticlesTimer = new Timer(true);
 
         /// <summary>
         /// Returns true if player is on fire and is taking damage per second.

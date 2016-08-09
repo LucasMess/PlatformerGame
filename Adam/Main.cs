@@ -34,7 +34,7 @@ namespace Adam
 
     public class Main : Game
     {
-        public delegate void UpdateHandler(GameTime gameTime);
+        public delegate void UpdateHandler();
 
         private const bool InDebugMode = true;
         private const bool IsTestingMultiplayer = false;
@@ -256,10 +256,9 @@ namespace Adam
         protected override void Update(GameTime gameTime)
         {
             TimeSinceLastUpdate = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
-            GameUpdateCalled?.Invoke(gameTime);
-
             GameTime = gameTime;
+            GameUpdateCalled?.Invoke();
+
 
             if (TimeFreeze.IsTimeFrozen())
             {
@@ -435,6 +434,7 @@ namespace Adam
                     _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                         null, null, Camera.Translate);
                     GameWorld.Draw(_spriteBatch);
+                    LightingEngine.DrawGlows(_spriteBatch);
                     _spriteBatch.End();
 
 
@@ -461,7 +461,7 @@ namespace Adam
 
                     GraphicsDevice.SetRenderTarget(_lightRT);
                     GraphicsDevice.Clear(Color.Transparent);
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                        null, null, Camera.Translate);
                     GameWorld.DrawLights(_spriteBatch);
                     _spriteBatch.End();

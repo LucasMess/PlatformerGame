@@ -14,8 +14,8 @@ namespace Adam.PlayerCharacter
         private List<Texture2D> _textures = new List<Texture2D>();
         private List<Rectangle> _drawRectangles = new List<Rectangle>();
         private List<Rectangle> _sourceRectangles = new List<Rectangle>();
-        private Timer _addTimer = new Timer();
-        private Timer _drawTimer = new Timer();
+        private Timer _addTimer = new Timer(true);
+        private Timer _drawTimer = new Timer(true);
         private int _currentlyShown = 0;
         private const int TimeBetweenShots = 200;
         private const int NumberOfTrails = 20;

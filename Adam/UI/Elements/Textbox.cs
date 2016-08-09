@@ -11,7 +11,7 @@ namespace Adam.UI
     {
         Texture2D _white;
         SpriteFont _font;
-        Timer _flashingTimer = new Timer();
+        Timer _flashingTimer = new Timer(true);
 
         bool _editLineFlashing;
 

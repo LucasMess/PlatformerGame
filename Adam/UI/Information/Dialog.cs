@@ -22,10 +22,10 @@ namespace Adam.UI.Information
         private readonly Rectangle _dialogBoxSourceRectangle;
         private readonly SpriteFont _font;
         private readonly SoundFx _letterPopSound;
-        private readonly Timer _letterPopTimer = new Timer();
+        private readonly Timer _letterPopTimer = new Timer(true);
         private readonly char[] _pauseChars = {'!', '.', ',', '?'};
-        private readonly Timer _selectBufferTimer = new Timer();
-        private readonly Timer _skipTimer = new Timer();
+        private readonly Timer _selectBufferTimer = new Timer(true);
+        private readonly Timer _skipTimer = new Timer(true);
         private int _currentLetterIndex;
         private DialogOptions _dialogOptions;
         private bool _enterPressed;

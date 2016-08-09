@@ -8,7 +8,7 @@ namespace Adam.UI.Elements
     {
 
         private Rectangle _container;
-        private Timer _movementTimer = new Timer();
+        private Timer _movementTimer = new Timer(true);
         private Vector2 _previousPosition;
         private Vector2 _newPosition;
         private Vector2 _delta;

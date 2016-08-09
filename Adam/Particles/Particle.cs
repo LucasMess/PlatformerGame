@@ -147,13 +147,14 @@ namespace Adam.Particles
             Color = color;
             Texture = GameWorld.SpriteSheet;
             Scale = Main.Random.Next(5, 30) / 10f;
-            Position = new Vector2(x - (Scale * Width) / 2, y - (Scale * Height)/2);
+            Position = new Vector2(x - (Scale * Width) / 2, y - (Scale * Height) / 2);
             frameChange = Main.Random.Next(100, 200);
             _frames = 4;
         }
 
         public override void Update()
         {
+            _animationTimer.Increment();
             if (_animationTimer.TimeElapsedInMilliSeconds > frameChange)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
@@ -192,6 +193,7 @@ namespace Adam.Particles
 
         public override void Update()
         {
+            _animationTimer.Increment();
             if (_animationTimer.TimeElapsedInMilliSeconds > frameChange)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);
@@ -223,7 +225,7 @@ namespace Adam.Particles
             Opacity = 1;
             Color = color;
             Texture = GameWorld.SpriteSheet;
-            Scale = Main.Random.Next(5, 30)/10f;
+            Scale = Main.Random.Next(5, 30) / 10f;
 
             _frames = 4;
 

@@ -10,7 +10,7 @@ namespace Adam
     {
         private Texture2D _background;
         SpriteFont _font64, _font32;
-        Timer dotTimer = new Timer();
+        Timer dotTimer = new Timer(true);
 
         public static string LoadingText = "Contemplating life...";
         private string _loadingDots;

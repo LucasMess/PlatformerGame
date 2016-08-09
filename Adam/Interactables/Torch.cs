@@ -11,6 +11,7 @@ namespace Adam.Interactables
         private Timer _smokeParticleTimer = new Timer();
         public override void OnTileUpdate(Tile tile)
         {
+            _fireParticleTimer.Increment();
             if (_fireParticleTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _fireParticleTimer.Reset();

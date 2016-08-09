@@ -21,11 +21,11 @@ namespace Adam
         const float RunAcc = 42f;
         const float DashSpeed = 24000f;
 
-        Timer _idleTimer = new Timer();
-        Timer _airTimer = new Timer();
-        Timer _weaponFireRateTimer = new Timer();
+        Timer _idleTimer = new Timer(true);
+        Timer _airTimer = new Timer(true);
+        Timer _weaponFireRateTimer = new Timer(true);
 
-        public static Timer TimeSinceLastPunch = new Timer();
+        public static Timer TimeSinceLastPunch = new Timer(true);
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
 

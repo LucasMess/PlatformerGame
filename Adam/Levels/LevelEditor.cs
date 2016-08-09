@@ -17,9 +17,9 @@ namespace Adam.Levels
     /// </summary>
     public static class LevelEditor
     {
-        private static Timer _switchEditAndPlayTimer = new Timer();
+        private static Timer _switchEditAndPlayTimer = new Timer(true);
         private static readonly SoundFx[] Construction = new SoundFx[3];
-        private static readonly Timer IdleTimerForSave = new Timer();
+        private static readonly Timer IdleTimerForSave = new Timer(true);
         private static ButtonBar _buttonBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;

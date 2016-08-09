@@ -2,7 +2,7 @@
 {
     public class TimeFreeze
     {
-        private Timer _freezeTimer = new Timer();
+        private Timer _freezeTimer = new Timer(true);
 
         public TimeFreeze()
         {

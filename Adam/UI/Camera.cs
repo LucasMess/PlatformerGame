@@ -27,7 +27,7 @@ namespace Adam
 
         Vector2 _prefRes;
         Vector2 _defRes;
-        private Timer _shakeTimer = new Timer();
+        private Timer _shakeTimer = new Timer(true);
         public Vector3 Velocity;
         public Vector3 LastCameraLeftCorner;
         public Vector2 CenterGameCoords;

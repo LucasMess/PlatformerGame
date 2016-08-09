@@ -13,7 +13,7 @@ namespace Adam.UI.Level_Editor
         private const int SpacingBetweenSquareAndTile = 3;
         private Vector2 _positionRelativeToContainer;
         private readonly Tile _tile;
-        public Timer LastTimeUsed { get; set; } = new Timer();
+        public Timer LastTimeUsed { get; set; } = new Timer(true);
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
 
         private readonly Color _hoveredColor = new Color(69, 96, 198);

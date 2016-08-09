@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
 
 namespace Adam.Misc
 {
@@ -14,17 +14,14 @@ namespace Adam.Misc
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
 
-        public Timer(bool isInfinite)
+        public Timer(bool isInfinite = false)
         {
             IsInfinite = isInfinite;
-            Main.GameUpdateCalled += Increment;
-            ActiveTimers++;
-        }
-        public Timer()
-        {
-            IsInfinite = true;
-            Main.GameUpdateCalled += Increment;
-            ActiveTimers++;
+            if (IsInfinite)
+            {
+                Main.GameUpdateCalled += Increment;
+                ActiveTimers++;
+            }
         }
 
         /// <summary>
@@ -35,25 +32,26 @@ namespace Adam.Misc
         /// <summary>
         /// Increments the timer by amount of time passed since last update.
         /// </summary>
-        private void Increment(GameTime gameTime)
+        public void Increment()
         {
-            _currentTimeInSeconds += gameTime.ElapsedGameTime.TotalSeconds;
-            _currentTimeInMilliSeconds += gameTime.ElapsedGameTime.TotalMilliseconds;
+            _currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
+            _currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (_currentTimeInMilliSeconds > _notificationTime)
             {
                 SetTimeReached?.Invoke();
                 if (!IsInfinite)
                 {
-                    Destroy();
+                    //Destroy();
                 }
             }
 
-            // Destroys timer if it is running for too long.
-            if (_notificationTime == 0 && _currentTimeInSeconds > 60 && !IsInfinite)
-            {
-                Destroy();
-            }
+            //// Destroys timer if it is running for too long.
+            //if (_notificationTime == 0 && _currentTimeInSeconds > 60 && !IsInfinite)
+            //{
+            //    Console.WriteLine("A timer timedout!");
+            //    Destroy();
+            //}
         }
 
         /// <summary>
@@ -112,8 +110,11 @@ namespace Adam.Misc
         /// </summary>
         public void Destroy()
         {
-            Main.GameUpdateCalled -= Increment;
-            ActiveTimers--;
+            if (IsInfinite)
+            {
+                Main.GameUpdateCalled -= Increment;
+                ActiveTimers--;
+            }
         }
     }
 }

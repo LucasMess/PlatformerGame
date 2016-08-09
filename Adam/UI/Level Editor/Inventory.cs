@@ -30,7 +30,7 @@ namespace Adam.UI.Level_Editor
         // This is used to keep track of where the backdrop was when the animation started.
         private static int _posAtStartOfAnimation;
 
-        private static readonly Timer AnimationTimer = new Timer();
+        private static readonly Timer AnimationTimer = new Timer(true);
         private static Rectangle _backDrop;
         private readonly Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
         private CategorySelector _categorySelector = new CategorySelector();

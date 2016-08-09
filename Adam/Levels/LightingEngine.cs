@@ -28,7 +28,7 @@ namespace Adam.Levels
                 _lights[ind] =
                     new Light(
                         new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 4, Color.White);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 4, Color.White, 1, false);
             }
             if (tile.Id == 11) // Torch
             {
@@ -76,11 +76,19 @@ namespace Adam.Levels
 
         }
 
-        public static void Draw(SpriteBatch spriteBatch)
+        public static void DrawLights(SpriteBatch spriteBatch)
         {
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
-                _lights[index]?.Draw(spriteBatch);
+                _lights[index]?.DrawLight(spriteBatch);
+            }
+        }
+
+        public static void DrawGlows(SpriteBatch spriteBatch)
+        {
+            foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
+            {
+                _lights[index]?.DrawGlow(spriteBatch);
             }
         }
     }

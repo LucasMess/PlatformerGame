@@ -60,7 +60,7 @@ namespace Adam
         private int _health;
         private float _opacity = 1f;
         private float _gravityStrength = Main.Gravity;
-        private Timer _stompParticleTimer = new Timer();
+        private Timer _stompParticleTimer = new Timer(true);
 
         /// <summary>
         /// Subscribes to events and initializes other variables.
@@ -320,7 +320,7 @@ namespace Adam
         /// Called right after the entity spawns to define the respawn location;
         /// </summary>
         /// <param name="gameTime"></param>
-        private void DefineRespawnPoint(GameTime gameTime)
+        private void DefineRespawnPoint()
         {
             Main.GameUpdateCalled -= DefineRespawnPoint;
             Vector2 v = RespawnPos;

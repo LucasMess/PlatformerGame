@@ -11,7 +11,7 @@ namespace Adam.UI
 {
     public class Brush
     {
-        Timer gridOpacityTimer = new Timer();
+        Timer gridOpacityTimer = new Timer(true);
 
         protected int MaxSize
         {
