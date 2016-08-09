@@ -214,7 +214,7 @@ namespace Adam.PlayerCharacter
         {
             if (!IsJumping)
             {
-                if (Math.Abs(Velocity.X) < .1f)
+                if (Math.Abs(Velocity.X) < 100f)
                     return;
                 if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X)/60))
                 {

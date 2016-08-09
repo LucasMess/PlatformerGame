@@ -75,7 +75,7 @@ namespace Adam
             //MoveTo(new Vector2(currentLeftCorner.X, currentLeftCorner.Y), 2000);
 
 
-            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 30;
+            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 10;
             Vector3 cameraLeftCorner = LastCameraLeftCorner;
             cameraLeftCorner += Velocity * Main.TimeSinceLastUpdate;
             

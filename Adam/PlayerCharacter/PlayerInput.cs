@@ -130,8 +130,6 @@ namespace Adam.PlayerCharacter
             if (Main.Dialog.IsActive)
                 return;
 
-            StillUpdate?.Invoke();
-
             if (!IsPunchPressed())
             {
                 _attackIsPressed = false;
@@ -194,6 +192,9 @@ namespace Adam.PlayerCharacter
                     FastRunInactive?.Invoke();
                 }
             }
+
+
+            StillUpdate?.Invoke();
 
             if (InputHelper.IsAnyInputPressed())
                 NotIdle?.Invoke();

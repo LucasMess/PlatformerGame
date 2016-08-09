@@ -71,7 +71,7 @@ namespace Adam
                 _idleTimer.Reset();
             }
 
-            if (Math.Abs(player.GetVelocity().X) < 120f)
+            if (Math.Abs(player.GetVelocity().X) < 100f)
             {
                 player.RemoveAnimationFromQueue("walk");
             }
