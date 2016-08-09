@@ -106,8 +106,7 @@ namespace Adam
 
         public override void Update()
         {
-            CollRectangle.X += (int)Velocity.X;
-            CollRectangle.Y += (int)Velocity.Y;
+            Position += Velocity;
 
             CreateTrailEffect();
 
@@ -175,8 +174,7 @@ namespace Adam
             switch (CurrentProjectileSource)
             {
                 case ProjectileSource.Enemy:
-                    CollRectangle.X += (int)Velocity.X;
-                    CollRectangle.Y += (int)Velocity.Y;
+                    Position += Velocity;
 
                     Velocity.Y += .8f;
 

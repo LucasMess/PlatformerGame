@@ -81,7 +81,7 @@ namespace Adam.Particles
         /// </summary>
         private void DefaultBehavior()
         {
-            Position += Velocity;
+            Position += Velocity * Main.TimeSinceLastUpdate;
             Opacity -= .01f;
         }
 
@@ -96,7 +96,7 @@ namespace Adam.Particles
 
         protected void NoOpacityDefaultBehavior()
         {
-            Position += Velocity;
+            Position += Velocity * Main.TimeSinceLastUpdate;
         }
 
         protected void GravityNoOpacityDefaultBehavior()

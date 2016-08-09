@@ -1524,7 +1524,7 @@ namespace Adam
                 case 0:
                     return 1f;
                 default:
-                    return .95f;
+                    return .02f;
             }
         }
 

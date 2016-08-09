@@ -48,6 +48,7 @@ namespace Adam
         public event Entityhandler CollidedWithEntityToLeft;
 
         protected Vector2 Origin;
+        public Vector2 Position { get; set; }
         protected Vector2 Velocity;
 
         private Texture2D _texture;
@@ -59,6 +60,7 @@ namespace Adam
         private int _health;
         private float _opacity = 1f;
         private float _gravityStrength = Main.Gravity;
+        private Timer _stompParticleTimer = new Timer();
 
         /// <summary>
         /// Subscribes to events and initializes other variables.
@@ -152,10 +154,21 @@ namespace Adam
             return DrawRectangle;
         }
 
+        private Rectangle _collRectangle;
         /// <summary>
-        /// The rectangle where position and collisions are done in.
+        /// The rectangle that keeps track of collision.
         /// </summary>
-        protected Rectangle CollRectangle;
+        public Rectangle CollRectangle
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, _collRectangle.Width, _collRectangle.Height);
+            }
+            protected set
+            {
+                _collRectangle = new Rectangle(0, 0, value.Width, value.Height);
+            }
+        }
 
         /// <summary>
         /// Returns the Collision Rectangle of the entity.
@@ -299,7 +312,7 @@ namespace Adam
             if ((CollRectangle.Y + CollRectangle.Height) - below?.GetDrawRectangle().Y < 1)
             {
                 IsTouchingGround = true;
-                Velocity *= below.GetFrictionConstant();
+                Velocity = Velocity * (float)Math.Pow(below.GetFrictionConstant(), Main.TimeSinceLastUpdate);
             }
         }
 
@@ -409,8 +422,7 @@ namespace Adam
         {
             if (!IsAboutToDie && !IsTakingDamage)
             {
-                CollRectangle.X += x;
-                CollRectangle.Y += y;
+                MoveBy(x, y);
             }
         }
 
@@ -540,7 +552,7 @@ namespace Adam
             int[] q = GetNearbyTileIndexes();
 
             //Solve Y collisions
-            CollRectangle.Y += (int)(Velocity.Y);
+            MoveBy(0, Velocity.Y * Main.TimeSinceLastUpdate);
             foreach (int quadrant in q)
             {
                 if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
@@ -567,7 +579,7 @@ namespace Adam
             }
 
             //Solve X Collisions
-            CollRectangle.X += (int)(Velocity.X);
+            MoveBy(Velocity.X * Main.TimeSinceLastUpdate, 0);
             foreach (int quadrant in q)
             {
                 if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
@@ -671,7 +683,7 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            Velocity.Y += (GravityStrength);
+            Velocity.Y += (GravityStrength) * Main.TimeSinceLastUpdate;
         }
 
         /// <summary>
@@ -681,7 +693,7 @@ namespace Adam
         /// <param name="tile"></param>
         private void OnCollisionWithTileAbove(Entity entity, Tile tile)
         {
-            CollRectangle.Y = tile.DrawRectangle.Y + tile.DrawRectangle.Height;
+            SetY(tile.DrawRectangle.Y + tile.DrawRectangle.Height);
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
@@ -703,9 +715,9 @@ namespace Adam
         /// <param name="tile"></param>
         private void OnCollisionWithTileBelow(Entity entity, Tile tile)
         {
-            CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
+            SetY(tile.DrawRectangle.Y - CollRectangle.Height);
 
-            if (Math.Abs(Velocity.Y) > 5)
+            if (Math.Abs(Velocity.Y) > 300)
             {
                 CreateStompParticles(CollRectangle.Width / 10);
             }
@@ -731,7 +743,7 @@ namespace Adam
         /// <param name="tile"></param>
         private void OnCollisionWithTileToRight(Entity entity, Tile tile)
         {
-            CollRectangle.X = tile.DrawRectangle.X - CollRectangle.Width;
+            SetX(tile.DrawRectangle.X - CollRectangle.Width);
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
@@ -755,7 +767,7 @@ namespace Adam
         /// <param name="tile"></param>
         private void OnCollisionWithTileToLeft(Entity entity, Tile tile)
         {
-            CollRectangle.X = tile.DrawRectangle.X + tile.DrawRectangle.Width;
+            SetX(tile.DrawRectangle.X + tile.DrawRectangle.Width);
             switch (CurrentCollisionType)
             {
                 case CollisionType.Rigid:
@@ -814,9 +826,8 @@ namespace Adam
         /// <param name="velocity"></param>
         public void UpdateFromPacket(Vector2 position, Vector2 velocity)
         {
-            CollRectangle.X = (int)position.X;
-            CollRectangle.Y = (int)position.Y;
-            this.Velocity = velocity;
+            Position = position;
+            Velocity = velocity;
         }
 
         /// <summary>
@@ -909,10 +920,14 @@ namespace Adam
         /// <param name="count"></param>
         public void CreateStompParticles(int count)
         {
-            for (int i = 0; i < count; i++)
+            if (_stompParticleTimer.TimeElapsedInMilliSeconds > 100)
             {
-                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(1, 5) / 10f), Color.White);
-                GameWorld.ParticleSystem.Add(par);
+                for (int i = 0; i < count; i++)
+                {
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(1, 5) / 10f), Color.White);
+                    GameWorld.ParticleSystem.Add(par);
+                }
+                _stompParticleTimer.Reset();
             }
         }
 
@@ -920,8 +935,22 @@ namespace Adam
 
         public void SetPosition(Vector2 position)
         {
-            CollRectangle.X = (int) position.X;
-            CollRectangle.Y = (int) position.Y;
+            Position = position;
+        }
+
+        public void MoveBy(float x, float y)
+        {
+            Position += new Vector2(x, y);
+        }
+
+        public void SetX(float x)
+        {
+            Position = new Vector2(x, Position.Y);
+        }
+
+        public void SetY(float y)
+        {
+            Position = new Vector2(Position.X, y);
         }
 
     }

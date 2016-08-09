@@ -1,12 +1,13 @@
 ﻿using Adam.Levels;
 using Adam.Misc;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Adam
 {
-    public class Camera
+    public class Camera : UiElement
     {
         private Matrix _translation;
         public Matrix Translate
@@ -36,8 +37,8 @@ namespace Adam
         public Camera(Viewport newViewport)
         {
             _viewport = newViewport;
-            _defRes = new Vector2(Main.DefaultResWidth,Main.DefaultResHeight);
-            _prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight) ;
+            _defRes = new Vector2(Main.DefaultResWidth, Main.DefaultResHeight);
+            _prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight);
             Velocity = new Vector3(0, 0, 0);
             TileIndex = 100;
         }
@@ -70,9 +71,9 @@ namespace Adam
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 
-            Velocity = (currentLeftCorner - LastCameraLeftCorner) / 5;
+            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 50;
             Vector3 cameraLeftCorner = LastCameraLeftCorner;
-            cameraLeftCorner += Velocity;
+            cameraLeftCorner += Velocity * Main.TimeSinceLastUpdate;
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
 
             // Make sure mult of 2.
@@ -80,7 +81,7 @@ namespace Adam
             {
                 cameraLeftCorner.X++;
             }
-            if (cameraLeftCorner.Y % 2!= 0)
+            if (cameraLeftCorner.Y % 2 != 0)
             {
                 cameraLeftCorner.Y++;
             }

@@ -71,7 +71,6 @@
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityProperties.cs" />
-    <Compile Include="Game1.cs" />
     <Compile Include="GameData\GameDataManager.cs" />
     <Compile Include="GameData\LevelProgression.cs" />
     <Compile Include="GameData\Save.cs" />

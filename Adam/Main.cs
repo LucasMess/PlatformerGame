@@ -43,7 +43,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const string Version = "Version 0.10.0 Beta";
         public const string Producers = "BitBite Games";
-        public const float Gravity = .90f;
+        public const float Gravity = 3400;
         // Color presets for lighting engine.
         private static Color _sunnyPreset = new Color(255, 238, 186);
         private static Color _hellPreset = new Color(255, 129, 116);
@@ -88,6 +88,7 @@ namespace Adam
         private RenderTarget2D _shadowRT;
         private RenderTarget2D _backRT;
         private RenderTarget2D _lightRT;
+        public static float TimeSinceLastUpdate;
         private Menu _menu;
         private Session _session;
         public SamplerState DesiredSamplerState;
@@ -125,7 +126,7 @@ namespace Adam
             // Change game settings here.
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
-            IsFixedTimeStep = true;
+            IsFixedTimeStep = false;
             _graphics.IsFullScreen = true;
             if (IsTestingMultiplayer) _graphics.IsFullScreen = false;
 
@@ -254,6 +255,8 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
+            TimeSinceLastUpdate = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+
             GameUpdateCalled?.Invoke(gameTime);
 
             GameTime = gameTime;
@@ -537,15 +540,15 @@ namespace Adam
                 _spriteBatch.DrawString(_debugFont,
                     "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
                     LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Camera Zoom:" + Camera.GetZoom(), new Vector2(0, 80),
+                _spriteBatch.DrawString(_debugFont, "Camera Velocity:" + Camera.Velocity, new Vector2(0, 80),
                     Color.White);
                 _spriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
                     Color.White);
-                _spriteBatch.DrawString(_debugFont, "Player is dead: " + GameWorld.GetPlayer().IsDead,
+                _spriteBatch.DrawString(_debugFont, "Player is jumping: " + GameWorld.GetPlayer().IsJumping,
                     new Vector2(0, 120),
                     Color.White);
-                //SpriteBatch.DrawString(debugFont, "AnimationState:" + player.CurrentAnimation, new Vector2(0, 140), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Level:" + CurrentGameMode, new Vector2(0, 160), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Player is touching ground:" + GameWorld.GetPlayer().IsTouchingGround, new Vector2(0, 140), Color.White);
+                _spriteBatch.DrawString(_debugFont, "Time since last update:" + TimeSinceLastUpdate, new Vector2(0, 160), Color.White);
                 _spriteBatch.DrawString(_debugFont, "Player Velocity" + GameWorld.GetPlayer().GetVelocity(),
                     new Vector2(0, 180),
                     Color.White);

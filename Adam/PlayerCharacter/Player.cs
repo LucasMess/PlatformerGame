@@ -157,8 +157,7 @@ namespace Adam.PlayerCharacter
                 {
                     int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * Main.Tilesize;
                     int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * Main.Tilesize;
-                    CollRectangle.X = x;
-                    CollRectangle.Y = y;
+                    Position = new Vector2(x, y);
                     RespawnPos = new Vector2(x, y);
                     _spawnPointNextLevel = null;
                     goto NoError;
@@ -166,15 +165,13 @@ namespace Adam.PlayerCharacter
 
             }
             //Set the player position according to where in the map his default spawn point is.
-            CollRectangle.X = setX;
-            CollRectangle.Y = setY;
+            Position = new Vector2(setX, setY);
             RespawnPos = new Vector2(setX, setY);
 
-            NoError:
+        NoError:
 
             //Animation information
-            CollRectangle.Width = 32;
-            CollRectangle.Height = 64;
+            CollRectangle = new Rectangle(0, 0, 32, 64);
             SourceRectangle = new Rectangle(0, 0, 24, 40);
 
             InitializeInput();
@@ -196,16 +193,16 @@ namespace Adam.PlayerCharacter
         private void ContainInGameWorld()
         {
             if (CollRectangle.X < 0)
-                CollRectangle.X = 0;
+                SetX(0);
             if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
-                CollRectangle.X = (GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
+                SetX(GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
-                CollRectangle.Y = 0;
+                SetY(0);
             if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
                 if (Main.CurrentGameMode == GameMode.Edit)
-                    CollRectangle.Y = GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height;
+                    SetY(GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height);
                 else
                 {
                     TakeDamage(null, MaxHealth);
@@ -219,7 +216,7 @@ namespace Adam.PlayerCharacter
             {
                 if (Math.Abs(Velocity.X) < .1f)
                     return;
-                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / Math.Abs(Velocity.X))
+                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X)/60))
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
@@ -284,8 +281,7 @@ namespace Adam.PlayerCharacter
 
         public void MoveTo(Vector2 position)
         {
-            CollRectangle.X = (int)position.X;
-            CollRectangle.Y = (int)position.Y;
+            Position = position;
         }
 
         private void OnPlayerDeath(Entity entity)

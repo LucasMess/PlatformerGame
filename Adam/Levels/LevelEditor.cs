@@ -228,27 +228,27 @@ namespace Adam.Levels
         {
             Main.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
-            const int speed = 15;
+            float speed = 500 * Main.TimeSinceLastUpdate;
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
                 IdleTimerForSave.Reset();
-                GameWorld.Player.ChangePosBy(-speed, 0);
+                GameWorld.Player.MoveBy(-speed, 0);
             }
             if (InputHelper.IsKeyDown(Keys.D))
             {
                 IdleTimerForSave.Reset();
-                GameWorld.Player.ChangePosBy(speed, 0);
+                GameWorld.Player.MoveBy(speed, 0);
             }
             if (InputHelper.IsKeyDown(Keys.W))
             {
                 IdleTimerForSave.Reset();
-                GameWorld.Player.ChangePosBy(0, -speed);
+                GameWorld.Player.MoveBy(0, -speed);
             }
             if (InputHelper.IsKeyDown(Keys.S))
             {
                 IdleTimerForSave.Reset();
-                GameWorld.Player.ChangePosBy(0, speed);
+                GameWorld.Player.MoveBy(0, speed);
             }
             if (InputHelper.IsKeyDown(Keys.Enter))
             {

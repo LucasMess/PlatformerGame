@@ -72,8 +72,6 @@ namespace Adam.Interactables
         public override void Update()
         {
             Player player = GameWorld.Player;
-            CollRectangle.X += (int)Velocity.X;
-            CollRectangle.Y += (int)Velocity.Y;
 
             base.Update();
         }
@@ -86,7 +84,7 @@ namespace Adam.Interactables
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
         {
-            CollRectangle.Y = tile.DrawRectangle.Y - CollRectangle.Height;
+            SetY(tile.DrawRectangle.Y - CollRectangle.Height);
             if (Velocity.Y < 3)
                 Velocity.Y = 0;
             else
