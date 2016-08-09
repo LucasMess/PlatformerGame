@@ -457,7 +457,7 @@ namespace Adam
 
             for (int i = 0; i < 20; i++)
             {
-                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(1, 5) / 10f), Color.White);
+                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(60, 300) / 10f), Color.White);
                 GameWorld.ParticleSystem.Add(par);
             }
 
@@ -684,6 +684,10 @@ namespace Adam
         private void ApplyGravity()
         {
             Velocity.Y += (GravityStrength) * Main.TimeSinceLastUpdate;
+            if (Velocity.Y > 800)
+            {
+                Velocity.Y = 800;
+            }
         }
 
         /// <summary>
@@ -924,7 +928,7 @@ namespace Adam
             {
                 for (int i = 0; i < count; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(1, 5) / 10f), Color.White);
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-300, 300) / 10f, -Main.Random.Next(60, 300) / 10f), Color.White);
                     GameWorld.ParticleSystem.Add(par);
                 }
                 _stompParticleTimer.Reset();

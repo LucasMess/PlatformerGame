@@ -71,7 +71,7 @@ namespace Adam
                 _idleTimer.Reset();
             }
 
-            if (Math.Abs(player.GetVelocity().X) < 100f)
+            if (Math.Abs(player.GetVelocity().X) < 150f)
             {
                 player.RemoveAnimationFromQueue("walk");
             }
@@ -114,7 +114,7 @@ namespace Adam
 
                 for (int i = 0; i < 10; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(1, 10) / 10f), Color.White);
+                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
                     GameWorld.ParticleSystem.Add(par);
                 }
 

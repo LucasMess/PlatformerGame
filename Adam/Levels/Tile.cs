@@ -230,6 +230,7 @@ namespace Adam
                     break;
                 case 3: //Marble Floor
                     IsSolid = true;
+                    IsTransparent = true;
                     switch (SubId)
                     {
                         case 0: //Foundation
@@ -264,6 +265,7 @@ namespace Adam
                 case 7: //ShortGrass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(12, 16);
+                    IsTransparent = true;
                     break;
                 case 8: //Metal
                     _frameCount = new Vector2(4, 0);
@@ -273,6 +275,7 @@ namespace Adam
                 case 9: //Tall Grass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(0, 16);
+                    IsTransparent = true;
                     break;
                 case 10: // Gold.
                     _hasConnectPattern = true;
@@ -285,35 +288,43 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     _interactable = new Torch();
+                    IsTransparent = true;
                     break;
                 case 12: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
+                    IsTransparent = true;
                     break;
                 case 13: //Door
                     IsSolid = true;
+                    IsTransparent = true;
                     break;
                 case 14: //Vines
                     _positionInSpriteSheet = new Vector2(15, 7);
                     IsClimbable = true;
+                    IsTransparent = true;
                     break;
                 case 15: //Ladders
                     _positionInSpriteSheet = new Vector2(13, 7);
                     IsClimbable = true;
+                    IsTransparent = true;
                     break;
                 case 16: //Chains
                     _positionInSpriteSheet = new Vector2(14, 7);
                     IsClimbable = true;
+                    IsTransparent = true;
                     break;
                 case 17: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
-                    _positionInSpriteSheet = new Vector2(12, 10 + Main.Random.Next(0, 3)*2);
+                    _positionInSpriteSheet = new Vector2(12, 10 + Main.Random.Next(0, 3) * 2);
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     _hasRandomStartingPoint = true;
+                    IsTransparent = true;
                     break;
                 case 18: //Marble Column
+                    IsTransparent = true;
                     switch (SubId)
                     {
                         case 0: //middle
@@ -333,9 +344,10 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     _animationPlaysOnce = true;
-                    DrawRectangle.X = _originalPosition.X + Main.Tilesize/4;
+                    DrawRectangle.X = _originalPosition.X + Main.Tilesize / 4;
                     DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
                     var chest = new Chest(this);
+                    IsTransparent = true;
                     break;
                 case 20: // Marble Brick
                     _hasConnectPattern = true;
@@ -346,9 +358,11 @@ namespace Adam
                 case 21: //scaffolding
                     _positionInSpriteSheet = new Vector2(13, 6);
                     IsSolid = true;
+                    IsTransparent = true;
                     break;
                 case 22: //spikes
                     _positionInSpriteSheet = new Vector2(17, 13);
+                    IsTransparent = true;
                     break;
                 case 23: //water
                     _frameCount = new Vector2(4, 0);
@@ -376,12 +390,14 @@ namespace Adam
                 case 26: // Golden Apple.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(8, 26);
+                    IsTransparent = true;
                     break;
                 case 27: //golden chest
                     _positionInSpriteSheet = new Vector2(15, 3);
                     break;
                 case 29: //Marble ceiling
                     IsSolid = true;
+                    IsTransparent = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -403,12 +419,14 @@ namespace Adam
                     _sizeOfTile.X = 4;
                     _sizeOfTile.Y = 6;
 
-                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     _positionInSpriteSheet = new Vector2(16, 0);
+                    IsTransparent = true;
                     break;
                 case 32: //Small Rock
                     _positionInSpriteSheet = new Vector2(13, 18);
+                    IsTransparent = true;
                     break;
                 case 33: //Big Rock
                     _frameCount = new Vector2(0, 0);
@@ -416,14 +434,18 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     DrawRectangle.Y = _originalPosition.Y - 32;
                     _positionInSpriteSheet = new Vector2(14, 17);
+                    IsTransparent = true;
                     break;
                 case 34: //Medium Rock
                     _positionInSpriteSheet = new Vector2(11, 18);
+                    IsTransparent = true;
                     break;
                 case 36: //Sign
                     _positionInSpriteSheet = new Vector2(12, 4);
+                    IsTransparent = true;
                     break;
                 case 37: //Checkpoint
+                    IsTransparent = true;
                     if (Main.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(8, 29);
@@ -465,12 +487,13 @@ namespace Adam
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 29);
-
+                    IsTransparent = true;
                     break;
                 case 43: // Machine Gun
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 28);
+                    IsTransparent = true;
                     break;
                 case 44: // Cacti
                     _frameCount = new Vector2(1, 0);
@@ -491,59 +514,72 @@ namespace Adam
                             _positionInSpriteSheet = new Vector2(22, 4);
                             break;
                     }
+                    IsTransparent = true;
                     break;
                 case 45: // Mushroom Booster
                     _positionInSpriteSheet = new Vector2(19, 26);
+                    IsTransparent = true;
                     break;
                 case 46: // Void ladder.
                     _positionInSpriteSheet = new Vector2(14, 8);
                     IsClimbable = true;
+                    IsTransparent = true;
                     break;
                 case 47: // Wooden platform.
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(14, 26);
+                    IsTransparent = true;
                     break;
                 case 48: // Blue crystal.
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
                     new Crystal(this, 3);
+                    IsTransparent = true;
                     break;
                 case 49: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
                     new Crystal(this, 1);
+                    IsTransparent = true;
                     break;
                 case 50: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
                     new Crystal(this, 2);
+                    IsTransparent = true;
                     break;
                 case 51: // Void FireSpitter.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 28);
+                    IsTransparent = true;
                     break;
                 case 52: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
                     new Crystal(this, 3);
+                    IsTransparent = true;
                     break;
                 case 53: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
                     new Crystal(this, 4);
+                    IsTransparent = true;
                     break;
                 case 54: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
                     new Crystal(this, 2);
+                    IsTransparent = true;
                     break;
                 case 55: // Skull.
                     _positionInSpriteSheet = new Vector2(22, 24);
+                    IsTransparent = true;
                     break;
                 case 56: // Stalagmite
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(23, 24);
+                    IsTransparent = true;
                     break;
                 case 57: // Mud.
                     _hasConnectPattern = true;
@@ -555,8 +591,8 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
-                    DrawRectangle.Height = (int) _sizeOfTile.Y*Main.Tilesize;
-                    DrawRectangle.Width = (int) _sizeOfTile.X*Main.Tilesize;
+                    DrawRectangle.Height = (int)_sizeOfTile.Y * Main.Tilesize;
+                    DrawRectangle.Width = (int)_sizeOfTile.X * Main.Tilesize;
                     switch (SubId)
                     {
                         case 0:
@@ -569,24 +605,28 @@ namespace Adam
                         new Portal(this);
                         _wasInitialized = true;
                     }
+                    IsTransparent = true;
                     break;
                 case 59: // Bed.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 3;
                     _positionInSpriteSheet = new Vector2(10, 30);
+                    IsTransparent = true;
                     break;
                 case 60: // Bookshelf.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(13, 30);
+                    IsTransparent = true;
                     break;
                 case 61: // Painting.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(10, 32);
+                    IsTransparent = true;
                     break;
                 case 62: // Tree of Knowledge
                     _sizeOfTile.X = 50;
@@ -594,8 +634,9 @@ namespace Adam
                     //Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
                     _positionInSpriteSheet = new Vector2(0, 0);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    IsTransparent = true;
                     break;
                 case 63: // Tree Bark
                     _hasConnectPattern = true;
@@ -604,7 +645,7 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
-                    #region Wall Textures
+                #region Wall Textures
 
                 case 100: //Gold Brick Wall
                     _hasConnectPattern = true;
@@ -679,11 +720,11 @@ namespace Adam
                     _sizeOfTile.Y = 10;
                     _positionInSpriteSheet = new Vector2(24, 5);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32*((int) _sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16*(int) _sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
+                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     break;
 
-                    #endregion
+                #endregion
 
                 case 200: //Player
                     if (Main.CurrentGameMode == GameMode.Edit)
@@ -707,11 +748,13 @@ namespace Adam
                             _isInvisible = true;
                         }
                     }
+                    IsTransparent = true;
                     break;
                 case 201: //Snake
-                    
+                    IsTransparent = true;
                     break;
                 case 202: //Frog
+                    IsTransparent = true;
                     if (Main.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
@@ -727,6 +770,7 @@ namespace Adam
                     }
                     break;
                 case 203: // NPC
+                    IsTransparent = true;
                     _positionInSpriteSheet = new Vector2(18, 13);
                     _isInvisible = true;
                     if (!_isSampleTile && !_wasInitialized)
@@ -736,22 +780,22 @@ namespace Adam
                     }
                     break;
                 case 204: //Lost
-                   
+                    IsTransparent = true;
                     break;
                 case 205: //Hellboar
-                  
+                    IsTransparent = true;
                     break;
                 case 206: //Falling Boulder
-                   
+                    IsTransparent = true;
                     break;
                 case 207: //Bat
-                   
+                    IsTransparent = true;
                     break;
                 case 208: //Duck
-                   
+                    IsTransparent = true;
                     break;
                 case 209: //Flying Wheel
-                   
+                    IsTransparent = true;
                     break;
             }
 
@@ -763,8 +807,8 @@ namespace Adam
 
             if (_hasRandomStartingPoint)
             {
-                var randX = Main.Random.Next(0, (int) _frameCount.X);
-                SourceRectangle.X += randX*SmallTileSize;
+                var randX = Main.Random.Next(0, (int)_frameCount.X);
+                SourceRectangle.X += randX * SmallTileSize;
                 _currentFrame += randX;
             }
         }
@@ -781,9 +825,9 @@ namespace Adam
         private void DefineSourceRectangle()
         {
             //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
-            SourceRectangle = new Rectangle((int) (_positionInSpriteSheet.X*SmallTileSize),
-                (int) (_positionInSpriteSheet.Y*SmallTileSize), (int) (SmallTileSize*_sizeOfTile.X),
-                (int) (SmallTileSize*_sizeOfTile.Y));
+            SourceRectangle = new Rectangle((int)(_positionInSpriteSheet.X * SmallTileSize),
+                (int)(_positionInSpriteSheet.Y * SmallTileSize), (int)(SmallTileSize * _sizeOfTile.X),
+                (int)(SmallTileSize * _sizeOfTile.Y));
         }
 
         /// <summary>
@@ -794,17 +838,17 @@ namespace Adam
         {
             if (_isSampleTile)
             {
-                var width = (int) (_sizeOfTile.X*Main.Tilesize);
-                var height = (int) (_sizeOfTile.Y*Main.Tilesize);
+                var width = (int)(_sizeOfTile.X * Main.Tilesize);
+                var height = (int)(_sizeOfTile.Y * Main.Tilesize);
 
                 if (width > height)
                 {
                     width = Main.Tilesize;
-                    height = (int) (Main.Tilesize/_sizeOfTile.X);
+                    height = (int)(Main.Tilesize / _sizeOfTile.X);
                 }
                 if (height > width)
                 {
-                    width = (int) (Main.Tilesize/_sizeOfTile.Y);
+                    width = (int)(Main.Tilesize / _sizeOfTile.Y);
                     height = Main.Tilesize;
                 }
                 if (height == width)
@@ -816,8 +860,8 @@ namespace Adam
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
             }
             else
-                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int) (_sizeOfTile.X*Main.Tilesize),
-                    (int) (_sizeOfTile.Y*Main.Tilesize));
+                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * Main.Tilesize),
+                    (int)(_sizeOfTile.Y * Main.Tilesize));
         }
 
         /// <summary>
@@ -826,7 +870,8 @@ namespace Adam
         public void Update()
         {
             OnTileUpdate?.Invoke(this);
-            _interactable?.OnTileUpdate(this);
+            if (!_isSampleTile)
+                _interactable?.OnTileUpdate(this);
             Animate();
             ChangeOpacity();
         }
@@ -858,7 +903,7 @@ namespace Adam
                         if (_currentFrame >= _frameCount.X)
                         {
                             _currentFrame = 0;
-                            SourceRectangle.X = 12*16;
+                            SourceRectangle.X = 12 * 16;
                             _restartTimer = 0;
                         }
                         break;
@@ -955,7 +1000,7 @@ namespace Adam
             if (Texture != null)
             {
                 if (!_isInvisible || (_isInvisible && Main.CurrentGameMode == GameMode.Edit))
-                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color*_opacity);
+                    spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
             }
             if (_hasConnectPattern)
             {
@@ -971,7 +1016,7 @@ namespace Adam
             }
             if (Main.CurrentGameMode == GameMode.Edit)
             {
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, Main.Tilesize,Main.Tilesize),_gridSourceRectangle, Color.CornflowerBlue * .5f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, Main.Tilesize, Main.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
             }
         }
 
@@ -1334,7 +1379,7 @@ namespace Adam
             // Random decorations for sand.
             if (Id == 5 && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth*2;
+                var indexAbove = TileIndex - mapWidth * 2;
                 var indexToRight = TileIndex - mapWidth + 1;
                 var indexTopRight = indexAbove + 1;
                 if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
@@ -1487,7 +1532,7 @@ namespace Adam
         /// </summary>
         private void SetToDefaultSourceRect()
         {
-            SourceRectangle = new Rectangle(12*SmallTileSize, 8*SmallTileSize, SmallTileSize, SmallTileSize);
+            SourceRectangle = new Rectangle(12 * SmallTileSize, 8 * SmallTileSize, SmallTileSize, SmallTileSize);
         }
 
         /// <summary>
@@ -1524,7 +1569,7 @@ namespace Adam
                 case 0:
                     return 1f;
                 default:
-                    return .02f;
+                    return .005f;
             }
         }
 

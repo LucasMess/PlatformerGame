@@ -132,6 +132,8 @@ namespace Adam.Levels
                     Main.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
                     GameWorld.Player.ComplexAnimation.RemoveAllFromQueue();
+                    GameWorld.Player.SetVelX(0);
+                    GameWorld.Player.SetVelY(0);
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
@@ -437,10 +439,10 @@ namespace Adam.Levels
         /// <param name="rect"></param>
         private static void CreateConstructionParticles(Rectangle rect)
         {
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
-                    new Vector2(Main.Random.Next(-10, 10) / 10f, Main.Random.Next(-10, 10) / 10f), Color.White));
+                GameWorld.ParticleSystem.Add(new SmokeParticle(CalcHelper.GetRandomX(rect), CalcHelper.GetRandomY(rect),
+                    new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White));
             }
         }
 
@@ -450,10 +452,10 @@ namespace Adam.Levels
         /// <param name="rect"></param>
         private static void CreateDestructionParticles(Rectangle rect)
         {
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(new SmokeParticle(rect.Center.X, rect.Center.Y,
-                    new Vector2(Main.Random.Next(-10, 10) / 10f, Main.Random.Next(-10, 10) / 10f), Color.White));
+                GameWorld.ParticleSystem.Add(new SmokeParticle(CalcHelper.GetRandomX(rect), CalcHelper.GetRandomY(rect),
+                    new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White));
             }
         }
 

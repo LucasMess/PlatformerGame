@@ -97,21 +97,7 @@ namespace Adam.PlayerCharacter
 
         protected override Rectangle DrawRectangle => new Rectangle(CollRectangle.X - 8, CollRectangle.Y - 16, 48, 80);
         //Player stats
-        public int Score
-        {
-            get
-            {
-                try
-                {
-                    return Main.GameData.CurrentSave.PlayerStats.Score;
-                }
-                catch
-                {
-                    return 0;
-                }
-            }
-            set { Main.GameData.CurrentSave.PlayerStats.Score = value; }
-        }
+        public int Score;
 
         public override int MaxHealth => 100;
         //Animation Variables
@@ -214,13 +200,13 @@ namespace Adam.PlayerCharacter
         {
             if (!IsJumping)
             {
-                if (Math.Abs(Velocity.X) < 100f)
+                if (Math.Abs(Velocity.X) < 150f)
                     return;
                 if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X)/60))
                 {
                     _movementParticlesTimer.Reset();
                     var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
-                        new Vector2(0, (float)(Main.Random.Next(-5, 5) / 10f)), Color.White);
+                        new Vector2(0, (float)(Main.Random.Next(-300, 300) / 10f)), Color.White);
                     GameWorld.ParticleSystem.Add(par);
                 }
             }

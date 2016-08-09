@@ -316,7 +316,7 @@ namespace Adam
                 }
                 else
                 {
-                    GameData.SaveGame();
+                    //GameData.SaveGame();
                     Menu.CurrentMenuState = Menu.MenuState.Main;
                     ChangeState(GameState.MainMenu, GameMode.None);
                 }

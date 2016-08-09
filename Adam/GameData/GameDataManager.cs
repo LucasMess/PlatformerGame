@@ -84,7 +84,7 @@ namespace Adam.GameData
 
         public Save CurrentSave
         {
-            get { return Saves[SelectedSave]; }
+            get {return Saves[SelectedSave]; }
         }
 
         public Save GetSave(int number)
