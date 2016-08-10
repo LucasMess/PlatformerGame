@@ -181,5 +181,24 @@ namespace Adam
                 rectangle.Y = finish;
             }
         }
+
+
+        public static byte GetMax(byte a, byte b, byte c = 0, byte d = 0)
+        {
+            byte[] numbers = new[] { a, b, c, d };
+            return GetMax(numbers);
+        }
+
+        public static byte GetMax(byte[] numbers)
+        {
+            byte currentMax = 0;
+            foreach (var num in numbers)
+            {
+                if (num > currentMax)
+                    currentMax = num;
+            }
+
+            return currentMax;
+        }
     }
 }

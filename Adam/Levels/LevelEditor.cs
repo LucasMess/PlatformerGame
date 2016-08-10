@@ -431,9 +431,10 @@ namespace Adam.Levels
                         GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
                     t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
-                    LightingEngine.UpdateLightAt(ind);
                 }
             }
+
+            LightingEngine.UpdateLightAt(index, true);
         }
 
         /// <summary>
