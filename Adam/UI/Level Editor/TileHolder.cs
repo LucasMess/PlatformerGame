@@ -27,6 +27,7 @@ namespace Adam.UI.Level_Editor
         private bool _isBeingMoved;
         private bool _isReturningToDefaultPos;
         private bool _isSteppingAside;
+        private bool _wasMouseReleased;
         public bool CanBeMoved { get; set; } = true;
         private Vector2 _mouseDifferential;
         private Vector2 _positionAtStartOfMovement;
@@ -88,10 +89,11 @@ namespace Adam.UI.Level_Editor
 
         private void TileHolder_WasClicked(TileHolder tile)
         {
-            if (CanBeMoved)
+            if (CanBeMoved && _wasMouseReleased)
             {
                 _pickUpSound.Play();
                 _isBeingMoved = true;
+                _wasMouseReleased = false;
                 Rectangle mouse = InputHelper.MouseRectangle;
                 float x = mouse.X - Position.X;
                 float y = mouse.Y - Position.Y;
@@ -171,8 +173,9 @@ namespace Adam.UI.Level_Editor
                 Rectangle mouse = InputHelper.MouseRectangle;
                 SetPosition(mouse.X - (int)_mouseDifferential.X, mouse.Y - (int)_mouseDifferential.Y);
 
-                if (InputHelper.IsLeftMouseReleased())
+                if (InputHelper.IsLeftMousePressed() && _wasMouseReleased)
                 {
+                    _wasMouseReleased = false;
                     ReturnToDefaultPosition();
                     _isBeingMoved = false;
                     Inventory.IsMovingTile = false;
@@ -180,6 +183,9 @@ namespace Adam.UI.Level_Editor
                     WasReleased?.Invoke(this);
                 }
             }
+
+            if (InputHelper.IsLeftMouseReleased())
+                _wasMouseReleased = true;
         }
 
         /// <summary>
