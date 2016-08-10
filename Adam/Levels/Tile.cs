@@ -183,15 +183,16 @@ namespace Adam
         public void DefineTexture()
         {
             //Air ID is 0, so it can emit sunlight.
-            if (Id != 0)
-            {
-                Texture = GameWorld.SpriteSheet;
-            }
-            else
+            if (Id == 0)
             {
                 IsTransparent = true;
                 Texture = null;
                 return;
+
+            }
+            else
+            {
+                Texture = GameWorld.SpriteSheet;
             }
 
             Vector2 startingPoint;
@@ -672,6 +673,7 @@ namespace Adam
                             _positionInSpriteSheet = new Vector2(12, 6);
                             break;
                     }
+                    IsTransparent = true;
                     break;
                 case 104: //Marble wall
                     _hasConnectPattern = true;
@@ -993,8 +995,8 @@ namespace Adam
             SetToDefaultSourceRect();
             GameWorld.WorldData.MetaData[TileIndex] = null;
 
-            DefineTexture();
-            LightingEngine.UpdateLightAt(TileIndex);
+            //DefineTexture();
+            //LightingEngine.UpdateLightAt(TileIndex);
         }
 
         public void Draw(SpriteBatch spriteBatch)

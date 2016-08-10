@@ -39,6 +39,8 @@ namespace Adam
         private void Player_CollidedWithTileBelow(Entity entity, Tile tile)
         {
             entity.IsJumping = false;
+            entity.RemoveAnimationFromQueue("fall");
+            entity.RemoveAnimationFromQueue("jump");
         }
 
         protected override void OnGameTick()
@@ -123,20 +125,19 @@ namespace Adam
 
             if (_airTimer.TimeElapsedInMilliSeconds < 1000)
             {
-                player.GravityStrength = Main.Gravity * .75f;
+               // player.GravityStrength = Main.Gravity * .75f;
             }
             else
             {
                 player.GravityStrength = Main.Gravity;
+                player.GravityStrength = Main.Gravity * .75f;
             }
         }
 
         private void OnTouchGround(Entity entity, Tile tile)
         {
             _airTimer.Reset();
-            entity.IsJumping = false;
-            entity.RemoveAnimationFromQueue("fall");
-            entity.RemoveAnimationFromQueue("jump");
+            entity.CollidedWithTileBelow -= OnTouchGround;
         }
 
         public void OnRightMove(Player player)
