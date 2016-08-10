@@ -233,6 +233,7 @@ namespace Adam.Particles
 
         public override void Update()
         {
+            _animationTimer.Increment();
             if (_animationTimer.TimeElapsedInMilliSeconds > _animationTime)
             {
                 SourceRectangle = new Rectangle(SourceRectangle.X + SourceRectangle.Width, SourceRectangle.Y, SourceRectangle.Width, SourceRectangle.Height);

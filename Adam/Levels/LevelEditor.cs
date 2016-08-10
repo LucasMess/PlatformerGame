@@ -158,7 +158,7 @@ namespace Adam.Levels
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
-                    _testSound.Play();
+                     _testSound.Play();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)
@@ -206,7 +206,7 @@ namespace Adam.Levels
             {
                 if (!_inventoryKeyPressed)
                 {
-                    Inventory.StartAnimation();
+                    Inventory.OpenOrClose();
                     if (Inventory.IsOpen)
                     {
                         _close.PlayNewInstanceOnce();

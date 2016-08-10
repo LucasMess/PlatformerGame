@@ -978,6 +978,7 @@ namespace Adam
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
 
+            Id = 0;
             _interactable = null;
             IsSolid = false;
             SubId = 0;
@@ -991,6 +992,9 @@ namespace Adam
             DefineSourceRectangle();
             SetToDefaultSourceRect();
             GameWorld.WorldData.MetaData[TileIndex] = null;
+
+            DefineTexture();
+            LightingEngine.UpdateLightAt(TileIndex);
         }
 
         public void Draw(SpriteBatch spriteBatch)

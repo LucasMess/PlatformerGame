@@ -5,6 +5,7 @@ using Adam.Misc.Helpers;
 using Adam.Network;
 using Adam.UI;
 using Adam.UI.Information;
+using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -93,6 +94,7 @@ namespace Adam
         private Session _session;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
+        private bool _wasEscapeReleased;
 
         public Main()
         {
@@ -307,25 +309,39 @@ namespace Adam
             //    GameData.Settings.HasChanged = false;
             //}
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu &&
-                CurrentGameState != GameState.LoadingScreen)
-            {
-                if (CurrentGameState == GameState.GameWorld && GameWorld.IsTestingLevel)
-                {
-                    //ChangeState(GameState.GameWorld, GameMode.Edit);
-                }
-                else
-                {
-                    //GameData.SaveGame();
-                    Menu.CurrentMenuState = Menu.MenuState.Main;
-                    ChangeState(GameState.MainMenu, GameMode.None);
-                }
-            }
+            if (InputHelper.IsKeyUp(Keys.Escape))
+                _wasEscapeReleased = true;
 
-            if (InputHelper.IsKeyDown(Keys.Enter) && CurrentGameState == GameState.GameWorld &&
-                CurrentGameMode == GameMode.Play && GameWorld.IsTestingLevel)
+            if (_wasEscapeReleased)
             {
-                LevelEditor.GoBackToEditing();
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu &&
+                    CurrentGameState != GameState.LoadingScreen)
+                {
+                    if (CurrentGameState == GameState.GameWorld && GameWorld.IsTestingLevel)
+                    {
+                        _wasEscapeReleased = false;
+                        LevelEditor.GoBackToEditing();
+                    }
+                    else if (CurrentGameState == GameState.GameWorld && CurrentGameMode == GameMode.Edit && Inventory.IsOpen)
+                    {
+                        _wasEscapeReleased = false;
+                        Inventory.OpenOrClose();
+                    }
+                    else
+                    {
+                        //GameData.SaveGame();
+                        _wasEscapeReleased = false;
+                        Menu.CurrentMenuState = Menu.MenuState.Main;
+                        ChangeState(GameState.MainMenu, GameMode.None);
+                    }
+                }
+
+                if (InputHelper.IsKeyDown(Keys.Enter) && CurrentGameState == GameState.GameWorld &&
+                    CurrentGameMode == GameMode.Play && GameWorld.IsTestingLevel)
+                {
+                    _wasEscapeReleased = false;
+                    LevelEditor.GoBackToEditing();
+                }
             }
 
             //Update the game based on what GameState it is

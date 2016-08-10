@@ -41,9 +41,8 @@ namespace Adam.Interactables
             {
                 _breakSound.Play();
                 _broken = true;
-                Gem.GenerateIdentical(_gemId, _sourceTile, Main.Random.Next(6, 15));
-                _sourceTile.Id = 0;
-                _sourceTile.DefineTexture();
+                Gem.GenerateIdentical(_gemId, _sourceTile, Main.Random.Next(4, 8));
+                _sourceTile.Destroy();
             }
         }
     }

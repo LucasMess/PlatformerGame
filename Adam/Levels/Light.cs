@@ -12,7 +12,7 @@ namespace Adam.Levels
         private Texture2D _texture = GameWorld.SpriteSheet;
         private float _layerDepth;
         private bool _hasGlow;
-
+    
         public Light(Vector2 center, float radius, Color color, float layerDepth = 0, bool hasGlow = true)
         {
             _radius = radius;

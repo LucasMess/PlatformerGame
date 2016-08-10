@@ -14,7 +14,7 @@ namespace Adam.Interactables
         protected Rectangle TopMidBound;
         protected double ElapsedTime;
         protected SoundFx LoopSound;
-        protected SoundFx PickUpSound = new SoundFx("Sounds/coin");
+        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold"+Main.Random.Next(0,5));
         protected SoundFx BounceSound;
         private int _tileIndex;
         protected double EffectTimer;
@@ -32,7 +32,7 @@ namespace Adam.Interactables
 
         private void Item_CollidedWithTerrain(Entity entity, Tile tile)
         {
-            if (Math.Abs(Velocity.Y) > 3)
+            if (Math.Abs(Velocity.Y) > 180)
             {
                 BounceSound?.Play();
             }
@@ -43,8 +43,8 @@ namespace Adam.Interactables
 
             for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(Main.Random.Next(-1, 0) * Main.Random.NextDouble());
-                float randX = (float)(Main.Random.Next(-1, 2) * Main.Random.NextDouble());
+                float randY = (float)(Main.Random.Next(-1, 0) * Main.Random.NextDouble() * 60);
+                float randX = (float)(Main.Random.Next(-1, 2) * Main.Random.NextDouble() * 60);
                 RoundCommonParticle par = new RoundCommonParticle(CollRectangle.Center.X, CollRectangle.Center.Y, new Vector2(randX,randY), Color.Yellow);
                 GameWorld.ParticleSystem.Add(par);
             }

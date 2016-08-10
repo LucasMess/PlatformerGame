@@ -20,6 +20,7 @@ namespace Adam.Levels
 
         public static void UpdateLightAt(int ind)
         {
+            if (_lights == null) return;
             _lights[ind] = null;
             Tile tile = GameWorld.TileArray[ind];
             Tile wall = GameWorld.WallArray[ind];

@@ -11,7 +11,7 @@ namespace Adam.UI.Level_Editor
     /// <summary>
     ///     Contains all tiles and entities in grid format.
     /// </summary>
-    internal class Inventory
+    class Inventory
     {
         public enum Category
         {
@@ -273,7 +273,7 @@ namespace Adam.UI.Level_Editor
         /// <summary>
         /// Changes the state of the inventory and triggers the animation to start.
         /// </summary>
-        public static void StartAnimation()
+        public static void OpenOrClose()
         {
             IsOpen = !IsOpen;
             AnimationTimer.Reset();
@@ -387,7 +387,7 @@ namespace Adam.UI.Level_Editor
 
         public static void StartAnimation(Button button)
         {
-            StartAnimation();
+            OpenOrClose();
         }
     }
 }

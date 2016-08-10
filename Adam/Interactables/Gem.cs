@@ -27,9 +27,10 @@ namespace Adam
         {
             _gemId = GenerateId();
             Texture = GameWorld.SpriteSheet;
+            Position = new Vector2(centerX, centerY);
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(Main.Random.Next(-100, 100) / 10f, -Main.Random.Next(100, 180) / 10f);
+            Velocity = new Vector2(Main.Random.Next(-6000, 6000) / 10f, -Main.Random.Next(6000, 6000) / 10f);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -41,9 +42,10 @@ namespace Adam
         {
             _gemId = id;
             Texture = GameWorld.SpriteSheet;
-            CollRectangle = new Rectangle(centerX, centerY, 16, 16);
+            Position = new Vector2(centerX, centerY);
+            CollRectangle = new Rectangle(0, 0, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(Main.Random.Next(-100, 100) / 10f, -Main.Random.Next(100, 180) / 10f);
+            Velocity = new Vector2(Main.Random.Next(-6000, 6000) / 10f, -Main.Random.Next(6000, 6000) / 10f);
 
             PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + Main.Random.Next(0, 5));
 

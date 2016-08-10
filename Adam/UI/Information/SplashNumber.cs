@@ -13,7 +13,7 @@ namespace Adam.UI
         bool _isNegative;
         bool _hasExpanded;
         int _number;
-        private int _offset ;
+        private int _offset;
         float _scale, _normScale;
         private Color _borderColor = Microsoft.Xna.Framework.Color.White;
 
@@ -41,7 +41,7 @@ namespace Adam.UI
                 _scale = 1f;
 
             _font = ContentHelper.LoadFont("Fonts/splashNumber");
-            Velocity = new Vector2(0, -7);
+            Velocity = new Vector2(0, -420);
 
             _normScale = _scale;
             _scale = .01f;
@@ -53,7 +53,7 @@ namespace Adam.UI
         public override void Update()
         {
             Opacity -= .01f;
-            Position += Velocity;
+            Position += Velocity * Main.TimeSinceLastUpdate;
             Velocity = new Vector2((float)Math.Cos(_offset + Main.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
 
             if (_scale > _normScale * 2)
@@ -63,16 +63,16 @@ namespace Adam.UI
 
             if (!_hasExpanded)
             {
-                _scale += .1f;
+                _scale += 6f * Main.TimeSinceLastUpdate;
             }
             else
             {
-                _scale -= .005f;
+                _scale -= .3f * Main.TimeSinceLastUpdate;
             }
-            if (Velocity.Y > -1)
+            if (Velocity.Y > -6)
             {
-                _scale -= .05f;
-                Velocity = new Vector2(0,1);
+                _scale -= .3f * Main.TimeSinceLastUpdate;
+                Velocity = new Vector2(0, 6);
             }
 
             if (_scale < 0)
@@ -83,7 +83,7 @@ namespace Adam.UI
         {
             if (_isNegative)
             {
-                FontHelper.DrawWithOutline(spriteBatch, _font, _number.ToString(), Position, 2, Color * Opacity, _borderColor * Opacity,_scale);
+                FontHelper.DrawWithOutline(spriteBatch, _font, _number.ToString(), Position, 2, Color * Opacity, _borderColor * Opacity, _scale);
             }
             else FontHelper.DrawWithOutline(spriteBatch, _font, "+" + _number, Position, 2, Color * Opacity, _borderColor * Opacity, _scale);
         }
