@@ -450,7 +450,7 @@ namespace Adam
                     _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                         null, null, Camera.Translate);
                     GameWorld.Draw(_spriteBatch);
-                    LightingEngine.DrawGlows(_spriteBatch);
+                    //LightingEngine.DrawGlows(_spriteBatch);
                     _spriteBatch.End();
 
 
@@ -477,9 +477,9 @@ namespace Adam
 
                     GraphicsDevice.SetRenderTarget(_lightRT);
                     GraphicsDevice.Clear(Color.Transparent);
-                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp, null,
                        null, null, Camera.Translate);
-                    GameWorld.DrawLights(_spriteBatch);
+                    GameWorld.DrawLights(GraphicsDevice, _spriteBatch);
                     _spriteBatch.End();
 
 
@@ -499,7 +499,7 @@ namespace Adam
                         AlphaDestinationBlend = Blend.InverseSourceAlpha,
                         ColorSourceBlend = Blend.DestinationColor,
                     };
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, bsLight, SamplerState.PointClamp,
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, RasterizerState.CullNone);
                     _spriteBatch.Draw(_lightRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.End();
