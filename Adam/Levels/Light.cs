@@ -14,7 +14,7 @@ namespace Adam.Levels
         private Texture2D _texture = GameWorld.SpriteSheet;
         private float _layerDepth;
         private bool _hasGlow;
-        public bool IsLightSource { get; private set; }
+        public bool IsLightSource { get; set; } = true;
 
         public Light(Vector2 center, byte lightLevel)
         {

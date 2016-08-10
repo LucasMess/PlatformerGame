@@ -1040,8 +1040,7 @@ namespace Adam
 
         public void DebugDraw(SpriteBatch spriteBatch)
         {
-            if (Texture != null)
-                spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.Red);
+            spriteBatch.Draw(GameWorld.SpriteSheet, DrawRectangle, Color.Red * .5f);
         }
 
         /// <summary>

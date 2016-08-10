@@ -273,6 +273,12 @@ namespace Adam.Levels
         public static void DrawLights(SpriteBatch spriteBatch)
         {
             LightingEngine.DrawLights(spriteBatch);
+
+            //if (LightingEngine.LASTMODIFIEDINDICES != null)
+            //    foreach (var ind in LightingEngine.LASTMODIFIEDINDICES)
+            //    {
+            //        TileArray[ind].DebugDraw(spriteBatch);
+            //    }
         }
 
         public static void DrawBackground(SpriteBatch spriteBatch)

@@ -434,7 +434,7 @@ namespace Adam.Levels
                 }
             }
 
-            LightingEngine.UpdateLightAt(index, true);
+            LightingEngine.UpdateLightingAt(index, true);
         }
 
         /// <summary>

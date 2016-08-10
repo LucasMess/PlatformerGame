@@ -1,6 +1,7 @@
 ﻿using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Adam.Levels
@@ -16,21 +17,22 @@ namespace Adam.Levels
             _lights = new Light[GameWorld.WorldData.LevelWidth * GameWorld.WorldData.LevelHeight];
             for (int i = 0; i < _lights.Length; i++)
             {
-                UpdateLightAt(i);
+                ResetLightAt(i);
             }
 
-            DissipateAllLights();
+            UpdateAllLights();
         }
 
-        public static void UpdateLightAt(int ind, bool update)
+        public static void UpdateLightingAt(int ind, bool update)
         {
-            UpdateLightAt(ind);
+            ResetLightAt(ind);
             if (update)
-                DissipateLightsAround(ind, new List<int>());
+                UpdateLightsAround(ind);
         }
 
-        private static void UpdateLightAt(int ind)
+        private static void ResetLightAt(int ind)
         {
+            if (ind < 0 || ind >= _lights.Length) return;
             _lights[ind] = null;
             Tile tile = GameWorld.TileArray[ind];
             Tile wall = GameWorld.WallArray[ind];
@@ -48,104 +50,142 @@ namespace Adam.Levels
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                 //            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 4, Color.White, 1, false);
             }
-            if (tile.Id == 11) // Torch
+            else if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 9);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 12);
                 //_lights[ind] =
                 //    new Light(
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                 //            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 6, Color.Orange);
             }
-            if (tile.Id == 12) // Chandelier
+            else if (tile.Id == 12) // Chandelier
             {
                 _lights[ind] =
                     new Light(
                         new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 9, Color.White);
             }
-            if (tile.Id == 24) // Lava
+            else if (tile.Id == 24) // Lava
             {
                 _lights[ind] =
                    new Light(
                        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Yellow);
             }
-            if (tile.Id == 52) // Sapphire
+            else if (tile.Id == 52) // Sapphire
             {
                 _lights[ind] =
                    new Light(
                        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Blue);
             }
-            if (tile.Id == 53) // Ruby
+            else if (tile.Id == 53) // Ruby
             {
                 _lights[ind] =
                    new Light(
                        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Red);
             }
-            if (tile.Id == 54) // Emerald
+            else if (tile.Id == 54) // Emerald
             {
                 _lights[ind] =
                    new Light(
                        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Green);
             }
-
-
-        }
-
-        private static void DissipateAllLights()
-        {
-            bool hasChanged = false;
-
-            for (int i = 0; i < _lights.Length; i++)
+            else
             {
-                int width = GameWorld.WorldData.LevelWidth;
-                byte[] lightLevels = new byte[4];
-                if (i - width > 0 && i - width < GameWorld.TileArray.Length)
-                {
-                    lightLevels[0] = _lights[i - width].LightLevel;
-                }
-                if (i + width < GameWorld.TileArray.Length && i + width > 0)
-                {
-                    lightLevels[1] = _lights[i + width].LightLevel;
-                }
-                if (i - 1 > 0 && i - 1 < GameWorld.TileArray.Length)
-                {
-                    lightLevels[2] = _lights[i - 1].LightLevel;
-                }
-                if (i + 1 < GameWorld.TileArray.Length && i + 1 > 0)
-                {
-                    lightLevels[3] = _lights[i + 1].LightLevel;
-                }
-
-                byte max = CalcHelper.GetMax(lightLevels);
-
-                byte change = 1;
-                if (!GameWorld.TileArray[i].IsTransparent)
-                    change++;
-
-                if (max - change > _lights[i].LightLevel)
-                {
-                    hasChanged = true;
-                    _lights[i].LightLevel = (byte)(max - change);
-                }
+                _lights[ind].IsLightSource = false;
             }
 
 
-            if (hasChanged)
-                DissipateAllLights();
         }
 
-        /// <summary>
-        /// Wrapper method for recursive dissipation.
-        /// </summary>
-        /// <param name="i"></param>
-        private static void DissipateLightsAround(int i, List<int> changedIndices)
-        { 
+        static int count = 0;
+        private static bool _needsToUpdateAgain = false;
+        private static void UpdateAllLights()
+        {
+            _needsToUpdateAgain = false;
+            for (int i = 0; i < _lights.Length; i++)
+            {
+                UpdateLight(i);
+            }
 
+            count++;
+            Console.WriteLine("Times called:" + count);
+            if (_needsToUpdateAgain)
+                UpdateAllLights();
+        }
+
+        private static void UpdateLight(int i)
+        {
+            if (i < 0 || i >= _lights.Length) return;
+            int width = GameWorld.WorldData.LevelWidth;
+            byte[] lightLevels = new byte[4];
+            if (i - width >= 0 && i - width < GameWorld.TileArray.Length)
+            {
+                lightLevels[0] = _lights[i - width].LightLevel;
+            }
+            if (i + width < GameWorld.TileArray.Length && i + width >= 0)
+            {
+                lightLevels[1] = _lights[i + width].LightLevel;
+            }
+            if (i - 1 >= 0 && i - 1 < GameWorld.TileArray.Length)
+            {
+                lightLevels[2] = _lights[i - 1].LightLevel;
+            }
+            if (i + 1 < GameWorld.TileArray.Length && i + 1 >= 0)
+            {
+                lightLevels[3] = _lights[i + 1].LightLevel;
+            }
+
+            
+            byte max = CalcHelper.GetMax(lightLevels);
+
+           
+
+            byte change = 1;
+            if (!GameWorld.TileArray[i].IsTransparent)
+                change += 2;
+
+            if (_lights[i].LightLevel < max - change)
+            {
+                if (Main.CurrentGameState != GameState.LoadingScreen)
+                {
+                    Console.Write("Ll was:" + _lights[i].LightLevel);
+                }
+
+                _lights[i].LightLevel = (byte)(max - change);
+
+                if (Main.CurrentGameState != GameState.LoadingScreen)
+                {
+                    Console.Write("== Ll is:" + _lights[i].LightLevel+"\n");
+                }
+                _needsToUpdateAgain = true;
+            }
+        }
+
+        private static void UpdateLightsAround(int i)
+        {
+            // Clear all non-sources
+            int[] indices = GetIndicesOfAllLightsInRange(i);
+            foreach (var ind in indices)
+            {
+                if (ind < 0 || ind >= _lights.Length) return;
+                ResetLightAt(ind);
+            }
+
+            _needsToUpdateAgain = true;
+            while (_needsToUpdateAgain)
+            {
+                _needsToUpdateAgain = false;
+
+                foreach (var ind in indices)
+                {
+                    UpdateLight(ind);
+                }
+            }
         }
 
         private static void SetLightLevelAt(int i, byte newLight)
@@ -156,6 +196,26 @@ namespace Adam.Levels
         private static byte GetLightLevelAt(int i)
         {
             return _lights[i].LightLevel;
+        }
+
+        public static int[] LASTMODIFIEDINDICES;
+
+        private static int[] GetIndicesOfAllLightsInRange(int i)
+        {
+            int halfSize = (int)Math.Ceiling((double)Light.MaxLightLevel / 2);
+            int width = GameWorld.WorldData.LevelWidth;
+            int starting = i - halfSize - halfSize * width;
+            List<int> indices = new List<int>();
+            for (int h = 0; h < Light.MaxLightLevel; h++)
+            {
+                for (int w = 0; w < Light.MaxLightLevel; w++)
+                {
+                    int index = starting + h * width + w;
+                    indices.Add(index);
+                }
+            }
+            LASTMODIFIEDINDICES = indices.ToArray();
+            return indices.ToArray();
         }
 
         /// <summary>
@@ -210,7 +270,7 @@ namespace Adam.Levels
 
             int change = 1;
             if (!GameWorld.TileArray[i].IsTransparent)
-                change++;
+                change += 2;
             int minimum = max - change;
             if (minimum < 0) minimum = 0;
             return (byte)minimum;
