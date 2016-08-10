@@ -14,32 +14,44 @@ namespace Adam.PlayerCharacter
         private List<Texture2D> _textures = new List<Texture2D>();
         private List<Rectangle> _drawRectangles = new List<Rectangle>();
         private List<Rectangle> _sourceRectangles = new List<Rectangle>();
-        private Timer _addTimer = new Timer(true);
+        private List<bool> _isFacingRight = new List<bool>();
         private Timer _drawTimer = new Timer(true);
         private int _currentlyShown = 0;
-        private const int TimeBetweenShots = 200;
+        private const int DistanceBetweenShots = 64;
         private const int NumberOfTrails = 20;
         private const int TimeBetweenDraws = 100;
+        private Vector2 _oldPosition;
 
+        /// <summary>
+        /// Adds a new trail if the player has moved sufficiently.
+        /// </summary>
+        /// <param name="player"></param>
         public void Add(Player player)
         {
-            if (_addTimer.TimeElapsedInMilliSeconds < TimeBetweenShots)
-                return;
-            
-            _addTimer.Reset();
-
-            _textures.Add(player.ComplexAnimation.GetCurrentTexture());
-            _drawRectangles.Add(player.ComplexAnimation.GetDrawRectangle());
-            _sourceRectangles.Add(player.ComplexAnimation.GetSourceRectangle());
-
-            if (_textures.Count > NumberOfTrails)
+            Vector2 position = player.Position;
+            if (CalcHelper.GetPythagoras(position.X - _oldPosition.X, position.Y - _oldPosition.Y) > DistanceBetweenShots)
             {
-                _textures.RemoveAt(0);
-                _drawRectangles.RemoveAt(0);
-                _sourceRectangles.RemoveAt(0);
+                _oldPosition = position;
+
+                _textures.Add(player.ComplexAnimation.GetCurrentTexture());
+                _drawRectangles.Add(player.ComplexAnimation.GetDrawRectangle());
+                _sourceRectangles.Add(player.ComplexAnimation.GetSourceRectangle());
+                _isFacingRight.Add(player.IsFacingRight);
+
+                if (_textures.Count > NumberOfTrails)
+                {
+                    _textures.RemoveAt(0);
+                    _drawRectangles.RemoveAt(0);
+                    _sourceRectangles.RemoveAt(0);
+                    _isFacingRight.RemoveAt(0);
+                }
             }
         }
 
+        /// <summary>
+        /// Draws the trails one at a time until they are all drawn.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_drawTimer.TimeElapsedInMilliSeconds > TimeBetweenDraws)
@@ -53,7 +65,7 @@ namespace Adam.PlayerCharacter
 
             for (int i = 0; i < _currentlyShown; i++)
             {
-                spriteBatch.Draw(_textures.ElementAt(i), _drawRectangles.ElementAt(i), _sourceRectangles.ElementAt(i), Color.White * .5f);
+                spriteBatch.Draw(_textures.ElementAt(i), _drawRectangles.ElementAt(i), _sourceRectangles.ElementAt(i), Color.White * .5f, 0, Vector2.Zero, _isFacingRight[i] ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
             }
         }
     }
