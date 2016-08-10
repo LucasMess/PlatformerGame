@@ -1381,3 +1381,39 @@
 /processorParam:Quality=Best
 /build:Sounds/Tiles/lava.wav
 
+#begin Sounds/Level Editor/switch_category.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/switch_category.wav
+
+#begin Sounds/Level Editor/pickup_tileholder.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/pickup_tileholder.wav
+
+#begin Sounds/Level Editor/return_tileholder.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/return_tileholder.wav
+
+#begin Sounds/Level Editor/replace_hotbar.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/replace_hotbar.wav
+
+#begin Sounds/Level Editor/swipe_hotbar.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/swipe_hotbar.wav
+
+#begin Sounds/Level Editor/test_level.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Level Editor/test_level.wav
+

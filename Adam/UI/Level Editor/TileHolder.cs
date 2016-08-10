@@ -1,4 +1,5 @@
 ﻿using Adam.Levels;
+using Adam.Misc;
 using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -31,6 +32,8 @@ namespace Adam.UI.Level_Editor
         private Vector2 _positionAtStartOfMovement;
         private Vector2 _containerPosition;
         private Vector2 _tileTextureDifferential;
+        private static SoundFx _pickUpSound = new SoundFx("Sounds/Level Editor/pickup_tileholder");
+        public static SoundFx ReturnSound = new SoundFx("Sounds/Level Editor/return_tileholder");
 
         public TileHolder(int id)
         {
@@ -42,6 +45,12 @@ namespace Adam.UI.Level_Editor
             AdjustTileInside();
 
             WasClicked += TileHolder_WasClicked;
+            WasReleased += TileHolder_WasReleased;
+        }
+
+        private void TileHolder_WasReleased(TileHolder tile)
+        {
+
         }
 
         private void AdjustTileInside()
@@ -81,6 +90,7 @@ namespace Adam.UI.Level_Editor
         {
             if (CanBeMoved)
             {
+                _pickUpSound.Play();
                 _isBeingMoved = true;
                 Rectangle mouse = InputHelper.MouseRectangle;
                 float x = mouse.X - Position.X;
@@ -167,6 +177,7 @@ namespace Adam.UI.Level_Editor
                     _isBeingMoved = false;
                     Inventory.IsMovingTile = false;
                     HotBar.ReplaceHotBar(this);
+                    WasReleased?.Invoke(this);
                 }
             }
         }
@@ -238,7 +249,7 @@ namespace Adam.UI.Level_Editor
         }
 
         private Vector2 StepAsidePosition
-            => new Vector2(_containerPosition.X +_positionRelativeToContainer.X, _positionRelativeToContainer.Y + _containerPosition.Y - DrawRectangle.Height / 2);
+            => new Vector2(_containerPosition.X + _positionRelativeToContainer.X, _positionRelativeToContainer.Y + _containerPosition.Y - DrawRectangle.Height / 2);
 
         /// <summary>
         /// Makes the tile return to its default position if it is not doing so already.

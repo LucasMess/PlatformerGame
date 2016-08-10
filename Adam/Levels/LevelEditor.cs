@@ -23,6 +23,7 @@ namespace Adam.Levels
         private static ButtonBar _buttonBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
+        private static SoundFx _testSound = new SoundFx("Sounds/Level Editor/test_level");
         private static bool _hasChangedSinceLastSave;
         private static Inventory _inventory;
         private static bool _inventoryKeyPressed;
@@ -136,6 +137,7 @@ namespace Adam.Levels
                     GameWorld.Player.SetVelY(0);
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
+                    _testSound.Play();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)
@@ -156,6 +158,7 @@ namespace Adam.Levels
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
+                    _testSound.Play();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)

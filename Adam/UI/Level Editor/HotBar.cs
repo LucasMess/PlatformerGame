@@ -1,4 +1,5 @@
 ﻿using Adam.Levels;
+using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace Adam.UI.Level_Editor
         private static Rectangle _selectorDrawRect;
         public static TileHolder SelectedTile { get; private set; }
         private static TileHolder _deletedTile = new TileHolder(0);
+        private static SoundFx _replaceSound = new SoundFx("Sounds/Level Editor/replace_hotbar");
+        private static SoundFx _swipeSound = new SoundFx("Sounds/Level Editor/swipe_hotbar");
 
         public static void Initialize()
         {
@@ -99,6 +102,7 @@ namespace Adam.UI.Level_Editor
             tileHolder.SetPosition(tileHolder.GetPosition().X, -tileHolder.DrawRectangle.Height);
             tileHolder.ReturnToDefaultPosition();
 
+            _swipeSound.Play();
         }
 
         /// <summary>
@@ -124,8 +128,12 @@ namespace Adam.UI.Level_Editor
                     tileHolder.SetPosition(Main.UserResWidth, Main.UserResHeight);
                     tileHolder.ReturnToDefaultPosition(500);
 
+                    _swipeSound.Play();
+                    _replaceSound.Play();
+                    return;
                 }
             }
+            TileHolder.ReturnSound.Play();
         }
 
         public static void Update()
