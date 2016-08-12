@@ -475,8 +475,19 @@ namespace Adam
                     _spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight), Color.Black * 1f);
                     _spriteBatch.End();
 
+
+
+
                     GraphicsDevice.SetRenderTarget(_lightRT);
                     GraphicsDevice.Clear(Color.Transparent);
+                    BlendState bs2 = new BlendState
+                    {
+                        ColorBlendFunction = BlendFunction.Add,
+                        ColorSourceBlend = Blend.One,
+                        AlphaSourceBlend = Blend.One,
+                        ColorDestinationBlend = Blend.InverseSourceAlpha,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+                    };
                     _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                        null, null, Camera.Translate);
                     GameWorld.DrawLights(_spriteBatch);

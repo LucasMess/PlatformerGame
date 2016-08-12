@@ -1,5 +1,4 @@
-﻿using Adam.Misc.Helpers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -45,54 +44,39 @@ namespace Adam.Levels
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White);
-                //_lights[ind] =
-                //    new Light(
-                //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                //            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 4, Color.White, 1, false);
             }
             else if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.Orange);
-                //_lights[ind] =
-                //    new Light(
-                //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                //            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 6, Color.Orange);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.Orange)
+                {
+                    ChangesSize = true,
+                };
             }
             else if (tile.Id == 12) // Chandelier
             {
-                _lights[ind] =
-                    new Light(
-                        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 9, Color.White);
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White);
             }
             else if (tile.Id == 24) // Lava
             {
-                _lights[ind] =
-                   new Light(
-                       new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                           GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Yellow);
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.Red);
             }
             else if (tile.Id == 52) // Sapphire
             {
-                _lights[ind] =
-                   new Light(
-                       new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                           GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Blue);
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Blue);
             }
             else if (tile.Id == 53) // Ruby
             {
-                _lights[ind] =
-                   new Light(
-                       new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                           GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Red);
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Red);
             }
             else if (tile.Id == 54) // Emerald
             {
-                _lights[ind] =
-                   new Light(
-                       new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                           GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Main.Tilesize * 2, Color.Green);
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Green);
             }
             else
             {
@@ -122,28 +106,52 @@ namespace Adam.Levels
         {
             if (i < 0 || i >= _lights.Length) return;
             int width = GameWorld.WorldData.LevelWidth;
-            int[] lightLevels = new int[4];
+            Light[] lightsAround = new Light[4];
             if (i - width >= 0 && i - width < GameWorld.TileArray.Length)
             {
-                lightLevels[0] = _lights[i - width].LightLevel;
+                lightsAround[0] = _lights[i - width];
             }
             if (i + width < GameWorld.TileArray.Length && i + width >= 0)
             {
-                lightLevels[1] = _lights[i + width].LightLevel;
+                lightsAround[1] = _lights[i + width];
             }
             if (i - 1 >= 0 && i - 1 < GameWorld.TileArray.Length)
             {
-                lightLevels[2] = _lights[i - 1].LightLevel;
+                lightsAround[2] = _lights[i - 1];
             }
             if (i + 1 < GameWorld.TileArray.Length && i + 1 >= 0)
             {
-                lightLevels[3] = _lights[i + 1].LightLevel;
+                lightsAround[3] = _lights[i + 1];
             }
 
+            int max = 0;
+            Light sourceLight = new Light();
+            Color[] colors = new Color[4];
+            int count = 0;
+            foreach (var light in lightsAround)
+            {
+                if (light != null)
+                {
+                    if (light.LightLevel > max)
+                    {
+                        max = light.LightLevel;
+                        sourceLight = light;
+                    }
+                    //Color source = light.GetSourceColor();
+                    //colors[count] = new Color(source.R, source.G, source.B) * ((float)light.LightLevel / Light.MaxLightLevel);
 
-            int max = CalcHelper.GetMax(lightLevels);
+                }
+                count++;
+            }
 
-
+            //int r = 0, g = 0, b = 0;
+            //foreach (var color in colors)
+            //{
+            //    r += color.R;
+            //    g += color.G;
+            //    b += color.B;
+            //}
+            //_lights[i]._color = new Color(r/colors.Length, g / colors.Length, b / colors.Length, 255);
 
             int change = 1;
             if (!GameWorld.TileArray[i].IsTransparent)
@@ -158,6 +166,8 @@ namespace Adam.Levels
             if (_lights[i].LightLevel < newLightLevel)
             {
                 _lights[i].LightLevel = newLightLevel;
+                if (sourceLight != null)
+                    _lights[i].SourceLight = sourceLight;
                 _needsToUpdateAgain = true;
             }
         }
@@ -184,18 +194,6 @@ namespace Adam.Levels
             }
         }
 
-        private static void SetLightLevelAt(int i, int newLight)
-        {
-            _lights[i].LightLevel = newLight;
-        }
-
-        private static int GetLightLevelAt(int i)
-        {
-            return _lights[i].LightLevel;
-        }
-
-        public static int[] LASTMODIFIEDINDICES;
-
         private static int[] GetIndicesOfAllLightsInRange(int i)
         {
             int halfSize = Light.MaxLightLevel;
@@ -210,66 +208,7 @@ namespace Adam.Levels
                     indices.Add(index);
                 }
             }
-            LASTMODIFIEDINDICES = indices.ToArray();
             return indices.ToArray();
-        }
-
-        /// <summary>
-        /// Returns the indices of all tiles around this tile index.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        private static int[] GetIndicesAround(int i)
-        {
-            int width = GameWorld.WorldData.LevelWidth;
-            int[] indices = new[] {
-                i-width,
-                i-1,i+1,
-                i+width,
-                };
-
-            for (int j = 0; j < indices.Length; j++)
-            {
-                if (indices[j] < 0)
-                    indices[j] = 0;
-
-                if (indices[j] >= GameWorld.TileArray.Length)
-                    indices[j] = GameWorld.TileArray.Length;
-            }
-
-            return indices;
-        }
-
-        /// <summary>
-        /// Returns the max light level around the tile with this index.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        private static int GetMaxLightLevelAround(int i)
-        {
-            List<int> lightLevels = new List<int>();
-            foreach (int index in GetIndicesAround(i))
-            {
-                lightLevels.Add(_lights[index].LightLevel);
-            }
-            return CalcHelper.GetMax(lightLevels.ToArray());
-        }
-
-        /// <summary>
-        /// Gets the minimum light level of the tile with this index based on the light level of the tiles around it. It cannot be smaller than 0.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <returns></returns>
-        private static int GetCorrectLightLevelAt(int i)
-        {
-            int max = GetMaxLightLevelAround(i);
-
-            int change = 1;
-            if (!GameWorld.TileArray[i].IsTransparent)
-                change += 2;
-            int minimum = max - change;
-            if (minimum < 0) minimum = 0;
-            return minimum;
         }
 
         public static void DrawLights(SpriteBatch spriteBatch)
@@ -286,7 +225,10 @@ namespace Adam.Levels
             {
                 _lights[index]?.DrawGlow(spriteBatch);
 
-                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], _lights?[index]?.LightLevel.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(_lights?[index]?.LightLevel.ToString()).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+                //string text = _lights?[index]?.LightLevel.ToString();
+                //Color color = _lights[index].GetColor();
+                //string text = "R:" + color.R;
+                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text, new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
             }
         }
     }
