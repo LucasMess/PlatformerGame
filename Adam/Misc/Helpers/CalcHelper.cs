@@ -183,15 +183,15 @@ namespace Adam
         }
 
 
-        public static byte GetMax(byte a, byte b, byte c = 0, byte d = 0)
+        public static int GetMax(int a, int b, int c = 0, int d = 0)
         {
-            byte[] numbers = new[] { a, b, c, d };
+            int[] numbers = new[] { a, b, c, d };
             return GetMax(numbers);
         }
 
-        public static byte GetMax(byte[] numbers)
+        public static int GetMax(int[] numbers)
         {
-            byte currentMax = 0;
+            int currentMax = 0;
             foreach (var num in numbers)
             {
                 if (num > currentMax)

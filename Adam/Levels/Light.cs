@@ -5,8 +5,8 @@ namespace Adam.Levels
 {
     class Light
     {
-        public const byte MaxLightLevel = 15;
-        public byte LightLevel { get; set; } = 0;
+        public const byte MaxLightLevel = 16;
+        public int LightLevel { get; set; } = 0;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
         private Vector2 _center;
         private float _radius = 80;
@@ -16,7 +16,7 @@ namespace Adam.Levels
         private bool _hasGlow;
         public bool IsLightSource { get; set; } = true;
 
-        public Light(Vector2 center, byte lightLevel, Color color)
+        public Light(Vector2 center, int lightLevel, Color color)
         {
             _color = color;
             Update(center);

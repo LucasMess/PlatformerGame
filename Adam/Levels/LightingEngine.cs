@@ -44,7 +44,7 @@ namespace Adam.Levels
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.White);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White);
                 //_lights[ind] =
                 //    new Light(
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
@@ -53,7 +53,7 @@ namespace Adam.Levels
             else if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 12, Color.Orange);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.Orange);
                 //_lights[ind] =
                 //    new Light(
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
@@ -122,7 +122,7 @@ namespace Adam.Levels
         {
             if (i < 0 || i >= _lights.Length) return;
             int width = GameWorld.WorldData.LevelWidth;
-            byte[] lightLevels = new byte[4];
+            int[] lightLevels = new int[4];
             if (i - width >= 0 && i - width < GameWorld.TileArray.Length)
             {
                 lightLevels[0] = _lights[i - width].LightLevel;
@@ -140,28 +140,24 @@ namespace Adam.Levels
                 lightLevels[3] = _lights[i + 1].LightLevel;
             }
 
-            
-            byte max = CalcHelper.GetMax(lightLevels);
 
-           
+            int max = CalcHelper.GetMax(lightLevels);
 
-            byte change = 1;
+
+
+            int change = 1;
             if (!GameWorld.TileArray[i].IsTransparent)
                 change += 2;
 
-            if (_lights[i].LightLevel < max - change)
+            int newLightLevel = max - change;
+            if (newLightLevel < 0)
+                newLightLevel = 0;
+            if (newLightLevel > Light.MaxLightLevel)
+                newLightLevel = Light.MaxLightLevel;
+
+            if (_lights[i].LightLevel < newLightLevel)
             {
-                if (Main.CurrentGameState != GameState.LoadingScreen)
-                {
-                    //Console.Write("Ll was:" + _lights[i].LightLevel);
-                }
-
-                _lights[i].LightLevel = (byte)(max - change);
-
-                if (Main.CurrentGameState != GameState.LoadingScreen)
-                {
-                    //Console.Write("== Ll is:" + _lights[i].LightLevel+"\n");
-                }
+                _lights[i].LightLevel = newLightLevel;
                 _needsToUpdateAgain = true;
             }
         }
@@ -188,12 +184,12 @@ namespace Adam.Levels
             }
         }
 
-        private static void SetLightLevelAt(int i, byte newLight)
+        private static void SetLightLevelAt(int i, int newLight)
         {
             _lights[i].LightLevel = newLight;
         }
 
-        private static byte GetLightLevelAt(int i)
+        private static int GetLightLevelAt(int i)
         {
             return _lights[i].LightLevel;
         }
@@ -202,13 +198,13 @@ namespace Adam.Levels
 
         private static int[] GetIndicesOfAllLightsInRange(int i)
         {
-            int halfSize = (int)Math.Ceiling((double)Light.MaxLightLevel / 2);
+            int halfSize = Light.MaxLightLevel;
             int width = GameWorld.WorldData.LevelWidth;
             int starting = i - halfSize - halfSize * width;
             List<int> indices = new List<int>();
-            for (int h = 0; h < Light.MaxLightLevel; h++)
+            for (int h = 0; h < Light.MaxLightLevel * 2; h++)
             {
-                for (int w = 0; w < Light.MaxLightLevel; w++)
+                for (int w = 0; w < Light.MaxLightLevel * 2; w++)
                 {
                     int index = starting + h * width + w;
                     indices.Add(index);
@@ -249,9 +245,9 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private static byte GetMaxLightLevelAround(int i)
+        private static int GetMaxLightLevelAround(int i)
         {
-            List<byte> lightLevels = new List<byte>();
+            List<int> lightLevels = new List<int>();
             foreach (int index in GetIndicesAround(i))
             {
                 lightLevels.Add(_lights[index].LightLevel);
@@ -264,16 +260,16 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private static byte GetCorrectLightLevelAt(int i)
+        private static int GetCorrectLightLevelAt(int i)
         {
-            byte max = GetMaxLightLevelAround(i);
+            int max = GetMaxLightLevelAround(i);
 
             int change = 1;
             if (!GameWorld.TileArray[i].IsTransparent)
                 change += 2;
             int minimum = max - change;
             if (minimum < 0) minimum = 0;
-            return (byte)minimum;
+            return minimum;
         }
 
         public static void DrawLights(SpriteBatch spriteBatch)
@@ -290,7 +286,7 @@ namespace Adam.Levels
             {
                 _lights[index]?.DrawGlow(spriteBatch);
 
-               // FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], _lights?[index]?.LightLevel.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(_lights?[index]?.LightLevel.ToString()).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], _lights?[index]?.LightLevel.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(_lights?[index]?.LightLevel.ToString()).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
             }
         }
     }
