@@ -270,9 +270,9 @@ namespace Adam.Levels
 
         }
 
-        public static void DrawLights(GraphicsDevice graphics,  SpriteBatch spriteBatch)
+        public static void DrawLights(SpriteBatch spriteBatch)
         {
-            LightingEngine.DrawLights(graphics, spriteBatch);
+            LightingEngine.DrawLights(spriteBatch);
         }
 
         public static void DrawBackground(SpriteBatch spriteBatch)
