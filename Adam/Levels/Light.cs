@@ -9,15 +9,16 @@ namespace Adam.Levels
         public byte LightLevel { get; set; } = 0;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
         private Vector2 _center;
-        private float _radius = 48;
+        private float _radius = 80;
         private Color _color = Color.White;
         private Texture2D _texture = GameWorld.SpriteSheet;
         private float _layerDepth;
         private bool _hasGlow;
         public bool IsLightSource { get; set; } = true;
 
-        public Light(Vector2 center, byte lightLevel)
+        public Light(Vector2 center, byte lightLevel, Color color)
         {
+            _color = color;
             Update(center);
             LightLevel = lightLevel;
             if (lightLevel != 0)
@@ -48,7 +49,7 @@ namespace Adam.Levels
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, _color * GetOpacity(), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, Color.White * GetOpacity(), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)

@@ -38,13 +38,13 @@ namespace Adam.Levels
             Tile wall = GameWorld.WallArray[ind];
 
             _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 0);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 0, Color.White);
 
             if (tile.IsTransparent && wall.IsTransparent)
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.White);
                 //_lights[ind] =
                 //    new Light(
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
@@ -53,7 +53,7 @@ namespace Adam.Levels
             else if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 12);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 12, Color.Orange);
                 //_lights[ind] =
                 //    new Light(
                 //        new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
@@ -153,14 +153,14 @@ namespace Adam.Levels
             {
                 if (Main.CurrentGameState != GameState.LoadingScreen)
                 {
-                    Console.Write("Ll was:" + _lights[i].LightLevel);
+                    //Console.Write("Ll was:" + _lights[i].LightLevel);
                 }
 
                 _lights[i].LightLevel = (byte)(max - change);
 
                 if (Main.CurrentGameState != GameState.LoadingScreen)
                 {
-                    Console.Write("== Ll is:" + _lights[i].LightLevel+"\n");
+                    //Console.Write("== Ll is:" + _lights[i].LightLevel+"\n");
                 }
                 _needsToUpdateAgain = true;
             }
@@ -290,7 +290,7 @@ namespace Adam.Levels
             {
                 _lights[index]?.DrawGlow(spriteBatch);
 
-                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], _lights?[index]?.LightLevel.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(_lights?[index]?.LightLevel.ToString()).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+               // FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], _lights?[index]?.LightLevel.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(_lights?[index]?.LightLevel.ToString()).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
             }
         }
     }
