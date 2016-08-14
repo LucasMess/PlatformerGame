@@ -1417,3 +1417,9 @@
 /processorParam:Quality=Best
 /build:Sounds/Level Editor/test_level.wav
 
+#begin Fonts/x8.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/x8.spritefont
+

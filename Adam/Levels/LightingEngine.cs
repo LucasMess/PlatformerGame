@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Misc.Helpers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Adam.Levels
 {
@@ -61,7 +63,7 @@ namespace Adam.Levels
             else if (tile.Id == 24) // Lava
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.Red);
+                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 10, Color.Red);
             }
             else if (tile.Id == 52) // Sapphire
             {
@@ -124,50 +126,73 @@ namespace Adam.Levels
                 lightsAround[3] = _lights[i + 1];
             }
 
-            int max = 0;
-            Light sourceLight = new Light();
-            Color[] colors = new Color[4];
+            Light sourceRed = new Light();
+            Light sourceGreen = new Light();
+            Light sourceBlue = new Light();
             int count = 0;
+            int maxRed = 0;
+            int maxGreen = 0;
+            int maxBlue = 0;
             foreach (var light in lightsAround)
             {
                 if (light != null)
                 {
-                    if (light.LightLevel > max)
+                    if (light.RedIntensity > maxRed)
                     {
-                        max = light.LightLevel;
-                        sourceLight = light;
+                        maxRed = light.RedIntensity;
+                        sourceRed = light;
                     }
-                    //Color source = light.GetSourceColor();
-                    //colors[count] = new Color(source.R, source.G, source.B) * ((float)light.LightLevel / Light.MaxLightLevel);
-
+                    if (light.GreenIntensity > maxGreen)
+                    {
+                        maxGreen = light.GreenIntensity;
+                        sourceGreen = light;
+                    }
+                    if (light.BlueIntensity > maxBlue)
+                    {
+                        maxBlue = light.BlueIntensity;
+                        sourceBlue = light;
+                    }
                 }
                 count++;
             }
-
-            //int r = 0, g = 0, b = 0;
-            //foreach (var color in colors)
-            //{
-            //    r += color.R;
-            //    g += color.G;
-            //    b += color.B;
-            //}
-            //_lights[i]._color = new Color(r/colors.Length, g / colors.Length, b / colors.Length, 255);
 
             int change = 1;
             if (!GameWorld.TileArray[i].IsTransparent)
                 change += 2;
 
-            int newLightLevel = max - change;
-            if (newLightLevel < 0)
-                newLightLevel = 0;
-            if (newLightLevel > Light.MaxLightLevel)
-                newLightLevel = Light.MaxLightLevel;
 
-            if (_lights[i].LightLevel < newLightLevel)
+            int newRed = maxRed - change;
+            int newGreen = maxGreen - change;
+            int newBlue = maxBlue - change;
+
+            if (newRed < 0) newRed = 0;
+            if (newGreen < 0) newGreen = 0;
+            if (newBlue < 0) newBlue = 0;
+            if (newRed > Light.MaxLightLevel) newRed = Light.MaxLightLevel;
+            if (newGreen > Light.MaxLightLevel) newGreen = Light.MaxLightLevel;
+            if (newBlue > Light.MaxLightLevel) newBlue = Light.MaxLightLevel;
+
+            Light thisLight = _lights[i];
+
+            if (thisLight.RedIntensity < newRed)
             {
-                _lights[i].LightLevel = newLightLevel;
-                if (sourceLight != null)
-                    _lights[i].SourceLight = sourceLight;
+                thisLight.RedIntensity = newRed;
+                if (sourceRed != null)
+                    thisLight.RedSource = sourceRed;
+                _needsToUpdateAgain = true;
+            }
+            if (thisLight.GreenIntensity < newGreen)
+            {
+                thisLight.GreenIntensity = newGreen;
+                if (sourceGreen != null)
+                    thisLight.GreenSource = sourceGreen;
+                _needsToUpdateAgain = true;
+            }
+            if (thisLight.BlueIntensity < newBlue)
+            {
+                thisLight.BlueIntensity = newBlue;
+                if (sourceBlue != null)
+                    thisLight.BlueSource = sourceBlue;
                 _needsToUpdateAgain = true;
             }
         }
@@ -216,6 +241,10 @@ namespace Adam.Levels
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
                 _lights[index]?.DrawLight(spriteBatch);
+
+                //_lights[index]?.DrawR(spriteBatch);
+                //_lights[index]?.DrawG(spriteBatch);
+                //_lights[index]?.DrawB(spriteBatch);
             }
         }
 
@@ -224,11 +253,14 @@ namespace Adam.Levels
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
                 _lights[index]?.DrawGlow(spriteBatch);
-
+                Light light = _lights[index];
                 //string text = _lights?[index]?.LightLevel.ToString();
                 //Color color = _lights[index].GetColor();
-                //string text = "R:" + color.R;
-                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text, new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+                StringBuilder text = new StringBuilder();
+                text.Append(light.RedIntensity + ",");
+                text.Append(light.GreenIntensity + ",");
+                text.Append(light.BlueIntensity);
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
             }
         }
     }

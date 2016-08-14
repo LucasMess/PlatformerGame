@@ -9,9 +9,18 @@ namespace Adam.Levels
     {
         public const int MaxLightLevel = 16;
         public int LightLevel { get; set; } = 0;
+        public int RedIntensity { get; set; } = 0;
+        public int GreenIntensity { get; set; } = 0;
+        public int BlueIntensity { get; set; } = 0;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
         private Vector2 _center;
         public Color _color = Color.Black;
+        public float Red { get; set; }
+        public float Green { get; set; }
+        public float Blue { get; set; }
+        public Light RedSource { get; set; }
+        public Light GreenSource { get; set; }
+        public Light BlueSource { get; set; }
         public List<Color> ColorOfSources = new List<Color>();
         private Texture2D _texture = GameWorld.SpriteSheet;
         public Light SourceLight { get; set; }
@@ -34,6 +43,9 @@ namespace Adam.Levels
             if (lightLevel != 0)
             {
                 IsLightSource = true;
+                RedIntensity = (int)(Light.MaxLightLevel * color.R / 255f);
+                GreenIntensity = (int)(Light.MaxLightLevel * color.G / 255f);
+                BlueIntensity = (int)(Light.MaxLightLevel * color.B / 255f);
             }
         }
         public void Update(Vector2 newCenter)
@@ -56,8 +68,41 @@ namespace Adam.Levels
             //{
             //    spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, color * GetOpacity(), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
             //}
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetSourceColor() * GetOpacity(), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+            //float colorR = (GetRedSourceColor().R / 255 * RedIntensity / MaxLightLevel + GetGreenSourceColor().R / 255 * GreenIntensity / MaxLightLevel + GetBlueSourceColor().R / 255 * BlueIntensity / MaxLightLevel) / 3;
+            //float colorG = (GetRedSourceColor().G / 255 * RedIntensity / MaxLightLevel + GetGreenSourceColor().G / 255 * GreenIntensity / MaxLightLevel + GetBlueSourceColor().G / 255 * BlueIntensity / MaxLightLevel) / 3;
+            //float colorB = (GetRedSourceColor().B / 255 * RedIntensity / MaxLightLevel + GetGreenSourceColor().B / 255 * GreenIntensity / MaxLightLevel + GetBlueSourceColor().B / 255 * BlueIntensity / MaxLightLevel) / 3;
+
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color(colorR, colorG, colorB, GetOpacity()), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetRedSourceColor() * (GetOpacity() / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetGreenSourceColor() * (GetOpacity() / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetBlueSourceColor() * (GetOpacity() / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+
+
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+
             _hasIncremented = false;
+        }
+
+        public void DrawR(SpriteBatch spriteBatch)
+        {
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetRedSourceColor() * ((float)RedIntensity / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, 0, 0, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+
+        }
+
+        public void DrawG(SpriteBatch spriteBatch)
+        {
+            // spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetGreenSourceColor() * ((float)GreenIntensity / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color(0, (float)GreenIntensity / MaxLightLevel, 0, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+
+        }
+
+        public void DrawB(SpriteBatch spriteBatch)
+        {
+            // spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetBlueSourceColor() * ((float)BlueIntensity / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, 2);
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color(0, 0, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)
@@ -68,39 +113,35 @@ namespace Adam.Levels
 
         public float GetOpacity()
         {
-            return (float)LightLevel / MaxLightLevel;
+            int max = 0;
+            if (RedIntensity > max)
+                max = RedIntensity;
+            if (GreenIntensity > max)
+                max = GreenIntensity;
+            if (BlueIntensity > max)
+                max = BlueIntensity;
+            return max;
         }
 
-        public Color GetSourceColor()
+        public Color GetRedSourceColor()
         {
-            //if (IsLightSource || ColorOfSources.Count == 0)
-            //{
-            //    return _color;
-            //}
-
-
-            //float r = 0, g = 0, b = 0;
-            //foreach (var color in ColorOfSources)
-            //{
-            //    r += color.R;
-            //    g += color.G;
-            //    b += color.B;
-
-            //}
-
-            //r = MathHelper.Min(r, 255);
-            //g= MathHelper.Min(g, 255);
-            //b = MathHelper.Min(b, 255);
-
-            //return new Color(r / 255, g / 255, b / 255);
-
-            //return _color;
-
-            if (IsLightSource || SourceLight == null)
-            {
+            if (IsLightSource || RedSource == null)
                 return _color;
-            }
-            else return SourceLight.GetSourceColor();
+            else return RedSource.GetRedSourceColor();
+        }
+
+        public Color GetGreenSourceColor()
+        {
+            if (IsLightSource || GreenSource == null)
+                return _color;
+            else return GreenSource.GetGreenSourceColor();
+        }
+
+        public Color GetBlueSourceColor()
+        {
+            if (IsLightSource || BlueSource == null)
+                return _color;
+            else return BlueSource.GetBlueSourceColor();
         }
 
         private const int ShakeOffset = 10;

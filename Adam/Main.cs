@@ -483,8 +483,8 @@ namespace Adam
                     BlendState bs2 = new BlendState
                     {
                         ColorBlendFunction = BlendFunction.Add,
-                        ColorSourceBlend = Blend.One,
-                        AlphaSourceBlend = Blend.One,
+                        ColorSourceBlend = Blend.InverseDestinationAlpha,
+                        AlphaSourceBlend = Blend.InverseDestinationAlpha,
                         ColorDestinationBlend = Blend.InverseSourceAlpha,
                         AlphaDestinationBlend = Blend.InverseSourceAlpha,
                     };
