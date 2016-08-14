@@ -488,7 +488,7 @@ namespace Adam
                         ColorDestinationBlend = Blend.InverseSourceAlpha,
                         AlphaDestinationBlend = Blend.InverseSourceAlpha,
                     };
-                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Additive, SamplerState.PointClamp, null,
                        null, null, Camera.Translate);
                     GameWorld.DrawLights(_spriteBatch);
                     _spriteBatch.End();

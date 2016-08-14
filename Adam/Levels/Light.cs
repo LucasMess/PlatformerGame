@@ -79,7 +79,7 @@ namespace Adam.Levels
             //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, GetBlueSourceColor() * (GetOpacity() / MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
 
 
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
+            //spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, _layerDepth);
 
             _hasIncremented = false;
         }

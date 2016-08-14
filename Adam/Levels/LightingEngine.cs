@@ -50,7 +50,7 @@ namespace Adam.Levels
             else if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.Orange)
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, new Color(255,207,100))
                 {
                     ChangesSize = true,
                 };
@@ -240,11 +240,11 @@ namespace Adam.Levels
         {
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
-                _lights[index]?.DrawLight(spriteBatch);
+                //_lights[index]?.DrawLight(spriteBatch);
 
-                //_lights[index]?.DrawR(spriteBatch);
-                //_lights[index]?.DrawG(spriteBatch);
-                //_lights[index]?.DrawB(spriteBatch);
+                _lights[index]?.DrawR(spriteBatch);
+                _lights[index]?.DrawG(spriteBatch);
+                _lights[index]?.DrawB(spriteBatch);
             }
         }
 
@@ -252,15 +252,15 @@ namespace Adam.Levels
         {
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
-                _lights[index]?.DrawGlow(spriteBatch);
-                Light light = _lights[index];
-                //string text = _lights?[index]?.LightLevel.ToString();
-                //Color color = _lights[index].GetColor();
-                StringBuilder text = new StringBuilder();
-                text.Append(light.RedIntensity + ",");
-                text.Append(light.GreenIntensity + ",");
-                text.Append(light.BlueIntensity);
-                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+                //_lights[index]?.DrawGlow(spriteBatch);
+                //Light light = _lights[index];
+                ////string text = _lights?[index]?.LightLevel.ToString();
+                ////Color color = _lights[index].GetColor();
+                //StringBuilder text = new StringBuilder();
+                //text.Append(light.RedIntensity + ",");
+                //text.Append(light.GreenIntensity + ",");
+                //text.Append(light.BlueIntensity);
+                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
             }
         }
     }
