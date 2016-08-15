@@ -1,9 +1,7 @@
-﻿using Adam.Misc.Helpers;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Adam.Levels
 {
@@ -45,12 +43,14 @@ namespace Adam.Levels
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.White);
             }
-            else if (tile.Id == 11) // Torch
+
+
+            if (tile.Id == 11) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, new Color(255,207,100))
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, new Color(255, 207, 100))
                 {
                     ChangesSize = true,
                 };
@@ -240,11 +240,11 @@ namespace Adam.Levels
         {
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
-                //_lights[index]?.DrawLight(spriteBatch);
+                _lights[index]?.DrawLight(spriteBatch);
 
-                _lights[index]?.DrawR(spriteBatch);
-                _lights[index]?.DrawG(spriteBatch);
-                _lights[index]?.DrawB(spriteBatch);
+                //_lights[index]?.DrawR(spriteBatch);
+                //_lights[index]?.DrawG(spriteBatch);
+                //_lights[index]?.DrawB(spriteBatch);
             }
         }
 

@@ -89,6 +89,7 @@ namespace Adam
         private RenderTarget2D _shadowRT;
         private RenderTarget2D _backRT;
         private RenderTarget2D _lightRT;
+        private RenderTarget2D _sunlightRT;
         public static float TimeSinceLastUpdate;
         private Menu _menu;
         private Session _session;
@@ -188,6 +189,9 @@ namespace Adam
                 GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _lightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
+                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            _sunlightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
                 GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -480,15 +484,7 @@ namespace Adam
 
                     GraphicsDevice.SetRenderTarget(_lightRT);
                     GraphicsDevice.Clear(Color.Transparent);
-                    BlendState bs2 = new BlendState
-                    {
-                        ColorBlendFunction = BlendFunction.Add,
-                        ColorSourceBlend = Blend.InverseDestinationAlpha,
-                        AlphaSourceBlend = Blend.InverseDestinationAlpha,
-                        ColorDestinationBlend = Blend.InverseSourceAlpha,
-                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
-                    };
-                    _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Additive, SamplerState.PointClamp, null,
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
                        null, null, Camera.Translate);
                     GameWorld.DrawLights(_spriteBatch);
                     _spriteBatch.End();

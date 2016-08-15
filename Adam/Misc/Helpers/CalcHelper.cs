@@ -200,5 +200,23 @@ namespace Adam
 
             return currentMax;
         }
+
+        public static float GetMax(float a, float b, float c = 0, float d = 0)
+        {
+            float[] numbers = new[] { a, b, c, d };
+            return GetMax(numbers);
+        }
+
+        public static float GetMax(float[] numbers)
+        {
+            float currentMax = 0;
+            foreach (var num in numbers)
+            {
+                if (num > currentMax)
+                    currentMax = num;
+            }
+
+            return currentMax;
+        }
     }
 }
