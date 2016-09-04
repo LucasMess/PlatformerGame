@@ -15,7 +15,6 @@ using System;
 using System.Threading;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using MessageBox = Adam.UI.MessageBox;
-using Timer = Adam.Misc.Timer;
 
 namespace Adam
 {
@@ -78,9 +77,9 @@ namespace Adam
         public static bool WasPressed, DebugOn, DebugPressed;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
-        private GameDebug _debug;
         private SpriteFont _debugFont;
-        private int _fps, _totalFrames;
+        public static int FPS { get; set; }
+        private int _totalFrames;
         private double _frameRateTimer;
         //Game Variables
         private BlendState _lightBlendState;
@@ -213,8 +212,6 @@ namespace Adam
 
             _debugFont = Content.Load<SpriteFont>("debug");
 
-            _debug = new GameDebug(_debugFont, new Vector2(UserResWidth, UserResHeight), _blackScreen);
-
             CurrentGameMode = GameMode.None;
         }
 
@@ -274,7 +271,7 @@ namespace Adam
             _frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_frameRateTimer > 1000f)
             {
-                _fps = _totalFrames;
+                FPS = _totalFrames;
                 _totalFrames = 0;
                 _frameRateTimer = 0;
             }
@@ -373,7 +370,7 @@ namespace Adam
             }
 
             base.Update(gameTime);
-            _debug.Update(this, DebugOn);
+            GameDebug.Update();
             Overlay.Update();
         }
 
@@ -546,57 +543,10 @@ namespace Adam
                 DebugPressed = true;
             }
 
-            if (Keyboard.GetState().IsKeyUp(Keys.F3))
-            {
-                DebugPressed = false;
-            }
+            _spriteBatch.Begin();
+            GameDebug.Draw(_spriteBatch);
+            _spriteBatch.End();
 
-            if (DebugOn)
-            {
-                _spriteBatch.Begin();
-                _spriteBatch.Draw(_blackScreen, new Rectangle(0, 0, UserResWidth, 360), Color.White * .3f);
-                _spriteBatch.DrawString(_debugFont, Version + " FPS: " + _fps, new Vector2(0, 0), Color.White);
-                _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 20), Color.White);
-                _spriteBatch.DrawString(_debugFont,
-                    "Camera Position:" + Camera.CenterGameCoords.X + "," + Camera.CenterGameCoords.Y,
-                    new Vector2(0, 40), Color.White);
-                _spriteBatch.DrawString(_debugFont,
-                    "Editor Rectangle Position:" + LevelEditor.EditorRectangle.X + "," +
-                    LevelEditor.EditorRectangle.Y, new Vector2(0, 60), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Camera DrawRect:" + Camera.DrawRectangle, new Vector2(0, 80),
-                    Color.White);
-                _spriteBatch.DrawString(_debugFont, "Times Updated: " + GameWorld.TimesUpdated, new Vector2(0, 100),
-                    Color.White);
-                _spriteBatch.DrawString(_debugFont, "Player is jumping: " + GameWorld.GetPlayer().IsJumping,
-                    new Vector2(0, 120),
-                    Color.White);
-                _spriteBatch.DrawString(_debugFont, "Player is touching ground:" + GameWorld.GetPlayer().IsTouchingGround, new Vector2(0, 140), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Time since last update:" + TimeSinceLastUpdate, new Vector2(0, 160), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Player Velocity" + GameWorld.GetPlayer().GetVelocity(),
-                    new Vector2(0, 180),
-                    Color.White);
-                _spriteBatch.DrawString(_debugFont,
-                    "Total Chunks: " + GameWorld.ChunkManager.GetNumberOfChunks() + " Active Chunk: " +
-                    GameWorld.ChunkManager.GetActiveChunkIndex(), new Vector2(0, 200), Color.White);
-                _spriteBatch.DrawString(_debugFont,
-                    "Particle Index: " + GameWorld.ParticleSystem.GetCurrentParticleIndex(),
-                    new Vector2(0, 240), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Entity Count: " + GameWorld.Entities?.Count,
-                    new Vector2(0, 260), Color.White);
-                _spriteBatch.DrawString(_debugFont,
-                    "Visible Tiles: " + GameWorld.ChunkManager.GetVisibleIndexes()?.Length,
-                    new Vector2(0, 280), Color.White);
-                _spriteBatch.DrawString(_debugFont, "", new Vector2(0, 300), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Is TextInputBox Active: " + TextInputBox.IsActive,
-                    new Vector2(0, 320), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Is MessageBox Active: " + MessageBox.IsActive,
-                    new Vector2(0, 340), Color.White);
-                _spriteBatch.DrawString(_debugFont, "Timers called: " + Timer.ActiveTimers,
-                    new Vector2(0, 360), Color.White);
-
-                _debug.Draw(_spriteBatch);
-                _spriteBatch.End();
-            }
 
         }
 

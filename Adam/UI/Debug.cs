@@ -1,173 +1,158 @@
-﻿using Adam.Levels;
-using Adam.PlayerCharacter;
+﻿using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
+using System.Collections.Generic;
 
 namespace Adam
 {
-    public class GameDebug
+    public static class GameDebug
     {
-        Texture2D _black;
-        Rectangle _rect;
-        Keys[] _lastPressedKeys;
-        public bool IsWritingCommand;
-        KeyboardState _oldKeyboardState, _currentKeyboardState;
-        string _textString;
-        SpriteFont _font;
-        Vector2 _monitorRes;
-        Vector2 _position;
-        Main _game1;
-        Player _player;
-        bool _definitionFound;
+        //Rectangle _rect;
+        //Keys[] _lastPressedKeys;
+        //public bool IsWritingCommand;
+        //KeyboardState _oldKeyboardState, _currentKeyboardState;
+        //string _textString;
+        //bool _definitionFound;
 
-        public GameDebug(SpriteFont font, Vector2 monitorRes, Texture2D black)
+        private static List<string> _infos = new List<string>();
+        private static SpriteFont _font = FontHelper.Fonts[1];
+
+        static bool _debugKeyReleased;
+
+        /// <summary>
+        /// Returns true if the user requested debug mode to be on.
+        /// </summary>
+        public static bool IsDebugOn { get; set; }
+
+        /// <summary>
+        /// Checks if user is pressing the debug key and turns it on or off.
+        /// </summary>
+        private static void CheckIfDebugIsOn()
         {
-            this._monitorRes = monitorRes;
-            this._font = font;
-            this._black = black;
-            _lastPressedKeys = new Keys[0];
-            _position = new Vector2(10, monitorRes.Y - font.LineSpacing - 40);
-            _rect = new Rectangle(0, (int)(monitorRes.Y - font.LineSpacing - 40), (int)monitorRes.X, (int)font.LineSpacing);
-        }
-
-        public void Update(Main game1, bool isOnDebug)
-        {
-            if (!isOnDebug)
+            if (InputHelper.IsKeyUp(Keys.F3))
             {
-                _textString = "";
-                IsWritingCommand = false;
-                GameWorld.IsOnDebug = false;
-                return;
-            }
-
-            if (!IsWritingCommand)
-            {
-                GameWorld.IsOnDebug = false;
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
-                    && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
-                    && Keyboard.GetState().IsKeyDown(Keys.C))
-                {
-                    IsWritingCommand = true;
-                    _textString = "";
-                    return;
-                }
-                else return;
+                _debugKeyReleased = true;
             }
             else
             {
-                GameWorld.IsOnDebug = true;
+                if (_debugKeyReleased)
+                {
+                    IsDebugOn = !IsDebugOn;
+                    _debugKeyReleased = false;
+                }
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl)
-                    && Keyboard.GetState().IsKeyDown(Keys.LeftShift)
-                    && Keyboard.GetState().IsKeyDown(Keys.C))
-            {
-                _textString = "";
-            }
-
-            if (_textString == "No command found" && Keyboard.GetState().IsKeyDown(Keys.Back))
-                _textString = "";
-
-            this._game1 = game1;
-            this._player = GameWorld.GetPlayer();
-
-            _oldKeyboardState = _currentKeyboardState;
-            _currentKeyboardState = Keyboard.GetState();
-
-            InputHelper.TryLinkToKeyboardInput(ref _textString, _currentKeyboardState, _oldKeyboardState);
-            if (InputHelper.IsKeyDown(Keys.Enter) &&!_definitionFound)
-            {
-                AnalyzeText();
-            }
-
         }
 
-        public void AnalyzeText()
+        /// <summary>
+        /// Checks for input.
+        /// </summary>
+        public static void Update()
         {
-            switch (_textString)
-            {
-                case "is op true":
-                    _player.CanFly = true;
-                    _player.IsInvulnerable = true;
-                    _definitionFound = true;
-                    break;
-                case "is op false":
-                    _player.CanFly = false;
-                    _player.IsInvulnerable = false;
-                    _definitionFound = true;
-                    break;
-                case "is ghost true":
-                    _player.IsGhost = true;
-                    _player.CanFly = true;
-                    _player.IsInvulnerable = true;
-                    _definitionFound = true;
-                    break;
-                case "is ghost false":
-                    _player.IsGhost = false;
-                    _player.CanFly = false;
-                    _player.IsInvulnerable = false;
-                    _definitionFound = true;
-                    break;
-                case "set level":
-                    break;
-                case "has clouds true":
-                    GameWorld.WorldData.HasClouds = true;
-                    _definitionFound = true;
-                    break;
-                case "has clouds false":
-                    GameWorld.WorldData.HasClouds = false;
-                    _definitionFound = true;
-                    break;
-            }
+            CheckIfDebugIsOn();
+        }
 
-            String text = _textString;
-            string keyword = "set background ";
-            if (text.StartsWith(keyword))
-            {
-                string newString = text.Remove(0, keyword.Length);
-                int number;
-                Int32.TryParse(newString, out number);
-                GameWorld.WorldData.BackgroundId = (byte)number;
-                _definitionFound = true;
-            }
-            keyword = "set soundtrack ";
-            if (text.StartsWith(keyword))
-            {
-                string newString = text.Remove(0, keyword.Length);
-                int number;
-                Int32.TryParse(newString, out number);
-                GameWorld.WorldData.SoundtrackId = (byte)number;
-                _definitionFound = true;
-            }
+        /// <summary>
+        /// Runs the appropriate command if one is found.
+        /// </summary>
+        public static void RunCommand(string command)
+        {
+            //switch (_textString)
+            //{
+            //    case "is op true":
+            //        _player.CanFly = true;
+            //        _player.IsInvulnerable = true;
+            //        _definitionFound = true;
+            //        break;
+            //    case "is op false":
+            //        _player.CanFly = false;
+            //        _player.IsInvulnerable = false;
+            //        _definitionFound = true;
+            //        break;
+            //    case "is ghost true":
+            //        _player.IsGhost = true;
+            //        _player.CanFly = true;
+            //        _player.IsInvulnerable = true;
+            //        _definitionFound = true;
+            //        break;
+            //    case "is ghost false":
+            //        _player.IsGhost = false;
+            //        _player.CanFly = false;
+            //        _player.IsInvulnerable = false;
+            //        _definitionFound = true;
+            //        break;
+            //    case "set level":
+            //        break;
+            //    case "has clouds true":
+            //        GameWorld.WorldData.HasClouds = true;
+            //        _definitionFound = true;
+            //        break;
+            //    case "has clouds false":
+            //        GameWorld.WorldData.HasClouds = false;
+            //        _definitionFound = true;
+            //        break;
+            //}
 
-            //keyword = "set ambience ";
+            //String text = _textString;
+            //string keyword = "set background ";
             //if (text.StartsWith(keyword))
             //{
             //    string newString = text.Remove(0, keyword.Length);
             //    int number;
             //    Int32.TryParse(newString, out number);
-            //    GameWorld.worldData.SoundtrackID = (byte)number;
-            //    definitionFound = true;
+            //    GameWorld.WorldData.BackgroundId = (byte)number;
+            //    _definitionFound = true;
+            //}
+            //keyword = "set soundtrack ";
+            //if (text.StartsWith(keyword))
+            //{
+            //    string newString = text.Remove(0, keyword.Length);
+            //    int number;
+            //    Int32.TryParse(newString, out number);
+            //    GameWorld.WorldData.SoundtrackId = (byte)number;
+            //    _definitionFound = true;
             //}
 
-            if (_definitionFound)
-            {
-                _textString = "";
-                _definitionFound = false;
-                IsWritingCommand = false;
-            }
-            else _textString = "No command found";
+            ////keyword = "set ambience ";
+            ////if (text.StartsWith(keyword))
+            ////{
+            ////    string newString = text.Remove(0, keyword.Length);
+            ////    int number;
+            ////    Int32.TryParse(newString, out number);
+            ////    GameWorld.worldData.SoundtrackID = (byte)number;
+            ////    definitionFound = true;
+            ////}
+
+            //if (_definitionFound)
+            //{
+            //    _textString = "";
+            //    _definitionFound = false;
+            //    IsWritingCommand = false;
+            //}
+            //else _textString = "No command found";
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        /// <summary>
+        /// Draws the debug information to the screen if debug is on.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public static void Draw(SpriteBatch spriteBatch)
         {
-            if (IsWritingCommand)
-                spriteBatch.Draw(_black, _rect, Color.White * .3f);
-            if (_textString != null)
-                spriteBatch.DrawString(_font, _textString, _position, Color.White);
+            if (IsDebugOn)
+            {
+                _infos = new List<string>();
+                _infos.Add(Main.Producers + " (" + Main.Version + ")");
+                _infos.Add("FPS: " + Main.FPS);
+                _infos.Add("Gamestate: " + Main.CurrentGameState);
+                _infos.Add("Gamemode: " + Main.CurrentGameMode);
+
+                for (int i = 0; i < _infos.Count; i++)
+                {
+                    Point pos = new Point(0, i * _font.LineSpacing);
+                    FontHelper.DrawWithOutline(spriteBatch, _font, _infos[i], pos.ToVector2(), 1, new Color(220, 220, 220), Color.Black);
+                }
+            }
         }
     }
 }
