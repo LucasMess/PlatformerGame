@@ -10,11 +10,12 @@ namespace Adam.Characters.Enemies
         public Frog(int x, int y)
         {
             Weight = 10;
-            Script = new FrogScript();
+            Script = new FrogBehavior();
             Script.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/frog");
-            CollRectangle = new Rectangle(x, y, 32, 32);            
+            SetPosition(new Vector2(x, y));
+            CollRectangle = new Rectangle(0, 0, 32, 32);            
             SourceRectangle = new Rectangle(0, 0, 24, 32);
 
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(4, 16, 24, 32), 0, 24, 32, 125, 4, true));

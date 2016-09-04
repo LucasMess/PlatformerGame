@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adam.Misc
+﻿namespace Adam.Misc
 {
     public class Timer
     {
@@ -80,6 +78,15 @@ namespace Adam.Misc
         public void ResetAndWaitFor(int time)
         {
             Reset();
+            ChangeWaitTime(time);
+        }
+
+        /// <summary>
+        /// Used to change the time until the notification without resetting the timer.
+        /// </summary>
+        /// <param name="time"></param>
+        public void ChangeWaitTime(int time)
+        {
             _notificationTime = time;
         }
 

@@ -13,6 +13,7 @@ namespace Adam
     //Defines what happens to the velocity of the entity when it collides.
     public enum CollisionType
     {
+        None,
         Rigid,
         Bouncy,
         SuperBouncy,
@@ -25,11 +26,13 @@ namespace Adam
     {
         public delegate void EventHandler();
         public delegate void TileHandler(Entity entity, Tile tile);
-        public delegate void Entityhandler(Entity entity);
+        public delegate void EntityHandler(Entity entity);
 
-        public event Entityhandler HasFinishedDying;
+        public event EntityHandler HasFinishedDying;
         public event EventHandler HasTakenDamage;
         public event EventHandler HasRevived;
+
+        public event EntityHandler UpdateCall;
 
         const float AirFrictionConstant = 98f / 99f;
 
@@ -41,11 +44,11 @@ namespace Adam
         public event TileHandler CollidedWithTerrain;
 
         // Collision with entity events.
-        public event Entityhandler CollidedWithEntity;
-        public event Entityhandler CollidedWithEntityAbove;
-        public event Entityhandler CollidedWithEntityBelow;
-        public event Entityhandler CollidedWithEntityToRight;
-        public event Entityhandler CollidedWithEntityToLeft;
+        public event EntityHandler CollidedWithEntity;
+        public event EntityHandler CollidedWithEntityAbove;
+        public event EntityHandler CollidedWithEntityBelow;
+        public event EntityHandler CollidedWithEntityToRight;
+        public event EntityHandler CollidedWithEntityToLeft;
 
         protected Vector2 Origin;
         public Vector2 Position { get; set; }
@@ -89,7 +92,7 @@ namespace Adam
         /// <summary>
         /// Defines what happens to the velocity of the entity when it collides with something.
         /// </summary>
-        protected CollisionType CurrentCollisionType { get; set; } = CollisionType.Rigid;
+        public CollisionType CurrentCollisionType { get; set; } = CollisionType.Rigid;
 
         /// <summary>
         /// How much gravity is applied to the entity
@@ -283,6 +286,8 @@ namespace Adam
                 }
 
                 ApplyAirFriction();
+
+                UpdateCall?.Invoke(this);
 
             }
 
@@ -750,6 +755,8 @@ namespace Adam
             SetX(tile.DrawRectangle.X - CollRectangle.Width);
             switch (CurrentCollisionType)
             {
+                case CollisionType.None:
+                    break;
                 case CollisionType.Rigid:
                     Velocity.X = 0;
                     break;
@@ -774,6 +781,9 @@ namespace Adam
             SetX(tile.DrawRectangle.X + tile.DrawRectangle.Width);
             switch (CurrentCollisionType)
             {
+                case CollisionType.None:
+
+                    break;
                 case CollisionType.Rigid:
                     Velocity.X = 0;
                     break;
@@ -873,7 +883,7 @@ namespace Adam
             if (damageDealer == null)
                 return;
 
-            Velocity.Y = -8f;
+            Velocity.Y = -480f;
             Velocity.X = (Weight / 2f);
             if (!damageDealer.IsFacingRight)
                 Velocity.X *= -1;
@@ -933,6 +943,16 @@ namespace Adam
                 }
                 _stompParticleTimer.Reset();
             }
+        }
+
+        public bool IsPlayerToRight()
+        {
+            if (this is PlayerCharacter.Player)
+            {
+                throw new Exception("Cannot ask if player is to the right if you are the player!");
+            }
+
+            return (Position.X < GameWorld.GetPlayer().Position.X);
         }
 
         public ComplexAnimation ComplexAnimation => ComplexAnim;

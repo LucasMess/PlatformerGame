@@ -94,6 +94,8 @@ namespace Adam.Levels
 
         public static void PrepareLevelForTesting()
         {
+            Entities = new List<Entity>();
+
             ConvertToTiles(TileArray, WorldData.TileIDs);
             ConvertToTiles(WallArray, WorldData.WallIDs);
         }

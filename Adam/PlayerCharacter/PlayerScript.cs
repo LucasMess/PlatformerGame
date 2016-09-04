@@ -7,7 +7,7 @@ using System;
 
 namespace Adam
 {
-    public class PlayerScript : Script
+    public class PlayerScript : Behavior
     {
         Player _player;
         public static bool IsDoingAction = false;

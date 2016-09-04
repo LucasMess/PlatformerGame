@@ -1,6 +1,6 @@
 ﻿namespace Adam
 {
-    public class Script
+    public class Behavior
     {
         protected Entity Entity;
 

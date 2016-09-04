@@ -4,7 +4,7 @@ namespace Adam.Characters
 {
     public abstract class Character : Entity
     {
-        protected Script Script;
+        protected Behavior Script;
 
         public override void Update()
         {
