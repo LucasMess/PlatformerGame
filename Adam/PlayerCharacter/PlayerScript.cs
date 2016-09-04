@@ -116,8 +116,7 @@ namespace Adam
 
                 for (int i = 0; i < 10; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom, new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
-                    GameWorld.ParticleSystem.Add(par);
+                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
                 }
 
 
@@ -125,7 +124,7 @@ namespace Adam
 
             if (_airTimer.TimeElapsedInMilliSeconds < 1000)
             {
-               // player.GravityStrength = Main.Gravity * .75f;
+                // player.GravityStrength = Main.Gravity * .75f;
             }
             else
             {

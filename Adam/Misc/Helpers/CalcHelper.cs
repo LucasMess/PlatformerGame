@@ -112,6 +112,16 @@ namespace Adam
         }
 
         /// <summary>
+        /// Returns two random x and y coordinates inside this rectangle.
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static Vector2 GetRandXAndY(Rectangle rect)
+        {
+            return new Vector2(GetRandomX(rect), GetRandomY(rect));
+        }
+
+        /// <summary>
         /// Returns the ratio of the screen to the game depending on what the resolution is.
         ///  </summary>
         /// <returns></returns>

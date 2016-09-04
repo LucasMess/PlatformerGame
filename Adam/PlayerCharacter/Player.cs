@@ -205,9 +205,9 @@ namespace Adam.PlayerCharacter
                 if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X)/60))
                 {
                     _movementParticlesTimer.Reset();
-                    var par = new SmokeParticle(CollRectangle.Center.X, CollRectangle.Bottom,
+
+                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
                         new Vector2(0, (float)(Main.Random.Next(-300, 300) / 10f)), Color.White);
-                    GameWorld.ParticleSystem.Add(par);
                 }
             }
         }

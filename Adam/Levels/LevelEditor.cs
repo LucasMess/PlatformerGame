@@ -445,8 +445,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(new SmokeParticle(CalcHelper.GetRandomX(rect), CalcHelper.GetRandomY(rect),
-                    new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White));
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White);
             }
         }
 
@@ -458,8 +457,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(new SmokeParticle(CalcHelper.GetRandomX(rect), CalcHelper.GetRandomY(rect),
-                    new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White));
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White);
             }
         }
 

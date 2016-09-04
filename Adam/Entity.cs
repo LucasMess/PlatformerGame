@@ -462,17 +462,16 @@ namespace Adam
 
             for (int i = 0; i < 20; i++)
             {
-                SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(60, 300) / 10f), Color.White);
-                GameWorld.ParticleSystem.Add(par);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -Main.Random.Next(60, 300) / 10f), Color.White);
             }
 
-            Rectangle[] desinRectangles;
-            GetDisintegratedRectangles(out desinRectangles);
-            foreach (Rectangle rect in desinRectangles)
-            {
-                EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(-5, 5) / 10f), this);
-                GameWorld.ParticleSystem.Add(par);
-            }
+            //Rectangle[] desinRectangles;
+            //GetDisintegratedRectangles(out desinRectangles);
+            //foreach (Rectangle rect in desinRectangles)
+            //{
+            //    EntityTextureParticle par = new EntityTextureParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), rect, new Vector2(Main.Random.Next(-5, 5) / 10f, -Main.Random.Next(-5, 5) / 10f), this);
+            //    GameWorld.ParticleSystem.Add(par);
+            //}
 
             HasFinishedDying?.Invoke(this);
         }
@@ -726,7 +725,7 @@ namespace Adam
         {
             SetY(tile.DrawRectangle.Y - CollRectangle.Height);
 
-            if (Math.Abs(Velocity.Y) > 300)
+            if (Math.Abs(Velocity.Y) > 300 && IsJumping)
             {
                 CreateStompParticles(CollRectangle.Width / 10);
             }
@@ -876,8 +875,7 @@ namespace Adam
                 particleCount = 100;
             for (int i = 0; i < particleCount; i++)
             {
-                RoundCommonParticle par = new RoundCommonParticle(CalcHelper.GetRandomX(CollRectangle), CalcHelper.GetRandomY(CollRectangle), new Vector2(0, -Main.Random.Next(1, 5) / 10f), Color.Red);
-                GameWorld.ParticleSystem.Add(par);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -Main.Random.Next(1, 5) / 10f), Color.Red);
             }
 
             if (damageDealer == null)
@@ -938,8 +936,7 @@ namespace Adam
             {
                 for (int i = 0; i < count; i++)
                 {
-                    SmokeParticle par = new SmokeParticle(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom, new Vector2(Main.Random.Next(-300, 300) / 10f, -Main.Random.Next(60, 300) / 10f), Color.White);
-                    GameWorld.ParticleSystem.Add(par);
+                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(Main.Random.Next(-300, 300) / 10f, -Main.Random.Next(60, 300) / 10f), Color.White);
                 }
                 _stompParticleTimer.Reset();
             }
