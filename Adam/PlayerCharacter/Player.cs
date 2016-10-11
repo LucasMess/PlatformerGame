@@ -62,7 +62,7 @@ namespace Adam.PlayerCharacter
             ComplexAnim.AddAnimationData("jump",
                 new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
             ComplexAnim.AddAnimationData("climb",
-                new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 125, 4, true));
+                new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 75, 4, true));
             ComplexAnim.AddAnimationData("fall",
                 new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
             ComplexAnim.AddAnimationData("ninjaDash",
@@ -154,7 +154,7 @@ namespace Adam.PlayerCharacter
             Position = new Vector2(setX, setY);
             RespawnPos = new Vector2(setX, setY);
 
-        NoError:
+            NoError:
 
             //Animation information
             CollRectangle = new Rectangle(0, 0, 32, 64);
@@ -173,6 +173,17 @@ namespace Adam.PlayerCharacter
 
             CheckInput();
             Burn();
+
+            if (!IsOnVines)
+            {
+                IsClimbing = false;
+            }
+            if (IsClimbing)
+            {
+                ObeysGravity = false;
+            }
+            else ObeysGravity = true;
+
             base.Update();
         }
 
@@ -202,7 +213,7 @@ namespace Adam.PlayerCharacter
             {
                 if (Math.Abs(Velocity.X) < 150f)
                     return;
-                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X)/60))
+                if (_movementParticlesTimer.TimeElapsedInMilliSeconds > 500 / (Math.Abs(Velocity.X) / 60))
                 {
                     _movementParticlesTimer.Reset();
 

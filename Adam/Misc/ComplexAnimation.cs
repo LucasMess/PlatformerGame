@@ -57,14 +57,16 @@ namespace Adam.Misc
             if (_currentName == "walk" || _currentName == "run")
             {
                 // y = 1020/(x + 1) - 20
-                _currentAnimationData.Speed = (int)(-20 + 500f / (Math.Abs(entity.GetVelocity().X/120) + 1));
+                _currentAnimationData.Speed = (int)(-20 + 500f / (Math.Abs(entity.GetVelocity().X / 120) + 1));
             }
             if (_currentName == "climb")
             {
-                _currentAnimationData.Speed = (int)(-20 + 1020f / (Math.Abs(entity.GetVelocity().Y/120) + 1));
+                _currentAnimationData.Speed = (int)(-20 + 500f / (Math.Abs(entity.GetVelocity().Y / 120) + 1));
+                if (Math.Abs(entity.GetVelocity().Y) < .1f)
+                    _currentAnimationData.Speed = Int32.MaxValue;
             }
 
-           
+
 
             if (_frameTimer.TimeElapsedInMilliSeconds > _currentAnimationData.Speed)
             {
@@ -76,7 +78,7 @@ namespace Adam.Misc
                     AnimationEnded?.Invoke();
                     // Send notice that animation has ended.
                     if (!_currentAnimationData.IsRepeating)
-                    { 
+                    {
                         _currentFrame = _currentAnimationData.FrameCount - 1;
                     }
                     else

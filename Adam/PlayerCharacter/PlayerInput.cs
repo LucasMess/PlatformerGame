@@ -25,6 +25,7 @@ namespace Adam.PlayerCharacter
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
         public event EventHandler NotIdle;
+        public event EventHandler ReleaseUpAndDownAction;
 
         private void InitializeInput()
         {
@@ -38,6 +39,7 @@ namespace Adam.PlayerCharacter
                 DuckAction += Player_DuckAction;
                 DuckActionStop += Player_DuckActionStop; ;
                 FireWeaponAction += Player_FireWeaponAction;
+                ReleaseUpAndDownAction += Player_ReleaseUpAndDownAction;
                 //AttackAction += Player_AttackAction;
                 //DefendAction += Player_DefendAction;
                 //DashAction += Player_DashAction;
@@ -47,6 +49,11 @@ namespace Adam.PlayerCharacter
                 NotIdle += Player_NotIdle;
                 _hasInitialized = true;
             }
+        }
+
+        private void Player_ReleaseUpAndDownAction()
+        {
+            script.OnUpAndDownReleased(this);
         }
 
         private void Player_FireWeaponAction()
@@ -152,6 +159,9 @@ namespace Adam.PlayerCharacter
                 if (IsInteractPressed())
                     InteractAction?.Invoke();
 
+                if (!IsMoveDownPressed() && !IsInteractPressed())
+                    ReleaseUpAndDownAction?.Invoke();
+
                 if (IsPunchPressed())
                 {
                     if (!_attackIsPressed)
@@ -215,12 +225,12 @@ namespace Adam.PlayerCharacter
             return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
         }
 
-        private bool IsMoveDownPressed()
+        public bool IsMoveDownPressed()
         {
             return InputHelper.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
         }
 
-        private bool IsInteractPressed()
+        public bool IsInteractPressed()
         {
             return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
         }

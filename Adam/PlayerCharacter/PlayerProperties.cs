@@ -36,7 +36,6 @@ namespace Adam.PlayerCharacter
                 {
                     return true;
                 }
-                ObeysGravity = true;
                 return false;
             }
         }

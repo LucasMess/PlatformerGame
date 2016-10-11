@@ -337,9 +337,7 @@ namespace Adam.Levels
         public static Tile GetTileBelow(int index)
         {
             index += WorldData.LevelWidth;
-            if (index >= 0 && index < TileArray.Length)
-                return TileArray[index];
-            return null;
+            return GetTile(index);
         }
 
         /// <summary>
@@ -349,10 +347,8 @@ namespace Adam.Levels
         /// <returns></returns>
         public static Tile GetTileAbove(int index)
         {
-            index += WorldData.LevelHeight;
-            if (index >= 0 && index < TileArray.Length)
-                return TileArray[index];
-            return null;
+            index -= WorldData.LevelWidth;
+            return GetTile(index);
         }
 
         public static Player GetPlayer()

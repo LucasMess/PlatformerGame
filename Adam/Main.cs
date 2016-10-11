@@ -259,6 +259,7 @@ namespace Adam
         protected override void Update(GameTime gameTime)
         {
             TimeSinceLastUpdate = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            if (TimeSinceLastUpdate > (1000 / 60)) TimeSinceLastUpdate = (1000 / 60);
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 

@@ -20,6 +20,7 @@ namespace Adam
         const float WalkAcc = 30f;
         const float RunAcc = 42f;
         const float DashSpeed = 24000f;
+        const float ClimbingSpeed = 200f;
 
         Timer _idleTimer = new Timer(true);
         Timer _airTimer = new Timer(true);
@@ -55,13 +56,13 @@ namespace Adam
 
         public void OnStill(Player player)
         {
-            if (!player.IsOnVines)
+            if (player.IsClimbing)
             {
-                player.RemoveAnimationFromQueue("climb");
+                player.RemoveAnimationFromQueue("fall");
             }
             else
             {
-                player.RemoveAnimationFromQueue("fall");
+                player.RemoveAnimationFromQueue("climb");
             }
 
             // Toggle idle animations.
@@ -105,11 +106,22 @@ namespace Adam
 
         public void OnJumpAction(Player player)
         {
+            float jumpAcc = JumpAcc;
+            if (player.IsClimbing)
+            {
+                if (player.IsInteractPressed())
+                    return;
+                player.IsClimbing = false;
+                player.IsJumping = false;
+
+                if (player.IsMoveDownPressed())
+                    jumpAcc = 0;
+            }
             if (!player.IsJumping)
             {
                 player.Sounds.Get("jump").Play();
                 player.IsJumping = true;
-                player.SetVelY(JumpAcc);
+                player.SetVelY(jumpAcc);
                 player.ChangePosBy(0, -1);
                 player.AddAnimationToQueue("jump");
                 player.CollidedWithTileBelow += OnTouchGround;
@@ -234,7 +246,7 @@ namespace Adam
 
         public void OnInteractAction(Player player)
         {
-            if (player.IsOnVines)
+            if (player.IsOnVines && player.GetVelocity().Y >= 0)
             {
                 OnClimbingUpAction(player);
             }
@@ -242,21 +254,29 @@ namespace Adam
 
         public void OnClimbingUpAction(Player player)
         {
+            player.SetVelX(0);
             player.AddAnimationToQueue("climb");
-            player.SetVelY(-5);
-            player.ObeysGravity = false;
+            player.SetVelY(-ClimbingSpeed);
+            player.IsClimbing = true;
         }
 
         public void OnClimbingDownAction(Player player)
         {
+            player.SetVelX(0);
             player.AddAnimationToQueue("climb");
-            player.SetVelY(5);
-            player.ObeysGravity = false;
+            player.SetVelY(ClimbingSpeed);
+            player.IsClimbing = true;
+        }
+
+        public void OnUpAndDownReleased(Player player)
+        {
+            if (player.IsClimbing)
+                player.SetVelY(0);
         }
 
         public void OnDuckAction(Player player)
         {
-            if (player.IsOnVines)
+            if (player.IsClimbing)
             {
                 OnClimbingDownAction(player);
             }
