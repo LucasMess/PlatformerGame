@@ -11,7 +11,6 @@ namespace Adam
     {
         Player _player;
         public static bool IsDoingAction = false;
-        private bool _isDucking;
 
         private const float MaxWalkVelX = 300f;
         private const float MaxRunVelX = 400f;
@@ -107,6 +106,12 @@ namespace Adam
         public void OnJumpAction(Player player)
         {
             float jumpAcc = JumpAcc;
+            if (player.IsDucking)
+            {
+                player.WantsToMoveDownPlatform = true;
+                player.AddAnimationToQueue("fall");
+                return;
+            }
             if (player.IsClimbing)
             {
                 if (player.IsInteractPressed())
@@ -126,10 +131,11 @@ namespace Adam
                 player.AddAnimationToQueue("jump");
                 player.CollidedWithTileBelow += OnTouchGround;
 
-                for (int i = 0; i < 10; i++)
-                {
-                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
-                }
+                if (jumpAcc != 0)
+                    for (int i = 0; i < 10; i++)
+                    {
+                        GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
+                    }
 
 
             }
@@ -153,7 +159,7 @@ namespace Adam
 
         public void OnRightMove(Player player)
         {
-            if (_isDucking)
+            if (player.IsDucking)
                 return;
 
             float acc = WalkAcc;
@@ -200,7 +206,7 @@ namespace Adam
 
         public void OnLeftMove(Player player)
         {
-            if (_isDucking)
+            if (player.IsDucking)
                 return;
 
             float acc = WalkAcc;
@@ -281,13 +287,14 @@ namespace Adam
                 OnClimbingDownAction(player);
             }
             player.AddAnimationToQueue("duck");
-            _isDucking = true;
+            player.IsDucking = true;
         }
 
         public void OnDuckActionStop(Player player)
         {
             player.RemoveAnimationFromQueue("duck");
-            _isDucking = false;
+            player.WantsToMoveDownPlatform = false;
+            player.IsDucking = false;
         }
 
         public void OnWeaponFire(Player player)

@@ -59,6 +59,8 @@ namespace Adam
 
         private bool _healthGiven;
         public bool IsTouchingGround { get; set; }
+        public bool IsDucking { get; set; }
+        public bool WantsToMoveDownPlatform { get; set; }
 
         private int _health;
         private float _opacity = 1f;
@@ -569,9 +571,18 @@ namespace Adam
                         {
                             if (Velocity.Y > 0)
                             {
+                                if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove)
+                                {
+                                    if (CollRectangle.Bottom <= tile.DrawRectangle.Center.Y) { }
+                                    else continue;
+
+                                    if (WantsToMoveDownPlatform) continue;
+ 
+                                }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
                             }
+                            else if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
                             else if (Velocity.Y < 0)
                             {
                                 CollidedWithTileAbove(this, tile);
@@ -581,7 +592,6 @@ namespace Adam
                     }
                 }
             }
-
             //Solve X Collisions
             MoveBy(Velocity.X * Main.TimeSinceLastUpdate, 0);
             foreach (int quadrant in q)
@@ -589,6 +599,7 @@ namespace Adam
                 if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
                 {
                     Tile tile = GameWorld.TileArray[quadrant];
+                    if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
                     if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid == true)
                     {
                         Rectangle tileRect = tile.DrawRectangle;

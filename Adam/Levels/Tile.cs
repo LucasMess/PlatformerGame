@@ -10,6 +10,11 @@ namespace Adam
 {
     public sealed class Tile
     {
+        public enum CollisionType
+        {
+            All, FromAbove,
+        }
+        public CollisionType CurrentCollisionType = CollisionType.All;
         public delegate void TileHandler(Tile t);
 
         private const int SmallTileSize = 16;
@@ -360,6 +365,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(13, 6);
                     IsSolid = true;
                     IsTransparent = true;
+                    CurrentCollisionType = CollisionType.FromAbove;
                     break;
                 case 22: //spikes
                     _positionInSpriteSheet = new Vector2(17, 13);
@@ -530,6 +536,7 @@ namespace Adam
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(14, 26);
                     IsTransparent = true;
+                    CurrentCollisionType = CollisionType.FromAbove;
                     break;
                 case 48: // Blue crystal.
                     _frameCount = new Vector2(2, 0);
@@ -993,6 +1000,7 @@ namespace Adam
             DefineDrawRectangle();
             DefineSourceRectangle();
             SetToDefaultSourceRect();
+            CurrentCollisionType = CollisionType.All;
             GameWorld.WorldData.MetaData[TileIndex] = null;
 
             //DefineTexture();
