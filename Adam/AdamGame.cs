@@ -43,7 +43,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const string Version = "Version 0.10.0 Beta";
         public const string Producers = "BitBite Games";
-        public const float Gravity = .09f;
+        public const float Gravity = .8f;
         // Color presets for lighting engine.
         private static Color _sunnyPreset = new Color(255, 238, 186);
         private static Color _hellPreset = new Color(255, 129, 116);

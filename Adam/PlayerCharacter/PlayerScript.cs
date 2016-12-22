@@ -12,14 +12,14 @@ namespace Adam
         Player _player;
         public static bool IsDoingAction = false;
 
-        private const float MaxWalkVelX = 2f;
-        private const float MaxRunVelX = 3f;
+        private const float MaxWalkVelX = 6f;
+        private const float MaxRunVelX = 8f;
         private const float MoveJumpAcc = .05f;
-        const float JumpAcc = -5f;
-        const float WalkAcc = .08f;
-        const float RunAcc = .1f;
+        const float JumpAcc = -15f;
+        const float WalkAcc = .3f;
+        const float RunAcc = .4f;
         const float DashSpeed = 24f;
-        const float ClimbingSpeed = 5f;
+        const float ClimbingSpeed = 4f;
 
         Timer _idleTimer = new Timer(true);
         Timer _airTimer = new Timer(true);
@@ -73,24 +73,24 @@ namespace Adam
                 _idleTimer.Reset();
             }
 
-            if (Math.Abs(player.GetVelocity().X) < 150f)
+            if (Math.Abs(player.GetVelocity().X) < 1f)
             {
                 player.RemoveAnimationFromQueue("walk");
             }
-            if (Math.Abs(player.GetVelocity().X) < 540)
+            if (Math.Abs(player.GetVelocity().X) < 7)
             {
                 player.RemoveAnimationFromQueue("run");
             }
-            if (Math.Abs(player.GetVelocity().X) < 60)
+            if (Math.Abs(player.GetVelocity().X) < 1)
             {
                 player.RemoveAnimationFromQueue("slide");
             }
 
-            if (player.GetVelocity().Y > 120)
+            if (player.GetVelocity().Y > 2)
             {
                 player.IsJumping = true;
 
-                if (player.GetVelocity().Y > 600)
+                if (player.GetVelocity().Y > 10)
                     player.AddAnimationToQueue("fall");
             }
 

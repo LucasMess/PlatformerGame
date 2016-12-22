@@ -699,9 +699,9 @@ namespace Adam
         private void ApplyGravity()
         {
             Velocity.Y += (GravityStrength);
-            if (Velocity.Y > 20)
+            if (Velocity.Y > 12)
             {
-                Velocity.Y = 20;
+                Velocity.Y = 12;
             }
         }
 
