@@ -43,8 +43,8 @@ namespace Adam.Interactables
 
             for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(AdamGame.Random.Next(-1, 0) * AdamGame.Random.NextDouble() * 60);
-                float randX = (float)(AdamGame.Random.Next(-1, 2) * AdamGame.Random.NextDouble() * 60);
+                float randY = (float)(AdamGame.Random.Next(-1, 0) * AdamGame.Random.NextDouble());
+                float randX = (float)(AdamGame.Random.Next(-1, 2) * AdamGame.Random.NextDouble());
                 GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX,randY), Color.Yellow);
             }
         }

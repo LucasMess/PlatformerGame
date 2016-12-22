@@ -15,8 +15,8 @@ namespace Adam.Characters.Scripts
 
         const int TimeBetweenJumps_ACTIVE = 200;
         const int TimeBetweenJumps_IDLE = 2000;
-        const float JumpVel = -840f;
-        const float MoveVel = 300f;
+        const float JumpVel = -14f;
+        const float MoveVel = 5;
 
         private bool _canSeePlayer;
 

@@ -464,7 +464,7 @@ namespace Adam
 
             for (int i = 0; i < 20; i++)
             {
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -AdamGame.Random.Next(60, 300) / 10f), Color.White);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -AdamGame.Random.Next(1, 5) / 10f), Color.White);
             }
 
             //Rectangle[] desinRectangles;
@@ -947,7 +947,7 @@ namespace Adam
             {
                 for (int i = 0; i < count; i++)
                 {
-                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next(-300, 300) / 10f, -AdamGame.Random.Next(60, 300) / 10f), Color.White);
+                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next(-5, 5) / 10f, -AdamGame.Random.Next(1, 5) / 10f), Color.White);
                 }
                 _stompParticleTimer.Reset();
             }
