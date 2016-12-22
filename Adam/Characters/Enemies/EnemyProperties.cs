@@ -159,7 +159,7 @@ namespace Adam.Characters.Enemies
             //Starts the timer at a random position.
             if (_startTimeOfBeingMean == 0)
             {
-                _startTimeOfBeingMean = Main.Random.Next(0, MeanResetTime);
+                _startTimeOfBeingMean = AdamGame.Random.Next(0, MeanResetTime);
                 _wasMeanTimer.SetToInMilliseconds(_startTimeOfBeingMean);
             }
 

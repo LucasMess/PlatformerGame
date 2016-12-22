@@ -23,7 +23,7 @@ namespace Adam.Interactables
 
             _collRectangle = sourceTile.DrawRectangle;
 
-            int rand = Main.Random.Next(1, 9);
+            int rand = AdamGame.Random.Next(1, 9);
             _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
         }
 
@@ -41,7 +41,7 @@ namespace Adam.Interactables
             {
                 _breakSound.Play();
                 _broken = true;
-                Gem.GenerateIdentical(_gemId, _sourceTile, Main.Random.Next(4, 8));
+                Gem.GenerateIdentical(_gemId, _sourceTile, AdamGame.Random.Next(4, 8));
                 _sourceTile.Destroy();
             }
         }

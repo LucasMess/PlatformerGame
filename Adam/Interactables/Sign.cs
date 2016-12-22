@@ -23,7 +23,7 @@ namespace Adam.Interactables
         public Sign(int xCoor, int yCoor, int id)
         {
             _key = new KeyPopUp();
-            CollRectangle = new Rectangle(xCoor, yCoor, Main.Tilesize, Main.Tilesize);
+            CollRectangle = new Rectangle(xCoor, yCoor, AdamGame.Tilesize, AdamGame.Tilesize);
             this._id = id;
         }
 

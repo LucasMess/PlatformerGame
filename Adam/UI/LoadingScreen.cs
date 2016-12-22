@@ -172,9 +172,9 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_background, new Rectangle(0,0,Main.UserResWidth,Main.UserResHeight),Color.White);
-            FontHelper.DrawWithOutline(spriteBatch,_font64,_loadingDots,new Vector2(Main.UserResWidth - 500, Main.UserResHeight - 200),3,Color.White,Color.DarkGray);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, LoadingText, new Vector2(Main.UserResWidth -_font32.MeasureString(LoadingText).X, Main.UserResHeight - 100), 3, Color.White, Color.DarkGray);
+            spriteBatch.Draw(_background, new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
+            FontHelper.DrawWithOutline(spriteBatch,_font64,_loadingDots,new Vector2(AdamGame.UserResWidth - 500, AdamGame.UserResHeight - 200),3,Color.White,Color.DarkGray);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, LoadingText, new Vector2(AdamGame.UserResWidth -_font32.MeasureString(LoadingText).X, AdamGame.UserResHeight - 100), 3, Color.White, Color.DarkGray);
         }
 
     }

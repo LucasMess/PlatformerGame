@@ -134,7 +134,7 @@ namespace Adam.PlayerCharacter
         /// </summary>
         private void CheckInput()
         {
-            if (Main.Dialog.IsActive)
+            if (AdamGame.Dialog.IsActive)
                 return;
 
             if (!IsPunchPressed())

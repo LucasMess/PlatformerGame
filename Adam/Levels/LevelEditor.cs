@@ -61,8 +61,8 @@ namespace Adam.Levels
             _open = new SoundFx("Sounds/Level Editor/close");
             _select = new SoundFx("Sounds/Level Editor/select");
 
-            EditorRectangle = new Rectangle(GameWorld.WorldData.LevelWidth * Main.Tilesize / 2,
-                GameWorld.WorldData.LevelHeight * Main.Tilesize / 2, Main.DefaultResWidth, Main.DefaultResHeight);
+            EditorRectangle = new Rectangle(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
+                GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight);
         }
 
         //private void EntityScroll_TileSelected(TileSelectedArgs e)
@@ -122,7 +122,7 @@ namespace Adam.Levels
         /// </summary>
         public static void TestLevel()
         {
-            if (Main.CurrentGameMode != GameMode.Play && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
+            if (AdamGame.CurrentGameMode != GameMode.Play && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
 
                 try
@@ -130,7 +130,7 @@ namespace Adam.Levels
                     SaveLevel();
                     GameWorld.IsTestingLevel = true;
                     GameWorld.PlayerTrail = new PlayerTrail();
-                    Main.CurrentGameMode = GameMode.Play;
+                    AdamGame.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
                     GameWorld.Player.ComplexAnimation.RemoveAllFromQueue();
                     GameWorld.Player.SetVelX(0);
@@ -142,19 +142,19 @@ namespace Adam.Levels
                 }
                 catch (Exception e)
                 {
-                    Main.MessageBox.Show(e.Message);
+                    AdamGame.MessageBox.Show(e.Message);
                 }
             }
         }
 
         public static void GoBackToEditing()
         {
-            if (Main.CurrentGameMode != GameMode.Edit && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
+            if (AdamGame.CurrentGameMode != GameMode.Edit && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
                 try
                 {
                     GameWorld.IsTestingLevel = false;
-                    Main.CurrentGameMode = GameMode.Edit;
+                    AdamGame.CurrentGameMode = GameMode.Edit;
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
@@ -163,7 +163,7 @@ namespace Adam.Levels
                 }
                 catch (Exception e)
                 {
-                    Main.MessageBox.Show(e.Message);
+                    AdamGame.MessageBox.Show(e.Message);
                 }
             }
         }
@@ -231,9 +231,9 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            Main.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
+            AdamGame.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
-            float speed = 500 * Main.TimeSinceLastUpdate;
+            float speed = 9f;
 
             if (InputHelper.IsKeyDown(Keys.A))
             {
@@ -266,17 +266,17 @@ namespace Adam.Levels
             {
                 EditorRectangle.X = 0;
             }
-            if (EditorRectangle.X > (GameWorld.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width)
+            if (EditorRectangle.X > (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize) - EditorRectangle.Width)
             {
-                EditorRectangle.X = (GameWorld.WorldData.LevelWidth * Main.Tilesize) - EditorRectangle.Width;
+                EditorRectangle.X = (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize) - EditorRectangle.Width;
             }
             if (EditorRectangle.Y < 0)
             {
                 EditorRectangle.Y = 0;
             }
-            if (EditorRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height)
+            if (EditorRectangle.Y > (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize) - EditorRectangle.Height)
             {
-                EditorRectangle.Y = (GameWorld.WorldData.LevelHeight * Main.Tilesize) - EditorRectangle.Height;
+                EditorRectangle.Y = (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize) - EditorRectangle.Height;
             }
         }
 
@@ -286,8 +286,8 @@ namespace Adam.Levels
         private static void CheckForMouseInput()
         {
             InputHelper.GetMouseRectGameWorld(ref _mouseRectInGameWorld);
-            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) +
-                           (_mouseRectInGameWorld.Center.X / Main.Tilesize);
+            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) +
+                           (_mouseRectInGameWorld.Center.X / AdamGame.Tilesize);
 
             if (!IsIntersectingUi())
             {
@@ -379,8 +379,8 @@ namespace Adam.Levels
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
-            Construction[Main.Random.Next(0, 3)].Play();
-            Main.Camera.Shake();
+            Construction[AdamGame.Random.Next(0, 3)].Play();
+            AdamGame.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
         }
 
@@ -395,7 +395,7 @@ namespace Adam.Levels
             _destruction.Play();
             CreateDestructionParticles(t.GetDrawRectangle());
             UpdateTilesAround(t.TileIndex);
-            Main.Camera.Shake();
+            AdamGame.Camera.Shake();
         }
 
         /// <summary>
@@ -445,7 +445,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(AdamGame.Random.Next(-600, 600) / 10f, AdamGame.Random.Next(-600, 600) / 10f), Color.White);
             }
         }
 
@@ -457,7 +457,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(Main.Random.Next(-600, 600) / 10f, Main.Random.Next(-600, 600) / 10f), Color.White);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(AdamGame.Random.Next(-600, 600) / 10f, AdamGame.Random.Next(-600, 600) / 10f), Color.White);
             }
         }
 

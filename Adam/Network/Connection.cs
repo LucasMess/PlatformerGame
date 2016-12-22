@@ -124,11 +124,11 @@ namespace Adam.Network
                     //bw.Flush();
 
                     packet.ExtractConfigFile().LoadIntoPlay();
-                    Main.Session.Start();
+                    AdamGame.Session.Start();
                 }
                 if (request == DkdTest)
                 {
-                    Main.MessageBox.Show(_br.ReadString());
+                    AdamGame.MessageBox.Show(_br.ReadString());
                     _bw.Write(DkdOk);
                     _bw.Flush();
                 }

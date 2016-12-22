@@ -13,7 +13,7 @@ namespace Adam
 
         public Apple(int x, int y)
         {
-            _collRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            _collRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
             _levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
             _levelFinishedSound.MaxVolume = .2f;
         }
@@ -29,7 +29,7 @@ namespace Adam
 
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
-                Main.ChangeState(GameState.MainMenu, GameMode.None);
+                AdamGame.ChangeState(GameState.MainMenu, GameMode.None);
             }
         }
     }

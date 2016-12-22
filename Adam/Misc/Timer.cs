@@ -17,7 +17,7 @@
             IsInfinite = isInfinite;
             if (IsInfinite)
             {
-                Main.GameUpdateCalled += Increment;
+                AdamGame.GameUpdateCalled += Increment;
                 ActiveTimers++;
             }
         }
@@ -32,8 +32,8 @@
         /// </summary>
         public void Increment()
         {
-            _currentTimeInSeconds += Main.GameTime.ElapsedGameTime.TotalSeconds;
-            _currentTimeInMilliSeconds += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+            _currentTimeInSeconds += AdamGame.GameTime.ElapsedGameTime.TotalSeconds;
+            _currentTimeInMilliSeconds += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (_currentTimeInMilliSeconds > _notificationTime)
             {
@@ -119,7 +119,7 @@
         {
             if (IsInfinite)
             {
-                Main.GameUpdateCalled -= Increment;
+                AdamGame.GameUpdateCalled -= Increment;
                 ActiveTimers--;
             }
         }

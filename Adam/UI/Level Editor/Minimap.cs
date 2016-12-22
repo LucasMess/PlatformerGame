@@ -26,20 +26,20 @@ namespace Adam.UI
         public Minimap()
         {
             int size = CalcHelper.ApplyUiRatio(74);
-            _temp = Main.DefaultTexture;
-            _texture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
+            _temp = AdamGame.DefaultTexture;
+            _texture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
-            _antiTexture = new Texture2D(Main.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
+            _antiTexture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
-            _rectangle = new Rectangle(Main.UserResWidth - size, Main.UserResHeight - size,
+            _rectangle = new Rectangle(AdamGame.UserResWidth - size, AdamGame.UserResHeight - size,
                 size, size);
 
             minimapToWorldRatio = (float)(_texture.Width)/size;
 
             int width = CalcHelper.ApplyUiRatio(_uiSourceRect.Width);
             int height = CalcHelper.ApplyUiRatio(_uiSourceRect.Height);
-            _uiDrawRect = new Rectangle(Main.UserResWidth - width, Main.UserResHeight - height, width, height);
+            _uiDrawRect = new Rectangle(AdamGame.UserResWidth - width, AdamGame.UserResHeight - height, width, height);
 
         }
 
@@ -61,7 +61,7 @@ namespace Adam.UI
             var isGoing = true;
             while (isGoing)
             {
-                if (Main.IsLoadingContent)
+                if (AdamGame.IsLoadingContent)
                     continue;
 
                 var tileArray = GameWorld.TileArray;
@@ -130,7 +130,7 @@ namespace Adam.UI
                 spriteBatch.Draw(_antiTexture, _rectangle, Color.White);
             }
 
-            _viewDrawRect = new Rectangle((int)(Main.Camera.LeftTopGameCoords.X / Main.Tilesize / minimapToWorldRatio), (int)(Main.Camera.LeftTopGameCoords.Y / Main.Tilesize / minimapToWorldRatio), (int)(23f * (16/9f)), 23);
+            _viewDrawRect = new Rectangle((int)(AdamGame.Camera.LeftTopGameCoords.X / AdamGame.Tilesize / minimapToWorldRatio), (int)(AdamGame.Camera.LeftTopGameCoords.Y / AdamGame.Tilesize / minimapToWorldRatio), (int)(23f * (16/9f)), 23);
             _viewDrawRect.X += _rectangle.X;
             _viewDrawRect.Y += _rectangle.Y;
             spriteBatch.Draw(GameWorld.SpriteSheet, _viewDrawRect, _viewSourceRect, Color.Black);

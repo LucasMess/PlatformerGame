@@ -87,10 +87,10 @@ namespace Adam.Levels
         /// <returns>Visible indexes of tiles in chunks.</returns>
         public int[] GetVisibleIndexes()
         {
-            if (Main.Camera == null)
+            if (AdamGame.Camera == null)
                 return new int[0];
 
-            _activeChunk = GetChunk((int)Main.Camera.CenterGameCoords.X, (int)Main.Camera.CenterGameCoords.Y);
+            _activeChunk = GetChunk((int)AdamGame.Camera.CenterGameCoords.X, (int)AdamGame.Camera.CenterGameCoords.Y);
             // Chunk activeChunk = GetChunk(128 * Main.Tilesize, 128 * Main.Tilesize);
             return _activeChunk.GetSurroundIndexes();
         }
@@ -103,7 +103,7 @@ namespace Adam.Levels
         /// <returns>Chunk at location.</returns>
         public Chunk GetChunk(int x, int y)
         {
-            int size = Chunk.DefaultSize * Main.Tilesize;
+            int size = Chunk.DefaultSize * AdamGame.Tilesize;
             int chunkIndex = (y / size) * _maxChunksX + (x / size);
             if (chunkIndex >= 0 && chunkIndex < _chunks.Length)
             {
@@ -118,15 +118,15 @@ namespace Adam.Levels
         /// <returns>Visible chunks.</returns>
         private Chunk[] GetVisibleChunks()
         {
-            if (GameWorld.Player == null || _chunks == null || Main.Camera == null) return new Chunk[0];
+            if (GameWorld.Player == null || _chunks == null || AdamGame.Camera == null) return new Chunk[0];
 
             // Gets the chunk the camera is in.
 
-            int cameraChunk = GetChunk((int)Main.Camera.LastCameraLeftCorner.X, (int)Main.Camera.LastCameraLeftCorner.Y).Index;
+            int cameraChunk = GetChunk((int)AdamGame.Camera.LastCameraLeftCorner.X, (int)AdamGame.Camera.LastCameraLeftCorner.Y).Index;
 
             // Defines how many chunks are visible in either direction.
-            int visibleChunksY = (int)(3 / Main.Camera.GetZoom());
-            int visibleChunksX = (int)(3 / Main.Camera.GetZoom());
+            int visibleChunksY = (int)(3 / AdamGame.Camera.GetZoom());
+            int visibleChunksX = (int)(3 / AdamGame.Camera.GetZoom());
 
             // Finds where the top left visible chunk is.
             int startingChunk = cameraChunk - (int)Math.Ceiling((double)(visibleChunksX / 2)) - 1;

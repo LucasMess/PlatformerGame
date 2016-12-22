@@ -19,7 +19,7 @@ namespace Adam
         {
             //hello
             _openSound = new SoundFx("Sounds/Chest/open");
-            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, Main.Tilesize * 2, Main.Tilesize);
+            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, AdamGame.Tilesize * 2, AdamGame.Tilesize);
             _sourceTile = tile;
             _sourceTile.OnTileUpdate += Update;
             _sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
@@ -51,7 +51,7 @@ namespace Adam
             _openSound.PlayOnce();
             _isOpen = true;
 
-            int maxGems = Main.Random.Next(10, 20);
+            int maxGems = AdamGame.Random.Next(10, 20);
             for (int i = 0; i < maxGems; i++)
             {
                 GameWorld.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));

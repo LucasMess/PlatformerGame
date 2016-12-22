@@ -37,10 +37,15 @@ namespace Adam
         public Camera(Viewport newViewport)
         {
             _viewport = newViewport;
-            _defRes = new Vector2(Main.DefaultResWidth, Main.DefaultResHeight);
-            _prefRes = new Vector2(Main.UserResWidth, Main.UserResHeight);
+            _defRes = new Vector2(AdamGame.DefaultResWidth, AdamGame.DefaultResHeight);
+            _prefRes = new Vector2(AdamGame.UserResWidth, AdamGame.UserResHeight);
             Velocity = new Vector3(0, 0, 0);
             TileIndex = 100;
+        }
+
+        public override Vector2 GetPosition()
+        {
+            return LeftTopGameCoords;
         }
 
         public void UpdateSmoothly(Rectangle rectangle, int width, int height, bool active)
@@ -50,12 +55,12 @@ namespace Adam
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;
-            if (currentLeftCorner.X < -(width * Main.Tilesize - _defRes.X))
-                currentLeftCorner.X = -(width * Main.Tilesize - _defRes.X);
+            if (currentLeftCorner.X < -(width * AdamGame.Tilesize - _defRes.X))
+                currentLeftCorner.X = -(width * AdamGame.Tilesize - _defRes.X);
             if (currentLeftCorner.Y > 0)
                 currentLeftCorner.Y = 0;
-            if (currentLeftCorner.Y < -(height * Main.Tilesize - _defRes.Y))
-                currentLeftCorner.Y = -(height * Main.Tilesize - _defRes.Y);
+            if (currentLeftCorner.Y < -(height * AdamGame.Tilesize - _defRes.Y))
+                currentLeftCorner.Y = -(height * AdamGame.Tilesize - _defRes.Y);
 
             //if (zoom > 1)
             //{
@@ -75,10 +80,10 @@ namespace Adam
             //MoveTo(new Vector2(currentLeftCorner.X, currentLeftCorner.Y), 2000);
 
 
-            Velocity = (currentLeftCorner - LastCameraLeftCorner) * 10;
+            Velocity = (currentLeftCorner - LastCameraLeftCorner) / 5;
             Vector3 cameraLeftCorner = LastCameraLeftCorner;
-            cameraLeftCorner += Velocity * Main.TimeSinceLastUpdate;
-            
+            cameraLeftCorner += Velocity;
+
 
             // Make sure mult of 2.
             //double mult = .5;
@@ -101,9 +106,9 @@ namespace Adam
             //LeftTopGameCoords.X -= Main.DefaultResWidth;
             //LeftTopGameCoords.Y -= Main.DefaultResHeight;
 
-            CenterGameCoords.X += Main.DefaultResWidth / 2;
-            CenterGameCoords.Y += Main.DefaultResHeight * 2 / 3;
-            TileIndex = (int)((int)CenterGameCoords.Y / Main.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)CenterGameCoords.X / Main.Tilesize);
+            CenterGameCoords.X += AdamGame.DefaultResWidth / 2;
+            CenterGameCoords.Y += AdamGame.DefaultResHeight * 2 / 3;
+            TileIndex = (int)((int)CenterGameCoords.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)CenterGameCoords.X / AdamGame.Tilesize);
 
 
             LastCameraLeftCorner = cameraLeftCorner;
@@ -112,7 +117,7 @@ namespace Adam
             int shakeOffset = 1;
             if (_shakeTimer.TimeElapsedInMilliSeconds < 100)
             {
-                switch (Main.Random.Next(0, 5))
+                switch (AdamGame.Random.Next(0, 5))
                 {
                     case 0:
                         cameraLeftCorner.X += shakeOffset;

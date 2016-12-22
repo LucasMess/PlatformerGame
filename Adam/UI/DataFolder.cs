@@ -104,7 +104,7 @@ namespace Adam.UI
             WorldConfigFile config = GetWorldConfigFile(filePath);
             if (!config.CanBeEdited)
             {
-                Main.MessageBox.Show("This level cannot be edited.");
+                AdamGame.MessageBox.Show("This level cannot be edited.");
                 return;
             }
 
@@ -175,7 +175,7 @@ namespace Adam.UI
             }
             catch (FileNotFoundException)
             {
-                Main.MessageBox.Show("Error: File not found.");
+                AdamGame.MessageBox.Show("Error: File not found.");
                 throw new Exception();
             }
 
@@ -191,7 +191,7 @@ namespace Adam.UI
             WorldConfigFile config = GetWorldConfigFile(filePath);
             if (!config.CanBeEdited)
             {
-                Main.MessageBox.Show("This level cannot be deleted.");
+                AdamGame.MessageBox.Show("This level cannot be deleted.");
                 return;
             }
             File.Delete(filePath);
@@ -208,7 +208,7 @@ namespace Adam.UI
             WorldConfigFile config = GetWorldConfigFile(filePath);
             if (!config.CanBeEdited)
             {
-                Main.MessageBox.Show("This level cannot be renamed.");
+                AdamGame.MessageBox.Show("This level cannot be renamed.");
                 return;
             }
 

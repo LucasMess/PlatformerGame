@@ -141,8 +141,8 @@ namespace Adam.PlayerCharacter
                 int spawnIndex;
                 if (int.TryParse(_spawnPointNextLevel, out spawnIndex))
                 {
-                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * Main.Tilesize;
-                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * Main.Tilesize;
+                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;
+                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;
                     Position = new Vector2(x, y);
                     RespawnPos = new Vector2(x, y);
                     _spawnPointNextLevel = null;
@@ -191,15 +191,15 @@ namespace Adam.PlayerCharacter
         {
             if (CollRectangle.X < 0)
                 SetX(0);
-            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width))
-                SetX(GameWorld.WorldData.LevelWidth * Main.Tilesize - CollRectangle.Width);
+            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize - CollRectangle.Width))
+                SetX(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
                 SetY(0);
-            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Width) + 100)
+            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
-                if (Main.CurrentGameMode == GameMode.Edit)
-                    SetY(GameWorld.WorldData.LevelHeight * Main.Tilesize - CollRectangle.Height);
+                if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    SetY(GameWorld.WorldData.LevelHeight * AdamGame.Tilesize - CollRectangle.Height);
                 else
                 {
                     TakeDamage(null, MaxHealth);
@@ -218,7 +218,7 @@ namespace Adam.PlayerCharacter
                     _movementParticlesTimer.Reset();
 
                     GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
-                        new Vector2(0, (float)(Main.Random.Next(-300, 300) / 10f)), Color.White);
+                        new Vector2(0, (float)(AdamGame.Random.Next(-300, 300) / 10f)), Color.White);
                 }
             }
         }

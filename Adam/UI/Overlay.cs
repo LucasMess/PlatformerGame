@@ -50,7 +50,7 @@ namespace Adam.UI
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_white, new Rectangle(0,0, Main.UserResWidth, Main.UserResHeight), Color.White * _whiteOpacity);
+            spriteBatch.Draw(_white, new Rectangle(0,0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White * _whiteOpacity);
         }
     }
 }

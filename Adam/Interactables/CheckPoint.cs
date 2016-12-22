@@ -56,7 +56,7 @@ namespace Adam.Interactables
         {
             Texture = ContentHelper.LoadTexture("Objects/checkPoint");
             SourceRectangle = new Rectangle(0, 0, 16, 48);
-            CollRectangle = new Rectangle(x - 50, y - Main.Tilesize * 2, 100, DrawRectangle.Height);
+            CollRectangle = new Rectangle(x - 50, y - AdamGame.Tilesize * 2, 100, DrawRectangle.Height);
 
             _opening = new AnimationData(32, 4, 0, AnimationType.PlayOnce);
             _animation = new Animation(Texture, DrawRectangle, SourceRectangle);
@@ -76,7 +76,7 @@ namespace Adam.Interactables
 
             if (_isOpen)
             {
-                _animation.Update(Main.GameTime, DrawRectangle, _opening);
+                _animation.Update(AdamGame.GameTime, DrawRectangle, _opening);
             }
         }
 

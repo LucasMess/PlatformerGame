@@ -43,15 +43,15 @@ namespace Adam.Characters
             }
             else
             {
-                Main.TextInputBox.Show("Please enter the name of the NPC you would like to put here.");
-                Main.TextInputBox.OnInputEntered += OnNpcNameEntered;
+                AdamGame.TextInputBox.Show("Please enter the name of the NPC you would like to put here.");
+                AdamGame.TextInputBox.OnInputEntered += OnNpcNameEntered;
                 Console.WriteLine("Creating brand new NPC");
             }
         }
 
         private void OnNpcNameEntered(TextInputArgs e)
         {
-            Main.TextInputBox.OnInputEntered -= OnNpcNameEntered;
+            AdamGame.TextInputBox.OnInputEntered -= OnNpcNameEntered;
             string npcName = e.Input.ToLower();
             GameWorld.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
             CreateNpc(npcName);
@@ -83,8 +83,8 @@ namespace Adam.Characters
                     _npc = new Will(_xCoord, _yCoord);
                     break;
                 default:
-                    Main.MessageBox.Show("This NPC does not exist.");
-                    Main.TextInputBox.ShowSameMessage();
+                    AdamGame.MessageBox.Show("This NPC does not exist.");
+                    AdamGame.TextInputBox.ShowSameMessage();
                     return;
             }
             GameWorld.Entities.Add(_npc);
@@ -121,7 +121,7 @@ namespace Adam.Characters
         /// <param name="options">The options the player has to choose from.</param>
         protected void Say(string text, string nextDialogCode, string[] options)
         {
-            Main.Dialog.Say(text, nextDialogCode, options);
+            AdamGame.Dialog.Say(text, nextDialogCode, options);
         }
 
         /// <summary>

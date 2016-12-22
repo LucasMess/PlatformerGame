@@ -20,7 +20,7 @@ namespace Adam.UI
         {
             _texture = ContentHelper.LoadTexture("Tiles/black");
             _font = ContentHelper.LoadFont("Fonts/x64");
-            _drawRectangle = new Rectangle(0, Main.UserResHeight - 180, Main.UserResWidth, 105);
+            _drawRectangle = new Rectangle(0, AdamGame.UserResHeight - 180, AdamGame.UserResWidth, 105);
         }
 
         public void Show(string text)
@@ -29,7 +29,7 @@ namespace Adam.UI
             if (text == null) return;
             _isActive = true;
             _timer = 0;
-            _textPos = new Vector2(Main.UserResWidth - _font.MeasureString(text).X - 30, _drawRectangle.Y);
+            _textPos = new Vector2(AdamGame.UserResWidth - _font.MeasureString(text).X - 30, _drawRectangle.Y);
             _original = _textPos;
             _textPos.X += _font.MeasureString(text).X / 2;
         }
@@ -41,7 +41,7 @@ namespace Adam.UI
             if (_isActive)
             {
                 _opacity += deltaOpacity;
-                _timer += Main.GameTime.ElapsedGameTime.TotalSeconds;
+                _timer += AdamGame.GameTime.ElapsedGameTime.TotalSeconds;
                 if (_textPos.X >= _original.X)
                 {
                     _textPos.X += (_original.X - _textPos.X) / 10;

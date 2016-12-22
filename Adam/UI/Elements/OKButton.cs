@@ -40,7 +40,7 @@ namespace Adam.UI.Elements
         {
             spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color);
             spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
-                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / Main.HeightRatio), SpriteEffects.None, 0);
+                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / AdamGame.HeightRatio), SpriteEffects.None, 0);
 
         }
     }

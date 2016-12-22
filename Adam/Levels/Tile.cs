@@ -159,7 +159,7 @@ namespace Adam
         public Tile(int x, int y)
         {
             _originalPosition = new Rectangle(x, y, 0, 0);
-            DrawRectangle = new Rectangle(x, y, Main.Tilesize, Main.Tilesize);
+            DrawRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
             _defaultDrawRectangle = DrawRectangle;
             SetToDefaultSourceRect();
         }
@@ -324,8 +324,8 @@ namespace Adam
                 case 17: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
-                    _positionInSpriteSheet = new Vector2(12, 10 + Main.Random.Next(0, 3) * 2);
-                    DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
+                    _positionInSpriteSheet = new Vector2(12, 10 + AdamGame.Random.Next(0, 3) * 2);
+                    DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
                     _hasRandomStartingPoint = true;
                     IsTransparent = true;
                     break;
@@ -350,8 +350,8 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     _animationPlaysOnce = true;
-                    DrawRectangle.X = _originalPosition.X + Main.Tilesize / 4;
-                    DrawRectangle.Y = _originalPosition.Y - Main.Tilesize;
+                    DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
+                    DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
                     var chest = new Chest(this);
                     IsTransparent = true;
                     break;
@@ -453,7 +453,7 @@ namespace Adam
                     break;
                 case 37: //Checkpoint
                     IsTransparent = true;
-                    if (Main.CurrentGameMode == GameMode.Edit)
+                    if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(8, 29);
                     }
@@ -506,7 +506,7 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.X = 2;
                     _sizeOfTile.Y = 2;
-                    switch (Main.Random.Next(0, 4))
+                    switch (AdamGame.Random.Next(0, 4))
                     {
                         case 0: // One branch normal.
                             _positionInSpriteSheet = new Vector2(20, 2);
@@ -599,8 +599,8 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
-                    DrawRectangle.Height = (int)_sizeOfTile.Y * Main.Tilesize;
-                    DrawRectangle.Width = (int)_sizeOfTile.X * Main.Tilesize;
+                    DrawRectangle.Height = (int)_sizeOfTile.Y * AdamGame.Tilesize;
+                    DrawRectangle.Width = (int)_sizeOfTile.X * AdamGame.Tilesize;
                     switch (SubId)
                     {
                         case 0:
@@ -736,7 +736,7 @@ namespace Adam
                 #endregion
 
                 case 200: //Player
-                    if (Main.CurrentGameMode == GameMode.Edit)
+                    if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(17, 12);
                         if (GameWorld.Player.GetCollRectangle().X == 0 && GameWorld.Player.GetCollRectangle().Y == 0)
@@ -764,7 +764,7 @@ namespace Adam
                     break;
                 case 202: //Frog
                     IsTransparent = true;
-                    if (Main.CurrentGameMode == GameMode.Edit)
+                    if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
                     }
@@ -816,7 +816,7 @@ namespace Adam
 
             if (_hasRandomStartingPoint)
             {
-                var randX = Main.Random.Next(0, (int)_frameCount.X);
+                var randX = AdamGame.Random.Next(0, (int)_frameCount.X);
                 SourceRectangle.X += randX * SmallTileSize;
                 _currentFrame += randX;
             }
@@ -847,30 +847,30 @@ namespace Adam
         {
             if (_isSampleTile)
             {
-                var width = (int)(_sizeOfTile.X * Main.Tilesize);
-                var height = (int)(_sizeOfTile.Y * Main.Tilesize);
+                var width = (int)(_sizeOfTile.X * AdamGame.Tilesize);
+                var height = (int)(_sizeOfTile.Y * AdamGame.Tilesize);
 
                 if (width > height)
                 {
-                    width = Main.Tilesize;
-                    height = (int)(Main.Tilesize / _sizeOfTile.X);
+                    width = AdamGame.Tilesize;
+                    height = (int)(AdamGame.Tilesize / _sizeOfTile.X);
                 }
                 if (height > width)
                 {
-                    width = (int)(Main.Tilesize / _sizeOfTile.Y);
-                    height = Main.Tilesize;
+                    width = (int)(AdamGame.Tilesize / _sizeOfTile.Y);
+                    height = AdamGame.Tilesize;
                 }
                 if (height == width)
                 {
-                    width = Main.Tilesize;
-                    height = Main.Tilesize;
+                    width = AdamGame.Tilesize;
+                    height = AdamGame.Tilesize;
                 }
                 // Console.WriteLine("Name:{0}, Width:{1}, Height:{2}", name, width, height);
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
             }
             else
-                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * Main.Tilesize),
-                    (int)(_sizeOfTile.Y * Main.Tilesize));
+                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * AdamGame.Tilesize),
+                    (int)(_sizeOfTile.Y * AdamGame.Tilesize));
         }
 
         /// <summary>
@@ -894,8 +894,8 @@ namespace Adam
                     case 8: //Metal
                         _switchFrame = 100;
                         _restartWait = 2000;
-                        _frameTimer += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
-                        _restartTimer += Main.GameTime.ElapsedGameTime.TotalMilliseconds;
+                        _frameTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
+                        _restartTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
 
                         if (_restartTimer < _restartWait)
                             break;
@@ -925,7 +925,7 @@ namespace Adam
 
         private void DefaultAnimation()
         {
-            var gameTime = Main.GameTime;
+            var gameTime = AdamGame.GameTime;
 
             if (_switchFrame == 0) _switchFrame = 130;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -957,7 +957,7 @@ namespace Adam
 
         private void ChangeOpacity()
         {
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
             {
                 if (LevelEditor.OnWallMode)
                 {
@@ -1013,7 +1013,7 @@ namespace Adam
 
             if (Texture != null)
             {
-                if (!_isInvisible || (_isInvisible && Main.CurrentGameMode == GameMode.Edit))
+                if (!_isInvisible || (_isInvisible && AdamGame.CurrentGameMode == GameMode.Edit))
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
             }
             if (_hasConnectPattern)
@@ -1028,9 +1028,9 @@ namespace Adam
                     c.Draw(spriteBatch);
                 }
             }
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
             {
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, Main.Tilesize, Main.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, AdamGame.Tilesize, AdamGame.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
             }
         }
 
@@ -1371,7 +1371,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = Main.Random.Next(0, 10);
+                    var rand = AdamGame.Random.Next(0, 10);
                     if (rand == 0) //flower
                     {
                         array[indexAbove].Id = 17;
@@ -1397,7 +1397,7 @@ namespace Adam
                 var indexTopRight = indexAbove + 1;
                 if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
                 {
-                    var rand = Main.Random.Next(0, 100);
+                    var rand = AdamGame.Random.Next(0, 100);
                     if (rand > 80)
                         array[indexAbove].Id = 44;
 
@@ -1411,7 +1411,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = Main.Random.Next(0, 10);
+                    var rand = AdamGame.Random.Next(0, 10);
 
                     // Skull.
                     if (rand == 0)
@@ -1425,7 +1425,7 @@ namespace Adam
             // Hellstone stalagmmite.
             if (Id == 4 && SubId == 13)
             {
-                if (Main.Random.Next(0, 5) == 1)
+                if (AdamGame.Random.Next(0, 5) == 1)
                 {
                     var indexBelow = TileIndex + mapWidth;
                     var indexTwoBelow = indexBelow + mapWidth;
@@ -1439,9 +1439,9 @@ namespace Adam
 
             // Randomly generate different plain textures for certain tiles.
             // Grass
-            if (Id == 1 && SubId == 0 && Main.Random.Next(0, 100) > 80)
+            if (Id == 1 && SubId == 0 && AdamGame.Random.Next(0, 100) > 80)
             {
-                switch (Main.Random.Next(0, 4))
+                switch (AdamGame.Random.Next(0, 4))
                 {
                     case 0:
                         SubId = 101;
@@ -1580,9 +1580,9 @@ namespace Adam
             switch (Id)
             {
                 case 0:
-                    return 1f;
+                    return .94f;
                 default:
-                    return .005f;
+                    return .94f;
             }
         }
 

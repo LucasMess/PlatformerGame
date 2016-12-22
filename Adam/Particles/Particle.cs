@@ -123,23 +123,23 @@ namespace Adam.Particles
             {
 
                 case ParticleType.Smoke:
-                    Position = new Vector2(position.X - 4, position.Y - Main.Random.Next(0, 80) / 10f);
+                    Position = new Vector2(position.X - 4, position.Y - AdamGame.Random.Next(0, 80) / 10f);
                     _sourceRectangle = new Rectangle(256, 104, 8, 8);
                     Velocity = velocity;
                     Color = color;
-                    Scale = Main.Random.Next(5, 30) / 10f;
+                    Scale = AdamGame.Random.Next(5, 30) / 10f;
                     Position = new Vector2(Position.X - (Scale * Width) / 2, Position.Y - (Scale * Height) / 2);
-                    _frameChange = Main.Random.Next(200, 300);
+                    _frameChange = AdamGame.Random.Next(200, 300);
                     _frames = 4;
                     IsAnimated = true;
                     break;
                 case ParticleType.Flame:
-                    Position = new Vector2(position.X - 4, position.Y - Main.Random.Next(0, 80) / 10f);
+                    Position = new Vector2(position.X - 4, position.Y - AdamGame.Random.Next(0, 80) / 10f);
                     _sourceRectangle = new Rectangle(288, 96, 8, 8);
                     Velocity = velocity;
-                    Scale = Main.Random.Next(5, 30) / 10f;
+                    Scale = AdamGame.Random.Next(5, 30) / 10f;
                     Position = new Vector2(position.X - (Scale * Width) / 2, position.Y - (Scale * Height) / 2);
-                    _frameChange = Main.Random.Next(100, 200);
+                    _frameChange = AdamGame.Random.Next(100, 200);
                     _frames = 4;
                     IsAnimated = true;
                     break;
@@ -148,8 +148,8 @@ namespace Adam.Particles
                     _sourceRectangle = new Rectangle(288, 104, 8, 8);
                     Velocity = velocity;
                     Color = color;
-                    Scale = Main.Random.Next(5, 30) / 10f;
-                    _frameChange = Main.Random.Next(100, 200);
+                    Scale = AdamGame.Random.Next(5, 30) / 10f;
+                    _frameChange = AdamGame.Random.Next(100, 200);
                     _frames = 4;
                     IsAnimated = true;
                     break;
@@ -195,7 +195,7 @@ namespace Adam.Particles
         /// </summary>
         private void DefaultBehavior()
         {
-            Position += Velocity * Main.TimeSinceLastUpdate;
+            Position += Velocity;
             Opacity -= .01f;
         }
 
@@ -204,18 +204,18 @@ namespace Adam.Particles
         /// </summary>
         protected void GravityDefaultBehavior()
         {
-            Position = new Vector2(Position.X, Position.Y + Main.Gravity);
+            Position = new Vector2(Position.X, Position.Y + AdamGame.Gravity);
             DefaultBehavior();
         }
 
         protected void NoOpacityDefaultBehavior()
         {
-            Position += Velocity * Main.TimeSinceLastUpdate;
+            Position += Velocity;
         }
 
         protected void GravityNoOpacityDefaultBehavior()
         {
-            Position = new Vector2(Position.X, Position.Y + Main.Gravity);
+            Position = new Vector2(Position.X, Position.Y + AdamGame.Gravity);
             NoOpacityDefaultBehavior();
         }
 

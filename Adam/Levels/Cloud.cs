@@ -22,19 +22,19 @@ namespace Adam
             Texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
             _prefRes = monitorResolution;
             _velocity = new Vector2(-.03f, 0);
-            _distance = (int)(monitorResolution.X * 2 / maxClouds * Main.Random.NextDouble());
-            _flipH = Main.Random.Next(0, 2) == 0;
-            _flipV = Main.Random.Next(0, 2) == 0;
+            _distance = (int)(monitorResolution.X * 2 / maxClouds * AdamGame.Random.NextDouble());
+            _flipH = AdamGame.Random.Next(0, 2) == 0;
+            _flipV = AdamGame.Random.Next(0, 2) == 0;
 
             Create(i);
         }
 
         public void Create(int i)
         {
-            Rectangle = new Rectangle(i * _distance, Main.Random.Next(0, 50), Texture1.Width, Texture1.Height);
+            Rectangle = new Rectangle(i * _distance, AdamGame.Random.Next(0, 50), Texture1.Width, Texture1.Height);
             _position = new Vector2(Rectangle.X, Rectangle.Y);
 
-            switch (Main.Random.Next(0, 3))
+            switch (AdamGame.Random.Next(0, 3))
             {
                 case 0:
                     CurrentTexture = Texture1;

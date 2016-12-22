@@ -87,7 +87,7 @@ namespace Adam.Characters.Scripts
                     if (!Entity.IsPlayerToRight())
                         speed *= -1;
                 }
-                else if (Main.Random.Next(0, 2) == 0)
+                else if (AdamGame.Random.Next(0, 2) == 0)
                 {
                     speed *= -1;
                 }

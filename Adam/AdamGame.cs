@@ -32,7 +32,7 @@ namespace Adam
         Play
     }
 
-    public class Main : Game
+    public class AdamGame : Game
     {
         public delegate void UpdateHandler();
 
@@ -43,7 +43,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const string Version = "Version 0.10.0 Beta";
         public const string Producers = "BitBite Games";
-        public const float Gravity = 3300;
+        public const float Gravity = .09f;
         // Color presets for lighting engine.
         private static Color _sunnyPreset = new Color(255, 238, 186);
         private static Color _hellPreset = new Color(255, 129, 116);
@@ -89,14 +89,13 @@ namespace Adam
         private RenderTarget2D _backRT;
         private RenderTarget2D _lightRT;
         private RenderTarget2D _sunlightRT;
-        public static float TimeSinceLastUpdate;
         private Menu _menu;
         private Session _session;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
         private bool _wasEscapeReleased;
 
-        public Main()
+        public AdamGame()
         {
             // Get the current monitor resolution and set it as the game's resolution
             var monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
@@ -258,8 +257,6 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-            TimeSinceLastUpdate = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-            if (TimeSinceLastUpdate > (1000 / 60)) TimeSinceLastUpdate = (1000 / 60);
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 

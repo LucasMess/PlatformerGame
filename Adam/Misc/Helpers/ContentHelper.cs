@@ -20,12 +20,12 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return Main.Content.Load<Texture2D>(file);
+                return AdamGame.Content.Load<Texture2D>(file);
             }
             catch (ContentLoadException)
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
-                return Main.DefaultTexture;
+                return AdamGame.DefaultTexture;
             }            
         }
 
@@ -38,7 +38,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return Main.Content.Load<SoundEffect>(file);
+                return AdamGame.Content.Load<SoundEffect>(file);
             }
             catch (ContentLoadException)
             {
@@ -56,7 +56,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return Main.Content.Load<Song>(file);
+                return AdamGame.Content.Load<Song>(file);
             }
             catch (ContentLoadException)
             {
@@ -74,7 +74,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return Main.Content.Load<SpriteFont>(file);
+                return AdamGame.Content.Load<SpriteFont>(file);
             }
             catch (ContentLoadException)
             {

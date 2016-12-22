@@ -76,7 +76,7 @@ namespace Adam
         {
             CurrentProjectileSource = ProjectileSource.Player;
             Player player = GameWorld.GetPlayer();
-            Texture = Main.DefaultTexture;
+            Texture = AdamGame.DefaultTexture;
             CollRectangle = new Rectangle(player.GetCollRectangle().Center.X - 8, player.GetCollRectangle().Center.Y - 4, 16, 8);
             CurrentCollisionType = CollisionType.Bouncy;
 
@@ -204,7 +204,7 @@ namespace Adam
 
         private void CheckIfOutsideBoundaries()
         {
-            if (CollRectangle.Y > GameWorld.WorldData.LevelHeight * Main.Tilesize)
+            if (CollRectangle.Y > GameWorld.WorldData.LevelHeight * AdamGame.Tilesize)
                 IsInactive = true;
         }
     }

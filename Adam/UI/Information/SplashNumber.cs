@@ -24,8 +24,8 @@ namespace Adam.UI
             Position = new Vector2(entity.GetCollRectangle().Right + 20, entity.GetCollRectangle().Y - 20);
             Color = color;
             const int offset = 150;
-            _borderColor = new Color(color.R - offset, color.G - offset, color.B - offset);
-
+            //_borderColor = new Color(color.R - offset, color.G - offset, color.B - offset);
+            _borderColor = Color.Black;
             if (this._number < 0)
                 _isNegative = true;
 
@@ -41,11 +41,11 @@ namespace Adam.UI
                 _scale = 1f;
 
             _font = ContentHelper.LoadFont("Fonts/splashNumber");
-            Velocity = new Vector2(0, -420);
+            Velocity = new Vector2(0, AdamGame.Random.Next(-700, -500));
 
             _normScale = _scale;
             _scale = .01f;
-            _offset = Main.Random.Next(0, 100);
+            _offset = AdamGame.Random.Next(0, 100);
             Opacity = 2;
         }
 
@@ -53,8 +53,8 @@ namespace Adam.UI
         public override void Update()
         {
             Opacity -= .01f;
-            Position += Velocity * Main.TimeSinceLastUpdate;
-            Velocity = new Vector2((float)Math.Cos(_offset + Main.GameTime.TotalGameTime.TotalSeconds * 20) * Velocity.Y, Velocity.Y * .95f);
+            Position += Velocity;
+            Velocity = new Vector2((float)Math.Cos(_offset + AdamGame.GameTime.TotalGameTime.TotalSeconds * 10) * 50, Velocity.Y * .95f);
 
             if (_scale > _normScale * 2)
             {
@@ -63,15 +63,15 @@ namespace Adam.UI
 
             if (!_hasExpanded)
             {
-                _scale += 6f * Main.TimeSinceLastUpdate;
+                _scale += 6f;
             }
             else
             {
-                _scale -= .3f * Main.TimeSinceLastUpdate;
+                _scale -= .3f;
             }
-            if (Velocity.Y > -6)
+            if (Velocity.Y > -360)
             {
-                _scale -= .3f * Main.TimeSinceLastUpdate;
+                _scale -= .3f;
                 Velocity = new Vector2(0, 6);
             }
 

@@ -95,7 +95,7 @@ namespace Adam.Network
         {
             while (IsActive)
             {
-                if (Main.IsLoadingContent)
+                if (AdamGame.IsLoadingContent)
                     continue;
                 Console.WriteLine("Updating...");
                 if (IsHost)

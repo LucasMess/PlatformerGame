@@ -12,14 +12,14 @@ namespace Adam
         Player _player;
         public static bool IsDoingAction = false;
 
-        private const float MaxWalkVelX = 300f;
-        private const float MaxRunVelX = 400f;
-        private const float MoveJumpAcc = 3f;
-        const float JumpAcc = -834f;
-        const float WalkAcc = 30f;
-        const float RunAcc = 42f;
-        const float DashSpeed = 24000f;
-        const float ClimbingSpeed = 200f;
+        private const float MaxWalkVelX = 2f;
+        private const float MaxRunVelX = 3f;
+        private const float MoveJumpAcc = .05f;
+        const float JumpAcc = -5f;
+        const float WalkAcc = .08f;
+        const float RunAcc = .1f;
+        const float DashSpeed = 24f;
+        const float ClimbingSpeed = 5f;
 
         Timer _idleTimer = new Timer(true);
         Timer _airTimer = new Timer(true);
@@ -134,7 +134,7 @@ namespace Adam
                 if (jumpAcc != 0)
                     for (int i = 0; i < 10; i++)
                     {
-                        GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(Main.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -Main.Random.Next(60, 600) / 10f), Color.White);
+                        GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -AdamGame.Random.Next(60, 600) / 10f), Color.White);
                     }
 
 
@@ -146,8 +146,8 @@ namespace Adam
             }
             else
             {
-                player.GravityStrength = Main.Gravity;
-                player.GravityStrength = Main.Gravity * .75f;
+                player.GravityStrength = AdamGame.Gravity;
+                player.GravityStrength = AdamGame.Gravity * .75f;
             }
         }
 

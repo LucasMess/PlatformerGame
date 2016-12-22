@@ -97,6 +97,6 @@ namespace Adam.UI.Elements
             _drawRectangle.Y = _container.Y + (int)_containerDiff.Y;
         }
 
-        public Vector2 GetPosition() { return new Vector2(DrawRectangle.X, DrawRectangle.Y); }
+        public virtual Vector2 GetPosition() { return new Vector2(DrawRectangle.X, DrawRectangle.Y); }
     }
 }

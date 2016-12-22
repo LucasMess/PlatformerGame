@@ -12,7 +12,7 @@ namespace Adam.Misc
         bool _isGlobal = true;
         Entity _source;
 
-        public float MaxVolume { get; set; } = Main.MaxVolume;
+        public float MaxVolume { get; set; } = AdamGame.MaxVolume;
 
         public SoundFx(string file)
         {

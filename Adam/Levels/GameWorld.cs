@@ -59,7 +59,7 @@ namespace Adam.Levels
             var maxClouds = width / 20;
             for (var i = 0; i < maxClouds; i++)
             {
-                _clouds.Add(new Cloud(new Vector2(Main.UserResWidth, Main.UserResHeight), maxClouds, i));
+                _clouds.Add(new Cloud(new Vector2(AdamGame.UserResWidth, AdamGame.UserResHeight), maxClouds, i));
             }
 
             TileArray = new Tile[tileIDs.Length];
@@ -83,7 +83,7 @@ namespace Adam.Levels
             }
             catch (ArgumentException e)
             {
-                Main.MessageBox.Show(e.Message);
+                AdamGame.MessageBox.Show(e.Message);
                 return false;
             }
 
@@ -107,8 +107,8 @@ namespace Adam.Levels
 
             for (var i = 0; i < ids.Length; i++)
             {
-                var xcoor = (i % width) * Main.Tilesize;
-                var ycoor = ((i - (i % width)) / width) * Main.Tilesize;
+                var xcoor = (i % width) * AdamGame.Tilesize;
+                var ycoor = ((i - (i % width)) / width) * AdamGame.Tilesize;
 
 
                 array[i] = new Tile(xcoor, ycoor);
@@ -142,7 +142,7 @@ namespace Adam.Levels
                 }
             }
 
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
             {
                 Player.ComplexAnimation.RemoveAllFromQueue();
                 Player.AddAnimationToQueue("editMode");
@@ -154,7 +154,7 @@ namespace Adam.Levels
 
                 var cameraRect = Player.GetCollRectangle();
 
-                Main.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
+                AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
             }
 
             TimesUpdated++;
@@ -172,7 +172,7 @@ namespace Adam.Levels
             }
 
             Player.Update();
-            if (Main.CurrentGameMode == GameMode.Play)
+            if (AdamGame.CurrentGameMode == GameMode.Play)
                 PlayerTrail.Add(Player);
 
             foreach (var c in _clouds)
@@ -181,7 +181,7 @@ namespace Adam.Levels
                 c.Update();
             }
 
-            if (Main.CurrentGameMode == GameMode.Play)
+            if (AdamGame.CurrentGameMode == GameMode.Play)
             {
                 for (var i = 0; i < Entities.Count; i++)
                 {
@@ -244,7 +244,7 @@ namespace Adam.Levels
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
 
 
@@ -266,7 +266,7 @@ namespace Adam.Levels
 
             ParticleSystem.Draw(spriteBatch);
 
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.Draw(spriteBatch);
 
 
@@ -296,7 +296,7 @@ namespace Adam.Levels
 
         public static void DrawUi(SpriteBatch spriteBatch)
         {
-            if (Main.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
         }
 

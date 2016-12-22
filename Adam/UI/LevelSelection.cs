@@ -46,9 +46,9 @@ namespace Adam.UI
         public LevelSelection()
         {
             // Defines the bounding box for the Level Info List.
-            int widthOfBounds = (int)(600 / Main.WidthRatio);
-            int heightOfBounds = (int)(300 / Main.HeightRatio);
-            _boundsDrawRectangle = new Rectangle(Main.UserResWidth / 2, Main.UserResHeight / 2, widthOfBounds, heightOfBounds);
+            int widthOfBounds = (int)(600 / AdamGame.WidthRatio);
+            int heightOfBounds = (int)(300 / AdamGame.HeightRatio);
+            _boundsDrawRectangle = new Rectangle(AdamGame.UserResWidth / 2, AdamGame.UserResHeight / 2, widthOfBounds, heightOfBounds);
             _boundsDrawRectangle.X -= widthOfBounds / 2;
             _boundsDrawRectangle.Y -= heightOfBounds / 2;
             _boundsSourceRectangle = new Rectangle(376, 48, 300, 150);
@@ -57,10 +57,10 @@ namespace Adam.UI
             HeightOfBounds = heightOfBounds;
 
             // Defines how big the level selection box will be based on the game's resolution.
-            _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + (int)(12 / Main.WidthRatio), _boundsDrawRectangle.Y + (int)(12 / Main.HeightRatio), _boundsDrawRectangle.Width - (int)(24 / Main.WidthRatio), _boundsDrawRectangle.Height - (int)(24 / Main.HeightRatio));
+            _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + (int)(12 / AdamGame.WidthRatio), _boundsDrawRectangle.Y + (int)(12 / AdamGame.HeightRatio), _boundsDrawRectangle.Width - (int)(24 / AdamGame.WidthRatio), _boundsDrawRectangle.Height - (int)(24 / AdamGame.HeightRatio));
 
             // Defines where the function buttons will be.
-            _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - CalcHelper.ApplyHeightRatio(4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + (int)(8 / Main.HeightRatio), (int)(184 / Main.WidthRatio), (int)(40 / Main.HeightRatio));
+            _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - CalcHelper.ApplyHeightRatio(4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + (int)(8 / AdamGame.HeightRatio), (int)(184 / AdamGame.WidthRatio), (int)(40 / AdamGame.HeightRatio));
             _playButton = new IconButton(new Vector2(4, 4), _functionButtonContainer, "Play level", ButtonImage.Play);
             _editButton = new IconButton(new Vector2(4 + 32 + 4, 4), _functionButtonContainer, "Edit level", ButtonImage.Edit);
             _renameButton = new IconButton(new Vector2(4 + 64 + 8, 4), _functionButtonContainer, "Rename level", ButtonImage.Rename);
@@ -86,19 +86,19 @@ namespace Adam.UI
             // Define the spritefont for the "Select Level" header and its position.
             _headerFont = ContentHelper.LoadFont("Fonts/x64");
             _headerText = "Select a Level:";
-            _headerPos = new Vector2(Main.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineSpacing - CalcHelper.ApplyHeightRatio(10));
+            _headerPos = new Vector2(AdamGame.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineSpacing - CalcHelper.ApplyHeightRatio(10));
         }
 
         private void NewButton_MouseClicked(Button button)
         {
-            Main.TextInputBox.Show("Please enter the name for your new level:");
-            Main.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
+            AdamGame.TextInputBox.Show("Please enter the name for your new level:");
+            AdamGame.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
         }
 
         private void NewLevel_OnTextEntered(TextInputArgs e)
         {
             string newPath;
-            Main.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
+            AdamGame.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
 
             try
             {
@@ -106,7 +106,7 @@ namespace Adam.UI
             }
             catch (Exception ex)
             {
-                Main.MessageBox.Show(ex.Message);
+                AdamGame.MessageBox.Show(ex.Message);
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace Adam.UI
         {
             if (_selectedLevel == null)
             {
-                Main.MessageBox.Show("Please select a level.");
+                AdamGame.MessageBox.Show("Please select a level.");
                 return;
             }
             DataFolder.DeleteFile(_selectedLevel.FilePath);
@@ -133,18 +133,18 @@ namespace Adam.UI
         {
             if (_selectedLevel == null)
             {
-                Main.MessageBox.Show("Please select a level.");
+                AdamGame.MessageBox.Show("Please select a level.");
                 return;
             }
-            Main.TextInputBox.Show("What would you like to rename this level to?");
-            Main.TextInputBox.SetTextTo(_selectedLevel.Name);
-            Main.TextInputBox.OnInputEntered += RenameButton_OnInputEntered;
+            AdamGame.TextInputBox.Show("What would you like to rename this level to?");
+            AdamGame.TextInputBox.SetTextTo(_selectedLevel.Name);
+            AdamGame.TextInputBox.OnInputEntered += RenameButton_OnInputEntered;
         }
 
         private void RenameButton_OnInputEntered(TextInputArgs e)
         {
             DataFolder.RenameFile(_selectedLevel.FilePath, _selectedLevel.Name, e.Input);
-            Main.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
+            AdamGame.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
             LoadLevels();
         }
 
@@ -152,7 +152,7 @@ namespace Adam.UI
         {
             if (_selectedLevel == null)
             {
-                Main.MessageBox.Show("Please select a level.");
+                AdamGame.MessageBox.Show("Please select a level.");
                 return;
             }
             DataFolder.EditLevel(_selectedLevel.FilePath);
@@ -166,7 +166,7 @@ namespace Adam.UI
             }
             catch (Exception e)
             {
-                Main.MessageBox.Show(e.Message);
+                AdamGame.MessageBox.Show(e.Message);
             }
         }
 
@@ -279,7 +279,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, Main.UserResWidth, Main.UserResHeight), Color.Black * .7f);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.Black * .7f);
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
 
             // Sets the scrolling levels to disappear if they are not inside of this bounding box.
@@ -334,7 +334,7 @@ namespace Adam.UI
             //_nameFont = ContentHelper.LoadFont("Fonts/x32");
             //_infoFont = ContentHelper.LoadFont("Fonts/x16");
 
-            _drawRectangle = new Rectangle(Main.UserResWidth / 2 - LevelSelection.WidthOfBounds / 2 + (int)(16 / Main.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / Main.WidthRatio), (int)(50 / Main.HeightRatio));
+            _drawRectangle = new Rectangle(AdamGame.UserResWidth / 2 - LevelSelection.WidthOfBounds / 2 + (int)(16 / AdamGame.WidthRatio), 0, LevelSelection.WidthOfBounds - (int)(32 / AdamGame.WidthRatio), (int)(50 / AdamGame.HeightRatio));
 
             _nameFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 2);
             _infoFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 3);

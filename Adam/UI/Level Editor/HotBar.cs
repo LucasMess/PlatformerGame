@@ -125,7 +125,7 @@ namespace Adam.UI.Level_Editor
                     _tileHolders[i].SetPosition(tileHolder.GetPosition());
                     _tileHolders[i].ReturnToDefaultPosition();
 
-                    tileHolder.SetPosition(Main.UserResWidth, Main.UserResHeight);
+                    tileHolder.SetPosition(AdamGame.UserResWidth, AdamGame.UserResHeight);
                     tileHolder.ReturnToDefaultPosition(500);
 
                     _swipeSound.Play();

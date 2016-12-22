@@ -49,8 +49,8 @@ namespace Adam.Interactables
             }
             else
             {
-                Main.TextInputBox.Show("Please enter the name of the level this portal links to");
-                Main.TextInputBox.OnInputEntered += OnLevelNameEntered;
+                AdamGame.TextInputBox.Show("Please enter the name of the level this portal links to");
+                AdamGame.TextInputBox.OnInputEntered += OnLevelNameEntered;
                 Console.WriteLine("Creating a brand new Portal.Index:" + _tileIndex);
             }
 
@@ -78,17 +78,17 @@ namespace Adam.Interactables
             if (DataFolder.LevelExists(_linkedLevelName))
             {
                 GameWorld.WorldData.MetaData[_tileIndex] = "pl:nl:" + e.Input;
-                Main.TextInputBox.OnInputEntered -= OnLevelNameEntered;
+                AdamGame.TextInputBox.OnInputEntered -= OnLevelNameEntered;
                 string message = "Portal link created to level: " + _linkedLevelName + " on index: " +
                                  (_linkedPortalIndex ?? "SPAWN") +
                                  ". This portal index is: " + _tileIndex;
-                Main.MessageBox.Show(message);
+                AdamGame.MessageBox.Show(message);
                 Console.WriteLine(message);
             }
             else
             {
-                Main.MessageBox.Show("Level does not exist. Try again.");
-                Main.TextInputBox.ShowSameMessage();
+                AdamGame.MessageBox.Show("Level does not exist. Try again.");
+                AdamGame.TextInputBox.ShowSameMessage();
             }
         }
 
@@ -96,7 +96,7 @@ namespace Adam.Interactables
         {
             if (_linkedLevelName == null)
             {
-                Main.MessageBox.Show("There is no level linked to this portal. Try placing it again.");
+                AdamGame.MessageBox.Show("There is no level linked to this portal. Try placing it again.");
                 return;
             }
 

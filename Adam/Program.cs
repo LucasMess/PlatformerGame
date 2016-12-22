@@ -10,7 +10,7 @@ namespace Adam
 
         static void Main(string[] args)
         {
-            using (Main game = new Main())
+            using (AdamGame game = new AdamGame())
             {
                 game.Run();
             }

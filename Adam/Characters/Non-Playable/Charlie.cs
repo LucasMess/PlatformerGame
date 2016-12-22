@@ -15,12 +15,12 @@ namespace Adam.Characters
             CollRectangle = new Rectangle(x, y, 48, 80);
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 1, true));
             AddAnimationToQueue("still");
-            Main.Dialog.NextDialog += Dialog_NextDialog;
+            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         protected override void ShowDialog()
         {
-            if (!Main.LevelProgression.HasStartedCharlieCollectingQuest)
+            if (!AdamGame.LevelProgression.HasStartedCharlieCollectingQuest)
             {
                 Say("ZZZ...\nHmmm? What?!\nOh hiya.", "charlie-honeyquest-1", new []{"You seem tired.", "Who are you?", "I have to go."});
             }

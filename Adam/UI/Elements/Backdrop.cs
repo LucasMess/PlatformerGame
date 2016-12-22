@@ -38,12 +38,12 @@ namespace Adam.UI.Elements
             height = CalcHelper.ApplyUiRatio(height);
 
             Size = new Vector2(width, height);
-            float x = (Main.UserResWidth / 2) - width / 2;
-            float y = (Main.UserResHeight / 2) - height / 2;
+            float x = (AdamGame.UserResWidth / 2) - width / 2;
+            float y = (AdamGame.UserResHeight / 2) - height / 2;
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
-            _hiddenPos = new Vector2(x, Main.UserResHeight);
+            _hiddenPos = new Vector2(x, AdamGame.UserResHeight);
 
             SetPosition(_hiddenPos);
         }
@@ -71,7 +71,7 @@ namespace Adam.UI.Elements
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
-            _hiddenPos = new Vector2(x, Main.UserResHeight);
+            _hiddenPos = new Vector2(x, AdamGame.UserResHeight);
 
             SetPosition(_hiddenPos);
         }

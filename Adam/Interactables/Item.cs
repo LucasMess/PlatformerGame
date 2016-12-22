@@ -14,7 +14,7 @@ namespace Adam.Interactables
         protected Rectangle TopMidBound;
         protected double ElapsedTime;
         protected SoundFx LoopSound;
-        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold"+Main.Random.Next(0,5));
+        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold"+AdamGame.Random.Next(0,5));
         protected SoundFx BounceSound;
         private int _tileIndex;
         protected double EffectTimer;
@@ -43,8 +43,8 @@ namespace Adam.Interactables
 
             for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(Main.Random.Next(-1, 0) * Main.Random.NextDouble() * 60);
-                float randX = (float)(Main.Random.Next(-1, 2) * Main.Random.NextDouble() * 60);
+                float randY = (float)(AdamGame.Random.Next(-1, 0) * AdamGame.Random.NextDouble() * 60);
+                float randX = (float)(AdamGame.Random.Next(-1, 2) * AdamGame.Random.NextDouble() * 60);
                 GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX,randY), Color.Yellow);
             }
         }
@@ -52,7 +52,7 @@ namespace Adam.Interactables
         public override void Update()
         {
             Player player = GameWorld.GetPlayer();
-            GameTime gameTime = Main.GameTime;
+            GameTime gameTime = AdamGame.GameTime;
 
             ElapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -72,7 +72,7 @@ namespace Adam.Interactables
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (Texture == null) Texture = Main.DefaultTexture;
+            if (Texture == null) Texture = AdamGame.DefaultTexture;
             spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
     }

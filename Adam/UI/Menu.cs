@@ -47,19 +47,19 @@ namespace Adam
 
         bool _isSongPlaying;
         SpriteFont _font32, _font64;
-        Main _game1;
+        AdamGame _game1;
 
         LevelSelection _levelSelection;
 
         public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession  }
         public static MenuState CurrentMenuState = MenuState.Main;
 
-        public Menu(Main game1)
+        public Menu(AdamGame game1)
         {
             this._game1 = game1;
 
-            int width = Main.DefaultResWidth/2;
-            int height = Main.DefaultResHeight * 2/5;
+            int width = AdamGame.DefaultResWidth/2;
+            int height = AdamGame.DefaultResHeight * 2/5;
             int diff = CalcHelper.ApplyScreenScale(TextButton.Height + 2);
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
@@ -139,24 +139,24 @@ namespace Adam
         {
            if (Session.IsHost)
             {
-                Main.Session.Start();
+                AdamGame.Session.Start();
             }
         }
 
         private void storyMode_MouseClicked(Button button)
         {
-            Main.MessageBox.Show("Coming Soon...");
+            AdamGame.MessageBox.Show("Coming Soon...");
         }
 
         void joinGame_MouseClicked(Button button)
         {
-            Main.Session = new Session(false, "Client");
+            AdamGame.Session = new Session(false, "Client");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         void hostGame_MouseClicked(Button button)
         {
-            Main.Session = new Session(true, "Host");
+            AdamGame.Session = new Session(true, "Host");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
@@ -211,15 +211,15 @@ namespace Adam
             {
                 case true:
                     _fullscreen.IsOn = false;
-                    Main.GameData.Settings.IsFullscreen = false;
-                    Main.GameData.Settings.NeedsRestart = true;
-                    Main.GameData.Settings.HasChanged = true;
+                    AdamGame.GameData.Settings.IsFullscreen = false;
+                    AdamGame.GameData.Settings.NeedsRestart = true;
+                    AdamGame.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     _fullscreen.IsOn = true;
-                    Main.GameData.Settings.IsFullscreen = true;
-                    Main.GameData.Settings.NeedsRestart = true;
-                    Main.GameData.Settings.HasChanged = true;
+                    AdamGame.GameData.Settings.IsFullscreen = true;
+                    AdamGame.GameData.Settings.NeedsRestart = true;
+                    AdamGame.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -232,15 +232,15 @@ namespace Adam
             {
                 case true:
                     _lighting.IsOn = false;
-                    Main.GameData.Settings.DesiredLight = false;
-                    Main.GameData.Settings.NeedsRestart = true;
-                    Main.GameData.Settings.HasChanged = true;
+                    AdamGame.GameData.Settings.DesiredLight = false;
+                    AdamGame.GameData.Settings.NeedsRestart = true;
+                    AdamGame.GameData.Settings.HasChanged = true;
                     break;
                 case false:
                     _lighting.IsOn = true;
-                    Main.GameData.Settings.DesiredLight = true;
-                    Main.GameData.Settings.NeedsRestart = true;
-                    Main.GameData.Settings.HasChanged = true;
+                    AdamGame.GameData.Settings.DesiredLight = true;
+                    AdamGame.GameData.Settings.NeedsRestart = true;
+                    AdamGame.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;
@@ -314,18 +314,18 @@ namespace Adam
                     break;
             }
 
-            if (Main.CurrentGameState == GameState.MainMenu)
+            if (AdamGame.CurrentGameState == GameState.MainMenu)
             SoundtrackManager.PlayMainTheme();
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background,new Rectangle(0,0,Main.UserResWidth,Main.UserResHeight),Color.White);
+            spriteBatch.Draw(background,new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch,_font32,Main.Producers,new Vector2((float)(5 / Main.WidthRatio), (float)(5 / Main.HeightRatio)),3,Color.White,Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, Main.Version, new Vector2((float)(5 / Main.WidthRatio), (float)(30 / Main.HeightRatio)), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(Main.DefaultResWidth/2f) - _font64.MeasureString("Adam").X/2, CalcHelper.ApplyScreenScale(Main.DefaultResHeight * 1/5f)), 3, Color.DarkRed, Color.MediumVioletRed);
+            FontHelper.DrawWithOutline(spriteBatch,_font32,AdamGame.Producers,new Vector2((float)(5 / AdamGame.WidthRatio), (float)(5 / AdamGame.HeightRatio)),3,Color.White,Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(30 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(AdamGame.DefaultResWidth/2f) - _font64.MeasureString("Adam").X/2, CalcHelper.ApplyScreenScale(AdamGame.DefaultResHeight * 1/5f)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)
             {

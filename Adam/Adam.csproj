@@ -102,7 +102,7 @@
     <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\WorldData.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="AdamGame.cs" />
     <Compile Include="Misc\Animation.cs" />
     <Compile Include="Misc\ComplexAnimation.cs" />
     <Compile Include="Misc\Countdown.cs" />

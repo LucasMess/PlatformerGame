@@ -21,12 +21,12 @@ namespace Adam.Noobs
             CollRectangle = new Rectangle(x, y, 48, 80);
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 4, true));
             AddAnimationToQueue("still");
-            Main.Dialog.NextDialog += Dialog_NextDialog;
+            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         protected override void ShowDialog()
         {
-            if (!Main.LevelProgression.HasStartedMainQuest)
+            if (!AdamGame.LevelProgression.HasStartedMainQuest)
             {
                 Say("You are finally awake!.", "god-mainstory-1", new[] { "What are you talking about?", "What are you cooking there?" });
             }
@@ -83,7 +83,7 @@ namespace Adam.Noobs
                     break;
                 case "god-mainstory-5":
                     Say("Be very careful with it.\nNow Go!",null,null);
-                    Main.LevelProgression.HasStartedMainQuest = true;
+                    AdamGame.LevelProgression.HasStartedMainQuest = true;
                     break;
             }
         }

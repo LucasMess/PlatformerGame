@@ -78,7 +78,7 @@ namespace Adam.UI
             if (IsActive)
             {
                 base.Draw(spriteBatch);
-                if (_textBox.DrawRectangle.Bottom < Main.UserResHeight)
+                if (_textBox.DrawRectangle.Bottom < AdamGame.UserResHeight)
                 _textBox.Draw(spriteBatch);
             }
         }

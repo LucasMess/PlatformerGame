@@ -95,7 +95,7 @@ namespace Adam.UI
             if (SelectedIndexes[0] >= 0 && SelectedIndexes[0] < GameWorld.TileArray.Length)
             {
                 Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[0]];
-                grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * Main.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * Main.Tilesize + 8);
+                grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * AdamGame.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * AdamGame.Tilesize + 8);
                 grid.Texture = GameWorld.UiSpriteSheet;
 
                 for (int i = 0; i < _selectedBrushTiles.Length; i++)

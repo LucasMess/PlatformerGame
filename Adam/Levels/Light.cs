@@ -159,7 +159,7 @@ namespace Adam.Levels
                         _changeSizeTimer.Increment();
                         if (_changeSizeTimer.TimeElapsedInMilliSeconds > RateOfChange)
                         {
-                            oldChangeSize = Main.Random.Next(-ShakeOffset, ShakeOffset + 1);
+                            oldChangeSize = AdamGame.Random.Next(-ShakeOffset, ShakeOffset + 1);
                             _changeSizeTimer.Reset();
                         }
                     }

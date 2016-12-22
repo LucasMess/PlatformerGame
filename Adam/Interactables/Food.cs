@@ -97,7 +97,7 @@ namespace Adam.Interactables
 
         public float GravityStrength
         {
-            get { return Main.Gravity; }
+            get { return AdamGame.Gravity; }
             set
             {
                 GravityStrength = value;

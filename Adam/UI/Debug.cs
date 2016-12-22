@@ -142,10 +142,11 @@ namespace Adam
             if (IsDebugOn)
             {
                 _infos = new List<string>();
-                _infos.Add(Main.Producers + " (" + Main.Version + ")");
-                _infos.Add("FPS: " + Main.FPS);
-                _infos.Add("Gamestate: " + Main.CurrentGameState);
-                _infos.Add("Gamemode: " + Main.CurrentGameMode);
+                _infos.Add(AdamGame.Producers + " (" + AdamGame.Version + ")");
+                _infos.Add("FPS: " + AdamGame.FPS);
+                _infos.Add("Gamestate: " + AdamGame.CurrentGameState);
+                _infos.Add("Gamemode: " + AdamGame.CurrentGameMode);
+                _infos.Add("Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {

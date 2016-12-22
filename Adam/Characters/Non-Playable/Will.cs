@@ -15,7 +15,7 @@ namespace Adam.Characters
             CollRectangle = new Rectangle(x, y, 48, 68);
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 28, 34), 0, 28, 34, 500, 1, true));
             AddAnimationToQueue("still");
-            Main.Dialog.NextDialog += Dialog_NextDialog;
+            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         protected override void ShowDialog()

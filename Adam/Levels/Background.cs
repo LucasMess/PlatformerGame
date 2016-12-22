@@ -42,9 +42,9 @@ namespace Adam
             }
 
             // Sets the textures to a default texture to avoid problems.
-            _backgroundTexture = Main.DefaultTexture;
-            _middlegroundTexture = Main.DefaultTexture;
-            _foregroundTexture = Main.DefaultTexture;
+            _backgroundTexture = AdamGame.DefaultTexture;
+            _middlegroundTexture = AdamGame.DefaultTexture;
+            _foregroundTexture = AdamGame.DefaultTexture;
 
             // Tries to set the textures to what the level settings specify. If none are found, the default are kept.
             try
@@ -63,7 +63,7 @@ namespace Adam
             List<Vector2> one = new List<Vector2>();
             for (int i = 0; i < 3; i++)
             {
-                Vector2 pos = new Vector2(-Main.DefaultResWidth + (Main.DefaultResWidth * i), 0);
+                Vector2 pos = new Vector2(-AdamGame.DefaultResWidth + (AdamGame.DefaultResWidth * i), 0);
                 one.Add(pos);
             }
             middleCoords = one.ToArray();
@@ -87,28 +87,28 @@ namespace Adam
             }
 
 
-            middleCoords[0] = new Vector2((Main.Camera.LastCameraLeftCorner.X / 10) % Main.DefaultResWidth, 0);
-            foreCoords[0] = new Vector2((Main.Camera.LastCameraLeftCorner.X / 5) % Main.DefaultResWidth, 0);
+            middleCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 10) % AdamGame.DefaultResWidth, 0);
+            foreCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 5) % AdamGame.DefaultResWidth, 0);
 
-            middleCoords[1] = middleCoords[0] + new Vector2(Main.DefaultResWidth, 0);
-            foreCoords[1] = foreCoords[0] + new Vector2(Main.DefaultResWidth, 0);
+            middleCoords[1] = middleCoords[0] + new Vector2(AdamGame.DefaultResWidth, 0);
+            foreCoords[1] = foreCoords[0] + new Vector2(AdamGame.DefaultResWidth, 0);
 
-            middleCoords[2] = middleCoords[0] - new Vector2(Main.DefaultResWidth, 0);
-            foreCoords[2] = foreCoords[0] - new Vector2(Main.DefaultResWidth, 0);
+            middleCoords[2] = middleCoords[0] - new Vector2(AdamGame.DefaultResWidth, 0);
+            foreCoords[2] = foreCoords[0] - new Vector2(AdamGame.DefaultResWidth, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+            spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
 
-            spriteBatch.Draw(_sun, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+            spriteBatch.Draw(_sun, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
 
             //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
 
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
             }
 
             //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
@@ -117,7 +117,7 @@ namespace Adam
 
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, Main.DefaultResWidth, Main.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
             }
 
             //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
