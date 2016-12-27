@@ -43,6 +43,8 @@ namespace Adam.Interactables
                 _broken = true;
                 Gem.GenerateIdentical(_gemId, _sourceTile, AdamGame.Random.Next(4, 8));
                 _sourceTile.Destroy();
+                // Define texture so that there is no missing texture after the tile is reset.
+                _sourceTile.DefineTexture();
             }
         }
     }

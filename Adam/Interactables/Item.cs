@@ -12,9 +12,9 @@ namespace Adam.Interactables
     {
         public bool WasPickedUp;
         protected Rectangle TopMidBound;
-        protected double ElapsedTime;
+        private Timer _pickUpTimer = new Timer();
         protected SoundFx LoopSound;
-        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold"+AdamGame.Random.Next(0,5));
+        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + AdamGame.Random.Next(0, 5));
         protected SoundFx BounceSound;
         private int _tileIndex;
         protected double EffectTimer;
@@ -27,15 +27,15 @@ namespace Adam.Interactables
         {
             OnPlayerPickUp += SpawnSparkles;
             CollidedWithTerrain += Item_CollidedWithTerrain;
-            BounceSound = new SoundFx("Sounds/Items/item_pop",this);
+            BounceSound = new SoundFx("Sounds/Items/item_pop", this);
         }
 
         private void Item_CollidedWithTerrain(Entity entity, Tile tile)
         {
-            //if (Math.Abs(Velocity.Y) > 180)
-            //{
-            //    BounceSound?.Play();
-            //}
+            if (Math.Abs(Velocity.Y) > 1)
+            {
+                BounceSound?.Play();
+            }
         }
 
         private void SpawnSparkles(PickedUpArgs e)
@@ -45,7 +45,7 @@ namespace Adam.Interactables
             {
                 float randY = (float)(AdamGame.Random.Next(-1, 0) * AdamGame.Random.NextDouble());
                 float randX = (float)(AdamGame.Random.Next(-1, 2) * AdamGame.Random.NextDouble());
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX,randY), Color.Yellow);
+                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX, randY), Color.Yellow);
             }
         }
 
@@ -54,12 +54,12 @@ namespace Adam.Interactables
             Player player = GameWorld.GetPlayer();
             GameTime gameTime = AdamGame.GameTime;
 
-            ElapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            _pickUpTimer.Increment();
 
-            if (player.GetCollRectangle().Intersects(DrawRectangle) && ElapsedTime > 500)
+            if (player.GetCollRectangle().Intersects(DrawRectangle) && _pickUpTimer.TimeElapsedInMilliSeconds > 500)
             {
                 if (OnPlayerPickUp != null)
-                OnPlayerPickUp(new PickedUpArgs(player));
+                    OnPlayerPickUp(new PickedUpArgs(player));
                 PickUpSound?.PlayOnce();
                 ToDelete = true;
                 LoopSound?.Stop();

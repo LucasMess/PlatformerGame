@@ -30,7 +30,7 @@ namespace Adam
             Position = new Vector2(centerX, centerY);
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(AdamGame.Random.Next(-6000, 6000) / 10f, -AdamGame.Random.Next(6000, 6000) / 10f);
+            Velocity = new Vector2(AdamGame.Random.Next(-100, 100) / 10f, -AdamGame.Random.Next(100, 100) / 10f);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -45,7 +45,7 @@ namespace Adam
             Position = new Vector2(centerX, centerY);
             CollRectangle = new Rectangle(0, 0, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(AdamGame.Random.Next(-6000, 6000) / 10f, -AdamGame.Random.Next(6000, 6000) / 10f);
+            Velocity = new Vector2(AdamGame.Random.Next(-100, 100) / 10f, -AdamGame.Random.Next(100, 100) / 10f);
 
             PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + AdamGame.Random.Next(0, 5));
 
