@@ -3,6 +3,7 @@ using Adam.Misc.Sound;
 using Adam.Network;
 using Adam.UI;
 using Adam.UI.Elements;
+using Adam.UI.MainMenu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -25,7 +26,7 @@ namespace Adam
         Button _options;
         Button _quit;
         Button _multiplayer;
-        Button _storyMode;
+        Button _storyModeButton;
 
         //Level Selector
         Button _save1;
@@ -49,17 +50,19 @@ namespace Adam
         SpriteFont _font32, _font64;
         AdamGame _game1;
 
+        StoryMode storyMode = new StoryMode();
+
         LevelSelection _levelSelection;
 
-        public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession  }
+        public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession, StoryMode }
         public static MenuState CurrentMenuState = MenuState.Main;
 
         public Menu(AdamGame game1)
         {
             this._game1 = game1;
 
-            int width = AdamGame.DefaultResWidth/2;
-            int height = AdamGame.DefaultResHeight * 2/5;
+            int width = AdamGame.DefaultResWidth / 2;
+            int height = AdamGame.DefaultResHeight * 2 / 5;
             int diff = CalcHelper.ApplyScreenScale(TextButton.Height + 2);
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
@@ -87,9 +90,9 @@ namespace Adam
             _multiplayer.MouseClicked += multiplayer_MouseClicked;
             _buttons.Add(_multiplayer);
 
-            _storyMode = new TextButton(_first, "Story Mode");
-            _storyMode.MouseClicked += storyMode_MouseClicked;
-            _buttons.Add(_storyMode);
+            _storyModeButton = new TextButton(_first, "Story Mode");
+            _storyModeButton.MouseClicked += storyMode_MouseClicked;
+            _buttons.Add(_storyModeButton);
 
             //smoothPixels = new Button(first, "Smooth Pixels: ");
             //smoothPixels.MouseClicked += smoothPixels_MouseClicked;
@@ -137,7 +140,7 @@ namespace Adam
 
         private void StartMultiplayerGame_MouseClicked(Button button)
         {
-           if (Session.IsHost)
+            if (Session.IsHost)
             {
                 AdamGame.Session.Start();
             }
@@ -145,7 +148,7 @@ namespace Adam
 
         private void storyMode_MouseClicked(Button button)
         {
-            AdamGame.MessageBox.Show("Coming Soon...");
+            CurrentMenuState = MenuState.StoryMode;
         }
 
         void joinGame_MouseClicked(Button button)
@@ -286,7 +289,10 @@ namespace Adam
                     _quit.Update();
                     _options.Update();
                     _multiplayer.Update();
-                    _storyMode.Update();
+                    _storyModeButton.Update();
+                    break;
+                case MenuState.StoryMode:
+                    storyMode.Update();
                     break;
                 case MenuState.LevelSelector:
                     _levelSelection.Update();
@@ -315,17 +321,17 @@ namespace Adam
             }
 
             if (AdamGame.CurrentGameState == GameState.MainMenu)
-            SoundtrackManager.PlayMainTheme();
+                SoundtrackManager.PlayMainTheme();
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background,new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch,_font32,AdamGame.Producers,new Vector2((float)(5 / AdamGame.WidthRatio), (float)(5 / AdamGame.HeightRatio)),3,Color.White,Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Producers, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(5 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(30 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(AdamGame.DefaultResWidth/2f) - _font64.MeasureString("Adam").X/2, CalcHelper.ApplyScreenScale(AdamGame.DefaultResHeight * 1/5f)), 3, Color.DarkRed, Color.MediumVioletRed);
+            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(AdamGame.DefaultResWidth / 2f) - _font64.MeasureString("Adam").X / 2, CalcHelper.ApplyScreenScale(AdamGame.DefaultResHeight * 1 / 5f)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)
             {
@@ -334,7 +340,10 @@ namespace Adam
                     _quit.Draw(spriteBatch);
                     _options.Draw(spriteBatch);
                     _multiplayer.Draw(spriteBatch);
-                    _storyMode.Draw(spriteBatch);
+                    _storyModeButton.Draw(spriteBatch);
+                    break;
+                case MenuState.StoryMode:
+                    storyMode.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
                     _levelSelection.Draw(spriteBatch);

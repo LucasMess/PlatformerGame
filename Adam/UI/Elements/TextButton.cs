@@ -25,8 +25,8 @@ namespace Adam.UI.Elements
 
             if (convertCoordinates)
             {
-                position.X = CalcHelper.ApplyScreenScale((int) position.X);
-                position.Y = CalcHelper.ApplyScreenScale((int) position.Y);
+                position.X = CalcHelper.ApplyScreenScale((int)position.X);
+                position.Y = CalcHelper.ApplyScreenScale((int)position.Y);
             }
 
             CollRectangle = new Rectangle((int)position.X, (int)position.Y, width,
@@ -45,7 +45,7 @@ namespace Adam.UI.Elements
             float y = CollRectangle.Center.Y - Font.MeasureString(Text).Y / 2;
 
             FontHelper.DrawWithOutline(spriteBatch, Font, Text,
-                new Vector2(x,y), 1, TextColor, Color.Black);
+                new Vector2(x, y), 1, TextColor, Color.Black);
 
         }
     }

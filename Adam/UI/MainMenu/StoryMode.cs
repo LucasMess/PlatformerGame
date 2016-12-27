@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Adam.UI.MainMenu
 {
@@ -15,7 +16,21 @@ namespace Adam.UI.MainMenu
 
         public StoryMode()
         {
-            levelSets.Add(new LevelGrid(levelOrder[currentLevelSet]));
+            for (int i = 0; i < levelOrder.Length; i++)
+            {
+                levelSets.Add(new LevelGrid(levelOrder[i]));
+            }
+
+        }
+
+        public void Update()
+        {
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            levelSets[currentLevelSet].Draw(spriteBatch);
         }
     }
 }
