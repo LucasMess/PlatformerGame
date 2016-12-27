@@ -52,6 +52,7 @@ namespace Adam
 
         protected Vector2 Origin;
         public Vector2 Position { get; set; }
+        private Vector2 _positionInLastFrame;
         protected Vector2 Velocity;
 
         private Texture2D _texture;
@@ -270,6 +271,9 @@ namespace Adam
         {
             if (AdamGame.CurrentGameMode == GameMode.Play)
             {
+                _positionInLastFrame = new Vector2(CollRectangle.X, CollRectangle.Y);
+
+
                 if (Health <= 0 && MaxHealth > 0 && !IsAboutToDie)
                 {
                     Kill();
@@ -573,11 +577,12 @@ namespace Adam
                             {
                                 if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove)
                                 {
-                                    if (CollRectangle.Bottom <= tile.DrawRectangle.Center.Y) { }
-                                    else continue;
+                                    // Do I know why I have to use the last position instead of the current? No. But does it work? Yes.
+                                    if (_positionInLastFrame.Y + CollRectangle.Height * 2 / 3 > tile.DrawRectangle.Y)
+                                        continue;
 
                                     if (WantsToMoveDownPlatform) continue;
- 
+
                                 }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
