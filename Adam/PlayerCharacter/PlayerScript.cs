@@ -15,14 +15,14 @@ namespace Adam
         private const float MaxWalkVelX = 6f;
         private const float MaxRunVelX = 8f;
         private const float MoveJumpAcc = .05f;
-        const float JumpAcc = -15f;
+        const float JumpAcc = -12f;
         const float WalkAcc = .3f;
         const float RunAcc = .4f;
         const float DashSpeed = 24f;
         const float ClimbingSpeed = 4f;
 
         Timer _idleTimer = new Timer(true);
-        Timer _airTimer = new Timer(true);
+        Timer _lastJumpTimer = new Timer(true);
         Timer _weaponFireRateTimer = new Timer(true);
 
         public static Timer TimeSinceLastPunch = new Timer(true);
@@ -55,6 +55,12 @@ namespace Adam
 
         public void OnStill(Player player)
         {
+            _lastJumpTimer.Increment();
+            if (_lastJumpTimer.TimeElapsedInMilliSeconds > 1000 || InputHelper.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                player.GravityStrength = AdamGame.Gravity;
+            }
+
             if (player.IsClimbing)
             {
                 player.RemoveAnimationFromQueue("fall");
@@ -130,6 +136,8 @@ namespace Adam
                 player.ChangePosBy(0, -1);
                 player.AddAnimationToQueue("jump");
                 player.CollidedWithTileBelow += OnTouchGround;
+                _lastJumpTimer.Reset();
+                player.GravityStrength = AdamGame.Gravity * .5f;
 
                 if (jumpAcc != 0)
                     for (int i = 0; i < 10; i++)
@@ -139,21 +147,11 @@ namespace Adam
 
 
             }
-
-            if (_airTimer.TimeElapsedInMilliSeconds < 1000)
-            {
-                // player.GravityStrength = Main.Gravity * .75f;
-            }
-            else
-            {
-                player.GravityStrength = AdamGame.Gravity;
-                player.GravityStrength = AdamGame.Gravity * .75f;
-            }
         }
 
         private void OnTouchGround(Entity entity, Tile tile)
         {
-            _airTimer.Reset();
+            _lastJumpTimer.Reset();
             entity.CollidedWithTileBelow -= OnTouchGround;
         }
 
