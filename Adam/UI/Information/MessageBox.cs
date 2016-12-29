@@ -11,7 +11,7 @@ namespace Adam.UI
     public class MessageBox
     {
         protected const int BezelSize = 25;
-        protected readonly Backdrop Window = new Backdrop(125, 50);
+        protected readonly Container Window = new Container(125, 50);
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.

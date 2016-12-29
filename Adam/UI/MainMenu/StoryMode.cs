@@ -28,6 +28,32 @@ namespace Adam.UI.MainMenu
 
         }
 
+        /// <summary>
+        /// Changes the current level set being shown to the player to the one that comes before it.
+        /// </summary>
+        public void ShowNextLevelSet()
+        {
+            currentLevelSet++;
+            if (currentLevelSet >= levelSets.Count)
+            {
+                currentLevelSet = levelSets.Count - 1;
+                //TODO: Add sound to show there isn't a next level set.
+            }
+        }
+
+        /// <summary>
+        /// Changes the current level set being shown to the player to the one that comes after it.
+        /// </summary>
+        public void ShowPreviousLevelSet()
+        {
+            currentLevelSet--;
+            if (currentLevelSet < 0)
+            {
+                currentLevelSet = 0;
+                //TODO: Add sound for invalid input.
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             levelSets[currentLevelSet].Draw(spriteBatch);

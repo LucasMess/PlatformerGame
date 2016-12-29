@@ -1,6 +1,7 @@
 ﻿using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Adam.UI.MainMenu
@@ -12,9 +13,18 @@ namespace Adam.UI.MainMenu
     {
         class LevelSquare : TextButton
         {
+            public int LevelID;
+            public delegate void LevelHandler(LevelSquare square);
+            public event LevelHandler OnLevelSelected;
             public LevelSquare(Vector2 position, string text, bool convertCoordinates = true) : base(position, text, convertCoordinates)
             {
+                Int32.TryParse(text, out LevelID);
+                MouseClicked += LevelSquare_MouseClicked;
+            }
 
+            private void LevelSquare_MouseClicked(Button button)
+            {
+                OnLevelSelected?.Invoke(this);
             }
         }
 
@@ -37,7 +47,23 @@ namespace Adam.UI.MainMenu
                     x = 100;
                     y += CalcHelper.ApplyUiRatio(LevelSquare.Height) + 5;
                 }
-                levelSquares.Add(new LevelSquare(new Vector2(x, y), i.ToString()));
+                LevelSquare square = new LevelSquare(new Vector2(x, y), i.ToString());
+                square.OnLevelSelected += Square_OnLevelSelected;
+                levelSquares.Add(square);
+            }
+        }
+
+        private void Square_OnLevelSelected(LevelSquare square)
+        {
+            //TODO: Load level with level id == square.levelID.
+        }
+
+        public void Update()
+        {
+            // Updates the squares to check for input, since they are buttons.
+            foreach (var levelSquare in levelSquares)
+            {
+                levelSquare.Update();
             }
         }
 

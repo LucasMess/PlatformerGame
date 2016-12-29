@@ -7,7 +7,7 @@ namespace Adam.UI.Elements
     /// <summary>
     /// Used to contain UI elements.
     /// </summary>
-    public class Backdrop : UiElement
+    public class Container : UiElement
     {
         private static Rectangle[] _sourceRectangles =
         {
@@ -32,7 +32,7 @@ namespace Adam.UI.Elements
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public Backdrop(int width, int height)
+        public Container(int width, int height)
         {
             width = CalcHelper.ApplyUiRatio(width);
             height = CalcHelper.ApplyUiRatio(height);
@@ -57,7 +57,7 @@ namespace Adam.UI.Elements
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="convertCoords"></param>
-        public Backdrop(int x, int y, int width, int height, bool convertCoords)
+        public Container(int x, int y, int width, int height, bool convertCoords)
         {
             if (convertCoords)
             {
