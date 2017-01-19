@@ -42,6 +42,37 @@ namespace Adam.Misc
         Rectangle _drawRectangle;
 
         /// <summary>
+        /// Update method for objects that do not move.
+        /// </summary>
+        public void Update()
+        {
+            FindHighestPriorityAnimation();
+
+            if (_frameTimer.TimeElapsedInMilliSeconds > _currentAnimationData.Speed)
+            {
+                _frameTimer.Reset();
+                _currentFrame++;
+
+                if (_currentFrame >= _currentAnimationData.FrameCount)
+                {
+                    AnimationEnded?.Invoke();
+                    // Send notice that animation has ended.
+                    if (!_currentAnimationData.IsRepeating)
+                    {
+                        _currentFrame = _currentAnimationData.FrameCount - 1;
+                    }
+                    else
+                    {
+                        _currentFrame = 0;
+                    }
+                }
+                FrameChanged?.Invoke(new FrameArgs(_currentFrame));
+            }
+
+            _sourceRectangle.X = _currentFrame * _currentAnimationData.Width;
+        }
+
+        /// <summary>
         /// Update the aniamtion, timers and fire events.
         /// </summary>
         /// <param name="entity"></param>
@@ -199,6 +230,17 @@ namespace Adam.Misc
         {
             _queue = new List<string>();
             AddToQueue("idle");
+        }
+
+        /// <summary>
+        /// Draws the animated texture at the specified position. Use this for objects that do not change position.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale)
+        {
+            if (_currentAnimationData.Texture == null)
+                return;
+            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), scale, SpriteEffects.None, 0);
         }
 
         /// <summary>

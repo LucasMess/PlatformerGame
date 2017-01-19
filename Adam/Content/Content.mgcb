@@ -1327,18 +1327,6 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/new spritemap.png
 
-#begin Tiles/ui_spritemap_4.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/ui_spritemap_4.png
-
 #begin Tiles/spritemap_21.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1411,18 +1399,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/x8.spritefont
 
-#begin ../../../Codename Adam/frog.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../Codename Adam/frog.png
-
 #begin Characters/adam_eden_darker.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1446,4 +1422,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tiles/spritemap_22.png
+
+#begin Tiles/ui_spritemap_4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/ui_spritemap_4.png
 

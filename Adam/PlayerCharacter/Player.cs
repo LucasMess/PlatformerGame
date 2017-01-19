@@ -102,6 +102,8 @@ namespace Adam.PlayerCharacter
         public override int MaxHealth => 100;
         //Animation Variables
         public int CurrentAnimationFrame { get; private set; }
+        public bool IsPoisoned { get; internal set; }
+
         public event EventHandler PlayerRespawned;
         public event PlayerHandler AnimationEnded;
         public event PlayerHandler AnimationFrameChanged;

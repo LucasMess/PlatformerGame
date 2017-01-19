@@ -1,4 +1,7 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Levels;
+using Adam.Misc;
+using Adam.Misc.Helpers;
+using Adam.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -136,15 +139,71 @@ namespace Adam.UI
             }
         }
 
+        private static class Heart
+        {
+            static ComplexAnimation animation;
+            static Vector2 position;
+            static int health;
+            static int maxHealth;
 
+            /// <summary>
+            /// Initializes animation components and resets variables.
+            /// </summary>
+            public static void Initialize()
+            {
+                position = new Vector2(10, 10);
+                position *= CalcHelper.GetScreenScale();
+                animation = new ComplexAnimation();
+                ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 80, 16, 16, 125, 4, true);
+                ComplexAnimData dead = new ComplexAnimData(1000, GameWorld.UiSpriteSheet, new Rectangle(), 96, 16, 16, 125, 4, true);
+                ComplexAnimData poison = new ComplexAnimData(100, GameWorld.UiSpriteSheet, new Rectangle(), 64, 16, 16, 125, 4, true);
+                animation.AddAnimationData("normal", normal);
+                animation.AddAnimationData("dead", dead);
+                animation.AddAnimationData("poison", poison);
+                animation.AddToQueue("normal");
+            }
 
+            public static void Update(Player player)
+            {
+                //animation.RemoveAllFromQueue();
 
-        // Variables for fade in and out.
+                //if (player.Health <= 0)
+                //{
+                //    animation.AddToQueue("dead");
+                //}
+                //else if (player.IsPoisoned)
+                //{
+                //    animation.AddToQueue("poison");
+                //}
+                //else
+                //{
+                //    animation.AddToQueue("normal");
+                //}
 
+                animation.Update();
+
+                health = player.Health;
+                maxHealth = player.MaxHealth;
+
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                animation.Draw(spriteBatch, position, CalcHelper.GetScreenScale());
+                float x = position.X + 16 * CalcHelper.GetScreenScale();
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.ChooseBestFont(100), health + "/" + maxHealth, new Vector2(x, position.Y), 2, Color.White, Color.Black);
+            }
+        }
+
+        public static void Initialize()
+        {
+            Heart.Initialize();
+        }
 
         public static void Update()
         {
             WhiteFlash.Update();
+            Heart.Update(GameWorld.GetPlayer());
         }
 
         public static void FlashWhite()
@@ -155,6 +214,7 @@ namespace Adam.UI
         public static void Draw(SpriteBatch spriteBatch)
         {
             WhiteFlash.Draw(spriteBatch);
+            Heart.Draw(spriteBatch);
         }
     }
 }

@@ -171,6 +171,7 @@ namespace Adam
             Dialog = new Dialog();
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
+            Overlay.Initialize();
 
             DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
             GraphicsDeviceInstance = _graphics.GraphicsDevice;
