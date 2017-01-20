@@ -56,7 +56,7 @@ namespace Adam.UI
         {
             if (InputHelper.IsLeftMousePressed())
             {
-                if (InputHelper.MouseRectangle.Intersects(DrawRectangle))
+                if (InputHelper.GetMouseInUi().Intersects(DrawRectangle))
                 {
                     _isSelected = true;
                 }
@@ -111,7 +111,8 @@ namespace Adam.UI
                 opacity = .7f;
             else opacity = .3f;
             int spacing = 2;
-            spriteBatch.Draw(_white, new Rectangle(InputHelper.MouseRectangle.X, InputHelper.MouseRectangle.Y, 10, 10), Color.Black);
+            Rectangle mouse = InputHelper.GetMouseInUi();
+            spriteBatch.Draw(_white, new Rectangle(mouse.X, mouse.Y, 10, 10), Color.Black);
             spriteBatch.Draw(_white, new Rectangle(DrawRectangle.X - spacing, DrawRectangle.Y - spacing, DrawRectangle.Width + spacing * 2, DrawRectangle.Height + spacing * 2), new Color(153, 153, 153));
             spriteBatch.Draw(_white, DrawRectangle, new Color(224, 224, 224));
 

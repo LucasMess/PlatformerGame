@@ -71,38 +71,37 @@ namespace Adam
         /// <summary>
         /// Returns the rectangle of the mouse when screen is scaled.
         /// </summary>
-        public static void GetMouseRectRenderTarget(ref Rectangle rectangle)
+        public static Rectangle GetMouseInUi()
         {
             MouseState = Mouse.GetState();
-            rectangle.X = (int)(MouseState.X * AdamGame.WidthRatio);
-            rectangle.Y = (int)(MouseState.Y * AdamGame.HeightRatio);
-            rectangle.Width = 1;
-            rectangle.Height = 1;
+            return new Rectangle((int)(MouseState.X * AdamGame.UiWidthRatio), (int)(MouseState.Y * AdamGame.UiHeightRatio), 1, 1);
         }
 
-        /// <summary>
-        /// Returns the rectangle of the mouse in screen coordinates.
-        /// </summary>
-        public static Rectangle MouseRectangle
-        {
-            get
-            {
-                MouseState mouseState = Mouse.GetState();
-                Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
-                return mouseRect;
-            }
-        }
+        ///// <summary>
+        ///// Returns the rectangle of the mouse in screen coordinates.
+        ///// </summary>
+        //public static Rectangle MouseRectangle
+        //{
+        //    get
+        //    {
+        //        MouseState mouseState = Mouse.GetState();
+        //        Rectangle mouseRect = new Rectangle((int)(mouseState.X), (int)(mouseState.Y), 1, 1);
+        //        return mouseRect;
+        //    }
+        //}
 
         /// <summary>
         /// Returns the rectangle of the mouse in GameWorld coordinates.
         /// </summary>
-        public static void GetMouseRectGameWorld(ref Rectangle rectangle)
+        public static Rectangle GetMouseRectGameWorld()
         {
-            GetMouseRectRenderTarget(ref rectangle);
+            MouseState = Mouse.GetState();
+            Rectangle rectangle = new Rectangle((int)(MouseState.X * AdamGame.WidthRatio), (int)(MouseState.Y * AdamGame.HeightRatio), 1, 1);
             rectangle.X = (int)(rectangle.X / AdamGame.Camera.GetZoom());
             rectangle.Y = (int)(rectangle.Y / AdamGame.Camera.GetZoom());
             rectangle.X -= (int)(AdamGame.Camera.LastCameraLeftCorner.X);
             rectangle.Y -= (int)(AdamGame.Camera.LastCameraLeftCorner.Y);
+            return rectangle;
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Adam
                         char tempChar;
                         FindPressedKey(keysPressed[i], out tempChar);
                         if (tempChar != 0)
-                        charactersList.Add(tempChar);
+                            charactersList.Add(tempChar);
 
                         // If backspace is pressed, delete last character.
                         if (InputHelper.IsKeyDown(Keys.Back))
@@ -174,8 +173,8 @@ namespace Adam
             }
 
             // Add pressed characters to string.
-            for(int i = 0; i < charactersList.Count; i++)
-            {                
+            for (int i = 0; i < charactersList.Count; i++)
+            {
                 text += charactersList[i];
             }
 

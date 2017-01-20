@@ -121,8 +121,8 @@ namespace Adam
             WidthRatio = (DefaultResWidth / (double)UserResWidth);
             HeightRatio = (DefaultResHeight / (double)UserResHeight);
 
-            WidthRatio = (DefaultUiWidth / (double)UserResWidth);
-            HeightRatio = (DefaultUiHeight / (double)UserResHeight);
+            UiWidthRatio = (DefaultUiWidth / (double)UserResWidth);
+            UiHeightRatio = (DefaultUiHeight / (double)UserResHeight);
 
             // Important services that need to be instanstiated before other things.
             _graphics = new GraphicsDeviceManager(this);

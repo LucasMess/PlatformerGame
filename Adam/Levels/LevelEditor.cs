@@ -158,7 +158,7 @@ namespace Adam.Levels
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
-                     _testSound.Play();
+                    _testSound.Play();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)
@@ -285,7 +285,7 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForMouseInput()
         {
-            InputHelper.GetMouseRectGameWorld(ref _mouseRectInGameWorld);
+            _mouseRectInGameWorld = InputHelper.GetMouseRectGameWorld();
             IndexOfMouse = (_mouseRectInGameWorld.Center.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) +
                            (_mouseRectInGameWorld.Center.X / AdamGame.Tilesize);
 
@@ -503,9 +503,10 @@ namespace Adam.Levels
         /// <returns></returns>
         private static bool IsIntersectingUi()
         {
-            if (InputHelper.MouseRectangle.Intersects(_buttonBar.GetCollRectangle()))
+            Rectangle mouse = InputHelper.GetMouseInUi();
+            if (mouse.Intersects(_buttonBar.GetCollRectangle()))
                 return true;
-            if (Inventory.IsOpen && InputHelper.MouseRectangle.Intersects(_inventory.GetCollRectangle()))
+            if (Inventory.IsOpen && mouse.Intersects(_inventory.GetCollRectangle()))
                 return true;
 
             return false;

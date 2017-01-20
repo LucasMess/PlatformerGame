@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Levels;
+using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -148,6 +149,8 @@ namespace Adam
                 _infos.Add("Gamestate: " + AdamGame.CurrentGameState);
                 _infos.Add("Gamemode: " + AdamGame.CurrentGameMode);
                 _infos.Add("Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y);
+                _infos.Add("Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y);
+                _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {

@@ -131,7 +131,7 @@ namespace Adam.Misc.Helpers
             if (string.IsNullOrEmpty(text))
                 return;
             var font = ChooseBestFont((16));
-            var mouse = InputHelper.MouseRectangle;
+            var mouse = InputHelper.GetMouseInUi();
 
             _window = new Container(mouse.X - (4), mouse.Y - (int)font.MeasureString(text).Y - (2),
                 (int)font.MeasureString(text).X + (8),

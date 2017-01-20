@@ -202,8 +202,8 @@ namespace Adam.UI
         {
             // Checks if there is scrolling.
             int scrollWheel = Mouse.GetState().ScrollWheelValue;
-            Rectangle mouse = new Rectangle();
-            InputHelper.GetMouseRectRenderTarget(ref mouse);
+            Rectangle mouse = InputHelper.GetMouseInUi();
+
 
             if (_levelCount > 5)
             {
@@ -412,8 +412,7 @@ namespace Adam.UI
         /// <returns></returns>
         public bool IsBeingClickedOn()
         {
-            Rectangle mouse = new Rectangle();
-            InputHelper.GetMouseRectRenderTarget(ref mouse);
+            Rectangle mouse = InputHelper.GetMouseInUi();
             return (mouse.Intersects(_drawRectangle));
         }
 

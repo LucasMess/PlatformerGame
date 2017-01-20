@@ -94,7 +94,7 @@ namespace Adam.UI.Level_Editor
                 _pickUpSound.Play();
                 _isBeingMoved = true;
                 _wasMouseReleased = false;
-                Rectangle mouse = InputHelper.MouseRectangle;
+                Rectangle mouse = InputHelper.GetMouseInUi();
                 float x = mouse.X - Position.X;
                 float y = mouse.Y - Position.Y;
                 _mouseDifferential = new Vector2(x, y);
@@ -170,7 +170,7 @@ namespace Adam.UI.Level_Editor
             if (_isBeingMoved)
             {
                 Inventory.IsMovingTile = true;
-                Rectangle mouse = InputHelper.MouseRectangle;
+                Rectangle mouse = InputHelper.GetMouseInUi();
                 SetPosition(mouse.X - (int)_mouseDifferential.X, mouse.Y - (int)_mouseDifferential.Y);
 
                 if (InputHelper.IsLeftMousePressed() && _wasMouseReleased)
@@ -205,7 +205,7 @@ namespace Adam.UI.Level_Editor
         /// <returns></returns>
         private bool IsHovered()
         {
-            return InputHelper.MouseRectangle.Intersects(DrawRectangle);
+            return InputHelper.GetMouseInUi().Intersects(DrawRectangle);
         }
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace Adam.UI.Level_Editor
             if (Id != 0)
             {
                 DrawSquareBehindTile(spriteBatch);
-                _tile.DrawShadowVersion(spriteBatch);
+                //_tile.DrawShadowVersion(spriteBatch);
                 _tile.DrawByForce(spriteBatch);
             }
         }
