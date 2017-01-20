@@ -112,7 +112,7 @@ namespace Adam.Misc.Helpers
         {
             for (int i = 1; i < Fonts.Length; i++)
             {
-                if (height < Fonts[i].LineHeight)
+                if ((height - 2) < Fonts[i].LineHeight)
                     return Fonts[i - 1];
             }
 

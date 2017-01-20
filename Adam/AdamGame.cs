@@ -40,8 +40,8 @@ namespace Adam
         private const bool InDebugMode = true;
         private const bool IsTestingMultiplayer = false;
         public const int Tilesize = 32;
-        public const int DefaultResWidth = 480; // Default 960x540
-        public const int DefaultResHeight = 270;
+        public const int DefaultResWidth = 960; // Default 960x540
+        public const int DefaultResHeight = 540;
         public const int DefaultUiWidth = 480;
         public const int DefaultUiHeight = 270;
         public const string Version = "Version 0.10.0 Beta";
@@ -63,6 +63,8 @@ namespace Adam
         public static GameTime GameTime;
         public static double WidthRatio;
         public static double HeightRatio;
+        public static double UiWidthRatio;
+        public static double UiHeightRatio;
         public static float MaxVolume = .1f;
         public static bool IsMusicMuted = false;
         public static readonly Random Random = new Random();
@@ -118,6 +120,9 @@ namespace Adam
 
             WidthRatio = (DefaultResWidth / (double)UserResWidth);
             HeightRatio = (DefaultResHeight / (double)UserResHeight);
+
+            WidthRatio = (DefaultUiWidth / (double)UserResWidth);
+            HeightRatio = (DefaultUiHeight / (double)UserResHeight);
 
             // Important services that need to be instanstiated before other things.
             _graphics = new GraphicsDeviceManager(this);

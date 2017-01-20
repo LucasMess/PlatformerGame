@@ -85,9 +85,9 @@ namespace Adam.UI
             _backButton.MouseClicked += BackButton_MouseClicked;
 
             // Define the BitmapFont for the "Select Level" header and its position.
-            _headerFont = ContentHelper.LoadFont("Fonts/x64");
+            _headerFont = ContentHelper.LoadFont("Fonts/x8");
             _headerText = "Select a Level:";
-            _headerPos = new Vector2(AdamGame.DefaultUiWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineHeight - (10));
+            _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineHeight - (10));
         }
 
         private void NewButton_MouseClicked(Button button)
@@ -307,7 +307,7 @@ namespace Adam.UI
             }
 
             // Draw header text.
-            FontHelper.DrawWithOutline(spriteBatch, _headerFont, _headerText, _headerPos, 2, Color.Yellow, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _headerFont, _headerText, _headerPos, 2, Color.White, Color.Black);
         }
     }
 
@@ -333,13 +333,10 @@ namespace Adam.UI
             LastModifiedDate = lastModDate;
 
             // Define how big each info section will be.
-            //_nameFont = ContentHelper.LoadFont("Fonts/x32");
-            //_infoFont = ContentHelper.LoadFont("Fonts/x16");
+            _nameFont = ContentHelper.LoadFont("Fonts/x8");
+            _infoFont = ContentHelper.LoadFont("Fonts/x8");
 
             _drawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8, 0, LevelSelection.WidthOfBounds - 16, 25);
-
-            _nameFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 2);
-            _infoFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 3);
 
             _spacing = _infoFont.LineHeight + 4;
 
@@ -405,7 +402,7 @@ namespace Adam.UI
             if (dt.Second < 10)
                 seconds = "0" + seconds;
 
-            string date = "Last modified: " + dt.Year + "/" + dt.Month + "/" + dt.Day + " at " + dt.Hour + ":" + seconds;
+            string date = dt.Year + "/" + dt.Month + "/" + dt.Day + " at " + dt.Hour + ":" + seconds;
             return date;
         }
 

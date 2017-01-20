@@ -151,9 +151,10 @@ namespace Adam.UI
             /// </summary>
             public static void Initialize()
             {
-                position = new Vector2(10, 10);
+                position = new Vector2(5, 5);
                 position *= CalcHelper.GetScreenScale();
                 animation = new ComplexAnimation();
+                animation.DoubleSpriteSize = false;
                 ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 80, 16, 16, 125, 4, true);
                 ComplexAnimData dead = new ComplexAnimData(1000, GameWorld.UiSpriteSheet, new Rectangle(), 96, 16, 16, 125, 4, true);
                 ComplexAnimData poison = new ComplexAnimData(100, GameWorld.UiSpriteSheet, new Rectangle(), 64, 16, 16, 125, 4, true);
@@ -189,9 +190,9 @@ namespace Adam.UI
 
             public static void Draw(SpriteBatch spriteBatch)
             {
-                animation.Draw(spriteBatch, position, CalcHelper.GetScreenScale());
-                float x = position.X + 16 * CalcHelper.GetScreenScale();
-                FontHelper.DrawWithOutline(spriteBatch, FontHelper.ChooseBestFont(100), health + "/" + maxHealth, new Vector2(x, position.Y), 2, Color.White, Color.Black);
+                animation.Draw(spriteBatch, position);
+                float x = position.X + 16;
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.ChooseBestFont(20), health + "/" + maxHealth, new Vector2(x, position.Y), 2, Color.White, Color.Black);
             }
         }
 

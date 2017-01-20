@@ -41,6 +41,8 @@ namespace Adam.Misc
         Rectangle _sourceRectangle;
         Rectangle _drawRectangle;
 
+        public bool DoubleSpriteSize { get; set; } = true;
+
         /// <summary>
         /// Update method for objects that do not move.
         /// </summary>
@@ -83,7 +85,9 @@ namespace Adam.Misc
 
             FindHighestPriorityAnimation();
 
-            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * 2, _currentAnimationData.Height * 2);
+            int multiplier = 1;
+            if (DoubleSpriteSize) multiplier++;
+            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * multiplier, _currentAnimationData.Height * multiplier);
 
             if (_currentName == "walk" || _currentName == "run")
             {
@@ -236,11 +240,11 @@ namespace Adam.Misc
         /// Draws the animated texture at the specified position. Use this for objects that do not change position.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             if (_currentAnimationData.Texture == null)
                 return;
-            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), 1, SpriteEffects.None, 0);
         }
 
         /// <summary>
