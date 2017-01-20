@@ -385,30 +385,6 @@ namespace Adam
             Overlay.Update();
         }
 
-        private void DrawToMainRenderTarget(RenderTarget2D renderTarget)
-        {
-            //Change RenderTarget to this from the default
-            GraphicsDevice.SetRenderTarget(renderTarget);
-            //Set up the background color
-            GraphicsDevice.Clear(Color.Transparent);
-
-            //Draw what is needed based on GameState
-            switch (CurrentGameState)
-            {
-                case GameState.GameWorld:
-                    if (IsLoadingContent)
-                        break;
-
-
-
-
-
-                    break;
-            }
-
-            //Return the current RenderTarget to the default
-            GraphicsDevice.SetRenderTarget(null);
-        }
 
         protected override void Draw(GameTime gameTime)
         {
@@ -526,7 +502,6 @@ namespace Adam
                     _spriteBatch.Draw(_backRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.Draw(_shadowRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.Black * .5f);
                     _spriteBatch.Draw(_frontRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.End();
 
 
@@ -541,6 +516,10 @@ namespace Adam
                     _spriteBatch.Draw(_lightRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.End();
 
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
+                       DepthStencilState.None, RasterizerState.CullNone);
+                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.End();
 
                     /////////////////////////////////////////////////////
 

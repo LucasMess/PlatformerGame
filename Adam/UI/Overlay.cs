@@ -204,6 +204,7 @@ namespace Adam.UI
         public static void Update()
         {
             WhiteFlash.Update();
+
             Heart.Update(GameWorld.GetPlayer());
         }
 
@@ -215,7 +216,8 @@ namespace Adam.UI
         public static void Draw(SpriteBatch spriteBatch)
         {
             WhiteFlash.Draw(spriteBatch);
-            Heart.Draw(spriteBatch);
+            if (AdamGame.CurrentGameMode == GameMode.Play)
+                Heart.Draw(spriteBatch);
         }
     }
 }
