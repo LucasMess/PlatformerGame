@@ -2,6 +2,7 @@
 using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace Adam.UI.Elements
 {
@@ -39,8 +40,7 @@ namespace Adam.UI.Elements
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, CollRectangle, SourceRectangle, Color);
-            spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),
-                Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / AdamGame.HeightRatio), SpriteEffects.None, 0);
+           // spriteBatch.DrawString(Font, Text, new Vector2(CollRectangle.Center.X, CollRectangle.Center.Y),Color.White, 0, Font.MeasureString(Text) / 2, (float)(.5 / AdamGame.HeightRatio), 0);
 
         }
     }

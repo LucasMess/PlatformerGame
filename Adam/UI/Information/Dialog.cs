@@ -4,6 +4,7 @@ using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI.Information
 {
@@ -20,7 +21,7 @@ namespace Adam.UI.Information
         public delegate void TextHandler(string code, int optionSelected);
 
         private readonly Rectangle _dialogBoxSourceRectangle;
-        private readonly SpriteFont _font;
+        private readonly BitmapFont _font;
         private readonly SoundFx _letterPopSound;
         private readonly Timer _letterPopTimer = new Timer(true);
         private readonly char[] _pauseChars = {'!', '.', ',', '?'};
@@ -240,7 +241,7 @@ namespace Adam.UI.Information
         private readonly string[] _options;
         private readonly float[] _heights;
 
-        public DialogOptions(string[] options, SpriteFont font, int maxLineWidth)
+        public DialogOptions(string[] options, BitmapFont font, int maxLineWidth)
         {
             _options = options ?? new string[0];
 
@@ -295,7 +296,7 @@ namespace Adam.UI.Information
             _selectorSound.Reset();
         }
 
-        public void Draw(SpriteBatch spriteBatch, SpriteFont font, int centerX, int startingY)
+        public void Draw(SpriteBatch spriteBatch, BitmapFont font, int centerX, int startingY)
         {
             for (var i = 0; i < _options.Length; i++)
             {
@@ -338,7 +339,7 @@ namespace Adam.UI.Information
         /// <param name="text"></param>
         /// <param name="font"></param>
         /// <param name="positionOfText"></param>
-        public void DrawAroundText(SpriteBatch spriteBatch, string text, SpriteFont font, Vector2 positionOfText)
+        public void DrawAroundText(SpriteBatch spriteBatch, string text, BitmapFont font, Vector2 positionOfText)
         {
             _drawRectangle = new Rectangle((int) positionOfText.X - Size - Size/2, (int) positionOfText.Y + 4, Size,
                 Size);

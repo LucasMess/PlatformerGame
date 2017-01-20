@@ -4,13 +4,14 @@ using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI
 {
     class Textbox : UiElement
     {
         Texture2D _white;
-        SpriteFont _font;
+        BitmapFont _font;
         Timer _flashingTimer = new Timer(true);
 
         bool _editLineFlashing;
@@ -122,11 +123,11 @@ namespace Adam.UI
 
             if (_editLineFlashing)
             {
-                spriteBatch.DrawString(_font, Text + "|", new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
+                spriteBatch.DrawString(_font, Text + "|", new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineHeight / 2), Color.Black);
             }
             else
             {
-                spriteBatch.DrawString(_font, Text, new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
+                spriteBatch.DrawString(_font, Text, new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineHeight / 2), Color.Black);
             }
 
             // Returns the scissor rectangle to its original size.

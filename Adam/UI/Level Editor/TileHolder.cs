@@ -39,7 +39,7 @@ namespace Adam.UI.Level_Editor
         public TileHolder(int id)
         {
             DrawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(SourceRectangle.Width),
-            CalcHelper.ApplyUiRatio(SourceRectangle.Height));
+            SourceRectangle.Height);
             _tile = new Tile(true) { Id = (byte)id };
             _tile.DefineTexture();
             Size = SourceRectangle.Width;

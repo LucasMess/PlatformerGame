@@ -3,13 +3,14 @@ using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam
 {
     public class LoadingScreen
     {
         private Texture2D _background;
-        SpriteFont _font64, _font32;
+        BitmapFont _font64, _font32;
         Timer dotTimer = new Timer(true);
 
         public static string LoadingText = "Contemplating life...";
@@ -20,8 +21,8 @@ namespace Adam
         public LoadingScreen(Vector2 monitorRes, ContentManager content)
         {
             _background = ContentHelper.LoadTexture("Tiles/black");
-            _font64 = content.Load<SpriteFont>("Fonts/x64");
-            _font32 = content.Load<SpriteFont>("Fonts/x32");
+            _font64 = content.Load<BitmapFont>("Fonts/x64");
+            _font32 = content.Load<BitmapFont>("Fonts/x32");
             dotTimer.ResetAndWaitFor(100);
             dotTimer.SetTimeReached += DotTimer_SetTimeReached;
         }

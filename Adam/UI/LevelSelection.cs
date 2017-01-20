@@ -4,6 +4,7 @@ using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +19,7 @@ namespace Adam.UI
         private Rectangle _boundsDrawRectangle;
         private Rectangle _boundsSourceRectangle;
 
-        private SpriteFont _headerFont;
+        private BitmapFont _headerFont;
         private Vector2 _headerPos;
         private string _headerText;
 
@@ -83,10 +84,10 @@ namespace Adam.UI
             _newButton.MouseClicked += NewButton_MouseClicked;
             _backButton.MouseClicked += BackButton_MouseClicked;
 
-            // Define the spritefont for the "Select Level" header and its position.
+            // Define the BitmapFont for the "Select Level" header and its position.
             _headerFont = ContentHelper.LoadFont("Fonts/x64");
             _headerText = "Select a Level:";
-            _headerPos = new Vector2(AdamGame.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineSpacing - CalcHelper.ApplyHeightRatio(10));
+            _headerPos = new Vector2(AdamGame.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineHeight - CalcHelper.ApplyHeightRatio(10));
         }
 
         private void NewButton_MouseClicked(Button button)
@@ -316,8 +317,8 @@ namespace Adam.UI
     {
         Rectangle _drawRectangle;
         Rectangle _sourceRectangle;
-        SpriteFont _infoFont;
-        SpriteFont _nameFont;
+        BitmapFont _infoFont;
+        BitmapFont _nameFont;
 
         private static int _spacing;
 
@@ -339,7 +340,7 @@ namespace Adam.UI
             _nameFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 2);
             _infoFont = FontHelper.ChooseBestFont(_drawRectangle.Height / 3);
 
-            _spacing = _infoFont.LineSpacing + 4;
+            _spacing = _infoFont.LineHeight + 4;
 
             _sourceRectangle = new Rectangle(128, 0, 284, 25);
         }
@@ -387,9 +388,9 @@ namespace Adam.UI
 
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _drawRectangle, _sourceRectangle, color);
 
-            Vector2 namePos = new Vector2(_drawRectangle.X + _spacing, _drawRectangle.Y + _drawRectangle.Height / 2 - _nameFont.LineSpacing / 2);
+            Vector2 namePos = new Vector2(_drawRectangle.X + _spacing, _drawRectangle.Y + _drawRectangle.Height / 2 - _nameFont.LineHeight / 2);
             FontHelper.DrawWithOutline(spriteBatch, _nameFont, Name, namePos, 2, Color.LightGray, Color.Black);
-            spriteBatch.DrawString(_infoFont, GetDate(LastModifiedDate), new Vector2(_drawRectangle.X + _drawRectangle.Width - 20 - _infoFont.MeasureString(GetDate(LastModifiedDate)).X, _drawRectangle.Y + _drawRectangle.Height / 2 - _infoFont.LineSpacing / 2), Color.Black);
+            spriteBatch.DrawString(_infoFont, GetDate(LastModifiedDate), new Vector2(_drawRectangle.X + _drawRectangle.Width - 20 - _infoFont.MeasureString(GetDate(LastModifiedDate)).X, _drawRectangle.Y + _drawRectangle.Height / 2 - _infoFont.LineHeight / 2), Color.Black);
         }
 
         /// <summary>

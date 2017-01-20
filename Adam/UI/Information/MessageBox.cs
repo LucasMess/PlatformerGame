@@ -2,6 +2,7 @@
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI
 {
@@ -44,7 +45,7 @@ namespace Adam.UI
         /// </summary>
         protected string Message { get; set; } = "Error 404:Text not found.";
 
-        protected SpriteFont Font
+        protected BitmapFont Font
         {
             get { return ContentHelper.LoadFont("Fonts/x16"); }
         }

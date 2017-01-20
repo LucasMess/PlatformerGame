@@ -1,13 +1,14 @@
 ﻿using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI
 {
     public class LevelNameNotification
     {
 
-        SpriteFont _font;
+        BitmapFont _font;
         Texture2D _texture;
         Rectangle _drawRectangle;
         string _text = "";

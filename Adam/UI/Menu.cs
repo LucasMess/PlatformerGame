@@ -6,6 +6,7 @@ using Adam.UI.Elements;
 using Adam.UI.MainMenu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 
@@ -47,7 +48,7 @@ namespace Adam
         List<Button> _buttons = new List<Button>();
 
         bool _isSongPlaying;
-        SpriteFont _font32, _font64;
+        BitmapFont _font32, _font64;
         AdamGame _game1;
 
         StoryMode storyMode = new StoryMode();

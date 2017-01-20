@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended.BitmapFonts;
 using System;
 
 namespace Adam.Misc.Helpers
@@ -66,19 +67,19 @@ namespace Adam.Misc.Helpers
         }
 
         /// <summary>
-        /// Loads the SpriteFont at the specified file path.
+        /// Loads the BitmapFont at the specified file path.
         /// </summary>
         /// <param name="file">The file path of the font.</param>
         /// <returns>Loaded font.</returns>
-        public static SpriteFont LoadFont(string file)
+        public static BitmapFont LoadFont(string file)
         {
             try
             {
-                return AdamGame.Content.Load<SpriteFont>(file);
+                return AdamGame.Content.Load<BitmapFont>(file);
             }
             catch (ContentLoadException)
             {
-                Console.WriteLine("Spritefont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                Console.WriteLine("BitmapFont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 throw;
             }
         }

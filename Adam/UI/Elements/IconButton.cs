@@ -3,6 +3,7 @@ using Adam.Misc.Helpers;
 using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI.Elements
 {
@@ -36,7 +37,7 @@ namespace Adam.UI.Elements
         private readonly Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
         private readonly ButtonImage _buttonImage;
         private readonly string _hoverText;
-        private SpriteFont _font;
+        private BitmapFont _font;
         private Rectangle _shadowSource = new Rectangle(128, 25, 16, 6);
         private bool _showHoverText;
 
@@ -44,8 +45,8 @@ namespace Adam.UI.Elements
         {
             Initialize();
 
-            CollRectangle.X = CalcHelper.ApplyUiRatio((int)position.X) + box.X;
-            CollRectangle.Y = CalcHelper.ApplyUiRatio((int)position.Y) + box.Y;
+            CollRectangle.X = (int)position.X + box.X;
+            CollRectangle.Y = (int)position.Y + box.Y;
             _buttonImage = buttonImage;
             _hoverText = hoverText;
 
@@ -68,8 +69,8 @@ namespace Adam.UI.Elements
                     SourceRectangle.Y = 25;
                     SourceRectangle.Width = 10;
                     SourceRectangle.Height = 5;
-                    CollRectangle.Width = CalcHelper.ApplyUiRatio(SourceRectangle.Width);
-                    CollRectangle.Height = CalcHelper.ApplyUiRatio(SourceRectangle.Height);
+                    CollRectangle.Width = SourceRectangle.Width;
+                    CollRectangle.Height = SourceRectangle.Height;
                     break;
                 case ButtonImage.Delete:
                     SourceRectangle.X = 64;

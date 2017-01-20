@@ -10,14 +10,9 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin debug.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:debug.spritefont
 
 #begin Sounds/Chest/open.wav
 /importer:WavImporter
@@ -1003,12 +998,6 @@
 /processorParam:Quality=Best
 /build:Music/Level Editor/Silver Blue Light.mp3
 
-#begin Fonts/x64.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/x64.spritefont
-
 #begin Sounds/Crystal/Glass_01.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1153,18 +1142,6 @@
 /processorParam:TextureFormat=Color
 /build:Characters/adam_punch.png
 
-#begin Fonts/x32.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/x32.spritefont
-
-#begin Fonts/x16.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/x16.spritefont
-
 #begin Characters/adam_fall.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1188,12 +1165,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backgrounds/Main Menu/menu_background_temp.png
-
-#begin Fonts/splashNumber.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/splashNumber.spritefont
 
 #begin Backgrounds/ui_whiteCorners.png
 /importer:TextureImporter
@@ -1309,12 +1280,6 @@
 /processorParam:TextureFormat=Color
 /build:Characters/NPCs/rose.png
 
-#begin Fonts/x24.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/x24.spritefont
-
 #begin Tiles/new spritemap.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1393,12 +1358,6 @@
 /processorParam:Quality=Best
 /build:Sounds/Level Editor/test_level.wav
 
-#begin Fonts/x8.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/x8.spritefont
-
 #begin Characters/adam_eden_darker.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1434,4 +1393,131 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tiles/ui_spritemap_4.png
+
+#begin Fonts/LuckiestGuyOutline.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/LuckiestGuyOutline.png
+
+#begin Fonts/x8.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x8.fnt
+
+#begin Fonts/x16.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x16.fnt
+
+#begin Fonts/x32.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x32.fnt
+
+#begin Fonts/x64.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x64.fnt
+
+#begin Fonts/x24.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x24.fnt
+
+#begin debug.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:debug.fnt
+
+#begin Fonts/splashNumber.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/splashNumber.fnt
+
+#begin Fonts/x8_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x8_0.png
+
+#begin Fonts/x16_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x16_0.png
+
+#begin Fonts/x24_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x24_0.png
+
+#begin Fonts/x32_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x32_0.png
+
+#begin Fonts/x64_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x64_0.png
+
+#begin Fonts/x64_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x64_1.png
+
+#begin Fonts/x64_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x64_2.png
 

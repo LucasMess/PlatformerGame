@@ -20,10 +20,10 @@ namespace Adam.UI.Level_Editor
         {
             _texture = GameWorld.UiSpriteSheet;
             _sourceRectangle = new Rectangle(0, 212, 382, 40);
-            _drawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(_sourceRectangle.Width),
-                CalcHelper.ApplyUiRatio(_sourceRectangle.Height));
+            _drawRectangle = new Rectangle(0, 0, _sourceRectangle.Width,
+                _sourceRectangle.Height);
 
-            _drawRectangle.X = AdamGame.UserResWidth / 2 - _drawRectangle.Width / 2;
+            _drawRectangle.X = AdamGame.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
 
             // Buttons cannot be called individually outside the constructor.
             var brushButton = new IconButton(new Vector2(11, 11), _drawRectangle, "Brush", ButtonImage.Brush);

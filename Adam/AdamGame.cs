@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Threading;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -41,6 +42,8 @@ namespace Adam
         public const int Tilesize = 32;
         public const int DefaultResWidth = 960; // Default 960x540
         public const int DefaultResHeight = 540;
+        public const int DefaultUiWidth = 480;
+        public const int DefaultUiHeight = 270;
         public const string Version = "Version 0.10.0 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
@@ -77,7 +80,7 @@ namespace Adam
         public static bool WasPressed, DebugOn, DebugPressed;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
-        private SpriteFont _debugFont;
+        private BitmapFont _debugFont;
         public static int FPS { get; set; }
         private int _totalFrames;
         private double _frameRateTimer;
@@ -89,6 +92,7 @@ namespace Adam
         private RenderTarget2D _backRT;
         private RenderTarget2D _lightRT;
         private RenderTarget2D _sunlightRT;
+        private RenderTarget2D _uiRT;
         private Menu _menu;
         private Session _session;
         public SamplerState DesiredSamplerState;
@@ -193,6 +197,9 @@ namespace Adam
             _sunlightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
                 GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
                 GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
+            _uiRT = new RenderTarget2D(GraphicsDevice, DefaultUiWidth, DefaultUiHeight, false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
+                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _lightBlendState = new BlendState
@@ -210,7 +217,7 @@ namespace Adam
             _loadingScreen = new LoadingScreen(new Vector2(UserResWidth, UserResHeight), Content);
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
-            _debugFont = Content.Load<SpriteFont>("debug");
+            _debugFont = Content.Load<BitmapFont>("debug");
 
             CurrentGameMode = GameMode.None;
         }
@@ -485,6 +492,18 @@ namespace Adam
                     GameWorld.DrawLights(_spriteBatch);
                     _spriteBatch.End();
 
+                    GraphicsDevice.SetRenderTarget(_uiRT);
+                    GraphicsDevice.Clear(Color.Transparent);
+                    var rs = new RasterizerState { ScissorTestEnable = true };
+                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+                        DepthStencilState.None, rs);
+                    GameWorld.DrawUi(_spriteBatch);
+                    Overlay.Draw(_spriteBatch);
+                    Dialog.Draw(_spriteBatch);
+                    TextInputBox.Draw(_spriteBatch);
+                    MessageBox.Draw(_spriteBatch);
+                    _spriteBatch.End();
+
 
                     GraphicsDevice.SetRenderTarget(null);
 
@@ -493,6 +512,7 @@ namespace Adam
                     _spriteBatch.Draw(_backRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.Draw(_shadowRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.Black * .5f);
                     _spriteBatch.Draw(_frontRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.End();
 
 
@@ -514,18 +534,7 @@ namespace Adam
                     //    GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
                     //_spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight),
                     //    Color.White);
-                    //_spriteBatch.End();
-
-
-                    var rs = new RasterizerState { ScissorTestEnable = true };
-                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.None, rs);
-                    GameWorld.DrawUi(_spriteBatch);
-                    Overlay.Draw(_spriteBatch);
-                    Dialog.Draw(_spriteBatch);
-                    TextInputBox.Draw(_spriteBatch);
-                    MessageBox.Draw(_spriteBatch);
-                    _spriteBatch.End();
+                    //_spriteBatch.End();               
 
                     break;
             }

@@ -3,6 +3,7 @@ using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI
 {
@@ -62,7 +63,7 @@ namespace Adam.UI
         protected Texture2D Texture { get; set; }
         protected Rectangle CollRectangle;
         protected Rectangle SourceRectangle;
-        protected SpriteFont Font { get; set; } = ContentHelper.LoadFont("Fonts/x16");
+        protected BitmapFont Font { get; set; } = ContentHelper.LoadFont("Fonts/x16");
         public string Text { get; set; }
 
         /// <summary>

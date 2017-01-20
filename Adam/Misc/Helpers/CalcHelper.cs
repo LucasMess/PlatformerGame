@@ -77,6 +77,9 @@ namespace Adam
         /// <returns></returns>
         public static int ApplyUiRatio(int number)
         {
+            return number;
+
+            // TEST
             return (int)(ApplyScreenScale(number) * 2);
         }
 
@@ -88,6 +91,8 @@ namespace Adam
         /// <returns></returns>
         public static int ApplyHeightRatio(int number)
         {
+            return number;
+
             return ApplyScreenScale(number);
         }
 
@@ -138,6 +143,8 @@ namespace Adam
         /// <returns></returns>
         public static int ApplyScreenScale(float number)
         {
+            return (int)number;
+
             return (int)(GetScreenScale() * number);
         }
 

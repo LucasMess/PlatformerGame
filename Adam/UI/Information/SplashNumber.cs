@@ -2,13 +2,14 @@
 using Adam.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 using System;
 
 namespace Adam.UI
 {
     public class SplashNumber : Particle
     {
-        SpriteFont _font;
+        BitmapFont _font;
         string _text;
         bool _isNegative;
         bool _hasExpanded;

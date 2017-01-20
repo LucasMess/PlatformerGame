@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.BitmapFonts;
 using System.Collections.Generic;
 
 namespace Adam
@@ -16,7 +17,7 @@ namespace Adam
         //bool _definitionFound;
 
         private static List<string> _infos = new List<string>();
-        private static SpriteFont _font = FontHelper.Fonts[1];
+        private static BitmapFont _font = FontHelper.Fonts[1];
 
         static bool _debugKeyReleased;
 
@@ -150,7 +151,7 @@ namespace Adam
 
                 for (int i = 0; i < _infos.Count; i++)
                 {
-                    Point pos = new Point(0, i * _font.LineSpacing);
+                    Point pos = new Point(0, i * _font.LineHeight);
                     FontHelper.DrawWithOutline(spriteBatch, _font, _infos[i], pos.ToVector2(), 1, new Color(220, 220, 220), Color.Black);
                 }
             }
