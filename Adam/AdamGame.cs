@@ -40,8 +40,8 @@ namespace Adam
         private const bool InDebugMode = true;
         private const bool IsTestingMultiplayer = false;
         public const int Tilesize = 32;
-        public const int DefaultResWidth = 960; // Default 960x540
-        public const int DefaultResHeight = 540;
+        public const int DefaultResWidth = 480; // Default 960x540
+        public const int DefaultResHeight = 270;
         public const int DefaultUiWidth = 480;
         public const int DefaultUiHeight = 270;
         public const string Version = "Version 0.10.0 Beta";
@@ -424,6 +424,8 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.MainMenu:
+                    GraphicsDevice.SetRenderTarget(_uiRT);
+                    GraphicsDevice.Clear(Color.Black);
                     var rs2 = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs2);
@@ -432,6 +434,13 @@ namespace Adam
                     TextInputBox.Draw(_spriteBatch);
                     MessageBox.Draw(_spriteBatch);
                     _spriteBatch.End();
+
+                    GraphicsDevice.SetRenderTarget(null);
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
+                      DepthStencilState.None, RasterizerState.CullNone);
+                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+                    _spriteBatch.End();
+
                     break;
                 case GameState.GameWorld:
 

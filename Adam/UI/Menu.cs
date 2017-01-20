@@ -330,8 +330,8 @@ namespace Adam
         {
             spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Producers, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(5 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(30 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2((AdamGame.DefaultResWidth / 2f) - _font64.MeasureString("Adam").X / 2, (AdamGame.DefaultResHeight * 1 / 5f)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)

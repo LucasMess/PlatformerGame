@@ -162,8 +162,10 @@ namespace Adam.UI
         {
             Container.SetPosition(new Vector2(CollRectangle.X, CollRectangle.Y));
             Container.Color = CurrentColor;
+            Rectangle mouse = new Rectangle();
+            InputHelper.GetMouseRectRenderTarget(ref mouse);
 
-            if (InputHelper.MouseRectangle.Intersects(CollRectangle))
+            if (mouse.Intersects(CollRectangle))
             {
                 MouseHover?.Invoke();
 
