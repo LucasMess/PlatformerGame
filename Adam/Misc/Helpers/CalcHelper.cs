@@ -69,33 +69,6 @@ namespace Adam
             }
 
         }
-
-        /// <summary>
-        /// Takes a number and applies the ratio of screen expansion to it. This is the same as GetScreenScale, except it multiplies the ratio by two, which is useful for UI elements that were made at half size.
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        public static int ApplyUiRatio(int number)
-        {
-            return number;
-
-            // TEST
-            return (int)(ApplyScreenScale(number) * 2);
-        }
-
-        /// <summary>
-        /// DEPRECATED DO NOT USE
-        /// Takes a number and applies the ratio of the screen expansion to it.
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        public static int ApplyHeightRatio(int number)
-        {
-            return number;
-
-            return ApplyScreenScale(number);
-        }
-
         /// <summary>
         /// Returns a random x value from this rectangle's x-coord.
         /// </summary>
@@ -133,19 +106,6 @@ namespace Adam
         public static float GetScreenScale()
         {
             return ((float)AdamGame.UserResWidth / AdamGame.DefaultResWidth);
-        }
-
-
-        /// <summary>
-        /// Applies the ratio of the screen to the game to the number.
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        public static int ApplyScreenScale(float number)
-        {
-            return (int)number;
-
-            return (int)(GetScreenScale() * number);
         }
 
         /// <summary>

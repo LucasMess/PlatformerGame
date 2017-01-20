@@ -18,13 +18,13 @@ namespace Adam.UI
         /// </summary>
         public TextInputBox()
         {
-            _textBox = new Textbox(Window.DrawRectangle.X + CalcHelper.ApplyScreenScale(BezelSize), Window.DrawRectangle.Y + Window.DrawRectangle.Height / 2 - CalcHelper.ApplyScreenScale(20), Window.DrawRectangle.Width - CalcHelper.ApplyScreenScale(BezelSize*2));
+            _textBox = new Textbox(Window.DrawRectangle.X + (BezelSize), Window.DrawRectangle.Y + Window.DrawRectangle.Height / 2 - (20), Window.DrawRectangle.Width - (BezelSize*2));
             _textBox.BindTo(Window.DrawRectangle);
 
-            int buttonWidth = CalcHelper.ApplyUiRatio(40);
-            int buttonHeight = CalcHelper.ApplyUiRatio(15);
+            int buttonWidth = (40);
+            int buttonHeight = (15);
             int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
-            int y = Window.DrawRectangle.Bottom - buttonHeight - CalcHelper.ApplyScreenScale(4);
+            int y = Window.DrawRectangle.Bottom - buttonHeight - (4);
 
             Button = new TextButton(new Vector2(x, y), "Ok", false);
             Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));

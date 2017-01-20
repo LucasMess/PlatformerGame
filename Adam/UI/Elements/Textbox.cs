@@ -29,7 +29,7 @@ namespace Adam.UI
         {
             _white = ContentHelper.LoadTexture("Tiles/white");
             _font = ContentHelper.LoadFont("Fonts/x16");
-            DrawRectangle = new Rectangle(x, y, width, CalcHelper.ApplyScreenScale(20));
+            DrawRectangle = new Rectangle(x, y, width, 20);
         }
 
         public override void Update(Rectangle container)
@@ -110,7 +110,7 @@ namespace Adam.UI
             if (IsSelected)
                 opacity = .7f;
             else opacity = .3f;
-            int spacing = CalcHelper.ApplyScreenScale(2);
+            int spacing = 2;
             spriteBatch.Draw(_white, new Rectangle(InputHelper.MouseRectangle.X, InputHelper.MouseRectangle.Y, 10, 10), Color.Black);
             spriteBatch.Draw(_white, new Rectangle(DrawRectangle.X - spacing, DrawRectangle.Y - spacing, DrawRectangle.Width + spacing * 2, DrawRectangle.Height + spacing * 2), new Color(153, 153, 153));
             spriteBatch.Draw(_white, DrawRectangle, new Color(224, 224, 224));

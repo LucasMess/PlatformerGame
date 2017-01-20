@@ -28,7 +28,7 @@ namespace Adam.UI.Level_Editor
             for (int i = 0; i < 8; i++)
             {
                 TileHolder tileHolder = new TileHolder(0);
-                tileHolder.SetPosition(CalcHelper.ApplyUiRatio(StartingX + (i * (tileHolder.Size + SpacingBetweenTiles))), CalcHelper.ApplyUiRatio(StartingY));
+                tileHolder.SetPosition(StartingX + (i * (tileHolder.Size + SpacingBetweenTiles)), StartingY);
                 tileHolder.BindTo(new Vector2(0, 0));
                 tileHolder.WasClicked += Tile_WasClicked;
                 tileHolder.CanBeMoved = false;
@@ -141,10 +141,10 @@ namespace Adam.UI.Level_Editor
             if (SelectedTile != null)
             {
                 _selectorDrawRect = SelectedTile.CollRectangle;
-                _selectorDrawRect.X -= CalcHelper.ApplyUiRatio(2);
-                _selectorDrawRect.Y -= CalcHelper.ApplyUiRatio(2);
-                _selectorDrawRect.Width = CalcHelper.ApplyUiRatio(_selectorSourceRect.Width);
-                _selectorDrawRect.Height = CalcHelper.ApplyUiRatio(_selectorSourceRect.Height);
+                _selectorDrawRect.X -= 2;
+                _selectorDrawRect.Y -= 2;
+                _selectorDrawRect.Width = _selectorSourceRect.Width;
+                _selectorDrawRect.Height = _selectorSourceRect.Height;
             }
 
 

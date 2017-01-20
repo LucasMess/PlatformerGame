@@ -64,7 +64,7 @@ namespace Adam
 
             int width = AdamGame.DefaultResWidth / 2;
             int height = AdamGame.DefaultResHeight * 2 / 5;
-            int diff = CalcHelper.ApplyScreenScale(TextButton.Height + 2);
+            int diff = (TextButton.Height + 2);
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
             _third = new Vector2(width, height + (diff * 2));
@@ -332,7 +332,7 @@ namespace Adam
 
             FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Producers, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(5 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2((float)(5 / AdamGame.WidthRatio), (float)(30 / AdamGame.HeightRatio)), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2(CalcHelper.ApplyScreenScale(AdamGame.DefaultResWidth / 2f) - _font64.MeasureString("Adam").X / 2, CalcHelper.ApplyScreenScale(AdamGame.DefaultResHeight * 1 / 5f)), 3, Color.DarkRed, Color.MediumVioletRed);
+            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2((AdamGame.DefaultResWidth / 2f) - _font64.MeasureString("Adam").X / 2, (AdamGame.DefaultResHeight * 1 / 5f)), 3, Color.DarkRed, Color.MediumVioletRed);
 
             switch (CurrentMenuState)
             {

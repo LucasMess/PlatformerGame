@@ -38,14 +38,14 @@ namespace Adam.UI.MainMenu
         {
             int y = 100;
             int x = 100;
-            x -= CalcHelper.ApplyUiRatio(LevelSquare.Width) + 5;
+            x -= (LevelSquare.Width) + 5;
             for (int i = 0; i < 10; i++)
             {
-                x += CalcHelper.ApplyUiRatio(LevelSquare.Width) + 5;
-                if (x + CalcHelper.ApplyUiRatio(LevelSquare.Width) > AdamGame.DefaultResWidth)
+                x += (LevelSquare.Width) + 5;
+                if (x + (LevelSquare.Width) > AdamGame.DefaultUiWidth)
                 {
                     x = 100;
-                    y += CalcHelper.ApplyUiRatio(LevelSquare.Height) + 5;
+                    y += (LevelSquare.Height) + 5;
                 }
                 LevelSquare square = new LevelSquare(new Vector2(x, y), i.ToString());
                 square.OnLevelSelected += Square_OnLevelSelected;

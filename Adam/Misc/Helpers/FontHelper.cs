@@ -130,12 +130,12 @@ namespace Adam.Misc.Helpers
 
             if (string.IsNullOrEmpty(text))
                 return;
-            var font = ChooseBestFont(CalcHelper.ApplyUiRatio(16));
+            var font = ChooseBestFont((16));
             var mouse = InputHelper.MouseRectangle;
 
-            _window = new Container(mouse.X - CalcHelper.ApplyUiRatio(4), mouse.Y - (int)font.MeasureString(text).Y - CalcHelper.ApplyUiRatio(2),
-                (int)font.MeasureString(text).X + CalcHelper.ApplyUiRatio(8),
-                (int)font.MeasureString(text).Y + CalcHelper.ApplyUiRatio(4), false);
+            _window = new Container(mouse.X - (4), mouse.Y - (int)font.MeasureString(text).Y - (2),
+                (int)font.MeasureString(text).X + (8),
+                (int)font.MeasureString(text).Y + (4), false);
             _window.Color = new Color(196, 69, 69);
             _window.DisableAnimation();
             _window.Draw(spriteBatch);

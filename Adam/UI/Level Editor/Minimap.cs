@@ -25,7 +25,7 @@ namespace Adam.UI
 
         public Minimap()
         {
-            int size = CalcHelper.ApplyUiRatio(74);
+            int size = (74);
             _temp = AdamGame.DefaultTexture;
             _texture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
@@ -37,9 +37,9 @@ namespace Adam.UI
 
             minimapToWorldRatio = (float)(_texture.Width)/size;
 
-            int width = CalcHelper.ApplyUiRatio(_uiSourceRect.Width);
-            int height = CalcHelper.ApplyUiRatio(_uiSourceRect.Height);
-            _uiDrawRect = new Rectangle(AdamGame.UserResWidth - width, AdamGame.UserResHeight - height, width, height);
+            int width = (_uiSourceRect.Width);
+            int height = (_uiSourceRect.Height);
+            _uiDrawRect = new Rectangle(AdamGame.DefaultUiWidth - width, AdamGame.DefaultUiHeight - height, width, height);
 
         }
 

@@ -61,7 +61,7 @@ namespace Adam.UI
             _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + (int)(12 / AdamGame.WidthRatio), _boundsDrawRectangle.Y + (int)(12 / AdamGame.HeightRatio), _boundsDrawRectangle.Width - (int)(24 / AdamGame.WidthRatio), _boundsDrawRectangle.Height - (int)(24 / AdamGame.HeightRatio));
 
             // Defines where the function buttons will be.
-            _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - CalcHelper.ApplyHeightRatio(4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + (int)(8 / AdamGame.HeightRatio), (int)(184 / AdamGame.WidthRatio), (int)(40 / AdamGame.HeightRatio));
+            _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - (4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + (int)(8 / AdamGame.HeightRatio), (int)(184 / AdamGame.WidthRatio), (int)(40 / AdamGame.HeightRatio));
             _playButton = new IconButton(new Vector2(4, 4), _functionButtonContainer, "Play level", ButtonImage.Play);
             _editButton = new IconButton(new Vector2(4 + 32 + 4, 4), _functionButtonContainer, "Edit level", ButtonImage.Edit);
             _renameButton = new IconButton(new Vector2(4 + 64 + 8, 4), _functionButtonContainer, "Rename level", ButtonImage.Rename);
@@ -87,7 +87,7 @@ namespace Adam.UI
             // Define the BitmapFont for the "Select Level" header and its position.
             _headerFont = ContentHelper.LoadFont("Fonts/x64");
             _headerText = "Select a Level:";
-            _headerPos = new Vector2(AdamGame.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineHeight - CalcHelper.ApplyHeightRatio(10));
+            _headerPos = new Vector2(AdamGame.UserResWidth / 2 - _headerFont.MeasureString(_headerText).X / 2, _scissorRectangle.Y - _headerFont.LineHeight - (10));
         }
 
         private void NewButton_MouseClicked(Button button)
@@ -191,7 +191,7 @@ namespace Adam.UI
             }
 
             // Arranges the levels in an alphabetical list and sets their position.
-            _startingY = _scissorRectangle.Y + CalcHelper.ApplyHeightRatio(3);
+            _startingY = _scissorRectangle.Y + (3);
             for (int i = 0; i < _levelCount; i++)
             {
                 _levelInfos[i].SetPosition(_startingY, i);
@@ -226,7 +226,7 @@ namespace Adam.UI
                     velocityY = -1f;
 
                 // If last element is above bottom of box, make them go back, but only if the user is not making them go back already.
-                if (_levelInfos[_levelCount - 1].GetY() < _scissorRectangle.Y + _scissorRectangle.Height - _levelInfos[0].GetHeight() - CalcHelper.ApplyHeightRatio(3) && _levelInfos[0].VelocityY < 1)
+                if (_levelInfos[_levelCount - 1].GetY() < _scissorRectangle.Y + _scissorRectangle.Height - _levelInfos[0].GetHeight() - (3) && _levelInfos[0].VelocityY < 1)
                     velocityY = 1f;
 
                 if (velocityY != 0)
@@ -367,7 +367,7 @@ namespace Adam.UI
         /// <param name="orderInList">The rank of this item in the list.</param>
         public void SetPosition(int initialY, int orderInList)
         {
-            _drawRectangle.Y = initialY + _drawRectangle.Height * orderInList + CalcHelper.ApplyHeightRatio(3) * orderInList;
+            _drawRectangle.Y = initialY + _drawRectangle.Height * orderInList + (3) * orderInList;
         }
 
         public void Update()

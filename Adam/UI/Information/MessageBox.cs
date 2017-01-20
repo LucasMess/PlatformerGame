@@ -19,10 +19,10 @@ namespace Adam.UI
         /// </summary>
         public MessageBox()
         {
-            int buttonWidth = CalcHelper.ApplyUiRatio(40);
-            int buttonHeight = CalcHelper.ApplyUiRatio(15);
+            int buttonWidth = 40;
+            int buttonHeight = 15;
             int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
-            int y = Window.DrawRectangle.Bottom - buttonHeight - CalcHelper.ApplyScreenScale(4);
+            int y = Window.DrawRectangle.Bottom - buttonHeight - 4;
 
             Button = new TextButton(new Vector2(x, y), "Ok", false);
             Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));

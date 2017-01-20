@@ -21,16 +21,16 @@ namespace Adam.UI.Elements
         public TextButton(Vector2 position, string text, bool convertCoordinates = true)
         {
             Text = text;
-            int width = CalcHelper.ApplyUiRatio(Width);
+            int width = Width;
 
             if (convertCoordinates)
             {
-                position.X = CalcHelper.ApplyScreenScale((int)position.X);
-                position.Y = CalcHelper.ApplyScreenScale((int)position.Y);
+                position.X = (int)position.X;
+                position.Y = (int)position.Y;
             }
 
             CollRectangle = new Rectangle((int)position.X, (int)position.Y, width,
-                CalcHelper.ApplyUiRatio(Height));
+                Height);
             SourceRectangle = new Rectangle(112, 32, Width, Height);
             Font = FontHelper.ChooseBestFont(CollRectangle.Height);
         }

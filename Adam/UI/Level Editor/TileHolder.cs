@@ -38,7 +38,7 @@ namespace Adam.UI.Level_Editor
 
         public TileHolder(int id)
         {
-            DrawRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(SourceRectangle.Width),
+            DrawRectangle = new Rectangle(0, 0, (SourceRectangle.Width),
             SourceRectangle.Height);
             _tile = new Tile(true) { Id = (byte)id };
             _tile.DefineTexture();
@@ -77,11 +77,11 @@ namespace Adam.UI.Level_Editor
 
             }
 
-            int width = CalcHelper.ApplyUiRatio((int)(16 * wRatio));
-            int height = CalcHelper.ApplyUiRatio((int)(16 * hRatio));
+            int width = ((int)(16 * wRatio));
+            int height = ((int)(16 * hRatio));
 
-            int widthDiff = (CalcHelper.ApplyUiRatio(16) - width) / 2;
-            int heightDiff = (CalcHelper.ApplyUiRatio(16) - height) / 2;
+            int widthDiff = ((16) - width) / 2;
+            int heightDiff = ((16) - height) / 2;
             _tileTextureDifferential = new Vector2(widthDiff, heightDiff);
             _tile.DrawRectangle.Width = width;
             _tile.DrawRectangle.Height = height;
@@ -114,8 +114,8 @@ namespace Adam.UI.Level_Editor
 
         private void UpdateTilePosition(float x, float y)
         {
-            _tile.DrawRectangle.X = (int)(x + _tileTextureDifferential.X + CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
-            _tile.DrawRectangle.Y = (int)(y + _tileTextureDifferential.Y + CalcHelper.ApplyUiRatio(SpacingBetweenSquareAndTile));
+            _tile.DrawRectangle.X = (int)(x + _tileTextureDifferential.X + (SpacingBetweenSquareAndTile));
+            _tile.DrawRectangle.Y = (int)(y + _tileTextureDifferential.Y + (SpacingBetweenSquareAndTile));
         }
 
         /// <summary>

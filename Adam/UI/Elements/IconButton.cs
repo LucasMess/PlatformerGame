@@ -124,7 +124,7 @@ namespace Adam.UI.Elements
         {
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
-            CollRectangle = new Rectangle(0, 0, CalcHelper.ApplyUiRatio(ButtonSize), CalcHelper.ApplyUiRatio(ButtonSize));
+            CollRectangle = new Rectangle(0, 0, ButtonSize, ButtonSize);
             SourceRectangle = new Rectangle(0, 0, ButtonSize, ButtonSize);
             _font = ContentHelper.LoadFont("Fonts/x32");
         }
@@ -155,8 +155,8 @@ namespace Adam.UI.Elements
                 default:
                     spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, CurrentColor);
                     spriteBatch.Draw(GameWorld.UiSpriteSheet,
-                        new Rectangle(CollRectangle.X, CollRectangle.Y + CalcHelper.ApplyUiRatio(11),
-                            CalcHelper.ApplyUiRatio(_shadowSource.Width), CalcHelper.ApplyUiRatio(_shadowSource.Height)),
+                        new Rectangle(CollRectangle.X, CollRectangle.Y + 11,
+                            _shadowSource.Width, _shadowSource.Height),
                         _shadowSource, Color.White);
                     break;
                 case ButtonImage.Expand:

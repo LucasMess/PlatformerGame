@@ -34,8 +34,8 @@ namespace Adam.UI.Elements
         /// <param name="height"></param>
         public Container(int width, int height)
         {
-            width = CalcHelper.ApplyUiRatio(width);
-            height = CalcHelper.ApplyUiRatio(height);
+            width = (width);
+            height = (height);
 
             Size = new Vector2(width, height);
             float x = (AdamGame.UserResWidth / 2) - width / 2;
@@ -61,10 +61,10 @@ namespace Adam.UI.Elements
         {
             if (convertCoords)
             {
-                width = CalcHelper.ApplyUiRatio(width);
-                height = CalcHelper.ApplyUiRatio(height);
-                x = CalcHelper.ApplyUiRatio(x);
-                y = CalcHelper.ApplyUiRatio(y);
+                width = (width);
+                height = (height);
+                x = (x);
+                y = (y);
             }
 
             Size = new Vector2(width, height);
@@ -102,7 +102,7 @@ namespace Adam.UI.Elements
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            int cornerSize = CalcHelper.ApplyUiRatio(_sourceRectangles[0].Width);
+            int cornerSize = (_sourceRectangles[0].Width);
             spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, cornerSize, cornerSize), _sourceRectangles[0], Color);
             int topBlankWidth = (int)(Size.X - cornerSize * 2);
             spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerSize), DrawRectangle.Y, topBlankWidth, cornerSize), _sourceRectangles[1], Color);
