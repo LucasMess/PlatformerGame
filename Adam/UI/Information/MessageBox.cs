@@ -11,8 +11,8 @@ namespace Adam.UI
     /// </summary>
     public class MessageBox
     {
-        protected const int BezelSize = 25;
-        protected readonly Container Window = new Container(125, 50);
+        protected const int BezelSize = 10;
+        protected readonly Container Window = new Container(250, 100);
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.
@@ -47,7 +47,7 @@ namespace Adam.UI
 
         protected BitmapFont Font
         {
-            get { return ContentHelper.LoadFont("Fonts/x16"); }
+            get { return ContentHelper.LoadFont("Fonts/x8"); }
         }
 
         protected void Button_MouseClicked(Button button)

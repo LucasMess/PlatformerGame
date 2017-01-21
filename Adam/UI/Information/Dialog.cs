@@ -42,7 +42,7 @@ namespace Adam.UI.Information
         /// </summary>
         public Dialog()
         {
-            _nonPlayerDialogBox = new Rectangle(AdamGame.UserResWidth/2, 40, 600, 200);
+            _nonPlayerDialogBox = new Rectangle(AdamGame.DefaultUiWidth/2, 40, 300, 100);
             _dialogBoxSourceRectangle = new Rectangle(16*16, 14*16, 16*3, 16);
 
             var origin = new Vector2(_nonPlayerDialogBox.Width/2f, _nonPlayerDialogBox.Height/2f);

@@ -28,7 +28,7 @@ namespace Adam.UI
         public Textbox(int x, int y, int width)
         {
             _white = ContentHelper.LoadTexture("Tiles/white");
-            _font = ContentHelper.LoadFont("Fonts/x16");
+            _font = ContentHelper.LoadFont("Fonts/x8");
             DrawRectangle = new Rectangle(x, y, width, 20);
         }
 
