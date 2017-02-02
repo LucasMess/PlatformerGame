@@ -4,6 +4,7 @@ using Adam.Misc;
 using Adam.Misc.Helpers;
 using Adam.Particles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Adam.PlayerCharacter
@@ -23,6 +24,9 @@ namespace Adam.PlayerCharacter
         public bool IsInvulnerable;
         public bool IsClimbing { get; set; }
         private string _spawnPointNextLevel;
+
+        public RewindTracker rewindTracker = new RewindTracker();
+        public Timer rewindTimer = new Timer();
 
         public Player()
         {
@@ -176,6 +180,9 @@ namespace Adam.PlayerCharacter
             CheckInput();
             Burn();
 
+            rewindTracker.Update(this);
+            rewindTimer.Increment();
+
             if (!IsOnVines)
             {
                 IsClimbing = false;
@@ -306,6 +313,12 @@ namespace Adam.PlayerCharacter
         public void SetSpawnPointForNextLevel(string spawnPoint)
         {
             _spawnPointNextLevel = spawnPoint;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            rewindTracker.Draw(this, spriteBatch);
+            base.Draw(spriteBatch);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Adam.UI
             Button = new TextButton(new Vector2(x, y), "Ok", false);
             Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));
             Button.BindTo(Window.DrawRectangle);
-            Button.Color = new Color(196,69,69);
+            Button.Color = new Color(196, 69, 69);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Adam.UI
         {
             Window.Show();
             Button.MouseClicked += Button_MouseClicked;
-            var wrapped = FontHelper.WrapText(Font, message, Window.DrawRectangle.Width - BezelSize*2);
+            var wrapped = FontHelper.WrapText(Font, message, Window.DrawRectangle.Width - BezelSize * 2);
             Message = wrapped;
             IsActive = true;
         }

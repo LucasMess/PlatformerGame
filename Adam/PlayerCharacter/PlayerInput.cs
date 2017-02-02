@@ -21,6 +21,7 @@ namespace Adam.PlayerCharacter
         public event EventHandler FireWeaponAction;
         public event EventHandler DefendAction;
         public event EventHandler DashAction;
+        public event EventHandler RewindAction;
         public event EventHandler UltimateAction;
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
@@ -44,11 +45,17 @@ namespace Adam.PlayerCharacter
                 //DefendAction += Player_DefendAction;
                 //DashAction += Player_DashAction;
                 //UltimateAction += Player_UltimateAction;
+                RewindAction += Player_RewindAction;
                 FastRunActive += Player_FastRunActive;
                 FastRunInactive += Player_FastRunInactive;
                 NotIdle += Player_NotIdle;
                 _hasInitialized = true;
             }
+        }
+
+        private void Player_RewindAction()
+        {
+            script.OnRewindAction(this);
         }
 
         private void Player_ReleaseUpAndDownAction()
@@ -149,6 +156,10 @@ namespace Adam.PlayerCharacter
 
             if (!PlayerScript.IsDoingAction)
             {
+                if (IsRewindPressed())
+                {
+                    RewindAction?.Invoke();
+                }
                 if (IsMoveLeftPressed())
                     LeftMove?.Invoke();
                 if (IsMoveRightPressed())
@@ -232,7 +243,7 @@ namespace Adam.PlayerCharacter
 
         public bool IsInteractPressed()
         {
-            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
         }
 
         private bool IsPunchPressed()
@@ -243,6 +254,11 @@ namespace Adam.PlayerCharacter
         private bool IsSprinting()
         {
             return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+        }
+
+        private bool IsRewindPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
         }
 
     }

@@ -2,6 +2,7 @@
 using Adam.Misc;
 using Adam.Particles;
 using Adam.PlayerCharacter;
+using Adam.UI;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -20,6 +21,7 @@ namespace Adam
         const float RunAcc = .4f;
         const float DashSpeed = 24f;
         const float ClimbingSpeed = 4f;
+        public const double RewindCooldown = 4000;
 
         Timer _idleTimer = new Timer(true);
         Timer _lastJumpTimer = new Timer(true);
@@ -301,6 +303,19 @@ namespace Adam
             {
                 new PlayerWeaponProjectile();
                 _weaponFireRateTimer.Reset();
+            }
+        }
+
+        public void OnRewindAction(Player player)
+        {
+            if (player.rewindTimer.TimeElapsedInMilliSeconds > RewindCooldown)
+            {
+                RewindTracker.Snapshot snap = player.rewindTracker.GetRewindSnapShot();
+                player.SetPosition(snap.Position);
+                player.SetVelX(snap.Velocity.X);
+                player.SetVelY(snap.Velocity.Y);
+                player.rewindTimer.Reset();
+                //Overlay.FlashWhite();
             }
         }
 

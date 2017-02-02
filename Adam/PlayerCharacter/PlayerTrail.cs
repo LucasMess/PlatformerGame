@@ -68,5 +68,6 @@ namespace Adam.PlayerCharacter
                 spriteBatch.Draw(_textures.ElementAt(i), _drawRectangles.ElementAt(i), _sourceRectangles.ElementAt(i), Color.White * .5f, 0, Vector2.Zero, _isFacingRight[i] ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
             }
         }
+
     }
 }
