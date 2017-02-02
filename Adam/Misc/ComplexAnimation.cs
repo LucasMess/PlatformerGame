@@ -74,6 +74,13 @@ namespace Adam.Misc
             _sourceRectangle.X = _currentFrame * _currentAnimationData.Width;
         }
 
+        public void UpdatePositionOnly(Entity entity)
+        {
+            int multiplier = 1;
+            if (DoubleSpriteSize) multiplier++;
+            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * multiplier, _currentAnimationData.Height * multiplier);
+        }
+
         /// <summary>
         /// Update the aniamtion, timers and fire events.
         /// </summary>
@@ -85,9 +92,7 @@ namespace Adam.Misc
 
             FindHighestPriorityAnimation();
 
-            int multiplier = 1;
-            if (DoubleSpriteSize) multiplier++;
-            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * multiplier, _currentAnimationData.Height * multiplier);
+            UpdatePositionOnly(entity);
 
             if (_currentName == "walk" || _currentName == "run")
             {

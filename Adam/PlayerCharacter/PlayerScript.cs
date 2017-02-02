@@ -2,7 +2,6 @@
 using Adam.Misc;
 using Adam.Particles;
 using Adam.PlayerCharacter;
-using Adam.UI;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -310,10 +309,10 @@ namespace Adam
         {
             if (player.rewindTimer.TimeElapsedInMilliSeconds > RewindCooldown)
             {
-                RewindTracker.Snapshot snap = player.rewindTracker.GetRewindSnapShot();
-                player.SetPosition(snap.Position);
-                player.SetVelX(snap.Velocity.X);
-                player.SetVelY(snap.Velocity.Y);
+                RewindTracker.Snapshot snap = player.rewindTracker.StartRewind();
+                //player.SetPosition(snap.Position);
+                //player.SetVelX(snap.Velocity.X);
+                //player.SetVelY(snap.Velocity.Y);
                 player.rewindTimer.Reset();
                 //Overlay.FlashWhite();
             }

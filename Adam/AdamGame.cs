@@ -273,12 +273,6 @@ namespace Adam
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 
-
-            if (TimeFreeze.IsTimeFrozen())
-            {
-                return;
-            }
-
             _frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_frameRateTimer > 1000f)
             {
@@ -374,8 +368,9 @@ namespace Adam
                     if (IsLoadingContent) return;
                     if (GameWorld.IsOnDebug)
                         break;
-
-                    GameWorld.Update();
+                    if (!TimeFreeze.IsTimeFrozen())
+                        GameWorld.UpdateWorld();
+                    GameWorld.UpdateVisual();
                     Dialog.Update();
                     break;
             }

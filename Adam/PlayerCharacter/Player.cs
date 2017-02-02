@@ -23,6 +23,7 @@ namespace Adam.PlayerCharacter
         public bool IsGhost;
         public bool IsInvulnerable;
         public bool IsClimbing { get; set; }
+        public bool IsVisible { get; set; } = true;
         private string _spawnPointNextLevel;
 
         public RewindTracker rewindTracker = new RewindTracker();
@@ -94,6 +95,7 @@ namespace Adam.PlayerCharacter
             HasTakenDamage += OnDamageTaken;
             HasRevived += OnPlayerRevive;
         }
+
 
         private void OnPlayerRevive()
         {
@@ -318,7 +320,8 @@ namespace Adam.PlayerCharacter
         public override void Draw(SpriteBatch spriteBatch)
         {
             rewindTracker.Draw(this, spriteBatch);
-            base.Draw(spriteBatch);
+            if (IsVisible)
+                base.Draw(spriteBatch);
         }
     }
 }

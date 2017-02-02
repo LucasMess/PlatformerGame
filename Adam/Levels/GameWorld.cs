@@ -127,7 +127,16 @@ namespace Adam.Levels
             }
         }
 
-        public static void Update()
+        public static void UpdateVisual()
+        {
+            var cameraRect = Player.GetCollRectangle();
+            AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
+
+            Background.Update();
+            WorldData.Update();
+        }
+
+        public static void UpdateWorld()
         {
             ParticleSystem.Update();
 
@@ -151,16 +160,10 @@ namespace Adam.Levels
             else
             {
                 SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
-
-                var cameraRect = Player.GetCollRectangle();
-
-                AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
+                UpdateVisual();
             }
 
             TimesUpdated++;
-
-            Background.Update();
-            WorldData.Update();
 
             for (var i = Entities.Count - 1; i >= 0; i--)
             {

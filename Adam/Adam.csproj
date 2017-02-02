@@ -159,7 +159,7 @@
     <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="PlayerCharacter\PlayerInput.cs" />
     <Compile Include="PlayerCharacter\PlayerProperties.cs" />
-    <Compile Include="PlayerCharacter\PlayerRewind.cs" />
+    <Compile Include="PlayerCharacter\PlayerRewind2.cs" />
     <Compile Include="PlayerCharacter\PlayerScript.cs" />
     <Compile Include="PlayerCharacter\PlayerTrail.cs" />
     <Compile Include="PlayerCharacter\Script.cs" />
