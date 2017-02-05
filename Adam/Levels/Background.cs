@@ -99,6 +99,7 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_backgroundTexture == null) return;
 
             spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
 

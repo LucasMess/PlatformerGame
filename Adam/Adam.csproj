@@ -76,6 +76,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AdamGame2.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\WorldData.cs" />
-    <Compile Include="AdamGame.cs" />
     <Compile Include="Misc\Animation.cs" />
     <Compile Include="Misc\ComplexAnimation.cs" />
     <Compile Include="Misc\Countdown.cs" />
@@ -229,6 +229,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CodenameAdam_TemporaryKey.pfx" />
+    <None Include="Content\Levels\Main Menu.lvl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

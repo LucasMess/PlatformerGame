@@ -29,7 +29,7 @@ namespace Adam
 
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
-                AdamGame.ChangeState(GameState.MainMenu, GameMode.None);
+                AdamGame.ChangeState(GameState.MainMenu, GameMode.None, false);
             }
         }
     }

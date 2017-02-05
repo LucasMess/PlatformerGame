@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.BitmapFonts;
 using System;
+using System.IO;
 using System.Threading;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using MessageBox = Adam.UI.MessageBox;
@@ -225,17 +226,23 @@ namespace Adam
             _debugFont = Content.Load<BitmapFont>("debug");
 
             CurrentGameMode = GameMode.None;
+
+            string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
+            DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/Main Menu.lvl");
         }
 
-        public static void ChangeState(GameState desiredGameState, GameMode mode)
+        public static void ChangeState(GameState desiredGameState, GameMode mode, bool reloadWorld)
         {
             CurrentGameState = GameState.LoadingScreen;
+            CurrentGameMode = mode;
             _desiredGameState = desiredGameState;
             IsLoadingContent = true;
 
-            if (desiredGameState == GameState.GameWorld)
+            if (reloadWorld)
             {
-                LoadWorldFromFile(mode);
+                _reloadThread = new Thread(BackgroundThread_FileLoad);
+                _reloadThread.IsBackground = true;
+                _reloadThread.Start();
             }
             else
             {
@@ -243,23 +250,11 @@ namespace Adam
             }
         }
 
-        private static void LoadWorldFromFile(GameMode mode)
-        {
-            CurrentGameState = GameState.LoadingScreen;
-            CurrentGameMode = mode;
-            _desiredGameState = GameState.GameWorld;
-            IsLoadingContent = true;
-
-            _reloadThread = new Thread(BackgroundThread_FileLoad);
-            _reloadThread.IsBackground = true;
-            _reloadThread.Start();
-        }
-
         private static void BackgroundThread_FileLoad()
         {
-            IsLoadingContent = true;
             if (!GameWorld.TryLoadFromFile(CurrentGameMode))
             {
+                // If loading fails, return to main menu to avoid errors.
                 CurrentGameMode = GameMode.None;
                 CurrentGameState = GameState.MainMenu;
             }
@@ -338,7 +333,7 @@ namespace Adam
                         //GameData.SaveGame();
                         _wasEscapeReleased = false;
                         Menu.CurrentMenuState = Menu.MenuState.Main;
-                        ChangeState(GameState.MainMenu, GameMode.None);
+                        ChangeState(GameState.MainMenu, GameMode.None, false);
                     }
                 }
 
@@ -355,7 +350,7 @@ namespace Adam
             {
                 case GameState.MainMenu:
                     _menu.Update();
-                    break;
+                    goto case GameState.GameWorld;
                 case GameState.LoadingScreen:
                     _loadingScreen.Update();
 
@@ -384,7 +379,6 @@ namespace Adam
         protected override void Draw(GameTime gameTime)
         {
             _totalFrames++;
-            //DrawToMainRenderTarget(_mainRenderTarget);
 
             //Set background color
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -400,6 +394,7 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.MainMenu:
+                    goto case GameState.GameWorld;
                     GraphicsDevice.SetRenderTarget(_uiRT);
                     GraphicsDevice.Clear(Color.Black);
                     var rs2 = new RasterizerState { ScissorTestEnable = true };
@@ -482,7 +477,14 @@ namespace Adam
                     var rs = new RasterizerState { ScissorTestEnable = true };
                     _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
                         DepthStencilState.None, rs);
-                    GameWorld.DrawUi(_spriteBatch);
+
+                    // For the new main menu that has a world simulated in the background.
+                    if (CurrentGameState == GameState.MainMenu)
+                        _menu.Draw(_spriteBatch);
+                    else
+                        GameWorld.DrawUi(_spriteBatch);
+
+
                     Overlay.Draw(_spriteBatch);
                     Dialog.Draw(_spriteBatch);
                     TextInputBox.Draw(_spriteBatch);
@@ -500,11 +502,14 @@ namespace Adam
                     int count = 0;
                     if (TimeFreeze.IsTimeFrozen())
                     {
-                        count = 5;
+                        count = 10;
                     }
+                    Color color = Color.White;
                     for (int i = 0; i <= count; i++)
                     {
-                        _spriteBatch.Draw(_frontRT, new Rectangle(0 + count, 0 + count, UserResWidth - count * 2, UserResHeight - count * 2), Color.White);
+                        int dist = i * 5;
+                        _spriteBatch.Draw(_frontRT, new Rectangle(0 + dist, 0 + dist, UserResWidth - dist * 2, UserResHeight - dist * 2), color);
+                        color *= .8f;
                     }
 
                     _spriteBatch.End();

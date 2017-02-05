@@ -29,7 +29,7 @@ namespace Adam.GameData
 
         public WorldConfigFile() { }
 
-        public WorldConfigFile(string levelName ,short width, short height)
+        public WorldConfigFile(string levelName, short width, short height)
         {
             if (levelName == null)
                 levelName = "Name not Found";
@@ -84,14 +84,20 @@ namespace Adam.GameData
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Edit);
-            AdamGame.ChangeState(GameState.GameWorld, GameMode.Edit);
+            AdamGame.ChangeState(GameState.GameWorld, GameMode.Edit, true);
         }
 
         public void LoadIntoPlay()
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Play);
-            AdamGame.ChangeState(GameState.GameWorld, GameMode.Play);
+            AdamGame.ChangeState(GameState.GameWorld, GameMode.Play, true);
+        }
+
+        public void LoadIntoView()
+        {
+            TransferDataToWorldData();
+            AdamGame.ChangeState(AdamGame.CurrentGameState, AdamGame.CurrentGameMode, true);
         }
 
         public void TransferDataToWorldData()
@@ -121,8 +127,8 @@ namespace Adam.GameData
         /// <returns>Returns true if level is valid.</returns>
         public bool IsValidLevel()
         {
-            foreach (int id in  TileIDs)
-            { 
+            foreach (int id in TileIDs)
+            {
                 // Found player.
                 if (id == 200)
                     return true;

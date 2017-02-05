@@ -141,6 +141,8 @@ namespace Adam.PlayerCharacter
         /// </summary>
         private void CheckInput()
         {
+            if (AdamGame.CurrentGameMode == GameMode.None) return;
+
             if (AdamGame.Dialog.IsActive)
                 return;
 
@@ -156,10 +158,11 @@ namespace Adam.PlayerCharacter
 
             if (!PlayerScript.IsDoingAction)
             {
-                if (IsRewindPressed())
-                {
-                    RewindAction?.Invoke();
-                }
+                if (AdamGame.CurrentGameMode == GameMode.Play)
+                    if (IsRewindPressed())
+                    {
+                        RewindAction?.Invoke();
+                    }
                 if (IsMoveLeftPressed())
                     LeftMove?.Invoke();
                 if (IsMoveRightPressed())

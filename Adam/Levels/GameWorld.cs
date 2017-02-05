@@ -159,9 +159,11 @@ namespace Adam.Levels
             }
             else
             {
-                SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
                 UpdateVisual();
             }
+
+            if (AdamGame.CurrentGameMode == GameMode.Play)
+                SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
 
             TimesUpdated++;
 

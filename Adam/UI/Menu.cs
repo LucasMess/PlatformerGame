@@ -23,32 +23,32 @@ namespace Adam
         Vector2 _fifth;
 
         //Main Menu
-        Button _chooseLevel;
-        Button _options;
-        Button _quit;
-        Button _multiplayer;
-        Button _storyModeButton;
+        TextButton _chooseLevel;
+        TextButton _options;
+        TextButton _quit;
+        TextButton _multiplayer;
+        TextButton _storyModeButton;
 
         //Level Selector
-        Button _save1;
-        Button _save2;
-        Button _save3;
+        TextButton _save1;
+        TextButton _save2;
+        TextButton _save3;
 
         //Options
-        Button _smoothPixels;
-        Button _lighting;
-        Button _fullscreen;
+        TextButton _smoothPixels;
+        TextButton _lighting;
+        TextButton _fullscreen;
 
         //Multiplayer
-        Button _hostGame;
-        Button _joinGame;
-        Button _startMultiplayerGame;
+        TextButton _hostGame;
+        TextButton _joinGame;
+        TextButton _startMultiplayerGame;
 
-        Button _backButton;
-        List<Button> _buttons = new List<Button>();
+        TextButton _backButton;
+        List<TextButton> _buttons = new List<TextButton>();
 
         bool _isSongPlaying;
-        BitmapFont _font32, _font64;
+        BitmapFont _font8, _font32;
         AdamGame _game1;
 
         StoryMode storyMode = new StoryMode();
@@ -62,7 +62,7 @@ namespace Adam
         {
             this._game1 = game1;
 
-            int width = AdamGame.DefaultUiWidth / 2;
+            int width = AdamGame.DefaultUiWidth / 2 - TextButton.Width / 2;
             int height = AdamGame.DefaultUiHeight * 2 / 5;
             int diff = (TextButton.Height + 2);
             _first = new Vector2(width, height + (diff * 0));
@@ -72,8 +72,8 @@ namespace Adam
             _fifth = new Vector2(width, height + (diff * 4));
 
             background = ContentHelper.LoadTexture("Backgrounds/Main Menu/menu_background_temp");
+            _font8 = ContentHelper.LoadFont("Fonts/x8");
             _font32 = ContentHelper.LoadFont("Fonts/x32");
-            _font64 = ContentHelper.LoadFont("Fonts/x64");
 
             _chooseLevel = new TextButton(_second, "Choose a Level");
             _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
@@ -135,6 +135,11 @@ namespace Adam
             _startMultiplayerGame = new TextButton(_third, "Start Game");
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
             _buttons.Add(_startMultiplayerGame);
+
+            foreach (var button in _buttons)
+            {
+                button.Color = new Color(196, 69, 69);
+            }
 
             _levelSelection = new LevelSelection();
         }
@@ -328,11 +333,11 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
+            //spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, AdamGame.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font64, "Adam", new Vector2((AdamGame.DefaultUiWidth / 2f) - _font64.MeasureString("Adam").X / 2, (AdamGame.DefaultUiHeight * 1 / 5f)), 3, Color.DarkRed, Color.MediumVioletRed);
+            FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font32, "Adam", new Vector2((AdamGame.DefaultUiWidth / 2f) - _font32.MeasureString("Adam").X / 2, (AdamGame.DefaultUiHeight * 1 / 5f)), 3, new Color(196, 69, 69), new Color(147,52,52));
 
             switch (CurrentMenuState)
             {

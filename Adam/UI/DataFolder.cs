@@ -130,6 +130,23 @@ namespace Adam.UI
         }
 
         /// <summary>
+        /// Loads the level but does not change game state.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void LoadLevelForBackground(string filePath)
+        {
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+            CurrentLevelFilePath = filePath;
+
+            if (!config.IsValidLevel())
+            {
+                throw new Exception("This level cannot be played because there is no player spawn point. Edit the level first.");
+            }
+
+            config.LoadIntoView();
+        }
+
+        /// <summary>
         /// Saves the current game world to the current level file.
         /// </summary>
         public static void SaveLevel()

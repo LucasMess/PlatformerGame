@@ -319,6 +319,9 @@ namespace Adam.PlayerCharacter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            // Do not draw player in main menu mode.
+            if (AdamGame.CurrentGameMode == GameMode.None) return;
+
             rewindTracker.Draw(this, spriteBatch);
             if (IsVisible)
                 base.Draw(spriteBatch);
