@@ -15,13 +15,14 @@ namespace Adam.Characters.Enemies
 
             Texture = ContentHelper.LoadTexture("Enemies/frog");
             SetPosition(new Vector2(x, y));
-            CollRectangle = new Rectangle(0, 0, 32, 32);            
+            CollRectangle = new Rectangle(0, 0, 32, 32);
             SourceRectangle = new Rectangle(0, 0, 24, 32);
 
             ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(4, 16, 24, 32), 0, 24, 32, 125, 4, true));
             ComplexAnim.AddAnimationData("jump", new ComplexAnimData(100, Texture, new Rectangle(4, 16, 24, 32), 32, 24, 32, 50, 4, false));
 
             Sounds.AddSoundRef("jump", "Sounds/Frog/frog_jump");
+            Sounds.AddSoundRef("idle", "Sounds/Frog/frog_croak");
         }
 
 
@@ -41,14 +42,11 @@ namespace Adam.Characters.Enemies
             }
         }
 
-        SoundFx _meanSound;
         protected override SoundFx MeanSound
         {
             get
             {
-                if (_meanSound == null)
-                    _meanSound = new SoundFx("Sounds/Frog/frog_croak");
-                return _meanSound;
+                return Sounds.GetSoundRef("idle");
             }
         }
 

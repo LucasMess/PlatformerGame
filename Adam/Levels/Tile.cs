@@ -761,6 +761,19 @@ namespace Adam
                     break;
                 case 201: //Snake
                     IsTransparent = true;
+                    if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    {
+                        _positionInSpriteSheet = new Vector2(19, 12);
+                    }
+                    else
+                    {
+                        if (!_hasAddedEntity)
+                        {
+                            GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
+                            _hasAddedEntity = true;
+                            _isInvisible = true;
+                        }
+                    }
                     break;
                 case 202: //Frog
                     IsTransparent = true;

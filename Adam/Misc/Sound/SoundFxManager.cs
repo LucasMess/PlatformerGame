@@ -32,7 +32,7 @@ namespace Adam.Misc.Sound
             }
         }
 
-        public SoundFx Get(string name)
+        public SoundFx GetSoundRef(string name)
         {
             SoundFx sound;
             if (_sounds.TryGetValue(name, out sound))

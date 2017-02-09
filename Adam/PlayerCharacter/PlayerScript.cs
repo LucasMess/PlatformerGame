@@ -44,14 +44,15 @@ namespace Adam
             entity.RemoveAnimationFromQueue("jump");
         }
 
-        protected override void OnGameTick()
+        public override void Update(Entity entity)
         {
             _player = (Player)_player.Get();
+            base.Update(entity);
         }
 
         private void OnPlayerDamaged(Rectangle damageArea, int damage)
         {
-            _player.Sounds.Get("hurt").Play();
+            _player.Sounds.GetSoundRef("hurt").Play();
         }
 
         public void OnStill(Player player)
@@ -131,7 +132,7 @@ namespace Adam
             }
             if (!player.IsJumping)
             {
-                player.Sounds.Get("jump").Play();
+                player.Sounds.GetSoundRef("jump").Play();
                 player.IsJumping = true;
                 player.SetVelY(jumpAcc);
                 player.ChangePosBy(0, -1);

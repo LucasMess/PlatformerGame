@@ -293,8 +293,6 @@ namespace Adam
 
                 ApplyAirFriction();
 
-                UpdateCall?.Invoke(this);
-
             }
 
             //Animate entity if applicable.

@@ -337,7 +337,7 @@ namespace Adam
 
             FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
             FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, "Adam", new Vector2((AdamGame.DefaultUiWidth / 2f) - _font32.MeasureString("Adam").X / 2, (AdamGame.DefaultUiHeight * 1 / 5f)), 3, new Color(196, 69, 69), new Color(147,52,52));
+            //FontHelper.DrawWithOutline(spriteBatch, _font8, "Another Way", new Vector2((AdamGame.DefaultUiWidth / 2f) - _font32.MeasureString("Adam").X / 2, (AdamGame.DefaultUiHeight * 1 / 5f)), 3, new Color(196, 69, 69), new Color(147,52,52));
 
             switch (CurrentMenuState)
             {

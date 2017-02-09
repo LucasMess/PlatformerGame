@@ -9,12 +9,12 @@
             this.Entity = entity;
         }
 
-        public void Run()
+        public virtual void Update(Entity entity)
         {
-            OnGameTick();
+
         }
 
-        protected virtual void OnGameTick()
+        public void Run()
         {
             Entity = Entity.Get();
         }

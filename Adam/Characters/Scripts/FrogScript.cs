@@ -28,7 +28,6 @@ namespace Adam.Characters.Scripts
             entity.CurrentCollisionType = CollisionType.None;
             entity.CollidedWithTileBelow += Entity_CollidedWithTileBelow;
             entity.CollidedWithEntityAbove += Entity_CollidedWithEntityAbove;
-            entity.UpdateCall += Entity_UpdateCall;
             entity.AddAnimationToQueue("still");
 
             base.Initialize(entity);
@@ -39,7 +38,7 @@ namespace Adam.Characters.Scripts
             entity.SetVelY(0);
         }
 
-        private void Entity_UpdateCall(Entity entity)
+        public override void Update(Entity entity)
         {
             if (CollisionRay.IsPlayerInSight(entity as Enemy, GameWorld.GetPlayer()))
             {
@@ -53,7 +52,7 @@ namespace Adam.Characters.Scripts
                 _canSeePlayer = false;
                 entity.Color = Color.White;
             }
-
+            base.Update(entity);
         }
 
         private void Entity_CollidedWithTileBelow(Entity entity, Tile tile)
@@ -94,7 +93,7 @@ namespace Adam.Characters.Scripts
 
                 Entity.SetVelX(speed);
                 Entity.AddAnimationToQueue("jump");
-                Entity.Sounds.Get("jump").Play();
+                Entity.Sounds.GetSoundRef("jump").Play();
             }
         }
 
