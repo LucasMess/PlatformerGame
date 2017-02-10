@@ -38,7 +38,6 @@ namespace Adam.Levels
         public static int IndexOfMouse;
         public static bool OnWallMode;
         public static byte SelectedId = 1;
-        public static bool IsInteractingWithTile = false;
 
         private static byte[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
@@ -371,7 +370,7 @@ namespace Adam.Levels
                     {
                         // If there is no air, then the player can interact with the tile.
                         // Only allow interaction if the brush size is 1.
-                        if (Brush.Size == 1 && !IsInteractingWithTile)
+                        if (Brush.Size == 1 )
                         {
                             CurrentArray[i].InteractInEditMode();
                         }

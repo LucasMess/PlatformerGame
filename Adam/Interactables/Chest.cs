@@ -27,6 +27,7 @@ namespace Adam
 
         public override void Update(Tile t)
         {
+            t.AnimationStopped = !_isOpen;
             Player player = GameWorld.Player;
             if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
             {
@@ -40,14 +41,6 @@ namespace Adam
 
         public override void OnPlayerAction(Tile tile)
         {
-            tile.AnimationStopped = false;
-            Open();
-
-            base.OnPlayerAction(tile);
-        }
-
-        void Open()
-        {
             if (!_isOpen)
             {
                 _openSound.PlayOnce();
@@ -59,6 +52,8 @@ namespace Adam
                     GameWorld.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));
                 }
             }
+
+            base.OnPlayerAction(tile);
         }
     }
 }

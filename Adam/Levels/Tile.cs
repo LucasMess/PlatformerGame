@@ -4,6 +4,7 @@ using Adam.Interactables;
 using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Adam
@@ -1645,6 +1646,11 @@ namespace Adam
 
         public void ConnectToInteractable(Interactable interactable)
         {
+            if (_interactable == null)
+            {
+                Console.WriteLine("Could not find interactable!");
+                return;
+            }
             interactable.OnActivation += _interactable.OnPlayerAction;
         }
     }

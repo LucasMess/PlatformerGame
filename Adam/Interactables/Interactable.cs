@@ -12,7 +12,8 @@ namespace Adam.Interactables
         public bool CanBeLinkedToOtherInteractables { get; protected set; } = false;
         Line line;
         private bool isBeingInteractedWith = false;
-        private bool buttonWasReleased = false;
+        private static bool buttonWasReleased = false;
+        private static bool selectingAnotherTile = false;
 
         public delegate void InteractionHandler(Tile tile);
         public event InteractionHandler OnActivation;
@@ -53,7 +54,7 @@ namespace Adam.Interactables
 
                 if (InputHelper.IsLeftMousePressed())
                 {
-                    LevelEditor.IsInteractingWithTile = false;
+                    selectingAnotherTile = false;
                     isBeingInteractedWith = false;
                     buttonWasReleased = false;
 
@@ -68,9 +69,7 @@ namespace Adam.Interactables
                     else
                     {
                         line = null;
-                    }
-                    // If the tile under the mouse is interactable, then act as if the player just acted on it.
-                }
+                    }                }
             }
         }
 
@@ -101,10 +100,10 @@ namespace Adam.Interactables
         /// </summary>
         public virtual void OnPlayerClickInEditMode(Tile tile)
         {
-            if (CanBeLinkedToOtherInteractables)
+            if (CanBeLinkedToOtherInteractables && !selectingAnotherTile && buttonWasReleased)
             {
                 isBeingInteractedWith = true;
-                LevelEditor.IsInteractingWithTile = true;
+                selectingAnotherTile = true;
                 buttonWasReleased = false;
             }
         }
