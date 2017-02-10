@@ -61,8 +61,18 @@ namespace Adam.Levels
             _open = new SoundFx("Sounds/Level Editor/close");
             _select = new SoundFx("Sounds/Level Editor/select");
 
-            EditorRectangle = new Rectangle(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
-                GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight);
+            Player player = GameWorld.GetPlayer();
+            if (player.RespawnPos == Vector2.Zero)
+            {
+                player.SetPosition(new Vector2(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
+                GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2));
+            }
+            else
+            {
+                player.SetPosition(player.RespawnPos);
+            }
+
+
         }
 
         //private void EntityScroll_TileSelected(TileSelectedArgs e)
@@ -370,7 +380,7 @@ namespace Adam.Levels
                     {
                         // If there is no air, then the player can interact with the tile.
                         // Only allow interaction if the brush size is 1.
-                        if (Brush.Size == 1 )
+                        if (Brush.Size == 1)
                         {
                             CurrentArray[i].InteractInEditMode();
                         }

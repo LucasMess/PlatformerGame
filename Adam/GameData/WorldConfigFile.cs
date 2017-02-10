@@ -129,13 +129,16 @@ namespace Adam.GameData
 
             // Need to convert metadata xml string array to dict.
             GameWorld.WorldData.MetaData.Clear();
-            foreach (var keyVal in MetaData)
+            if (MetaData != null)
             {
-                if (keyVal == null) continue;
-                string[] keyValSeparated = keyVal.Split(' ');
-                int key;
-                int.TryParse(keyValSeparated[0], out key);
-                GameWorld.WorldData.MetaData.Add(key, keyValSeparated[1]);
+                foreach (var keyVal in MetaData)
+                {
+                    if (keyVal == null) continue;
+                    string[] keyValSeparated = keyVal.Split(' ');
+                    int key;
+                    int.TryParse(keyValSeparated[0], out key);
+                    GameWorld.WorldData.MetaData.Add(key, keyValSeparated[1]);
+                }
             }
 
             GameWorld.WorldData.LevelName = LevelName;

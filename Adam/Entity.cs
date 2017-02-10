@@ -81,7 +81,6 @@ namespace Adam
             CollidedWithTileToLeft += OnCollisionWithTileToLeft;
             CollidedWithTileToRight += OnCollisionWithTileToRight;
             CollidedWithTerrain += OnCollisionWithTerrain;
-            AdamGame.GameUpdateCalled += DefineRespawnPoint;
 
             // Sets SpawnPoint Tile index based on coordinates at spawn.
             TileIndexSpawn = GetTileIndex();
@@ -326,16 +325,6 @@ namespace Adam
                 IsTouchingGround = true;
                 Velocity *= below.GetFrictionConstant();
             }
-        }
-
-        /// <summary>
-        /// Called right after the entity spawns to define the respawn location;
-        /// </summary>
-        /// <param name="gameTime"></param>
-        private void DefineRespawnPoint()
-        {
-            AdamGame.GameUpdateCalled -= DefineRespawnPoint;
-            Vector2 v = RespawnPos;
         }
 
         /// <summary>

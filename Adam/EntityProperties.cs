@@ -45,17 +45,7 @@ namespace Adam
         /// </summary>
         public int Weight { get; set; } = 10;
 
-        private Vector2 _respawnPos;
-        protected Vector2 RespawnPos
-        {
-            get
-            {
-                if (_respawnPos == Vector2.Zero)
-                    _respawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
-                return _respawnPos;
-            }
-            set { _respawnPos = value; }
-        }
+        public Vector2 RespawnPos { get; set; }
 
     }
 }
