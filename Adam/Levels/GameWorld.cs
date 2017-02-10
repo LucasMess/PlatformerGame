@@ -38,9 +38,14 @@ namespace Adam.Levels
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
 
+        /// <summary>
+        /// Returns the color data of the spritesheet used for most of the game's textures.
+        /// </summary>
+        public static Color[] SpriteSheetColorData = new Color[SpriteSheet.Width * SpriteSheet.Height];
+
         public static void Initialize()
         {
-
+            SpriteSheet.GetData<Color>(SpriteSheetColorData);
         }
 
         public static bool TryLoadFromFile(GameMode currentGameMode)

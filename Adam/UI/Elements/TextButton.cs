@@ -25,8 +25,8 @@ namespace Adam.UI.Elements
 
             if (convertCoordinates)
             {
-                position.X = (int)position.X;
-                position.Y = (int)position.Y;
+                position.X = (int)position.X * 2;
+                position.Y = (int)position.Y * 2;
             }
 
             CollRectangle = new Rectangle((int)position.X, (int)position.Y, width,

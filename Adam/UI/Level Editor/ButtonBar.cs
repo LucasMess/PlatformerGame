@@ -20,20 +20,20 @@ namespace Adam.UI.Level_Editor
         {
             _texture = GameWorld.UiSpriteSheet;
             _sourceRectangle = new Rectangle(0, 212, 382, 40);
-            _drawRectangle = new Rectangle(0, 0, _sourceRectangle.Width,
-                _sourceRectangle.Height);
+            _drawRectangle = new Rectangle(0, 0, _sourceRectangle.Width * 2,
+                _sourceRectangle.Height * 2);
 
             _drawRectangle.X = AdamGame.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
 
             // Buttons cannot be called individually outside the constructor.
-            var brushButton = new IconButton(new Vector2(11, 11), _drawRectangle, "Brush", ButtonImage.Brush);
-            var eraserButton = new IconButton(new Vector2(29, 11), _drawRectangle, "Eraser", ButtonImage.Eraser);
-            var undoButton = new IconButton(new Vector2(47, 11), _drawRectangle, "Undo", ButtonImage.Undo);
-            var wallButton = new IconButton(new Vector2(65, 11), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
-            var expandButton = new IconButton(new Vector2(293, 17), _drawRectangle, "More tiles", ButtonImage.Expand);
-            var playButton = new IconButton(new Vector2(336, 11), _drawRectangle, "Play test level", ButtonImage.Play);
-            var deleteButton = new IconButton(new Vector2(318, 11), _drawRectangle, "Reset level", ButtonImage.Delete);
-            var optionsButton = new IconButton(new Vector2(354, 11), _drawRectangle, "More options",
+            var brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);
+            var eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
+            var undoButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Undo", ButtonImage.Undo);
+            var wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
+            var expandButton = new IconButton(new Vector2(293 * 2, 17 * 2), _drawRectangle, "More tiles", ButtonImage.Expand);
+            var playButton = new IconButton(new Vector2(336 * 2, 11 * 2), _drawRectangle, "Play test level", ButtonImage.Play);
+            var deleteButton = new IconButton(new Vector2(318 * 2, 11 * 2), _drawRectangle, "Reset level", ButtonImage.Delete);
+            var optionsButton = new IconButton(new Vector2(354 * 2, 11 * 2), _drawRectangle, "More options",
                 ButtonImage.Settings);
 
             playButton.MouseClicked += LevelEditor.TestLevel;

@@ -33,7 +33,7 @@ namespace Adam.UI.Elements
     /// </summary>
     public class IconButton : Button
     {
-        private const int ButtonSize = 16;
+        public const int Size = 32;
         private readonly Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
         private readonly ButtonImage _buttonImage;
         private readonly string _hoverText;
@@ -69,8 +69,8 @@ namespace Adam.UI.Elements
                     SourceRectangle.Y = 25;
                     SourceRectangle.Width = 10;
                     SourceRectangle.Height = 5;
-                    CollRectangle.Width = SourceRectangle.Width;
-                    CollRectangle.Height = SourceRectangle.Height;
+                    CollRectangle.Width = SourceRectangle.Width * 2;
+                    CollRectangle.Height = SourceRectangle.Height * 2;
                     break;
                 case ButtonImage.Delete:
                     SourceRectangle.X = 64;
@@ -124,8 +124,8 @@ namespace Adam.UI.Elements
         {
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
-            CollRectangle = new Rectangle(0, 0, ButtonSize, ButtonSize);
-            SourceRectangle = new Rectangle(0, 0, ButtonSize, ButtonSize);
+            CollRectangle = new Rectangle(0, 0, Size, Size);
+            SourceRectangle = new Rectangle(0, 0, 16, 16);
             _font = ContentHelper.LoadFont("Fonts/x32");
         }
 
@@ -155,8 +155,8 @@ namespace Adam.UI.Elements
                 default:
                     spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, CurrentColor);
                     spriteBatch.Draw(GameWorld.UiSpriteSheet,
-                        new Rectangle(CollRectangle.X, CollRectangle.Y + 11,
-                            _shadowSource.Width, _shadowSource.Height),
+                        new Rectangle(CollRectangle.X, CollRectangle.Y + 11 * 2,
+                            _shadowSource.Width * 2, _shadowSource.Height * 2),
                         _shadowSource, Color.White);
                     break;
                 case ButtonImage.Expand:

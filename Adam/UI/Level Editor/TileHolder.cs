@@ -11,7 +11,7 @@ namespace Adam.UI.Level_Editor
 {
     internal class TileHolder : UiElement
     {
-        private const int SpacingBetweenSquareAndTile = 3;
+        private const int SpacingBetweenSquareAndTile = 3 * 2;
         private Vector2 _positionRelativeToContainer;
         private readonly Tile _tile;
         public Timer LastTimeUsed { get; set; } = new Timer(true);
@@ -38,11 +38,11 @@ namespace Adam.UI.Level_Editor
 
         public TileHolder(int id)
         {
-            DrawRectangle = new Rectangle(0, 0, (SourceRectangle.Width),
-            SourceRectangle.Height);
+            DrawRectangle = new Rectangle(0, 0, (SourceRectangle.Width) * 2,
+            SourceRectangle.Height * 2);
             _tile = new Tile(true) { Id = (byte)id };
             _tile.DefineTexture();
-            Size = SourceRectangle.Width;
+            Size = SourceRectangle.Width * 2;
             AdjustTileInside();
 
             WasClicked += TileHolder_WasClicked;
@@ -83,8 +83,8 @@ namespace Adam.UI.Level_Editor
             int widthDiff = ((16) - width) / 2;
             int heightDiff = ((16) - height) / 2;
             _tileTextureDifferential = new Vector2(widthDiff, heightDiff);
-            _tile.DrawRectangle.Width = width;
-            _tile.DrawRectangle.Height = height;
+            _tile.DrawRectangle.Width = width * 2;
+            _tile.DrawRectangle.Height = height * 2;
         }
 
         private void TileHolder_WasClicked(TileHolder tile)

@@ -47,8 +47,8 @@ namespace Adam.UI
         public LevelSelection()
         {
             // Defines the bounding box for the Level Info List.
-            int widthOfBounds = 300;
-            int heightOfBounds = 150;
+            int widthOfBounds = 300 * 2;
+            int heightOfBounds = 150 * 2;
             _boundsDrawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2, AdamGame.DefaultUiHeight / 2, widthOfBounds, heightOfBounds);
             _boundsDrawRectangle.X -= widthOfBounds / 2;
             _boundsDrawRectangle.Y -= heightOfBounds / 2;
@@ -62,12 +62,12 @@ namespace Adam.UI
 
             // Defines where the function buttons will be.
             _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - (4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + 8, 184, 40);
-            _playButton = new IconButton(new Vector2(4, 4), _functionButtonContainer, "Play level", ButtonImage.Play);
-            _editButton = new IconButton(new Vector2(4 + 32 + 4, 4), _functionButtonContainer, "Edit level", ButtonImage.Edit);
-            _renameButton = new IconButton(new Vector2(4 + 64 + 8, 4), _functionButtonContainer, "Rename level", ButtonImage.Rename);
-            _deleteButton = new IconButton(new Vector2(4 + 96 + 12, 4), _functionButtonContainer, "Delete level", ButtonImage.Delete);
-            _newButton = new IconButton(new Vector2(4 + 128 + 16, 4), _functionButtonContainer, "Create a new level", ButtonImage.New);
-            _backButton = new IconButton(new Vector2(-500 + 96 + 4, 4), _functionButtonContainer, "Return", ButtonImage.Back);
+            _playButton = new IconButton(new Vector2(4 + IconButton.Size * 0, 4), _functionButtonContainer, "Play level", ButtonImage.Play);
+            _editButton = new IconButton(new Vector2(4 + IconButton.Size * 1 + 4, 4), _functionButtonContainer, "Edit level", ButtonImage.Edit);
+            _renameButton = new IconButton(new Vector2(4 + IconButton.Size * 2 + 8, 4), _functionButtonContainer, "Rename level", ButtonImage.Rename);
+            _deleteButton = new IconButton(new Vector2(4 + IconButton.Size * 3 + 12, 4), _functionButtonContainer, "Delete level", ButtonImage.Delete);
+            _newButton = new IconButton(new Vector2(4 + IconButton.Size * 4 + 16, 4), _functionButtonContainer, "Create a new level", ButtonImage.New);
+            _backButton = new IconButton(new Vector2(-500 + IconButton.Size * 3 + 4, 4), _functionButtonContainer, "Return", ButtonImage.Back);
 
             _buttons = new List<IconButton>();
             _buttons.Add(_playButton);
@@ -85,7 +85,7 @@ namespace Adam.UI
             _backButton.MouseClicked += BackButton_MouseClicked;
 
             // Define the BitmapFont for the "Select Level" header and its position.
-            _headerFont = ContentHelper.LoadFont("Fonts/x8");
+            _headerFont = ContentHelper.LoadFont("Fonts/x32");
             _headerText = "Select a Level:";
             _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineHeight - (10));
         }
@@ -191,7 +191,7 @@ namespace Adam.UI
             }
 
             // Arranges the levels in an alphabetical list and sets their position.
-            _startingY = _scissorRectangle.Y + (3);
+            _startingY = _scissorRectangle.Y + (4 * 2);
             for (int i = 0; i < _levelCount; i++)
             {
                 _levelInfos[i].SetPosition(_startingY, i);
@@ -333,10 +333,10 @@ namespace Adam.UI
             LastModifiedDate = lastModDate;
 
             // Define how big each info section will be.
-            _nameFont = ContentHelper.LoadFont("Fonts/x8");
+            _nameFont = ContentHelper.LoadFont("Fonts/x16");
             _infoFont = ContentHelper.LoadFont("Fonts/x8");
 
-            _drawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8, 0, LevelSelection.WidthOfBounds - 16, 25);
+            _drawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
 
             _spacing = _infoFont.LineHeight + 4;
 
@@ -365,7 +365,7 @@ namespace Adam.UI
         /// <param name="orderInList">The rank of this item in the list.</param>
         public void SetPosition(int initialY, int orderInList)
         {
-            _drawRectangle.Y = initialY + _drawRectangle.Height * orderInList + (3) * orderInList;
+            _drawRectangle.Y = initialY + _drawRectangle.Height * orderInList + (3 * 2) * orderInList;
         }
 
         public void Update()

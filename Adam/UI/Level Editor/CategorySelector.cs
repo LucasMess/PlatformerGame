@@ -14,8 +14,8 @@ namespace Adam.UI.Level_Editor
 
         public CategorySelector()
         {
-            DrawRectangle = new Rectangle(0, 0, _sourceRectangle.Width
-            , _sourceRectangle.Height);
+            DrawRectangle = new Rectangle(0, 0, _sourceRectangle.Width * 2
+            , _sourceRectangle.Height * 2);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -30,8 +30,8 @@ namespace Adam.UI.Level_Editor
                 _swooshSound.Play();
                 _oldPosition = position;
             }
-            position.X -= 6;
-            position.Y -= 9;
+            position.X -= 12;
+            position.Y -= 16;
             base.MoveTo(position, duration);
         }
     }

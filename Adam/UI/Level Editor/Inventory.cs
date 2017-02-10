@@ -19,11 +19,11 @@ namespace Adam.UI.Level_Editor
         }
         public static Category CurrentCategory { get; private set; } = Category.Building;
 
-        private const int SpacingBetweenTiles = 2;
+        private const int SpacingBetweenTiles = 2 * 2;
 
         // The starting coordinates for the first tile in the grid.
-        private const int DefaultX = 155;
-        private const int DefaultY = 47;
+        private const int DefaultX = 155 * 2;
+        private const int DefaultY = 47 * 2;
 
         private const int TilesPerRow = 9;
 
@@ -43,7 +43,7 @@ namespace Adam.UI.Level_Editor
         private List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
         public static bool IsMovingTile { get; set; }
-        private Rectangle _scissorRectangle = new Rectangle(150, 42, 236, 195);
+        private Rectangle _scissorRectangle = new Rectangle(150 * 2, 42 * 2, 236 * 2, 195 * 2);
 
         private byte[] _buildingTiles =
         {
@@ -141,36 +141,38 @@ namespace Adam.UI.Level_Editor
 
         public Inventory()
         {
-            _backDrop = new Rectangle(87, 38,
-                305, 204);
+            _backDrop = new Rectangle(87 * 2, 38 * 2,
+                305 * 2, 204 * 2);
             _inactiveY = _backDrop.Y - _backDrop.Height;
             _activeY = _backDrop.Y;
             _posAtStartOfAnimation = _backDrop.Y;
 
             CreateTileHolders();
 
-            int buttonWidth = 46;
-            int buttonHeight = 15;
+            int buttonWidth = 46 * 2;
+            int buttonHeight = 15 * 2;
+
+            int spacingBetweenButtons = 6;
 
             // Category buttons on the side.
-            Button button1 = new TextButton(new Vector2(99, 60), "Building");
+            Button button1 = new TextButton(new Vector2(99 * 2, 60 * 2), "Building", false);
             button1.MouseClicked += BuldingCatClicked;
             BuldingCatClicked(button1);
             _categoryButtons.Add(button1);
 
-            Button button2 = new TextButton(new Vector2(99, 58 + buttonHeight * 2 + 5), "Wall");
+            Button button2 = new TextButton(new Vector2(button1.GetPosition().X, button1.GetPosition().Y + buttonHeight * 1 + spacingBetweenButtons * 2), "Wall", false);
             button2.MouseClicked += WallCatClicked;
             _categoryButtons.Add(button2);
 
-            Button button3 = new TextButton(new Vector2(99, 58 + buttonHeight * 3 + 5 * 3), "Objects");
+            Button button3 = new TextButton(new Vector2(button1.GetPosition().X, button1.GetPosition().Y + buttonHeight * 2 + spacingBetweenButtons * 4), "Objects", false);
             button3.MouseClicked += ObjectsCatClicked; ;
             _categoryButtons.Add(button3);
 
-            Button button4 = new TextButton(new Vector2(99, 58 + buttonHeight * 4 + 5 * 5), "Entities");
+            Button button4 = new TextButton(new Vector2(button1.GetPosition().X, button1.GetPosition().Y + buttonHeight * 3 + spacingBetweenButtons * 6), "Entities", false);
             button4.MouseClicked += CharactersCatClicked; ;
             _categoryButtons.Add(button4);
 
-            Button button5 = new TextButton(new Vector2(99, 58 + buttonHeight * 5 + 5 * 7), "Special");
+            Button button5 = new TextButton(new Vector2(button1.GetPosition().X, button1.GetPosition().Y + buttonHeight * 4 + spacingBetweenButtons * 8), "Special", false);
             button5.MouseClicked += SpecialCatClicked;
             _categoryButtons.Add(button5);
 
@@ -254,10 +256,10 @@ namespace Adam.UI.Level_Editor
             {
                 var x = (DefaultX) +
                         (counter % TilesPerRow) *
-                        (TileHolder.SourceRectangle.Width + SpacingBetweenTiles);
+                        (tile.Size + SpacingBetweenTiles);
                 var y = (DefaultY) +
                         (counter / TilesPerRow) *
-                        (TileHolder.SourceRectangle.Height + SpacingBetweenTiles);
+                        (tile.Size + SpacingBetweenTiles);
 
                 tile.SetPosition(x, y);
                 tile.BindTo(new Vector2(_backDrop.X, _backDrop.Y));

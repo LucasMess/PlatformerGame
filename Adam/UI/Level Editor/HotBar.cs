@@ -12,9 +12,9 @@ namespace Adam.UI.Level_Editor
     static class HotBar
     {
         private const int NumberOfVisible = 8;
-        private const int SpacingBetweenTiles = 2;
-        private const int StartingX = 145;
-        private const int StartingY = 8;
+        private const int SpacingBetweenTiles = 2 * 2;
+        private const int StartingX = 145 * 2;
+        private const int StartingY = 8 * 2;
         private static List<TileHolder> _tileHolders = new List<TileHolder>();
         private static Rectangle _selectorSourceRect = new Rectangle(283, 142, 26, 26);
         private static Rectangle _selectorDrawRect;
@@ -141,10 +141,10 @@ namespace Adam.UI.Level_Editor
             if (SelectedTile != null)
             {
                 _selectorDrawRect = SelectedTile.CollRectangle;
-                _selectorDrawRect.X -= 2;
-                _selectorDrawRect.Y -= 2;
-                _selectorDrawRect.Width = _selectorSourceRect.Width;
-                _selectorDrawRect.Height = _selectorSourceRect.Height;
+                _selectorDrawRect.X -= 2 * 2;
+                _selectorDrawRect.Y -= 2 * 2;
+                _selectorDrawRect.Width = _selectorSourceRect.Width * 2;
+                _selectorDrawRect.Height = _selectorSourceRect.Height * 2;
             }
 
 

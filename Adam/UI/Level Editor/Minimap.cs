@@ -10,10 +10,10 @@ namespace Adam.UI
     /// </summary>
     internal class Minimap
     {
-        private readonly Texture2D _antiTexture;
-        private readonly Color[] _pixels;
-        private readonly Rectangle _rectangle;
-        private readonly Texture2D _texture;
+        private Texture2D _antiTexture;
+        private Color[] _pixels;
+        private Rectangle _rectangle;
+        private Texture2D _texture;
         private bool _isAnti;
         private Texture2D _temp;
         private Thread _thread;
@@ -25,20 +25,20 @@ namespace Adam.UI
 
         public Minimap()
         {
-            int size = (74);
+            int size = (74 * 2);
             _temp = AdamGame.DefaultTexture;
             _texture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _antiTexture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
-            _rectangle = new Rectangle(AdamGame.UserResWidth - size, AdamGame.UserResHeight - size,
+            _rectangle = new Rectangle(AdamGame.DefaultUiWidth - size, AdamGame.DefaultUiHeight - size,
                 size, size);
 
-            minimapToWorldRatio = (float)(_texture.Width)/size;
+            minimapToWorldRatio = (float)(_texture.Width) / size;
 
-            int width = (_uiSourceRect.Width);
-            int height = (_uiSourceRect.Height);
+            int width = (_uiSourceRect.Width * 2);
+            int height = (_uiSourceRect.Height * 2);
             _uiDrawRect = new Rectangle(AdamGame.DefaultUiWidth - width, AdamGame.DefaultUiHeight - height, width, height);
 
         }
@@ -67,27 +67,17 @@ namespace Adam.UI
                 var tileArray = GameWorld.TileArray;
                 var wallArray = GameWorld.WallArray;
 
-                Texture2D texture = GameWorld.SpriteSheet;
-                Color[] colors = new Color[texture.Width * texture.Height];
-                try
-                {
-                    texture.GetData(colors);
-
-                }
-                catch{
-                    return;
-                }
-
                 for (var i = 0; i < tileArray.Length; i++)
                 {
                     _pixels[i] = Color.Transparent;
                     if (tileArray[i].Id != 0 && tileArray[i].Id < 200)
                     {
-                        _pixels[i] = colors[tileArray[i].SourceRectangle.Center.X + tileArray[i].SourceRectangle.Center.Y * texture.Width];
+                        Color color = GameWorld.SpriteSheetColorData[tileArray[i].SourceRectangle.Center.X + tileArray[i].SourceRectangle.Center.Y * GameWorld.SpriteSheet.Width];
+                        _pixels[i] = color;
                     }
                     else if (wallArray[i].Id != 0)
                     {
-                        _pixels[i] = colors[wallArray[i].SourceRectangle.Center.X + wallArray[i].SourceRectangle.Center.Y * texture.Width];
+                        _pixels[i] = GameWorld.SpriteSheetColorData[wallArray[i].SourceRectangle.Center.X + wallArray[i].SourceRectangle.Center.Y * GameWorld.SpriteSheet.Width];
                     }
                 }
 
@@ -130,7 +120,7 @@ namespace Adam.UI
                 spriteBatch.Draw(_antiTexture, _rectangle, Color.White);
             }
 
-            _viewDrawRect = new Rectangle((int)(AdamGame.Camera.LeftTopGameCoords.X / AdamGame.Tilesize / minimapToWorldRatio), (int)(AdamGame.Camera.LeftTopGameCoords.Y / AdamGame.Tilesize / minimapToWorldRatio), (int)(23f * (16/9f)), 23);
+            _viewDrawRect = new Rectangle((int)(AdamGame.Camera.LeftTopGameCoords.X / AdamGame.Tilesize / minimapToWorldRatio), (int)(AdamGame.Camera.LeftTopGameCoords.Y / AdamGame.Tilesize / minimapToWorldRatio), 24, 17);
             _viewDrawRect.X += _rectangle.X;
             _viewDrawRect.Y += _rectangle.Y;
             spriteBatch.Draw(GameWorld.SpriteSheet, _viewDrawRect, _viewSourceRect, Color.Black);

@@ -62,9 +62,9 @@ namespace Adam
         {
             this._game1 = game1;
 
-            int width = AdamGame.DefaultUiWidth / 2 - TextButton.Width / 2;
+            int width = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
             int height = AdamGame.DefaultUiHeight * 2 / 5;
-            int diff = (TextButton.Height + 2);
+            int diff = (TextButton.Height + 2) * 2;
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
             _third = new Vector2(width, height + (diff * 2));
@@ -75,23 +75,23 @@ namespace Adam
             _font8 = ContentHelper.LoadFont("Fonts/x8");
             _font32 = ContentHelper.LoadFont("Fonts/x32");
 
-            _chooseLevel = new TextButton(_second, "Choose a Level");
+            _chooseLevel = new TextButton(_second, "Choose a Level", false);
             _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
             _buttons.Add(_chooseLevel);
 
-            _quit = new TextButton(_fifth, "Quit");
+            _quit = new TextButton(_fifth, "Quit", false);
             _quit.MouseClicked += quit_MouseClicked;
             _buttons.Add(_quit);
 
-            _options = new TextButton(_third, "Options");
+            _options = new TextButton(_third, "Options", false);
             _options.MouseClicked += options_MouseClicked;
             _buttons.Add(_options);
 
-            _multiplayer = new TextButton(_fourth, "Multiplayer");
+            _multiplayer = new TextButton(_fourth, "Multiplayer", false);
             _multiplayer.MouseClicked += multiplayer_MouseClicked;
             _buttons.Add(_multiplayer);
 
-            _storyModeButton = new TextButton(_first, "Story Mode");
+            _storyModeButton = new TextButton(_first, "Story Mode", false);
             _storyModeButton.MouseClicked += storyMode_MouseClicked;
             _buttons.Add(_storyModeButton);
 
@@ -103,12 +103,12 @@ namespace Adam
             //lighting.MouseClicked += lighting_MouseClicked;
             //buttons.Add(lighting);
 
-            _fullscreen = new TextButton(_first, "Borderless Mode: ");
+            _fullscreen = new TextButton(_first, "Borderless Mode: ", false);
             _fullscreen.MouseClicked += fullscreen_MouseClicked;
             //_fullscreen.IsOn = Main.GameData.Settings.IsFullscreen;
             _buttons.Add(_fullscreen);
 
-            _backButton = new TextButton(_fifth, "Back");
+            _backButton = new TextButton(_fifth, "Back", false);
             _backButton.MouseClicked += backButton_MouseClicked;
             _buttons.Add(_backButton);
 
@@ -124,20 +124,21 @@ namespace Adam
             //save3.MouseClicked += level3_MouseClicked;
             //buttons.Add(save3);
 
-            _hostGame = new TextButton(_first, "Host Game");
+            _hostGame = new TextButton(_first, "Host Game", false);
             _hostGame.MouseClicked += hostGame_MouseClicked;
             _buttons.Add(_hostGame);
 
-            _joinGame = new TextButton(_second, "Join Game");
+            _joinGame = new TextButton(_second, "Join Game", false);
             _joinGame.MouseClicked += joinGame_MouseClicked;
             _buttons.Add(_joinGame);
 
-            _startMultiplayerGame = new TextButton(_third, "Start Game");
+            _startMultiplayerGame = new TextButton(_third, "Start Game", false);
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
             _buttons.Add(_startMultiplayerGame);
 
             foreach (var button in _buttons)
             {
+                button.ChangeDimensions(new Vector2(TextButton.Width * 2, TextButton.Height * 2));
                 button.Color = new Color(196, 69, 69);
             }
 
