@@ -299,11 +299,7 @@ namespace Adam
 
         public void OnWeaponFire(Player player)
         {
-            if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 200)
-            {
-                new PlayerWeaponProjectile();
-                _weaponFireRateTimer.Reset();
-            }
+
         }
 
         public void OnRewindAction(Player player)

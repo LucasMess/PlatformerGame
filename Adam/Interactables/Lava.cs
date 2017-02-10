@@ -5,17 +5,18 @@ namespace Adam.Interactables
 {
     class Lava : Interactable
     {
-        private static readonly SoundFx Bubbling = new SoundFx("Sounds/Tiles/lava");
 
-        public override void OnPlayerTouch()
+        private static readonly SoundFx bubblingSound = new SoundFx("Sounds/Tiles/lava");
+
+        public override void OnPlayerTouch(Tile tile)
         {
             GameWorld.Player.TakeDamage(null, 100);
-            base.OnPlayerTouch();
+            base.OnPlayerTouch(tile);
         }
 
-        public override void OnTileUpdate(Tile tile)
+        public override void Update(Tile tile)
         {
-            Bubbling.PlayIfStopped();
+            bubblingSound.PlayIfStopped();
         }
     }
 }

@@ -130,6 +130,16 @@ namespace Adam.UI
         }
 
         /// <summary>
+        /// Used to load a level from the content folder of the game. These will be levels created by the developer.
+        /// </summary>
+        /// <param name="levelName"></param>
+        public static void PlayStoryLevel(string levelName)
+        {
+            string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
+            PlayLevel(basePath + "/Content/Levels/" + levelName);
+        }
+
+        /// <summary>
         /// Loads the level but does not change game state.
         /// </summary>
         /// <param name="filePath"></param>

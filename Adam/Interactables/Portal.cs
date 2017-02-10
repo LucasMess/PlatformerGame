@@ -109,7 +109,7 @@ namespace Adam.Interactables
         {
             t.OnTileDestroyed -= SourceTile_OnTileDestroyed;
             t.OnPlayerInteraction -= SourceTile_OnPlayerInteraction;
-            GameWorld.WorldData.MetaData[_tileIndex] = null;
+            GameWorld.WorldData.MetaData.Remove(t.TileIndex);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using Adam.Misc.Databases;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Adam.GameData
 {
@@ -39,8 +40,6 @@ namespace Adam.GameData
             BackgroundId = 1;
             SoundtrackId = 1;
 
-            MetaData = new string[LevelWidth * LevelHeight];
-
             TileIDs = new byte[LevelWidth * LevelHeight];
             WallIDs = new byte[LevelWidth * LevelHeight];
 
@@ -65,7 +64,24 @@ namespace Adam.GameData
             BackgroundId = GameWorld.WorldData.BackgroundId;
             SoundtrackId = GameWorld.WorldData.SoundtrackId;
 
-            MetaData = GameWorld.WorldData.MetaData;
+            // For the metadata, you need to convert the Dictionary into a string array.
+            List<string> values = new List<string>();
+            StringBuilder builder = new StringBuilder();
+            foreach (var key in GameWorld.WorldData.MetaData.Keys)
+            {
+                builder.Clear();
+                builder.Append(key + " ");
+                string value;
+                if (GameWorld.WorldData.MetaData.TryGetValue(key, out value))
+                {
+                    builder.Append(value);
+                    values.Add(builder.ToString());
+                }
+            }
+
+            MetaData = values.ToArray();
+
+
 
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
@@ -111,7 +127,16 @@ namespace Adam.GameData
             GameWorld.WorldData.BackgroundId = BackgroundId;
             GameWorld.WorldData.SoundtrackId = SoundtrackId;
 
-            GameWorld.WorldData.MetaData = MetaData;
+            // Need to convert metadata xml string array to dict.
+            GameWorld.WorldData.MetaData.Clear();
+            foreach (var keyVal in MetaData)
+            {
+                if (keyVal == null) continue;
+                string[] keyValSeparated = keyVal.Split(' ');
+                int key;
+                int.TryParse(keyValSeparated[0], out key);
+                GameWorld.WorldData.MetaData.Add(key, keyValSeparated[1]);
+            }
 
             GameWorld.WorldData.LevelName = LevelName;
             GameWorld.WorldData.HasClouds = HasClouds;
@@ -135,77 +160,6 @@ namespace Adam.GameData
             }
 
             return false;
-        }
-    }
-
-    [Serializable]
-    public class AdamDictionary
-    {
-        List<KeyValue> _keyValues = new List<KeyValue>();
-        public AdamDictionary()
-        {
-
-        }
-
-        /// <summary>
-        /// Add a new entry to the dictionary.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="keyword"></param>
-        public void Add(int key, object keyword)
-        {
-            KeyValue newKey = new KeyValue(key, keyword);
-            _keyValues.Add(newKey);
-        }
-
-        /// <summary>
-        /// Try retrieving a value.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public object TryGetValue(int key)
-        {
-            foreach (KeyValue kv in _keyValues)
-            {
-                if (kv.Key == key)
-                {
-                    return kv.Value;
-                }
-            }
-
-            throw new KeyNotFoundException();
-        }
-
-        /// <summary>
-        /// Remove specified key.
-        /// </summary>
-        /// <param name="key"></param>
-        public void Remove(int key)
-        {
-            foreach (KeyValue kv in _keyValues)
-            {
-                if (kv.Key == key)
-                {
-                    _keyValues.Remove(kv);
-                    return;
-                }
-            }
-
-            throw new KeyNotFoundException();
-        }
-
-    }
-
-    [Serializable]
-    public struct KeyValue
-    {
-        public int Key { get; set; }
-        public object Value { get; set; }
-
-        public KeyValue(int key, object value)
-        {
-            Key = key;
-            Value = value;
         }
     }
 }

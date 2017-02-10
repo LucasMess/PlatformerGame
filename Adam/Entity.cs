@@ -82,6 +82,9 @@ namespace Adam
             CollidedWithTileToRight += OnCollisionWithTileToRight;
             CollidedWithTerrain += OnCollisionWithTerrain;
             AdamGame.GameUpdateCalled += DefineRespawnPoint;
+
+            // Sets SpawnPoint Tile index based on coordinates at spawn.
+            TileIndexSpawn = GetTileIndex();
         }
 
         /// <summary>
@@ -516,7 +519,9 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex()
         {
-            return (int)(CollRectangle.Center.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(CollRectangle.Center.X / AdamGame.Tilesize);
+            return CalcHelper.GetIndexInGameWorld(CollRectangle.Center.X, CollRectangle.Center.Y);
+            //if (GameWorld.WorldData == null) return -1;
+            //return (int)(CollRectangle.Center.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(CollRectangle.Center.X / AdamGame.Tilesize);
         }
 
         /// <summary>

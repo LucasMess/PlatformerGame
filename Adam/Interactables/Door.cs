@@ -1,7 +1,29 @@
-﻿namespace Adam
-{
-    public class Door
-    {
+﻿using Adam.Interactables;
+using Microsoft.Xna.Framework;
 
+namespace Adam
+{
+    public class Door : Interactable
+    {
+        bool isOpen = false;
+        bool isLocked = false;
+        Rectangle rectangle;
+
+        public override void Update(Tile tile)
+        {
+
+            base.Update(tile);
+        }
+
+        public override void OnPlayerAction(Tile tile)
+        {
+            if (isLocked)
+            {
+
+            }
+            isOpen = true;
+
+            base.OnPlayerAction(tile);
+        }
     }
 }

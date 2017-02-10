@@ -99,6 +99,11 @@ namespace Adam.UI.Elements
             }
         }
 
+        public void SetColor(Color color)
+        {
+            Color = color;
+        }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {

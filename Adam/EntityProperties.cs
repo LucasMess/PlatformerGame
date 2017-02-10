@@ -19,6 +19,11 @@ namespace Adam
         public bool IsCollidable { get; set; } = true;
 
         /// <summary>
+        /// Where the entity was originally placed at. Used to avoid respawning entities when defining textures.
+        /// </summary>
+        public int TileIndexSpawn { get; private set; }
+
+        /// <summary>
         /// Determines whether this entity should be affected by gravity.
         /// </summary>
         public bool ObeysGravity { get; set; } = true;

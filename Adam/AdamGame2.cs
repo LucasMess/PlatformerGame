@@ -72,7 +72,7 @@ namespace Adam
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
         public static DataFolder DataFolder = new DataFolder();
-        public static LevelProgression LevelProgression = new LevelProgression();
+        public static PlayerProfile LevelProgression = new PlayerProfile();
         public static Camera Camera;
         private static GameState _desiredGameState;
         private static Thread _reloadThread;
@@ -101,6 +101,7 @@ namespace Adam
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
         private bool _wasEscapeReleased;
+        public bool IsInStoryMode = false;
 
         public AdamGame()
         {
@@ -499,18 +500,21 @@ namespace Adam
                     _spriteBatch.Draw(_backRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
                     _spriteBatch.Draw(_shadowRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.Black * .5f);
 
-                    int count = 0;
-                    if (TimeFreeze.IsTimeFrozen())
-                    {
-                        count = 10;
-                    }
-                    Color color = Color.White;
-                    for (int i = 0; i <= count; i++)
-                    {
-                        int dist = i * 5;
-                        _spriteBatch.Draw(_frontRT, new Rectangle(0 + dist, 0 + dist, UserResWidth - dist * 2, UserResHeight - dist * 2), color);
-                        color *= .8f;
-                    }
+                    //int count = 0;
+                    //if (TimeFreeze.IsTimeFrozen())
+                    //{
+                    //    count = 10;
+                    //}
+                    //Color color = Color.White;
+                    //for (int i = 0; i <= count; i++)
+                    //{
+                    //    int dist = i * 5;
+                    //    _spriteBatch.Draw(_frontRT, new Rectangle(0 + dist, 0 + dist, UserResWidth - dist * 2, UserResHeight - dist * 2), color);
+                    //    color *= .8f;
+                    //}
+
+                    _spriteBatch.Draw(_frontRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
+
 
                     _spriteBatch.End();
 

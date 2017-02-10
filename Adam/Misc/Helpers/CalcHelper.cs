@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Adam.Levels;
+using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -194,6 +195,19 @@ namespace Adam
             }
 
             return currentMax;
+        }
+
+
+        /// <summary>
+        /// Returns the index of the coordinates given in the game world. If a gameworld does not exist, then it returns -1.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static int GetIndexInGameWorld(int x, int y)
+        {
+            if (GameWorld.WorldData == null) return -1;
+            return (int)(y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(x / AdamGame.Tilesize);
         }
     }
 }

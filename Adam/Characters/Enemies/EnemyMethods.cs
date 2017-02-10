@@ -79,15 +79,6 @@ namespace Adam.Characters.Enemies
                 player.TakeDamage(this, GetTouchDamage());
             }
 
-            foreach (Projectile proj in GameWorld.PlayerProjectiles)
-            {
-                if (proj.GetCollRectangle().Intersects(CollRectangle))
-                {
-                    TakeDamage(player,proj.DamageOnHit);
-                    proj.ToDelete = true;
-                }
-            }
-
         }
 
         private void CheckCollisionWithOtherEnemies()

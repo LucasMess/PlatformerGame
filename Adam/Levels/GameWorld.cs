@@ -18,7 +18,7 @@ namespace Adam.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_21");
+        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_23");
         public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
         public static readonly Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
         private static Timer _stopMovingTimer = new Timer(true);
@@ -31,13 +31,17 @@ namespace Adam.Levels
         public static List<Entity> Entities;
         public static bool IsOnDebug;
         public static PlayerCharacter.Player Player = new PlayerCharacter.Player();
-        public static List<Projectile> PlayerProjectiles;
         //Basic tile grid and the visible tile grid
         public static Tile[] TileArray;
         public static int TimesUpdated;
         public static Tile[] WallArray;
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
+
+        public static void Initialize()
+        {
+
+        }
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
         {
@@ -48,13 +52,9 @@ namespace Adam.Levels
             LoadingScreen.LoadingText = "Starting up world...";
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            PlayerProjectiles = new List<Projectile>();
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
-
-            if (WorldData.MetaData == null)
-                WorldData.MetaData = new string[width * height];
 
             var maxClouds = width / 20;
             for (var i = 0; i < maxClouds; i++)
@@ -124,6 +124,11 @@ namespace Adam.Levels
                 t.DefineTexture();
                 t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                 t.DefineTexture();
+            }
+
+            foreach (var t in array)
+            {
+                t.ReadMetaData();
             }
         }
 
@@ -203,11 +208,6 @@ namespace Adam.Levels
                     {
                         var power = (Item)entity;
                         power.Update();
-                    }
-                    if (entity is Projectile)
-                    {
-                        var proj = (Projectile)entity;
-                        proj.Update();
                     }
                     if (entity is NonPlayableCharacter)
                     {
@@ -359,6 +359,20 @@ namespace Adam.Levels
         public static Player GetPlayer()
         {
             return Player;
+        }
+
+        public static void AddEntityAt(int tileIndex, Entity entity)
+        {
+            foreach (var e in Entities)
+            {
+                // An entity from that tile already exists.
+                if (e.TileIndexSpawn == tileIndex)
+                {
+                    return;
+                }
+            }
+
+            Entities.Add(entity);
         }
     }
 }

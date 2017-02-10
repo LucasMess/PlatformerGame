@@ -76,6 +76,7 @@ namespace Adam.UI.Level_Editor
             23, // Water
             24, // Lava
             25, // Poisoned Water
+            64, // Player Detector
         };
 
         private byte[] _objects =
@@ -157,19 +158,19 @@ namespace Adam.UI.Level_Editor
             BuldingCatClicked(button1);
             _categoryButtons.Add(button1);
 
-            Button button2 = new TextButton(new Vector2(99 , 58  + buttonHeight * 2 + 5), "Wall");
+            Button button2 = new TextButton(new Vector2(99, 58 + buttonHeight * 2 + 5), "Wall");
             button2.MouseClicked += WallCatClicked;
             _categoryButtons.Add(button2);
 
-            Button button3 = new TextButton(new Vector2(99 , 58  + buttonHeight * 3 + 5 * 3), "Objects");
+            Button button3 = new TextButton(new Vector2(99, 58 + buttonHeight * 3 + 5 * 3), "Objects");
             button3.MouseClicked += ObjectsCatClicked; ;
             _categoryButtons.Add(button3);
 
-            Button button4 = new TextButton(new Vector2(99 , 58  + buttonHeight * 4 + 5 * 5), "Entities");
+            Button button4 = new TextButton(new Vector2(99, 58 + buttonHeight * 4 + 5 * 5), "Entities");
             button4.MouseClicked += CharactersCatClicked; ;
             _categoryButtons.Add(button4);
 
-            Button button5 = new TextButton(new Vector2(99 , 58  + buttonHeight * 5 + 5 * 7), "Special");
+            Button button5 = new TextButton(new Vector2(99, 58 + buttonHeight * 5 + 5 * 7), "Special");
             button5.MouseClicked += SpecialCatClicked;
             _categoryButtons.Add(button5);
 

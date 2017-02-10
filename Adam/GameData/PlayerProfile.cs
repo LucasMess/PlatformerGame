@@ -7,10 +7,9 @@ namespace Adam.GameData
     /// the player is at, as well stats.
     /// </summary>
     [Serializable]
-    public class LevelProgression
+    public class PlayerProfile
     {
-
-        public int StoryProgress = 0;
+        public int CurrentLevel = 0;
 
         // Garden of Eden
         public bool HasRetrievedMap = false;

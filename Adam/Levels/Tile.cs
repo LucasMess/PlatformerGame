@@ -86,6 +86,7 @@ namespace Adam
             {61, "Painting"},
             {62, "Tree of Knowledge"},
             {63, "Tree Bark"},
+            {64, "Player Detector" },
             {100, "Gold Brick Wall"},
             {101, "Stone Wall"},
             {102, "Dirt Wall"},
@@ -119,7 +120,7 @@ namespace Adam
         private bool _hasAddedEntity;
         private bool _hasConnectPattern;
         private bool _hasRandomStartingPoint;
-        private bool _isInvisible;
+        private bool _isInvisibleInPlayMode;
         private float _opacity = 1;
         private Rectangle _originalPosition;
         private Vector2 _positionInSpriteSheet;
@@ -190,7 +191,7 @@ namespace Adam
             //Air ID is 0, so it can emit sunlight.
             if (Id == 0)
             {
-                IsTransparent = true;
+                LetsLightThrough = true;
                 Texture = null;
                 return;
 
@@ -236,7 +237,7 @@ namespace Adam
                     break;
                 case 3: //Marble Floor
                     IsSolid = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     switch (SubId)
                     {
                         case 0: //Foundation
@@ -271,7 +272,7 @@ namespace Adam
                 case 7: //ShortGrass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(12, 16);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 8: //Metal
                     _frameCount = new Vector2(4, 0);
@@ -281,7 +282,7 @@ namespace Adam
                 case 9: //Tall Grass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(0, 16);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 10: // Gold.
                     _hasConnectPattern = true;
@@ -294,32 +295,32 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     _interactable = new Torch();
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 12: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 13: //Door
                     IsSolid = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 14: //Vines
                     _positionInSpriteSheet = new Vector2(15, 7);
                     IsClimbable = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 15: //Ladders
                     _positionInSpriteSheet = new Vector2(13, 7);
                     IsClimbable = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 16: //Chains
                     _positionInSpriteSheet = new Vector2(14, 7);
                     IsClimbable = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 17: //Daffodyls
                     _frameCount = new Vector2(4, 0);
@@ -327,10 +328,10 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(12, 10 + AdamGame.Random.Next(0, 3) * 2);
                     DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
                     _hasRandomStartingPoint = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 18: //Marble Column
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     switch (SubId)
                     {
                         case 0: //middle
@@ -352,8 +353,8 @@ namespace Adam
                     _animationPlaysOnce = true;
                     DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
                     DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
-                    var chest = new Chest(this);
-                    IsTransparent = true;
+                    _interactable = new Chest(this);
+                    LetsLightThrough = true;
                     break;
                 case 20: // Marble Brick
                     _hasConnectPattern = true;
@@ -364,12 +365,12 @@ namespace Adam
                 case 21: //scaffolding
                     _positionInSpriteSheet = new Vector2(13, 6);
                     IsSolid = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
                 case 22: //spikes
                     _positionInSpriteSheet = new Vector2(17, 13);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 23: //water
                     _frameCount = new Vector2(4, 0);
@@ -397,14 +398,14 @@ namespace Adam
                 case 26: // Golden Apple.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(8, 26);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 27: //golden chest
                     _positionInSpriteSheet = new Vector2(15, 3);
                     break;
                 case 29: //Marble ceiling
                     IsSolid = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -429,11 +430,11 @@ namespace Adam
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     _positionInSpriteSheet = new Vector2(16, 0);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 32: //Small Rock
                     _positionInSpriteSheet = new Vector2(13, 18);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 33: //Big Rock
                     _frameCount = new Vector2(0, 0);
@@ -441,18 +442,18 @@ namespace Adam
                     _sizeOfTile.Y = 2;
                     DrawRectangle.Y = _originalPosition.Y - 32;
                     _positionInSpriteSheet = new Vector2(14, 17);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 34: //Medium Rock
                     _positionInSpriteSheet = new Vector2(11, 18);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 36: //Sign
                     _positionInSpriteSheet = new Vector2(12, 4);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 37: //Checkpoint
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(8, 29);
@@ -494,13 +495,13 @@ namespace Adam
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 29);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 43: // Machine Gun
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 28);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 44: // Cacti
                     _frameCount = new Vector2(1, 0);
@@ -521,73 +522,73 @@ namespace Adam
                             _positionInSpriteSheet = new Vector2(22, 4);
                             break;
                     }
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 45: // Mushroom Booster
                     _positionInSpriteSheet = new Vector2(19, 26);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 46: // Void ladder.
                     _positionInSpriteSheet = new Vector2(14, 8);
                     IsClimbable = true;
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 47: // Wooden platform.
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(14, 26);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
                 case 48: // Blue crystal.
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
                     new Crystal(this, 3);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 49: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
                     new Crystal(this, 1);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 50: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
                     new Crystal(this, 2);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 51: // Void FireSpitter.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 28);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 52: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
                     new Crystal(this, 3);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 53: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
                     new Crystal(this, 4);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 54: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
                     new Crystal(this, 2);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 55: // Skull.
                     _positionInSpriteSheet = new Vector2(22, 24);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 56: // Stalagmite
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(23, 24);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 57: // Mud.
                     _hasConnectPattern = true;
@@ -613,28 +614,28 @@ namespace Adam
                         new Portal(this);
                         _wasInitialized = true;
                     }
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 59: // Bed.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 3;
                     _positionInSpriteSheet = new Vector2(10, 30);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 60: // Bookshelf.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(13, 30);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 61: // Painting.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(10, 32);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 62: // Tree of Knowledge
                     _sizeOfTile.X = 50;
@@ -644,13 +645,19 @@ namespace Adam
 
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 63: // Tree Bark
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(28, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case 64: // Player Detector
+                    LetsLightThrough = true;
+                    _positionInSpriteSheet = new Vector2(13, 8);
+                    _interactable = new PlayerDetector(this);
+                    _isInvisibleInPlayMode = true;
                     break;
 
                 #region Wall Textures
@@ -680,7 +687,7 @@ namespace Adam
                             _positionInSpriteSheet = new Vector2(12, 6);
                             break;
                     }
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 104: //Marble wall
                     _hasConnectPattern = true;
@@ -754,29 +761,31 @@ namespace Adam
                         {
                             GameWorld.GetPlayer().Initialize(DrawRectangle.X, DrawRectangle.Y);
                             _hasAddedEntity = true;
-                            _isInvisible = true;
                         }
                     }
-                    IsTransparent = true;
+                    _isInvisibleInPlayMode = true;
+                    LetsLightThrough = true;
                     break;
                 case 201: //Snake
-                    IsTransparent = true;
-                    if (AdamGame.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(19, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisible = true;
-                        }
-                    }
+                    GameWorld.AddEntityAt(TileIndex, new Snake(DrawRectangle.X, DrawRectangle.Y));
+                    LetsLightThrough = true;
+                    //LetsLightThrough = true;
+                    //if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    //{
+                    //    _positionInSpriteSheet = new Vector2(19, 12);
+                    //}
+                    //else
+                    //{
+                    //    if (!_hasAddedEntity)
+                    //    {
+                    //        GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
+                    //        _hasAddedEntity = true;
+                    //        _isInvisible = true;
+                    //    }
+                    //}
                     break;
                 case 202: //Frog
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(21, 12);
@@ -787,14 +796,14 @@ namespace Adam
                         {
                             GameWorld.Entities.Add(new Frog(DrawRectangle.X, DrawRectangle.Y));
                             _hasAddedEntity = true;
-                            _isInvisible = true;
+                            _isInvisibleInPlayMode = true;
                         }
                     }
                     break;
                 case 203: // NPC
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     _positionInSpriteSheet = new Vector2(18, 13);
-                    _isInvisible = true;
+                    _isInvisibleInPlayMode = true;
                     if (!_isSampleTile && !_wasInitialized)
                     {
                         new NonPlayableCharacter(this);
@@ -802,22 +811,22 @@ namespace Adam
                     }
                     break;
                 case 204: //Lost
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 205: //Hellboar
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 206: //Falling Boulder
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 207: //Bat
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 208: //Duck
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
                 case 209: //Flying Wheel
-                    IsTransparent = true;
+                    LetsLightThrough = true;
                     break;
             }
 
@@ -833,6 +842,12 @@ namespace Adam
                 SourceRectangle.X += randX * SmallTileSize;
                 _currentFrame += randX;
             }
+        }
+
+        public void ReadMetaData()
+        {
+            if (IsWall) return;
+            _interactable?.ReadMetaData(this);
         }
 
         private void Tile_OnTileUpdate(Tile t)
@@ -893,7 +908,7 @@ namespace Adam
         {
             OnTileUpdate?.Invoke(this);
             if (!_isSampleTile)
-                _interactable?.OnTileUpdate(this);
+                _interactable?.Update(this);
             Animate();
             ChangeOpacity();
         }
@@ -1008,13 +1023,13 @@ namespace Adam
             DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
             _wasInitialized = false;
-            IsTransparent = false;
+            LetsLightThrough = false;
             _sizeOfTile = new Vector2(1, 1);
             DefineDrawRectangle();
             DefineSourceRectangle();
             SetToDefaultSourceRect();
             CurrentCollisionType = CollisionType.All;
-            GameWorld.WorldData.MetaData[TileIndex] = null;
+            GameWorld.WorldData.MetaData.Remove(TileIndex);
 
             //DefineTexture();
             //LightingEngine.UpdateLightAt(TileIndex);
@@ -1026,8 +1041,13 @@ namespace Adam
 
             if (Texture != null)
             {
-                if (!_isInvisible || (_isInvisible && AdamGame.CurrentGameMode == GameMode.Edit))
+                if (_isInvisibleInPlayMode && AdamGame.CurrentGameMode == GameMode.Play)
+                    return;
+                else
+                {
+                    _interactable?.Draw(spriteBatch, this);
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
+                }
             }
             if (_hasConnectPattern)
             {
@@ -1602,6 +1622,30 @@ namespace Adam
         /// <summary>
         /// Returns true if light can pass through it.
         /// </summary>
-        public bool IsTransparent { get; set; }
+        public bool LetsLightThrough { get; set; }
+
+        /// <summary>
+        /// Called when the player clicks on the tile in edit mode.
+        /// </summary>
+        public void InteractInEditMode()
+        {
+            _interactable?.OnPlayerClickInEditMode(this);
+        }
+
+
+        /// <summary>
+        /// Returns true if there is an interactable component to this tile.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsInteractable()
+        {
+            if (_interactable == null) return false;
+            return _interactable.CanBeLinkedToOtherInteractables;
+        }
+
+        public void ConnectToInteractable(Interactable interactable)
+        {
+            interactable.OnActivation += _interactable.OnPlayerAction;
+        }
     }
 }

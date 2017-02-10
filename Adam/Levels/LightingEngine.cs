@@ -39,7 +39,7 @@ namespace Adam.Levels
             _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 0, Color.White);
 
-            if (tile.IsTransparent && wall.IsTransparent)
+            if (tile.LetsLightThrough && wall.LetsLightThrough)
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
@@ -157,7 +157,7 @@ namespace Adam.Levels
             }
 
             int change = 1;
-            if (!GameWorld.TileArray[i].IsTransparent)
+            if (!GameWorld.TileArray[i].LetsLightThrough)
                 change += 2;
 
 

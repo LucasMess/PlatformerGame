@@ -1,6 +1,7 @@
 ﻿using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
 namespace Adam.Levels
 {
@@ -42,7 +43,12 @@ namespace Adam.Levels
 
         public Vector2 SpawnPoint { get; set; }
 
-        public string[] MetaData { get; set; }
+        /// <summary>
+        /// Used to retrieve special information about a tile in the index key.
+        /// </summary>
+        public Dictionary<int, string> MetaData { get; set; } = new Dictionary<int, string>();
+
+        //public string[] MetaData { get; set; }
 
         public WorldData()
         {

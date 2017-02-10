@@ -14,6 +14,11 @@ namespace Adam.UI.Elements
         Rectangle _rect, _sourceRect;
         float _rotation;
 
+        /// <summary>
+        /// Creates a line from point A to point B.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         public Line(Vector2 a, Vector2 b)
         {
             float distance = Vector2.Distance(a, b);
@@ -21,7 +26,7 @@ namespace Adam.UI.Elements
             float yDiff = b.Y - a.Y;
             float xDiff = b.X - a.X;
 
-            _rotation = (float)Math.Atan2((double)yDiff , (double) xDiff);
+            _rotation = (float)Math.Atan2((double)yDiff, (double)xDiff);
 
 
             _rect = new Rectangle((int)a.X, (int)a.Y, (int)distance, 4);
