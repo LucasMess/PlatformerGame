@@ -3,14 +3,15 @@ using Adam.Misc.Databases;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Adam.AdamGame;
 
 namespace Adam.GameData
 {
     [Serializable]
     public class WorldConfigFile
     {
-        public byte[] TileIDs { get; set; }
-        public byte[] WallIDs { get; set; }
+        public ushort[] TileIDs { get; set; }
+        public ushort[] WallIDs { get; set; }
 
         public short LevelWidth { get; set; }
         public short LevelHeight { get; set; }
@@ -40,8 +41,8 @@ namespace Adam.GameData
             BackgroundId = 1;
             SoundtrackId = 1;
 
-            TileIDs = new byte[LevelWidth * LevelHeight];
-            WallIDs = new byte[LevelWidth * LevelHeight];
+            TileIDs = new ushort[LevelWidth * LevelHeight];
+            WallIDs = new ushort[LevelWidth * LevelHeight];
 
             HasClouds = true;
             IsSnowing = false;
@@ -52,8 +53,8 @@ namespace Adam.GameData
         {
             //Creates arrays for the tiles.
             int size = GameWorld.TileArray.Length;
-            TileIDs = new byte[size];
-            WallIDs = new byte[size];
+            TileIDs = new ushort[size];
+            WallIDs = new ushort[size];
 
             //Sets the dimensions of the level.
             LevelWidth = (short)GameWorld.WorldData.LevelWidth;
@@ -86,8 +87,8 @@ namespace Adam.GameData
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
-                TileIDs[i] = GameWorld.WorldData.TileIDs[i];
-                WallIDs[i] = GameWorld.WorldData.WallIDs[i];
+                TileIDs[i] = (ushort)GameWorld.WorldData.TileIDs[i];
+                WallIDs[i] = (ushort)GameWorld.WorldData.WallIDs[i];
             }
 
             //Level conditions
@@ -118,8 +119,8 @@ namespace Adam.GameData
 
         public void TransferDataToWorldData()
         {
-            GameWorld.WorldData.TileIDs = TileIDs;
-            GameWorld.WorldData.WallIDs = WallIDs;
+            GameWorld.WorldData.TileIDs = (TileType[])(object)TileIDs;
+            GameWorld.WorldData.WallIDs = (TileType[])(object)WallIDs;
 
             GameWorld.WorldData.LevelWidth = LevelWidth;
             GameWorld.WorldData.LevelHeight = LevelHeight;

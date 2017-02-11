@@ -34,7 +34,7 @@ namespace Adam
         Play
     }
 
-    public class AdamGame : Game
+    public partial class AdamGame : Game
     {
         public delegate void UpdateHandler();
 
@@ -71,7 +71,6 @@ namespace Adam
         public static readonly Random Random = new Random();
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
-        public static DataFolder DataFolder = new DataFolder();
         public static PlayerProfile LevelProgression = new PlayerProfile();
         public static Camera Camera;
         private static GameState _desiredGameState;
@@ -97,7 +96,6 @@ namespace Adam
         private RenderTarget2D _sunlightRT;
         private RenderTarget2D _uiRT;
         private Menu _menu;
-        private Session _session;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
         private bool _wasEscapeReleased;
@@ -108,6 +106,8 @@ namespace Adam
             // Get the current monitor resolution and set it as the game's resolution
             var monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+
+            DataFolder.Initialize();
 
 #pragma warning disable 0162
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -164,8 +164,6 @@ namespace Adam
             MediaPlayer.Volume = MaxVolume;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
-
-        public static Session Session { get; set; }
 
         /// <summary>
         ///     Used to display messages to the user where he needs to press OK to continue.
@@ -229,7 +227,7 @@ namespace Adam
             CurrentGameMode = GameMode.None;
 
             string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
-            DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/Main Menu.lvl");
+            DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/MainMenu.lvl");
 
             GameWorld.Initialize();
         }
@@ -353,7 +351,11 @@ namespace Adam
             {
                 case GameState.MainMenu:
                     _menu.Update();
-                    goto case GameState.GameWorld;
+                    if (GameWorld.TileArray != null && GameWorld.TileArray.Length != 0)
+                    {
+                        goto case GameState.GameWorld;
+                    }
+                    break;                    
                 case GameState.LoadingScreen:
                     _loadingScreen.Update();
 
@@ -397,7 +399,11 @@ namespace Adam
                     _spriteBatch.End();
                     break;
                 case GameState.MainMenu:
-                    goto case GameState.GameWorld;
+                    if (GameWorld.TileArray != null && GameWorld.TileArray.Length != 0)
+                    {
+                        goto case GameState.GameWorld;
+                    }
+
                     GraphicsDevice.SetRenderTarget(_uiRT);
                     GraphicsDevice.Clear(Color.Black);
                     var rs2 = new RasterizerState { ScissorTestEnable = true };

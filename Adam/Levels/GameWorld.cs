@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam.Levels
 {
@@ -105,7 +106,7 @@ namespace Adam.Levels
             ConvertToTiles(WallArray, WorldData.WallIDs);
         }
 
-        private static void ConvertToTiles(Tile[] array, byte[] ids)
+        private static void ConvertToTiles(Tile[] array, TileType[] ids)
         {
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -118,14 +119,14 @@ namespace Adam.Levels
 
                 array[i] = new Tile(xcoor, ycoor);
                 var t = array[i];
-                t.Id = ids[i];
+                t.Id = (TileType)ids[i];
                 t.TileIndex = i;
             }
 
             foreach (var t in array)
             {
                 t.DefineTexture();
-                t.FindConnectedTextures(ids, width);
+                t.FindConnectedTextures((TileType[])(object)ids, width);
                 t.DefineTexture();
                 t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                 t.DefineTexture();

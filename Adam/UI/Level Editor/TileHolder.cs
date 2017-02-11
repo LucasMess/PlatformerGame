@@ -5,6 +5,7 @@ using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using static Adam.AdamGame;
 using Timer = Adam.Misc.Timer;
 
 namespace Adam.UI.Level_Editor
@@ -36,11 +37,11 @@ namespace Adam.UI.Level_Editor
         private static SoundFx _pickUpSound = new SoundFx("Sounds/Level Editor/pickup_tileholder");
         public static SoundFx ReturnSound = new SoundFx("Sounds/Level Editor/return_tileholder");
 
-        public TileHolder(int id)
+        public TileHolder(TileType id)
         {
             DrawRectangle = new Rectangle(0, 0, (SourceRectangle.Width) * 2,
             SourceRectangle.Height * 2);
-            _tile = new Tile(true) { Id = (byte)id };
+            _tile = new Tile(true) { Id = id };
             _tile.DefineTexture();
             Size = SourceRectangle.Width * 2;
             AdjustTileInside();
@@ -221,7 +222,7 @@ namespace Adam.UI.Level_Editor
         /// <summary>
         /// Returns the id of the tile the holder has.
         /// </summary>
-        public byte Id => _tile.Id;
+        public TileType Id => _tile.Id;
 
         /// <summary>
         /// The rectangle representing the space the tile is supposed to be occupying by default.
@@ -269,7 +270,7 @@ namespace Adam.UI.Level_Editor
 
         private Vector2 DefaultPosition => new Vector2(_containerPosition.X + _positionRelativeToContainer.X, _containerPosition.Y + _positionRelativeToContainer.Y);
 
-        public void ChangeId(byte newId)
+        public void ChangeId(TileType newId)
         {
             _tile.Destroy();
             _tile.Id = newId;
@@ -314,7 +315,7 @@ namespace Adam.UI.Level_Editor
             if (IsHovered() && !_isReturningToDefaultPos)
             {
                 string name = "Name not found";
-                Tile.Names.TryGetValue(_tile.Id, out name);
+                name = _tile.Id.ToString();
                 FontHelper.DrawTooltip(spriteBatch, name);
             }
         }

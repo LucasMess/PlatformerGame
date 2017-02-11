@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Adam.UI
 {
-    public class DataFolder
+    public static class DataFolder
     {
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Adam.UI
         /// <summary>
         /// Checks to see if the directory exists upon creation, and if it does not, it will create it.
         /// </summary>
-        public DataFolder()
+        public static void Initialize()
         {
             // The folder for the roaming current user.
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -145,14 +145,9 @@ namespace Adam.UI
         /// <param name="filePath"></param>
         public static void LoadLevelForBackground(string filePath)
         {
+            // Do not check if level is valid or the game will not launch if there are errors in the file.
             WorldConfigFile config = GetWorldConfigFile(filePath);
             CurrentLevelFilePath = filePath;
-
-            if (!config.IsValidLevel())
-            {
-                throw new Exception("This level cannot be played because there is no player spawn point. Edit the level first.");
-            }
-
             config.LoadIntoView();
         }
 

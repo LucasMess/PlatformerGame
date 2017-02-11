@@ -8,13 +8,13 @@ using System.Threading;
 
 namespace Adam.Network
 {
-    public class Session
+    public static class Session
     {
-        Server _server;
-        Connection _connection;
-        IPEndPoint _serverIp;
+        static Server _server;
+        static Connection _connection;
+        static IPEndPoint _serverIp;
 
-        string _playerName;
+        static string _playerName;
 
         /// <summary>
         /// Returns true if the current client is host.
@@ -53,11 +53,11 @@ namespace Adam.Network
             get; set;
         }
 
-        public Session(bool isHost, string playerName)
+        public static void CreateNew(bool isHost, string playerName)
         {
             IsActive = true;
             Console.WriteLine("New session started. Is host? {0}, Player Name: {1}", isHost, playerName);
-            this._playerName = playerName;
+            _playerName = playerName;
             IsHost = isHost;
 
             if (isHost)
@@ -75,13 +75,13 @@ namespace Adam.Network
 
         }
 
-        public void ConnectTo(string address, int port)
+        public static void ConnectTo(string address, int port)
         {
             //Connection automatically sets up a connection with server.
             _connection = new Connection(address, port, _playerName);
         }
 
-        public void Start()
+        public static void Start()
         {
             if (IsHost)
             {
@@ -91,7 +91,7 @@ namespace Adam.Network
             new Thread(new ThreadStart(Update)).Start();
         }
 
-        private void Update()
+        private static void Update()
         {
             while (IsActive)
             {
@@ -112,12 +112,12 @@ namespace Adam.Network
             }
         }
 
-        public void SendTestMessage()
+        public static void SendTestMessage()
         {
             _server.SendMessage("Hello World!");
         }
 
-        public void SendLevel()
+        public static void SendLevel()
         {
             WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Enemies Test.lvl"));
             _server.SendLevelPacket(level);

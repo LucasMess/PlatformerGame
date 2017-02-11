@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam.Levels
 {
@@ -33,8 +34,8 @@ namespace Adam.Levels
         bool _editMode;
         public bool IsDealinGameWorldithData { get; set; }
 
-        public byte[] TileIDs { get; set; }
-        public byte[] WallIDs { get; set; }
+        public TileType[] TileIDs { get; set; }
+        public TileType[] WallIDs { get; set; }
 
         public int LevelWidth { get; set; }
         public int LevelHeight { get; set; }

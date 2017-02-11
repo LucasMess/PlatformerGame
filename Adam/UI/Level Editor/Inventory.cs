@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 using Timer = Adam.Misc.Timer;
 
 namespace Adam.UI.Level_Editor
@@ -45,98 +46,97 @@ namespace Adam.UI.Level_Editor
         public static bool IsMovingTile { get; set; }
         private Rectangle _scissorRectangle = new Rectangle(150 * 2, 42 * 2, 236 * 2, 195 * 2);
 
-        private byte[] _buildingTiles =
+        private TileType[] _buildingTiles =
         {
-            1, // Grass
-            2, // Stone
-            38, // Stone Brick
-            5, // Sand
-            39, // Ice
-            40, // Snow Grass
-            57, // Mud
-            6, // Mesa
-            41, // Void Tile
-            4, // Hellrock
-            10, // Gold Brick
-            8, // Metal
-            21, // Scaffolding
+            TileType.Grass, // Grass
+            TileType.Stone, // Stone
+            TileType.StoneBrick, // Stone Brick
+            TileType.Sand, // Sand
+            TileType.Snow, // Ice
+            TileType.SnowyGrass, // Snow Grass
+            TileType.Mud, // Mud
+            TileType.Mesa, // Mesa
+            TileType.CompressedVoid, // Void Tile
+            TileType.Hellrock, // Hellrock
+            TileType.GoldBrick, // Gold Brick
+            TileType.Metal, // Metal
+            TileType.Scaffolding, // Scaffolding
         };
 
-        private byte[] _specialTiles =
+        private TileType[] _specialTiles =
         {
-            3, // Marble Floor
-            18, // Marble Column
-            29, // Marble Ceiling
-            47, // Wooden Platform
-            14, // Vines
-            15, // Ladder
-            16, // Chain
-            22, // Spikes
-            46, // Void Ladder
-            23, // Water
-            24, // Lava
-            25, // Poisoned Water
-            64, // Player Detector
+            TileType.MarbleFloor, // Marble Floor
+            TileType.MarbleColumn, // Marble Column
+            TileType.MarbleCeiling, // Marble Ceiling
+            TileType.WoodenPlatform, // Wooden Platform
+            TileType.Vine, // Vines
+            TileType.Ladder, // Ladder
+            TileType.Chain, // Chain
+            TileType.Spikes, // Spikes
+            TileType.VoidLadder, // Void Ladder
+            TileType.Water, // Water
+            TileType.Lava, // Lava
+            TileType.Poison, // Poisoned Water
+            TileType.PlayerDetector, // Player Detector
         };
 
-        private byte[] _objects =
+        private TileType[] _objects =
         {
-            11, // Torch
-            12, // Chandelier
-            13, // Door
-            19, // Chest
-            36, // Sign
-            58, // Portal
-            37, // Checkpoint
-            31, // Tree
-            59, // Bed
-            60, // Bookshelf
-            61, // Painting
-            20, // Tech -- OBSOLETE
-            42, // Flame Spitter
-            43, // Machine Gun
-            41, // Void Fire Spitter
-            45, // Mushroom Booster
-            21, // Golden Apple
-            22, // Health Apple
-            32, // Small Rock
-            34, // Medium Rock
-            33, // Big Rock
-            52, // Sapphire Crystal
-            53, // Ruby Crystal
-            54, // Emerald Crystal
-            48, // Aquaant Crystal
-            49, // Heliaura Crystal
-            50, // Sentistract Sludge
+            TileType.Torch, // Torch
+            TileType.Chandelier, // Chandelier
+            TileType.Door, // Door
+            TileType.Chest, // Chest
+            TileType.Sign, // Sign
+            TileType.Portal, // Portal
+            TileType.Checkpoint, // Checkpoint
+            TileType.Tree, // Tree
+            TileType.Bed, // Bed
+            TileType.Bookshelf, // Bookshelf
+            TileType.Painting, // Painting
+            TileType.FlameSpitter, // Flame Spitter
+            TileType.MachineGun, // Machine Gun
+            TileType.VoidFireSpitter, // Void Fire Spitter
+            TileType.MushroomBooster, // Mushroom Booster
+            TileType.GoldenApple, // Golden Apple
+            TileType.HealthApple, // Health Apple
+            TileType.SmallRock, // Small Rock
+            TileType.MediumRock, // Medium Rock
+            TileType.BigRock, // Big Rock
+            TileType.SapphireCrystal, // Sapphire Crystal
+            TileType.RubyCrystal, // Ruby Crystal
+            TileType.EmeraldCrystal, // Emerald Crystal
+            TileType.AquaantCrystal, // Aquaant Crystal
+            TileType.HeliauraCrystal, // Heliaura Crystal
+            TileType.SentistractSludge, // Sentistract Sludge
         };
 
-        private byte[] _wallTiles =
+        private TileType[] _wallTiles =
         {
-            102, // Dirt Wall
-            101, // Stone Wall
-            107, // Stone Brick Wall
-            105, // Sand Wall
-            108, // Mesa Wall
-            104, // Marble Wall
-            109, // Wallpaper
-            100, // Gold Brick Wall
-            106, // Hellstone Wall
-            103, // Fence
-            110, // Black
+            TileType.DirtWall, // Dirt Wall
+            TileType.StoneWall, // Stone Wall
+            TileType.StoneBrickWall, // Stone Brick Wall
+            TileType.SandWall, // Sand Wall
+            TileType.MesaWall, // Mesa Wall
+            TileType.MarbleWall, // Marble Wall
+            TileType.Wallpaper, // Wallpaper
+            TileType.GoldBrickWall, // Gold Brick Wall
+            TileType.HellstoneWall, // Hellstone Wall
+            TileType.Fence, // Fence
+            TileType.Nothing, // Black
         };
 
-        private byte[] _characters =
+        private TileType[] _characters =
         {
-            200, // Player
-            203, // NPC
-            201, // Snake
-            202, // Frog
-            204, // Lost
-            205, // Hellboar
-            206, // Falling Boulder
-            207, // Bay
-            208, // Duck
-            209, // Being of Sight
+            TileType.Player, // Player
+            TileType.NPC, // NPC
+            TileType.Snake, // Snake
+            TileType.Frog, // Frog
+            TileType.Lost, // Lost
+            TileType.Hellboar, // Hellboar
+            TileType.FallingBoulder, // Falling Boulder
+            TileType.Bat, // Bay
+            TileType.Duck, // Duck
+            TileType.BeingofSight, // Being of Sight
         };
 
         public Inventory()
@@ -224,7 +224,7 @@ namespace Adam.UI.Level_Editor
         {
             _tileHolders = new List<TileHolder>();
 
-            byte[] ids = { 0 };
+            TileType[] ids = { TileType.Air };
             switch (CurrentCategory)
             {
                 case Category.Building:
@@ -245,7 +245,7 @@ namespace Adam.UI.Level_Editor
 
             }
 
-            foreach (byte id in ids)
+            foreach (var id in ids)
             {
                 _tileHolders.Add(new TileHolder(id));
             }

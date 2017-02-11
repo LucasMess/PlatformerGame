@@ -3,6 +3,7 @@ using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam.UI.Level_Editor
 {
@@ -35,7 +36,7 @@ namespace Adam.UI.Level_Editor
                 _tileHolders.Add(tileHolder);
             }
 
-            _tileHolders[0].ChangeId(1);
+            _tileHolders[0].ChangeId(TileType.Grass);
             Tile_WasClicked(_tileHolders[0]);
         }
 
@@ -54,7 +55,7 @@ namespace Adam.UI.Level_Editor
         }
 
 
-        public static void AddToHotBarFromWorld(byte id)
+        public static void AddToHotBarFromWorld(TileType id)
         {
             // Checks if already on hotbar.
             foreach (var tileHolder in _tileHolders)
@@ -92,7 +93,7 @@ namespace Adam.UI.Level_Editor
 
         }
 
-        public static void ReplaceHotBarWithMiddleMouse(TileHolder tileHolder, byte newId)
+        public static void ReplaceHotBarWithMiddleMouse(TileHolder tileHolder, TileType newId)
         {
             _deletedTile = new TileHolder(tileHolder.Id);
             _deletedTile.SetPosition(tileHolder.GetPosition());

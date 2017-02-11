@@ -70,7 +70,7 @@ namespace Adam.UI
                 for (var i = 0; i < tileArray.Length; i++)
                 {
                     _pixels[i] = Color.Transparent;
-                    if (tileArray[i].Id != 0 && tileArray[i].Id < 200)
+                    if (tileArray[i].Id != 0 && tileArray[i].Id < AdamGame.TileType.Player)
                     {
                         Color color = GameWorld.SpriteSheetColorData[tileArray[i].SourceRectangle.Center.X + tileArray[i].SourceRectangle.Center.Y * GameWorld.SpriteSheet.Width];
                         _pixels[i] = color;

@@ -124,7 +124,7 @@ namespace Adam.Network
                     //bw.Flush();
 
                     packet.ExtractConfigFile().LoadIntoPlay();
-                    AdamGame.Session.Start();
+                    Session.Start();
                 }
                 if (request == DkdTest)
                 {

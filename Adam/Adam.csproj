@@ -126,6 +126,7 @@
     <Compile Include="Levels\StoryMode.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\WorldData.cs" />
+    <Compile Include="Literals.cs" />
     <Compile Include="Misc\Animation.cs" />
     <Compile Include="Misc\ComplexAnimation.cs" />
     <Compile Include="Misc\Countdown.cs" />
@@ -232,7 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CodenameAdam_TemporaryKey.pfx" />
-    <None Include="Content\Levels\Main Menu.lvl">
+    <None Include="Content\Levels\MainMenu.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

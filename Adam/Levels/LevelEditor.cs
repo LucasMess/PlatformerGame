@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam.Levels
 {
@@ -37,11 +38,11 @@ namespace Adam.Levels
         public static Rectangle EditorRectangle;
         public static int IndexOfMouse;
         public static bool OnWallMode;
-        public static byte SelectedId = 1;
+        public static TileType SelectedId = TileType.Grass;
         private static int lastAddedTile = -1;
         private static int lastRemovedTile = -1;
 
-        private static byte[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
+        private static TileType[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
 
         public static void Load()
@@ -319,7 +320,7 @@ namespace Adam.Levels
                 }
                 else if (InputHelper.IsMiddleMousePressed())
                 {
-                    SelectedId = WorldDataIds[IndexOfMouse];
+                    SelectedId = (TileType)WorldDataIds[IndexOfMouse];
                     HotBar.AddToHotBarFromWorld(SelectedId);
                 }
             }
@@ -333,7 +334,7 @@ namespace Adam.Levels
             if (InputHelper.IsKeyDown(Keys.P))
             {
                 Brush.Size = 1;
-                UpdateSelectedTiles(200);
+                UpdateSelectedTiles(TileType.Player);
                 _hasChangedSinceLastSave = true;
             }
         }
@@ -342,13 +343,13 @@ namespace Adam.Levels
         /// Updates all the tiles highlighted by the brush.
         /// </summary>
         /// <param name="desiredId"></param>
-        private static void UpdateSelectedTiles(int desiredId)
+        private static void UpdateSelectedTiles(TileType desiredId)
         {
             foreach (var i in Brush.SelectedIndexes)
             {
                 if (i < 0 || i > WorldDataIds.Length)
                     continue;
-                int tileId = WorldDataIds[i];
+                TileType tileId = WorldDataIds[i];
 
                 //Wants to destroy. Any block can be destroyed.
                 if (desiredId == 0)
@@ -357,7 +358,7 @@ namespace Adam.Levels
                     if (tileId == 0)
                         continue;
                     CurrentArray[i].Destroy();
-                    WorldDataIds[i] = (byte)desiredId;
+                    WorldDataIds[i] = desiredId;
                     if (OnWallMode)
                     {
                         CurrentArray[i].IsWall = true;
@@ -373,7 +374,7 @@ namespace Adam.Levels
                 {
                     if (tileId == 0)
                     {
-                        WorldDataIds[i] = (byte)desiredId;
+                        WorldDataIds[i] = desiredId;
                         if (OnWallMode)
                         {
                             CurrentArray[i].IsWall = true;
@@ -470,7 +471,7 @@ namespace Adam.Levels
                 {
                     var t = CurrentArray[ind];
                     t.Destroy();
-                    t.Id = WorldDataIds[ind];
+                    t.Id = (TileType)WorldDataIds[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(WorldDataIds,
                         GameWorld.WorldData.LevelWidth);

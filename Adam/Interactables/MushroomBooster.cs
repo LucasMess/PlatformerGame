@@ -1,18 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-
-namespace Adam.Interactables
+﻿namespace Adam.Interactables
 {
-    class MushroomBooster : Entity
+    class MushroomBooster : Interactable
     {
-        protected override Rectangle DrawRectangle
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public MushroomBooster()
         {
 

@@ -149,7 +149,7 @@ namespace Adam
         {
             if (Session.IsHost)
             {
-                AdamGame.Session.Start();
+                Session.Start();
             }
         }
 
@@ -160,13 +160,13 @@ namespace Adam
 
         void joinGame_MouseClicked(Button button)
         {
-            AdamGame.Session = new Session(false, "Client");
+            Session.CreateNew(false, "Client");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         void hostGame_MouseClicked(Button button)
         {
-            AdamGame.Session = new Session(true, "Host");
+            Session.CreateNew(true, "Host");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 

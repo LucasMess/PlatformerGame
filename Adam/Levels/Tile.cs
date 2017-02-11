@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam
 {
@@ -22,96 +23,7 @@ namespace Adam
         private const float DefaultOpacity = 1;
         private const float MaxOpacity = .5f;
 
-        public static Dictionary<int, string> Names = new Dictionary<int, string>
-        {
-            {1, "Grass"},
-            {2, "Stone"},
-            {3, "Marble Floor"},
-            {4, "Hellrock"},
-            {5, "Sand"},
-            {6, "Mesa"},
-            {7, "Short Grass"},
-            {8, "Metal"},
-            {9, "Tall Grass"},
-            {10, "Gold Brick"},
-            {11, "Torch"},
-            {12, "Chandelier"},
-            {13, "Door"},
-            {14, "Vine"},
-            {15, "Ladder"},
-            {16, "Chain"},
-            {17, "Flower"},
-            {18, "Marble Column"},
-            {19, "Chest"},
-            {20, "Marble Brick"},
-            {21, "Scaffolding"},
-            {22, "Spikes"},
-            {23, "Water"},
-            {24, "Lava"},
-            {25, "Poison"},
-            {26, "Golden Apple"},
-            {27, "Golden Chest"},
-            {28, "Health Apple"},
-            {29, "Marble Ceiling"},
-            {30, ""},
-            {31, "Tree"},
-            {32, "Small Rock"},
-            {33, "Big Rock"},
-            {34, "Medium Rock"},
-            {35, "Pebbles"},
-            {36, "Sign"},
-            {37, "Checkpoint"},
-            {38, "Stone Brick"},
-            {39, "Snow"},
-            {40, "Snowy Grass"},
-            {41, "Compressed Void"},
-            {42, "Flame Spitter"},
-            {43, "Machine Gun"},
-            {44, "Cactus"},
-            {45, "Mushroom Booster"},
-            {46, "Void Ladder"},
-            {47, "Wooden Platform"},
-            {48, "Aquaant Crystal"},
-            {49, "Heliaura Crystal"},
-            {50, "Sentistract Sludge"},
-            {51, "Void Fire Spitter"},
-            {52, "Sapphire Crystal"},
-            {53, "Ruby Crystal"},
-            {54, "Emerald Crystal"},
-            {55, "Skull"},
-            {56, "Stalagmite"},
-            {57, "Mud"},
-            {58, "Portal"},
-            {59, "Bed"},
-            {60, "Bookshelf"},
-            {61, "Painting"},
-            {62, "Tree of Knowledge"},
-            {63, "Tree Bark"},
-            {64, "Player Detector" },
-            {100, "Gold Brick Wall"},
-            {101, "Stone Wall"},
-            {102, "Dirt Wall"},
-            {103, "Fence"},
-            {104, "Marble Wall"},
-            {105, "Sand Wall"},
-            {106, "Hellstone Wall"},
-            {107, "Stone Brick Wall"},
-            {108, "Mesa Wall"},
-            {109, "Wallpaper"},
-            {110, "Nothing"},
-            {111, "Tree Bark"},
-            {200, "Player"},
-            {201, "Snake"},
-            {202, "Frog"},
-            {203, "God"},
-            {204, "Lost"},
-            {205, "Hellboar"},
-            {206, "Falling Boulder (Desert)"},
-            {207, "Bat"},
-            {208, "Duck"},
-            {209, "Being of Sight"}
-        };
-
+        public TileType Id = 0;
         private readonly bool _isSampleTile;
         private bool _animationPlaysOnce;
         private List<Tile> _cornerPieces = new List<Tile>();
@@ -136,7 +48,6 @@ namespace Adam
         public Rectangle DrawRectangle;
         private Rectangle _defaultDrawRectangle;
         private Interactable _interactable;
-        public byte Id;
         public bool IsClimbable;
         public bool IsSolid;
         public bool IsWall;
@@ -208,7 +119,7 @@ namespace Adam
 
             switch (Id)
             {
-                case 1: //Grass
+                case TileType.Grass: //Grass
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(0, 0);
@@ -230,13 +141,13 @@ namespace Adam
                             break;
                     }
                     break;
-                case 2: //Stone
+                case TileType.Stone: //Stone
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(4, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 3: //Marble Floor
+                case TileType.MarbleFloor: //Marble Floor
                     IsSolid = true;
                     LetsLightThrough = true;
                     switch (SubId)
@@ -252,78 +163,78 @@ namespace Adam
                             break;
                     }
                     break;
-                case 4: //Hellrock
+                case TileType.Hellrock: //Hellrock
                     IsSolid = true;
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(4, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 5: //Sand
+                case TileType.Sand: //Sand
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(8, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 6: //Mesa
+                case TileType.Mesa: //Mesa
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(8, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 7: //ShortGrass
+                case TileType.ShortGrass: //ShortGrass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(12, 16);
                     LetsLightThrough = true;
                     break;
-                case 8: //Metal
+                case TileType.Metal: //Metal
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(12, 2);
                     IsSolid = true;
                     break;
-                case 9: //Tall Grass
+                case TileType.TallGrass: //Tall Grass
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(0, 16);
                     LetsLightThrough = true;
                     break;
-                case 10: // Gold.
+                case TileType.GoldBrick: // Gold.
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(0, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 11: // Torch.
+                case TileType.Torch: // Torch.
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     _interactable = new Torch();
                     LetsLightThrough = true;
                     break;
-                case 12: //Chandelier
+                case TileType.Chandelier: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(0, 17);
                     LetsLightThrough = true;
                     break;
-                case 13: //Door
+                case TileType.Door: //Door
                     IsSolid = true;
                     LetsLightThrough = true;
                     break;
-                case 14: //Vines
+                case TileType.Vine: //Vines
                     _positionInSpriteSheet = new Vector2(15, 7);
                     IsClimbable = true;
                     LetsLightThrough = true;
                     break;
-                case 15: //Ladders
+                case TileType.Ladder: //Ladders
                     _positionInSpriteSheet = new Vector2(13, 7);
                     IsClimbable = true;
                     LetsLightThrough = true;
                     break;
-                case 16: //Chains
+                case TileType.Chain: //Chains
                     _positionInSpriteSheet = new Vector2(14, 7);
                     IsClimbable = true;
                     LetsLightThrough = true;
                     break;
-                case 17: //Daffodyls
+                case TileType.Flower: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 10 + AdamGame.Random.Next(0, 3) * 2);
@@ -331,7 +242,7 @@ namespace Adam
                     _hasRandomStartingPoint = true;
                     LetsLightThrough = true;
                     break;
-                case 18: //Marble Column
+                case TileType.MarbleColumn: //Marble Column
                     LetsLightThrough = true;
                     switch (SubId)
                     {
@@ -346,7 +257,7 @@ namespace Adam
                             break;
                     }
                     break;
-                case 19: //chest
+                case TileType.Chest: //chest
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 1.5f;
                     _sizeOfTile.Y = 2;
@@ -357,23 +268,23 @@ namespace Adam
                     _interactable = new Chest(this);
                     LetsLightThrough = true;
                     break;
-                case 20: // Marble Brick
+                case TileType.MarbleBrick: // Marble Brick
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(24, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 21: //scaffolding
+                case TileType.Scaffolding: //scaffolding
                     _positionInSpriteSheet = new Vector2(13, 6);
                     IsSolid = true;
                     LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
-                case 22: //spikes
+                case TileType.Spikes: //spikes
                     _positionInSpriteSheet = new Vector2(17, 13);
                     LetsLightThrough = true;
                     break;
-                case 23: //water
+                case TileType.Water: //water
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = true;
                     _positionInSpriteSheet = new Vector2(4, 15);
@@ -381,7 +292,7 @@ namespace Adam
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 24);
                     break;
-                case 24: //lava
+                case TileType.Lava: //lava
                     _interactable = new Lava();
                     _switchFrame = 1000;
 
@@ -391,20 +302,20 @@ namespace Adam
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(8, 25);
                     break;
-                case 25: // Poisoned Water.
+                case TileType.Poison: // Poisoned Water.
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = true;
                     _positionInSpriteSheet = new Vector2(8, 15);
                     break;
-                case 26: // Golden Apple.
+                case TileType.GoldenApple: // Golden Apple.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(8, 26);
                     LetsLightThrough = true;
                     break;
-                case 27: //golden chest
+                case TileType.GoldenChest: //golden chest
                     _positionInSpriteSheet = new Vector2(15, 3);
                     break;
-                case 29: //Marble ceiling
+                case TileType.MarbleCeiling: //Marble ceiling
                     IsSolid = true;
                     LetsLightThrough = true;
                     switch (SubId)
@@ -421,9 +332,9 @@ namespace Adam
                     }
 
                     break;
-                case 30: // Vacant.
+                case TileType.Air: // Vacant.
                     break;
-                case 31: //Tree
+                case TileType.Tree: //Tree
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.X = 4;
                     _sizeOfTile.Y = 6;
@@ -433,11 +344,11 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(16, 0);
                     LetsLightThrough = true;
                     break;
-                case 32: //Small Rock
+                case TileType.SmallRock: //Small Rock
                     _positionInSpriteSheet = new Vector2(13, 18);
                     LetsLightThrough = true;
                     break;
-                case 33: //Big Rock
+                case TileType.BigRock: //Big Rock
                     _frameCount = new Vector2(0, 0);
                     _sizeOfTile.X = 2;
                     _sizeOfTile.Y = 2;
@@ -445,15 +356,15 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(14, 17);
                     LetsLightThrough = true;
                     break;
-                case 34: //Medium Rock
+                case TileType.MediumRock: //Medium Rock
                     _positionInSpriteSheet = new Vector2(11, 18);
                     LetsLightThrough = true;
                     break;
-                case 36: //Sign
+                case TileType.Sign: //Sign
                     _positionInSpriteSheet = new Vector2(12, 4);
                     LetsLightThrough = true;
                     break;
-                case 37: //Checkpoint
+                case TileType.Checkpoint: //Checkpoint
                     LetsLightThrough = true;
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
@@ -468,43 +379,43 @@ namespace Adam
                         }
                     }
                     break;
-                case 38: //Stone Brick
+                case TileType.StoneBrick: //Stone Brick
                     IsSolid = true;
                     startingPoint = new Vector2(0, 10);
                     _hasConnectPattern = true;
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 39: //Ice
+                case TileType.Snow: //Ice
                     IsSolid = true;
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(4, 10);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 40: //Snow Covered Grass
+                case TileType.SnowyGrass: //Snow Covered Grass
                     IsSolid = true;
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(8, 10);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 41: //Void tile
+                case TileType.CompressedVoid: //Void tile
                     IsSolid = true;
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(16, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 42: // Flamespitter
+                case TileType.FlameSpitter: // Flamespitter
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 29);
                     LetsLightThrough = true;
                     break;
-                case 43: // Machine Gun
+                case TileType.MachineGun: // Machine Gun
                     _frameCount = new Vector2(8, 0);
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 28);
                     LetsLightThrough = true;
                     break;
-                case 44: // Cacti
+                case TileType.Cactus: // Cacti
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.X = 2;
                     _sizeOfTile.Y = 2;
@@ -525,79 +436,81 @@ namespace Adam
                     }
                     LetsLightThrough = true;
                     break;
-                case 45: // Mushroom Booster
+                case TileType.MushroomBooster: // Mushroom Booster
                     _positionInSpriteSheet = new Vector2(19, 26);
+                    _interactable = new MushroomBooster();
                     LetsLightThrough = true;
+                    CurrentCollisionType = CollisionType.FromAbove;
                     break;
-                case 46: // Void ladder.
+                case TileType.VoidLadder: // Void ladder.
                     _positionInSpriteSheet = new Vector2(14, 8);
                     IsClimbable = true;
                     LetsLightThrough = true;
                     break;
-                case 47: // Wooden platform.
+                case TileType.WoodenPlatform: // Wooden platform.
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(14, 26);
                     LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
-                case 48: // Blue crystal.
+                case TileType.AquaantCrystal: // Blue crystal.
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
                     new Crystal(this, 3);
                     LetsLightThrough = true;
                     break;
-                case 49: // Yellow crystal.
+                case TileType.HeliauraCrystal: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
                     new Crystal(this, 1);
                     LetsLightThrough = true;
                     break;
-                case 50: // Green sludge.
+                case TileType.SentistractSludge: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
                     new Crystal(this, 2);
                     LetsLightThrough = true;
                     break;
-                case 51: // Void FireSpitter.
+                case TileType.VoidFireSpitter: // Void FireSpitter.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 28);
                     LetsLightThrough = true;
                     break;
-                case 52: // Sapphire Crystal.
+                case TileType.SapphireCrystal: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
                     new Crystal(this, 3);
                     LetsLightThrough = true;
                     break;
-                case 53: // Ruby Crystal.
+                case TileType.RubyCrystal: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
                     new Crystal(this, 4);
                     LetsLightThrough = true;
                     break;
-                case 54: // Emerald Crystal.
+                case TileType.EmeraldCrystal: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
                     new Crystal(this, 2);
                     LetsLightThrough = true;
                     break;
-                case 55: // Skull.
+                case TileType.Skull: // Skull.
                     _positionInSpriteSheet = new Vector2(22, 24);
                     LetsLightThrough = true;
                     break;
-                case 56: // Stalagmite
+                case TileType.Stalagmite: // Stalagmite
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(23, 24);
                     LetsLightThrough = true;
                     break;
-                case 57: // Mud.
+                case TileType.Mud: // Mud.
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(4, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 58: // Portal.
+                case TileType.Portal: // Portal.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
@@ -617,28 +530,28 @@ namespace Adam
                     }
                     LetsLightThrough = true;
                     break;
-                case 59: // Bed.
+                case TileType.Bed: // Bed.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 3;
                     _positionInSpriteSheet = new Vector2(10, 30);
                     LetsLightThrough = true;
                     break;
-                case 60: // Bookshelf.
+                case TileType.Bookshelf: // Bookshelf.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(13, 30);
                     LetsLightThrough = true;
                     break;
-                case 61: // Painting.
+                case TileType.Painting: // Painting.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 2;
                     _sizeOfTile.X = 2;
                     _positionInSpriteSheet = new Vector2(10, 32);
                     LetsLightThrough = true;
                     break;
-                case 62: // Tree of Knowledge
+                case TileType.TreeofKnowledge: // Tree of Knowledge
                     _sizeOfTile.X = 50;
                     _sizeOfTile.Y = 25;
                     //Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
@@ -648,13 +561,13 @@ namespace Adam
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
                     LetsLightThrough = true;
                     break;
-                case 63: // Tree Bark
+                case TileType.TreeBark: // Tree Bark
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(28, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 64: // Player Detector
+                case TileType.PlayerDetector: // Player Detector
                     LetsLightThrough = true;
                     _positionInSpriteSheet = new Vector2(13, 8);
                     _interactable = new PlayerDetector(this);
@@ -663,22 +576,22 @@ namespace Adam
 
                 #region Wall Textures
 
-                case 100: //Gold Brick Wall
+                case TileType.GoldBrickWall: //Gold Brick Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(4, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 101: //Stone Wall
+                case TileType.StoneWall: //Stone Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(20, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 102: //Dirt Wall
+                case TileType.DirtWall: //Dirt Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(0, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 103: //Fences
+                case TileType.Fence: //Fences
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -690,32 +603,32 @@ namespace Adam
                     }
                     LetsLightThrough = true;
                     break;
-                case 104: //Marble wall
+                case TileType.MarbleWall: //Marble wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(12, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 105: // Sand Wall
+                case TileType.SandWall: // Sand Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(4, 24);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 106: //Hellstone Wall
+                case TileType.HellstoneWall: //Hellstone Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(0, 24);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 107: //Stone Brick Wall
+                case TileType.StoneBrickWall: //Stone Brick Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(8, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 108: // Mesa Wall
+                case TileType.MesaWall: // Mesa Wall
                     _hasConnectPattern = true;
                     startingPoint = new Vector2(0, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case 109: // Wallpaper.
+                case TileType.Wallpaper: // Wallpaper.
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -729,10 +642,10 @@ namespace Adam
                             break;
                     }
                     break;
-                case 110: // Black.
+                case TileType.Nothing: // Black.
                     _positionInSpriteSheet = new Vector2(13, 9);
                     break;
-                case 111: // Tree of Knowledge
+                case TileType.TreeOfKnowledge: // Tree of Knowledge
                     _sizeOfTile.X = 10;
                     _sizeOfTile.Y = 10;
                     _positionInSpriteSheet = new Vector2(24, 5);
@@ -743,7 +656,7 @@ namespace Adam
 
                 #endregion
 
-                case 200: //Player
+                case TileType.Player: //Player
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(17, 12);
@@ -767,7 +680,7 @@ namespace Adam
                     _isInvisibleInPlayMode = true;
                     LetsLightThrough = true;
                     break;
-                case 201: //Snake
+                case TileType.Snake: //Snake
                     GameWorld.AddEntityAt(TileIndex, new Snake(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
                     //LetsLightThrough = true;
@@ -785,7 +698,7 @@ namespace Adam
                     //    }
                     //}
                     break;
-                case 202: //Frog
+                case TileType.Frog: //Frog
                     LetsLightThrough = true;
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
@@ -801,7 +714,7 @@ namespace Adam
                         }
                     }
                     break;
-                case 203: // NPC
+                case TileType.NPC: // NPC
                     LetsLightThrough = true;
                     _positionInSpriteSheet = new Vector2(18, 13);
                     _isInvisibleInPlayMode = true;
@@ -811,22 +724,22 @@ namespace Adam
                         _wasInitialized = true;
                     }
                     break;
-                case 204: //Lost
+                case TileType.Lost: //Lost
                     LetsLightThrough = true;
                     break;
-                case 205: //Hellboar
+                case TileType.Hellboar: //Hellboar
                     LetsLightThrough = true;
                     break;
-                case 206: //Falling Boulder
+                case TileType.FallingBoulder: //Falling Boulder
                     LetsLightThrough = true;
                     break;
-                case 207: //Bat
+                case TileType.Bat: //Bat
                     LetsLightThrough = true;
                     break;
-                case 208: //Duck
+                case TileType.Duck: //Duck
                     LetsLightThrough = true;
                     break;
-                case 209: //Flying Wheel
+                case TileType.BeingofSight: //Flying Wheel
                     LetsLightThrough = true;
                     break;
             }
@@ -920,7 +833,7 @@ namespace Adam
             {
                 switch (Id)
                 {
-                    case 8: //Metal
+                    case TileType.Metal: //Metal
                         _switchFrame = 100;
                         _restartWait = 2000;
                         _frameTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
@@ -1091,20 +1004,20 @@ namespace Adam
         /// </summary>
         /// <param name="ids">The tile array that will be analyzed.</param>
         /// <param name="mapWidth">The width of the map in tiles.</param>
-        public void FindConnectedTextures(byte[] ids, int mapWidth)
+        public void FindConnectedTextures(TileType[] ids, int mapWidth)
         {
             _cornerPieces = new List<Tile>();
 
             // Wallpaper.
-            if (Id == 109)
+            if (Id == TileType.Wallpaper)
             {
                 var indexAbove = TileIndex - mapWidth;
                 var indexBelow = TileIndex + mapWidth;
-                if (ids[indexAbove] != 109)
+                if (ids[indexAbove] != TileType.Wallpaper)
                 {
                     SubId = 1;
                 }
-                else if (ids[indexBelow] != 109)
+                else if (ids[indexBelow] != TileType.Wallpaper)
                 {
                     SubId = 2;
                 }
@@ -1112,15 +1025,15 @@ namespace Adam
             }
 
             //Marble columns
-            if (Id == 18)
+            if (Id == TileType.MarbleColumn)
             {
                 var indexAbove = TileIndex - mapWidth;
                 var indexBelow = TileIndex + mapWidth;
-                if (ids[indexAbove] != 18)
+                if (ids[indexAbove] != TileType.MarbleColumn)
                 {
                     SubId = 1;
                 }
-                else if (ids[indexBelow] != 18)
+                else if (ids[indexBelow] != TileType.MarbleColumn)
                 {
                     SubId = 2;
                 }
@@ -1128,36 +1041,36 @@ namespace Adam
             }
 
             //Marble Floor
-            else if (Id == 3)
+            else if (Id == TileType.MarbleFloor)
             {
-                if (ids[TileIndex - 1] != 3)
+                if (ids[TileIndex - 1] != TileType.MarbleFloor)
                     SubId = 2;
-                else if (ids[TileIndex + 1] != 3)
+                else if (ids[TileIndex + 1] != TileType.MarbleFloor)
                     SubId = 1;
                 else SubId = 0;
             }
 
 
             //Marble Ceiling
-            else if (Id == 29)
+            else if (Id == TileType.MarbleCeiling)
             {
-                if (ids[TileIndex + 1] != 29)
+                if (ids[TileIndex + 1] != TileType.MarbleCeiling)
                     SubId = 1;
-                else if (ids[TileIndex - 1] != 29)
+                else if (ids[TileIndex - 1] != TileType.MarbleCeiling)
                     SubId = 2;
                 else SubId = 0;
             }
 
             //Fences
-            else if (Id == 103)
+            else if (Id == TileType.Fence)
             {
-                if (ids[TileIndex - mapWidth] != 103)
+                if (ids[TileIndex - mapWidth] != TileType.Fence)
                     SubId = 1;
                 else SubId = 0;
             }
 
             // Water.
-            else if (Id == 23)
+            else if (Id == TileType.Water)
             {
                 if (ids[TileIndex - mapWidth] == 0)
                     SubId = 1;
@@ -1165,7 +1078,7 @@ namespace Adam
             }
 
             // Lava.
-            else if (Id == 24)
+            else if (Id == TileType.Lava)
             {
                 if (ids[TileIndex - mapWidth] == 0)
                     SubId = 1;
@@ -1348,7 +1261,7 @@ namespace Adam
                 bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid;
+                corner.Id = (TileType)mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 1;
@@ -1360,7 +1273,7 @@ namespace Adam
                 bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid;
+                corner.Id = (TileType)mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 2;
@@ -1372,7 +1285,7 @@ namespace Adam
                 top == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid;
+                corner.Id = (TileType)mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 3;
@@ -1384,7 +1297,7 @@ namespace Adam
                 top == mid)
             {
                 var corner = new Tile();
-                corner.Id = mid;
+                corner.Id = (TileType)mid;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 7;
@@ -1400,7 +1313,7 @@ namespace Adam
         public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
         {
             //Add decoration on top of grass tile.
-            if (Id == 1 && SubId == 5)
+            if (Id == TileType.Grass && SubId == 5)
             {
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
@@ -1408,15 +1321,15 @@ namespace Adam
                     var rand = AdamGame.Random.Next(0, 10);
                     if (rand == 0) //flower
                     {
-                        array[indexAbove].Id = 17;
+                        array[indexAbove].Id = TileType.Flower;
                     }
                     else if (rand == 1 || rand == 2) //tall grass
                     {
-                        array[indexAbove].Id = 9;
+                        array[indexAbove].Id = TileType.TallGrass;
                     }
                     else //short grass
                     {
-                        array[indexAbove].Id = 7;
+                        array[indexAbove].Id = TileType.ShortGrass;
                     }
 
                     array[indexAbove].DefineTexture();
@@ -1424,7 +1337,7 @@ namespace Adam
             }
 
             // Random decorations for sand.
-            if (Id == 5 && SubId == 5)
+            if (Id == TileType.Sand && SubId == 5)
             {
                 var indexAbove = TileIndex - mapWidth * 2;
                 var indexToRight = TileIndex - mapWidth + 1;
@@ -1433,14 +1346,14 @@ namespace Adam
                 {
                     var rand = AdamGame.Random.Next(0, 100);
                     if (rand > 80)
-                        array[indexAbove].Id = 44;
+                        array[indexAbove].Id = TileType.Cactus;
 
                     array[indexAbove].DefineTexture();
                 }
             }
 
             // Random decoration for hellstone.
-            if (Id == 4 && SubId == 5)
+            if (Id == TileType.Hellrock && SubId == 5)
             {
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
@@ -1450,14 +1363,14 @@ namespace Adam
                     // Skull.
                     if (rand == 0)
                     {
-                        array[indexAbove].Id = 55;
+                        array[indexAbove].Id = TileType.Skull;
                     }
                     array[indexAbove].DefineTexture();
                 }
             }
 
             // Hellstone stalagmmite.
-            if (Id == 4 && SubId == 13)
+            if (Id == TileType.Hellrock && SubId == 13)
             {
                 if (AdamGame.Random.Next(0, 5) == 1)
                 {
@@ -1465,7 +1378,7 @@ namespace Adam
                     var indexTwoBelow = indexBelow + mapWidth;
                     if (array[indexBelow].Id == 0 && array[indexTwoBelow].Id == 0)
                     {
-                        array[indexBelow].Id = 56;
+                        array[indexBelow].Id = TileType.Stalagmite;
                         array[indexBelow].DefineTexture();
                     }
                 }
@@ -1473,7 +1386,7 @@ namespace Adam
 
             // Randomly generate different plain textures for certain tiles.
             // Grass
-            if (Id == 1 && SubId == 0 && AdamGame.Random.Next(0, 100) > 80)
+            if (Id == TileType.Grass && SubId == 0 && AdamGame.Random.Next(0, 100) > 80)
             {
                 switch (AdamGame.Random.Next(0, 4))
                 {

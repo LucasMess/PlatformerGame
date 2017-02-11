@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Adam.AdamGame;
 
 namespace Adam.Levels
 {
@@ -51,7 +52,7 @@ namespace Adam.Levels
             }
 
 
-            if (tile.Id == 11) // Torch
+            if (tile.Id == TileType.Torch) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, new Color(255, 207, 100))
@@ -59,27 +60,27 @@ namespace Adam.Levels
                     ChangesSize = true,
                 };
             }
-            else if (tile.Id == 12) // Chandelier
+            else if (tile.Id == TileType.Chandelier) // Chandelier
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White);
             }
-            else if (tile.Id == 24) // Lava
+            else if (tile.Id == TileType.Lava) // Lava
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                              GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 10, Color.Red);
             }
-            else if (tile.Id == 52) // Sapphire
+            else if (tile.Id == TileType.SapphireCrystal) // Sapphire
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Blue);
             }
-            else if (tile.Id == 53) // Ruby
+            else if (tile.Id == TileType.RubyCrystal) // Ruby
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Red);
             }
-            else if (tile.Id == 54) // Emerald
+            else if (tile.Id == TileType.EmeraldCrystal) // Emerald
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                              GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Green);
