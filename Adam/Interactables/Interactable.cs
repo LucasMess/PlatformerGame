@@ -1,4 +1,5 @@
 ﻿using Adam.Levels;
+using Adam.PlayerCharacter;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -82,7 +83,7 @@ namespace Adam.Interactables
         /// Defines what should happen when the player touches the object. Should not call on connected interactables.
         /// </summary>
         /// <param name="tile"></param>
-        public virtual void OnPlayerTouch(Tile tile)
+        public virtual void OnEntityTouch(Tile tile, Entity entity)
         {
 
         }

@@ -25,9 +25,10 @@ namespace Adam
 
         public TileType Id = 0;
         private readonly bool _isSampleTile;
-        private bool _animationPlaysOnce;
+        private bool animationPlaysOnce = false;
+        private bool animationResets = false;
         private List<Tile> _cornerPieces = new List<Tile>();
-        private int _currentFrame;
+        public int CurrentFrame;
         private Vector2 _frameCount;
         private double _frameTimer;
         private bool _hasAddedEntity;
@@ -42,7 +43,8 @@ namespace Adam
         private Vector2 _sizeOfTile = new Vector2(1, 1);
         private Rectangle _startingPosition;
         private Rectangle _startingRectangle;
-        private int _switchFrame;
+        private const int DefaultAnimationSpeed = 125;
+        private int animationSpeed = DefaultAnimationSpeed;
         private bool _wasInitialized;
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
@@ -262,7 +264,7 @@ namespace Adam
                     _sizeOfTile.X = 1.5f;
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(15, 30);
-                    _animationPlaysOnce = true;
+                    animationPlaysOnce = true;
                     DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
                     DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
                     _interactable = new Chest(this);
@@ -294,7 +296,7 @@ namespace Adam
                     break;
                 case TileType.Lava: //lava
                     _interactable = new Lava();
-                    _switchFrame = 1000;
+                    animationSpeed = 1000;
 
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = false;
@@ -437,8 +439,16 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.MushroomBooster: // Mushroom Booster
+                    _frameCount = new Vector2(4, 0);
+                    _sizeOfTile.X = 2;
+                    DrawRectangle.Width = (int)_sizeOfTile.X * AdamGame.Tilesize;
+                    animationSpeed = 75;
                     _positionInSpriteSheet = new Vector2(19, 26);
                     _interactable = new MushroomBooster();
+                    IsSolid = true;
+                    AnimationStopped = true;
+                    animationPlaysOnce = true;
+                    animationResets = true;
                     LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
@@ -754,7 +764,7 @@ namespace Adam
             {
                 var randX = AdamGame.Random.Next(0, (int)_frameCount.X);
                 SourceRectangle.X += randX * SmallTileSize;
-                _currentFrame += randX;
+                CurrentFrame += randX;
             }
         }
 
@@ -834,29 +844,28 @@ namespace Adam
                 switch (Id)
                 {
                     case TileType.Metal: //Metal
-                        _switchFrame = 100;
+                        animationSpeed = 100;
                         _restartWait = 2000;
                         _frameTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
                         _restartTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
 
                         if (_restartTimer < _restartWait)
                             break;
-                        if (_frameTimer >= _switchFrame)
+                        if (_frameTimer >= animationSpeed)
                         {
                             if (_frameCount.X != 0)
                             {
                                 _frameTimer = 0;
-                                SourceRectangle.X += SmallTileSize;
-                                _currentFrame++;
+                                CurrentFrame++;
                             }
                         }
 
-                        if (_currentFrame >= _frameCount.X)
+                        if (CurrentFrame >= _frameCount.X)
                         {
-                            _currentFrame = 0;
-                            SourceRectangle.X = 12 * 16;
+                            CurrentFrame = 0;
                             _restartTimer = 0;
                         }
+                        SourceRectangle.X = _startingRectangle.X + _startingRectangle.Width * CurrentFrame;
                         break;
                     default:
                         DefaultAnimation();
@@ -869,32 +878,39 @@ namespace Adam
         {
             var gameTime = AdamGame.GameTime;
 
-            if (_switchFrame == 0) _switchFrame = 130;
+            if (animationSpeed == 0) animationSpeed = 130;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (_frameTimer >= _switchFrame)
+            if (_frameTimer >= animationSpeed)
             {
                 if (_frameCount.X != 0)
                 {
                     _frameTimer = 0;
-                    SourceRectangle.X += SourceRectangle.Width;
-                    _currentFrame++;
+                    CurrentFrame++;
                 }
             }
 
-            if (_currentFrame >= _frameCount.X)
+            if (CurrentFrame >= _frameCount.X)
             {
-                if (_animationPlaysOnce)
+                if (animationPlaysOnce)
                 {
-                    _currentFrame--;
-                    SourceRectangle.X -= SourceRectangle.Width;
+                    if (animationResets)
+                    {
+                        CurrentFrame = 0;
+                        AnimationStopped = true;
+                    }
+                    else
+                    {
+                        CurrentFrame--;
+                    }
                 }
                 else
                 {
-                    _currentFrame = 0;
-                    SourceRectangle.X = _startingRectangle.X;
+                    CurrentFrame = 0;
                 }
             }
+            SourceRectangle.X = _startingRectangle.X + _startingRectangle.Width * CurrentFrame;
+
         }
 
         private void ChangeOpacity()
@@ -924,16 +940,21 @@ namespace Adam
             }
         }
 
-        public void Destroy()
+        public void ResetToDefault()
         {
             if (OnTileDestroyed != null)
                 OnTileDestroyed(this);
+
+            GameWorld.WorldData.MetaData.Remove(TileIndex);
+
 
             Id = 0;
             _interactable = null;
             IsSolid = false;
             SubId = 0;
-            _switchFrame = 0;
+            animationPlaysOnce = false;
+            animationResets = false;
+            animationSpeed = DefaultAnimationSpeed;
             DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
             _wasInitialized = false;
@@ -943,7 +964,7 @@ namespace Adam
             DefineSourceRectangle();
             SetToDefaultSourceRect();
             CurrentCollisionType = CollisionType.All;
-            GameWorld.WorldData.MetaData.Remove(TileIndex);
+
 
             //DefineTexture();
             //LightingEngine.UpdateLightAt(TileIndex);
@@ -1565,6 +1586,11 @@ namespace Adam
                 return;
             }
             interactable.OnActivation += _interactable.OnPlayerAction;
+        }
+
+        public void OnEntityTouch(Entity entity)
+        {
+            _interactable?.OnEntityTouch(this, entity);
         }
     }
 }

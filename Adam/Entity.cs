@@ -578,12 +578,14 @@ namespace Adam
                                 }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
+                                tile.OnEntityTouch(this);
                             }
                             else if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
                             else if (Velocity.Y < 0)
                             {
                                 CollidedWithTileAbove(this, tile);
                                 CollidedWithTerrain(this, tile);
+                                tile.OnEntityTouch(this);
                             }
                         }
                     }
@@ -606,13 +608,15 @@ namespace Adam
                             {
                                 CollidedWithTileToRight(this, tile);
                                 CollidedWithTerrain(this, tile);
+                                tile.OnEntityTouch(this);
                             }
                             else if (Velocity.X < 0)
                             {
                                 CollidedWithTileToLeft(this, tile);
                                 CollidedWithTerrain(this, tile);
+                                tile.OnEntityTouch(this);
                             }
-
+                           
                         }
                     }
 

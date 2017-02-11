@@ -41,8 +41,9 @@ namespace Adam.Levels
             Tile tile = GameWorld.TileArray[ind];
             Tile wall = GameWorld.WallArray[ind];
 
-            _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+            Light light = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 0, Color.White);
+            _lights[ind] = light;
 
             if (tile.LetsLightThrough && wall.LetsLightThrough)
             {

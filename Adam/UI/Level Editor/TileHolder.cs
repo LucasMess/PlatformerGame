@@ -14,7 +14,7 @@ namespace Adam.UI.Level_Editor
     {
         private const int SpacingBetweenSquareAndTile = 3 * 2;
         private Vector2 _positionRelativeToContainer;
-        private readonly Tile _tile;
+        private Tile _tile;
         public Timer LastTimeUsed { get; set; } = new Timer(true);
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
 
@@ -272,7 +272,7 @@ namespace Adam.UI.Level_Editor
 
         public void ChangeId(TileType newId)
         {
-            _tile.Destroy();
+            _tile.ResetToDefault();
             _tile.Id = newId;
             _tile.DefineTexture();
             AdjustTileInside();

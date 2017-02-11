@@ -209,7 +209,7 @@ namespace Adam.PlayerCharacter
                 {
                     _jumpButtonIsPressed = false;
                 }
-                if (IsSprinting())
+                if (IsSprintButtonPressed())
                     FastRunActive?.Invoke();
                 else
                 {
@@ -224,17 +224,17 @@ namespace Adam.PlayerCharacter
                 NotIdle?.Invoke();
         }
 
-        private bool IsJumpButtonPressed()
+        public bool IsJumpButtonPressed()
         {
             return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
         }
 
-        private bool IsMoveRightPressed()
+        public bool IsMoveRightPressed()
         {
             return InputHelper.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
         }
 
-        private bool IsMoveLeftPressed()
+        public bool IsMoveLeftPressed()
         {
             return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
         }
@@ -249,17 +249,17 @@ namespace Adam.PlayerCharacter
             return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
         }
 
-        private bool IsPunchPressed()
+        public bool IsPunchPressed()
         {
             return InputHelper.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
         }
 
-        private bool IsSprinting()
+        public bool IsSprintButtonPressed()
         {
             return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
         }
 
-        private bool IsRewindPressed()
+        public bool IsRewindPressed()
         {
             return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
         }

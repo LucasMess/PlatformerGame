@@ -130,12 +130,12 @@ namespace Adam.Misc.Helpers
 
             if (string.IsNullOrEmpty(text))
                 return;
-            var font = ChooseBestFont((16));
+            var font = ChooseBestFont(24);
             var mouse = InputHelper.GetMouseInUi();
 
-            _window = new Container(mouse.X - (4), mouse.Y - (int)font.MeasureString(text).Y - (2),
-                (int)font.MeasureString(text).X + (8),
-                (int)font.MeasureString(text).Y + (4), false);
+            _window = new Container(mouse.X - (8), mouse.Y - (int)font.MeasureString(text).Y - (4),
+                (int)font.MeasureString(text).X + (16),
+                (int)font.MeasureString(text).Y + (8), false);
             _window.Color = new Color(196, 69, 69);
             _window.DisableAnimation();
             _window.Draw(spriteBatch);

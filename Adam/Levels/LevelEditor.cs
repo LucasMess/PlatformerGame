@@ -43,7 +43,14 @@ namespace Adam.Levels
         private static int lastRemovedTile = -1;
 
         private static TileType[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
-        private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
+        private static Tile[] GetCurrentArray()
+        {
+            if (OnWallMode)
+            {
+                return GameWorld.WallArray;
+            }
+            return GameWorld.TileArray;
+        }
 
         public static void Load()
         {
@@ -350,6 +357,7 @@ namespace Adam.Levels
                 if (i < 0 || i > WorldDataIds.Length)
                     continue;
                 TileType tileId = WorldDataIds[i];
+                GetCurrentArray()[i].ResetToDefault();
 
                 //Wants to destroy. Any block can be destroyed.
                 if (desiredId == 0)
@@ -357,16 +365,15 @@ namespace Adam.Levels
                     //Check to see if block is already air.
                     if (tileId == 0)
                         continue;
-                    CurrentArray[i].Destroy();
                     WorldDataIds[i] = desiredId;
                     if (OnWallMode)
                     {
-                        CurrentArray[i].IsWall = true;
+                        GetCurrentArray()[i].IsWall = true;
                     }
                     else
-                        CurrentArray[i].IsWall = false;
+                        GetCurrentArray()[i].IsWall = false;
 
-                    Destroy(CurrentArray[i]);
+                    Destroy(GetCurrentArray()[i]);
                 }
 
                 //Wants to build, but only if there is air.
@@ -377,11 +384,11 @@ namespace Adam.Levels
                         WorldDataIds[i] = desiredId;
                         if (OnWallMode)
                         {
-                            CurrentArray[i].IsWall = true;
+                            GetCurrentArray()[i].IsWall = true;
                         }
                         else
-                            CurrentArray[i].IsWall = false;
-                        Construct(CurrentArray[i]);
+                            GetCurrentArray()[i].IsWall = false;
+                        Construct(GetCurrentArray()[i]);
                     }
                     else
                     {
@@ -389,7 +396,7 @@ namespace Adam.Levels
                         // Only allow interaction if the brush size is 1.
                         if (Brush.Size == 1)
                         {
-                            CurrentArray[i].InteractInEditMode();
+                            GetCurrentArray()[i].InteractInEditMode();
                         }
                     }
                 }
@@ -469,14 +476,15 @@ namespace Adam.Levels
             {
                 if (ind >= 0 && ind < GameWorld.TileArray.Length)
                 {
-                    var t = CurrentArray[ind];
-                    t.Destroy();
+                    var t = GetCurrentArray()[ind];
+                    t.ResetToDefault();
                     t.Id = (TileType)WorldDataIds[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(WorldDataIds,
                         GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
-                    t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
+                    t.AddRandomlyGeneratedDecoration(GetCurrentArray(), GameWorld.WorldData.LevelWidth);
+                    GetCurrentArray()[ind] = t;
                     //t.Color = Color.Red;
                 }
             }
