@@ -42,7 +42,7 @@ namespace Adam.UI
 
         public Brush()
         {
-            bright = new Rectangle(412,0,36,36);
+            bright = new Rectangle(412, 0, 36, 36);
             middle = new Rectangle(412 + 36, 0, 36, 36);
             dim = new Rectangle(412 + 36 + 36, 0, 36, 36);
         }
@@ -119,7 +119,8 @@ namespace Adam.UI
 
         private int[] GetTilesCoveredByBrush()
         {
-            _index = LevelEditor.IndexOfMouse;
+            Rectangle mouse = InputHelper.GetMouseRectGameWorld();
+            _index = CalcHelper.GetIndexInGameWorld(mouse.X, mouse.Y);
 
             //Get indexes around brush
             List<int> indexes = new List<int>();
@@ -155,8 +156,8 @@ namespace Adam.UI
             //        spriteBatch.Draw(i.Texture, i.Rectangle, i.SourceRectangle, Color.White);
             //}
 
-            float opacity = (float)( .6 + .4 *(Math.Sin(gridOpacityTimer.TimeElapsedInSeconds * 5)));
-            Color gridColor = Color.White*opacity;
+            float opacity = (float)(.6 + .4 * (Math.Sin(gridOpacityTimer.TimeElapsedInSeconds * 5)));
+            Color gridColor = Color.White * opacity;
 
             if (grid.Texture != null)
                 spriteBatch.Draw(grid.Texture, grid.Rectangle, dim, gridColor);

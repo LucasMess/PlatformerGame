@@ -38,6 +38,8 @@ namespace Adam.Levels
         public static int IndexOfMouse;
         public static bool OnWallMode;
         public static byte SelectedId = 1;
+        private static int lastAddedTile = -1;
+        private static int lastRemovedTile = -1;
 
         private static byte[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
@@ -296,22 +298,26 @@ namespace Adam.Levels
         private static void CheckForMouseInput()
         {
             _mouseRectInGameWorld = InputHelper.GetMouseRectGameWorld();
-            IndexOfMouse = (_mouseRectInGameWorld.Center.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) +
-                           (_mouseRectInGameWorld.Center.X / AdamGame.Tilesize);
+            IndexOfMouse = CalcHelper.GetIndexInGameWorld(_mouseRectInGameWorld.X, _mouseRectInGameWorld.Y);
 
             if (!IsIntersectingUi())
             {
-                if (InputHelper.IsLeftMousePressed())
+                if (InputHelper.IsLeftMousePressed() && InputHelper.IsRightMousePressed())
+                    return;
+
+                if (InputHelper.IsLeftMousePressed() && lastAddedTile != IndexOfMouse)
                 {
+                    lastAddedTile = IndexOfMouse;
+                    lastRemovedTile = -1;
                     UpdateSelectedTiles(SelectedId);
                 }
-
-                if (InputHelper.IsRightMousePressed())
+                else if (InputHelper.IsRightMousePressed() && lastRemovedTile != IndexOfMouse)
                 {
+                    lastRemovedTile = IndexOfMouse;
+                    lastAddedTile = -1;
                     UpdateSelectedTiles(0);
                 }
-
-                if (InputHelper.IsMiddleMousePressed())
+                else if (InputHelper.IsMiddleMousePressed())
                 {
                     SelectedId = WorldDataIds[IndexOfMouse];
                     HotBar.AddToHotBarFromWorld(SelectedId);
@@ -338,8 +344,6 @@ namespace Adam.Levels
         /// <param name="desiredId"></param>
         private static void UpdateSelectedTiles(int desiredId)
         {
-            UpdateLightingByCorners();
-
             foreach (var i in Brush.SelectedIndexes)
             {
                 if (i < 0 || i > WorldDataIds.Length)
@@ -389,6 +393,8 @@ namespace Adam.Levels
                     }
                 }
             }
+            UpdateTilesAround(IndexOfMouse);
+            UpdateLightingByCorners();
         }
 
         /// <summary>
@@ -399,7 +405,6 @@ namespace Adam.Levels
         {
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
-            UpdateTilesAround(t.TileIndex);
             Construction[AdamGame.Random.Next(0, 3)].PlayIfStopped();
             AdamGame.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
@@ -415,7 +420,6 @@ namespace Adam.Levels
             _hasChangedSinceLastSave = true;
             _destruction.PlayIfStopped();
             CreateDestructionParticles(t.GetDrawRectangle());
-            UpdateTilesAround(t.TileIndex);
             AdamGame.Camera.Shake();
         }
 
@@ -472,6 +476,7 @@ namespace Adam.Levels
                         GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
                     t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
+                    //t.Color = Color.Red;
                 }
             }
 
