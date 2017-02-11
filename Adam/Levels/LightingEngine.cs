@@ -29,6 +29,10 @@ namespace Adam.Levels
                 UpdateLightsAround(ind);
         }
 
+        /// <summary>
+        /// Sets the light value to the light value of what is supposed to be there.
+        /// </summary>
+        /// <param name="ind"></param>
         private static void ResetLightAt(int ind)
         {
             if (ind < 0 || ind >= _lights.Length) return;
@@ -125,6 +129,7 @@ namespace Adam.Levels
             {
                 lightsAround[3] = _lights[i + 1];
             }
+
 
             Light sourceRed = new Light();
             Light sourceGreen = new Light();

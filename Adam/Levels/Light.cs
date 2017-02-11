@@ -7,6 +7,7 @@ namespace Adam.Levels
 {
     class Light
     {
+        public static Light BrightestLight = new Light(Vector2.Zero, 0, Color.White);
         public const int MaxLightLevel = 16;
         public int LightLevel { get; set; } = 0;
         public int RedIntensity { get; set; } = 0;

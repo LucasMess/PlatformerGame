@@ -338,6 +338,8 @@ namespace Adam.Levels
         /// <param name="desiredId"></param>
         private static void UpdateSelectedTiles(int desiredId)
         {
+            UpdateLightingByCorners();
+
             foreach (var i in Brush.SelectedIndexes)
             {
                 if (i < 0 || i > WorldDataIds.Length)
@@ -398,7 +400,7 @@ namespace Adam.Levels
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
             UpdateTilesAround(t.TileIndex);
-            Construction[AdamGame.Random.Next(0, 3)].Play();
+            Construction[AdamGame.Random.Next(0, 3)].PlayIfStopped();
             AdamGame.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
         }
@@ -411,10 +413,30 @@ namespace Adam.Levels
         {
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
-            _destruction.Play();
+            _destruction.PlayIfStopped();
             CreateDestructionParticles(t.GetDrawRectangle());
             UpdateTilesAround(t.TileIndex);
             AdamGame.Camera.Shake();
+        }
+
+        private static void UpdateLightingByCorners()
+        {
+            if (Brush.Size == 1)
+            {
+                LightingEngine.UpdateLightingAt(Brush.SelectedIndexes[0], true);
+            }
+            else
+            {
+                int leftTop = Brush.SelectedIndexes[0];
+                int rightTop = Brush.SelectedIndexes[Brush.Size - 1];
+                int leftBot = Brush.SelectedIndexes[(Brush.Size - 1) * (Brush.Size - 2) + 1];
+                int rightBot = Brush.SelectedIndexes[Brush.SelectedIndexes.Length - 1];
+
+                LightingEngine.UpdateLightingAt(leftTop, true);
+                LightingEngine.UpdateLightingAt(rightTop, true);
+                LightingEngine.UpdateLightingAt(leftBot, true);
+                LightingEngine.UpdateLightingAt(rightBot, true);
+            }
         }
 
         /// <summary>
@@ -453,7 +475,6 @@ namespace Adam.Levels
                 }
             }
 
-            LightingEngine.UpdateLightingAt(index, true);
         }
 
         /// <summary>
