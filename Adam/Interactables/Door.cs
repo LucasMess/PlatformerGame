@@ -1,4 +1,5 @@
 ﻿using Adam.Interactables;
+using Adam.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
 namespace Adam
@@ -15,7 +16,7 @@ namespace Adam
             base.Update(tile);
         }
 
-        public override void OnPlayerAction(Tile tile)
+        public override void OnPlayerAction(Tile tile, Player player)
         {
             if (isLocked)
             {
@@ -23,7 +24,7 @@ namespace Adam
             }
             isOpen = true;
 
-            base.OnPlayerAction(tile);
+            base.OnPlayerAction(tile, player);
         }
     }
 }

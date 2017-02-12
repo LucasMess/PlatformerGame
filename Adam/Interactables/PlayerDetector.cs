@@ -23,12 +23,21 @@ namespace Adam.Interactables
             container = new Container(collRectangle.Width, collRectangle.Height);
             container.SetPosition(new Vector2(collRectangle.X, collRectangle.Y));
 
+            CanBeLinkedByOtherInteractables = false;
             CanBeLinkedToOtherInteractables = true;
         }
 
         protected override void OnConnectionToInteractable(Tile source, Tile other)
         {
-            GameWorld.WorldData.MetaData[source.TileIndex] = "activate:" + other.TileIndex;
+            string value = "activate:" + other.TileIndex;
+            if (GameWorld.WorldData.MetaData.ContainsKey(source.TileIndex))
+            {
+                GameWorld.WorldData.MetaData[source.TileIndex] = value;
+            }
+            else
+            {
+                GameWorld.WorldData.MetaData.Add(source.TileIndex, value);
+            }
 
             base.OnConnectionToInteractable(source, other);
         }
@@ -39,7 +48,7 @@ namespace Adam.Interactables
             if (player.GetCollRectangle().Intersects(collRectangle))
             {
                 color = Color.Red;
-                OnPlayerAction(tile);
+                OnPlayerAction(tile, player);
             }
             else color = Color.Green;
 

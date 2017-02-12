@@ -38,6 +38,10 @@ namespace Adam.Levels
         {
             if (ind < 0 || ind >= _lights.Length) return;
             _lights[ind] = null;
+
+            if (GameWorld.TileArray == null || GameWorld.TileArray.Length == 0)
+                return;
+
             Tile tile = GameWorld.TileArray[ind];
             Tile wall = GameWorld.WallArray[ind];
 

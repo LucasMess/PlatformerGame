@@ -49,7 +49,7 @@ namespace Adam
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
         private Rectangle _defaultDrawRectangle;
-        private Interactable _interactable;
+        public Interactable Interactable { get; private set; }
         public bool IsClimbable;
         public bool IsSolid;
         public bool IsWall;
@@ -208,7 +208,7 @@ namespace Adam
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(12, 0);
-                    _interactable = new Torch();
+                    Interactable = new Torch();
                     LetsLightThrough = true;
                     break;
                 case TileType.Chandelier: //Chandelier
@@ -267,7 +267,7 @@ namespace Adam
                     animationPlaysOnce = true;
                     DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
                     DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
-                    _interactable = new Chest(this);
+                    Interactable = new Chest(this);
                     LetsLightThrough = true;
                     break;
                 case TileType.MarbleBrick: // Marble Brick
@@ -295,7 +295,7 @@ namespace Adam
                         _positionInSpriteSheet = new Vector2(8, 24);
                     break;
                 case TileType.Lava: //lava
-                    _interactable = new Lava();
+                    Interactable = new Lava();
                     animationSpeed = 1000;
 
                     _frameCount = new Vector2(4, 0);
@@ -444,7 +444,7 @@ namespace Adam
                     DrawRectangle.Width = (int)_sizeOfTile.X * AdamGame.Tilesize;
                     animationSpeed = 75;
                     _positionInSpriteSheet = new Vector2(19, 26);
-                    _interactable = new MushroomBooster();
+                    Interactable = new MushroomBooster();
                     IsSolid = true;
                     AnimationStopped = true;
                     animationPlaysOnce = true;
@@ -520,7 +520,7 @@ namespace Adam
                     startingPoint = new Vector2(4, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case TileType.Portal: // Portal.
+                case TileType.BackgroundDoor: // Portal.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3;
                     _sizeOfTile.X = 2;
@@ -535,7 +535,7 @@ namespace Adam
 
                     if (!_isSampleTile && !_wasInitialized)
                     {
-                        new Portal(this);
+                        new BackgroundDoor();
                         _wasInitialized = true;
                     }
                     LetsLightThrough = true;
@@ -580,7 +580,13 @@ namespace Adam
                 case TileType.PlayerDetector: // Player Detector
                     LetsLightThrough = true;
                     _positionInSpriteSheet = new Vector2(13, 8);
-                    _interactable = new PlayerDetector(this);
+                    Interactable = new PlayerDetector(this);
+                    _isInvisibleInPlayMode = true;
+                    break;
+                case TileType.Teleporter:
+                    LetsLightThrough = true;
+                    _positionInSpriteSheet = new Vector2(15, 8);
+                    Interactable = new Teleporter(this);
                     _isInvisibleInPlayMode = true;
                     break;
 
@@ -784,7 +790,7 @@ namespace Adam
         public void ReadMetaData()
         {
             if (IsWall) return;
-            _interactable?.ReadMetaData(this);
+            Interactable?.ReadMetaData(this);
         }
 
         private void Tile_OnTileUpdate(Tile t)
@@ -845,7 +851,7 @@ namespace Adam
         {
             OnTileUpdate?.Invoke(this);
             if (!_isSampleTile)
-                _interactable?.Update(this);
+                Interactable?.Update(this);
             Animate();
             ChangeOpacity();
         }
@@ -962,7 +968,7 @@ namespace Adam
 
 
             Id = 0;
-            _interactable = null;
+            Interactable = null;
             IsSolid = false;
             SubId = 0;
             animationPlaysOnce = false;
@@ -993,7 +999,7 @@ namespace Adam
                     return;
                 else
                 {
-                    _interactable?.Draw(spriteBatch, this);
+                    Interactable?.Draw(spriteBatch, this);
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
                 }
             }
@@ -1577,7 +1583,7 @@ namespace Adam
         /// </summary>
         public void InteractInEditMode()
         {
-            _interactable?.OnPlayerClickInEditMode(this);
+            Interactable?.OnPlayerClickInEditMode(this);
         }
 
 
@@ -1585,25 +1591,25 @@ namespace Adam
         /// Returns true if there is an interactable component to this tile.
         /// </summary>
         /// <returns></returns>
-        public bool IsInteractable()
+        public bool HasInteractable()
         {
-            if (_interactable == null) return false;
-            return _interactable.CanBeLinkedToOtherInteractables;
+            if (Interactable == null) return false;
+            return Interactable.CanBeLinkedByOtherInteractables;
         }
 
         public void ConnectToInteractable(Interactable interactable)
         {
-            if (_interactable == null)
+            if (Interactable == null)
             {
                 Console.WriteLine("Could not find interactable!");
                 return;
             }
-            interactable.OnActivation += _interactable.OnPlayerAction;
+            interactable.OnActivation += Interactable.OnPlayerAction;
         }
 
         public void OnEntityTouch(Entity entity)
         {
-            _interactable?.OnEntityTouch(this, entity);
+            Interactable?.OnEntityTouch(this, entity);
         }
     }
 }

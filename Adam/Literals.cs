@@ -9,7 +9,7 @@
         /// <summary>
         /// Each type of tile has its own unique ID.
         /// </summary>
-        public enum TileType : ushort
+        public enum TileType : int
         {
             Air = 0,
             Grass = 1,
@@ -68,13 +68,15 @@
             Skull,
             Stalagmite,
             Mud,
-            Portal,
+            BackgroundDoor,
             Bed,
             Bookshelf,
             Painting,
             TreeofKnowledge,
             TreeBark,
             PlayerDetector,
+            Teleporter,
+
             GoldBrickWall = 100,
             StoneWall,
             DirtWall,

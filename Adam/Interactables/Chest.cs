@@ -12,7 +12,6 @@ namespace Adam
         bool _isOpen;
         SoundFx _openSound;
         Rectangle _collRectangle;
-        Tile _sourceTile;
 
         public bool IsGolden { get; set; }
 
@@ -34,12 +33,12 @@ namespace Adam
                 // If player presses open button, open chest.
                 if (InputHelper.IsKeyDown(Keys.W))
                 {
-                    OnPlayerAction(t);
+                    OnPlayerAction(t, player);
                 }
             }
         }
 
-        public override void OnPlayerAction(Tile tile)
+        public override void OnPlayerAction(Tile tile, Player player)
         {
             if (!_isOpen)
             {
@@ -53,7 +52,7 @@ namespace Adam
                 }
             }
 
-            base.OnPlayerAction(tile);
+            base.OnPlayerAction(tile, player);
         }
     }
 }

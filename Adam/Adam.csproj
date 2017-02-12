@@ -113,8 +113,9 @@
     <Compile Include="Interactables\Lava.cs" />
     <Compile Include="Interactables\MushroomBooster.cs" />
     <Compile Include="Interactables\PlayerDetector.cs" />
-    <Compile Include="Interactables\Portal.cs" />
+    <Compile Include="Interactables\BackgroundDoor.cs" />
     <Compile Include="Interactables\Sign.cs" />
+    <Compile Include="Interactables\Teleporter.cs" />
     <Compile Include="Interactables\Torch.cs" />
     <Compile Include="Levels\Background.cs" />
     <Compile Include="Levels\Chunk.cs" />

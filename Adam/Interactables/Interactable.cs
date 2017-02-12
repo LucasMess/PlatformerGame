@@ -10,32 +10,56 @@ namespace Adam.Interactables
     public abstract class Interactable
     {
 
+        /// <summary>
+        /// Returns true if this interactable can be linked to other interactables to activate them.
+        /// </summary>
         public bool CanBeLinkedToOtherInteractables { get; protected set; } = false;
+
+        /// <summary>
+        /// Returns true if this interactable can be linked by other interactables to be activated by them.
+        /// </summary>
+        public bool CanBeLinkedByOtherInteractables { get; protected set; } = false;
         Line line;
         private bool isBeingInteractedWith = false;
         private static bool buttonWasReleased = false;
         private static bool selectingAnotherTile = false;
 
-        public delegate void InteractionHandler(Tile tile);
+        public delegate void InteractionHandler(Tile tile, Player player);
         public event InteractionHandler OnActivation;
 
+        /// <summary>
+        /// Reads the metadata tag and conencts the interactable to others depending on the commands.
+        /// </summary>
+        /// <param name="tile"></param>
         public void ReadMetaData(Tile tile)
+        {
+            string[] commands = GetCommands(tile);
+            if (commands == null) return;
+            switch (commands[0])
+            {
+                case "activate":
+                    int indexOther = int.Parse(commands[1]);
+                    Tile other = GameWorld.GetTile(indexOther);
+                    other.ConnectToInteractable(this);
+                    break;
+            }
+
+        }
+
+        /// <summary>
+        /// Returns the commands listed under the metadata tag for this tile.
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        protected string[] GetCommands(Tile tile)
         {
             string val;
             if (GameWorld.WorldData.MetaData.TryGetValue(tile.TileIndex, out val))
             {
-                string[] commands = val.Split(':');
-                switch (commands[0])
-                {
-                    case "activate":
-                        int indexOther = int.Parse(commands[1]);
-                        Tile other = GameWorld.GetTile(indexOther);
-                        other.ConnectToInteractable(this);
-                        break;
-                }
+                return val.Split(':');
             }
+            else return null;
         }
-
 
         /// <summary>
         /// Called when the tile is updated.
@@ -55,22 +79,25 @@ namespace Adam.Interactables
 
                 if (InputHelper.IsLeftMousePressed())
                 {
+                    int index = CalcHelper.GetIndexInGameWorld(mouse.Center.X, mouse.Center.Y);
+                    Tile other = GameWorld.GetTile(index);
+
                     selectingAnotherTile = false;
                     isBeingInteractedWith = false;
                     buttonWasReleased = false;
 
-                    int index = CalcHelper.GetIndexInGameWorld(mouse.Center.X, mouse.Center.Y);
-                    if (GameWorld.GetTile(index).IsInteractable())
+                    if (other.HasInteractable() && other.Interactable.CanBeLinkedByOtherInteractables)
                     {
                         //TODO: Make a connection between these tiles.
                         // Maybe make the interactable in the other tile be subscribed to this interactable's Action event....
-                        GameWorld.GetTile(index).ConnectToInteractable(this);
-                        OnConnectionToInteractable(tile, GameWorld.GetTile(index));
+                        other.ConnectToInteractable(this);
+                        OnConnectionToInteractable(tile, other);
                     }
                     else
                     {
                         line = null;
-                    }                }
+                    }
+                }
             }
         }
 
@@ -91,9 +118,9 @@ namespace Adam.Interactables
         /// <summary>
         /// Defines what should happen when the player interacts with the object. It is also what happens when the object is remotely activated, i.e. via a player detector.
         /// </summary>
-        public virtual void OnPlayerAction(Tile tile)
+        public virtual void OnPlayerAction(Tile tile, Player player)
         {
-            OnActivation?.Invoke(tile);
+            OnActivation?.Invoke(tile, player);
         }
 
         /// <summary>
@@ -116,6 +143,7 @@ namespace Adam.Interactables
         public virtual void OnTileDestroyed(Tile tile)
         {
             GameWorld.WorldData.MetaData.Remove(tile.TileIndex);
+            OnActivation = null;
         }
 
         /// <summary>
@@ -126,6 +154,15 @@ namespace Adam.Interactables
         public virtual void Draw(SpriteBatch spriteBatch, Tile tile)
         {
             line?.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// Returns true if interacting with this interactable will activate another interactable.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsConnectedToAnotherInteractable()
+        {
+            return OnActivation == null;
         }
     }
 }

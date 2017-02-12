@@ -232,7 +232,7 @@ namespace Adam
             CurrentGameMode = GameMode.None;
 
             string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
-            DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/MainMenu.lvl");
+            //DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/MainMenu.lvl");
 
             GameWorld.Initialize();
         }

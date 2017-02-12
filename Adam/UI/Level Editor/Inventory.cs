@@ -78,6 +78,7 @@ namespace Adam.UI.Level_Editor
             TileType.Lava, // Lava
             TileType.Poison, // Poisoned Water
             TileType.PlayerDetector, // Player Detector
+            TileType.Teleporter,
         };
 
         private TileType[] _objects =
@@ -87,7 +88,7 @@ namespace Adam.UI.Level_Editor
             TileType.Door, // Door
             TileType.Chest, // Chest
             TileType.Sign, // Sign
-            TileType.Portal, // Portal
+            TileType.BackgroundDoor, // Portal
             TileType.Checkpoint, // Checkpoint
             TileType.Tree, // Tree
             TileType.Bed, // Bed
