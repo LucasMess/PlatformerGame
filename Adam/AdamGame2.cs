@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.BitmapFonts;
+using Steamworks;
 using System;
 using System.IO;
 using System.Threading;
@@ -100,6 +101,7 @@ namespace Adam
         public static event UpdateHandler GameUpdateCalled;
         private bool _wasEscapeReleased;
         public bool IsInStoryMode = false;
+        public static string UserName;
 
         public AdamGame()
         {
@@ -108,6 +110,9 @@ namespace Adam
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
             DataFolder.Initialize();
+
+            SteamAPI.Init();
+            UserName = SteamFriends.GetPersonaName();
 
 #pragma warning disable 0162
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse

@@ -78,8 +78,8 @@ namespace Adam.PlayerCharacter
                 new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
             ComplexAnim.AddAnimationData("punch2",
                 new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
-            ComplexAnim.AddAnimationData("death",
-                new ComplexAnimData(int.MaxValue, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
+           // ComplexAnim.AddAnimationData("death",
+                //new ComplexAnimData(int.MaxValue, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
 
             // Sounds
             Sounds.AddSoundRef("hurt", "Player/hurtSound");

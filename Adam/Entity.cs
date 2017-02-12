@@ -282,13 +282,13 @@ namespace Adam
                 }
 
                 //Check for physics, if applicable.
-                if (ObeysGravity && !IsAboutToDie)
+                if (ObeysGravity)
                 {
                     ApplyGravity();
                 }
 
                 //Check for collision, if applicable.
-                if (IsCollidable)
+                if (IsCollidable && !IsAboutToDie)
                 {
                     CheckTerrainCollision();
                 }
@@ -437,7 +437,7 @@ namespace Adam
             _deathAnimationTimer.ResetAndWaitFor(1000);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
             IsAboutToDie = true;
-            Velocity.Y = -5f;
+            SetVelY(-20f);
         }
 
         /// <summary>

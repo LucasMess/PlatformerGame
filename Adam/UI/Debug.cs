@@ -151,6 +151,7 @@ namespace Adam
                 _infos.Add("Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y);
                 _infos.Add("Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y);
                 _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
+                _infos.Add("Steam Name: " + AdamGame.UserName);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {
