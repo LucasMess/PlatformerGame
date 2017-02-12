@@ -3,6 +3,7 @@ using Adam.Misc.Sound;
 using Adam.Particles;
 using Adam.PlayerCharacter;
 using Adam.UI;
+using Adam.UI.Elements;
 using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -45,6 +46,8 @@ namespace Adam.Levels
         private static TileType[] WorldDataIds => OnWallMode ? GameWorld.WorldData.WallIDs : GameWorld.WorldData.TileIDs;
         private static Tile[] CurrentArray => OnWallMode ? GameWorld.WallArray : GameWorld.TileArray;
 
+        public static List<Line> InteractableConnections = new List<Line>();
+        public static Tile ForceUpdateTile;
 
         public static void Load()
         {
@@ -117,6 +120,8 @@ namespace Adam.Levels
             CheckIfChangedToWallMode();
             CheckForCameraMovement();
             CheckForMouseInput();
+
+            ForceUpdateTile?.Update();
 
             // Auto-save functionality.
             if (IdleTimerForSave.TimeElapsedInSeconds > 1 && _hasChangedSinceLastSave)
@@ -479,8 +484,7 @@ namespace Adam.Levels
                 if (ind >= 0 && ind < GameWorld.TileArray.Length)
                 {
                     var t = CurrentArray[ind];
-                    if (t.Id != WorldDataIds[ind])
-                        t.ResetToDefault();
+                    t.ResetToDefault();
                     t.Id = WorldDataIds[ind];
                     t.DefineTexture();
                     t.FindConnectedTextures(WorldDataIds,
@@ -529,6 +533,11 @@ namespace Adam.Levels
 
             //spriteBatch.Draw(Main.DefaultTexture, EditorRectangle, Color.White);
             GameWorld.PlayerTrail.Draw(spriteBatch);
+
+            foreach (var line in InteractableConnections)
+            {
+                line.Draw(spriteBatch);
+            }
         }
 
         /// <summary>

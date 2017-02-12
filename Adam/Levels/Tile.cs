@@ -961,9 +961,8 @@ namespace Adam
 
         public void ResetToDefault()
         {
-            if (OnTileDestroyed != null)
-                OnTileDestroyed(this);
-
+            OnTileDestroyed?.Invoke(this);
+            Interactable?.OnTileDestroyed(this);
             GameWorld.WorldData.MetaData.Remove(TileIndex);
 
 

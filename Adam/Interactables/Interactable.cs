@@ -19,13 +19,18 @@ namespace Adam.Interactables
         /// Returns true if this interactable can be linked by other interactables to be activated by them.
         /// </summary>
         public bool CanBeLinkedByOtherInteractables { get; protected set; } = false;
-        Line line;
+        Line line = new Line();
         private bool isBeingInteractedWith = false;
-        private static bool buttonWasReleased = false;
-        private static bool selectingAnotherTile = false;
+        private static bool ButtonWasReleased = false;
+        private static bool SelectingAnotherTile = false;
 
         public delegate void InteractionHandler(Tile tile, Player player);
         public event InteractionHandler OnActivation;
+
+        public Interactable()
+        {
+            LevelEditor.InteractableConnections.Add(line);
+        }
 
         /// <summary>
         /// Reads the metadata tag and conencts the interactable to others depending on the commands.
@@ -67,14 +72,13 @@ namespace Adam.Interactables
         /// <param name="tile"></param>
         public virtual void Update(Tile tile)
         {
-
             if (Mouse.GetState().LeftButton == ButtonState.Released)
-                buttonWasReleased = true;
+                ButtonWasReleased = true;
 
-            if (isBeingInteractedWith && buttonWasReleased)
+            if (isBeingInteractedWith && ButtonWasReleased)
             {
                 Rectangle mouse = InputHelper.GetMouseRectGameWorld();
-                line = new Line(new Vector2(tile.DrawRectangle.Center.X, tile.DrawRectangle.Center.Y),
+                line.Update(new Vector2(tile.DrawRectangle.Center.X, tile.DrawRectangle.Center.Y),
                     new Vector2(mouse.Center.X, mouse.Center.Y));
 
                 if (InputHelper.IsLeftMousePressed())
@@ -82,9 +86,10 @@ namespace Adam.Interactables
                     int index = CalcHelper.GetIndexInGameWorld(mouse.Center.X, mouse.Center.Y);
                     Tile other = GameWorld.GetTile(index);
 
-                    selectingAnotherTile = false;
+                    SelectingAnotherTile = false;
                     isBeingInteractedWith = false;
-                    buttonWasReleased = false;
+                    ButtonWasReleased = false;
+                    LevelEditor.ForceUpdateTile = null;
 
                     if (other.HasInteractable() && other.Interactable.CanBeLinkedByOtherInteractables)
                     {
@@ -95,7 +100,7 @@ namespace Adam.Interactables
                     }
                     else
                     {
-                        line = null;
+                        line.IsActive = false;
                     }
                 }
             }
@@ -103,6 +108,8 @@ namespace Adam.Interactables
 
         protected virtual void OnConnectionToInteractable(Tile source, Tile other)
         {
+            line.IsActive = true;
+            line.Update(new Vector2(source.DrawRectangle.Center.X, source.DrawRectangle.Center.Y), new Vector2(other.DrawRectangle.Center.X, other.DrawRectangle.Center.Y));
             LevelEditor.SaveLevel();
         }
 
@@ -128,11 +135,14 @@ namespace Adam.Interactables
         /// </summary>
         public virtual void OnPlayerClickInEditMode(Tile tile)
         {
-            if (CanBeLinkedToOtherInteractables && !selectingAnotherTile && buttonWasReleased)
+            if (CanBeLinkedToOtherInteractables && !SelectingAnotherTile && ButtonWasReleased)
             {
                 isBeingInteractedWith = true;
-                selectingAnotherTile = true;
-                buttonWasReleased = false;
+                SelectingAnotherTile = true;
+                ButtonWasReleased = false;
+                line.IsActive = true;
+                line.Update(Vector2.Zero, Vector2.Zero);
+                LevelEditor.ForceUpdateTile = tile;
             }
         }
 
@@ -144,6 +154,10 @@ namespace Adam.Interactables
         {
             GameWorld.WorldData.MetaData.Remove(tile.TileIndex);
             OnActivation = null;
+            if (isBeingInteractedWith)
+            {
+                SelectingAnotherTile = false;
+            }
         }
 
         /// <summary>
@@ -153,7 +167,6 @@ namespace Adam.Interactables
         /// <param name="tile"></param>
         public virtual void Draw(SpriteBatch spriteBatch, Tile tile)
         {
-            line?.Draw(spriteBatch);
         }
 
         /// <summary>

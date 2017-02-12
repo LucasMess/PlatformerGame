@@ -16,9 +16,12 @@ namespace Adam.Interactables
 
         public override void OnPlayerAction(Tile tile, Player player)
         {
-            player.SetPosition(teleportPosition);
-            player.SetVelX(0);
-            player.SetVelY(0);
+            if (AdamGame.CurrentGameMode == GameMode.Play)
+            {
+                player.SetPosition(teleportPosition);
+                player.SetVelX(0);
+                player.SetVelY(0);
+            }
             base.OnPlayerAction(tile, player);
         }
     }

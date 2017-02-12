@@ -68,6 +68,8 @@ namespace Adam.Levels
                 _clouds.Add(new Cloud(new Vector2(AdamGame.UserResWidth, AdamGame.UserResHeight), maxClouds, i));
             }
 
+            LevelEditor.InteractableConnections.Clear();
+
             TileArray = new Tile[tileIDs.Length];
             WallArray = new Tile[tileIDs.Length];
 
