@@ -337,7 +337,7 @@ namespace Adam
             //spriteBatch.Draw(Main.DefaultTexture, GetCollRectangle(), Color.Red * .5f);
 
             // Complex animations.
-            if (ComplexAnim != null)
+            if (ComplexAnim != null && ComplexAnim.AnimationDataCount != 0)
             {
                 ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
                 return;

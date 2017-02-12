@@ -742,6 +742,19 @@ namespace Adam
                     break;
                 case TileType.FallingBoulder: //Falling Boulder
                     LetsLightThrough = true;
+                    if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    {
+                        _positionInSpriteSheet = new Vector2(19, 13);
+                    }
+                    else
+                    {
+                        if (!_hasAddedEntity)
+                        {
+                            GameWorld.Entities.Add(new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
+                            _hasAddedEntity = true;
+                            _isInvisibleInPlayMode = true;
+                        }
+                    }
                     break;
                 case TileType.Bat: //Bat
                     LetsLightThrough = true;

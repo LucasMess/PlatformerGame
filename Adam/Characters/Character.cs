@@ -8,8 +8,7 @@ namespace Adam.Characters
 
         public override void Update()
         {
-            if (Session.IsActive && Session.IsHost && AdamGame.CurrentGameMode == GameMode.Play)
-                Script?.Run();
+            Script?.Update(this);
             base.Update();
         }
 

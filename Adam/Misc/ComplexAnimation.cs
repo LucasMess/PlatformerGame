@@ -19,6 +19,11 @@ namespace Adam.Misc
         public delegate void EventHandler();
 
         /// <summary>
+        /// Returns the number of animations saved.
+        /// </summary>
+        public int AnimationDataCount => _animationData.Count;
+
+        /// <summary>
         /// Fires whenever the animation data was switched to another one.
         /// </summary>
         public event EventHandler AnimationStateChanged;
