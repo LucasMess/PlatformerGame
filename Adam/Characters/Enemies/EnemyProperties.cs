@@ -21,6 +21,7 @@ namespace Adam.Characters.Enemies
             GameWorld.GetPlayer().PlayerAttacked += OnPlayerAttack;
             HasFinishedDying += Enemy_HasFinishedDying;
             RespawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
+            AddAnimationToQueue("idle");
         }
 
         public bool IsCollidableWithEnemies { get; set; } = true;

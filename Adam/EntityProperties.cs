@@ -21,7 +21,7 @@ namespace Adam
         /// <summary>
         /// Where the entity was originally placed at. Used to avoid respawning entities when defining textures.
         /// </summary>
-        public int TileIndexSpawn { get; private set; }
+        public int TileIndexSpawn { get; set; } = -1;
 
         /// <summary>
         /// Determines whether this entity should be affected by gravity.

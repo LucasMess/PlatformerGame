@@ -35,6 +35,7 @@ namespace Adam
         private bool _hasConnectPattern;
         private bool _hasRandomStartingPoint;
         private bool _isInvisibleInPlayMode;
+        private bool _isInvisibleInEditMode;
         private float _opacity = 1;
         private Rectangle _originalPosition;
         private Vector2 _positionInSpriteSheet;
@@ -697,13 +698,12 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.Snake: //Snake
-                    GameWorld.AddEntityAt(TileIndex, new Snake(DrawRectangle.X, DrawRectangle.Y));
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new Snake(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
-                    //LetsLightThrough = true;
-                    //if (AdamGame.CurrentGameMode == GameMode.Edit)
-                    //{
-                    //    _positionInSpriteSheet = new Vector2(19, 12);
-                    //}
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(18, 12);
                     //else
                     //{
                     //    if (!_hasAddedEntity)
@@ -964,6 +964,7 @@ namespace Adam
             OnTileDestroyed?.Invoke(this);
             Interactable?.OnTileDestroyed(this);
             GameWorld.WorldData.MetaData.Remove(TileIndex);
+            GameWorld.RemoveEntityAt(TileIndex);
 
 
             Id = 0;
@@ -995,6 +996,8 @@ namespace Adam
             if (Texture != null)
             {
                 if (_isInvisibleInPlayMode && AdamGame.CurrentGameMode == GameMode.Play)
+                    return;
+                if (_isInvisibleInEditMode && AdamGame.CurrentGameMode == GameMode.Edit)
                     return;
                 else
                 {

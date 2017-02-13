@@ -82,8 +82,6 @@ namespace Adam
             CollidedWithTileToRight += OnCollisionWithTileToRight;
             CollidedWithTerrain += OnCollisionWithTerrain;
 
-            // Sets SpawnPoint Tile index based on coordinates at spawn.
-            TileIndexSpawn = GetTileIndex();
         }
 
         /// <summary>

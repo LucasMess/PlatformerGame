@@ -12,10 +12,12 @@ namespace Adam.Characters.Enemies
         /// </summary>
         public override void Update()
         {
-            PlayMeanSound();
-            CheckInteractionsWithPlayer();
-            if (IsCollidableWithEnemies) CheckCollisionWithOtherEnemies();
-
+            if (AdamGame.CurrentGameMode == GameMode.Play)
+            {
+                PlayMeanSound();
+                CheckInteractionsWithPlayer();
+                if (IsCollidableWithEnemies) CheckCollisionWithOtherEnemies();
+            }
             base.Update();
         }
 

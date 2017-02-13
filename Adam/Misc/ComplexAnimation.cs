@@ -195,6 +195,8 @@ namespace Adam.Misc
         private void ChangeAnimation(string name)
         {
             ComplexAnimData animData;
+            if (name == "")
+                name = "idle";
             if (!_animationData.TryGetValue(name, out animData))
             {
                 throw new Exception("Animation not found.");

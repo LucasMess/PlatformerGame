@@ -198,42 +198,39 @@ namespace Adam.Levels
                 c.CheckOutOfRange();
                 c.Update();
             }
-
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            for (var i = 0; i < Entities.Count; i++)
             {
-                for (var i = 0; i < Entities.Count; i++)
-                {
-                    var entity = Entities[i];
-                    if (entity.IsDead)
-                        continue;
+                var entity = Entities[i];
+                if (entity.IsDead)
+                    continue;
 
-                    if (entity is Enemy)
-                    {
-                        var enemy = (Enemy)entity;
-                        enemy.Update();
-                    }
-                    if (entity is Item)
-                    {
-                        var power = (Item)entity;
-                        power.Update();
-                    }
-                    if (entity is NonPlayableCharacter)
-                    {
-                        var npc = (NonPlayableCharacter)entity;
-                        npc.Update();
-                    }
-                    if (entity is Sign)
-                    {
-                        var sign = (Sign)entity;
-                        sign.Update();
-                    }
-                    if (entity is CheckPoint)
-                    {
-                        var ch = (CheckPoint)entity;
-                        ch.Update();
-                    }
+                if (entity is Enemy)
+                {
+                    var enemy = (Enemy)entity;
+                    enemy.Update();
+                }
+                if (entity is Item)
+                {
+                    var power = (Item)entity;
+                    power.Update();
+                }
+                if (entity is NonPlayableCharacter)
+                {
+                    var npc = (NonPlayableCharacter)entity;
+                    npc.Update();
+                }
+                if (entity is Sign)
+                {
+                    var sign = (Sign)entity;
+                    sign.Update();
+                }
+                if (entity is CheckPoint)
+                {
+                    var ch = (CheckPoint)entity;
+                    ch.Update();
                 }
             }
+
 
             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
@@ -380,7 +377,21 @@ namespace Adam.Levels
                 }
             }
 
+            entity.TileIndexSpawn = tileIndex;
             Entities.Add(entity);
+        }
+
+        public static void RemoveEntityAt(int tileIndex)
+        {
+            foreach (var e in Entities)
+            {
+                // An entity from that tile already exists.
+                if (e.TileIndexSpawn == tileIndex)
+                {
+                    Entities.Remove(e);
+                    break;
+                }
+            }
         }
     }
 }
