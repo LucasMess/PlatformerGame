@@ -76,6 +76,7 @@
             TreeBark,
             PlayerDetector,
             Teleporter,
+            Wood,
 
             GoldBrickWall = 100,
             StoneWall,

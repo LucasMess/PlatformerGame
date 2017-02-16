@@ -18,7 +18,7 @@ namespace Adam.UI
         /// </summary>
         public TextInputBox()
         {
-            _textBox = new Textbox(Window.DrawRectangle.X + (BezelSize), Window.DrawRectangle.Y + Window.DrawRectangle.Height / 2 - (20), Window.DrawRectangle.Width - (BezelSize*2));
+            _textBox = new Textbox(Window.DrawRectangle.X + (BezelSize), Window.DrawRectangle.Y + Window.DrawRectangle.Height / 2 - (20), Window.DrawRectangle.Width - (BezelSize*2), 10);
             _textBox.BindTo(Window.DrawRectangle);
 
             int buttonWidth = (40);

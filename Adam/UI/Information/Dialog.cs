@@ -1,6 +1,8 @@
-﻿using Adam.Levels;
+﻿using Adam.Characters;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,7 +14,8 @@ namespace Adam.UI.Information
     /// Dialog class for displaying information.
     /// 
     /// Created by: Lucas Message a long time ago.
-    /// Cleaned up on 1/24/2016
+    /// Cleaned up on 1/24/2016.
+    /// Repurposed and buffed on 2/15/2017 :)
     /// </summary>
     public class Dialog
     {
@@ -29,29 +32,24 @@ namespace Adam.UI.Information
         private readonly Timer _skipTimer = new Timer(true);
         private int _currentLetterIndex;
         private DialogOptions _dialogOptions;
-        private bool _enterPressed;
+        private bool _dialogSkipPressedPressed;
         private string _fullText = "";
         private int _letterPopResetTime = 30;
         private string _nextDialogCode;
-        private Rectangle _nonPlayerDialogBox;
         private string _partialText = "";
-        private Rectangle _playerDialogBox;
+        Container container;
 
         /// <summary>
         ///     Displays text in dialog format to the player and lets them choose a response.
         /// </summary>
         public Dialog()
         {
-            _nonPlayerDialogBox = new Rectangle(AdamGame.DefaultUiWidth/2, 40, 300, 100);
-            _dialogBoxSourceRectangle = new Rectangle(16*16, 14*16, 16*3, 16);
+            container = new Container(850, 150);
+            container.SetPosition(AdamGame.DefaultUiWidth / 2 - container.Size.X/2, 40);
 
-            var origin = new Vector2(_nonPlayerDialogBox.Width/2f, _nonPlayerDialogBox.Height/2f);
-            _nonPlayerDialogBox.X -= (int) origin.X;
+            var origin = new Vector2(container.Size.X/2f, container.Size.Y / 2f);
 
-            _playerDialogBox = _nonPlayerDialogBox;
-            _playerDialogBox.Y = AdamGame.UserResHeight - 40 - _playerDialogBox.Height;
-
-            _font = ContentHelper.LoadFont("Fonts/x24");
+            _font = ContentHelper.LoadFont("Fonts/x16");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
         }
 
@@ -76,10 +74,15 @@ namespace Adam.UI.Information
         ///     input.
         /// </param>
         /// <param name="options">The options the player has to choose from when interacting with the character.</param>
-        public void Say(string text, string nextDialogCode, string[] options)
+        public void Say(string text, string nextDialogCode, string[] options, NonPlayableCharacter.Type character = NonPlayableCharacter.Type.None)
         {
+            if (character != NonPlayableCharacter.Type.None)
+            {
+
+            }
+
             _nextDialogCode = nextDialogCode;
-            _dialogOptions = new DialogOptions(options, _font, _nonPlayerDialogBox.Width - 60);
+            _dialogOptions = new DialogOptions(options, _font, (int)container.Size.X - 60);
             Prepare(text);
         }
 
@@ -90,7 +93,7 @@ namespace Adam.UI.Information
         private void Prepare(string text)
         {
             IsActive = true;
-            _fullText = FontHelper.WrapText(_font, text, _nonPlayerDialogBox.Width - 60);
+            _fullText = FontHelper.WrapText(_font, text, (int)container.Size.X - 60);
             _skipTimer.Reset();
             _letterPopTimer.Reset();
             _partialText = "";
@@ -99,15 +102,16 @@ namespace Adam.UI.Information
 
         public void Update()
         {
+            
             if (IsActive)
             {
                 // Checks to see if player wants to move on to the next dialog.
                 if (_skipTimer.TimeElapsedInSeconds > .5)
                 {
                     // If player presses button to skip dialog.
-                    if (InputHelper.IsKeyDown(Keys.Enter) && !_enterPressed)
+                    if (GameWorld.GetPlayer().IsContinueChatPressed() && !_dialogSkipPressedPressed)
                     {
-                        _enterPressed = true;
+                        _dialogSkipPressedPressed = true;
                         // If the dialog has not finished displaying the text, simply display the text.
                         if (IsWritingText())
                         {
@@ -119,7 +123,7 @@ namespace Adam.UI.Information
                             NextDialog?.Invoke(_nextDialogCode, _dialogOptions.SelectedOption);
                         }
                     }
-                    if (InputHelper.IsKeyUp(Keys.Enter)) _enterPressed = false;
+                    if (!GameWorld.GetPlayer().IsContinueChatPressed()) _dialogSkipPressedPressed = false;
                 }
 
                 // Move the selector leaves around depending on keys pressed.
@@ -197,24 +201,25 @@ namespace Adam.UI.Information
             if (IsActive)
             {
                 // Drawing for non-player dialog box.
-                spriteBatch.Draw(GameWorld.UiSpriteSheet, _nonPlayerDialogBox, _dialogBoxSourceRectangle, Color.White);
+                container.Draw(spriteBatch);
                 spriteBatch.DrawString(_font, _partialText,
-                    new Vector2(_nonPlayerDialogBox.X + 30, _nonPlayerDialogBox.Y + 30),
+                    new Vector2(container.GetPosition().X + 30, container.GetPosition().Y + 30),
                     Color.Black);
 
                 if (!IsWritingText())
                 {
                     // Displays options to choose from when the whole text has been displayed.
-                    spriteBatch.Draw(GameWorld.UiSpriteSheet, _playerDialogBox, _dialogBoxSourceRectangle, Color.White);
+                    //spriteBatch.Draw(GameWorld.UiSpriteSheet, _playerDialogBox, _dialogBoxSourceRectangle, Color.White);
                     if (_dialogOptions.Count > 0)
                     {
-                        _dialogOptions.Draw(spriteBatch, _font, _playerDialogBox.Center.X, _playerDialogBox.Y + 30);
+                        _dialogOptions.Draw(spriteBatch, _font, (int)container.GetPosition().X + (int)container.Size.X/2, (int)container.GetPosition().Y + 30);
                     }
                     else
                     {
                         // Displays default text to continue if there are no options.
-                        spriteBatch.DrawString(_font, "Press enter to continue...",
-                            new Vector2(_playerDialogBox.X + 30, _playerDialogBox.Y + 30),
+                        string text = "Press space to continue";
+                        spriteBatch.DrawString(_font, text,
+                            new Vector2((int)container.GetPosition().X + (int)container.Size.X - _font.MeasureString(text).X - 5, (int)container.GetPosition().Y + (int)container.Size.Y - 30),
                             Color.Black);
                     }
                 }

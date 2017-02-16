@@ -1,5 +1,6 @@
 ﻿using Adam.Levels;
 using Adam.Misc.Helpers;
+using Adam.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,13 +20,17 @@ namespace Adam
 
         private static List<string> _infos = new List<string>();
         private static BitmapFont _font = FontHelper.Fonts[1];
+        static Textbox chatBox = new Textbox(0, AdamGame.UserResHeight - 60, AdamGame.UserResWidth - 10, 60);
 
         static bool _debugKeyReleased;
+        static bool _chatKeyReleased;
 
         /// <summary>
         /// Returns true if the user requested debug mode to be on.
         /// </summary>
         public static bool IsDebugOn { get; set; }
+
+        public static bool IsTyping { get; set; }
 
         /// <summary>
         /// Checks if user is pressing the debug key and turns it on or off.
@@ -44,6 +49,18 @@ namespace Adam
                     _debugKeyReleased = false;
                 }
             }
+
+            // Chat box.
+            if (InputHelper.IsKeyUp(Keys.T))
+            {
+                _chatKeyReleased = true;
+            }
+
+            if (InputHelper.IsKeyDown(Keys.T) && _chatKeyReleased)
+            {
+                _chatKeyReleased = false;
+                IsTyping = !IsTyping;
+            }
         }
 
         /// <summary>
@@ -52,6 +69,21 @@ namespace Adam
         public static void Update()
         {
             CheckIfDebugIsOn();
+
+            if (IsTyping && _chatKeyReleased)
+            {
+                chatBox.IsSelected = true;
+                chatBox.Update(new Rectangle());
+                if (GameWorld.GetPlayer().IsStartGamePressed())
+                {
+                    IsTyping = false;
+                    string text = chatBox.Text;
+                    if (text[0] == '/')
+                    {
+                        RunCommand(text);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -59,79 +91,6 @@ namespace Adam
         /// </summary>
         public static void RunCommand(string command)
         {
-            //switch (_textString)
-            //{
-            //    case "is op true":
-            //        _player.CanFly = true;
-            //        _player.IsInvulnerable = true;
-            //        _definitionFound = true;
-            //        break;
-            //    case "is op false":
-            //        _player.CanFly = false;
-            //        _player.IsInvulnerable = false;
-            //        _definitionFound = true;
-            //        break;
-            //    case "is ghost true":
-            //        _player.IsGhost = true;
-            //        _player.CanFly = true;
-            //        _player.IsInvulnerable = true;
-            //        _definitionFound = true;
-            //        break;
-            //    case "is ghost false":
-            //        _player.IsGhost = false;
-            //        _player.CanFly = false;
-            //        _player.IsInvulnerable = false;
-            //        _definitionFound = true;
-            //        break;
-            //    case "set level":
-            //        break;
-            //    case "has clouds true":
-            //        GameWorld.WorldData.HasClouds = true;
-            //        _definitionFound = true;
-            //        break;
-            //    case "has clouds false":
-            //        GameWorld.WorldData.HasClouds = false;
-            //        _definitionFound = true;
-            //        break;
-            //}
-
-            //String text = _textString;
-            //string keyword = "set background ";
-            //if (text.StartsWith(keyword))
-            //{
-            //    string newString = text.Remove(0, keyword.Length);
-            //    int number;
-            //    Int32.TryParse(newString, out number);
-            //    GameWorld.WorldData.BackgroundId = (byte)number;
-            //    _definitionFound = true;
-            //}
-            //keyword = "set soundtrack ";
-            //if (text.StartsWith(keyword))
-            //{
-            //    string newString = text.Remove(0, keyword.Length);
-            //    int number;
-            //    Int32.TryParse(newString, out number);
-            //    GameWorld.WorldData.SoundtrackId = (byte)number;
-            //    _definitionFound = true;
-            //}
-
-            ////keyword = "set ambience ";
-            ////if (text.StartsWith(keyword))
-            ////{
-            ////    string newString = text.Remove(0, keyword.Length);
-            ////    int number;
-            ////    Int32.TryParse(newString, out number);
-            ////    GameWorld.worldData.SoundtrackID = (byte)number;
-            ////    definitionFound = true;
-            ////}
-
-            //if (_definitionFound)
-            //{
-            //    _textString = "";
-            //    _definitionFound = false;
-            //    IsWritingCommand = false;
-            //}
-            //else _textString = "No command found";
 
         }
 
@@ -154,11 +113,19 @@ namespace Adam
                 _infos.Add("Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString());
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count + 1) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+
                 for (int i = 0; i < _infos.Count; i++)
                 {
                     Point pos = new Point(0, i * _font.LineHeight);
                     FontHelper.DrawWithOutline(spriteBatch, _font, _infos[i], pos.ToVector2(), 1, new Color(220, 220, 220), Color.Black);
                 }
+            }
+
+            if (IsTyping)
+            {
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, AdamGame.UserResHeight - 30, AdamGame.UserResWidth, 30), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                chatBox.Draw(spriteBatch);
             }
         }
     }

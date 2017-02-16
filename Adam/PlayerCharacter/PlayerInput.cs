@@ -264,5 +264,14 @@ namespace Adam.PlayerCharacter
             return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
         }
 
+        public bool IsStartGamePressed()
+        {
+            return InputHelper.IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+        }
+
+        public bool IsContinueChatPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+        }
     }
 }

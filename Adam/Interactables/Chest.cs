@@ -22,6 +22,7 @@ namespace Adam
             tile.AnimationStopped = true;
 
             CanBeLinkedToOtherInteractables = true;
+            CanBeLinkedByOtherInteractables = true;
         }
 
         public override void Update(Tile t)

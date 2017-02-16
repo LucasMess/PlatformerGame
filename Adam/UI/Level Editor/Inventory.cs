@@ -49,6 +49,7 @@ namespace Adam.UI.Level_Editor
         private TileType[] _buildingTiles =
         {
             TileType.Grass, // Grass
+            TileType.Wood,
             TileType.Stone, // Stone
             TileType.StoneBrick, // Stone Brick
             TileType.Sand, // Sand

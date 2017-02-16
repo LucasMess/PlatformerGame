@@ -21,6 +21,13 @@ namespace Adam.Characters
         private readonly int _sourceTileIndex;
         private NonPlayableCharacter _npc;
 
+        public Type CurrentType;
+
+        public enum Type
+        {
+            None, God, Charlie, HarryPotter, Rose, Scooter, Vladimir, Will,
+        }
+
         protected NonPlayableCharacter()
         {
         }

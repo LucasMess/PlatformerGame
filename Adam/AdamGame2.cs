@@ -274,6 +274,12 @@ namespace Adam
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 
+
+            if (InputHelper.IsKeyDown(Keys.O))
+            {
+                Dialog.Say("BITCH", null, null);
+            }
+
             _frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_frameRateTimer > 1000f)
             {
@@ -303,6 +309,14 @@ namespace Adam
             {
                 return;
             }
+
+            GameDebug.Update();
+            if (GameDebug.IsTyping)
+            {
+                return;
+            }
+
+            Dialog.Update();
 
             //if (GameData.Settings.HasChanged)
             //{
@@ -360,7 +374,7 @@ namespace Adam
                     {
                         goto case GameState.GameWorld;
                     }
-                    break;                    
+                    break;
                 case GameState.LoadingScreen:
                     _loadingScreen.Update();
 
@@ -376,12 +390,10 @@ namespace Adam
                     if (!TimeFreeze.IsTimeFrozen())
                         GameWorld.UpdateWorld();
                     GameWorld.UpdateVisual();
-                    Dialog.Update();
                     break;
             }
 
             base.Update(gameTime);
-            GameDebug.Update();
             Overlay.Update();
         }
 

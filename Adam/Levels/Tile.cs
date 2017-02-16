@@ -590,6 +590,12 @@ namespace Adam
                     Interactable = new Teleporter(this);
                     _isInvisibleInPlayMode = true;
                     break;
+                case TileType.Wood:
+                    IsSolid = true;
+                    _hasConnectPattern = true;
+                    startingPoint = new Vector2(28, 19);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
 
                 #region Wall Textures
 

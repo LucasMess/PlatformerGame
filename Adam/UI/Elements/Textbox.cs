@@ -25,11 +25,11 @@ namespace Adam.UI
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="width">THe width of the textbox.</param>
-        public Textbox(int x, int y, int width)
+        public Textbox(int x, int y, int width, int height)
         {
             _white = ContentHelper.LoadTexture("Tiles/white");
-            _font = ContentHelper.LoadFont("Fonts/x8");
-            DrawRectangle = new Rectangle(x, y, width, 20);
+            _font = FontHelper.ChooseBestFont(height);
+            DrawRectangle = new Rectangle(x, y, width, height);
         }
 
         public override void Update(Rectangle container)
