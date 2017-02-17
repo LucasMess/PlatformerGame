@@ -53,6 +53,7 @@ namespace Adam.UI.Level_Editor
             TileType.Stone, // Stone
             TileType.StoneBrick, // Stone Brick
             TileType.Sand, // Sand
+            TileType.Glass,
             TileType.Snow, // Ice
             TileType.SnowyGrass, // Snow Grass
             TileType.Mud, // Mud
@@ -61,6 +62,7 @@ namespace Adam.UI.Level_Editor
             TileType.Hellrock, // Hellrock
             TileType.GoldBrick, // Gold Brick
             TileType.Metal, // Metal
+            TileType.SteelBeam,
             TileType.Scaffolding, // Scaffolding
         };
 

@@ -84,6 +84,7 @@
     <Compile Include="Characters\Enemies\Frog.cs" />
     <Compile Include="Characters\Enemies\Snake.cs" />
     <Compile Include="Characters\Non-Playable\Charlie.cs" />
+    <Compile Include="Characters\Non-Playable\COM.cs" />
     <Compile Include="Characters\Non-Playable\God.cs" />
     <Compile Include="Characters\Non-Playable\Harry Potter.cs" />
     <Compile Include="Characters\Non-Playable\NonPlayableCharacter.cs" />

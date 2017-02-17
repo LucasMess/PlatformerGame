@@ -596,6 +596,34 @@ namespace Adam
                     startingPoint = new Vector2(28, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case TileType.Glass:
+                    IsSolid = true;
+                    LetsLightThrough = true;
+                    _hasConnectPattern = true;
+                    startingPoint = new Vector2(32, 19);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case TileType.SteelBeam:
+                    IsSolid = true;
+                    switch (AdamGame.Random.Next(0, 5))
+                    {
+                        case 0:
+                            _positionInSpriteSheet = new Vector2(12, 25);
+                            break;
+                        case 1:
+                            _positionInSpriteSheet = new Vector2(13, 25);
+                            break;
+                        case 2:
+                            _positionInSpriteSheet = new Vector2(14, 25);
+                            break;
+                        case 3:
+                            _positionInSpriteSheet = new Vector2(15, 25);
+                            break;
+                        case 4:
+                            _positionInSpriteSheet = new Vector2(16, 25);
+                            break;
+                    }
+                    break;
 
                 #region Wall Textures
 
@@ -1023,7 +1051,7 @@ namespace Adam
                     c.Draw(spriteBatch);
                 }
             }
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (AdamGame.CurrentGameMode == GameMode.Edit && IsWall)
             {
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, AdamGame.Tilesize, AdamGame.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
             }

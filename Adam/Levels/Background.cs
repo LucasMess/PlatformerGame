@@ -41,11 +41,6 @@ namespace Adam
                 BackgroundId = 1;
             }
 
-            // Sets the textures to a default texture to avoid problems.
-            _backgroundTexture = AdamGame.DefaultTexture;
-            _middlegroundTexture = AdamGame.DefaultTexture;
-            _foregroundTexture = AdamGame.DefaultTexture;
-
             // Tries to set the textures to what the level settings specify. If none are found, the default are kept.
             try
             {
@@ -56,7 +51,7 @@ namespace Adam
             }
             catch (ContentLoadException)
             {
-
+                AdamGame.MessageBox.Show("Could not find background with id: " + BackgroundId);
             }
 
             // Makes three of each (except background).
@@ -99,29 +94,30 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_backgroundTexture == null) return;
+            if (_backgroundTexture != null)
+            {
 
-            spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+
+            }
 
             spriteBatch.Draw(_sun, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
 
-            //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
-
-            for (int i = 0; i < 3; i++)
+            if (_middlegroundTexture != null)
             {
-                spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                for (int i = 0; i < 3; i++)
+                {
+                    spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                }
             }
 
-            //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
-
-
-
-            for (int i = 0; i < 3; i++)
+            if (_foregroundTexture != null)
             {
-                spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                for (int i = 0; i < 3; i++)
+                {
+                    spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                }
             }
-
-            //spriteBatch.Draw(_skyFog, new Rectangle(0, 0, Main.DefaultResWidth, Main.DefaultResHeight), Color.White * FogGradient);
         }
     }
 

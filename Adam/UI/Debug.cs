@@ -56,10 +56,10 @@ namespace Adam
                 _chatKeyReleased = true;
             }
 
-            if (InputHelper.IsKeyDown(Keys.T) && _chatKeyReleased)
+            if (InputHelper.IsKeyDown(Keys.T) && _chatKeyReleased && !IsTyping)
             {
                 _chatKeyReleased = false;
-                IsTyping = !IsTyping;
+                IsTyping = true;
             }
         }
 
@@ -78,6 +78,8 @@ namespace Adam
                 {
                     IsTyping = false;
                     string text = chatBox.Text;
+                    if (text == null || text.Length == 0)
+                        return;
                     if (text[0] == '/')
                     {
                         RunCommand(text);
@@ -91,6 +93,24 @@ namespace Adam
         /// </summary>
         public static void RunCommand(string command)
         {
+            string[] commands = command.Split(' ');
+
+            commands[0] = commands[0].Substring(1);
+
+            switch (commands[0])
+            {
+                case "set":
+                    switch (commands[1])
+                    {
+                        case "background":
+                            int number;
+                            if (int.TryParse(commands[2], out number))
+                                GameWorld.WorldData.BackgroundId = (byte)number;
+                            break;
+                    }
+
+                    break;
+            }
 
         }
 

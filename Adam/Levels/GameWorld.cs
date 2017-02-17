@@ -75,7 +75,7 @@ namespace Adam.Levels
 
             LoadingScreen.LoadingText = "Getting tiles from junkyard...";
             ConvertToTiles(TileArray, tileIDs);
-            ConvertToTiles(WallArray, wallIDs);
+            ConvertToTiles(WallArray, wallIDs, true);
 
             LoadingScreen.LoadingText = "Lighting up the world...";
 
@@ -105,10 +105,10 @@ namespace Adam.Levels
             Entities = new List<Entity>();
 
             ConvertToTiles(TileArray, WorldData.TileIDs);
-            ConvertToTiles(WallArray, WorldData.WallIDs);
+            ConvertToTiles(WallArray, WorldData.WallIDs, true);
         }
 
-        private static void ConvertToTiles(Tile[] array, TileType[] ids)
+        private static void ConvertToTiles(Tile[] array, TileType[] ids, bool isWall = false)
         {
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -123,6 +123,8 @@ namespace Adam.Levels
                 var t = array[i];
                 t.Id = (TileType)ids[i];
                 t.TileIndex = i;
+                if (isWall)
+                    t.IsWall = true;
             }
 
             foreach (var t in array)

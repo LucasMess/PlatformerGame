@@ -107,6 +107,9 @@ namespace Adam.Levels
         /// </summary>
         public static void Update()
         {
+            if (GameDebug.IsTyping)
+                return;
+
             GameWorld.Player.Health = GameWorld.Player.MaxHealth;
 
             SoundtrackManager.PlayLevelEditorTheme();
@@ -367,12 +370,6 @@ namespace Adam.Levels
                         continue;
                     CurrentArray[i].ResetToDefault();
                     WorldDataIds[i] = desiredId;
-                    if (OnWallMode)
-                    {
-                        CurrentArray[i].IsWall = true;
-                    }
-                    else
-                        CurrentArray[i].IsWall = false;
 
                     hasChanged = true;
                     Destroy(CurrentArray[i]);

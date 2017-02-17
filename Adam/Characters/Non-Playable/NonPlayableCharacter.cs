@@ -1,4 +1,5 @@
-﻿using Adam.Levels;
+﻿using Adam.Characters.Non_Playable;
+using Adam.Levels;
 using Adam.Noobs;
 using Adam.PlayerCharacter;
 using Adam.UI;
@@ -26,6 +27,7 @@ namespace Adam.Characters
         public enum Type
         {
             None, God, Charlie, HarryPotter, Rose, Scooter, Vladimir, Will,
+            COM,
         }
 
         protected NonPlayableCharacter()
@@ -38,7 +40,7 @@ namespace Adam.Characters
             _yCoord = sourceTile.GetDrawRectangle().Y;
             _sourceTileIndex = sourceTile.TileIndex;
 
-            if (GameWorld.WorldData.MetaData[sourceTile.TileIndex] != null)
+            if (GameWorld.WorldData.MetaData.ContainsKey(sourceTile.TileIndex))
             {
                 string metadata = GameWorld.WorldData.MetaData[sourceTile.TileIndex];
                 if (metadata.StartsWith("npc:"))
@@ -88,6 +90,9 @@ namespace Adam.Characters
                     break;
                 case "will":
                     _npc = new Will(_xCoord, _yCoord);
+                    break;
+                case "COM":
+                    _npc = new COM(_xCoord, _yCoord);
                     break;
                 default:
                     AdamGame.MessageBox.Show("This NPC does not exist.");

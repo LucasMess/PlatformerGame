@@ -77,6 +77,8 @@
             PlayerDetector,
             Teleporter,
             Wood,
+            Glass,
+            SteelBeam,
 
             GoldBrickWall = 100,
             StoneWall,
