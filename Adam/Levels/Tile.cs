@@ -47,6 +47,7 @@ namespace Adam
         private const int DefaultAnimationSpeed = 125;
         private int animationSpeed = DefaultAnimationSpeed;
         private bool _wasInitialized;
+        private bool _hasTopAndBottomPattern;
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
         private Rectangle _defaultDrawRectangle;
@@ -679,7 +680,8 @@ namespace Adam
                     startingPoint = new Vector2(0, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case TileType.Wallpaper: // Wallpaper.
+                case TileType.RedWallpaper: // Wallpaper.
+                    _hasTopAndBottomPattern = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -703,6 +705,21 @@ namespace Adam
 
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    break;            
+                case TileType.LightYellowPaint:
+                    _hasTopAndBottomPattern = true;
+                    switch (SubId)
+                    {
+                        case 0: //Plain
+                            _positionInSpriteSheet = new Vector2(21, 31);
+                            break;
+                        case 1: //Top point
+                            _positionInSpriteSheet = new Vector2(21, 30);
+                            break;
+                        case 2: //Bottom point
+                            _positionInSpriteSheet = new Vector2(21, 32);
+                            break;
+                    }
                     break;
 
                 #endregion
@@ -1003,6 +1020,7 @@ namespace Adam
 
             Id = 0;
             Interactable = null;
+            _hasTopAndBottomPattern = false;
             IsSolid = false;
             SubId = 0;
             animationPlaysOnce = false;
@@ -1085,15 +1103,15 @@ namespace Adam
             _cornerPieces = new List<Tile>();
 
             // Wallpaper.
-            if (Id == TileType.Wallpaper)
+            if (_hasTopAndBottomPattern)
             {
                 var indexAbove = TileIndex - mapWidth;
                 var indexBelow = TileIndex + mapWidth;
-                if (ids[indexAbove] != TileType.Wallpaper)
+                if (ids[indexAbove] != Id)
                 {
                     SubId = 1;
                 }
-                else if (ids[indexBelow] != TileType.Wallpaper)
+                else if (ids[indexBelow] != Id)
                 {
                     SubId = 2;
                 }

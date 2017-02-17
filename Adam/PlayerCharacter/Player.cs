@@ -230,7 +230,7 @@ namespace Adam.PlayerCharacter
                 {
                     _movementParticlesTimer.Reset();
 
-                    GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
+                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
                         new Vector2(0, (float)(AdamGame.Random.Next(-5, 5) / 10f)), Color.White);
                 }
             }

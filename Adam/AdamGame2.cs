@@ -468,25 +468,25 @@ namespace Adam
 
 
                     //// Draw walls to another render target so that the shadows are only drawn when there is a wall.
-                    GraphicsDevice.SetRenderTarget(_shadowRT);
-                    GraphicsDevice.Clear(Color.Transparent);
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                        null, null, Camera.Translate);
-                    GameWorld.DrawWalls(_spriteBatch);
-                    _spriteBatch.End();
+                    //GraphicsDevice.SetRenderTarget(_shadowRT);
+                    //GraphicsDevice.Clear(Color.Transparent);
+                    //_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
+                    //    null, null, Camera.Translate);
+                    //GameWorld.DrawWalls(_spriteBatch);
+                    //_spriteBatch.End();
 
-                    // Draw shadow of front tiles and entities when there is a wall.
-                    BlendState bs = new BlendState
-                    {
-                        AlphaSourceBlend = Blend.DestinationAlpha,
-                        AlphaDestinationBlend = Blend.Zero,
-                        ColorSourceBlend = Blend.SourceColor,
-                        ColorDestinationBlend = Blend.Zero
-                    };
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, null,
-                        null, null);
-                    _spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight), Color.Black * 1f);
-                    _spriteBatch.End();
+                    //// Draw shadow of front tiles and entities when there is a wall.
+                    //BlendState bs = new BlendState
+                    //{
+                    //    AlphaSourceBlend = Blend.DestinationAlpha,
+                    //    AlphaDestinationBlend = Blend.Zero,
+                    //    ColorSourceBlend = Blend.SourceColor,
+                    //    ColorDestinationBlend = Blend.Zero
+                    //};
+                    //_spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, null,
+                    //    null, null);
+                    //_spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight), Color.Black * 1f);
+                    //_spriteBatch.End();
 
 
 

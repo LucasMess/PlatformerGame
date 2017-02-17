@@ -122,7 +122,8 @@ namespace Adam.UI.Level_Editor
             TileType.SandWall, // Sand Wall
             TileType.MesaWall, // Mesa Wall
             TileType.MarbleWall, // Marble Wall
-            TileType.Wallpaper, // Wallpaper
+            TileType.RedWallpaper, // Wallpaper
+            TileType.LightYellowPaint,
             TileType.GoldBrickWall, // Gold Brick Wall
             TileType.HellstoneWall, // Hellstone Wall
             TileType.Fence, // Fence

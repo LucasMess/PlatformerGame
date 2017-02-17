@@ -89,9 +89,11 @@
             HellstoneWall,
             StoneBrickWall,
             MesaWall,
-            Wallpaper,
+            RedWallpaper,
             Nothing,
             TreeOfKnowledge,
+            LightYellowPaint,
+
             Player = 200,
             Snake,
             Frog,

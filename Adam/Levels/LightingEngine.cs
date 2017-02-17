@@ -11,6 +11,7 @@ namespace Adam.Levels
         //TODO: Work on lower performance lighting system.
 
         private static Light[] _lights;
+        static Color Sunset = new Color(244, 158, 66);
 
         public static void GenerateLights()
         {
@@ -53,7 +54,7 @@ namespace Adam.Levels
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.White);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 4, Sunset);
             }
 
 

@@ -173,13 +173,21 @@ namespace Adam.Levels
             {
                 if (RedIntensity > GreenIntensity)
                 {
-                    if (RedSource != null) return RedSource.GetRadius();
+                    if (RedSource != null)
+                        return RedSource.GetRadius();
                 }
-                if (GreenSource != null) return GreenSource.GetRadius();
+                else if (GreenSource != null)
+                    return GreenSource.GetRadius();
             }
-            if (BlueIntensity > GreenIntensity)
-                if (BlueSource != null) return BlueSource.GetRadius();
-            if (GreenSource != null) return GreenSource.GetRadius();
+            else if (BlueIntensity > GreenIntensity)
+            {
+                if (BlueSource != null)
+                    return BlueSource.GetRadius();
+            }
+            else if (GreenSource != null)
+                return GreenSource.GetRadius();
+
+
             return 80;
 
         }

@@ -17,13 +17,13 @@ namespace Adam.Interactables
             {
                 _fireParticleTimer.Reset();
                 float velY = (float)-AdamGame.Random.NextDouble();
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), Color.White);
+                GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), Color.White);
             }
             if (_smokeParticleTimer.TimeElapsedInMilliSeconds > 400)
             {
                 _smokeParticleTimer.Reset();
                 float velY = (float)-AdamGame.Random.NextDouble();
-                GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), new Color(30, 30, 30, 150));
+                GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), new Color(30, 30, 30, 150));
             }
             base.Update(tile);
         }

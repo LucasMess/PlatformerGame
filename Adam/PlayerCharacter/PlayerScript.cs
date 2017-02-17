@@ -144,7 +144,7 @@ namespace Adam
                 if (jumpAcc != 0)
                     for (int i = 0; i < 10; i++)
                     {
-                        GameWorld.ParticleSystem.GetNextParticle().ChangeParticleType(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -AdamGame.Random.Next(1, 10) / 10f), Color.White);
+                        GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -AdamGame.Random.Next(1, 10) / 10f), Color.White);
                     }
 
 

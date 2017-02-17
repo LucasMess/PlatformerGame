@@ -57,7 +57,7 @@ namespace Adam
         {
             e.Player.Score += GetValue();
 
-            GameWorld.ParticleSystem.Add(new SplashNumber(this, GetValue(), Color.DarkGoldenrod));
+            //GameWorld.ParticleSystem.Add(new SplashNumber(this, GetValue(), Color.DarkGoldenrod));
         }
 
         private int GetValue()
