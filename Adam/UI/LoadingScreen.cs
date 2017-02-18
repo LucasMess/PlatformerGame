@@ -7,27 +7,27 @@ using MonoGame.Extended.BitmapFonts;
 
 namespace Adam
 {
-    public class LoadingScreen
+    public static class LoadingScreen
     {
-        private Texture2D _background;
-        BitmapFont _font64, _font32;
-        Timer dotTimer = new Timer(true);
+        private static Texture2D _background;
+        static BitmapFont _font64, _font32;
+        static Timer dotTimer = new Timer(true);
 
         public static string LoadingText = "Contemplating life...";
-        private string _loadingDots;
+        private static string _loadingDots;
 
-        int _count = 0, _maxCount;
+        static int _count = 0;
 
-        public LoadingScreen(Vector2 monitorRes, ContentManager content)
+        public static void Initialize()
         {
             _background = ContentHelper.LoadTexture("Tiles/black");
-            _font64 = content.Load<BitmapFont>("Fonts/x64");
-            _font32 = content.Load<BitmapFont>("Fonts/x32");
+            _font64 = ContentHelper.LoadFont("Fonts/x64");
+            _font32 = ContentHelper.LoadFont("Fonts/x32");
             dotTimer.ResetAndWaitFor(100);
             dotTimer.SetTimeReached += DotTimer_SetTimeReached;
         }
 
-        private void DotTimer_SetTimeReached()
+        private static void DotTimer_SetTimeReached()
         {
             _count++;
             if (_count > 3)
@@ -35,7 +35,7 @@ namespace Adam
             dotTimer.Reset();
         }
 
-        public void Update()
+        public static void Update()
         {
             switch (_count)
             {
@@ -171,7 +171,7 @@ namespace Adam
         //}
 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_background, new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
             FontHelper.DrawWithOutline(spriteBatch,_font64,_loadingDots,new Vector2(AdamGame.UserResWidth - 500, AdamGame.UserResHeight - 200),3,Color.White,Color.DarkGray);

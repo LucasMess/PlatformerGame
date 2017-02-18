@@ -15,6 +15,8 @@ namespace Adam
             get { return _translation; }
         }
 
+        public Matrix HalfTranslate;
+
         //leave center for later
         public Vector2 CenterPos;
         private Vector2 _lastCenterPos;
@@ -138,6 +140,7 @@ namespace Adam
             //cameraLeftCorner = new Vector3(DrawRectangle.X, DrawRectangle.Y, 0);
             cameraLeftCorner = new Vector3((int)cameraLeftCorner.X, (int)cameraLeftCorner.Y, 0);
             _translation = Matrix.CreateTranslation(cameraLeftCorner) * Matrix.CreateScale(new Vector3(_zoom, _zoom, 0));
+            HalfTranslate = Matrix.CreateTranslation(cameraLeftCorner * 2);
         }
 
 

@@ -47,6 +47,10 @@ namespace Adam.Levels
         public static void Initialize()
         {
             SpriteSheet.GetData<Color>(SpriteSheetColorData);
+            _clouds = new List<Cloud>();
+            Entities = new List<Entity>();
+            TileArray = new Tile[0];
+            WallArray = new Tile[0];
         }
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
@@ -245,7 +249,10 @@ namespace Adam.Levels
 
         public static void DrawWalls(SpriteBatch spriteBatch)
         {
-            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            int[] indexes = ChunkManager.GetVisibleIndexes();
+            if (indexes == null)
+                return;
+            foreach (var tileNumber in indexes)
             {
                 if (tileNumber > 0 && tileNumber < TileArray.Length)
                 {
@@ -259,12 +266,16 @@ namespace Adam.Levels
             if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
 
-
-            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            int[] indexes = ChunkManager.GetVisibleIndexes();
+            if (indexes != null)
             {
-                if (tileNumber >= 0 && tileNumber < TileArray.Length)
+
+                foreach (var tileNumber in indexes)
                 {
-                    TileArray[tileNumber].Draw(spriteBatch);
+                    if (tileNumber >= 0 && tileNumber < TileArray.Length)
+                    {
+                        TileArray[tileNumber].Draw(spriteBatch);
+                    }
                 }
             }
 
@@ -299,11 +310,12 @@ namespace Adam.Levels
         {
             Background.Draw(spriteBatch);
 
-            foreach (var c in _clouds)
-            {
-                //if (WorldData.HasClouds)
-                c.Draw(spriteBatch);
-            }
+            if (_clouds != null)
+                foreach (var c in _clouds)
+                {
+                    //if (WorldData.HasClouds)
+                    c.Draw(spriteBatch);
+                }
         }
 
         public static void DrawUi(SpriteBatch spriteBatch)

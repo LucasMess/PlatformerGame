@@ -54,7 +54,7 @@ namespace Adam.Levels
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 4, Sunset);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 16, Color.White);
             }
 
 
@@ -250,9 +250,16 @@ namespace Adam.Levels
 
         public static void DrawLights(SpriteBatch spriteBatch)
         {
-            foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
+            if (GameWorld.TileArray == null || GameWorld.TileArray.Length == 0)
+                return;
+
+            int[] indexes = GameWorld.ChunkManager.GetVisibleIndexes();
+            if (indexes == null)
+                return;
+
+            foreach (var index in indexes)
             {
-                _lights[index]?.DrawLight(spriteBatch);
+                _lights?[index]?.DrawLight(spriteBatch);
 
                 //_lights[index]?.DrawR(spriteBatch);
                 //_lights[index]?.DrawG(spriteBatch);

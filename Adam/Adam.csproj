@@ -102,6 +102,7 @@
     <Compile Include="GameData\Save.cs" />
     <Compile Include="GameData\Settings.cs" />
     <Compile Include="GameData\WorldConfigFile.cs" />
+    <Compile Include="Graphics\GraphicsRenderer.cs" />
     <Compile Include="Interactables\Apple.cs" />
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\Chest.cs" />

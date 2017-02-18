@@ -88,7 +88,11 @@ namespace Adam.Levels
         public int[] GetVisibleIndexes()
         {
             if (AdamGame.Camera == null)
-                return new int[0];
+                return null;
+            if (_chunks == null || _chunks.Length == 0)
+            {
+                return null;
+            }
 
             _activeChunk = GetChunk((int)AdamGame.Camera.CenterGameCoords.X, (int)AdamGame.Camera.CenterGameCoords.Y);
             // Chunk activeChunk = GetChunk(128 * Main.Tilesize, 128 * Main.Tilesize);

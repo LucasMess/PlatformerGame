@@ -1,4 +1,5 @@
-﻿using Adam.Levels;
+﻿using Adam.Graphics;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
@@ -27,9 +28,9 @@ namespace Adam.UI
         {
             int size = (74 * 2);
             _temp = AdamGame.DefaultTexture;
-            _texture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
+            _texture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
-            _antiTexture = new Texture2D(AdamGame.GraphicsDeviceInstance, GameWorld.WorldData.LevelWidth,
+            _antiTexture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
             _rectangle = new Rectangle(AdamGame.DefaultUiWidth - size, AdamGame.DefaultUiHeight - size,

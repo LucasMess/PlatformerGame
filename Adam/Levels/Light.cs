@@ -12,7 +12,9 @@ namespace Adam.Levels
         public int RedIntensity { get; set; } = 0;
         public int GreenIntensity { get; set; } = 0;
         public int BlueIntensity { get; set; } = 0;
+        private const int DefaultRadius = 2;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
+        private static Rectangle _sourceRectangleFullWhite = new Rectangle(336, 224, 16, 16);
         private Vector2 _center;
         public Color _color = Color.Black;
         public float Red { get; set; }
@@ -47,12 +49,13 @@ namespace Adam.Levels
                 GreenIntensity = (int)(Light.MaxLightLevel * color.G / 255f);
                 BlueIntensity = (int)(Light.MaxLightLevel * color.B / 255f);
             }
+            Update(_center);
         }
         public void Update(Vector2 newCenter)
         {
             _center = newCenter;
             Vector2 offset = new Vector2();
-            float radius = GetRadius();
+            float radius = GetRadius() * 32;
             DrawRectangle = new Rectangle((int)(_center.X - radius + offset.X), (int)(_center.Y - radius + offset.Y), (int)(radius * 2), (int)(radius * 2));
             GlowRectangle = new Rectangle((int)(_center.X + offset.X - radius / 4), (int)(_center.Y + radius / 4 + offset.Y), (int)(radius / 2), (int)(radius / 2));
         }
@@ -62,27 +65,14 @@ namespace Adam.Levels
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-            Update(_center);
+            // Update(_center);
+            //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
+            if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
+            {
+                return;
+            }
             spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
             _hasIncremented = false;
-        }
-
-        public void DrawR(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, 0, 0, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
-
-        }
-
-        public void DrawG(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color(0, (float)GreenIntensity / MaxLightLevel, 0, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
-
-        }
-
-        public void DrawB(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color(0, 0, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
-
         }
 
         public void DrawGlow(SpriteBatch spriteBatch)
@@ -164,9 +154,9 @@ namespace Adam.Levels
                         }
                     }
 
-                    return 80 + oldChangeSize;
+                    return DefaultRadius + oldChangeSize;
                 }
-                return 80;
+                return DefaultRadius;
             }
 
             if (RedIntensity > BlueIntensity)
@@ -188,7 +178,7 @@ namespace Adam.Levels
                 return GreenSource.GetRadius();
 
 
-            return 80;
+            return DefaultRadius;
 
         }
     }

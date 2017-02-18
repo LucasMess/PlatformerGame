@@ -116,7 +116,7 @@ namespace Adam.UI
 
         private void BackButton_MouseClicked(Button button)
         {
-            Menu.CurrentMenuState = Menu.MenuState.Main;
+            Adam.MainMenu.CurrentMenuState = Adam.MainMenu.MenuState.Main;
         }
 
         private void DeleteButton_MouseClicked(Button button)

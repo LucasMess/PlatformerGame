@@ -1,4 +1,5 @@
 using Adam.GameData;
+using Adam.Graphics;
 using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
@@ -49,14 +50,6 @@ namespace Adam
         public const string Version = "Version 0.10.0 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
-        // Color presets for lighting engine.
-        private static Color _sunnyPreset = new Color(255, 238, 186);
-        private static Color _hellPreset = new Color(255, 129, 116);
-        private static Color _winterPreset = new Color(200, 243, 255);
-        private static Color _nightPreset = new Color(120, 127, 183);
-        private static Color _sunsetPreset = new Color(255, 155, 13);
-        // Rendering variables.
-        private static SpriteBatch _spriteBatch;
         public static bool IsLoadingContent;
         public static int UserResWidth;
         public static int UserResHeight;
@@ -87,21 +80,18 @@ namespace Adam
         public static int FPS { get; set; }
         private int _totalFrames;
         private double _frameRateTimer;
-        //Game Variables
-        private BlendState _lightBlendState;
-        private LoadingScreen _loadingScreen;
-        private RenderTarget2D _frontRT;
-        private RenderTarget2D _shadowRT;
-        private RenderTarget2D _backRT;
-        private RenderTarget2D _lightRT;
-        private RenderTarget2D _sunlightRT;
-        private RenderTarget2D _uiRT;
-        private Menu _menu;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
         private bool _wasEscapeReleased;
         public bool IsInStoryMode = false;
         public static string UserName;
+
+        /// <summary>
+        ///     Used to display messages to the user where he needs to press OK to continue.
+        /// </summary>
+        public static MessageBox MessageBox { get; set; }
+        public static TextInputBox TextInputBox { get; set; }
+        public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
 
         public AdamGame()
         {
@@ -110,6 +100,7 @@ namespace Adam
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
             DataFolder.Initialize();
+
 
             SteamAPI.Init();
             UserName = SteamFriends.GetPersonaName();
@@ -120,8 +111,10 @@ namespace Adam
             {
                 monitorRes = new Vector2(1366, 768);
             }
-            UserResWidth = (int)monitorRes.X;
-            UserResHeight = (int)monitorRes.Y;
+            //UserResWidth = (int)monitorRes.X;
+            //UserResHeight = (int)monitorRes.Y;
+            UserResWidth = DefaultResWidth;
+            UserResHeight = DefaultResHeight;
 
 #pragma warning restore 0162
 
@@ -170,61 +163,30 @@ namespace Adam
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
 
-        /// <summary>
-        ///     Used to display messages to the user where he needs to press OK to continue.
-        /// </summary>
-        public static MessageBox MessageBox { get; set; }
-
-        public static TextInputBox TextInputBox { get; set; }
-        public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
-
         protected override void Initialize()
         {
             Camera = new Camera(GraphicsDevice.Viewport);
-            _menu = new Menu(this);
+            MainMenu.Initialize(this);
             Dialog = new Dialog();
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
             Overlay.Initialize();
 
             DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
-            GraphicsDeviceInstance = _graphics.GraphicsDevice;
 
-            //Initialize the game render target
-            _frontRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _backRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
-               GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-               GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _shadowRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _lightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _sunlightRT = new RenderTarget2D(GraphicsDevice, DefaultResWidth, DefaultResHeight, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _uiRT = new RenderTarget2D(GraphicsDevice, DefaultUiWidth, DefaultUiHeight, false,
-                GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24,
-                GraphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.PreserveContents);
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            _lightBlendState = new BlendState
-            {
-                AlphaSourceBlend = Blend.DestinationColor,
-                ColorSourceBlend = Blend.DestinationColor,
-                ColorDestinationBlend = Blend.Zero
-            };
+            GraphicsRenderer.Initialize(GraphicsDevice);
 
             base.Initialize();
         }
 
+        internal static void Quit()
+        {
+            //TODO: Quit.
+        }
+
         protected override void LoadContent()
         {
-            _loadingScreen = new LoadingScreen(new Vector2(UserResWidth, UserResHeight), Content);
+            LoadingScreen.Initialize();
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<BitmapFont>("debug");
@@ -273,12 +235,6 @@ namespace Adam
         {
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
-
-
-            if (InputHelper.IsKeyDown(Keys.O))
-            {
-                Dialog.Say("BITCH", null, null);
-            }
 
             _frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_frameRateTimer > 1000f)
@@ -352,7 +308,7 @@ namespace Adam
                     {
                         //GameData.SaveGame();
                         _wasEscapeReleased = false;
-                        Menu.CurrentMenuState = Menu.MenuState.Main;
+                        MainMenu.CurrentMenuState = MainMenu.MenuState.Main;
                         ChangeState(GameState.MainMenu, GameMode.None, false);
                     }
                 }
@@ -369,14 +325,14 @@ namespace Adam
             switch (CurrentGameState)
             {
                 case GameState.MainMenu:
-                    _menu.Update();
+                    MainMenu.Update();
                     if (GameWorld.TileArray != null && GameWorld.TileArray.Length != 0)
                     {
                         goto case GameState.GameWorld;
                     }
                     break;
                 case GameState.LoadingScreen:
-                    _loadingScreen.Update();
+                    LoadingScreen.Update();
 
                     if (!IsLoadingContent)
                     {
@@ -401,193 +357,8 @@ namespace Adam
         protected override void Draw(GameTime gameTime)
         {
             _totalFrames++;
-
-            //Set background color
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //Draw what is needed based on GameState
-            switch (CurrentGameState)
-            {
-                case GameState.LoadingScreen:
-                    _spriteBatch.Begin();
-                    _loadingScreen.Draw(_spriteBatch);
-                    TextInputBox.Draw(_spriteBatch);
-                    MessageBox.Draw(_spriteBatch);
-                    _spriteBatch.End();
-                    break;
-                case GameState.MainMenu:
-                    if (GameWorld.TileArray != null && GameWorld.TileArray.Length != 0)
-                    {
-                        goto case GameState.GameWorld;
-                    }
-
-                    GraphicsDevice.SetRenderTarget(_uiRT);
-                    GraphicsDevice.Clear(Color.Black);
-                    var rs2 = new RasterizerState { ScissorTestEnable = true };
-                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.None, rs2);
-                    _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, UserResWidth, UserResWidth);
-                    _menu.Draw(_spriteBatch);
-                    TextInputBox.Draw(_spriteBatch);
-                    MessageBox.Draw(_spriteBatch);
-                    _spriteBatch.End();
-
-                    GraphicsDevice.SetRenderTarget(null);
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
-                      DepthStencilState.None, RasterizerState.CullNone);
-                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.End();
-
-                    break;
-                case GameState.GameWorld:
-
-                    // Draw background and walls to normal render target.
-                    GraphicsDevice.SetRenderTarget(_backRT);
-                    GraphicsDevice.Clear(Color.Green);
-
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.Default, RasterizerState.CullCounterClockwise);
-                    GameWorld.DrawBackground(_spriteBatch);
-                    _spriteBatch.End();
-
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                        null, null, Camera.Translate);
-                    GameWorld.DrawWalls(_spriteBatch);
-                    _spriteBatch.End();
-
-
-
-                    ////Draw the front tiles as usual.
-                    GraphicsDevice.SetRenderTarget(_frontRT);
-                    GraphicsDevice.Clear(Color.Transparent);
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                        null, null, Camera.Translate);
-                    GameWorld.Draw(_spriteBatch);
-                    LightingEngine.DrawGlows(_spriteBatch);
-                    _spriteBatch.End();
-
-
-                    //// Draw walls to another render target so that the shadows are only drawn when there is a wall.
-                    //GraphicsDevice.SetRenderTarget(_shadowRT);
-                    //GraphicsDevice.Clear(Color.Transparent);
-                    //_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                    //    null, null, Camera.Translate);
-                    //GameWorld.DrawWalls(_spriteBatch);
-                    //_spriteBatch.End();
-
-                    //// Draw shadow of front tiles and entities when there is a wall.
-                    //BlendState bs = new BlendState
-                    //{
-                    //    AlphaSourceBlend = Blend.DestinationAlpha,
-                    //    AlphaDestinationBlend = Blend.Zero,
-                    //    ColorSourceBlend = Blend.SourceColor,
-                    //    ColorDestinationBlend = Blend.Zero
-                    //};
-                    //_spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, null,
-                    //    null, null);
-                    //_spriteBatch.Draw(_frontRT, new Rectangle(6, 6, DefaultResWidth, DefaultResHeight), Color.Black * 1f);
-                    //_spriteBatch.End();
-
-
-
-
-                    GraphicsDevice.SetRenderTarget(_lightRT);
-                    GraphicsDevice.Clear(Color.Transparent);
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                       null, null, Camera.Translate);
-                    GameWorld.DrawLights(_spriteBatch);
-                    _spriteBatch.End();
-
-                    GraphicsDevice.SetRenderTarget(_uiRT);
-                    GraphicsDevice.Clear(Color.Transparent);
-                    var rs = new RasterizerState { ScissorTestEnable = true };
-                    _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.None, rs);
-
-                    // For the new main menu that has a world simulated in the background.
-                    if (CurrentGameState == GameState.MainMenu)
-                        _menu.Draw(_spriteBatch);
-                    else
-                        GameWorld.DrawUi(_spriteBatch);
-
-
-                    Overlay.Draw(_spriteBatch);
-                    Dialog.Draw(_spriteBatch);
-                    TextInputBox.Draw(_spriteBatch);
-                    MessageBox.Draw(_spriteBatch);
-                    _spriteBatch.End();
-
-
-                    GraphicsDevice.SetRenderTarget(null);
-
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
-                        DepthStencilState.None, RasterizerState.CullNone);
-                    _spriteBatch.Draw(_backRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.Draw(_shadowRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.Black * .5f);
-
-                    //int count = 0;
-                    //if (TimeFreeze.IsTimeFrozen())
-                    //{
-                    //    count = 10;
-                    //}
-                    //Color color = Color.White;
-                    //for (int i = 0; i <= count; i++)
-                    //{
-                    //    int dist = i * 5;
-                    //    _spriteBatch.Draw(_frontRT, new Rectangle(0 + dist, 0 + dist, UserResWidth - dist * 2, UserResHeight - dist * 2), color);
-                    //    color *= .8f;
-                    //}
-
-                    _spriteBatch.Draw(_frontRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-
-
-                    _spriteBatch.End();
-
-
-                    BlendState bsLight = new BlendState
-                    {
-                        AlphaSourceBlend = Blend.Zero,
-                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
-                        ColorSourceBlend = Blend.DestinationColor,
-                    };
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, bsLight, SamplerState.PointClamp,
-                        DepthStencilState.None, RasterizerState.CullNone);
-                    _spriteBatch.Draw(_lightRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.End();
-
-                    _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp,
-                       DepthStencilState.None, RasterizerState.CullNone);
-                    _spriteBatch.Draw(_uiRT, new Rectangle(0, 0, UserResWidth, UserResHeight), Color.White);
-                    _spriteBatch.End();
-
-                    /////////////////////////////////////////////////////
-
-                    //_spriteBatch.Begin(SpriteSortMode.Immediate, _lightBlendState,
-                    //    GameData.Settings.DesiredSamplerState, DepthStencilState.None, RasterizerState.CullNone);
-                    //_spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, UserResWidth, UserResHeight),
-                    //    Color.White);
-                    //_spriteBatch.End();               
-
-                    break;
-            }
+            GraphicsRenderer.Draw();           
             base.Draw(gameTime);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && !DebugOn)
-            {
-                DebugOn = true;
-                DebugPressed = true;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && !DebugPressed && DebugOn)
-            {
-                DebugOn = false;
-                DebugPressed = true;
-            }
-
-            _spriteBatch.Begin();
-            GameDebug.Draw(_spriteBatch);
-            _spriteBatch.End();
-
-
         }
 
         protected override void OnExiting(object sender, EventArgs args)

@@ -12,56 +12,51 @@ using System.Collections.Generic;
 
 namespace Adam
 {
-    public class Menu
+    public static class MainMenu
     {
-        private Texture2D background;
-
-        Vector2 _first;
-        Vector2 _second;
-        Vector2 _third;
-        Vector2 _fourth;
-        Vector2 _fifth;
+        static Vector2 _first;
+        static Vector2 _second;
+        static Vector2 _third;
+        static Vector2 _fourth;
+        static Vector2 _fifth;
 
         //Main Menu
-        TextButton _chooseLevel;
-        TextButton _options;
-        TextButton _quit;
-        TextButton _multiplayer;
-        TextButton _storyModeButton;
+        static TextButton _chooseLevel;
+        static TextButton _options;
+        static TextButton _quit;
+        static TextButton _multiplayer;
+        static TextButton _storyModeButton;
 
         //Level Selector
-        TextButton _save1;
-        TextButton _save2;
-        TextButton _save3;
+        static TextButton _save1;
+        static TextButton _save2;
+        static TextButton _save3;
 
         //Options
-        TextButton _smoothPixels;
-        TextButton _lighting;
-        TextButton _fullscreen;
+        static TextButton _smoothPixels;
+        static TextButton _lighting;
+        static TextButton _fullscreen;
 
         //Multiplayer
-        TextButton _hostGame;
-        TextButton _joinGame;
-        TextButton _startMultiplayerGame;
+        static TextButton _hostGame;
+        static TextButton _joinGame;
+        static TextButton _startMultiplayerGame;
 
-        TextButton _backButton;
-        List<TextButton> _buttons = new List<TextButton>();
+        static TextButton _backButton;
+        static List<TextButton> _buttons = new List<TextButton>();
 
-        bool _isSongPlaying;
-        BitmapFont _font8, _font32;
-        AdamGame _game1;
+        static bool _isSongPlaying;
+        static BitmapFont _font8, _font32;
 
-        StoryMode storyMode = new StoryMode();
+        static StoryMode storyMode = new StoryMode();
 
-        LevelSelection _levelSelection;
+        static LevelSelection _levelSelection;
 
         public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession, StoryMode }
         public static MenuState CurrentMenuState = MenuState.Main;
 
-        public Menu(AdamGame game1)
+        public static void Initialize(AdamGame game1)
         {
-            this._game1 = game1;
-
             int width = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
             int height = AdamGame.DefaultUiHeight * 2 / 5;
             int diff = (TextButton.Height + 2) * 2;
@@ -71,7 +66,6 @@ namespace Adam
             _fourth = new Vector2(width, height + (diff * 3));
             _fifth = new Vector2(width, height + (diff * 4));
 
-            background = ContentHelper.LoadTexture("Backgrounds/Main Menu/menu_background_temp");
             _font8 = ContentHelper.LoadFont("Fonts/x8");
             _font32 = ContentHelper.LoadFont("Fonts/x32");
 
@@ -145,7 +139,7 @@ namespace Adam
             _levelSelection = new LevelSelection();
         }
 
-        private void StartMultiplayerGame_MouseClicked(Button button)
+        private static void StartMultiplayerGame_MouseClicked(Button button)
         {
             if (Session.IsHost)
             {
@@ -153,18 +147,18 @@ namespace Adam
             }
         }
 
-        private void storyMode_MouseClicked(Button button)
+        private static void storyMode_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.StoryMode;
         }
 
-        void joinGame_MouseClicked(Button button)
+        static void joinGame_MouseClicked(Button button)
         {
             Session.CreateNew(false, "Client");
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
-        void hostGame_MouseClicked(Button button)
+        static void hostGame_MouseClicked(Button button)
         {
             Session.CreateNew(true, "Host");
             CurrentMenuState = MenuState.MultiplayerSession;
@@ -191,7 +185,7 @@ namespace Adam
         //    game1.ChangeState(GameState.GameWorld);
         //}
 
-        void backButton_MouseClicked(Button button)
+        static void backButton_MouseClicked(Button button)
         {
             switch (CurrentMenuState)
             {
@@ -214,7 +208,7 @@ namespace Adam
             }
         }
 
-        void fullscreen_MouseClicked(Button button)
+        static void fullscreen_MouseClicked(Button button)
         {
 
             switch (_fullscreen.IsOn)
@@ -236,7 +230,7 @@ namespace Adam
             }
         }
 
-        void lighting_MouseClicked()
+        static void lighting_MouseClicked()
         {
             switch (_lighting.IsOn)
             {
@@ -257,23 +251,23 @@ namespace Adam
             }
         }
 
-        void smoothPixels_MouseClicked()
+        static void smoothPixels_MouseClicked()
         {
             throw new NotImplementedException();
         }
 
-        void multiplayer_MouseClicked(Button button)
+        static void multiplayer_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.HostJoin;
         }
 
-        void quit_MouseClicked(Button button)
+        static void quit_MouseClicked(Button button)
         {
             // game1.GameData.SaveGame();
-            _game1.Exit();
+            AdamGame.Quit();
         }
 
-        void chooseLevel_MouseClicked(Button button)
+        static void chooseLevel_MouseClicked(Button button)
         {
             _levelSelection.LoadLevels();
             CurrentMenuState = MenuState.LevelSelector;
@@ -282,12 +276,12 @@ namespace Adam
             //GameWorld.worldData.OpenLevelLocally(false);
         }
 
-        void options_MouseClicked(Button button)
+        static void options_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.Options;
         }
 
-        public void Update()
+        static public void Update()
         {
             switch (CurrentMenuState)
             {
@@ -332,7 +326,7 @@ namespace Adam
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
