@@ -257,27 +257,29 @@ namespace Adam.Levels
                 GameWorld.WorldData.LevelHeight, true);
             float speed = 9f;
 
-            if (InputHelper.IsKeyDown(Keys.A))
+            Player player = GameWorld.GetPlayer();
+
+            if (player.IsMoveLeftPressed())
             {
                 IdleTimerForSave.Reset();
                 GameWorld.Player.MoveBy(-speed, 0);
             }
-            if (InputHelper.IsKeyDown(Keys.D))
+            if (player.IsMoveRightPressed())
             {
                 IdleTimerForSave.Reset();
                 GameWorld.Player.MoveBy(speed, 0);
             }
-            if (InputHelper.IsKeyDown(Keys.W))
+            if (player.IsMoveUpPressed())
             {
                 IdleTimerForSave.Reset();
                 GameWorld.Player.MoveBy(0, -speed);
             }
-            if (InputHelper.IsKeyDown(Keys.S))
+            if (player.IsMoveDownPressed())
             {
                 IdleTimerForSave.Reset();
                 GameWorld.Player.MoveBy(0, speed);
             }
-            if (InputHelper.IsKeyDown(Keys.Enter))
+            if (player.IsTestLevelPressed())
             {
                 TestLevel();
             }

@@ -151,7 +151,7 @@ namespace Adam.UI
             if (_selectedBrushTiles == null) return;
             foreach (Tile t in _selectedBrushTiles)
             {
-                if (t != null)
+                if (t != null && t.Texture != null)
                     spriteBatch.Draw(t.Texture, t.DrawRectangle, t.SourceRectangle, t.Color * .5f);
             }
         }

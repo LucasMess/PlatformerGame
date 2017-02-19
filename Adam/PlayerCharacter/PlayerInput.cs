@@ -189,14 +189,9 @@ namespace Adam.PlayerCharacter
                     _attackIsPressed = false;
                 }
 
-                if (InputHelper.IsLeftMousePressed())
+                if (IsWeaponFirePressed())
                     FireWeaponAction?.Invoke();
-                if (InputHelper.IsKeyDown(Keys.J))
-                    DefendAction?.Invoke();
-                if (InputHelper.IsKeyDown(Keys.K))
-                    DashAction?.Invoke();
-                if (InputHelper.IsKeyDown(Keys.L))
-                    UltimateAction?.Invoke();
+
                 if (IsJumpButtonPressed())
                 {
                     if (!_jumpButtonIsPressed)
@@ -256,7 +251,7 @@ namespace Adam.PlayerCharacter
 
         public bool IsSprintButtonPressed()
         {
-            return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+            return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger);
         }
 
         public bool IsRewindPressed()
@@ -264,14 +259,29 @@ namespace Adam.PlayerCharacter
             return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
         }
 
-        public bool IsStartGamePressed()
+        public bool IsEnterCommandPressed()
         {
-            return InputHelper.IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+            return InputHelper.IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
         }
 
         public bool IsContinueChatPressed()
         {
             return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+        }
+
+        public bool IsTestLevelPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.F5) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+        }
+
+        public bool IsMoveUpPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp);
+        }
+
+        public bool IsWeaponFirePressed()
+        {
+            return Mouse.GetState().LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
         }
     }
 }

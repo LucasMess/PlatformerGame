@@ -14,7 +14,7 @@ namespace Adam
         public static bool IsDoingAction = false;
 
         private const float MaxWalkVelX = 6f;
-        private const float MaxRunVelX = 8f;
+        private const float MaxRunVelX = 10f;
         private const float MoveJumpAcc = .05f;
         const float JumpAcc = -12f;
         const float WalkAcc = .3f;
@@ -63,7 +63,7 @@ namespace Adam
         public void OnStill(Player player)
         {
             _lastJumpTimer.Increment();
-            if (_lastJumpTimer.TimeElapsedInMilliSeconds > 1000 || InputHelper.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.Space))
+            if (_lastJumpTimer.TimeElapsedInMilliSeconds > 1000 || !player.IsJumpButtonPressed())
             {
                 player.GravityStrength = AdamGame.Gravity;
             }

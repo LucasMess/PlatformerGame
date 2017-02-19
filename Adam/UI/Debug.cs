@@ -74,7 +74,7 @@ namespace Adam
             {
                 chatBox.IsSelected = true;
                 chatBox.Update(new Rectangle());
-                if (GameWorld.GetPlayer().IsStartGamePressed())
+                if (GameWorld.GetPlayer().IsEnterCommandPressed())
                 {
                     IsTyping = false;
                     string text = chatBox.Text;
@@ -142,6 +142,7 @@ namespace Adam
                 _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
                 _infos.Add("Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString());
                 _infos.Add("Particle iteration: " + GameWorld.ParticleSystem?.GetIteration());
+                _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count + 1) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
