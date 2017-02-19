@@ -10,7 +10,7 @@ namespace Adam
     public static class LoadingScreen
     {
         private static Texture2D _background;
-        static BitmapFont _font64, _font32;
+        static BitmapFont _fontBig, _fontSmall;
         static Timer dotTimer = new Timer(true);
 
         public static string LoadingText = "Contemplating life...";
@@ -21,8 +21,8 @@ namespace Adam
         public static void Initialize()
         {
             _background = ContentHelper.LoadTexture("Tiles/black");
-            _font64 = ContentHelper.LoadFont("Fonts/x64");
-            _font32 = ContentHelper.LoadFont("Fonts/x32");
+            _fontBig = ContentHelper.LoadFont("Fonts/x32");
+            _fontSmall = ContentHelper.LoadFont("Fonts/x16");
             dotTimer.ResetAndWaitFor(100);
             dotTimer.SetTimeReached += DotTimer_SetTimeReached;
         }
@@ -174,8 +174,8 @@ namespace Adam
         public static void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_background, new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
-            FontHelper.DrawWithOutline(spriteBatch,_font64,_loadingDots,new Vector2(AdamGame.UserResWidth - 500, AdamGame.UserResHeight - 200),3,Color.White,Color.DarkGray);
-            FontHelper.DrawWithOutline(spriteBatch, _font32, LoadingText, new Vector2(AdamGame.UserResWidth -_font32.MeasureString(LoadingText).X, AdamGame.UserResHeight - 100), 3, Color.White, Color.DarkGray);
+            FontHelper.DrawWithOutline(spriteBatch,_fontBig,_loadingDots,new Vector2(50, AdamGame.UserResHeight - 100),3,Color.White,Color.DarkGray);
+            FontHelper.DrawWithOutline(spriteBatch, _fontSmall, LoadingText, new Vector2(50, AdamGame.UserResHeight - 50), 3, Color.White, Color.DarkGray);
         }
 
     }
