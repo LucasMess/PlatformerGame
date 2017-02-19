@@ -79,6 +79,7 @@
             Wood,
             Glass,
             SteelBeam,
+            SnowCover,
 
             GoldBrickWall = 100,
             StoneWall,

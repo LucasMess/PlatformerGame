@@ -161,6 +161,7 @@ namespace Adam.Levels
         public static void UpdateWorld()
         {
             ParticleSystem.Update();
+            Weather.Update();
 
             if (Session.IsActive)
             {

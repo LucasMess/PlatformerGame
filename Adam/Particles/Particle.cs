@@ -56,6 +56,9 @@ namespace Adam.Particles
                     case ParticleType.Flame:
                         NoOpacityDefaultBehavior();
                         break;
+                    case ParticleType.Snow:
+                        NoOpacityDefaultBehavior();
+                        break;
                     default:
                         DefaultBehavior();
                         break;
@@ -129,6 +132,8 @@ namespace Adam.Particles
                 return _nextInt;
             }
         }
+
+        public int GetIteration() => _nextInt;
 
         readonly Particle[] _particles;
 
@@ -210,6 +215,13 @@ namespace Adam.Particles
                     par._frames = 4;
                     par.IsAnimated = true;
                     break;
+                case ParticleType.Snow:
+                    par.Position = new Vector2(position.X - 4, position.Y - 4);
+                    par.SourceRectangle = new Rectangle(288, 104, 8, 8);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
+                    break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
                     break;
@@ -224,6 +236,7 @@ namespace Adam.Particles
         Flame,
         Speed,
         Round_Common,
+        Snow,
     }
 
 }

@@ -107,6 +107,11 @@ namespace Adam
                             if (int.TryParse(commands[2], out number))
                                 GameWorld.WorldData.BackgroundId = (byte)number;
                             break;
+                        case "snow":
+                            bool value;
+                            if (bool.TryParse(commands[2], out value))
+                                GameWorld.WorldData.IsSnowing = value;
+                            break;
                     }
 
                     break;
@@ -131,6 +136,7 @@ namespace Adam
                 _infos.Add("Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y);
                 _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
                 _infos.Add("Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString());
+                _infos.Add("Particle iteration: " + GameWorld.ParticleSystem?.GetIteration());
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count + 1) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);

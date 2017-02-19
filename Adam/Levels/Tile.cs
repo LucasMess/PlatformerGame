@@ -626,6 +626,26 @@ namespace Adam
                             break;
                     }
                     break;
+                case TileType.SnowCover:
+                    switch (AdamGame.Random.Next(0, 5))
+                    {
+                        case 0:
+                            _positionInSpriteSheet = new Vector2(12, 24);
+                            break;
+                        case 1:
+                            _positionInSpriteSheet = new Vector2(13, 24);
+                            break;
+                        case 2:
+                            _positionInSpriteSheet = new Vector2(14, 24);
+                            break;
+                        case 3:
+                            _positionInSpriteSheet = new Vector2(15, 24);
+                            break;
+                        case 4:
+                            _positionInSpriteSheet = new Vector2(16, 24);
+                            break;
+                    }
+                    break;
 
                 #region Wall Textures
 
@@ -706,7 +726,7 @@ namespace Adam
 
                     DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
                     DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
-                    break;            
+                    break;
                 case TileType.LightYellowPaint:
                     _hasTopAndBottomPattern = true;
                     switch (SubId)
@@ -1407,27 +1427,47 @@ namespace Adam
 
         public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
         {
-            //Add decoration on top of grass tile.
-            if (Id == TileType.Grass && SubId == 5)
+            // Add snow cover if it is snowing, otherwise add flowers and grass.
+            if (GameWorld.WorldData.IsSnowing)
             {
-                var indexAbove = TileIndex - mapWidth;
-                if (array[indexAbove].Id == 0)
+                if (!IsWall)
                 {
-                    var rand = AdamGame.Random.Next(0, 10);
-                    if (rand == 0) //flower
+                    if (IsSolid)
                     {
-                        array[indexAbove].Id = TileType.Flower;
+                        var indexAbove = TileIndex - mapWidth;
+                        if (array[indexAbove].Id == TileType.Air)
+                        {
+                            array[indexAbove].Id = TileType.SnowCover;
+                            array[indexAbove].DefineTexture();
+                        }
                     }
-                    else if (rand == 1 || rand == 2) //tall grass
-                    {
-                        array[indexAbove].Id = TileType.TallGrass;
-                    }
-                    else //short grass
-                    {
-                        array[indexAbove].Id = TileType.ShortGrass;
-                    }
+                }
+            }
+            else
+            {
 
-                    array[indexAbove].DefineTexture();
+                //Add decoration on top of grass tile.
+                if (Id == TileType.Grass && SubId == 5)
+                {
+                    var indexAbove = TileIndex - mapWidth;
+                    if (array[indexAbove].Id == 0)
+                    {
+                        var rand = AdamGame.Random.Next(0, 10);
+                        if (rand == 0) //flower
+                        {
+                            array[indexAbove].Id = TileType.Flower;
+                        }
+                        else if (rand == 1 || rand == 2) //tall grass
+                        {
+                            array[indexAbove].Id = TileType.TallGrass;
+                        }
+                        else //short grass
+                        {
+                            array[indexAbove].Id = TileType.ShortGrass;
+                        }
+
+                        array[indexAbove].DefineTexture();
+                    }
                 }
             }
 

@@ -15,6 +15,15 @@ namespace Adam.Levels
         private int _worldWidth;
         private int _worldHeight;
 
+        /// <summary>
+        /// Returns the width of all the visible chunks in tiles.
+        /// </summary>
+        /// <returns></returns>
+        public int GetVisibileWidth()
+        {
+            return Chunk.WidthVisible * Chunk.DefaultSize;
+        }
+
         public ChunkManager()
         {
 
