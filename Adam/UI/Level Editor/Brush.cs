@@ -94,27 +94,36 @@ namespace Adam.UI
             // Create grid.
             if (SelectedIndexes[0] >= 0 && SelectedIndexes[0] < GameWorld.TileArray.Length)
             {
-                Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[0]];
-                grid.Rectangle = new Rectangle(hoveredTile.GetDrawRectangle().X - 4, hoveredTile.GetDrawRectangle().Y - 4, Size * (int)hoveredTile.GetSize().X * AdamGame.Tilesize + 8, Size * (int)hoveredTile.GetSize().Y * AdamGame.Tilesize + 8);
-                grid.Texture = GameWorld.UiSpriteSheet;
+
 
                 for (int i = 0; i < _selectedBrushTiles.Length; i++)
                 {
                     if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
                     {
                         //Create transparent tiles to show selected tile
-                        hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
+                        Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
                         Tile fakeTile = new Tile(true);
                         fakeTile.Id = LevelEditor.SelectedId;
-                        fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
                         fakeTile.IsBrushTile = true;
                         fakeTile.DefineTexture();
-                        fakeTile.Texture = GameWorld.SpriteSheet;
+                        fakeTile.DrawRectangle.X = hoveredTile.DrawRectangle.X;
+                        fakeTile.DrawRectangle.Y = hoveredTile.DrawRectangle.Y;
+
                         _selectedBrushTiles[i] = fakeTile;
 
                     }
                 }
             }
+
+            // Setting size of grid.
+            Tile firstTile = _selectedBrushTiles[0];
+            int width, height;
+
+            width = Size * (int)firstTile.GetSize().X * AdamGame.Tilesize + 8;
+            height = Size * (int)firstTile.GetSize().Y * AdamGame.Tilesize + 8;
+            grid.Rectangle = new Rectangle(firstTile.GetDrawRectangle().X - 4, firstTile.GetDrawRectangle().Y - 4, width, height);
+            grid.Texture = GameWorld.UiSpriteSheet;
+
         }
 
         private int[] GetTilesCoveredByBrush()

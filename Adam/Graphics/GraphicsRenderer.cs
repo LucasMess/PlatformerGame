@@ -14,6 +14,8 @@ namespace Adam.Graphics
         public static bool ComplexLightingEnabled { get; set; } = true;
         public static bool IsFullScreen { get; set; } = true;
 
+        private static bool IsDarkOutline => GameWorld.WorldData.IsDarkOutline;
+
         /// <summary>
         /// When drawing the lights on top of the world, any opaque area becomes transparent.
         /// </summary>
@@ -59,7 +61,7 @@ namespace Adam.Graphics
         public static void Draw()
         {
             _graphicsDevice.SetRenderTarget(_mainRenderTarget);
-            _graphicsDevice.Clear(Color.CornflowerBlue);
+            _graphicsDevice.Clear(Color.Transparent);
             DrawGameWorld();
 
             _graphicsDevice.SetRenderTarget(_userInterfaceRenderTarget);
@@ -71,7 +73,7 @@ namespace Adam.Graphics
             DrawLights();
 
             _graphicsDevice.SetRenderTarget(null);
-            _graphicsDevice.Clear(Color.Transparent);
+            _graphicsDevice.Clear(Color.White);
             CombineRenderTargets();
 
         }
@@ -115,11 +117,6 @@ namespace Adam.Graphics
             if (AdamGame.CurrentGameState == GameState.LoadingScreen)
                 return;
 
-            _spriteBatch.Begin();
-            GameWorld.DrawBackground(_spriteBatch);
-            _spriteBatch.End();
-
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
 
             GameWorld.DrawWalls(_spriteBatch);
@@ -148,7 +145,8 @@ namespace Adam.Graphics
             int height = AdamGame.UserResHeight;
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-            _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+            GameWorld.DrawBackground(_spriteBatch);
+            _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
             if (AdamGame.CurrentGameState == GameState.GameWorld)
@@ -170,6 +168,11 @@ namespace Adam.Graphics
         public static GraphicsDevice GetGraphicsDevice()
         {
             return _graphicsDevice;
+        }
+
+        private static Color GetMainRenderTargetColor()
+        {
+            return IsDarkOutline ? Color.Black : Color.White;
         }
 
     }

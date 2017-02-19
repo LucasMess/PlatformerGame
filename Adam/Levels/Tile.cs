@@ -362,6 +362,7 @@ namespace Adam
                     break;
                 case TileType.MediumRock: //Medium Rock
                     _positionInSpriteSheet = new Vector2(11, 18);
+                    _sizeOfTile.X = 2;
                     LetsLightThrough = true;
                     break;
                 case TileType.Sign: //Sign
@@ -867,7 +868,7 @@ namespace Adam
         /// <returns></returns>
         private void DefineDrawRectangle()
         {
-            if (_isSampleTile)
+            if (_isSampleTile && !IsBrushTile)
             {
                 var width = (int)(_sizeOfTile.X * AdamGame.Tilesize);
                 var height = (int)(_sizeOfTile.Y * AdamGame.Tilesize);
@@ -1504,7 +1505,8 @@ namespace Adam
 
         private Vector2 GetPositionInSpriteSheetOfConnectedTextures(Vector2 startingPoint)
         {
-            if (_isSampleTile) SubId = 5;
+            // Sample tiles such as the ones in the tileholders have the same sub id, but the brush tiles do not.
+            if (_isSampleTile && !IsBrushTile) SubId = 5;
             var position = new Vector2();
             switch (SubId)
             {

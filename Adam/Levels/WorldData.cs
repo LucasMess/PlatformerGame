@@ -41,6 +41,7 @@ namespace Adam.Levels
         public int LevelHeight { get; set; }
         public byte BackgroundId { get; set; }
         public byte SoundtrackId { get; set; }
+        public bool IsDarkOutline { get; set; }
 
         public Vector2 SpawnPoint { get; set; }
 

@@ -24,6 +24,7 @@ namespace Adam.GameData
         public bool HasClouds { get; set; }
         public bool IsRaining { get; set; }
         public bool IsSnowing { get; set; }
+        public bool IsDarkOutline { get; set; }
 
         public bool CanBeEdited { get; set; } = true;
 
@@ -47,6 +48,7 @@ namespace Adam.GameData
             HasClouds = true;
             IsSnowing = false;
             IsRaining = false;
+            IsDarkOutline = false;
         }
 
         public void GetDataFromGameWorld()
@@ -95,6 +97,7 @@ namespace Adam.GameData
             IsRaining = GameWorld.WorldData.IsRaining;
             IsSnowing = GameWorld.WorldData.IsSnowing;
             HasClouds = GameWorld.WorldData.HasClouds;
+            IsDarkOutline = GameWorld.WorldData.IsDarkOutline;
         }
 
         public void LoadIntoEditor()
@@ -146,6 +149,7 @@ namespace Adam.GameData
             GameWorld.WorldData.HasClouds = HasClouds;
             GameWorld.WorldData.IsRaining = IsRaining;
             GameWorld.WorldData.IsSnowing = IsSnowing;
+            GameWorld.WorldData.IsDarkOutline = IsDarkOutline;
 
             GameWorld.WorldData.Song = SoundtrackDb.GetSong(1);
         }
