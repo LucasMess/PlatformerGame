@@ -46,7 +46,7 @@ namespace Adam.Misc
         Rectangle _sourceRectangle;
         Rectangle _drawRectangle;
 
-        public bool DoubleSpriteSize { get; set; } = true;
+        public int Scale { get; set; } = 2;
 
         /// <summary>
         /// Update method for objects that do not move.
@@ -81,9 +81,7 @@ namespace Adam.Misc
 
         public void UpdatePositionOnly(Entity entity)
         {
-            int multiplier = 1;
-            if (DoubleSpriteSize) multiplier++;
-            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * multiplier, _currentAnimationData.Height * multiplier);
+            _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * Scale, _currentAnimationData.Height * Scale);
         }
 
         /// <summary>
@@ -256,7 +254,7 @@ namespace Adam.Misc
         {
             if (_currentAnimationData.Texture == null)
                 return;
-            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 0);
         }
 
         /// <summary>

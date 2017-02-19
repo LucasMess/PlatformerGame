@@ -4,6 +4,7 @@ using Adam.Misc.Helpers;
 using Adam.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Adam.UI
 {
@@ -143,6 +144,8 @@ namespace Adam.UI
         {
             static ComplexAnimation animation;
             static Vector2 position;
+            static BitmapFont fontBig;
+            static BitmapFont fontSmall;
             static int health;
             static int maxHealth;
 
@@ -151,10 +154,9 @@ namespace Adam.UI
             /// </summary>
             public static void Initialize()
             {
-                position = new Vector2(5, 5);
-                position *= CalcHelper.GetScreenScale();
+                position = new Vector2(30, 30);
                 animation = new ComplexAnimation();
-                animation.DoubleSpriteSize = false;
+                animation.Scale = 4;
                 ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 80, 16, 16, 125, 4, true);
                 ComplexAnimData dead = new ComplexAnimData(1000, GameWorld.UiSpriteSheet, new Rectangle(), 96, 16, 16, 125, 4, true);
                 ComplexAnimData poison = new ComplexAnimData(100, GameWorld.UiSpriteSheet, new Rectangle(), 64, 16, 16, 125, 4, true);
@@ -162,6 +164,8 @@ namespace Adam.UI
                 animation.AddAnimationData("dead", dead);
                 animation.AddAnimationData("poison", poison);
                 animation.AddToQueue("normal");
+                fontBig = ContentHelper.LoadFont("Fonts/x32");
+                fontSmall = ContentHelper.LoadFont("Fonts/x16");
             }
 
             public static void Update(Player player)
@@ -191,14 +195,60 @@ namespace Adam.UI
             public static void Draw(SpriteBatch spriteBatch)
             {
                 animation.Draw(spriteBatch, position);
-                float x = position.X + 16;
-                FontHelper.DrawWithOutline(spriteBatch, FontHelper.ChooseBestFont(20), health + "/" + maxHealth, new Vector2(x, position.Y), 2, Color.White, Color.Black);
+                float x = position.X + 80;
+                float y = position.Y + 15;
+                FontHelper.DrawWithOutline(spriteBatch, fontBig, health.ToString(), new Vector2(x, y), 1, Color.White, Color.Black);
+
+                float widthHealth = fontBig.MeasureString(health.ToString()).X;
+                FontHelper.DrawWithOutline(spriteBatch, fontSmall, "/" + maxHealth.ToString(), new Vector2(x + widthHealth + 5, y + 20), 1, Color.White, Color.Black);
+            }
+        }
+
+        private static class Coin
+        {
+            static ComplexAnimation animation;
+            static Vector2 position;
+            static BitmapFont fontBig;
+            static BitmapFont fontSmall;
+            static int score;
+
+            /// <summary>
+            /// Initializes animation components and resets variables.
+            /// </summary>
+            public static void Initialize()
+            {
+                position = new Vector2(250, 30);
+                animation = new ComplexAnimation();
+                animation.Scale = 4;
+                ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 112, 16, 16, 125, 8, true);
+                animation.AddAnimationData("normal", normal);
+                animation.AddToQueue("normal");
+                fontBig = ContentHelper.LoadFont("Fonts/x32");
+                fontSmall = ContentHelper.LoadFont("Fonts/x16");
+            }
+
+            public static void Update(Player player)
+            {
+                animation.Update();
+
+                score = player.Score;
+
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                animation.Draw(spriteBatch, position);
+                float x = position.X + 80;
+                float y = position.Y + 20;
+                FontHelper.DrawWithOutline(spriteBatch, fontBig, score.ToString(), new Vector2(x, y), 1, Color.White, Color.Black);
+
             }
         }
 
         public static void Initialize()
         {
             Heart.Initialize();
+            Coin.Initialize();
         }
 
         public static void Update()
@@ -206,6 +256,7 @@ namespace Adam.UI
             WhiteFlash.Update();
 
             Heart.Update(GameWorld.GetPlayer());
+            Coin.Update(GameWorld.GetPlayer());
         }
 
         public static void FlashWhite()
@@ -217,7 +268,10 @@ namespace Adam.UI
         {
             WhiteFlash.Draw(spriteBatch);
             if (AdamGame.CurrentGameMode == GameMode.Play)
+            {
                 Heart.Draw(spriteBatch);
+                Coin.Draw(spriteBatch);
+            }
         }
     }
 }
