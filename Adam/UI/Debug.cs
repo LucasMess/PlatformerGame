@@ -97,6 +97,8 @@ namespace Adam
 
             commands[0] = commands[0].Substring(1);
 
+            bool value;
+
             switch (commands[0])
             {
                 case "set":
@@ -108,9 +110,12 @@ namespace Adam
                                 GameWorld.WorldData.BackgroundId = (byte)number;
                             break;
                         case "snow":
-                            bool value;
                             if (bool.TryParse(commands[2], out value))
                                 GameWorld.WorldData.IsSnowing = value;
+                            break;
+                        case "rain":
+                            if (bool.TryParse(commands[2], out value))
+                                GameWorld.WorldData.IsRaining = value;
                             break;
                     }
 

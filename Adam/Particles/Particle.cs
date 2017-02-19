@@ -59,6 +59,9 @@ namespace Adam.Particles
                     case ParticleType.Snow:
                         NoOpacityDefaultBehavior();
                         break;
+                    case ParticleType.Rain:
+                        NoOpacityDefaultBehavior();
+                        break;
                     default:
                         DefaultBehavior();
                         break;
@@ -222,6 +225,13 @@ namespace Adam.Particles
                     par.Color = color;
                     par.Scale = AdamGame.Random.Next(1, 10) / 10f;
                     break;
+                case ParticleType.Rain:
+                    par.Position = new Vector2(position.X - 4, position.Y - 4);
+                    par.SourceRectangle = new Rectangle(288, 104, 8, 8);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
+                    break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
                     break;
@@ -237,6 +247,7 @@ namespace Adam.Particles
         Speed,
         Round_Common,
         Snow,
+        Rain,
     }
 
 }
