@@ -146,10 +146,8 @@ namespace Adam.PlayerCharacter
             if (AdamGame.Dialog.IsActive)
                 return;
 
-            if (!IsPunchPressed())
-            {
-                _attackIsPressed = false;
-            }
+            if (AdamGame.CurrentGameMode == GameMode.Edit)
+                return;
 
             if (IsPunchPressed() && !_attackIsPressed)
             {
