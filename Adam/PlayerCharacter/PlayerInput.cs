@@ -283,5 +283,10 @@ namespace Adam.PlayerCharacter
         {
             return Mouse.GetState().LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
         }
+
+        public bool IsPauseButtonDown()
+        {
+            return InputHelper.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
+        }
     }
 }

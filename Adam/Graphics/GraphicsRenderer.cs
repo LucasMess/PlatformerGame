@@ -102,6 +102,7 @@ namespace Adam.Graphics
             Overlay.Draw(_spriteBatch);
             AdamGame.MessageBox.Draw(_spriteBatch);
             AdamGame.TextInputBox.Draw(_spriteBatch);
+            PauseMenu.Draw(_spriteBatch);
             AdamGame.Dialog.Draw(_spriteBatch);
             GameDebug.Draw(_spriteBatch);
 

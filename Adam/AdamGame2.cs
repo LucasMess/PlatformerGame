@@ -4,20 +4,19 @@ using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
 using Adam.Network;
+using Adam.PlayerCharacter;
 using Adam.UI;
 using Adam.UI.Information;
 using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.BitmapFonts;
 using Steamworks;
 using System;
 using System.IO;
 using System.Threading;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
 using MessageBox = Adam.UI.MessageBox;
 
 namespace Adam
@@ -85,6 +84,7 @@ namespace Adam
         private bool _wasEscapeReleased;
         public bool IsInStoryMode = false;
         public static string UserName;
+        private static bool _wantsToQuit;
 
         /// <summary>
         ///     Used to display messages to the user where he needs to press OK to continue.
@@ -171,6 +171,7 @@ namespace Adam
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
             Overlay.Initialize();
+            PauseMenu.Initialize();
 
             DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
 
@@ -179,9 +180,12 @@ namespace Adam
             base.Initialize();
         }
 
-        internal static void Quit()
+        /// <summary>
+        /// Lets the game know that the user wants to quit.
+        /// </summary>
+        public static void Quit()
         {
-            //TODO: Quit.
+            _wantsToQuit = true;
         }
 
         protected override void LoadContent()
@@ -235,6 +239,9 @@ namespace Adam
         {
             if (!IsActive) return;
 
+            if (_wantsToQuit)
+                Exit();
+
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 
@@ -274,6 +281,10 @@ namespace Adam
                 return;
             }
 
+            PauseMenu.Update();
+            if (PauseMenu.IsActive)
+                return;
+
             Dialog.Update();
 
             //if (GameData.Settings.HasChanged)
@@ -288,38 +299,20 @@ namespace Adam
             //    GameData.Settings.HasChanged = false;
             //}
 
-            if (InputHelper.IsKeyUp(Keys.Escape))
+            Player player = GameWorld.GetPlayer();
+            if (player.IsPauseButtonDown())
                 _wasEscapeReleased = true;
 
             if (_wasEscapeReleased)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && CurrentGameState != GameState.MainMenu &&
+                if (player.IsPauseButtonDown() && CurrentGameState != GameState.MainMenu &&
                     CurrentGameState != GameState.LoadingScreen)
                 {
-                    if (CurrentGameState == GameState.GameWorld && GameWorld.IsTestingLevel)
-                    {
-                        _wasEscapeReleased = false;
-                        LevelEditor.GoBackToEditing();
-                    }
-                    else if (CurrentGameState == GameState.GameWorld && CurrentGameMode == GameMode.Edit && Inventory.IsOpen)
+                    if (CurrentGameState == GameState.GameWorld && CurrentGameMode == GameMode.Edit && Inventory.IsOpen)
                     {
                         _wasEscapeReleased = false;
                         Inventory.OpenOrClose();
                     }
-                    else
-                    {
-                        //GameData.SaveGame();
-                        _wasEscapeReleased = false;
-                        MainMenu.CurrentMenuState = MainMenu.MenuState.Main;
-                        ChangeState(GameState.MainMenu, GameMode.None, false);
-                    }
-                }
-
-                if (InputHelper.IsKeyDown(Keys.Enter) && CurrentGameState == GameState.GameWorld &&
-                    CurrentGameMode == GameMode.Play && GameWorld.IsTestingLevel)
-                {
-                    _wasEscapeReleased = false;
-                    LevelEditor.GoBackToEditing();
                 }
             }
 
@@ -359,7 +352,7 @@ namespace Adam
         protected override void Draw(GameTime gameTime)
         {
             _totalFrames++;
-            GraphicsRenderer.Draw();           
+            GraphicsRenderer.Draw();
             base.Draw(gameTime);
         }
 

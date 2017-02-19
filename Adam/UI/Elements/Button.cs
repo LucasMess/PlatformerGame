@@ -90,6 +90,12 @@ namespace Adam.UI
 
         public delegate void ButtonHandler(Button button);
 
+        public void SetPosition(Vector2 position)
+        {
+            CollRectangle.X = (int)position.X;
+            CollRectangle.Y = (int)position.Y;
+        }
+
         /// <summary>
         /// The difference in coordinates between the container and the button.
         /// </summary>
