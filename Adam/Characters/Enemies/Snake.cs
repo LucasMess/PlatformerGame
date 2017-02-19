@@ -20,7 +20,7 @@ namespace Adam.Characters.Enemies
             CollRectangle = new Rectangle(0, 0, 32 * 2, 48 * 2);
             SourceRectangle = new Rectangle(0, 0, 32, 48);
 
-            ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 32, 48), 0, 32, 48, 125, 8, true));
+            _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 32, 48), 0, 32, 48, 125, 8, true));
 
             Sounds.AddSoundRef("idle", "Sounds/Snake/snake_idle");
             Sounds.AddSoundRef("spit", "Sounds/Snake/snake_spit");

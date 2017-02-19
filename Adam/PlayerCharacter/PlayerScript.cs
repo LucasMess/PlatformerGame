@@ -2,6 +2,7 @@
 using Adam.Misc;
 using Adam.Particles;
 using Adam.PlayerCharacter;
+using Adam.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -28,6 +29,7 @@ namespace Adam
 
         public static Timer TimeSinceLastPunch = new Timer(true);
 
+
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
 
         public void Initialize(Player player)
@@ -35,6 +37,8 @@ namespace Adam
             this._player = player;
             player.PlayerDamaged += OnPlayerDamaged;
             player.CollidedWithTileBelow += Player_CollidedWithTileBelow;
+
+            player.DamagePointsProj = 50;
         }
 
         private void Player_CollidedWithTileBelow(Entity entity, Tile tile)
@@ -47,6 +51,7 @@ namespace Adam
         public override void Update(Entity entity)
         {
             _player = (Player)_player.Get();
+            _weaponFireRateTimer.Increment();
             base.Update(entity);
         }
 
@@ -299,7 +304,15 @@ namespace Adam
 
         public void OnWeaponFire(Player player)
         {
-
+            if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 100)
+            {
+                _weaponFireRateTimer.Reset();
+                Vector2 velocity = new Vector2(25, -10);
+                if (!player.IsFacingRight)
+                    velocity.X *= -1;
+                Projectile proj = new Projectile(Projectile.Type.PlayerShuriken, player.Position, velocity, player);
+                GameWorld.PlayerProjectiles.Add(proj);
+            }
         }
 
         public void OnRewindAction(Player player)

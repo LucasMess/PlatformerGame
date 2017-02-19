@@ -6,7 +6,7 @@ namespace Adam
 {
     public partial class Entity
     {
-        protected ComplexAnimation ComplexAnim = new ComplexAnimation();
+        protected ComplexAnimation _complexAnimation = new ComplexAnimation();
 
         readonly Timer _hitRecentlyTimer = new Timer(true);
         readonly Timer _deathAnimationTimer = new Timer(true);

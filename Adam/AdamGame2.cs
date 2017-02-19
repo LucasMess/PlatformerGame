@@ -137,7 +137,7 @@ namespace Adam
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             if (IsTestingMultiplayer) _graphics.IsFullScreen = false;
 
             // Set window to borderless.
@@ -233,6 +233,8 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
+            if (!IsActive) return;
+
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 

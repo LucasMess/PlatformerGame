@@ -10,10 +10,10 @@ namespace Adam.Characters.Non_Playable
         {
             ObeysGravity = true;
             IsCollidable = true;
-            ComplexAnim = new ComplexAnimation();
+            _complexAnimation = new ComplexAnimation();
             Texture = ContentHelper.LoadTexture("Characters/NPCs/charlie");
             CollRectangle = new Rectangle(x, y, 24, 48);
-            ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 1, true));
+            _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 1, true));
             AddAnimationToQueue("still");
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }

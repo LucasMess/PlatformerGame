@@ -10,10 +10,10 @@ namespace Adam.Characters
         {
             ObeysGravity = true;
             IsCollidable = true;
-            ComplexAnim = new ComplexAnimation();
+            _complexAnimation = new ComplexAnimation();
             Texture = ContentHelper.LoadTexture("Characters/NPCs/harrypotter");
             CollRectangle = new Rectangle(x, y, 48, 80);
-            ComplexAnim.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 26, 40), 0, 26, 40, 500, 1, true));
+            _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 26, 40), 0, 26, 40, 500, 1, true));
             AddAnimationToQueue("still");
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }

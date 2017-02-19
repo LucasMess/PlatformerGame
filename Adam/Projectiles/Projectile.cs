@@ -1,68 +1,96 @@
-﻿using Adam.Misc;
-using Adam.PlayerCharacter;
+﻿using Adam.Levels;
+using Adam.Misc;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.Projectiles
 {
-    public abstract class Projectile
+
+    /// <summary>
+    /// Base class for all projectile. Provides basic functionality for simple projectiles, but can be extended to include more complex logic and rendering.
+    /// </summary>
+    public class Projectile : Entity
     {
+
+        protected override Rectangle DrawRectangle
+        {
+            get
+            {
+                return CollRectangle;
+            }
+        }
+
+        /// <summary>
+        /// Decides what update logic and what texture to use.
+        /// </summary>
         public enum Type
         {
-
+            PlayerShuriken
         }
 
-        public Type CurrentType;
-        private Texture2D texture;
-        private Vector2 velocity;
-        private Rectangle collRectangle;
-        private Rectangle drawRectangle;
-        private Rectangle sourceRectangle;
-        private ComplexAnimation complexAnimation;
+        Entity _source;
 
-        public Vector2 Position { get; set; }
+        private Timer _stayAliveTimer;
 
 
+        /// <summary>
+        /// The amount of time a projectile is alive for before being deleted.
+        /// </summary>
+        private const int StayAliveDuration = 10000;
 
+        public Type CurrentType { get; private set; }
 
-        public virtual void OnPlayerTouch(Player Player)
+        public Projectile(Type type, Vector2 position, Vector2 velocity, Entity source)
         {
+            _stayAliveTimer = new Timer();
+            Weight = 10;
+            Texture = GameWorld.SpriteSheet;
+            CurrentCollisionType = CollisionType.SuperBouncy;
+            _source = source;
+            Position = position;
+            CollRectangle = new Rectangle(0, 0, 16, 16);
+            Velocity = velocity;
+            ObeysGravity = true;
 
+            switch (CurrentType)
+            {
+                case Type.PlayerShuriken:
+                    SourceRectangle = new Rectangle(288, 104, 8, 8);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public Vector2 GetVelocity()
+        public override void Update()
         {
-            return velocity;
+            _stayAliveTimer.Increment();
+            if (_stayAliveTimer.TimeElapsedInMilliSeconds > StayAliveDuration)
+            {
+                ToDelete = true;
+            }
+
+            switch (CurrentType)
+            {
+                case Type.PlayerShuriken:
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Flame, Position, Vector2.Zero, Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, null, new Color(255, 233, 198));
+                    break;
+
+                default:
+                    break;
+            }
+            base.Update();
         }
 
-        public void SetVelX(float x)
+        /// <summary>
+        /// Called when this entity collides with an entity it can collide with.
+        /// </summary>
+        /// <param name="other"></param>
+        public virtual void OnCollisionWithEntity(Entity other)
         {
-            SetVelocity(x, GetVelocity().Y);
+            other.TakeDamage(_source, _source.DamagePointsProj);
+            ToDelete = true;
         }
 
-        public void SetVelY(float y)
-        {
-            SetVelocity(GetVelocity().X, y);
-        }
-
-        public void SetVelocity(float x, float y)
-        {
-            SetVelocity(new Vector2(x, y));
-        }
-
-        public void SetVelocity(Vector2 vel)
-        {
-            velocity = vel;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return new Vector2(collRectangle.X, collRectangle.Y);
-        }
-
-        public void SetPosition(float x, float y)
-        {
-            Position = new Vector2(x, y);
-        }
     }
 }

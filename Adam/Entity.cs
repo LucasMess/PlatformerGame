@@ -17,6 +17,7 @@ namespace Adam
         Rigid,
         Bouncy,
         SuperBouncy,
+        Sticky,
     }
 
     /// <summary>
@@ -62,6 +63,16 @@ namespace Adam
         public bool IsTouchingGround { get; set; }
         public bool IsDucking { get; set; }
         public bool WantsToMoveDownPlatform { get; set; }
+
+        /// <summary>
+        /// The amount of damage this entity deals by touching.
+        /// </summary>
+        public virtual int DamagePointsTouch { get; set; }
+
+        /// <summary>
+        /// The amount of damage this entity deals from their projectiles.
+        /// </summary>
+        public virtual int DamagePointsProj { get; set; }
 
         private int _health;
         private float _opacity = 1f;
@@ -125,9 +136,9 @@ namespace Adam
             {
                 if (_texture == null)
                 {
-                    if (ComplexAnim != null)
+                    if (_complexAnimation != null)
                     {
-                        _texture = ComplexAnim.GetCurrentTexture();
+                        _texture = _complexAnimation.GetCurrentTexture();
                     }
                     else
                     {
@@ -155,8 +166,8 @@ namespace Adam
         /// <returns></returns>
         public Rectangle GetDrawRectangle()
         {
-            if (ComplexAnim != null)
-                return ComplexAnim.GetDrawRectangle();
+            if (_complexAnimation != null)
+                return _complexAnimation.GetDrawRectangle();
             return DrawRectangle;
         }
 
@@ -291,7 +302,8 @@ namespace Adam
                     CheckTerrainCollision();
                 }
 
-                ApplyAirFriction();
+                if (Weight != 0)
+                    ApplyAirFriction();
 
             }
 
@@ -307,7 +319,7 @@ namespace Adam
             }
 
             // Update complex animations if this entity has it.
-            ComplexAnim?.Update(this);
+            _complexAnimation?.Update(this);
 
         }
 
@@ -335,9 +347,9 @@ namespace Adam
             //spriteBatch.Draw(Main.DefaultTexture, GetCollRectangle(), Color.Red * .5f);
 
             // Complex animations.
-            if (ComplexAnim != null && ComplexAnim.AnimationDataCount != 0)
+            if (_complexAnimation != null && _complexAnimation.AnimationDataCount != 0)
             {
-                ComplexAnim.Draw(spriteBatch, IsFacingRight, Color);
+                _complexAnimation.Draw(spriteBatch, IsFacingRight, Color);
                 return;
             }
 
@@ -398,7 +410,7 @@ namespace Adam
         /// <param name="x"></param>
         public void SetVelX(float x)
         {
-            if (!IsAboutToDie && !IsTakingDamage)
+            if (!IsAboutToDie)
                 Velocity.X = x;
         }
 
@@ -408,7 +420,7 @@ namespace Adam
         /// <param name="y"></param>
         public void SetVelY(float y)
         {
-            if (!IsAboutToDie && !IsTakingDamage)
+            if (!IsAboutToDie)
                 Velocity.Y = y;
         }
 
@@ -431,7 +443,7 @@ namespace Adam
         private void Kill()
         {
             // Queues up death animation and waits for it to finish.
-            ComplexAnim.AddToQueue("death");
+            _complexAnimation.AddToQueue("death");
             _deathAnimationTimer.ResetAndWaitFor(1000);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
             IsAboutToDie = true;
@@ -614,7 +626,7 @@ namespace Adam
                                 CollidedWithTerrain(this, tile);
                                 tile.OnEntityTouch(this);
                             }
-                           
+
                         }
                     }
 
@@ -648,7 +660,7 @@ namespace Adam
         /// <param name="name"></param>
         public void AddAnimationToQueue(string name)
         {
-            ComplexAnim.AddToQueue(name);
+            _complexAnimation.AddToQueue(name);
         }
 
         /// <summary>
@@ -657,7 +669,7 @@ namespace Adam
         /// <param name="name"></param>
         public void RemoveAnimationFromQueue(string name)
         {
-            ComplexAnim.RemoveFromQueue(name);
+            _complexAnimation.RemoveFromQueue(name);
         }
 
         /// <summary>
@@ -813,7 +825,12 @@ namespace Adam
         /// <param name="tile"></param>
         private void OnCollisionWithTerrain(Entity entity, Tile tile)
         {
-
+            if (CurrentCollisionType == CollisionType.Sticky)
+            {
+                SetVelX(0);
+                SetVelY(0);
+                ObeysGravity = false;
+            }
         }
 
         /// <summary>
@@ -838,7 +855,7 @@ namespace Adam
             Velocity = new Vector2(0, 0);
             IsDead = false;
             IsAboutToDie = false;
-            ComplexAnim?.RemoveFromQueue("death");
+            _complexAnimation?.RemoveFromQueue("death");
             HasRevived?.Invoke();
         }
 
@@ -885,16 +902,16 @@ namespace Adam
                 particleCount = 100;
             for (int i = 0; i < particleCount; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -AdamGame.Random.Next(1, 5) / 10f), Color.Red);
+                GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), null, Color.Red);
             }
 
-            if (damageDealer == null)
-                return;
+            //if (damageDealer == null)
+            //    return;
 
-            Velocity.Y = -8f;
-            Velocity.X = (Weight / 2f);
-            if (!damageDealer.IsFacingRight)
-                Velocity.X *= -1;
+            //Velocity.Y = -8f;
+            //Velocity.X = (Weight / 2f);
+            //if (!damageDealer.IsFacingRight)
+            //    Velocity.X *= -1;
 
             HasTakenDamage?.Invoke();
 
@@ -952,33 +969,54 @@ namespace Adam
             }
         }
 
+
+        /// <summary>
+        /// Returns true if the player is to the right of this entity in the game world.
+        /// </summary>
+        /// <returns></returns>
         public bool IsPlayerToRight()
         {
-            if (this is PlayerCharacter.Player)
-            {
-                throw new Exception("Cannot ask if player is to the right if you are the player!");
-            }
-
             return (Position.X < GameWorld.GetPlayer().Position.X);
         }
 
-        public ComplexAnimation ComplexAnimation => ComplexAnim;
+        /// <summary>
+        /// Returns a reference to the Complex Animation object of this entity, responsible for keeping track 
+        /// of all animations and sorting them based on priorities.
+        /// </summary>
+        public ComplexAnimation ComplexAnimation => _complexAnimation;
 
+        /// <summary>
+        /// Sets the position of the entity to the give position.
+        /// </summary>
+        /// <param name="position"></param>
         public void SetPosition(Vector2 position)
         {
             Position = position;
         }
 
+        /// <summary>
+        /// Changes the position of the entity by the specified amount.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MoveBy(float x, float y)
         {
             Position += new Vector2(x, y);
         }
 
+        /// <summary>
+        /// Sets the x-coordinate of the entity to the given quantity.
+        /// </summary>
+        /// <param name="x"></param>
         public void SetX(float x)
         {
             Position = new Vector2(x, Position.Y);
         }
 
+        /// <summary>
+        /// Sets the y-coordinate of the entity to the given quantity.
+        /// </summary>
+        /// <param name="y"></param>
         public void SetY(float y)
         {
             Position = new Vector2(Position.X, y);

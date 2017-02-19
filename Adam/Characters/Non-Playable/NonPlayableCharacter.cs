@@ -139,6 +139,6 @@ namespace Adam.Characters
         /// <summary>
         /// Returns complex animation draw rectangle because all NPCs have complex anims.
         /// </summary>
-        protected override Rectangle DrawRectangle => ComplexAnim.GetDrawRectangle();
+        protected override Rectangle DrawRectangle => _complexAnimation.GetDrawRectangle();
     }
 }

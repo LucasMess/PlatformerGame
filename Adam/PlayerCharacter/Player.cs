@@ -41,42 +41,42 @@ namespace Adam.PlayerCharacter
 
             AttackSound = new SoundFx("Player/attackSound");
 
-            ComplexAnim.AnimationEnded += ComplexAnim_AnimationEnded;
-            ComplexAnim.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
-            ComplexAnim.FrameChanged += ComplexAnim_FrameChanged;
+            _complexAnimation.AnimationEnded += ComplexAnim_AnimationEnded;
+            _complexAnimation.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
+            _complexAnimation.FrameChanged += ComplexAnim_FrameChanged;
 
             // Animation textures.
-            ComplexAnim.AddAnimationData("editMode",
+            _complexAnimation.AddAnimationData("editMode",
             new ComplexAnimData(9999, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
-            ComplexAnim.AddAnimationData("idle",
+            _complexAnimation.AddAnimationData("idle",
             new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
-            ComplexAnim.AddAnimationData("smellPoop",
+            _complexAnimation.AddAnimationData("smellPoop",
                 new ComplexAnimData(1, idlePoop, new Rectangle(6, 7, 12, 66), 0, 24, 40, 125, 21, false));
-            ComplexAnim.AddAnimationData("sleep",
+            _complexAnimation.AddAnimationData("sleep",
                 new ComplexAnimData(1, edenTexture, new Rectangle(6, 7, 12, 66), 200, 24, 40, 125, 4, true));
             //ComplexAnim.AddAnimationData("idle",
             //    new ComplexAnimData(0, edenTexture, new Rectangle(6, 7, 12, 66), 400, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("oldWalk",
+            _complexAnimation.AddAnimationData("oldWalk",
                 new ComplexAnimData(100, edenTexture, new Rectangle(6, 7, 12, 66), 40, 24, 40, 25, 4, true));
-            ComplexAnim.AddAnimationData("walk",
+            _complexAnimation.AddAnimationData("walk",
                 new ComplexAnimData(150, edenTexture, new Rectangle(6, 7, 12, 66), 240, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("slide",
+            _complexAnimation.AddAnimationData("slide",
                new ComplexAnimData(153, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("standup",
+            _complexAnimation.AddAnimationData("standup",
                 new ComplexAnimData(155, fallStandTexture, new Rectangle(15, 7, 12, 66), 0, 45, 40, 125, 3, false));
-            ComplexAnim.AddAnimationData("duck",
+            _complexAnimation.AddAnimationData("duck",
                 new ComplexAnimData(156, fallStandTexture, new Rectangle(15, 7, 12, 66), 40, 45, 40, 125, 3, false));
-            ComplexAnim.AddAnimationData("jump",
+            _complexAnimation.AddAnimationData("jump",
                 new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
-            ComplexAnim.AddAnimationData("climb",
+            _complexAnimation.AddAnimationData("climb",
                 new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 75, 4, true));
-            ComplexAnim.AddAnimationData("fall",
+            _complexAnimation.AddAnimationData("fall",
                 new ComplexAnimData(1000, edenTexture, new Rectangle(6, 7, 12, 66), 120, 24, 40, 125, 4, true));
-            ComplexAnim.AddAnimationData("ninjaDash",
+            _complexAnimation.AddAnimationData("ninjaDash",
                 new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
-            ComplexAnim.AddAnimationData("punch",
+            _complexAnimation.AddAnimationData("punch",
                 new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
-            ComplexAnim.AddAnimationData("punch2",
+            _complexAnimation.AddAnimationData("punch2",
                 new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
            // ComplexAnim.AddAnimationData("death",
                 //new ComplexAnimData(int.MaxValue, edenTexture, new Rectangle(6, 7, 12, 66), 280, 24, 40, 125, 4, true));
@@ -87,7 +87,7 @@ namespace Adam.PlayerCharacter
             Sounds.AddSoundRef("stomp", "Player/jumpSound");
             Sounds.AddSoundRef("fail", "Sounds/Menu/level_fail");
 
-            ComplexAnim.AddToQueue("idle");
+            _complexAnimation.AddToQueue("idle");
 
             InitializeInput();
             Initialize(0, 0);

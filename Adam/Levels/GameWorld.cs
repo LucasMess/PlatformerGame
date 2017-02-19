@@ -1,5 +1,4 @@
-﻿using Adam.Characters;
-using Adam.Characters.Enemies;
+﻿using Adam.Characters.Enemies;
 using Adam.Interactables;
 using Adam.Misc;
 using Adam.Misc.Helpers;
@@ -7,6 +6,7 @@ using Adam.Misc.Sound;
 using Adam.Network;
 using Adam.Particles;
 using Adam.PlayerCharacter;
+using Adam.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -30,6 +30,7 @@ namespace Adam.Levels
         private static List<Cloud> _clouds;
         public static bool IsTestingLevel;
         public static List<Entity> Entities;
+        public static List<Projectile> PlayerProjectiles;
         public static bool IsOnDebug;
         public static PlayerCharacter.Player Player = new PlayerCharacter.Player();
         //Basic tile grid and the visible tile grid
@@ -49,6 +50,7 @@ namespace Adam.Levels
             SpriteSheet.GetData<Color>(SpriteSheetColorData);
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
+            PlayerProjectiles = new List<Projectile>();
             TileArray = new Tile[0];
             WallArray = new Tile[0];
         }
@@ -62,6 +64,7 @@ namespace Adam.Levels
             LoadingScreen.LoadingText = "Starting up world...";
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
+            PlayerProjectiles = new List<Projectile>();
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -209,31 +212,30 @@ namespace Adam.Levels
                 var entity = Entities[i];
                 if (entity.IsDead)
                     continue;
+                entity.Update();
+            }
 
-                if (entity is Enemy)
+            // Player projectile update and deletion.
+            foreach (var proj in PlayerProjectiles)
+            {
+                proj.Update();
+
+                foreach (var entity in Entities)
                 {
-                    var enemy = (Enemy)entity;
-                    enemy.Update();
+                    if (entity.IsDead) continue;
+                    if (proj.IsTouchingEntity(entity))
+                    {
+                        proj.OnCollisionWithEntity(entity);
+                    }
                 }
-                if (entity is Item)
+            }
+            for (int i = PlayerProjectiles.Count - 1; i >= 0; i--)
+            {
+                Projectile proj = PlayerProjectiles[i];
+                if (proj.ToDelete)
                 {
-                    var power = (Item)entity;
-                    power.Update();
-                }
-                if (entity is NonPlayableCharacter)
-                {
-                    var npc = (NonPlayableCharacter)entity;
-                    npc.Update();
-                }
-                if (entity is Sign)
-                {
-                    var sign = (Sign)entity;
-                    sign.Update();
-                }
-                if (entity is CheckPoint)
-                {
-                    var ch = (CheckPoint)entity;
-                    ch.Update();
+                    PlayerProjectiles.Remove(proj);
+                    continue;
                 }
             }
 
@@ -286,6 +288,13 @@ namespace Adam.Levels
                 if (!Entities[i].IsDead)
                     Entities[i].Draw(spriteBatch);
             }
+
+
+            foreach (var proj in PlayerProjectiles)
+            {
+                proj.Draw(spriteBatch);
+            }
+
 
             ParticleSystem.Draw(spriteBatch);
 

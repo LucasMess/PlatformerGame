@@ -158,12 +158,23 @@ namespace Adam.Particles
             }
         }
 
-        public void Add(ParticleType type, Vector2 position, Vector2 velocity, Color color)
+        public void Add(ParticleType type, Vector2 position, Vector2? velocityArg, Color color)
         {
+
             par = _particles[NextIndex];
 
             par.Reset();
             par.CurrentParticleType = type;
+
+            Vector2 velocity;
+            if (velocityArg == null)
+            {
+                velocity = CalcHelper.GetRandXAndY(new Rectangle(-5, -5, 10, 10));
+            }
+            else
+            {
+                velocity = (Vector2)velocityArg;
+            }
 
             switch (par.CurrentParticleType)
             {
@@ -194,7 +205,7 @@ namespace Adam.Particles
                     par.SourceRectangle = new Rectangle(288, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(5, 30) / 10f;
+                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
                     par._frameChange = AdamGame.Random.Next(100, 200);
                     par._frames = 4;
                     par.IsAnimated = true;
