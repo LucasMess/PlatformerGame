@@ -1,3 +1,6 @@
+using System;
+using System.Windows.Forms;
+
 namespace Adam
 {
     static class Program
@@ -10,9 +13,16 @@ namespace Adam
 
         static void Main(string[] args)
         {
-            using (AdamGame game = new AdamGame())
+            try
             {
-                game.Run();
+                using (AdamGame game = new AdamGame())
+                {
+                    game.Run();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "::" + e.StackTrace + "::" + e.InnerException.Message);
             }
         }
     }

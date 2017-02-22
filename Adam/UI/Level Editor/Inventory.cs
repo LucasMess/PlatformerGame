@@ -287,8 +287,10 @@ namespace Adam.UI.Level_Editor
             AnimationTimer.Reset();
             _posAtStartOfAnimation = _backDrop.Y;
 
+#if DEBUG
             Steamworks.SteamUserStats.SetAchievement("INVENTORY_OPEN");
             Steamworks.SteamUserStats.StoreStats();
+#endif
         }
 
         /// <summary>

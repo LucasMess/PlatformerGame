@@ -197,6 +197,7 @@ namespace Adam.Misc
                 name = "idle";
             if (!_animationData.TryGetValue(name, out animData))
             {
+                return;
                 throw new Exception("Animation not found.");
             }
 

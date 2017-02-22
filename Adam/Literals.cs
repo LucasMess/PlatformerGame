@@ -9,7 +9,7 @@
         /// <summary>
         /// Each type of tile has its own unique ID.
         /// </summary>
-        public enum TileType : int
+        public enum TileType : byte
         {
             Air = 0,
             Grass = 1,

@@ -101,9 +101,15 @@ namespace Adam
 
             DataFolder.Initialize();
 
+            //if (SteamAPI.RestartAppIfNecessary(new AppId_t(595250))){
+            //    return;
+            //}
+#if DEBUG
 
             SteamAPI.Init();
             UserName = SteamFriends.GetPersonaName();
+
+#endif
 
 #pragma warning disable 0162
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
