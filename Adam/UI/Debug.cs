@@ -51,15 +51,16 @@ namespace Adam
             }
 
             // Chat box.
-            if (InputHelper.IsKeyUp(Keys.T))
+            if (!GameWorld.GetPlayer().IsEnterCommandPressed())
             {
                 _chatKeyReleased = true;
             }
 
-            if (InputHelper.IsKeyDown(Keys.T) && _chatKeyReleased && !IsTyping)
+            if (GameWorld.GetPlayer().IsEnterCommandPressed() && _chatKeyReleased && !IsTyping)
             {
                 _chatKeyReleased = false;
                 IsTyping = true;
+                chatBox.Reset();
             }
         }
 
@@ -76,6 +77,7 @@ namespace Adam
                 chatBox.Update(new Rectangle());
                 if (GameWorld.GetPlayer().IsEnterCommandPressed())
                 {
+                    _chatKeyReleased = false;
                     IsTyping = false;
                     string text = chatBox.Text;
                     if (text == null || text.Length == 0)

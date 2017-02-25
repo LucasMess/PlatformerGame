@@ -259,7 +259,7 @@ namespace Adam.PlayerCharacter
 
         public bool IsEnterCommandPressed()
         {
-            return InputHelper.IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+            return InputHelper.IsKeyDown(Keys.Enter);
         }
 
         public bool IsContinueChatPressed()
@@ -269,7 +269,7 @@ namespace Adam.PlayerCharacter
 
         public bool IsTestLevelPressed()
         {
-            return InputHelper.IsKeyDown(Keys.F5) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+            return InputHelper.IsKeyDown(Keys.T) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
         }
 
         public bool IsMoveUpPressed()
@@ -285,6 +285,11 @@ namespace Adam.PlayerCharacter
         public bool IsPauseButtonDown()
         {
             return InputHelper.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
+        }
+
+        public bool IsChangeHotBarTileDown()
+        {
+            return InputHelper.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Adam.Levels;
 using Adam.Misc;
+using Adam.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace Adam.UI.Level_Editor
         private static TileHolder _deletedTile = new TileHolder(0);
         private static SoundFx _replaceSound = new SoundFx("Sounds/Level Editor/replace_hotbar");
         private static SoundFx _swipeSound = new SoundFx("Sounds/Level Editor/swipe_hotbar");
+
+        private static bool _tabPressed;
 
         public static void Initialize()
         {
@@ -162,6 +165,27 @@ namespace Adam.UI.Level_Editor
 
                 tileHolder.CheckIfClickedOn();
                 tileHolder.Update(new Vector2(0, 0));
+            }
+
+            CheckSwitchTile();
+        }
+
+        private static void CheckSwitchTile()
+        {
+            Player player = GameWorld.GetPlayer();
+            if (player.IsChangeHotBarTileDown() && !_tabPressed)
+            {
+                int index = (_tileHolders.IndexOf(SelectedTile) + 1) % NumberOfVisible;
+                while (_tileHolders[index].Id == 0)
+                {
+                    index = (index + 1) % NumberOfVisible;
+                }
+                Tile_WasClicked(_tileHolders[index]);
+                _tabPressed = true;
+            }
+            if (!player.IsChangeHotBarTileDown())
+            {
+                _tabPressed = false;
             }
         }
 

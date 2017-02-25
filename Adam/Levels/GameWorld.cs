@@ -182,6 +182,13 @@ namespace Adam.Levels
             }
             else
             {
+                if (IsTestingLevel)
+                {
+                    if (Player.IsTestLevelPressed())
+                        LevelEditor.GoBackToEditing();
+                }
+
+
                 UpdateVisual();
             }
 
