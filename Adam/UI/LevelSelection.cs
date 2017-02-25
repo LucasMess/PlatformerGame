@@ -111,6 +111,7 @@ namespace Adam.UI
                 return;
             }
 
+            LoadLevels();
             DataFolder.EditLevel(newPath);
         }
 
@@ -124,8 +125,8 @@ namespace Adam.UI
             if (_selectedLevel == null)
             {
                 AdamGame.MessageBox.Show("Please select a level.");
-                return;
             }
+
             DataFolder.DeleteFile(_selectedLevel.FilePath);
             LoadLevels();
         }
@@ -144,7 +145,16 @@ namespace Adam.UI
 
         private void RenameButton_OnInputEntered(TextInputArgs e)
         {
-            DataFolder.RenameFile(_selectedLevel.FilePath, _selectedLevel.Name, e.Input);
+            try
+            {
+                DataFolder.RenameFile(_selectedLevel.FilePath, _selectedLevel.Name, e.Input);
+
+            }
+            catch (Exception ex)
+            {
+                AdamGame.MessageBox.Show(ex.Message);
+            }
+
             AdamGame.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
             LoadLevels();
         }

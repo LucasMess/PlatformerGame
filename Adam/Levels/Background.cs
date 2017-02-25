@@ -58,7 +58,7 @@ namespace Adam
             List<Vector2> one = new List<Vector2>();
             for (int i = 0; i < 3; i++)
             {
-                Vector2 pos = new Vector2(-AdamGame.DefaultResWidth + (AdamGame.DefaultResWidth * i), 0);
+                Vector2 pos = new Vector2(-AdamGame.UserResWidth + (AdamGame.UserResWidth * i), 0);
                 one.Add(pos);
             }
             middleCoords = one.ToArray();
@@ -82,14 +82,14 @@ namespace Adam
             }
 
 
-            middleCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 10) % AdamGame.DefaultResWidth, 0);
-            foreCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 5) % AdamGame.DefaultResWidth, 0);
+            middleCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 10) % AdamGame.UserResWidth, 0);
+            foreCoords[0] = new Vector2((AdamGame.Camera.LastCameraLeftCorner.X / 5) % AdamGame.UserResWidth, 0);
 
-            middleCoords[1] = middleCoords[0] + new Vector2(AdamGame.DefaultResWidth, 0);
-            foreCoords[1] = foreCoords[0] + new Vector2(AdamGame.DefaultResWidth, 0);
+            middleCoords[1] = middleCoords[0] + new Vector2(AdamGame.UserResWidth, 0);
+            foreCoords[1] = foreCoords[0] + new Vector2(AdamGame.UserResWidth, 0);
 
-            middleCoords[2] = middleCoords[0] - new Vector2(AdamGame.DefaultResWidth, 0);
-            foreCoords[2] = foreCoords[0] - new Vector2(AdamGame.DefaultResWidth, 0);
+            middleCoords[2] = middleCoords[0] - new Vector2(AdamGame.UserResWidth, 0);
+            foreCoords[2] = foreCoords[0] - new Vector2(AdamGame.UserResWidth, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -97,17 +97,17 @@ namespace Adam
             if (_backgroundTexture != null)
             {
 
-                spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
             }
 
-            spriteBatch.Draw(_sun, new Rectangle(0, 0, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+            spriteBatch.Draw(_sun, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
             if (_middlegroundTexture != null)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                    spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
                 }
             }
 
@@ -115,7 +115,7 @@ namespace Adam
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), Color.White);
+                    spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
                 }
             }
         }

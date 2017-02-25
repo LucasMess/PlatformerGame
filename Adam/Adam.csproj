@@ -218,6 +218,7 @@
     <Compile Include="UI\MainMenu\LevelGrid.cs" />
     <Compile Include="UI\MainMenu\StoryMode.cs" />
     <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\OptionsMenu.cs" />
     <Compile Include="UI\Overlay.cs" />
     <Compile Include="UI\PauseMenu.cs" />
   </ItemGroup>

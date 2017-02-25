@@ -20,7 +20,7 @@ namespace Adam
 
         private static List<string> _infos = new List<string>();
         private static BitmapFont _font = FontHelper.Fonts[1];
-        static Textbox chatBox = new Textbox(0, AdamGame.UserResHeight - 60, AdamGame.UserResWidth - 10, 60);
+        static Textbox chatBox = new Textbox(0, AdamGame.DefaultUiHeight - 60, AdamGame.DefaultUiWidth - 10, 60);
 
         static bool _debugKeyReleased;
         static bool _chatKeyReleased;

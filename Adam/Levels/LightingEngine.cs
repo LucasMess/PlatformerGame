@@ -54,7 +54,7 @@ namespace Adam.Levels
             {
 
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 16, Color.White);
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 1, new Color(50,50,100));
             }
 
 

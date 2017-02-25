@@ -51,22 +51,22 @@ namespace Adam.UI
 
         }
 
+
         /// <summary>
-        /// Attempts to create a new world.
+        /// Checks if the name already exists, if it is too short, etc, and return the file path if it is ok.
         /// </summary>
-        /// <param name="levelName">The name of the level.</param>
-        /// <param name="width">The width of the level.</param>
-        /// <param name="height">The height of the level.</param>
-        public static string CreateNewLevel(string levelName, short width, short height)
+        /// <param name="levelName"></param>
+        /// <returns></returns>
+        private static string GetFilePath(string levelName)
         {
             // Checks to see if levelName is valid.
             if (levelName == null)
             {
                 throw new Exception("The name of your level cannot be nothing.");
             }
-            if (levelName.Length > 20 || levelName.Length < 3)
+            if (levelName.Length > 40 || levelName.Length < 1)
             {
-                throw new Exception("The name of your level must be between 3 and 20 characters.");
+                throw new Exception("The name of your level must be between 1 and 40 characters.");
             }
             if (levelName.IndexOfAny(Path.GetInvalidFileNameChars()) > 0)
             {
@@ -81,6 +81,29 @@ namespace Adam.UI
             if (File.Exists(filePath))
             {
                 throw new Exception("A level with this name: " + filePath + " already exists.");
+            }
+
+            return filePath;
+
+        }
+
+        /// <summary>
+        /// Attempts to create a new world.
+        /// </summary>
+        /// <param name="levelName">The name of the level.</param>
+        /// <param name="width">The width of the level.</param>
+        /// <param name="height">The height of the level.</param>
+        public static string CreateNewLevel(string levelName, short width, short height)
+        {
+            string filePath;
+
+            try
+            {
+                filePath = GetFilePath(levelName);
+            }
+            catch
+            {
+                throw;
             }
 
             WorldConfigFile config = new WorldConfigFile(levelName, width, height);
@@ -101,15 +124,24 @@ namespace Adam.UI
         /// <param name="filePath"></param>
         public static void EditLevel(string filePath)
         {
-            WorldConfigFile config = GetWorldConfigFile(filePath);
-            if (!config.CanBeEdited)
+            try
             {
-                AdamGame.MessageBox.Show("This level cannot be edited.");
+                WorldConfigFile config = GetWorldConfigFile(filePath);
+
+
+                if (!config.CanBeEdited)
+                {
+                    AdamGame.MessageBox.Show("This level cannot be edited.");
+                    return;
+                }
+
+                CurrentLevelFilePath = filePath;
+                config.LoadIntoEditor();
+            }
+            catch
+            {
                 return;
             }
-
-            CurrentLevelFilePath = filePath;
-            config.LoadIntoEditor();
         }
 
         /// <summary>
@@ -198,7 +230,12 @@ namespace Adam.UI
             catch (FileNotFoundException)
             {
                 AdamGame.MessageBox.Show("Error: File not found.");
-                throw new Exception();
+                throw;
+            }
+            catch (InvalidOperationException)
+            {
+                AdamGame.MessageBox.Show("Error: Level data is corrupt. Cannot load level.");
+                throw;
             }
 
             return config;
@@ -210,12 +247,20 @@ namespace Adam.UI
         /// <param name="filePath"></param>
         public static void DeleteFile(string filePath)
         {
-            WorldConfigFile config = GetWorldConfigFile(filePath);
-            if (!config.CanBeEdited)
+            try
             {
-                AdamGame.MessageBox.Show("This level cannot be deleted.");
-                return;
+                WorldConfigFile config = GetWorldConfigFile(filePath);
+                if (!config.CanBeEdited)
+                {
+                    AdamGame.MessageBox.Show("This level cannot be deleted.");
+                    return;
+                }
             }
+            catch
+            {
+                // Do nothing. If it can't read the file, let the user delete it.
+            }
+
             File.Delete(filePath);
         }
 
@@ -227,20 +272,34 @@ namespace Adam.UI
         /// <param name="newName">The new name for the file.</param>
         public static void RenameFile(string filePath, string oldName, string newName)
         {
-            WorldConfigFile config = GetWorldConfigFile(filePath);
-            if (!config.CanBeEdited)
+            // Try to see if level can be edited. If there is a problem with the lvl file, abort.
+            WorldConfigFile config;
+            try
             {
-                AdamGame.MessageBox.Show("This level cannot be renamed.");
+                config = GetWorldConfigFile(filePath);
+                if (!config.CanBeEdited)
+                {
+                    AdamGame.MessageBox.Show("This level cannot be renamed.");
+                    return;
+                }
+            }
+            catch
+            {
                 return;
             }
 
-            // Rename the file.
-            Console.WriteLine(filePath);
-            string newFilePath = filePath.Remove(filePath.Length - oldName.Length - LevelFileExt.Length, oldName.Length + LevelFileExt.Length);
-            Console.WriteLine(newFilePath);
-            newFilePath += newName;
-            newFilePath += LevelFileExt;
-            Console.WriteLine(newFilePath);
+            // Exceptions are thrown when level name is invalid and are handled by the caller.
+            string newFilePath;
+            try
+            {
+                newFilePath = GetFilePath(newName);
+            }
+            catch
+            {
+                throw;
+            }
+
+            // Proceed if eveything worked.
             File.Move(filePath, newFilePath);
 
             // Rename the level inside the config file.
@@ -248,6 +307,8 @@ namespace Adam.UI
             config.LevelName = newName;
             CurrentLevelFilePath = newFilePath;
             SaveLevel(config2);
+
+
         }
 
         /// <summary>
