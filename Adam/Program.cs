@@ -12,7 +12,6 @@ namespace Adam
         /// 
     static void Main(string[] args)
         {
-
             try
             {
                 SteamAPI.Init();
@@ -21,12 +20,14 @@ namespace Adam
             {
                 MessageBox.Show(e.Message);
             }
+#if RELEASE
 
             if (SteamAPI.RestartAppIfNecessary(new AppId_t(595250)))
             {
                 return;
             }
-
+#endif
+#if RELEASE
             try
             {
                 using (AdamGame game = new AdamGame())
@@ -36,8 +37,16 @@ namespace Adam
             }
             catch (Exception e)
             {
+
                 MessageBox.Show(e.Message + "::" + e.StackTrace + "::" + e.InnerException.Message);
             }
+#else
+            using (AdamGame game = new AdamGame())
+            {
+                game.Run();
+            }
+#endif
+
         }
     }
 }

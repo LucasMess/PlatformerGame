@@ -72,7 +72,7 @@ namespace Adam.Levels
             var maxClouds = width / 20;
             for (var i = 0; i < maxClouds; i++)
             {
-                _clouds.Add(new Cloud(new Vector2(AdamGame.UserResWidth, AdamGame.UserResHeight), maxClouds, i));
+                _clouds.Add(new Cloud(new Vector2(AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), maxClouds, i));
             }
 
             LevelEditor.InteractableConnections.Clear();
@@ -297,12 +297,17 @@ namespace Adam.Levels
             }
 
 
-            ParticleSystem.Draw(spriteBatch);
+            ParticleSystem.DrawNormalParticles(spriteBatch);
 
             if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.Draw(spriteBatch);
 
 
+        }
+
+        public static void DrawRipples(SpriteBatch spriteBatch)
+        {
+            ParticleSystem.DrawEffectParticles(spriteBatch);
         }
 
         public static void DrawLights(SpriteBatch spriteBatch)

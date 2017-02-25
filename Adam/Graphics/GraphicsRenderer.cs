@@ -1,4 +1,5 @@
 ﻿using Adam.Levels;
+using Adam.Misc.Helpers;
 using Adam.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +33,9 @@ namespace Adam.Graphics
         private static RenderTarget2D _lightingRenderTarget;
         private static RenderTarget2D _userInterfaceRenderTarget;
         private static RenderTarget2D _mainRenderTarget;
+        private static RenderTarget2D _rippleRenderTarget;
+
+        private static Effect testEffect;
 
         /// <summary>
         /// Initializes all of the components used for rendering, such as rendertargets and spritebatches.
@@ -53,6 +57,13 @@ namespace Adam.Graphics
             _userInterfaceRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
                  graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                     graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
+            _rippleRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
+                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
+                   graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
+            testEffect = ContentHelper.LoadEffect("Effects/testEffect");
+
         }
 
         /// <summary>
@@ -72,10 +83,21 @@ namespace Adam.Graphics
             _graphicsDevice.Clear(Color.Transparent);
             DrawLights();
 
+            _graphicsDevice.SetRenderTarget(_rippleRenderTarget);
+            _graphicsDevice.Clear(Color.Transparent);
+            DrawRipples();
+
             _graphicsDevice.SetRenderTarget(null);
-            _graphicsDevice.Clear(Color.White);
+            _graphicsDevice.Clear(Color.Green);
             CombineRenderTargets();
 
+        }
+
+        private static void DrawRipples()
+        {
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            GameWorld.DrawRipples(_spriteBatch);
+            _spriteBatch.End();
         }
 
         /// <summary>
@@ -118,10 +140,17 @@ namespace Adam.Graphics
             if (AdamGame.CurrentGameState == GameState.LoadingScreen)
                 return;
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            GameWorld.DrawBackground(_spriteBatch);
+            _spriteBatch.End();
 
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            GameWorld.DrawBackground(_spriteBatch);
             GameWorld.DrawWalls(_spriteBatch);
             GameWorld.Draw(_spriteBatch);
+            //GameWorld.DrawRipples(_spriteBatch);
+
 
 
             _spriteBatch.End();
@@ -145,8 +174,11 @@ namespace Adam.Graphics
             int width = AdamGame.UserResWidth;
             int height = AdamGame.UserResHeight;
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-            GameWorld.DrawBackground(_spriteBatch);
+
+            testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
+            testEffect.Parameters["LastTexture"].SetValue(_mainRenderTarget);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
+
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
@@ -160,6 +192,10 @@ namespace Adam.Graphics
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             _spriteBatch.Draw(_userInterfaceRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
+
+
+            // _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
+
         }
 
         /// <summary>

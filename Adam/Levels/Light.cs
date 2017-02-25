@@ -65,7 +65,7 @@ namespace Adam.Levels
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-            // Update(_center);
+             //Update(_center);
             //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
             if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
             {

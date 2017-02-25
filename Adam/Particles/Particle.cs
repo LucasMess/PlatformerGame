@@ -2,6 +2,7 @@
 using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 
 namespace Adam.Particles
 {
@@ -30,6 +31,7 @@ namespace Adam.Particles
             public int Height { get; set; } = 8;
             public float Scale { get; set; } = 1;
             public bool IsAnimated { get; set; }
+            public bool IsRippleEffect { get; set; } = false;
 
             public void Reset()
             {
@@ -38,6 +40,7 @@ namespace Adam.Particles
                 Scale = 1;
                 Opacity = 1;
                 IsAnimated = false;
+                IsRippleEffect = false;
                 Color = Color.White;
                 _frameChange = 0;
                 _frames = 1;
@@ -158,12 +161,34 @@ namespace Adam.Particles
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawNormalParticles(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < _particles.Length; i++)
+            //for (int i = 0; i < _particles.Length; i++)
+            //{
+            //    _particles[i].Draw(spriteBatch);
+            //}
+
+            var query = from particle in _particles
+                        where !particle.IsRippleEffect
+                        select particle;
+
+            foreach (Particle par in query)
             {
-                _particles[i].Draw(spriteBatch);
+                par.Draw(spriteBatch);
             }
+        }
+
+        public void DrawEffectParticles(SpriteBatch spriteBatch)
+        {
+            var query = from particle in _particles
+                        where particle.IsRippleEffect
+                        select particle;
+
+            foreach (Particle par in query)
+            {
+                par.Draw(spriteBatch);
+            }
+
         }
 
         public void Add(ParticleType type, Vector2 position, Vector2? velocityArg, Color color)
@@ -232,6 +257,14 @@ namespace Adam.Particles
                     par.Color = color;
                     par.Scale = AdamGame.Random.Next(1, 10) / 10f;
                     break;
+                case ParticleType.HeatEffect:
+                    par.IsRippleEffect = true;
+                    par.SourceRectangle = new Rectangle(336, 112, 16, 16);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = AdamGame.Random.Next(1, 5);
+                    par.Position = new Vector2(position.X - par.Scale/2 * 8, position.Y - par.Scale / 2 * 8);
+                    break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
                     break;
@@ -248,6 +281,7 @@ namespace Adam.Particles
         Round_Common,
         Snow,
         Rain,
+        HeatEffect,
     }
 
 }

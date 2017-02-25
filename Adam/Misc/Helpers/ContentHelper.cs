@@ -27,7 +27,7 @@ namespace Adam.Misc.Helpers
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 return AdamGame.DefaultTexture;
-            }            
+            }
         }
 
         /// <summary>
@@ -80,6 +80,24 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("BitmapFont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Loads the BitmapFont at the specified file path.
+        /// </summary>
+        /// <param name="file">The file path of the font.</param>
+        /// <returns>Loaded font.</returns>
+        public static Effect LoadEffect(string file)
+        {
+            try
+            {
+                return AdamGame.Content.Load<Effect>(file);
+            }
+            catch (ContentLoadException)
+            {
+                Console.WriteLine("Effect location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
                 throw;
             }
         }
