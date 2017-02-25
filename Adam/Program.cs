@@ -1,3 +1,4 @@
+using Steamworks;
 using System;
 using System.Windows.Forms;
 
@@ -11,6 +12,21 @@ namespace Adam
         /// 
     static void Main(string[] args)
         {
+
+            try
+            {
+                SteamAPI.Init();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            if (SteamAPI.RestartAppIfNecessary(new AppId_t(595250)))
+            {
+                return;
+            }
+
             try
             {
                 using (AdamGame game = new AdamGame())

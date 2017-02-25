@@ -100,15 +100,11 @@ namespace Adam
                 GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
             DataFolder.Initialize();
+    
 
-            //if (SteamAPI.RestartAppIfNecessary(new AppId_t(595250))){
-            //    return;
-            //}
-#if DEBUG
-
-            SteamAPI.Init();
             UserName = SteamFriends.GetPersonaName();
-
+#if DEBUG
+            SteamUserStats.ResetAllStats(true);
 #endif
 
 #pragma warning disable 0162
