@@ -164,12 +164,6 @@ namespace Adam
 
         }
 
-        public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
-        {
-            BounceSound?.PlayNewInstanceOnce();
-            BounceSound?.Reset();
-        }
-
         /// <summary>
         /// Generates specified number of gems in gameworld.
         /// </summary>

@@ -147,7 +147,7 @@ namespace Adam
                 _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count + 1) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count ) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {

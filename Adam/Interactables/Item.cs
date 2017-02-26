@@ -32,9 +32,9 @@ namespace Adam.Interactables
 
         private void Item_CollidedWithTerrain(Entity entity, Tile tile)
         {
-            if (Math.Abs(Velocity.Y) > 1)
+            if (Math.Abs(Velocity.Y) > 3)
             {
-                BounceSound?.Play();
+                BounceSound?.PlayIfStopped();
             }
         }
 

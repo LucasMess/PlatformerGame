@@ -59,6 +59,7 @@ namespace Adam
         private Texture2D _texture;
         private Color _color = Color.White;
 
+        private const float BouncyFallOff = .8f;
         private bool _healthGiven;
         public bool IsTouchingGround { get; set; }
         public bool IsDucking { get; set; }
@@ -730,12 +731,14 @@ namespace Adam
                     Velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    Velocity.Y = -Velocity.Y;
+                    Velocity.Y = -Velocity.Y * BouncyFallOff;
                     break;
                 case CollisionType.SuperBouncy:
                     Velocity.Y = -Velocity.Y;
                     break;
             }
+
+
         }
 
         /// <summary>
@@ -758,11 +761,16 @@ namespace Adam
                     Velocity.Y = 0;
                     break;
                 case CollisionType.Bouncy:
-                    Velocity.Y = -Velocity.Y;
+                    Velocity.Y = -Velocity.Y * BouncyFallOff;
                     break;
                 case CollisionType.SuperBouncy:
                     Velocity.Y = -Velocity.Y;
                     break;
+            }
+
+            if (Math.Abs(Velocity.Y) < 1f)
+            {
+                SetVelY(0);
             }
         }
 
@@ -782,7 +790,7 @@ namespace Adam
                     Velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    Velocity.X = -Velocity.X;
+                    Velocity.X = -Velocity.X * BouncyFallOff;
                     break;
                 case CollisionType.SuperBouncy:
                     Velocity.X = -Velocity.X;
@@ -809,7 +817,7 @@ namespace Adam
                     Velocity.X = 0;
                     break;
                 case CollisionType.Bouncy:
-                    Velocity.X = -Velocity.X;
+                    Velocity.X = -Velocity.X * BouncyFallOff;
                     break;
                 case CollisionType.SuperBouncy:
                     Velocity.X = -Velocity.X;
