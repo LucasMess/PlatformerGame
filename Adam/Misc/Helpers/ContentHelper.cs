@@ -26,6 +26,7 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                throw;
                 return AdamGame.DefaultTexture;
             }
         }

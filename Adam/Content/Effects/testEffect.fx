@@ -25,9 +25,9 @@ sampler inputTexture = sampler_state
 sampler lastTexture = sampler_state
 {
 	texture = <LastTexture>;
-	magFilter = LINEAR;
-	minFilter = LINEAR;
-	mipFilter = LINEAR;
+	magFilter = POINT;
+	minFilter = POINT;
+	mipFilter = POINT;
 	addressU = CLAMP;
 	addressV = CLAMP;
 };

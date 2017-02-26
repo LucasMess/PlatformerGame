@@ -294,7 +294,7 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(4, 15);
 
                     if (SubId == 1)
-                        _positionInSpriteSheet = new Vector2(8, 24);
+                        _positionInSpriteSheet = new Vector2(17, 24);
                     break;
                 case TileType.Lava: //lava
                     Interactable = new Lava();
@@ -1060,6 +1060,12 @@ namespace Adam
 
             //DefineTexture();
             //LightingEngine.UpdateLightAt(TileIndex);
+        }
+
+        public void DrawRipples(SpriteBatch spriteBatch)
+        {
+            if (Id == TileType.Water && Texture != null)
+                spriteBatch.Draw(Texture, DrawRectangle, new Rectangle(SourceRectangle.X, SourceRectangle.Y + 16, 16, 16), Color.White);
         }
 
         public void Draw(SpriteBatch spriteBatch)

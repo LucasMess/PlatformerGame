@@ -178,7 +178,6 @@ namespace Adam.Graphics
             testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
             testEffect.Parameters["LastTexture"].SetValue(_mainRenderTarget);
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
-
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
@@ -192,9 +191,6 @@ namespace Adam.Graphics
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             _spriteBatch.Draw(_userInterfaceRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
-
-
-            // _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
 
         }
 
