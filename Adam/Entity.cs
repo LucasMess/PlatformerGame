@@ -768,10 +768,6 @@ namespace Adam
                     break;
             }
 
-            if (Math.Abs(Velocity.Y) < 1f)
-            {
-                SetVelY(0);
-            }
         }
 
         /// <summary>
