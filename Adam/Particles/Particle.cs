@@ -2,6 +2,7 @@
 using Adam.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Adam.Particles
@@ -32,6 +33,18 @@ namespace Adam.Particles
             public float Scale { get; set; } = 1;
             public bool IsAnimated { get; set; }
             public bool IsRippleEffect { get; set; } = false;
+            public int TimeToLive { get; set; } = -1;
+
+            public bool IsDead()
+            {
+                if (Opacity <= 0)
+                {
+                    return true;
+                }
+                if (TimeToLive < 0)
+                    return true;
+                return false;
+            }
 
             public void Reset()
             {
@@ -45,6 +58,7 @@ namespace Adam.Particles
                 _frameChange = 0;
                 _frames = 1;
                 _currentFrame = 0;
+                TimeToLive = 60 * 5;
                 _animationTimer.Reset();
             }
 
@@ -107,6 +121,7 @@ namespace Adam.Particles
             protected void NoOpacityDefaultBehavior()
             {
                 Position += Velocity;
+                TimeToLive--;
             }
 
             protected void GravityNoOpacityDefaultBehavior()
@@ -125,18 +140,19 @@ namespace Adam.Particles
         int _nextInt = 0;
         Particle par;
 
+        IEnumerable<Particle> _emptyParticles;
+
         /// <summary>
-        /// The next available index for creating a particle.
+        /// The next available index for creating a particle. Returns -1 if there are no more particles.
         /// </summary>
-        int NextIndex
+        int GetNextIndex()
         {
-            get
-            {
-                _nextInt++;
-                if (_nextInt >= _particles.Length)
-                    _nextInt = 0;
-                return _nextInt;
-            }
+
+            _nextInt++;
+            if (_nextInt >= _emptyParticles.Count())
+                _nextInt = -1;
+            return _nextInt;
+
         }
 
         public int GetIteration() => _nextInt;
@@ -151,6 +167,8 @@ namespace Adam.Particles
             {
                 _particles[i] = new Particle();
             }
+
+            GetAvailableParticles();
         }
 
         public void Update()
@@ -191,10 +209,45 @@ namespace Adam.Particles
 
         }
 
+        /// <summary>
+        /// Gets how many particles there are left before there are too many particles for the system to handle.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfAvailableParticles() => _emptyParticles.Count();
+
+        /// <summary>
+        /// Gets all of the available particles.
+        /// </summary>
+        private void GetAvailableParticles()
+        {
+            _emptyParticles = (from particle in _particles
+                               where particle.IsDead()
+                               select particle).ToList();
+        }
+
+        /// <summary>
+        /// Used when there are no more available particles.
+        /// </summary>
+        private void GetAllParticles()
+        {
+            _emptyParticles = _particles.ToList();
+        }
+
         public void Add(ParticleType type, Vector2 position, Vector2? velocityArg, Color color)
         {
+            int next = GetNextIndex();
+            if (next == -1)
+            {
+                GetAvailableParticles();
+                next = GetNextIndex();
+                if (next == -1)
+                {
+                    GetAllParticles();
+                    next = GetNextIndex();
+                }
+            }
 
-            par = _particles[NextIndex];
+            par = _emptyParticles.ElementAt(next);
 
             par.Reset();
             par.CurrentParticleType = type;
@@ -263,7 +316,7 @@ namespace Adam.Particles
                     par.Velocity = velocity;
                     par.Color = color;
                     par.Scale = AdamGame.Random.Next(1, 5);
-                    par.Position = new Vector2(position.X - par.Scale/2 * 8, position.Y - par.Scale / 2 * 8);
+                    par.Position = new Vector2(position.X - par.Scale / 2 * 8, position.Y - par.Scale / 2 * 8);
                     break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);

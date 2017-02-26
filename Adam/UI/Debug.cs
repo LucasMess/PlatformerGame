@@ -144,6 +144,7 @@ namespace Adam
                 _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
                 _infos.Add("Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString());
                 _infos.Add("Particle iteration: " + GameWorld.ParticleSystem?.GetIteration());
+                _infos.Add("Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles());
                 _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 

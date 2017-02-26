@@ -113,10 +113,10 @@ namespace Adam
             {
                 monitorRes = new Vector2(1366, 768);
             }
-            UserResWidth = (int)monitorRes.X;
-            UserResHeight = (int)monitorRes.Y;
-            //UserResWidth = DefaultResWidth;
-            //UserResHeight = DefaultResHeight;
+            //UserResWidth = (int)monitorRes.X;
+            //UserResHeight = (int)monitorRes.Y;
+            UserResWidth = DefaultResWidth;
+            UserResHeight = DefaultResHeight;
 
 #pragma warning restore 0162
 
@@ -139,7 +139,7 @@ namespace Adam
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             if (IsTestingMultiplayer) _graphics.IsFullScreen = false;
 
             // Set window to borderless.
