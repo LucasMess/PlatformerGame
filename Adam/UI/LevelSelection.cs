@@ -127,7 +127,7 @@ namespace Adam.UI
                 AdamGame.MessageBox.Show("Please select a level.");
             }
 
-            DataFolder.DeleteFile(_selectedLevel.FilePath);
+            DataFolder.DeleteLevel(_selectedLevel.FilePath);
             LoadLevels();
         }
 

@@ -10,8 +10,8 @@ namespace Adam.GameData
     [Serializable]
     public class WorldConfigFile
     {
-        public byte[] TileIDs { get; set; }
-        public byte[] WallIDs { get; set; }
+        public int[] TileIDs { get; set; }
+        public int[] WallIDs { get; set; }
 
         public short LevelWidth { get; set; }
         public short LevelHeight { get; set; }
@@ -42,8 +42,8 @@ namespace Adam.GameData
             BackgroundId = 1;
             SoundtrackId = 1;
 
-            TileIDs = new byte[LevelWidth * LevelHeight];
-            WallIDs = new byte[LevelWidth * LevelHeight];
+            TileIDs = new int[LevelWidth * LevelHeight];
+            WallIDs = new int[LevelWidth * LevelHeight];
 
             HasClouds = true;
             IsSnowing = false;
@@ -55,8 +55,8 @@ namespace Adam.GameData
         {
             //Creates arrays for the tiles.
             int size = GameWorld.TileArray.Length;
-            TileIDs = new byte[size];
-            WallIDs = new byte[size];
+            TileIDs = new int[size];
+            WallIDs = new int[size];
 
             //Sets the dimensions of the level.
             LevelWidth = (short)GameWorld.WorldData.LevelWidth;
@@ -117,7 +117,7 @@ namespace Adam.GameData
         public void LoadIntoView()
         {
             TransferDataToWorldData();
-            AdamGame.ChangeState(AdamGame.CurrentGameState, AdamGame.CurrentGameMode, true);
+            AdamGame.ChangeState(AdamGame.CurrentGameState, GameMode.None, true);
         }
 
         public void TransferDataToWorldData()

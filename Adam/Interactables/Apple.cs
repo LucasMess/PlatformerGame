@@ -15,7 +15,6 @@ namespace Adam
         {
             _collRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
             _levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
-            _levelFinishedSound.MaxVolume = .2f;
         }
 
         public void Update()

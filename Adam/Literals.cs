@@ -1,15 +1,11 @@
 ﻿namespace Adam
 {
-    /// <summary>
-    /// Use this file to keep track of all the constants in the game.
-    /// </summary>
-
     public partial class AdamGame
     {
         /// <summary>
         /// Each type of tile has its own unique ID.
         /// </summary>
-        public enum TileType : byte
+        public enum TileType : int
         {
             Air = 0,
             Grass = 1,

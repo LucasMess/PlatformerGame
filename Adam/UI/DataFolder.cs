@@ -21,6 +21,7 @@ namespace Adam.UI
         public static string LevelDirectory;
 
         public const string LevelFileExt = ".lvl";
+        private const string SettingsFileName = "settings.xml";
 
         public static string CurrentLevelFilePath;
 
@@ -87,6 +88,62 @@ namespace Adam.UI
 
         }
 
+
+        /// <summary>
+        /// Searches the game directory for a settings file. If none is found, it creates a new one with the default parameters.
+        /// </summary>
+        /// <returns></returns>
+        public static SettingsFile GetSettingsFile()
+        {
+            string filePath = MainDirectory + "/" + SettingsFileName;
+
+            SettingsFile settings = new SettingsFile();
+
+            if (File.Exists(filePath))
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(SettingsFile));
+                try
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        settings = (SettingsFile)xs.Deserialize(fs);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    AdamGame.MessageBox.Show("Settings corrupt.");
+                    throw;
+                }
+            }
+            else
+            {
+                // Creates the file for the settings.
+                XmlSerializer xs = new XmlSerializer(typeof(SettingsFile));
+                using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
+                {
+                    xs.Serialize(fs, settings);
+                }
+            }
+
+            return settings;
+        }
+
+        /// <summary>
+        /// Saves the given settings file to the current settings file location.
+        /// </summary>
+        /// <param name=""></param>
+        public static void SaveSettingsFile(SettingsFile newFile)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(SettingsFile));
+
+            File.Delete(MainDirectory + "/" + SettingsFileName);
+
+            using (FileStream fs = new FileStream(MainDirectory + "/" + SettingsFileName, FileMode.OpenOrCreate))
+            {
+                xs.Serialize(fs, newFile);
+            }
+        }
+
         /// <summary>
         /// Attempts to create a new world.
         /// </summary>
@@ -124,24 +181,24 @@ namespace Adam.UI
         /// <param name="filePath"></param>
         public static void EditLevel(string filePath)
         {
-            try
+
+            WorldConfigFile config = GetWorldConfigFile(filePath);
+
+            if (config.TileIDs.Length == 0)
             {
-                WorldConfigFile config = GetWorldConfigFile(filePath);
-
-
-                if (!config.CanBeEdited)
-                {
-                    AdamGame.MessageBox.Show("This level cannot be edited.");
-                    return;
-                }
-
-                CurrentLevelFilePath = filePath;
-                config.LoadIntoEditor();
-            }
-            catch
-            {
+                AdamGame.MessageBox.Show("There is something wrong with this level and it cannot be loaded.");
                 return;
             }
+
+            if (!config.CanBeEdited)
+            {
+                AdamGame.MessageBox.Show("This level cannot be edited.");
+                return;
+            }
+
+            CurrentLevelFilePath = filePath;
+            config.LoadIntoEditor();
+
         }
 
         /// <summary>
@@ -190,7 +247,7 @@ namespace Adam.UI
         {
             XmlSerializer xs = new XmlSerializer(typeof(WorldConfigFile));
 
-            DeleteFile(CurrentLevelFilePath);
+            DeleteLevel(CurrentLevelFilePath);
 
             using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
             {
@@ -245,7 +302,7 @@ namespace Adam.UI
         /// Deletes the specified file.
         /// </summary>
         /// <param name="filePath"></param>
-        public static void DeleteFile(string filePath)
+        public static void DeleteLevel(string filePath)
         {
             try
             {

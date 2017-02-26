@@ -278,6 +278,7 @@ namespace Adam
 
         static void options_MouseClicked(Button button)
         {
+            OptionsMenu.Show();
             CurrentMenuState = MenuState.Options;
         }
 
@@ -299,15 +300,6 @@ namespace Adam
                     _levelSelection.Update();
                     break;
                 case MenuState.Options:
-                    //smoothPixels.Text = "Smooth Pixels: " + smoothPixels.IsActive;
-                    //lighting.Text = "Lighting: " + lighting.IsActive;
-                    _fullscreen.Text = "Borderless Mode: " + !_fullscreen.IsOn;
-
-                    //smoothPixels.Update();
-                    //lighting.Update();
-                    _fullscreen.Update();
-
-                    _backButton.Update();
                     break;
 
                 case MenuState.HostJoin:
@@ -350,10 +342,8 @@ namespace Adam
                     _levelSelection.Draw(spriteBatch);
                     break;
                 case MenuState.Options:
-                    //smoothPixels.Draw(spriteBatch);
-                    //lighting.Draw(spriteBatch);
-                    _fullscreen.Draw(spriteBatch);
-                    _backButton.Draw(spriteBatch);
+                    if (!OptionsMenu.IsActive)
+                        CurrentMenuState = MenuState.Main;
                     break;
                 case MenuState.HostJoin:
                     _hostGame.Draw(spriteBatch);

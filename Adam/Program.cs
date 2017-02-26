@@ -42,9 +42,9 @@ namespace Adam
             }
 #else
             using (AdamGame game = new AdamGame())
-            {
-                game.Run();
-            }
+                {
+                    game.Run();
+                }
 #endif
 
         }

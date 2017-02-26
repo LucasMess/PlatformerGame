@@ -95,52 +95,27 @@ namespace Adam
 
         public AdamGame()
         {
-            // Get the current monitor resolution and set it as the game's resolution
-            var monitorRes = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            // Important services that need to be instanstiated before other things.
+            _graphics = new GraphicsDeviceManager(this);
+            Content = new ContentManager(Services, "Content");
+            GameData = new GameDataManager();
+
 
             DataFolder.Initialize();
-    
+            SettingsFile settings = DataFolder.GetSettingsFile();
 
             UserName = SteamFriends.GetPersonaName();
 #if DEBUG
             SteamUserStats.ResetAllStats(true);
 #endif
 
-#pragma warning disable 0162
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (IsTestingMultiplayer)
-            {
-                monitorRes = new Vector2(1366, 768);
-            }
-            //UserResWidth = (int)monitorRes.X;
-            //UserResHeight = (int)monitorRes.Y;
-            UserResWidth = DefaultResWidth;
-            UserResHeight = DefaultResHeight;
-
-#pragma warning restore 0162
-
-            WidthRatio = (DefaultResWidth / (double)UserResWidth);
-            HeightRatio = (DefaultResHeight / (double)UserResHeight);
-
-            UiWidthRatio = (DefaultUiWidth / (double)UserResWidth);
-            UiHeightRatio = (DefaultUiHeight / (double)UserResHeight);
-
-            // Important services that need to be instanstiated before other things.
-            _graphics = new GraphicsDeviceManager(this);
-            Content = new ContentManager(Services, "Content");
-            GameData = new GameDataManager();
-
-            // Sets the current screen resolution to the user resolution.
-            _graphics.PreferredBackBufferWidth = UserResWidth;
-            _graphics.PreferredBackBufferHeight = UserResHeight;
+            MediaPlayer.Volume = settings.MusicVolume;
+            MaxVolume = settings.SoundVolume;
 
             // Change game settings here.
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
-            _graphics.IsFullScreen = false;
-            if (IsTestingMultiplayer) _graphics.IsFullScreen = false;
 
             // Set window to borderless.
             //            var hWnd = Window.Handle;
@@ -160,15 +135,20 @@ namespace Adam
 
             _graphics.ApplyChanges();
 
-            //MediaPlayer Settings
-            MediaPlayer.Volume = MaxVolume;
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
 
         protected override void Initialize()
         {
+            SettingsFile settings = DataFolder.GetSettingsFile();
+
+            GraphicsRenderer.Initialize(GraphicsDevice, _graphics);
+            GraphicsRenderer.ChangeResolution(settings.ResolutionWidth, settings.ResolutionHeight);
+            GraphicsRenderer.SetFullscreen(settings.IsFullscreen);
+
             Camera = new Camera(GraphicsDevice.Viewport);
             MainMenu.Initialize(this);
+            OptionsMenu.Initialize();
             Dialog = new Dialog();
             MessageBox = new MessageBox();
             TextInputBox = new TextInputBox();
@@ -176,8 +156,6 @@ namespace Adam
             PauseMenu.Initialize();
 
             DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
-
-            GraphicsRenderer.Initialize(GraphicsDevice);
 
             base.Initialize();
         }
@@ -200,8 +178,14 @@ namespace Adam
             CurrentGameMode = GameMode.None;
 
             string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
-            //DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/MainMenu.lvl");
+            try
+            {
+                DataFolder.LoadLevelForBackground(basePath + "/Content/Levels/MainMenu.lvl");
+            }
+            catch
+            {
 
+            }
             GameWorld.Initialize();
         }
 
@@ -282,6 +266,11 @@ namespace Adam
             {
                 return;
             }
+
+
+            OptionsMenu.Update();
+            if (OptionsMenu.IsActive)
+                return;
 
             PauseMenu.Update();
             if (PauseMenu.IsActive)

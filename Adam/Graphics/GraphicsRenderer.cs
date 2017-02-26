@@ -1,4 +1,5 @@
-﻿using Adam.Levels;
+﻿using Adam.GameData;
+using Adam.Levels;
 using Adam.Misc.Helpers;
 using Adam.UI;
 using Microsoft.Xna.Framework;
@@ -13,7 +14,6 @@ namespace Adam.Graphics
     {
         public static bool ShadowsEnabled { get; set; } = true;
         public static bool ComplexLightingEnabled { get; set; } = true;
-        public static bool IsFullScreen { get; set; } = true;
 
         private static bool IsDarkOutline => GameWorld.WorldData.IsDarkOutline;
 
@@ -29,6 +29,7 @@ namespace Adam.Graphics
 
         private static SpriteBatch _spriteBatch;
         private static GraphicsDevice _graphicsDevice;
+        private static GraphicsDeviceManager _graphicsManager;
 
         private static RenderTarget2D _lightingRenderTarget;
         private static RenderTarget2D _userInterfaceRenderTarget;
@@ -41,10 +42,11 @@ namespace Adam.Graphics
         /// Initializes all of the components used for rendering, such as rendertargets and spritebatches.
         /// </summary>
         /// <param name="graphicsDevice"></param>
-        public static void Initialize(GraphicsDevice graphicsDevice)
+        public static void Initialize(GraphicsDevice graphicsDevice, GraphicsDeviceManager graphicsManager)
         {
             _spriteBatch = new SpriteBatch(graphicsDevice);
             _graphicsDevice = graphicsDevice;
+            _graphicsManager = graphicsManager;
 
             _mainRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
@@ -122,11 +124,13 @@ namespace Adam.Graphics
             }
 
             Overlay.Draw(_spriteBatch);
-            AdamGame.MessageBox.Draw(_spriteBatch);
-            AdamGame.TextInputBox.Draw(_spriteBatch);
             PauseMenu.Draw(_spriteBatch);
+            OptionsMenu.Draw(_spriteBatch);
             AdamGame.Dialog.Draw(_spriteBatch);
             GameDebug.Draw(_spriteBatch);
+
+            AdamGame.MessageBox.Draw(_spriteBatch);
+            AdamGame.TextInputBox.Draw(_spriteBatch);
 
             _spriteBatch.End();
         }
@@ -181,12 +185,10 @@ namespace Adam.Graphics
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
-            if (AdamGame.CurrentGameState == GameState.GameWorld)
-            {
-                _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend);
-                _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
-                _spriteBatch.End();
-            }
+            _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend);
+            _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+            _spriteBatch.End();
+
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             _spriteBatch.Draw(_userInterfaceRenderTarget, new Rectangle(0, 0, width, height), Color.White);
@@ -206,6 +208,49 @@ namespace Adam.Graphics
         private static Color GetMainRenderTargetColor()
         {
             return IsDarkOutline ? Color.Black : Color.White;
+        }
+
+        /// <summary>
+        /// Changes the window resolution and applies settings.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public static void ChangeResolution(int width, int height)
+        {
+            _graphicsManager.PreferredBackBufferWidth = width;
+            _graphicsManager.PreferredBackBufferHeight = height;
+            AdamGame.UserResWidth = width;
+            AdamGame.UserResHeight = height;
+
+            AdamGame.WidthRatio = (AdamGame.DefaultResWidth / (double)AdamGame.UserResWidth);
+            AdamGame.HeightRatio = (AdamGame.DefaultResHeight / (double)AdamGame.UserResHeight);
+
+            AdamGame.UiWidthRatio = (AdamGame.DefaultUiWidth / (double)AdamGame.UserResWidth);
+            AdamGame.UiHeightRatio = (AdamGame.DefaultUiHeight / (double)AdamGame.UserResHeight);
+
+
+            _graphicsManager.ApplyChanges();
+        }
+
+        public static void ChangeToNativeResolution()
+        {
+            ChangeResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+        }
+
+        public static void SetFullscreen(bool value)
+        {
+            _graphicsManager.IsFullScreen = value;
+
+            if (_graphicsManager.IsFullScreen)
+            {
+                ChangeToNativeResolution();
+            }
+            else
+            {
+                SettingsFile settings = DataFolder.GetSettingsFile();
+                ChangeResolution(settings.ResolutionWidth, settings.ResolutionHeight);
+            }
+
         }
 
     }
