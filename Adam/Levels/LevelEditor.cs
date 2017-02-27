@@ -69,15 +69,15 @@ namespace Adam.Levels
             _select = new SoundFx("Sounds/Level Editor/select");
 
             Player player = GameWorld.GetPlayer();
-            if (player.RespawnPos == Vector2.Zero)
-            {
-                player.SetPosition(new Vector2(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
-                GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2));
-            }
-            else
-            {
+            //if (player.RespawnPos == Vector2.Zero)
+            //{
+            //    player.SetPosition(new Vector2(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
+            //    GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2));
+            //}
+            //else
+            //{
                 player.SetPosition(player.RespawnPos);
-            }
+            //}
 
 
         }

@@ -749,10 +749,7 @@ namespace Adam
                     if (AdamGame.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(17, 12);
-                        if (GameWorld.Player.GetCollRectangle().X == 0 && GameWorld.Player.GetCollRectangle().Y == 0)
-                        {
-                            GameWorld.Player.SetPosition(new Vector2(DrawRectangle.X, DrawRectangle.Y));
-                        }
+                        GameWorld.GetPlayer().RespawnPos = new Vector2(DrawRectangle.X, DrawRectangle.Y);
                     }
                     else if (GameWorld.IsTestingLevel)
                     {
