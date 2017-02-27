@@ -43,7 +43,7 @@ namespace Adam
         private double _restartWait;
         private Vector2 _sizeOfTile = new Vector2(1, 1);
         private Rectangle _startingPosition;
-        private Rectangle _startingRectangle;
+        private Rectangle _defaultSourceRectangle;
         private const int DefaultAnimationSpeed = 125;
         private int animationSpeed = DefaultAnimationSpeed;
         private bool _wasInitialized;
@@ -98,7 +98,7 @@ namespace Adam
 
         public bool IsBrushTile { get; set; }
         public int TileIndex { get; set; }
-
+        bool hasNewConnectPattern;
         /// <summary>
         ///     After the IDs have been defined, this will give the tile the correct location of its texture in the spritemap.
         /// </summary>
@@ -118,38 +118,23 @@ namespace Adam
             }
 
             Vector2 startingPoint;
+            bool convertStartingPoint = true;
 
             #region DefiningTextures
 
             switch (Id)
             {
                 case TileType.Grass: //Grass
-                    _hasConnectPattern = true;
+                    convertStartingPoint = false;
+                    SourceRectangle = new Rectangle(2, 2, 16, 16);
+                    hasNewConnectPattern = true;
                     IsSolid = true;
-                    startingPoint = new Vector2(0, 0);
-                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
-                    // Random plain tile.
-                    switch (SubId)
-                    {
-                        case 101:
-                            _positionInSpriteSheet = new Vector2(12, 17);
-                            break;
-                        case 102:
-                            _positionInSpriteSheet = new Vector2(13, 17);
-                            break;
-                        case 103:
-                            _positionInSpriteSheet = new Vector2(11, 17);
-                            break;
-                        case 104:
-                            _positionInSpriteSheet = new Vector2(10, 17);
-                            break;
-                    }
                     break;
                 case TileType.Stone: //Stone
-                    _hasConnectPattern = true;
+                    convertStartingPoint = false;
+                    SourceRectangle = new Rectangle(22, 2, 16, 16);
+                    hasNewConnectPattern = true;
                     IsSolid = true;
-                    startingPoint = new Vector2(4, 0);
-                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.MarbleFloor: //Marble Floor
                     IsSolid = true;
@@ -847,9 +832,12 @@ namespace Adam
 
             #endregion
 
-            DefineSourceRectangle();
+            if (convertStartingPoint)
+                DefineSourceRectangle();
             DefineDrawRectangle();
-            _startingRectangle = SourceRectangle;
+            _defaultSourceRectangle = SourceRectangle;
+
+            SetRectangleOfNewConnectPattern();
 
             if (_hasRandomStartingPoint)
             {
@@ -956,7 +944,7 @@ namespace Adam
                             CurrentFrame = 0;
                             _restartTimer = 0;
                         }
-                        SourceRectangle.X = _startingRectangle.X + _startingRectangle.Width * CurrentFrame;
+                        SourceRectangle.X = _defaultSourceRectangle.X + _defaultSourceRectangle.Width * CurrentFrame;
                         break;
                     default:
                         DefaultAnimation();
@@ -1000,7 +988,7 @@ namespace Adam
                     CurrentFrame = 0;
                 }
             }
-            SourceRectangle.X = _startingRectangle.X + _startingRectangle.Width * CurrentFrame;
+            SourceRectangle.X = _defaultSourceRectangle.X + _defaultSourceRectangle.Width * CurrentFrame;
 
         }
 
@@ -1210,224 +1198,225 @@ namespace Adam
             //Default Connected Textures Pattern
             //"Please don't change this was a headache to make." -Lucas 2015
 
-            if (!_hasConnectPattern)
-                return;
-
-            var m = TileIndex;
-            var t = m - mapWidth;
-            var b = m + mapWidth;
-            var tl = t - 1;
-            var tr = t + 1;
-            var ml = m - 1;
-            var mr = m + 1;
-            var bl = b - 1;
-            var br = b + 1;
-
-            if (br >= ids.Length || tl < 0)
-                return;
-
-            var topLeft = ids[tl];
-            var top = ids[t];
-            var topRight = ids[tr];
-            var midLeft = ids[ml];
-            var mid = ids[m];
-            var midRight = ids[mr];
-            var botLeft = ids[bl];
-            var bot = ids[b];
-            var botRight = ids[br];
-
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
-                SubId = 0;
-
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight != mid)
-                SubId = 0;
-
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft != mid &&
-                bot == mid &&
-                botRight == mid)
-                SubId = 0;
-
-            if (topLeft != mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
-                SubId = 0;
-
-            if (top != mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot == mid)
-                SubId = 4;
-
-            if (top != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot == mid)
-                SubId = 5;
-
-            if (top != mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot == mid)
-                SubId = 6;
-
-            if (topLeft == mid &&
-                top == mid &&
-                topRight != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
-                SubId = 0;
-
-            if (top == mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot == mid)
-                SubId = 8;
-
-            if (top != mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot != mid)
-                SubId = 9;
-
-            if (top == mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot == mid)
-                SubId = 10;
-
-            if (top != mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot == mid)
-                SubId = 11;
-
-            if (top == mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot != mid)
-                SubId = 12;
-
-            if (top == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot != mid)
-                SubId = 13;
-
-            if (top == mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot != mid)
-                SubId = 14;
-
-            if (top == mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot == mid)
-                SubId = 15;
-
-            if (top != mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot != mid)
-                SubId = 16;
-
-            if (top != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot != mid)
-                SubId = 17;
-
-            if (top != mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot != mid)
-                SubId = 18;
-
-            if (top == mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot != mid)
-                SubId = 19;
-
-            //Special
-            if (botRight != mid &&
-                midRight == mid &&
-                bot == mid)
+            if (hasNewConnectPattern || _hasConnectPattern)
             {
-                var corner = new Tile();
-                corner.Id = (TileType)mid;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 1;
-                _cornerPieces.Add(corner);
-            }
 
-            if (botLeft != mid &&
-                midLeft == mid &&
-                bot == mid)
-            {
-                var corner = new Tile();
-                corner.Id = (TileType)mid;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 2;
-                _cornerPieces.Add(corner);
-            }
+                var m = TileIndex;
+                var t = m - mapWidth;
+                var b = m + mapWidth;
+                var tl = t - 1;
+                var tr = t + 1;
+                var ml = m - 1;
+                var mr = m + 1;
+                var bl = b - 1;
+                var br = b + 1;
 
-            if (topLeft != mid &&
-                midLeft == mid &&
-                top == mid)
-            {
-                var corner = new Tile();
-                corner.Id = (TileType)mid;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 3;
-                _cornerPieces.Add(corner);
-            }
+                if (br >= ids.Length || tl < 0)
+                    return;
 
-            if (topRight != mid &&
-                midRight == mid &&
-                top == mid)
-            {
-                var corner = new Tile();
-                corner.Id = (TileType)mid;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 7;
-                _cornerPieces.Add(corner);
-            }
+                var topLeft = ids[tl];
+                var top = ids[t];
+                var topRight = ids[tr];
+                var midLeft = ids[ml];
+                var mid = ids[m];
+                var midRight = ids[mr];
+                var botLeft = ids[bl];
+                var bot = ids[b];
+                var botRight = ids[br];
 
-            foreach (var corners in _cornerPieces)
-            {
-                corners.DefineTexture();
+                if (topLeft == mid &&
+                    top == mid &&
+                    topRight == mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    botLeft == mid &&
+                    bot == mid &&
+                    botRight == mid)
+                    SubId = 0;
+
+                if (topLeft == mid &&
+                    top == mid &&
+                    topRight == mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    botLeft == mid &&
+                    bot == mid &&
+                    botRight != mid)
+                    SubId = 0;
+
+                if (topLeft == mid &&
+                    top == mid &&
+                    topRight == mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    botLeft != mid &&
+                    bot == mid &&
+                    botRight == mid)
+                    SubId = 0;
+
+                if (topLeft != mid &&
+                    top == mid &&
+                    topRight == mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    botLeft == mid &&
+                    bot == mid &&
+                    botRight == mid)
+                    SubId = 0;
+
+                if (top != mid &&
+                    midLeft != mid &&
+                    midRight == mid &&
+                    bot == mid)
+                    SubId = 4;
+
+                if (top != mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    bot == mid)
+                    SubId = 5;
+
+                if (top != mid &&
+                    midLeft == mid &&
+                    midRight != mid &&
+                    bot == mid)
+                    SubId = 6;
+
+                if (topLeft == mid &&
+                    top == mid &&
+                    topRight != mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    botLeft == mid &&
+                    bot == mid &&
+                    botRight == mid)
+                    SubId = 0;
+
+                if (top == mid &&
+                    midLeft != mid &&
+                    midRight == mid &&
+                    bot == mid)
+                    SubId = 8;
+
+                if (top != mid &&
+                    midLeft != mid &&
+                    midRight != mid &&
+                    bot != mid)
+                    SubId = 9;
+
+                if (top == mid &&
+                    midLeft == mid &&
+                    midRight != mid &&
+                    bot == mid)
+                    SubId = 10;
+
+                if (top != mid &&
+                    midLeft != mid &&
+                    midRight != mid &&
+                    bot == mid)
+                    SubId = 11;
+
+                if (top == mid &&
+                    midLeft != mid &&
+                    midRight == mid &&
+                    bot != mid)
+                    SubId = 12;
+
+                if (top == mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    bot != mid)
+                    SubId = 13;
+
+                if (top == mid &&
+                    midLeft == mid &&
+                    midRight != mid &&
+                    bot != mid)
+                    SubId = 14;
+
+                if (top == mid &&
+                    midLeft != mid &&
+                    midRight != mid &&
+                    bot == mid)
+                    SubId = 15;
+
+                if (top != mid &&
+                    midLeft != mid &&
+                    midRight == mid &&
+                    bot != mid)
+                    SubId = 16;
+
+                if (top != mid &&
+                    midLeft == mid &&
+                    midRight == mid &&
+                    bot != mid)
+                    SubId = 17;
+
+                if (top != mid &&
+                    midLeft == mid &&
+                    midRight != mid &&
+                    bot != mid)
+                    SubId = 18;
+
+                if (top == mid &&
+                    midLeft != mid &&
+                    midRight != mid &&
+                    bot != mid)
+                    SubId = 19;
+
+                //Special
+                if (botRight != mid &&
+                    midRight == mid &&
+                    bot == mid)
+                {
+                    var corner = new Tile();
+                    corner.Id = (TileType)mid;
+                    corner.DrawRectangle = DrawRectangle;
+                    corner.Texture = Texture;
+                    corner.SubId = 1;
+                    _cornerPieces.Add(corner);
+                }
+
+                if (botLeft != mid &&
+                    midLeft == mid &&
+                    bot == mid)
+                {
+                    var corner = new Tile();
+                    corner.Id = (TileType)mid;
+                    corner.DrawRectangle = DrawRectangle;
+                    corner.Texture = Texture;
+                    corner.SubId = 2;
+                    _cornerPieces.Add(corner);
+                }
+
+                if (topLeft != mid &&
+                    midLeft == mid &&
+                    top == mid)
+                {
+                    var corner = new Tile();
+                    corner.Id = (TileType)mid;
+                    corner.DrawRectangle = DrawRectangle;
+                    corner.Texture = Texture;
+                    corner.SubId = 3;
+                    _cornerPieces.Add(corner);
+                }
+
+                if (topRight != mid &&
+                    midRight == mid &&
+                    top == mid)
+                {
+                    var corner = new Tile();
+                    corner.Id = (TileType)mid;
+                    corner.DrawRectangle = DrawRectangle;
+                    corner.Texture = Texture;
+                    corner.SubId = 7;
+                    _cornerPieces.Add(corner);
+                }
+
+                foreach (var corners in _cornerPieces)
+                {
+                    corners.DefineTexture();
+                }
             }
         }
 
@@ -1546,6 +1535,173 @@ namespace Adam
                 }
 
                 DefineTexture();
+            }
+        }
+
+        private void SetRectangleOfNewConnectPattern()
+        {
+            if (!hasNewConnectPattern)
+                return;
+            DrawRectangle = _defaultDrawRectangle;
+            SourceRectangle = _defaultSourceRectangle;
+
+            switch (SubId)
+            {
+                case 0: //Dirt
+
+                    break;
+                case 1: //Inner bot right corner
+                    break;
+                case 2: //Inner bot left corner
+                    break;
+                case 3: //Inner top left corner
+                    break;
+                case 4: //Top left corner
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 5: //Top
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+                    break;
+                case 6: //Top right corner
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 7: //Inner top right corner
+
+                    break;
+                case 8: //Left
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 9: //Middle
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+                    break;
+                case 10: //Right
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 11: //Top vertical
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+                    break;
+                case 12: //Bot left corner
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+                    break;
+                case 13: //Bot
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+                    break;
+                case 14: //Bot right corner
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 15: //Middle vertical
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 16: //Left horizontal
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+                    break;
+                case 17: //Middle horizontal
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+                    break;
+                case 18: //Right horizontal
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+
+                    SourceRectangle.Y -= 2;
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Y -= 4;
+                    DrawRectangle.Height += 4;
+
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+                    break;
+                case 19: //Bot vertical
+                    SourceRectangle.Height += 2;
+                    DrawRectangle.Height += 2;
+
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.Width += 4;
+
+                    SourceRectangle.X -= 2;
+                    SourceRectangle.Width += 2;
+                    DrawRectangle.X -= 4;
+                    DrawRectangle.Width += 4;
+                    break;
             }
         }
 
