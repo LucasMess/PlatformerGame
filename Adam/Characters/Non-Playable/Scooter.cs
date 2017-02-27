@@ -13,6 +13,7 @@ namespace Adam.Characters
             _complexAnimation = new ComplexAnimation();
             Texture = ContentHelper.LoadTexture("Characters/NPCs/scooter");
             CollRectangle = new Rectangle(x, y, 48, 80);
+            SetPosition(new Vector2(x, y));
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 26, 40), 0, 26, 40, 500, 1, true));
             AddAnimationToQueue("still");
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;

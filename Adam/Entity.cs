@@ -94,6 +94,8 @@ namespace Adam
             CollidedWithTileToRight += OnCollisionWithTileToRight;
             CollidedWithTerrain += OnCollisionWithTerrain;
 
+            RespawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
+
         }
 
         /// <summary>
@@ -373,7 +375,7 @@ namespace Adam
             }
 
             // Drawing for simple entities that have a texture contained in a spritesheet.
-            else if (SourceRectangle != null)
+            else if (SourceRectangle != null && Texture != null)
             {
                 if (!IsFacingRight)
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * Opacity, 0, new Vector2(0, 0), SpriteEffects.None, 0);
@@ -381,7 +383,7 @@ namespace Adam
             }
 
             // Most basic drawing when there is only one frame and it is not in a spritesheet.
-            else
+            else if (Texture != null)
             {
                 spriteBatch.Draw(Texture, DrawRectangle, Color * Opacity);
             }

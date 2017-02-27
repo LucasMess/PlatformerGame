@@ -773,41 +773,22 @@ namespace Adam
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
                     _positionInSpriteSheet = new Vector2(18, 12);
-                    //else
-                    //{
-                    //    if (!_hasAddedEntity)
-                    //    {
-                    //        GameWorld.Entities.Add(new Snake(DrawRectangle.X, DrawRectangle.Y));
-                    //        _hasAddedEntity = true;
-                    //        _isInvisible = true;
-                    //    }
-                    //}
                     break;
                 case TileType.Frog: //Frog
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new Frog(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
-                    if (AdamGame.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(21, 12);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new Frog(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisibleInPlayMode = true;
-                        }
-                    }
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(18, 12);
                     break;
                 case TileType.NPC: // NPC
-                    LetsLightThrough = true;
-                    _positionInSpriteSheet = new Vector2(18, 13);
-                    _isInvisibleInPlayMode = true;
-                    if (!_isSampleTile && !_wasInitialized)
-                    {
+                    if (!_isSampleTile)
                         new NonPlayableCharacter(this);
-                        _wasInitialized = true;
-                    }
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(18, 12);
                     break;
                 case TileType.Lost: //Lost
                     LetsLightThrough = true;

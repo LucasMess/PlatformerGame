@@ -96,10 +96,9 @@ namespace Adam.Characters
                     break;
                 default:
                     AdamGame.MessageBox.Show("This NPC does not exist.");
-                    AdamGame.TextInputBox.ShowSameMessage();
                     return;
             }
-            GameWorld.Entities.Add(_npc);
+            GameWorld.AddEntityAt(_sourceTileIndex, _npc);
             GameWorld.Player.InteractAction += Player_InteractAction;
             Console.WriteLine("NPC created successfully.");
         }

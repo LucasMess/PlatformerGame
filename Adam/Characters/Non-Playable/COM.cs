@@ -12,7 +12,8 @@ namespace Adam.Characters.Non_Playable
             IsCollidable = true;
             _complexAnimation = new ComplexAnimation();
             Texture = ContentHelper.LoadTexture("Characters/NPCs/charlie");
-            CollRectangle = new Rectangle(x, y, 24, 48);
+            CollRectangle = new Rectangle(0, 0, 24, 48);
+            SetPosition(new Vector2(x, y));
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 1, true));
             AddAnimationToQueue("still");
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
