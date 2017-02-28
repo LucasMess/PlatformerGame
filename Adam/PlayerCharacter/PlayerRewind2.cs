@@ -1,6 +1,10 @@
-﻿using Adam.Misc;
+﻿using Adam.Levels;
+using Adam.Misc;
+using Adam.Misc.Helpers;
+using Adam.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Adam.PlayerCharacter
@@ -27,6 +31,47 @@ namespace Adam.PlayerCharacter
             public const double DrawInterval = 1;
         }
 
+        private class RewindRing
+        {
+            static Texture2D _texture = ContentHelper.LoadTexture("Overlay/rewind_ring");
+            static Vector2 _center = new Vector2(_texture.Width / 2, _texture.Height / 2);
+            Timer _particleTimer = new Timer();
+
+            int lastDeg = 0;
+            const int changeInDeg = 20;
+
+            public void Draw(Player player, SpriteBatch spriteBatch, double timeSinceLastRewind)
+            {
+                double opacity = (PlayerScript.RewindCooldown - timeSinceLastRewind) / PlayerScript.RewindCooldown;
+
+                Overlay.RewindEffectSetOpacity((float)opacity);
+                //spriteBatch.Draw(_texture, new Vector2(player.GetDrawRectangle().Center.X, player.GetDrawRectangle().Center.Y),
+                   // new Rectangle(0, 0, _texture.Width, _texture.Height), Color.White * (float)opacity, 0, _center, 1, SpriteEffects.None, 0);
+
+                _particleTimer.Increment();
+                if (_particleTimer.TimeElapsedInMilliSeconds > 10)
+                {
+                    int radius = 100;
+                    Vector2 position = new Vector2(player.GetDrawRectangle().Center.X, player.GetDrawRectangle().Center.Y);
+                    lastDeg %= 360;
+                    for (int i = lastDeg; i < lastDeg + changeInDeg; i += 1)
+                    {
+                        double rads = Math.PI * i / 180;
+                        float x = (float)Math.Cos(rads);
+                        float y = (float)Math.Sin(rads);
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White * (float)opacity);
+
+                        x *= -1;
+                        y *= -1;
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White * (float)opacity);
+                    }
+                    lastDeg += changeInDeg;
+                }
+            }
+        }
+
         private Tracker tracker = new Tracker();
         private List<Snapshot> snapshots = new List<Snapshot>();
         private List<Snapshot> drawableSnapshots = new List<Snapshot>();
@@ -35,7 +80,10 @@ namespace Adam.PlayerCharacter
         private const float MaxDistance = AdamGame.Tilesize * 5;
         private Timer snapshotTimer = new Timer();
 
+        SoundFx _startSound = new SoundFx("Sounds/Player/rewind_start");
+        SoundFx _stopSound = new SoundFx("Sounds/Player/rewind_stop");
         public bool IsRewinding { get; private set; } = false;
+        RewindRing _rewindRing = new RewindRing();
 
         public void Reset()
         {
@@ -85,6 +133,9 @@ namespace Adam.PlayerCharacter
             IsRewinding = true;
             tracker = new Tracker();
             AdamGame.TimeFreeze.AddFrozenTime(1000);
+            Overlay.ActivateRewindEffect();
+            _startSound.Play();
+            _stopSound.Play();
 
             if (snapshots.Count == 0)
                 return new Snapshot();
@@ -106,6 +157,9 @@ namespace Adam.PlayerCharacter
 
         public void Draw(Player player, SpriteBatch spriteBatch)
         {
+            if (tracker.IsDrawingBackwards || !IsRewinding)
+                _rewindRing.Draw(player, spriteBatch, player.rewindTimer.TimeElapsedInMilliSeconds);
+
 
             if (IsRewinding)
             {
@@ -138,7 +192,15 @@ namespace Adam.PlayerCharacter
                 }
                 else
                 {
-                    player.IsVisible = false;
+
+                    player.SetPosition(snapshots[0].Position);
+                    player.SetVelX(snapshots[0].Velocity.X);
+                    player.SetVelY(snapshots[0].Velocity.Y);
+                    player.ComplexAnimation.RemoveAllFromQueue();
+                    player.ComplexAnimation.UpdatePositionOnly(player);
+
+
+                    //player.IsVisible = false;
                     for (int i = 0; i < tracker.CurrentDraw; i++)
                     {
                         if (i % 5 == 0)
@@ -159,11 +221,11 @@ namespace Adam.PlayerCharacter
                         tracker.DrawTimer.Reset();
                         tracker.CurrentDraw -= 5;
                         if (tracker.CurrentDraw < 0) tracker.CurrentDraw = 0;
-                        player.SetPosition(snapshots[tracker.CurrentDraw].Position);
+                        //player.SetPosition(snapshots[tracker.CurrentDraw].Position);
                         //player.SetVelX(snapshots[tracker.CurrentDraw].Velocity.X);
                         //player.SetVelY(snapshots[tracker.CurrentDraw].Velocity.Y);
-                        snapshots[tracker.CurrentDraw].Opacity = 1f;
-                        player.ComplexAnimation.UpdatePositionOnly(player);
+                        //snapshots[tracker.CurrentDraw].Opacity = 1f;
+                        //player.ComplexAnimation.UpdatePositionOnly(player);
                     }
                     if (tracker.CurrentDraw <= 0)
                     {

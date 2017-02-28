@@ -140,6 +140,57 @@ namespace Adam.UI
             }
         }
 
+        /// <summary>
+        /// Does all the effects for when the player rewinds.
+        /// </summary>
+        private static class RewindEffect
+        {
+            static Texture2D _cornersTexture = ContentHelper.LoadTexture("Overlay/rewind_corners");
+            static Texture2D _rippleTexture = ContentHelper.LoadTexture("Overlay/rewind_ripple");
+
+            static float rotation = 0;
+            static Vector2 center = new Vector2(_rippleTexture.Width / 2, _rippleTexture.Height / 2);
+
+            static bool _active;
+            static float _opacity;
+
+            public static void Update()
+            {
+                rotation -= .5f;
+            }
+
+            public static void Activate()
+            {
+                _active = true;
+                _opacity = 1;
+            }
+
+            public static void Deactivate()
+            {
+                _active = false;
+                _opacity = 0;
+            }
+
+            public static void SetOpacity(float opacity)
+            {
+                _opacity = opacity;
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                if (_active)
+                    spriteBatch.Draw(_cornersTexture, new Vector2(0, 0), Color.White * _opacity);
+            }
+
+            public static void DrawRipples(SpriteBatch spriteBatch)
+            {
+                if (_active)
+                    spriteBatch.Draw(_rippleTexture, new Vector2(AdamGame.DefaultUiWidth / 2, (int)(AdamGame.DefaultUiHeight * 3 / 5f)), new Rectangle(0, 0, _rippleTexture.Width, _rippleTexture.Height), Color.White * _opacity, rotation, center, 1, SpriteEffects.None, 0);
+            }
+
+        }
+
+
         private static class Heart
         {
             static ComplexAnimation animation;
@@ -254,7 +305,7 @@ namespace Adam.UI
         public static void Update()
         {
             WhiteFlash.Update();
-
+            RewindEffect.Update();
             Heart.Update(GameWorld.GetPlayer());
             Coin.Update(GameWorld.GetPlayer());
         }
@@ -264,14 +315,35 @@ namespace Adam.UI
             WhiteFlash.Start();
         }
 
+        public static void ActivateRewindEffect()
+        {
+            RewindEffect.Activate();
+        }
+
+        public static void DeactivateRewindEffect()
+        {
+            RewindEffect.Deactivate();
+        }
+
+        public static void RewindEffectSetOpacity(float opacity)
+        {
+            RewindEffect.SetOpacity(opacity);
+        }
+
         public static void Draw(SpriteBatch spriteBatch)
         {
             WhiteFlash.Draw(spriteBatch);
+            RewindEffect.Draw(spriteBatch);
             if (AdamGame.CurrentGameMode == GameMode.Play)
             {
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);
             }
+        }
+
+        public static void DrawRipples(SpriteBatch spriteBatch)
+        {
+            RewindEffect.DrawRipples(spriteBatch);
         }
     }
 }

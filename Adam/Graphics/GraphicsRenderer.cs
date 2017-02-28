@@ -100,6 +100,10 @@ namespace Adam.Graphics
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
             GameWorld.DrawRipples(_spriteBatch);
             _spriteBatch.End();
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            Overlay.DrawRipples(_spriteBatch);
+            _spriteBatch.End();
         }
 
         /// <summary>
@@ -150,7 +154,7 @@ namespace Adam.Graphics
 
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
-            GameWorld.DrawBackground(_spriteBatch);
+            //GameWorld.DrawBackground(_spriteBatch);
             GameWorld.DrawWalls(_spriteBatch);
             GameWorld.Draw(_spriteBatch);
             //GameWorld.DrawRipples(_spriteBatch);
@@ -207,7 +211,14 @@ namespace Adam.Graphics
 
         private static Color GetMainRenderTargetColor()
         {
-            return IsDarkOutline ? Color.Black : Color.White;
+            if (IsDarkOutline) return Color.Black;
+
+            //if (GameWorld.GetPlayer().rewindTracker.IsRewinding)
+            //{
+            //    return new Color(12, 76, 79);
+            //}
+
+            return Color.White;
         }
 
         /// <summary>

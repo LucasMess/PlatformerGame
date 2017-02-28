@@ -154,6 +154,10 @@ namespace Adam.Levels
             var cameraRect = Player.GetCollRectangle();
             AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
 
+            if (AdamGame.TimeFreeze.IsTimeFrozen())
+                ParticleSystem.UpdateTimeConstant();
+
+
             Background.Update();
             WorldData.Update();
         }

@@ -46,7 +46,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const int DefaultUiWidth = 960;
         public const int DefaultUiHeight = 540;
-        public const string Version = "Version 0.10.0 Beta";
+        public const string Version = "Version 0.10.1 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
         public static bool IsLoadingContent;
@@ -278,17 +278,7 @@ namespace Adam
 
             Dialog.Update();
 
-            //if (GameData.Settings.HasChanged)
-            //{
-            //    GameData.SaveSettings();
-            //    if (GameData.Settings.NeedsRestart)
-            //    {
-            //        _graphics.IsFullScreen = GameData.Settings.IsFullscreen;
-            //        _graphics.ApplyChanges();
-            //        GameData.Settings.NeedsRestart = false;
-            //    }
-            //    GameData.Settings.HasChanged = false;
-            //}
+            Overlay.Update();
 
             Player player = GameWorld.GetPlayer();
             if (player.IsPauseButtonDown())
@@ -336,7 +326,7 @@ namespace Adam
             }
 
             base.Update(gameTime);
-            Overlay.Update();
+
         }
 
 

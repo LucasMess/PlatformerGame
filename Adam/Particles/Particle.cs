@@ -34,6 +34,7 @@ namespace Adam.Particles
             public bool IsAnimated { get; set; }
             public bool IsRippleEffect { get; set; } = false;
             public int TimeToLive { get; set; } = -1;
+            public bool IsTimeConstant { get; internal set; }
 
             public bool IsDead()
             {
@@ -77,6 +78,9 @@ namespace Adam.Particles
                         NoOpacityDefaultBehavior();
                         break;
                     case ParticleType.Rain:
+                        NoOpacityDefaultBehavior();
+                        break;
+                    case ParticleType.RewindFire:
                         NoOpacityDefaultBehavior();
                         break;
                     default:
@@ -193,6 +197,22 @@ namespace Adam.Particles
             foreach (Particle par in query)
             {
                 par.Draw(spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Used to update particles that do not stop with time freeze.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void UpdateTimeConstant()
+        {
+            var query = from particle in _particles
+                        where particle.IsTimeConstant
+                        select particle;
+
+            foreach (var item in query)
+            {
+                item.Update();
             }
         }
 
@@ -318,6 +338,17 @@ namespace Adam.Particles
                     par.Scale = AdamGame.Random.Next(1, 5);
                     par.Position = new Vector2(position.X - par.Scale / 2 * 8, position.Y - par.Scale / 2 * 8);
                     break;
+                case ParticleType.RewindFire:
+                    par.SourceRectangle = new Rectangle(256, 160, 8, 8);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = AdamGame.Random.Next(1, 3);
+                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par._frames = 4;
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsAnimated = true;
+                    par.IsTimeConstant = true;
+                    break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
                     break;
@@ -335,6 +366,7 @@ namespace Adam.Particles
         Snow,
         Rain,
         HeatEffect,
+        RewindFire,
     }
 
 }
