@@ -143,11 +143,6 @@ namespace Adam
                     {
                         _texture = _complexAnimation.GetCurrentTexture();
                     }
-                    else
-                    {
-                        _texture = AdamGame.DefaultTexture;
-                        Console.WriteLine("Texture for: {0} is null, using default texture instead.", GetType());
-                    }
                 }
 
                 return _texture;
@@ -703,7 +698,7 @@ namespace Adam
                 if (i >= GameWorld.TileArray.Length || i < 0) continue;
                 Tile t = GameWorld.TileArray[i];
                 if (t == null) throw new NullReferenceException("t");
-                spriteBatch.Draw(AdamGame.DefaultTexture, t.DrawRectangle, t.SourceRectangle, Color.Red);
+                //spriteBatch.Draw( , t.DrawRectangle, t.SourceRectangle, Color.Red);
             }
         }
 

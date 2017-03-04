@@ -16,7 +16,6 @@ namespace Adam.UI
         private Rectangle _rectangle;
         private Texture2D _texture;
         private bool _isAnti;
-        private Texture2D _temp;
         private Thread _thread;
         private Rectangle _uiSourceRect = new Rectangle(205, 95, 77, 114);
         private Rectangle _uiDrawRect;
@@ -27,7 +26,6 @@ namespace Adam.UI
         public Minimap()
         {
             int size = (74 * 2);
-            _temp = AdamGame.DefaultTexture;
             _texture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _antiTexture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,

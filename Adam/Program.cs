@@ -20,14 +20,14 @@ namespace Adam
             {
                 MessageBox.Show(e.Message);
             }
-#if RELEASE
+#if !DEBUG
 
             if (SteamAPI.RestartAppIfNecessary(new AppId_t(595250)))
             {
                 return;
             }
 #endif
-#if RELEASE
+#if !DEBUG
             try
             {
                 using (AdamGame game = new AdamGame())
@@ -42,9 +42,9 @@ namespace Adam
             }
 #else
             using (AdamGame game = new AdamGame())
-                {
-                    game.Run();
-                }
+            {
+                game.Run();
+            }
 #endif
 
         }

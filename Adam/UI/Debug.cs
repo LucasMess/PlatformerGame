@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
+using System;
 using System.Collections.Generic;
 
 namespace Adam
@@ -96,35 +97,43 @@ namespace Adam
         /// </summary>
         public static void RunCommand(string command)
         {
-            string[] commands = command.Split(' ');
-
-            commands[0] = commands[0].Substring(1);
-
-            bool value;
-
-            switch (commands[0])
+            try
             {
-                case "set":
-                    switch (commands[1])
-                    {
-                        case "background":
-                            int number;
-                            if (int.TryParse(commands[2], out number))
-                                GameWorld.WorldData.BackgroundId = (byte)number;
-                            break;
-                        case "snow":
-                            if (bool.TryParse(commands[2], out value))
-                                GameWorld.WorldData.IsSnowing = value;
-                            break;
-                        case "rain":
-                            if (bool.TryParse(commands[2], out value))
-                                GameWorld.WorldData.IsRaining = value;
-                            break;
-                    }
+                string[] commands = command.Split(' ');
 
-                    break;
+                commands[0] = commands[0].Substring(1);
+
+                bool value;
+                int number;
+
+                switch (commands[0])
+                {
+                    case "set":
+                        switch (commands[1])
+                        {
+                            case "background":
+                                if (int.TryParse(commands[2], out number))
+                                    GameWorld.WorldData.BackgroundId = (byte)number;
+                                break;
+                            case "snow":
+                                if (bool.TryParse(commands[2], out value))
+                                    GameWorld.WorldData.IsSnowing = value;
+                                break;
+                            case "rain":
+                                if (bool.TryParse(commands[2], out value))
+                                    GameWorld.WorldData.IsRaining = value;
+                                break;
+                        }
+
+                        break;
+                }
+
             }
-
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Command not found.");
+                return;
+            }
         }
 
         /// <summary>
@@ -149,7 +158,7 @@ namespace Adam
                 _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
                 _infos.Add("Steam Name: " + AdamGame.UserName);
 
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count ) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {

@@ -52,7 +52,6 @@ namespace Adam
         public static bool IsLoadingContent;
         public static int UserResWidth;
         public static int UserResHeight;
-        public static Texture2D DefaultTexture;
         public static Dialog Dialog;
         public static GameTime GameTime;
         public static double WidthRatio;
@@ -154,8 +153,6 @@ namespace Adam
             TextInputBox = new TextInputBox();
             Overlay.Initialize();
             PauseMenu.Initialize();
-
-            DefaultTexture = ContentHelper.LoadTexture("Tiles/black");
 
             base.Initialize();
         }

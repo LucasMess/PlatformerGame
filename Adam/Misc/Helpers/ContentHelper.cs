@@ -12,6 +12,8 @@ namespace Adam.Misc.Helpers
     /// </summary>
     public static class ContentHelper
     {
+        private static Texture2D _defaultTex = AdamGame.Content.Load<Texture2D>("Tiles/texture_not_found");
+
         /// <summary>
         /// Loads the Texture2D at the specified file path.
         /// </summary>
@@ -26,8 +28,11 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("Texture2D location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+#if DEBUG
                 throw;
-                return AdamGame.DefaultTexture;
+#else
+                return _defaultTex;
+#endif
             }
         }
 
@@ -45,7 +50,11 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("SoundEffect location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+#if DEBUG
                 throw;
+#else
+                return null;
+#endif
             }
         }
 
@@ -63,7 +72,11 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("Song location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+#if DEBUG
                 throw;
+#else
+                return null;
+#endif
             }
         }
 
@@ -81,7 +94,11 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("BitmapFont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+#if DEBUG
                 throw;
+#else
+                return null;
+#endif
             }
         }
 
@@ -99,7 +116,11 @@ namespace Adam.Misc.Helpers
             catch (ContentLoadException)
             {
                 Console.WriteLine("Effect location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+#if DEBUG
                 throw;
+#else
+                return null;
+#endif
             }
         }
 
