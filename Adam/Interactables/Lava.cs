@@ -14,7 +14,7 @@ namespace Adam.Interactables
 
         public override void OnEntityTouch(Tile tile, Entity entity)
         {
-            GameWorld.Player.TakeDamage(null, 100);
+            entity.TakeDamage(null, 20);
             base.OnEntityTouch(tile, entity);
         }
 

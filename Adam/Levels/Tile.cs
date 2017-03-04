@@ -371,18 +371,13 @@ namespace Adam
                     break;
                 case TileType.Checkpoint: //Checkpoint
                     LetsLightThrough = true;
-                    if (AdamGame.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(8, 29);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new CheckPoint(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                        }
-                    }
+                    _sizeOfTile.X = 1;
+                    _sizeOfTile.Y = 3;
+                    _frameCount = new Vector2(4, 0);
+                    animationPlaysOnce = true;
+                    _positionInSpriteSheet = new Vector2(8, 27);
+                    Interactable = new CheckPoint(this);
+                    _hasAddedEntity = true;
                     break;
                 case TileType.StoneBrick: //Stone Brick
                     IsSolid = true;

@@ -568,7 +568,7 @@ namespace Adam
                 if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
                 {
                     Tile tile = GameWorld.TileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid == true)
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tileRect))
@@ -586,17 +586,16 @@ namespace Adam
                                 }
                                 CollidedWithTileBelow(this, tile);
                                 CollidedWithTerrain(this, tile);
-                                tile.OnEntityTouch(this);
                             }
                             else if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
                             else if (Velocity.Y < 0)
                             {
                                 CollidedWithTileAbove(this, tile);
                                 CollidedWithTerrain(this, tile);
-                                tile.OnEntityTouch(this);
                             }
                         }
                     }
+
                 }
             }
             //Solve X Collisions
@@ -607,7 +606,7 @@ namespace Adam
                 {
                     Tile tile = GameWorld.TileArray[quadrant];
                     if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
-                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid == true)
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tile.DrawRectangle))
@@ -616,19 +615,25 @@ namespace Adam
                             {
                                 CollidedWithTileToRight(this, tile);
                                 CollidedWithTerrain(this, tile);
-                                tile.OnEntityTouch(this);
                             }
                             else if (Velocity.X < 0)
                             {
                                 CollidedWithTileToLeft(this, tile);
                                 CollidedWithTerrain(this, tile);
-                                tile.OnEntityTouch(this);
                             }
 
                         }
                     }
 
                 }
+            }
+
+            // Check for interactables updates.
+            foreach (int quadrant in q)
+            {
+                Tile tile = GameWorld.GetTile(quadrant);
+                if (tile != null)
+                    tile.OnEntityTouch(this);
             }
         }
 
