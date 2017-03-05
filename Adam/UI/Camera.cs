@@ -50,10 +50,26 @@ namespace Adam
             return LeftTopGameCoords;
         }
 
+        /// <summary>
+        /// Updates the camera by following the rectangle given in a smooth manner.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="active">Should the camera follow the rectangle.</param>
         public void UpdateSmoothly(Rectangle rectangle, int width, int height, bool active)
         {
-            Vector2 playerPos = new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
-            Vector3 currentLeftCorner = new Vector3(-playerPos.X + _defRes.X / _zoom / 2, -playerPos.Y + (3 * _defRes.Y / _zoom / 5), 0);
+            Vector3 currentLeftCorner;
+            // If the camera is not active, which is used to show the player is dead, the camera stops moving.
+            if (active)
+            {
+                Vector2 playerPos = new Vector2(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
+                currentLeftCorner = new Vector3(-playerPos.X + _defRes.X / _zoom / 2, -playerPos.Y + (3 * _defRes.Y / _zoom / 5), 0);
+            }
+            else
+            {
+                currentLeftCorner = LastCameraLeftCorner;
+            }
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;

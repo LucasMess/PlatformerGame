@@ -18,16 +18,16 @@ namespace Adam.Misc.Sound
         {
         }
 
-        public void AddSoundRef(string name, string location)
+        public void AddSoundRef(string name, string filePath)
         {
             if (_source != null)
             {
-                SoundFx sound = new SoundFx(location, _source);
+                SoundFx sound = new SoundFx(filePath, _source);
                 _sounds.Add(name, sound);
             }
             else
             {
-                SoundFx sound = new SoundFx(location);
+                SoundFx sound = new SoundFx(filePath);
                 _sounds.Add(name, sound);
             }
         }

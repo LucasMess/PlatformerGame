@@ -76,7 +76,7 @@ namespace Adam.Characters.Enemies
             Player player = GameWorld.Player;
 
             //Deals damage to player if he is touching.
-            if (IsIntersectingPlayer() && !IsAboutToDie)
+            if (IsIntersectingPlayer() && !IsPlayingDeathAnimation)
             {
                 player.TakeDamage(this, GetTouchDamage());
             }

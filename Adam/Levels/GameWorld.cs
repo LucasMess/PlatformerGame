@@ -152,7 +152,7 @@ namespace Adam.Levels
         public static void UpdateVisual()
         {
             var cameraRect = Player.GetCollRectangle();
-            AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, Player.IsDead);
+            AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsPlayingDeathAnimation);
 
             if (AdamGame.TimeFreeze.IsTimeFrozen())
                 ParticleSystem.UpdateTimeConstant();

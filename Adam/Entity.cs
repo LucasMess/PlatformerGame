@@ -235,7 +235,7 @@ namespace Adam
         /// <summary>
         /// Returns true if the enemy is in the process of dying.
         /// </summary>
-        public bool IsAboutToDie { get; private set; }
+        public bool IsPlayingDeathAnimation { get; private set; }
 
         /// <summary>
         /// The maximum amount of health the enemy can have. This is the value that is given to the enemy when it respawns.
@@ -283,7 +283,7 @@ namespace Adam
                 _positionInLastFrame = new Vector2(CollRectangle.X, CollRectangle.Y);
 
 
-                if (Health <= 0 && MaxHealth > 0 && !IsAboutToDie)
+                if (Health <= 0 && MaxHealth > 0 && !IsPlayingDeathAnimation)
                 {
                     Kill();
                 }
@@ -295,9 +295,16 @@ namespace Adam
                 }
 
                 //Check for collision, if applicable.
-                if (IsCollidable && !IsAboutToDie)
+                if (IsCollidable)
                 {
                     CheckTerrainCollision();
+                }
+                else
+                {
+                    // If the entity is not collidable, it should still update the position based on velocity,
+                    // which is normally done in the terrain collision method.
+                    MoveBy(0, Velocity.Y);
+                    MoveBy(Velocity.X, 0);
                 }
 
                 if (Weight != 0)
@@ -342,7 +349,7 @@ namespace Adam
         public virtual void Draw(SpriteBatch spriteBatch)
         {
 
-            //spriteBatch.Draw(Main.DefaultTexture, GetCollRectangle(), Color.Red * .5f);
+            if (IsDead) return;
 
             // Complex animations.
             if (_complexAnimation != null && _complexAnimation.AnimationDataCount != 0)
@@ -408,8 +415,7 @@ namespace Adam
         /// <param name="x"></param>
         public void SetVelX(float x)
         {
-            if (!IsAboutToDie)
-                Velocity.X = x;
+            Velocity.X = x;
         }
 
         /// <summary>
@@ -418,8 +424,7 @@ namespace Adam
         /// <param name="y"></param>
         public void SetVelY(float y)
         {
-            if (!IsAboutToDie)
-                Velocity.Y = y;
+            Velocity.Y = y;
         }
 
         /// <summary>
@@ -429,10 +434,7 @@ namespace Adam
         /// <param name="y"></param>
         public void ChangePosBy(int x, int y)
         {
-            if (!IsAboutToDie && !IsTakingDamage)
-            {
-                MoveBy(x, y);
-            }
+            MoveBy(x, y);
         }
 
         /// <summary>
@@ -444,7 +446,7 @@ namespace Adam
             _complexAnimation.AddToQueue("death");
             _deathAnimationTimer.ResetAndWaitFor(1000);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
-            IsAboutToDie = true;
+            IsPlayingDeathAnimation = true;
             SetVelY(-20f);
         }
 
@@ -854,13 +856,12 @@ namespace Adam
         public virtual void Revive()
         {
             _respawnTimer.SetTimeReached -= Revive;
-            CollRectangle = new Rectangle((int)RespawnPos.X, (int)RespawnPos.Y, CollRectangle.Width,
-                CollRectangle.Height);
+            SetPosition(RespawnPos);
             Console.WriteLine("Respawned at location: {0}, {1}", RespawnPos.X, RespawnPos.Y);
             Health = MaxHealth;
             Velocity = new Vector2(0, 0);
             IsDead = false;
-            IsAboutToDie = false;
+            IsPlayingDeathAnimation = false;
             _complexAnimation?.RemoveFromQueue("death");
             HasRevived?.Invoke();
         }
@@ -892,7 +893,7 @@ namespace Adam
         /// <param name="damage"></param>
         public void TakeDamage(Entity damageDealer, int damage)
         {
-            if (IsTakingDamage || IsAboutToDie)
+            if (IsTakingDamage || IsPlayingDeathAnimation)
                 return;
 
             // Main.TimeFreeze.AddFrozenTime(damage*3);

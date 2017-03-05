@@ -16,7 +16,24 @@ namespace Adam
         /// <summary>
         /// Determines whether this entity should perform collision checks with other collidable objects.
         /// </summary>
-        public bool IsCollidable { get; set; } = true;
+
+        private bool _isCollidable = true;
+        public bool IsCollidable
+        {
+            get
+            {
+                if (IsPlayingDeathAnimation)
+                {
+                    return false;
+                }
+                else return _isCollidable;
+            }
+
+            set
+            {
+                _isCollidable = value;
+            }
+        }
 
         /// <summary>
         /// Where the entity was originally placed at. Used to avoid respawning entities when defining textures.
