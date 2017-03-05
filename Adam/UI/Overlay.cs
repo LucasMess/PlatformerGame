@@ -239,6 +239,9 @@ namespace Adam.UI
                 animation.Update();
 
                 health = player.Health;
+
+                if (health < 0) health = 0;
+
                 maxHealth = player.MaxHealth;
 
             }
