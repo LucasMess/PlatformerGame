@@ -12,8 +12,8 @@ namespace Adam.Characters.Enemies
         public Snake(int x, int y)
         {
             Weight = 10;
-            Script = new SnakeScript();
-            Script.Initialize(this);
+            Behavior = new SnakeScript();
+            Behavior.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/snake");
             SetPosition(new Vector2(x, y));

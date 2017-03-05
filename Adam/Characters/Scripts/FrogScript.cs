@@ -40,7 +40,7 @@ namespace Adam.Characters.Scripts
 
         public override void Update(Entity entity)
         {
-            if (CollisionRay.IsPlayerInSight(entity as Enemy, GameWorld.GetPlayer()))
+            if (CollisionRay.IsEntityInSight(entity as Enemy, GameWorld.GetPlayer()))
             {
                 _jumpTimer.ChangeWaitTime(TimeBetweenJumps_ACTIVE);
                 _canSeePlayer = true;

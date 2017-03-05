@@ -10,13 +10,19 @@ namespace Adam.Projectiles
     static class CollisionRay
     {
 
-        public static bool IsPlayerInSight(Enemy enemy, Player player)
+        /// <summary>
+        /// Returns true if the other entity is in the field of view of the given entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public static bool IsEntityInSight(Entity entity, Entity other)
         {
-            Rectangle rect = new Rectangle(enemy.GetCollRectangle().Center.X, enemy.GetCollRectangle().Center.Y, 1, 1);
+            Rectangle rect = new Rectangle(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y, 1, 1);
             List<Rectangle> rects = new List<Rectangle>();
 
-            double xVector = (double)(player.GetCollRectangle().Center.X - rect.Center.X);
-            double yVector = (double)(player.GetCollRectangle().Center.Y - rect.Center.Y);
+            double xVector = (double)(other.GetCollRectangle().Center.X - rect.Center.X);
+            double yVector = (double)(other.GetCollRectangle().Center.Y - rect.Center.Y);
 
             Vector2 maxVelocity = new Vector2(30, 30);
             double magnitude = Math.Sqrt((Math.Pow(xVector, 2.0)) + (Math.Pow(yVector, 2.0)));
@@ -28,7 +34,7 @@ namespace Adam.Projectiles
 
                 int index = (int)(rect.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(rect.X / AdamGame.Tilesize);
 
-                if (rect.Intersects(player.GetCollRectangle()))
+                if (rect.Intersects(other.GetCollRectangle()))
                     return true;
                 if (index > GameWorld.TileArray.Length - 1 || index < 0)
                     return false;

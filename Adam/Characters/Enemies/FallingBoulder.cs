@@ -16,8 +16,8 @@ namespace Adam.Characters.Enemies
             SourceRectangle = new Rectangle(192, 416, 16 * 2, 16 * 2);
             CollRectangle = new Rectangle(0, 0, SourceRectangle.Width * 2, SourceRectangle.Height * 2);
 
-            Script = new FallingBoulderScript();
-            Script.Initialize(this);
+            Behavior = new FallingBoulderScript();
+            Behavior.Initialize(this);
         }
 
         public override byte Id

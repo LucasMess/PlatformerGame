@@ -1742,3 +1742,45 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/texture_not_found.png
 
+#begin Enemies/hellboar.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemies/hellboar.png
+
+#begin Sounds/Hellboar/hellboar_crash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hellboar/hellboar_crash.wav
+
+#begin Sounds/Hellboar/hellboar_fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hellboar/hellboar_fire.wav
+
+#begin Sounds/Hellboar/hellboar_scream.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hellboar/hellboar_scream.wav
+
+#begin Sounds/Hellboar/hellboar_stunned.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hellboar/hellboar_stunned.wav
+
+#begin Sounds/Hellboar/hellboar_breath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hellboar/hellboar_breath.wav
+

@@ -10,8 +10,8 @@ namespace Adam.Characters.Enemies
         public Frog(int x, int y)
         {
             Weight = 10;
-            Script = new FrogBehavior();
-            Script.Initialize(this);
+            Behavior = new FrogBehavior();
+            Behavior.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/frog");
             SetPosition(new Vector2(x, y));

@@ -789,7 +789,12 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.Hellboar: //Hellboar
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new Hellboar(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(18, 12);
                     break;
                 case TileType.FallingBoulder: //Falling Boulder
                     LetsLightThrough = true;

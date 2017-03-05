@@ -4,11 +4,11 @@ namespace Adam.Characters
 {
     public abstract class Character : Entity
     {
-        protected Behavior Script;
+        protected Behavior Behavior;
 
         public override void Update()
         {
-            Script?.Update(this);
+            Behavior?.Update(this);
             base.Update();
         }
 
