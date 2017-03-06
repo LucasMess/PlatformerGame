@@ -19,6 +19,11 @@ namespace Adam
         public CollisionType CurrentCollisionType = CollisionType.All;
         public delegate void TileHandler(Tile t);
 
+        /// <summary>
+        /// A default tile that is returned when a query for a out of bounds tile is given.
+        /// </summary>
+        public static Tile Default = new Tile();
+
         private const int SmallTileSize = 16;
         private const float DefaultOpacity = 1;
         private const float MaxOpacity = .5f;
@@ -1219,154 +1224,190 @@ namespace Adam
             if (br >= ids.Length || tl < 0)
                 return;
 
-            var topLeft = ids[tl];
-            var top = ids[t];
-            var topRight = ids[tr];
-            var midLeft = ids[ml];
-            var mid = ids[m];
-            var midRight = ids[mr];
-            var botLeft = ids[bl];
-            var bot = ids[b];
-            var botRight = ids[br];
+            var topLeft = GameWorld.GetTile(tl);
+            var top = GameWorld.GetTile(t);
+            var topRight = GameWorld.GetTile(tr);
+            var midLeft = GameWorld.GetTile(ml);
+            var mid = GameWorld.GetTile(m);
+            var midRight = GameWorld.GetTile(mr);
+            var botLeft = GameWorld.GetTile(bl);
+            var bot = GameWorld.GetTile(b);
+            var botRight = GameWorld.GetTile(br);
 
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
+            if (topLeft.Equals(mid) &&
+                top.Equals(mid) &&
+                topRight.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                botLeft.Equals(mid) &&
+                bot.Equals(mid) &&
+                botRight.Equals(mid))
                 SubId = 0;
 
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight != mid)
+            if (topLeft.Equals(mid) &&
+                top.Equals(mid) &&
+                topRight.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                botLeft.Equals(mid) &&
+                bot.Equals(mid) &&
+                !botRight.Equals(mid) &&
+                !botRight.IsSolid)
                 SubId = 0;
 
-            if (topLeft == mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft != mid &&
-                bot == mid &&
-                botRight == mid)
+            if (topLeft.Equals(mid) &&
+                top.Equals(mid) &&
+                topRight.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                !botLeft.IsSolid &&
+                !botLeft.Equals(mid) &&
+                bot.Equals(mid) &&
+                botRight.Equals(mid))
                 SubId = 0;
 
-            if (topLeft != mid &&
-                top == mid &&
-                topRight == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
+            if (!topLeft.IsSolid &&
+                !topLeft.Equals(mid) &&
+                top.Equals(mid) &&
+                topRight.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                botLeft.Equals(mid) &&
+                bot.Equals(mid) &&
+                botRight.Equals(mid))
                 SubId = 0;
 
-            if (top != mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot == mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 4;
 
-            if (top != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot == mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 5;
 
-            if (top != mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot == mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 6;
 
-            if (topLeft == mid &&
-                top == mid &&
-                topRight != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                botLeft == mid &&
-                bot == mid &&
-                botRight == mid)
+            if (topLeft.Equals(mid) &&
+                top.Equals(mid) &&
+                !topRight.IsSolid &&
+                !topRight.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                botLeft.Equals(mid) &&
+                bot.Equals(mid) &&
+                botRight.Equals(mid))
                 SubId = 0;
 
-            if (top == mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot == mid)
+            if (top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 8;
 
-            if (top != mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot != mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 9;
 
-            if (top == mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot == mid)
+            if (top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 10;
 
-            if (top != mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot == mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 11;
 
-            if (top == mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot != mid)
+            if (top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 12;
 
-            if (top == mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot != mid)
+            if (top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 13;
 
-            if (top == mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot != mid)
+            if (top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 14;
 
-            if (top == mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot == mid)
+            if (top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                bot.Equals(mid))
                 SubId = 15;
 
-            if (top != mid &&
-                midLeft != mid &&
-                midRight == mid &&
-                bot != mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 16;
 
-            if (top != mid &&
-                midLeft == mid &&
-                midRight == mid &&
-                bot != mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 17;
 
-            if (top != mid &&
-                midLeft == mid &&
-                midRight != mid &&
-                bot != mid)
+            if (!top.IsSolid &&
+                !top.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 18;
 
-            if (top == mid &&
-                midLeft != mid &&
-                midRight != mid &&
-                bot != mid)
+            if (top.Equals(mid) &&
+                !midLeft.IsSolid &&
+                !midLeft.Equals(mid) &&
+                !midRight.IsSolid &&
+                !midRight.Equals(mid) &&
+                !bot.IsSolid &&
+                !bot.Equals(mid))
                 SubId = 19;
 
             //Special
@@ -1375,7 +1416,7 @@ namespace Adam
                 bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = (TileType)mid;
+                corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 1;
@@ -1387,7 +1428,7 @@ namespace Adam
                 bot == mid)
             {
                 var corner = new Tile();
-                corner.Id = (TileType)mid;
+                corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 2;
@@ -1399,7 +1440,7 @@ namespace Adam
                 top == mid)
             {
                 var corner = new Tile();
-                corner.Id = (TileType)mid;
+                corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 3;
@@ -1411,7 +1452,7 @@ namespace Adam
                 top == mid)
             {
                 var corner = new Tile();
-                corner.Id = (TileType)mid;
+                corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 7;
@@ -1720,5 +1761,21 @@ namespace Adam
         {
             Interactable?.OnEntityTouch(this, entity);
         }
+
+        /// <summary>
+        /// Returns true if both tiles have the same ID.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is Tile)
+            {
+                Tile other = (Tile)obj;
+                return (other.Id == Id);
+            }
+            return false;
+        }
+
     }
 }

@@ -381,7 +381,7 @@ namespace Adam.Levels
         {
             if (index >= 0 && index < TileArray.Length)
                 return TileArray[index];
-            return null;
+            return Tile.Default;
         }
 
         /// <summary>
