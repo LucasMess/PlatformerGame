@@ -76,6 +76,10 @@
             Glass,
             SteelBeam,
             SnowCover,
+            Mosaic,
+            MosaicVase,
+            MushroomDecor,
+
 
             GoldBrickWall = 100,
             StoneWall,

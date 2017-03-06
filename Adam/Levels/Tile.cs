@@ -641,6 +641,21 @@ namespace Adam
                             break;
                     }
                     break;
+                case TileType.Mosaic:
+                    _hasConnectPattern = true;
+                    IsSolid = true;
+                    startingPoint = new Vector2(24, 14);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case TileType.MosaicVase:
+                    _sizeOfTile.Y = 2;
+                    _positionInSpriteSheet = new Vector2(24, 24);
+                    LetsLightThrough = true;
+                    break;
+                case TileType.MushroomDecor:
+                    _positionInSpriteSheet = new Vector2(8, 17);
+                    LetsLightThrough = true;
+                    break;
 
                 #region Wall Textures
 
@@ -1452,6 +1467,20 @@ namespace Adam
 
                         array[indexAbove].DefineTexture();
                     }
+                }
+            }
+
+            // Random decorations for mud.
+            if (Id == TileType.Mud && SubId == 5)
+            {
+                var indexAbove = TileIndex - mapWidth ;
+                if (array[indexAbove].Id == 0)
+                {
+                    var rand = AdamGame.Random.Next(0, 100);
+                    if (rand > 90)
+                        array[indexAbove].Id = TileType.MushroomDecor;
+
+                    array[indexAbove].DefineTexture();
                 }
             }
 

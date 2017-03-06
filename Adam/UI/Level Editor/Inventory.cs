@@ -53,6 +53,7 @@ namespace Adam.UI.Level_Editor
             TileType.Stone, // Stone
             TileType.StoneBrick, // Stone Brick
             TileType.Sand, // Sand
+            TileType.Mosaic,
             TileType.Glass,
             TileType.Snow, // Ice
             TileType.SnowyGrass, // Snow Grass
@@ -97,6 +98,7 @@ namespace Adam.UI.Level_Editor
             TileType.Bed, // Bed
             TileType.Bookshelf, // Bookshelf
             TileType.Painting, // Painting
+            TileType.MosaicVase,
             TileType.FlameSpitter, // Flame Spitter
             TileType.MachineGun, // Machine Gun
             TileType.VoidFireSpitter, // Void Fire Spitter
