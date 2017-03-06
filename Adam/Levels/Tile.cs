@@ -1186,7 +1186,7 @@ namespace Adam
             // Water.
             else if (Id == TileType.Water)
             {
-                if (ids[TileIndex - mapWidth] == 0)
+                if (ids[TileIndex - mapWidth] != TileType.Water)
                     SubId = 1;
                 else SubId = 0;
             }
@@ -1194,7 +1194,7 @@ namespace Adam
             // Lava.
             else if (Id == TileType.Lava)
             {
-                if (ids[TileIndex - mapWidth] == 0)
+                if (ids[TileIndex - mapWidth] != TileType.Lava)
                     SubId = 1;
                 else SubId = 0;
             }
