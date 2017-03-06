@@ -377,10 +377,18 @@ namespace Adam.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static Tile GetTile(int index)
+        public static Tile GetTile(int index, bool isWall = false)
         {
-            if (index >= 0 && index < TileArray.Length)
-                return TileArray[index];
+            if (isWall)
+            {
+                if (index >= 0 && index < WallArray.Length)
+                    return WallArray[index];
+            }
+            else
+            {
+                if (index >= 0 && index < TileArray.Length)
+                    return TileArray[index];
+            }
             return Tile.Default;
         }
 

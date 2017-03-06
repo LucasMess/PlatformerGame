@@ -1204,12 +1204,19 @@ namespace Adam
                 else SubId = 0;
             }
 
+            GiveSubIdsToConnectPatterns();
+           
+        }
 
+        private void GiveSubIdsToConnectPatterns()
+        {
             //Default Connected Textures Pattern
             //"Please don't change this was a headache to make." -Lucas 2015
 
             if (!_hasConnectPattern)
                 return;
+
+            int mapWidth = GameWorld.WorldData.LevelWidth;
 
             var m = TileIndex;
             var t = m - mapWidth;
@@ -1221,18 +1228,15 @@ namespace Adam
             var bl = b - 1;
             var br = b + 1;
 
-            if (br >= ids.Length || tl < 0)
-                return;
-
-            var topLeft = GameWorld.GetTile(tl);
-            var top = GameWorld.GetTile(t);
-            var topRight = GameWorld.GetTile(tr);
-            var midLeft = GameWorld.GetTile(ml);
-            var mid = GameWorld.GetTile(m);
-            var midRight = GameWorld.GetTile(mr);
-            var botLeft = GameWorld.GetTile(bl);
-            var bot = GameWorld.GetTile(b);
-            var botRight = GameWorld.GetTile(br);
+            var topLeft = GameWorld.GetTile(tl, IsWall);
+            var top = GameWorld.GetTile(t, IsWall);
+            var topRight = GameWorld.GetTile(tr, IsWall);
+            var midLeft = GameWorld.GetTile(ml, IsWall);
+            var mid = GameWorld.GetTile(m, IsWall);
+            var midRight = GameWorld.GetTile(mr, IsWall);
+            var botLeft = GameWorld.GetTile(bl, IsWall);
+            var bot = GameWorld.GetTile(b, IsWall);
+            var botRight = GameWorld.GetTile(br, IsWall);
 
             if (topLeft.Equals(mid) &&
                 top.Equals(mid) &&
@@ -1251,8 +1255,7 @@ namespace Adam
                 midRight.Equals(mid) &&
                 botLeft.Equals(mid) &&
                 bot.Equals(mid) &&
-                !botRight.Equals(mid) &&
-                !botRight.IsSolid)
+                !botRight.Equals(mid))
                 SubId = 0;
 
             if (topLeft.Equals(mid) &&
@@ -1260,14 +1263,12 @@ namespace Adam
                 topRight.Equals(mid) &&
                 midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
-                !botLeft.IsSolid &&
                 !botLeft.Equals(mid) &&
                 bot.Equals(mid) &&
                 botRight.Equals(mid))
                 SubId = 0;
 
-            if (!topLeft.IsSolid &&
-                !topLeft.Equals(mid) &&
+            if (!topLeft.Equals(mid) &&
                 top.Equals(mid) &&
                 topRight.Equals(mid) &&
                 midLeft.Equals(mid) &&
@@ -1277,32 +1278,26 @@ namespace Adam
                 botRight.Equals(mid))
                 SubId = 0;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
-                !midLeft.IsSolid &&
+            if (!top.Equals(mid) &&
                 !midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 4;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
+            if (!top.Equals(mid) &&
                 midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 5;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
+            if (!top.Equals(mid) &&
                 midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 6;
 
             if (topLeft.Equals(mid) &&
                 top.Equals(mid) &&
-                !topRight.IsSolid &&
                 !topRight.Equals(mid) &&
                 midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
@@ -1312,108 +1307,81 @@ namespace Adam
                 SubId = 0;
 
             if (top.Equals(mid) &&
-                !midLeft.IsSolid &&
                 !midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 8;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
-                !midLeft.IsSolid &&
+            if (!top.Equals(mid) &&
                 !midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
-                bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 9;
 
             if (top.Equals(mid) &&
                 midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 10;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
-                !midLeft.IsSolid &&
+            if (!top.Equals(mid) &&
                 !midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 11;
 
             if (top.Equals(mid) &&
-                !midLeft.IsSolid &&
                 !midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 12;
 
             if (top.Equals(mid) &&
                 midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 13;
 
             if (top.Equals(mid) &&
                 midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 14;
 
             if (top.Equals(mid) &&
-                !midLeft.IsSolid &&
                 !midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
                 bot.Equals(mid))
                 SubId = 15;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
-                !midLeft.IsSolid &&
+            if (!top.Equals(mid) &&
                 !midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 16;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
+            if (!top.Equals(mid) &&
                 midLeft.Equals(mid) &&
                 midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 17;
 
-            if (!top.IsSolid &&
-                !top.Equals(mid) &&
+            if (!top.Equals(mid) &&
                 midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 18;
 
             if (top.Equals(mid) &&
-                !midLeft.IsSolid &&
                 !midLeft.Equals(mid) &&
-                !midRight.IsSolid &&
                 !midRight.Equals(mid) &&
-                !bot.IsSolid &&
                 !bot.Equals(mid))
                 SubId = 19;
 
             //Special
-            if (botRight != mid &&
-                midRight == mid &&
-                bot == mid)
+            if (!botRight.Equals(mid) &&
+                midRight.Equals(mid) &&
+                bot.Equals(mid))
             {
                 var corner = new Tile();
                 corner.Id = mid.Id;
@@ -1423,9 +1391,9 @@ namespace Adam
                 _cornerPieces.Add(corner);
             }
 
-            if (botLeft != mid &&
-                midLeft == mid &&
-                bot == mid)
+            if (!botLeft.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                bot.Equals(mid))
             {
                 var corner = new Tile();
                 corner.Id = mid.Id;
@@ -1435,9 +1403,9 @@ namespace Adam
                 _cornerPieces.Add(corner);
             }
 
-            if (topLeft != mid &&
-                midLeft == mid &&
-                top == mid)
+            if (!topLeft.Equals(mid) &&
+                midLeft.Equals(mid) &&
+                top.Equals(mid))
             {
                 var corner = new Tile();
                 corner.Id = mid.Id;
@@ -1447,9 +1415,9 @@ namespace Adam
                 _cornerPieces.Add(corner);
             }
 
-            if (topRight != mid &&
-                midRight == mid &&
-                top == mid)
+            if (!topRight.Equals(mid) &&
+                midRight.Equals(mid) &&
+                top.Equals(mid))
             {
                 var corner = new Tile();
                 corner.Id = mid.Id;
