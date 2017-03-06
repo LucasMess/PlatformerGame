@@ -46,7 +46,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const int DefaultUiWidth = 960;
         public const int DefaultUiHeight = 540;
-        public const string Version = "Version 0.10.1 Beta";
+        public const string Version = "Version 0.10.2 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
         public static bool IsLoadingContent;
