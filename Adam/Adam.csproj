@@ -146,6 +146,7 @@
     <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\StoryMode.cs" />
     <Compile Include="Levels\Tile.cs" />
+    <Compile Include="Levels\TileDefinitions.cs" />
     <Compile Include="Levels\Weather.cs" />
     <Compile Include="Levels\WorldData.cs" />
     <Compile Include="Literals.cs" />

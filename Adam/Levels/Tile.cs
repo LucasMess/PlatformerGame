@@ -10,8 +10,20 @@ using static Adam.AdamGame;
 
 namespace Adam
 {
-    public sealed class Tile
+    public sealed partial class Tile
     {
+        public enum BorderType
+        {
+            None, BorderAlways, BorderNonSolid, StarboundLike
+        }
+        public BorderType CurrentBorderType = BorderType.None;
+
+
+        public TileProperties GetProperties()
+        {
+            return Properties[Id];
+        }
+
         public enum CollisionType
         {
             All, FromAbove,
@@ -1205,7 +1217,7 @@ namespace Adam
             }
 
             GiveSubIdsToConnectPatterns();
-           
+
         }
 
         private void GiveSubIdsToConnectPatterns()
@@ -1482,7 +1494,7 @@ namespace Adam
             // Random decorations for mud.
             if (Id == TileType.Mud && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth ;
+                var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
                     var rand = AdamGame.Random.Next(0, 100);
