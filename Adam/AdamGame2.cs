@@ -84,6 +84,7 @@ namespace Adam
         public bool IsInStoryMode = false;
         public static string UserName;
         private static bool _wantsToQuit;
+        public static CSteamID SteamID;
 
         /// <summary>
         ///     Used to display messages to the user where he needs to press OK to continue.
@@ -104,6 +105,7 @@ namespace Adam
             SettingsFile settings = DataFolder.GetSettingsFile();
 
             UserName = SteamFriends.GetPersonaName();
+            SteamID = SteamUser.GetSteamID();
 #if DEBUG
             SteamUserStats.ResetAllStats(true);
 #endif
@@ -153,6 +155,7 @@ namespace Adam
             TextInputBox = new TextInputBox();
             Overlay.Initialize();
             PauseMenu.Initialize();
+            Session.Initialize();
 
             base.Initialize();
         }
@@ -220,7 +223,7 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-            if (!IsActive) return;
+            //if (!IsActive) return;
 
             if (_wantsToQuit)
                 Exit();
@@ -293,6 +296,8 @@ namespace Adam
                     }
                 }
             }
+
+            Session.Update();
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)

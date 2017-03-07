@@ -154,13 +154,13 @@ namespace Adam
 
         static void joinGame_MouseClicked(Button button)
         {
-            Session.CreateNew(false, "Client");
+            Session.Join();
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         static void hostGame_MouseClicked(Button button)
         {
-            Session.CreateNew(true, "Host");
+            Session.CreateNew();
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 

@@ -1,6 +1,7 @@
 ﻿using Adam.GameData;
 using Adam.Network.Packets;
 using Adam.UI;
+using Steamworks;
 using System;
 using System.IO;
 using System.Net;
@@ -53,26 +54,58 @@ namespace Adam.Network
             get; set;
         }
 
-        public static void CreateNew(bool isHost, string playerName)
+        static Callback<P2PSessionRequest_t> _sessionRequest;
+        static Callback<P2PSessionConnectFail_t> _sessionConnectFail;
+
+        const int Channel_LevelData = 0;
+        const int Channel_Entities = 1;
+
+        public static void Initialize()
         {
-            IsActive = true;
-            Console.WriteLine("New session started. Is host? {0}, Player Name: {1}", isHost, playerName);
-            _playerName = playerName;
-            IsHost = isHost;
+            _sessionRequest = Callback<P2PSessionRequest_t>.Create(OnP2PSessionRequested);
 
-            if (isHost)
-            {
-                //Server automatically starts listening for players.
-                _server = new Server();
+        }
 
-                //Automatically connects to own server.
-                //ConnectTo("192.168.1.1", 42555);
-            }
-            else
-            {
-                ConnectTo("127.0.0.1", 42555);
-            }
+        private static void OnP2PSessionRequested(P2PSessionRequest_t callback)
+        {
+            Console.WriteLine("Session requested.");
+            SteamNetworking.AcceptP2PSessionWithUser(callback.m_steamIDRemote);
+        }
 
+        public static void CreateNew()
+        {
+
+            SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
+            Console.WriteLine("Creating P2P connection...");
+            remoteUser = AdamGame.SteamID;
+            IsHost = true;
+
+            //IsActive = true;
+            //Console.WriteLine("New session started. Is host? {0}, Player Name: {1}", isHost, playerName);
+            //_playerName = playerName;
+            //IsHost = isHost;
+
+            //if (isHost)
+            //{
+            //    //Server automatically starts listening for players.
+            //    _server = new Server();
+
+            //    //Automatically connects to own server.
+            //    //ConnectTo("192.168.1.1", 42555);
+            //}
+            //else
+            //{
+            //    ConnectTo("127.0.0.1", 42555);
+            //}
+
+        }
+
+        public static void Join()
+        {
+            SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
+            Console.WriteLine("Creating P2P connection...");
+            remoteUser = AdamGame.SteamID;
+            IsHost = false;
         }
 
         public static void ConnectTo(string address, int port)
@@ -85,31 +118,62 @@ namespace Adam.Network
         {
             if (IsHost)
             {
-                _server.IsWaitingForPlayers = false;
+              //  _server.IsWaitingForPlayers = false;
                 SendLevel();
             }
-            new Thread(new ThreadStart(Update)).Start();
+            //new Thread(new ThreadStart(SendPackets)).Start();
+            //new Thread(new ThreadStart(ReceivePackets)).Start();
         }
 
-        private static void Update()
+        static CSteamID remoteUser;
+
+        public static void Update()
         {
-            while (IsActive)
+            ReceivePackets();
+        }
+
+        private static void SendPackets()
+        {
+
+        }
+
+        private static void ReceivePackets()
+        {
+            uint messageSize;
+            CSteamID steamIdRemote;
+            while (SteamNetworking.IsP2PPacketAvailable(out messageSize))
             {
-                if (AdamGame.IsLoadingContent)
-                    continue;
-                Console.WriteLine("Updating...");
-                if (IsHost)
+                Console.WriteLine("Packet available of size: " + messageSize);
+                byte[] pubDest = new byte[messageSize];
+                uint bytesRead = 0;
+                if (!IsHost)
                 {
-                    _server.SendEntityPacket();
-                    Console.WriteLine("Entity packet sent.");
-                    //PlayerPacket = connection.ReceivePlayerPacket();
-                }
-                else
-                {
-                    EntityPacket = _connection.ReceiveEntityPacket();
-                    Console.WriteLine("Entity packet received.");
+                    if (SteamNetworking.ReadP2PPacket(pubDest, messageSize, out bytesRead, out steamIdRemote, Channel_LevelData))
+                    {
+                        WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
+                        config.LoadIntoEditor();
+                    }
                 }
             }
+
+
+            //while (IsActive)
+            //{
+            //    if (AdamGame.IsLoadingContent)
+            //        continue;
+            //    Console.WriteLine("Updating...");
+            //    if (IsHost)
+            //    {
+            //        _server.SendEntityPacket();
+            //        Console.WriteLine("Entity packet sent.");
+            //        //PlayerPacket = connection.ReceivePlayerPacket();
+            //    }
+            //    else
+            //    {
+            //        EntityPacket = _connection.ReceiveEntityPacket();
+            //        Console.WriteLine("Entity packet received.");
+            //    }
+            //}
         }
 
         public static void SendTestMessage()
@@ -119,10 +183,22 @@ namespace Adam.Network
 
         public static void SendLevel()
         {
-            WorldConfigFile level = DataFolder.GetWorldConfigFile(Path.Combine(DataFolder.LevelDirectory, "Enemies Test.lvl"));
-            _server.SendLevelPacket(level);
-            level.LoadIntoPlay();
-           // server.SendLevelPacket(new WorldConfigFile("Test",256, 256));
+            DataFolder.DeleteLevel(DataFolder.LevelDirectory + "/temp.lvl");
+            string filePath = DataFolder.CreateNewLevel("temp", 256, 256);
+
+            WorldConfigFile config = DataFolder.GetWorldConfigFile(filePath);
+
+            byte[] levelData = CalcHelper.ToByteArray(config);
+            SteamNetworking.SendP2PPacket(remoteUser, levelData, (uint)levelData.Length, EP2PSend.k_EP2PSendReliable);
+
+            config.LoadIntoEditor();
+
+
+            //_server.SendLevelPacket(level);
+
+
+            //level.LoadIntoPlay();
+            // server.SendLevelPacket(new WorldConfigFile("Test",256, 256));
         }
     }
 }
