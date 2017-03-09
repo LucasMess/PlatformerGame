@@ -1,5 +1,6 @@
 ﻿using Adam.Misc;
 using Adam.Misc.Sound;
+using Adam.Network;
 using Adam.Particles;
 using Adam.PlayerCharacter;
 using Adam.UI;
@@ -135,6 +136,7 @@ namespace Adam.Levels
 
         public static void SaveLevel()
         {
+            if (!Session.IsHost) return;
             _hasChangedSinceLastSave = false;
             DataFolder.SaveLevel();
         }
@@ -351,6 +353,37 @@ namespace Adam.Levels
         }
 
         /// <summary>
+        /// Used to change the id of a specific tile when in multiplayer mode.
+        /// </summary>
+        /// <param name="tileIndex"></param>
+        /// <param name="newTileId"></param>
+        /// <param name="isWall"></param>
+        public static void UpdateTileFromP2P(Packet.TileIdChange packet)
+        {
+            int tileIndex = packet.TileIndex;
+            int newTileId = packet.TileId;
+            bool isWall = packet.IsWall;
+
+            Tile[] array = GameWorld.TileArray;
+            if (isWall)
+            {
+                array = GameWorld.WallArray;
+            }
+            array[tileIndex].ResetToDefault();
+            WorldDataIds[tileIndex] = (TileType)newTileId;
+            if (newTileId == 0)
+            {
+                Destroy(array[tileIndex]);
+            }
+            else
+            {
+                Construct(array[tileIndex]);
+            }
+            UpdateTilesAround(tileIndex);
+            LightingEngine.UpdateLightingAt(tileIndex, true);
+        }
+
+        /// <summary>
         /// Updates all the tiles highlighted by the brush.
         /// </summary>
         /// <param name="desiredId"></param>
@@ -375,6 +408,15 @@ namespace Adam.Levels
 
                     hasChanged = true;
                     Destroy(CurrentArray[i]);
+
+                    // Send change over network.
+                    byte[] data = new Packet.TileIdChange()
+                    {
+                        TileIndex = i,
+                        TileId = (int)desiredId,
+                        IsWall = (CurrentArray == GameWorld.WallArray),
+                    }.ToByteArray();
+                    Steamworks.SteamNetworking.SendP2PPacket(Session.RemoteUser, data, (uint)data.Length, Steamworks.EP2PSend.k_EP2PSendUnreliableNoDelay, Session.BB_TileIdChange);
                 }
 
                 //Wants to build, but only if there is air.
@@ -392,6 +434,15 @@ namespace Adam.Levels
                             CurrentArray[i].IsWall = false;
                         Construct(CurrentArray[i]);
                         hasChanged = true;
+
+                        // Send change over network.
+                        byte[] data = new Packet.TileIdChange()
+                        {
+                            TileIndex = i,
+                            TileId = (int)desiredId,
+                            IsWall = (CurrentArray == GameWorld.WallArray),
+                        }.ToByteArray();
+                        Steamworks.SteamNetworking.SendP2PPacket(Session.RemoteUser, data, (uint)data.Length, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
                     }
                     else
                     {
@@ -437,6 +488,9 @@ namespace Adam.Levels
             AdamGame.Camera.Shake();
         }
 
+        /// <summary>
+        /// Used to update the lighting of many tiles at once.
+        /// </summary>
         private static void UpdateLightingByCorners()
         {
             if (Brush.Size == 1)

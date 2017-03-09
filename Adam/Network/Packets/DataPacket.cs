@@ -9,6 +9,22 @@ namespace Adam.Network
     public abstract class DataPacket
     {
 
+    }
+    
+    [Serializable]
+    public class Packet
+    {
+        public byte[] ToByteArray()
+        {
+            return CalcHelper.ToByteArray(this);
+        }
 
+        [Serializable]
+        public class TileIdChange : Packet
+        {
+            public int TileIndex;
+            public int TileId;
+            public bool IsWall;
+        }
     }
 }

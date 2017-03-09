@@ -1,4 +1,5 @@
 ﻿using Adam.GameData;
+using Adam.Levels;
 using Adam.Network.Packets;
 using Adam.UI;
 using Steamworks;
@@ -57,8 +58,9 @@ namespace Adam.Network
         static Callback<P2PSessionRequest_t> _sessionRequest;
         static Callback<P2PSessionConnectFail_t> _sessionConnectFail;
 
-        const int Channel_LevelData = 0;
-        const int Channel_Entities = 1;
+        public const int BB_LevelData = 0;
+        public const int BB_TileIdChange = 1;
+
 
         public static void Initialize()
         {
@@ -70,6 +72,7 @@ namespace Adam.Network
         {
             Console.WriteLine("Session requested.");
             SteamNetworking.AcceptP2PSessionWithUser(callback.m_steamIDRemote);
+            RemoteUser = callback.m_steamIDRemote;
         }
 
         public static void CreateNew()
@@ -77,7 +80,7 @@ namespace Adam.Network
 
             SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
             Console.WriteLine("Creating P2P connection...");
-            remoteUser = AdamGame.SteamID;
+            RemoteUser = AdamGame.SteamID;
             IsHost = true;
 
             //IsActive = true;
@@ -104,7 +107,7 @@ namespace Adam.Network
         {
             SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
             Console.WriteLine("Creating P2P connection...");
-            remoteUser = AdamGame.SteamID;
+            RemoteUser = AdamGame.SteamID;
             IsHost = false;
         }
 
@@ -118,14 +121,14 @@ namespace Adam.Network
         {
             if (IsHost)
             {
-              //  _server.IsWaitingForPlayers = false;
+                //  _server.IsWaitingForPlayers = false;
                 SendLevel();
             }
             //new Thread(new ThreadStart(SendPackets)).Start();
             //new Thread(new ThreadStart(ReceivePackets)).Start();
         }
 
-        static CSteamID remoteUser;
+        public static CSteamID RemoteUser;
 
         public static void Update()
         {
@@ -139,20 +142,34 @@ namespace Adam.Network
 
         private static void ReceivePackets()
         {
-            uint messageSize;
-            CSteamID steamIdRemote;
-            while (SteamNetworking.IsP2PPacketAvailable(out messageSize))
+            for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine("Packet available of size: " + messageSize);
-                byte[] pubDest = new byte[messageSize];
-                uint bytesRead = 0;
-                if (!IsHost)
+                uint messageSize;
+                while (SteamNetworking.IsP2PPacketAvailable(out messageSize, i))
                 {
-                    if (SteamNetworking.ReadP2PPacket(pubDest, messageSize, out bytesRead, out steamIdRemote, Channel_LevelData))
+                    CSteamID steamIdRemote;
+                    Console.WriteLine("Packet available of size: " + messageSize);
+                    byte[] pubDest = new byte[messageSize];
+                    uint bytesRead = 0;
+                    if (SteamNetworking.ReadP2PPacket(pubDest, messageSize, out bytesRead, out steamIdRemote, i))
                     {
-                        WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
-                        config.LoadIntoEditor();
+                        switch (i)
+                        {
+                            case BB_LevelData:
+                                if (!IsHost)
+                                {
+                                    WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
+                                    config.LoadIntoEditor();
+                                }
+                                break;
+                            case BB_TileIdChange:
+                                Packet.TileIdChange packet = (Packet.TileIdChange)CalcHelper.ConvertToObject(pubDest);
+                                LevelEditor.UpdateTileFromP2P(packet);
+                                break;
+                        }
                     }
+
+
                 }
             }
 
@@ -189,7 +206,7 @@ namespace Adam.Network
             WorldConfigFile config = DataFolder.GetWorldConfigFile(filePath);
 
             byte[] levelData = CalcHelper.ToByteArray(config);
-            SteamNetworking.SendP2PPacket(remoteUser, levelData, (uint)levelData.Length, EP2PSend.k_EP2PSendReliable);
+            SteamNetworking.SendP2PPacket(RemoteUser, levelData, (uint)levelData.Length, EP2PSend.k_EP2PSendReliable, BB_LevelData);
 
             config.LoadIntoEditor();
 
