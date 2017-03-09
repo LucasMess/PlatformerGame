@@ -228,6 +228,8 @@ namespace Adam
             if (_wantsToQuit)
                 Exit();
 
+            SteamAPI.RunCallbacks();
+
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 

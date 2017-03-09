@@ -52,7 +52,7 @@ namespace Adam
 
         static LevelSelection _levelSelection;
 
-        public enum MenuState { Main, Options, LevelSelector, HostJoin, MultiplayerSession, StoryMode }
+        public enum MenuState { Main, Options, LevelSelector, MultiplayerLobby, MultiplayerSession, StoryMode }
         public static MenuState CurrentMenuState = MenuState.Main;
 
         public static void Initialize(AdamGame game1)
@@ -118,14 +118,6 @@ namespace Adam
             //save3.MouseClicked += level3_MouseClicked;
             //buttons.Add(save3);
 
-            _hostGame = new TextButton(_first, "Host Game", false);
-            _hostGame.MouseClicked += hostGame_MouseClicked;
-            _buttons.Add(_hostGame);
-
-            _joinGame = new TextButton(_second, "Join Game", false);
-            _joinGame.MouseClicked += joinGame_MouseClicked;
-            _buttons.Add(_joinGame);
-
             _startMultiplayerGame = new TextButton(_third, "Start Game", false);
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
             _buttons.Add(_startMultiplayerGame);
@@ -150,18 +142,6 @@ namespace Adam
         private static void storyMode_MouseClicked(Button button)
         {
             CurrentMenuState = MenuState.StoryMode;
-        }
-
-        static void joinGame_MouseClicked(Button button)
-        {
-            Session.Join();
-            CurrentMenuState = MenuState.MultiplayerSession;
-        }
-
-        static void hostGame_MouseClicked(Button button)
-        {
-            Session.HostGame();
-            CurrentMenuState = MenuState.MultiplayerSession;
         }
 
         //void level4_MouseClicked()
@@ -197,7 +177,7 @@ namespace Adam
                 case MenuState.LevelSelector:
                     CurrentMenuState = MenuState.Main;
                     break;
-                case MenuState.HostJoin:
+                case MenuState.MultiplayerLobby:
                     CurrentMenuState = MenuState.Main;
                     break;
                 case MenuState.MultiplayerSession:
@@ -258,7 +238,8 @@ namespace Adam
 
         static void multiplayer_MouseClicked(Button button)
         {
-            CurrentMenuState = MenuState.HostJoin;
+            CurrentMenuState = MenuState.MultiplayerLobby;
+            Lobby.CreateLobby();
         }
 
         static void quit_MouseClicked(Button button)
@@ -302,11 +283,8 @@ namespace Adam
                 case MenuState.Options:
                     break;
 
-                case MenuState.HostJoin:
-                    _hostGame.Update();
-                    _joinGame.Update();
-
-                    _backButton.Update();
+                case MenuState.MultiplayerLobby:
+                    Lobby.Update();
                     break;
                 case MenuState.MultiplayerSession:
                     _startMultiplayerGame.Update();
@@ -345,10 +323,8 @@ namespace Adam
                     if (!OptionsMenu.IsActive)
                         CurrentMenuState = MenuState.Main;
                     break;
-                case MenuState.HostJoin:
-                    _hostGame.Draw(spriteBatch);
-                    _joinGame.Draw(spriteBatch);
-                    _backButton.Draw(spriteBatch);
+                case MenuState.MultiplayerLobby:
+                    Lobby.Draw(spriteBatch);
                     break;
                 case MenuState.MultiplayerSession:
                     _startMultiplayerGame.Draw(spriteBatch);

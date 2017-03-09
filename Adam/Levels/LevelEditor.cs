@@ -136,7 +136,7 @@ namespace Adam.Levels
 
         public static void SaveLevel()
         {
-            if (!Session.IsHost) return;
+            if (Session.IsActive) return;
             _hasChangedSinceLastSave = false;
             DataFolder.SaveLevel();
         }
@@ -416,7 +416,7 @@ namespace Adam.Levels
                         TileId = (int)desiredId,
                         IsWall = (CurrentArray == GameWorld.WallArray),
                     }.ToByteArray();
-                    Steamworks.SteamNetworking.SendP2PPacket(Session.HostUser, data, (uint)data.Length, Steamworks.EP2PSend.k_EP2PSendUnreliableNoDelay, Session.BB_TileIdChange);
+                    Session.Send(data, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
                 }
 
                 //Wants to build, but only if there is air.
@@ -442,7 +442,7 @@ namespace Adam.Levels
                             TileId = (int)desiredId,
                             IsWall = (CurrentArray == GameWorld.WallArray),
                         }.ToByteArray();
-                        Steamworks.SteamNetworking.SendP2PPacket(Session.HostUser, data, (uint)data.Length, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
+                        Session.Send(data, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
                     }
                     else
                     {

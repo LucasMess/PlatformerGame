@@ -6,6 +6,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 
@@ -42,6 +43,8 @@ namespace Adam.Network
         {
             _sessionRequest = Callback<P2PSessionRequest_t>.Create(OnP2PSessionRequested);
             _sessionConnectFail = Callback<P2PSessionConnectFail_t>.Create(OnP2PSessionConnectFail);
+
+            Lobby.Initialize();
         }
 
         private static void OnP2PSessionConnectFail(P2PSessionConnectFail_t callback)
@@ -59,17 +62,15 @@ namespace Adam.Network
 
         public static void HostGame()
         {
-            SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
-            Console.WriteLine("Creating P2P connection...");
-            HostUser = AdamGame.SteamID;
             IsHost = true;
         }
 
-        public static void Join()
+        public static void Join(CSteamID hostId)
         {
-            SteamNetworking.CreateP2PConnectionSocket(AdamGame.SteamID, 42577, 1000, true);
+            if (IsHost) return;
+            SteamNetworking.CreateP2PConnectionSocket(hostId, 42577, 1000, true);
             Console.WriteLine("Creating P2P connection...");
-            HostUser = AdamGame.SteamID;
+            HostUser = hostId;
             IsHost = false;
         }
 
@@ -77,7 +78,22 @@ namespace Adam.Network
         {
             if (IsHost)
             {
+                IsActive = true;
+                Clients = (from client in Lobby.PlayerList
+                           where client != AdamGame.SteamID
+                           select client).ToList();
+
+                if (Clients.Count == 0)
+                {
+                    AdamGame.MessageBox.Show("There is no one in this lobby :(");
+                    return;
+                }
+
                 SendLevel();
+            }
+            else
+            {
+                AdamGame.MessageBox.Show("You cannot start a game you do not own, silly boy.");
             }
         }
         public static void Update()
@@ -101,16 +117,23 @@ namespace Adam.Network
                         switch (i)
                         {
                             case BB_LevelData:
-                                if (!IsHost)
-                                {
-                                    WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
-                                    config.LoadIntoEditor();
-                                }
+                                IsActive = true;
+                                WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
+                                config.LoadIntoEditor();
                                 break;
                             case BB_TileIdChange:
                                 Packet.TileIdChange packet = (Packet.TileIdChange)CalcHelper.ConvertToObject(pubDest);
                                 LevelEditor.UpdateTileFromP2P(packet);
                                 break;
+                        }
+
+                        // Relay message to others.
+                        if (IsHost)
+                        {
+                            var allButSender = (from client in Clients
+                                                where client != steamIdRemote
+                                                select client).ToList();
+                            Send(pubDest, EP2PSend.k_EP2PSendReliable, i, allButSender);
                         }
                     }
 
@@ -127,9 +150,29 @@ namespace Adam.Network
             WorldConfigFile config = DataFolder.GetWorldConfigFile(filePath);
 
             byte[] levelData = CalcHelper.ToByteArray(config);
-            SteamNetworking.SendP2PPacket(HostUser, levelData, (uint)levelData.Length, EP2PSend.k_EP2PSendReliable, BB_LevelData);
+
+            Send(levelData, EP2PSend.k_EP2PSendReliable, BB_LevelData, null);
 
             config.LoadIntoEditor();
         }
+
+
+        public static void Send(byte[] data, EP2PSend type, int channel, List<CSteamID> clients = null)
+        {
+            if (clients == null)
+                clients = Clients;
+            if (IsHost)
+            {
+                foreach (var client in clients)
+                {
+                    SteamNetworking.SendP2PPacket(client, data, (uint)data.Length, type, channel);
+                }
+            }
+            else
+            {
+                SteamNetworking.SendP2PPacket(HostUser, data, (uint)data.Length, type, channel);
+            }
+        }
+
     }
 }
