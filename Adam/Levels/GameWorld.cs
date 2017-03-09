@@ -169,13 +169,13 @@ namespace Adam.Levels
 
             if (Session.IsActive)
             {
-                if (Session.IsHost)
-                {
-                }
-                else
-                {
-                    Session.EntityPacket?.ExtractTo();
-                }
+                //if (Session.IsHost)
+                //{
+                //}
+                //else
+                //{
+                //    Session.EntityPacket?.ExtractTo();
+                //}
             }
 
             if (AdamGame.CurrentGameMode == GameMode.Edit)

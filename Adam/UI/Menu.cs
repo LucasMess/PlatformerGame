@@ -160,7 +160,7 @@ namespace Adam
 
         static void hostGame_MouseClicked(Button button)
         {
-            Session.CreateNew();
+            Session.HostGame();
             CurrentMenuState = MenuState.MultiplayerSession;
         }
 

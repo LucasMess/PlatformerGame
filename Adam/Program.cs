@@ -6,12 +6,24 @@ namespace Adam
 {
     static class Program
     {
+        static ulong gameLaunchLobbyId = 0;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         /// 
     static void Main(string[] args)
         {
+            Console.WriteLine("Arg count: " + args.Length);
+            // Joining lobby from outside the game.
+            if (args.Length > 1)
+            {
+                if (args[0] == "+connect_lobby")
+                {
+                    gameLaunchLobbyId = ulong.Parse(args[1]);
+                }
+            }
+
             try
             {
                 SteamAPI.Init();
