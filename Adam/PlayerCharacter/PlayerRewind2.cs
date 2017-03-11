@@ -51,6 +51,7 @@ namespace Adam.PlayerCharacter
                 _particleTimer.Increment();
                 if (_particleTimer.TimeElapsedInMilliSeconds > 10)
                 {
+                    _particleTimer.Reset();
                     int radius = 100;
                     Vector2 position = new Vector2(player.GetDrawRectangle().Center.X, player.GetDrawRectangle().Center.Y);
                     lastDeg %= 360;

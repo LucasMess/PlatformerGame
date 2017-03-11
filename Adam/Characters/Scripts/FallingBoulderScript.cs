@@ -1,4 +1,6 @@
-﻿using Adam.Misc;
+﻿using Adam.Levels;
+using Adam.Misc;
+using Adam.Particles;
 using Microsoft.Xna.Framework;
 
 namespace Adam.Characters.Scripts
@@ -25,6 +27,14 @@ namespace Adam.Characters.Scripts
 
         private void Entity_CollidedWithTileBelow(Entity entity, Tile tile)
         {
+            if (isFalling)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(new Rectangle(entity.GetCollRectangle().X, entity.GetCollRectangle().Bottom, entity.GetCollRectangle().Width, 1)),
+                                CalcHelper.GetRandXAndY(new Rectangle(-40, -5, 80, 10))/10f, Color.White);
+                }
+            }
             isFalling = false;
         }
 
