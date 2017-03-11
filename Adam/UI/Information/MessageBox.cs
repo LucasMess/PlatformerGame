@@ -1,4 +1,5 @@
-﻿using Adam.Misc.Helpers;
+﻿using Adam.Misc;
+using Adam.Misc.Helpers;
 using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,7 @@ namespace Adam.UI
     {
         protected const int BezelSize = 10;
         protected readonly Container Window = new Container(250, 100);
+        private static SoundFx _showSound = new SoundFx("Sounds/Menu/message_show");
 
         /// <summary>
         ///     Creates an instance of the message box that can be used to show a message to the player.
@@ -64,6 +66,7 @@ namespace Adam.UI
         public virtual void Show(string message)
         {
             Window.Show();
+            _showSound.Play();
             Button.MouseClicked += Button_MouseClicked;
             var wrapped = FontHelper.WrapText(Font, message, Window.DrawRectangle.Width - BezelSize * 2);
             Message = wrapped;

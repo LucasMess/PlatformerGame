@@ -10,6 +10,8 @@ namespace Adam.Interactables
 {
     public class CheckPoint : Interactable
     {
+        SoundFx _breakingSound = new SoundFx("Sounds/Tiles/checkpoint_break");
+
         public CheckPoint(Tile tile)
         {
             tile.AnimationStopped = true;
@@ -19,6 +21,7 @@ namespace Adam.Interactables
         {
             if (entity is Player)
             {
+                _breakingSound.PlayOnce();
                 Player player = (Player)entity;
                 player.SetRespawnPoint(tile.DrawRectangle.X, tile.DrawRectangle.Y);
                 tile.AnimationStopped = false;

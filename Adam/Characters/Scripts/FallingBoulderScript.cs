@@ -12,6 +12,7 @@ namespace Adam.Characters.Scripts
         const double TimeBetweenImpactAndRecoil = 1000;
         Timer fallAgainTimer = new Timer();
         Timer riseTimer = new Timer();
+        SoundFx _impactSound = new SoundFx("Sounds/Tiles/boulder_fall");
 
         public override void Initialize(Entity entity)
         {
@@ -33,12 +34,14 @@ namespace Adam.Characters.Scripts
 
             if (isFalling)
             {
+                _impactSound.Reset();
                 fallAgainTimer.Increment();
                 if (fallAgainTimer.TimeElapsedInMilliSeconds > TimeBetweenFalls)
                     entity.ObeysGravity = true;
             }
             else
             {
+                _impactSound.PlayOnce();
                 riseTimer.Increment();
                 if (riseTimer.TimeElapsedInMilliSeconds > TimeBetweenImpactAndRecoil)
                 {

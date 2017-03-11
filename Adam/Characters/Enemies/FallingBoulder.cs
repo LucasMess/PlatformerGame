@@ -7,7 +7,6 @@ namespace Adam.Characters.Enemies
 {
     class FallingBoulder : Enemy
     {
-
         public FallingBoulder(int x, int y)
         {
             Weight = 10;

@@ -384,9 +384,11 @@ namespace Adam
                 case TileType.Checkpoint: //Checkpoint
                     LetsLightThrough = true;
                     _sizeOfTile.Y = 32*3;
-                    _frameCount = new Vector2(4, 0);
+                    _sizeOfTile.X = 48;
+                    DrawRectangle.X -= 16;
+                    _frameCount = new Vector2(15, 0);
                     animationPlaysOnce = true;
-                    _positionInSpriteSheet = new Vector2(8, 27);
+                    _positionInSpriteSheet = new Vector2(22, 30);
                     Interactable = new CheckPoint(this);
                     _hasAddedEntity = true;
                     break;
