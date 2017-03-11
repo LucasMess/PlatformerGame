@@ -6,7 +6,8 @@ namespace Adam
 {
     static class Program
     {
-        static ulong gameLaunchLobbyId = 0;
+        public static ulong GameLaunchLobbyId = 0;
+        public static bool LaunchedFromInvite = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -20,7 +21,8 @@ namespace Adam
             {
                 if (args[0] == "+connect_lobby")
                 {
-                    gameLaunchLobbyId = ulong.Parse(args[1]);
+                    GameLaunchLobbyId = ulong.Parse(args[1]);
+                    LaunchedFromInvite = true;
                 }
             }
 

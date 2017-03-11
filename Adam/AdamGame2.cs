@@ -156,6 +156,8 @@ namespace Adam
             Overlay.Initialize();
             PauseMenu.Initialize();
             Session.Initialize();
+            GameWorld.Initialize();
+            LoadingScreen.Initialize();
 
             base.Initialize();
         }
@@ -170,7 +172,6 @@ namespace Adam
 
         protected override void LoadContent()
         {
-            LoadingScreen.Initialize();
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<BitmapFont>("debug");
@@ -186,7 +187,11 @@ namespace Adam
             {
 
             }
-            GameWorld.Initialize();
+
+            if (Program.LaunchedFromInvite)
+            {
+                Lobby.JoinLobby(Program.GameLaunchLobbyId);
+            }
         }
 
         public static void ChangeState(GameState desiredGameState, GameMode mode, bool reloadWorld)

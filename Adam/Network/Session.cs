@@ -18,18 +18,31 @@ namespace Adam.Network
         static Callback<P2PSessionConnectFail_t> _sessionConnectFail;
 
         public static CSteamID HostUser;
-        public static List<CSteamID> Clients;
+        public static List<CSteamID> OtherPlayers
+        {
+            get
+            {
+                return (from player in Lobby.PlayerList
+                        where player != AdamGame.SteamID
+                        select player).ToList();
+            }
+        }
 
         public const int BB_LevelData = 0;
-        public const int BB_TileIdChange = 1;
+        public const int BB_Ready = 1;
+        public const int BB_StartTime = 2;
+        public const int BB_TileIdChange = 3;
+
+        public static bool IsWaitingForOtherPlayers { get; set; }
+
+        private static int _playersReadyCount = 0;
+        private static bool _hasStartTime = false;
+        private static DateTime _startTime;
 
         /// <summary>
-        /// Returns true if the current client is hosting the multiplayer server.
+        /// Returns true if the current client is hosting the multiplayer server. The user is always hosting their single player games.
         /// </summary>
-        public static bool IsHost
-        {
-            get; set;
-        }
+        public static bool IsHost { get; set; } = true;
 
         /// <summary>
         /// Returns true if the session is still happening.
@@ -78,16 +91,14 @@ namespace Adam.Network
         {
             if (IsHost)
             {
+                IsWaitingForOtherPlayers = true;
                 IsActive = true;
-                Clients = (from client in Lobby.PlayerList
-                           where client != AdamGame.SteamID
-                           select client).ToList();
 
-                if (Clients.Count == 0)
-                {
-                    AdamGame.MessageBox.Show("There is no one in this lobby :(");
-                    return;
-                }
+                //if (Clients.Count == 0)
+                //{
+                //    AdamGame.MessageBox.Show("There is no one in this lobby :(");
+                //    return;
+                //}
 
                 SendLevel();
             }
@@ -101,9 +112,16 @@ namespace Adam.Network
             ReceivePackets();
         }
 
-        private static void ReceivePackets()
+        private static void ReceivePackets(int channel = -1)
         {
-            for (int i = 0; i < 10; i++)
+            int i = 0;
+            int max = 10;
+            if (channel != -1)
+            {
+                i = channel;
+                max = channel + 1;
+            }
+            for (i = 0; i < max; i++)
             {
                 uint messageSize;
                 while (SteamNetworking.IsP2PPacketAvailable(out messageSize, i))
@@ -121,6 +139,12 @@ namespace Adam.Network
                                 WorldConfigFile config = (WorldConfigFile)CalcHelper.ConvertToObject(pubDest);
                                 config.LoadIntoEditor();
                                 break;
+                            case BB_Ready:
+                                _playersReadyCount++;
+                                break;
+                            case BB_StartTime:
+                                _startTime = new DateTime((long)CalcHelper.ConvertToObject(pubDest));
+                                break;
                             case BB_TileIdChange:
                                 Packet.TileIdChange packet = (Packet.TileIdChange)CalcHelper.ConvertToObject(pubDest);
                                 LevelEditor.UpdateTileFromP2P(packet);
@@ -130,7 +154,7 @@ namespace Adam.Network
                         // Relay message to others.
                         if (IsHost)
                         {
-                            var allButSender = (from client in Clients
+                            var allButSender = (from client in OtherPlayers
                                                 where client != steamIdRemote
                                                 select client).ToList();
                             Send(pubDest, EP2PSend.k_EP2PSendReliable, i, allButSender);
@@ -160,7 +184,7 @@ namespace Adam.Network
         public static void Send(byte[] data, EP2PSend type, int channel, List<CSteamID> clients = null)
         {
             if (clients == null)
-                clients = Clients;
+                clients = OtherPlayers;
             if (IsHost)
             {
                 foreach (var client in clients)
@@ -171,6 +195,37 @@ namespace Adam.Network
             else
             {
                 SteamNetworking.SendP2PPacket(HostUser, data, (uint)data.Length, type, channel);
+            }
+        }
+
+        public static void WaitForPlayers()
+        {
+            Send(BitConverter.GetBytes(true), EP2PSend.k_EP2PSendReliable, BB_Ready);
+
+            while (_playersReadyCount < OtherPlayers.Count)
+            {
+                LoadingScreen.LoadingText = "Waiting for other players...";
+                ReceivePackets(BB_Ready);
+            }
+
+            if (IsHost)
+            {
+                long time = DateTime.UtcNow.Ticks + 5 * 1000000;
+                _hasStartTime = true;
+                _startTime = new DateTime(time);
+                Send(BitConverter.GetBytes(time), EP2PSend.k_EP2PSendReliable, BB_StartTime);
+            }
+            else
+            {
+                while (!_hasStartTime)
+                {
+                    ReceivePackets(BB_StartTime);
+                }
+            }
+
+            while (DateTime.UtcNow < _startTime)
+            {
+                LoadingScreen.LoadingText = "Starting game...";
             }
         }
 

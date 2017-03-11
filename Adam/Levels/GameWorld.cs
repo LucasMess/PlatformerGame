@@ -104,6 +104,8 @@ namespace Adam.Levels
 
             LightingEngine.GenerateLights();
 
+            Session.WaitForPlayers();
+
             return true;
         }
 
