@@ -50,6 +50,7 @@ namespace Adam.UI.Level_Editor
         {
             TileType.Grass, // Grass
             TileType.Wood,
+            TileType.ReinforcedWood,
             TileType.Stone, // Stone
             TileType.StoneBrick, // Stone Brick
             TileType.Sand, // Sand
@@ -98,7 +99,9 @@ namespace Adam.UI.Level_Editor
             TileType.Bed, // Bed
             TileType.Bookshelf, // Bookshelf
             TileType.Painting, // Painting
-            TileType.MosaicVase,
+            TileType.EmeraldVase,
+            TileType.RubyVase,
+            TileType.SapphireVase,
             TileType.FlameSpitter, // Flame Spitter
             TileType.MachineGun, // Machine Gun
             TileType.VoidFireSpitter, // Void Fire Spitter
@@ -122,6 +125,7 @@ namespace Adam.UI.Level_Editor
             TileType.StoneWall, // Stone Wall
             TileType.StoneBrickWall, // Stone Brick Wall
             TileType.SandWall, // Sand Wall
+            TileType.MosaicWall,
             TileType.MesaWall, // Mesa Wall
             TileType.MarbleWall, // Marble Wall
             TileType.RedWallpaper, // Wallpaper

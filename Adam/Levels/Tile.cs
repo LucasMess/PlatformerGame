@@ -119,6 +119,8 @@ namespace Adam
 
             Vector2 startingPoint;
 
+            DrawRectangle = _originalPosition;
+
             #region DefiningTextures
 
             switch (Id)
@@ -647,14 +649,33 @@ namespace Adam
                     startingPoint = new Vector2(24, 14);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case TileType.MosaicVase:
+                case TileType.EmeraldVase:
+                    _sizeOfTile.Y = 2;
+                    _positionInSpriteSheet = new Vector2(25, 24);
+                    LetsLightThrough = true;
+                    DrawRectangle.Y -= AdamGame.Tilesize;
+                    break;
+                case TileType.RubyVase:
                     _sizeOfTile.Y = 2;
                     _positionInSpriteSheet = new Vector2(24, 24);
                     LetsLightThrough = true;
+                    DrawRectangle.Y -= AdamGame.Tilesize;
+                    break;
+                case TileType.SapphireVase:
+                    _sizeOfTile.Y = 2;
+                    _positionInSpriteSheet = new Vector2(26, 24);
+                    LetsLightThrough = true;
+                    DrawRectangle.Y -= AdamGame.Tilesize;
                     break;
                 case TileType.MushroomDecor:
                     _positionInSpriteSheet = new Vector2(8, 17);
                     LetsLightThrough = true;
+                    break;
+                case TileType.ReinforcedWood:
+                    _hasConnectPattern = true;
+                    IsSolid = true;
+                    startingPoint = new Vector2(32, 14);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
                 #region Wall Textures
@@ -751,6 +772,12 @@ namespace Adam
                             _positionInSpriteSheet = new Vector2(21, 32);
                             break;
                     }
+                    break;
+                case TileType.MosaicWall:
+                    _hasConnectPattern = true;
+                    IsSolid = true;
+                    startingPoint = new Vector2(28, 14);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
                 #endregion
