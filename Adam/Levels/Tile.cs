@@ -41,7 +41,7 @@ namespace Adam
         private Vector2 _positionInSpriteSheet;
         private double _restartTimer;
         private double _restartWait;
-        private Vector2 _sizeOfTile = new Vector2(1, 1);
+        private Point _sizeOfTile = new Point(Tilesize, Tilesize);
         private Rectangle _startingPosition;
         private Rectangle _startingRectangle;
         private const int DefaultAnimationSpeed = 125;
@@ -75,7 +75,7 @@ namespace Adam
         /// <param name="y"></param>
         public Tile(int x, int y)
         {
-            _originalPosition = new Rectangle(x, y, 0, 0);
+            SetOriginalPosition(x, y);
             DrawRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
             _defaultDrawRectangle = DrawRectangle;
             SetToDefaultSourceRect();
@@ -89,6 +89,16 @@ namespace Adam
         {
             _isSampleTile = true;
             SetToDefaultSourceRect();
+        }
+
+        /// <summary>
+        /// Sets the position this tile should return to whenever it is reset.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetOriginalPosition(int x, int y)
+        {
+            _originalPosition = new Rectangle(x, y, 0, 0);
         }
 
         /// <summary>
@@ -210,14 +220,14 @@ namespace Adam
                     break;
                 case TileType.Torch: // Torch.
                     _frameCount = new Vector2(4, 0);
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(12, 0);
                     Interactable = new Torch();
                     LetsLightThrough = true;
                     break;
                 case TileType.Chandelier: //Chandelier
                     _frameCount = new Vector2(4, 0);
-                    _sizeOfTile.X = 2;
+                    _sizeOfTile.X = 64;
                     _positionInSpriteSheet = new Vector2(0, 17);
                     LetsLightThrough = true;
                     break;
@@ -242,7 +252,7 @@ namespace Adam
                     break;
                 case TileType.Flower: //Daffodyls
                     _frameCount = new Vector2(4, 0);
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(12, 10 + AdamGame.Random.Next(0, 3) * 2);
                     DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
                     _hasRandomStartingPoint = true;
@@ -265,8 +275,8 @@ namespace Adam
                     break;
                 case TileType.Chest: //chest
                     _frameCount = new Vector2(4, 0);
-                    _sizeOfTile.X = 1.5f;
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.X = 48;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     animationPlaysOnce = true;
                     DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
@@ -342,11 +352,11 @@ namespace Adam
                     break;
                 case TileType.Tree: //Tree
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.X = 4;
-                    _sizeOfTile.Y = 6;
+                    _sizeOfTile.X = 32*4;
+                    _sizeOfTile.Y = 32*6;
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - _sizeOfTile.Y + 32;
+                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X / 2;
                     _positionInSpriteSheet = new Vector2(16, 0);
                     LetsLightThrough = true;
                     break;
@@ -356,15 +366,15 @@ namespace Adam
                     break;
                 case TileType.BigRock: //Big Rock
                     _frameCount = new Vector2(0, 0);
-                    _sizeOfTile.X = 2;
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.X = 64;
+                    _sizeOfTile.Y = 64;
                     DrawRectangle.Y = _originalPosition.Y - 32;
                     _positionInSpriteSheet = new Vector2(14, 17);
                     LetsLightThrough = true;
                     break;
                 case TileType.MediumRock: //Medium Rock
                     _positionInSpriteSheet = new Vector2(11, 18);
-                    _sizeOfTile.X = 2;
+                    _sizeOfTile.X = 64;
                     LetsLightThrough = true;
                     break;
                 case TileType.Sign: //Sign
@@ -373,8 +383,7 @@ namespace Adam
                     break;
                 case TileType.Checkpoint: //Checkpoint
                     LetsLightThrough = true;
-                    _sizeOfTile.X = 1;
-                    _sizeOfTile.Y = 3;
+                    _sizeOfTile.Y = 32*3;
                     _frameCount = new Vector2(4, 0);
                     animationPlaysOnce = true;
                     _positionInSpriteSheet = new Vector2(8, 27);
@@ -419,8 +428,8 @@ namespace Adam
                     break;
                 case TileType.Cactus: // Cacti
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.X = 2;
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.X = 64;
+                    _sizeOfTile.Y = 64;
                     switch (AdamGame.Random.Next(0, 4))
                     {
                         case 0: // One branch normal.
@@ -440,8 +449,8 @@ namespace Adam
                     break;
                 case TileType.MushroomBooster: // Mushroom Booster
                     _frameCount = new Vector2(4, 0);
-                    _sizeOfTile.X = 2;
-                    DrawRectangle.Width = (int)_sizeOfTile.X * AdamGame.Tilesize;
+                    _sizeOfTile.X = 64;
+                    DrawRectangle.Width = _sizeOfTile.X;
                     animationSpeed = 75;
                     _positionInSpriteSheet = new Vector2(19, 26);
                     Interactable = new MushroomBooster();
@@ -510,7 +519,7 @@ namespace Adam
                     break;
                 case TileType.Stalagmite: // Stalagmite
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(23, 24);
                     LetsLightThrough = true;
                     break;
@@ -522,10 +531,10 @@ namespace Adam
                     break;
                 case TileType.BackgroundDoor: // Portal.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 3;
-                    _sizeOfTile.X = 2;
-                    DrawRectangle.Height = (int)_sizeOfTile.Y * AdamGame.Tilesize;
-                    DrawRectangle.Width = (int)_sizeOfTile.X * AdamGame.Tilesize;
+                    _sizeOfTile.Y = 3*32;
+                    _sizeOfTile.X = 64;
+                    DrawRectangle.Height = _sizeOfTile.Y;
+                    DrawRectangle.Width = _sizeOfTile.X;
                     switch (SubId)
                     {
                         case 0:
@@ -542,33 +551,33 @@ namespace Adam
                     break;
                 case TileType.Bed: // Bed.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 2;
-                    _sizeOfTile.X = 3;
+                    _sizeOfTile.Y = 64;
+                    _sizeOfTile.X = 3*32;
                     _positionInSpriteSheet = new Vector2(10, 30);
                     LetsLightThrough = true;
                     break;
                 case TileType.Bookshelf: // Bookshelf.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 3;
-                    _sizeOfTile.X = 2;
+                    _sizeOfTile.Y = 3*32;
+                    _sizeOfTile.X = 64;
                     _positionInSpriteSheet = new Vector2(13, 30);
                     LetsLightThrough = true;
                     break;
                 case TileType.Painting: // Painting.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 2;
-                    _sizeOfTile.X = 2;
+                    _sizeOfTile.Y = 64;
+                    _sizeOfTile.X = 64;
                     _positionInSpriteSheet = new Vector2(10, 32);
                     LetsLightThrough = true;
                     break;
                 case TileType.TreeofKnowledge: // Tree of Knowledge
-                    _sizeOfTile.X = 50;
-                    _sizeOfTile.Y = 25;
+                    _sizeOfTile.X = 50*2;
+                    _sizeOfTile.Y = 25*32;
                     //Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
                     _positionInSpriteSheet = new Vector2(0, 0);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y - _sizeOfTile.Y;
+                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X/2;
                     LetsLightThrough = true;
                     break;
                 case TileType.TreeBark: // Tree Bark
@@ -650,19 +659,19 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.EmeraldVase:
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(25, 24);
                     LetsLightThrough = true;
                     DrawRectangle.Y -= AdamGame.Tilesize;
                     break;
                 case TileType.RubyVase:
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(24, 24);
                     LetsLightThrough = true;
                     DrawRectangle.Y -= AdamGame.Tilesize;
                     break;
                 case TileType.SapphireVase:
-                    _sizeOfTile.Y = 2;
+                    _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(26, 24);
                     LetsLightThrough = true;
                     DrawRectangle.Y -= AdamGame.Tilesize;
@@ -751,12 +760,12 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(13, 9);
                     break;
                 case TileType.TreeOfKnowledge: // Tree of Knowledge
-                    _sizeOfTile.X = 10;
-                    _sizeOfTile.Y = 10;
+                    _sizeOfTile.X = 10*32;
+                    _sizeOfTile.Y = 10*32;
                     _positionInSpriteSheet = new Vector2(24, 5);
 
-                    DrawRectangle.Y = _originalPosition.Y - (32 * ((int)_sizeOfTile.Y - 1));
-                    DrawRectangle.X = _originalPosition.X - (16 * (int)_sizeOfTile.X);
+                    DrawRectangle.Y = _originalPosition.Y -_sizeOfTile.Y;
+                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X/2;
                     break;
                 case TileType.LightYellowPaint:
                     _hasTopAndBottomPattern = true;
@@ -898,8 +907,8 @@ namespace Adam
         {
             //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
             SourceRectangle = new Rectangle((int)(_positionInSpriteSheet.X * SmallTileSize),
-                (int)(_positionInSpriteSheet.Y * SmallTileSize), (int)(SmallTileSize * _sizeOfTile.X),
-                (int)(SmallTileSize * _sizeOfTile.Y));
+                (int)(_positionInSpriteSheet.Y * SmallTileSize),  _sizeOfTile.X/2,
+                _sizeOfTile.Y/2);
         }
 
         /// <summary>
@@ -910,8 +919,8 @@ namespace Adam
         {
             if (_isSampleTile && !IsBrushTile)
             {
-                var width = (int)(_sizeOfTile.X * AdamGame.Tilesize);
-                var height = (int)(_sizeOfTile.Y * AdamGame.Tilesize);
+                var width = _sizeOfTile.X;
+                var height = _sizeOfTile.Y;
 
                 if (width > height)
                 {
@@ -932,8 +941,8 @@ namespace Adam
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
             }
             else
-                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, (int)(_sizeOfTile.X * AdamGame.Tilesize),
-                    (int)(_sizeOfTile.Y * AdamGame.Tilesize));
+                DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, _sizeOfTile.X,
+                    _sizeOfTile.Y);
         }
 
         /// <summary>
@@ -1071,7 +1080,7 @@ namespace Adam
             _frameCount = Vector2.Zero;
             _wasInitialized = false;
             LetsLightThrough = false;
-            _sizeOfTile = new Vector2(1, 1);
+            _sizeOfTile = new Point(32, 32);
             DefineDrawRectangle();
             DefineSourceRectangle();
             SetToDefaultSourceRect();
@@ -1147,7 +1156,7 @@ namespace Adam
         /// <param name="mapWidth">The width of the map in tiles.</param>
         public void FindConnectedTextures(TileType[] ids, int mapWidth)
         {
-            _cornerPieces = new List<Tile>();
+            _cornerPieces.Clear();
 
             // Wallpaper.
             if (_hasTopAndBottomPattern)
@@ -1689,7 +1698,7 @@ namespace Adam
         ///     Returns the size of this tile as a ratio of the default tile size.
         /// </summary>
         /// <returns></returns>
-        public Vector2 GetSize()
+        public Point GetSize()
         {
             return _sizeOfTile;
         }
