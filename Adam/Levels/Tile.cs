@@ -163,7 +163,7 @@ namespace Adam
                     }
                     break;
                 case TileType.Stone: //Stone
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     IsSolid = true;
                     startingPoint = new Vector2(4, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -186,12 +186,12 @@ namespace Adam
                     break;
                 case TileType.Hellrock: //Hellrock
                     IsSolid = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(4, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.Sand: //Sand
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     IsSolid = true;
                     startingPoint = new Vector2(8, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -218,7 +218,7 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.GoldBrick: // Gold.
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(0, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -290,7 +290,7 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.MarbleBrick: // Marble Brick
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(24, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -399,24 +399,24 @@ namespace Adam
                 case TileType.StoneBrick: //Stone Brick
                     IsSolid = true;
                     startingPoint = new Vector2(0, 10);
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.Snow: //Ice
                     IsSolid = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(4, 10);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.SnowyGrass: //Snow Covered Grass
                     IsSolid = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(8, 10);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.CompressedVoid: //Void tile
                     IsSolid = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(16, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
@@ -530,7 +530,7 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.Mud: // Mud.
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     IsSolid = true;
                     startingPoint = new Vector2(4, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -587,7 +587,7 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.TreeBark: // Tree Bark
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(28, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -606,14 +606,14 @@ namespace Adam
                     break;
                 case TileType.Wood:
                     IsSolid = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(28, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.Glass:
                     IsSolid = true;
                     LetsLightThrough = true;
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways; ;
                     startingPoint = new Vector2(32, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
@@ -659,7 +659,7 @@ namespace Adam
                     }
                     break;
                 case TileType.Mosaic:
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(24, 14);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -677,19 +677,22 @@ namespace Adam
                 #region Wall Textures
 
                 case TileType.GoldBrickWall: //Gold Brick Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(4, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.StoneWall: //Stone Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(20, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.DirtWall: //Dirt Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(0, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.Fence: //Fences
                     switch (SubId)
@@ -704,28 +707,33 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.MarbleWall: //Marble wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(12, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.SandWall: // Sand Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(4, 24);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.HellstoneWall: //Hellstone Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(0, 24);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    IsSolid = true;
                     break;
                 case TileType.StoneBrickWall: //Stone Brick Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     startingPoint = new Vector2(8, 19);
+                    IsSolid = true;
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.MesaWall: // Mesa Wall
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     startingPoint = new Vector2(0, 29);
+                    IsSolid = true;
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.RedWallpaper: // Wallpaper.
@@ -1094,7 +1102,7 @@ namespace Adam
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
                 }
             }
-            if (_hasConnectPattern)
+            if (_cornerPieces.Count != 0)
             {
                 foreach (var c in _cornerPieces)
                 {
@@ -1137,7 +1145,7 @@ namespace Adam
         /// <param name="mapWidth">The width of the map in tiles.</param>
         public void FindConnectedTextures(TileType[] ids, int mapWidth)
         {
-            _cornerPieces = new List<Tile>();
+            _cornerPieces.Clear();
 
             // Wallpaper.
             if (_hasTopAndBottomPattern)
@@ -1404,9 +1412,8 @@ namespace Adam
                 midRight.IsSolid &&
                 bot.IsSolid)
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
                 corner.SubId = 1;
                 _cornerPieces.Add(corner);
@@ -1416,7 +1423,7 @@ namespace Adam
                 midLeft.IsSolid &&
                 bot.IsSolid)
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1428,7 +1435,7 @@ namespace Adam
                 midLeft.IsSolid &&
                 top.IsSolid)
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1440,7 +1447,7 @@ namespace Adam
                 midRight.IsSolid &&
                 top.IsSolid)
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1458,9 +1465,6 @@ namespace Adam
         {
             //Default Connected Textures Pattern
             //"Please don't change this was a headache to make." -Lucas 2015
-
-            if (!_hasConnectPattern)
-                return;
 
             int mapWidth = GameWorld.WorldData.LevelWidth;
 

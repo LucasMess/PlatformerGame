@@ -14,6 +14,8 @@ namespace Adam
         {
             public bool IsSolid { get; set; } = false;
             public Rectangle SourceRectangle { get; set; }
+
+            public BorderType CurrentBorderType { get; set; }
         }
 
         public static readonly Dictionary<TileType, TileProperties> Properties = new Dictionary<TileType, TileProperties>()
@@ -24,7 +26,8 @@ namespace Adam
             } },
             { TileType.Grass, new TileProperties()
             {
-
+                CurrentBorderType = BorderType.BorderNonSolid,
+                IsSolid = true,
             } },
 
         };
