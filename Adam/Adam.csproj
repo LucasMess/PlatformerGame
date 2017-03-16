@@ -182,6 +182,7 @@
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Particles\Particle.cs" />
+    <Compile Include="PlayerCharacter\FocusMechanic.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="PlayerCharacter\PlayerInput.cs" />
     <Compile Include="PlayerCharacter\PlayerProperties.cs" />

@@ -26,11 +26,14 @@ namespace Adam
         Timer _idleTimer = new Timer(true);
         Timer _lastJumpTimer = new Timer(true);
         Timer _weaponFireRateTimer = new Timer(true);
+        Timer _particleTimer = new Timer();
 
         public static Timer TimeSinceLastPunch = new Timer(true);
 
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
+
+        private bool hasFireballsAround;
 
         public void Initialize(Player player)
         {
@@ -39,6 +42,21 @@ namespace Adam
             player.CollidedWithTileBelow += Player_CollidedWithTileBelow;
 
             player.DamagePointsProj = 50;
+
+            player.FocusMechanic.OnFocusLevelChange += FocusMechanic_OnFocusLevelChange;
+        }
+
+        private void FocusMechanic_OnFocusLevelChange(Player player, int focusLevel)
+        {
+            if (focusLevel == 0)
+            {
+                hasFireballsAround = false;
+            }
+
+            if (focusLevel > 80)
+            {
+                hasFireballsAround = true;
+            }
         }
 
         private void Player_CollidedWithTileBelow(Entity entity, Tile tile)
@@ -48,16 +66,50 @@ namespace Adam
             entity.RemoveAnimationFromQueue("jump");
         }
 
+        int lastDeg;
         public override void Update(Entity entity)
         {
             _player = (Player)_player.Get();
             _weaponFireRateTimer.Increment();
+
+
+            if (hasFireballsAround)
+            {
+                int radius = 200;
+                int changeInDeg = 20;
+                _particleTimer.Increment();
+                if (_particleTimer.TimeElapsedInMilliSeconds > 10)
+                {
+                    _particleTimer.Reset();
+                    Vector2 position = new Vector2(entity.GetCollRectangle().Center.X, entity.GetCollRectangle().Center.Y);
+                    lastDeg %= 360;
+                    for (int i = lastDeg; i < lastDeg + changeInDeg; i += 1)
+                    {
+                        double rads = Math.PI * i / 180;
+                        float x = (float)Math.Cos(rads);
+                        float y = (float)Math.Sin(rads);
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White);
+
+                        x *= -1;
+                        y *= -1;
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White);
+                    }
+                    lastDeg += changeInDeg;
+
+
+                }
+            }
+
             base.Update(entity);
         }
 
         private void OnPlayerDamaged(Rectangle damageArea, int damage)
         {
             _player.Sounds.GetSoundRef("hurt").Play();
+
+            _player.FocusMechanic.ResetFocus();
         }
 
         public void OnStill(Player player)
@@ -312,6 +364,8 @@ namespace Adam
                     velocity.X *= -1;
                 Projectile proj = new Projectile(Projectile.Type.PlayerShuriken, player.Position, velocity, player);
                 GameWorld.PlayerProjectiles.Add(proj);
+
+                player.FocusMechanic.AddFocus(20);
             }
         }
 

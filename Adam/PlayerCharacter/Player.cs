@@ -29,8 +29,12 @@ namespace Adam.PlayerCharacter
         public RewindTracker rewindTracker = new RewindTracker();
         public Timer rewindTimer = new Timer();
 
+        public FocusMechanic FocusMechanic;
+
         public Player()
         {
+            FocusMechanic = new FocusMechanic(this);
+
             script.Initialize(this);
 
             var edenTexture = ContentHelper.LoadTexture("Characters/new_player");
@@ -197,6 +201,7 @@ namespace Adam.PlayerCharacter
             }
             else ObeysGravity = true;
 
+            script.Update(this);
             base.Update();
         }
 

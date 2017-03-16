@@ -142,6 +142,8 @@ namespace Adam
         /// <param name="spriteBatch"></param>
         public static void Draw(SpriteBatch spriteBatch)
         {
+            FontHelper.DrawWithOutline(spriteBatch, _font, "Focus Level: " + GameWorld.GetPlayer().FocusMechanic.GetFocus() , new Vector2(500,10), 1, new Color(220, 220, 220), Color.Black);
+
             if (IsDebugOn)
             {
                 _infos = new List<string>();

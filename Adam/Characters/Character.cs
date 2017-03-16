@@ -6,6 +6,7 @@ namespace Adam.Characters
     {
         protected Behavior Behavior;
 
+
         public override void Update()
         {
             Behavior?.Update(this);
