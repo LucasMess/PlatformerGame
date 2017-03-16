@@ -76,7 +76,7 @@ namespace Adam.Levels
             //}
             //else
             //{
-                player.SetPosition(player.RespawnPos);
+            player.SetPosition(player.RespawnPos);
             //}
 
 
@@ -486,12 +486,21 @@ namespace Adam.Levels
                     t.ResetToDefault();
                     t.Id = WorldDataIds[ind];
                     t.DefineTexture();
-                    t.FindConnectedTextures(WorldDataIds,
-                        GameWorld.WorldData.LevelWidth);
-                    t.DefineTexture();
-                    t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
                     CurrentArray[ind] = t;
                     //t.Color = Color.Red;
+                }
+            }
+
+            // TODO: Merge these two foreaches so that the code is faster.
+            foreach (var ind in indexes)
+            {
+                if (ind >= 0 && ind < GameWorld.TileArray.Length)
+                {
+                    var t = CurrentArray[ind];
+                    t.FindConnectedTextures(WorldDataIds,
+    GameWorld.WorldData.LevelWidth);
+                    t.DefineTexture();
+                    t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
                 }
             }
 

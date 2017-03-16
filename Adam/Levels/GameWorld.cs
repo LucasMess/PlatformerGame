@@ -137,8 +137,11 @@ namespace Adam.Levels
             foreach (var t in array)
             {
                 t.DefineTexture();
-                t.FindConnectedTextures((TileType[])(object)ids, width);
-                t.DefineTexture();
+            }
+
+            foreach (var t in array)
+            {
+                t.FindConnectedTextures(ids, width);
                 t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                 t.DefineTexture();
             }

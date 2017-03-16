@@ -141,7 +141,7 @@ namespace Adam
             switch (Id)
             {
                 case TileType.Grass: //Grass
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     IsSolid = true;
                     startingPoint = new Vector2(0, 0);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -1216,11 +1216,245 @@ namespace Adam
                 else SubId = 0;
             }
 
-            GiveSubIdsToConnectPatterns();
+            switch (CurrentBorderType)
+            {
+                case BorderType.None:
+                    break;
+                case BorderType.BorderAlways:
+                    ConnectWithSelf();
+                    break;
+                case BorderType.BorderNonSolid:
+                    ConnectWithSolids();
+                    break;
+                case BorderType.StarboundLike:
+                    break;
+                default:
+                    break;
+            }
+
 
         }
 
-        private void GiveSubIdsToConnectPatterns()
+        private void ConnectWithSolids()
+        {
+            int mapWidth = GameWorld.WorldData.LevelWidth;
+
+            var m = TileIndex;
+            var t = m - mapWidth;
+            var b = m + mapWidth;
+            var tl = t - 1;
+            var tr = t + 1;
+            var ml = m - 1;
+            var mr = m + 1;
+            var bl = b - 1;
+            var br = b + 1;
+
+            var topLeft = GameWorld.GetTile(tl, IsWall);
+            var top = GameWorld.GetTile(t, IsWall);
+            var topRight = GameWorld.GetTile(tr, IsWall);
+            var midLeft = GameWorld.GetTile(ml, IsWall);
+            var mid = GameWorld.GetTile(m, IsWall);
+            var midRight = GameWorld.GetTile(mr, IsWall);
+            var botLeft = GameWorld.GetTile(bl, IsWall);
+            var bot = GameWorld.GetTile(b, IsWall);
+            var botRight = GameWorld.GetTile(br, IsWall);
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                SubId = 0;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                !botRight.IsSolid)
+                SubId = 0;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                SubId = 0;
+
+            if (!topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                SubId = 0;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 4;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 5;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 6;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                !topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                SubId = 0;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 8;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 9;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 10;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 11;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 12;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 13;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 14;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                SubId = 15;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 16;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 17;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 18;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                SubId = 19;
+
+            //Special
+            if (!botRight.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+            {
+                var corner = new Tile();
+                corner.Id = mid.Id;
+                corner.DrawRectangle = DrawRectangle;
+                corner.Texture = Texture;
+                corner.SubId = 1;
+                _cornerPieces.Add(corner);
+            }
+
+            if (!botLeft.IsSolid &&
+                midLeft.IsSolid &&
+                bot.IsSolid)
+            {
+                var corner = new Tile();
+                corner.Id = mid.Id;
+                corner.DrawRectangle = DrawRectangle;
+                corner.Texture = Texture;
+                corner.SubId = 2;
+                _cornerPieces.Add(corner);
+            }
+
+            if (!topLeft.IsSolid &&
+                midLeft.IsSolid &&
+                top.IsSolid)
+            {
+                var corner = new Tile();
+                corner.Id = mid.Id;
+                corner.DrawRectangle = DrawRectangle;
+                corner.Texture = Texture;
+                corner.SubId = 3;
+                _cornerPieces.Add(corner);
+            }
+
+            if (!topRight.IsSolid &&
+                midRight.IsSolid &&
+                top.IsSolid)
+            {
+                var corner = new Tile();
+                corner.Id = mid.Id;
+                corner.DrawRectangle = DrawRectangle;
+                corner.Texture = Texture;
+                corner.SubId = 7;
+                _cornerPieces.Add(corner);
+            }
+
+            foreach (var corners in _cornerPieces)
+            {
+                corners.DefineTexture();
+            }
+        }
+
+        private void ConnectWithSelf()
         {
             //Default Connected Textures Pattern
             //"Please don't change this was a headache to make." -Lucas 2015
