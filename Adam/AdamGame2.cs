@@ -46,7 +46,7 @@ namespace Adam
         public const int DefaultResHeight = 540;
         public const int DefaultUiWidth = 960;
         public const int DefaultUiHeight = 540;
-        public const string Version = "Version 0.10.1 Beta";
+        public const string Version = "Version 0.10.2 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
         public static bool IsLoadingContent;
@@ -84,6 +84,7 @@ namespace Adam
         public bool IsInStoryMode = false;
         public static string UserName;
         private static bool _wantsToQuit;
+        public static CSteamID SteamID;
 
         /// <summary>
         ///     Used to display messages to the user where he needs to press OK to continue.
@@ -104,6 +105,7 @@ namespace Adam
             SettingsFile settings = DataFolder.GetSettingsFile();
 
             UserName = SteamFriends.GetPersonaName();
+            SteamID = SteamUser.GetSteamID();
 #if DEBUG
             SteamUserStats.ResetAllStats(true);
 #endif
@@ -153,6 +155,9 @@ namespace Adam
             TextInputBox = new TextInputBox();
             Overlay.Initialize();
             PauseMenu.Initialize();
+            Session.Initialize();
+            GameWorld.Initialize();
+            LoadingScreen.Initialize();
 
             base.Initialize();
         }
@@ -167,7 +172,6 @@ namespace Adam
 
         protected override void LoadContent()
         {
-            LoadingScreen.Initialize();
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<BitmapFont>("debug");
@@ -183,7 +187,11 @@ namespace Adam
             {
 
             }
-            GameWorld.Initialize();
+
+            if (Program.LaunchedFromInvite)
+            {
+                Lobby.JoinLobby(Program.GameLaunchLobbyId);
+            }
         }
 
         public static void ChangeState(GameState desiredGameState, GameMode mode, bool reloadWorld)
@@ -220,10 +228,12 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-            if (!IsActive) return;
+            //if (!IsActive) return;
 
             if (_wantsToQuit)
                 Exit();
+
+            SteamAPI.RunCallbacks();
 
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
@@ -293,6 +303,8 @@ namespace Adam
                     }
                 }
             }
+
+            Session.Update();
 
             //Update the game based on what GameState it is
             switch (CurrentGameState)

@@ -77,8 +77,11 @@
             SteelBeam,
             SnowCover,
             Mosaic,
-            MosaicVase,
+            EmeraldVase,
+            RubyVase,
+            SapphireVase,
             MushroomDecor,
+            ReinforcedWood,
 
 
             GoldBrickWall = 100,
@@ -94,6 +97,7 @@
             Nothing,
             TreeOfKnowledge,
             LightYellowPaint,
+            MosaicWall,
 
             Player = 200,
             Snake,

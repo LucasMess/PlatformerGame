@@ -175,6 +175,7 @@
     <Compile Include="Misc\Timer.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />
+    <Compile Include="Network\Lobby.cs" />
     <Compile Include="Network\Packets\DataPacket.cs" />
     <Compile Include="Network\Packets\EntityPacket.cs" />
     <Compile Include="Network\Packets\LevelPacket.cs" />
@@ -254,7 +255,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="CSteamworks.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="steam_api.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

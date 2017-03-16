@@ -17,7 +17,7 @@ namespace Adam.UI
         {
             get
             {
-                if (_selectedBrushTiles[0]?.GetSize() == new Vector2(1, 1))
+                if (_selectedBrushTiles[0]?.GetSize() == new Point(32, 32))
                 {
                     return 12;
                 }
@@ -58,6 +58,13 @@ namespace Adam.UI
             MouseState mouse = Mouse.GetState();
             int scrollWheel = mouse.ScrollWheelValue;
 
+            // If brush is big and a tile that cannot have a brush > 1 is selected, resize brush.
+            if (Size > MaxSize)
+            {
+                Size = MaxSize;
+                _selectedBrushTiles = new Tile[Size * Size];
+            }
+
             if (!Inventory.IsOpen)
             {
                 if (scrollWheel > _lastScrollWheel)
@@ -94,8 +101,6 @@ namespace Adam.UI
             // Create grid.
             if (SelectedIndexes[0] >= 0 && SelectedIndexes[0] < GameWorld.TileArray.Length)
             {
-
-
                 for (int i = 0; i < _selectedBrushTiles.Length; i++)
                 {
                     if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
@@ -103,11 +108,26 @@ namespace Adam.UI
                         //Create transparent tiles to show selected tile
                         Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
                         Tile fakeTile = new Tile(true);
-                        fakeTile.Id = LevelEditor.SelectedId;
                         fakeTile.IsBrushTile = true;
-                        fakeTile.DefineTexture();
-                        fakeTile.DrawRectangle.X = hoveredTile.DrawRectangle.X;
-                        fakeTile.DrawRectangle.Y = hoveredTile.DrawRectangle.Y;
+                        if (Size == 1)
+                        {
+
+                            fakeTile.Id = LevelEditor.SelectedId;
+                            fakeTile.SetOriginalPosition(hoveredTile.DrawRectangle.X, hoveredTile.DrawRectangle.Y);
+                            fakeTile.DefineTexture();
+                            if (hoveredTile.GetSize() != new Point(32, 32))
+                            {
+                                fakeTile.Id = hoveredTile.Id;
+                                fakeTile.DefineTexture();
+                                fakeTile.DrawRectangle = hoveredTile.DrawRectangle;
+                            }
+                        }
+                        else
+                        {
+                            fakeTile.Id = LevelEditor.SelectedId;
+                            fakeTile.SetOriginalPosition(hoveredTile.DrawRectangle.X, hoveredTile.DrawRectangle.Y);
+                            fakeTile.DefineTexture();
+                        }
 
                         _selectedBrushTiles[i] = fakeTile;
 
@@ -119,8 +139,17 @@ namespace Adam.UI
             Tile firstTile = _selectedBrushTiles[0];
             int width, height;
 
-            width = Size * (int)firstTile.GetSize().X * AdamGame.Tilesize + 8;
-            height = Size * (int)firstTile.GetSize().Y * AdamGame.Tilesize + 8;
+            if (Size == 1)
+            {
+                width = Size * (int)firstTile.GetSize().X + 8;
+                height = Size * (int)firstTile.GetSize().Y + 8;
+            }
+            else
+            {
+                width = Size * 32 + 8;
+                height = Size * 32 + 8;
+            }
+
             grid.Rectangle = new Rectangle(firstTile.GetDrawRectangle().X - 4, firstTile.GetDrawRectangle().Y - 4, width, height);
             grid.Texture = GameWorld.UiSpriteSheet;
 

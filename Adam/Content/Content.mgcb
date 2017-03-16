@@ -1184,18 +1184,6 @@
 /processorParam:Quality=Best
 /build:Sounds/Menu/letterPop.wav
 
-#begin Tiles/spritemap_20.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/spritemap_20.png
-
 #begin Backgrounds/sky_fog.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1292,18 +1280,6 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/new spritemap.png
 
-#begin Tiles/spritemap_21.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/spritemap_21.png
-
 #begin Backgrounds/sun.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1369,18 +1345,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Characters/adam_eden_darker.png
-
-#begin Tiles/spritemap_22.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/spritemap_22.png
 
 #begin Tiles/ui_spritemap_4.png
 /importer:TextureImporter
@@ -1580,18 +1544,6 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/snake.png
 
-#begin Tiles/spritemap_23.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/spritemap_23.png
-
 #begin Backgrounds/2_background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1669,18 +1621,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Effects/bumpMap.png
-
-#begin Tiles/spritemap_24.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Tiles/spritemap_24.png
 
 #begin Overlay/rewind_corners.png
 /importer:TextureImporter
@@ -1784,7 +1724,7 @@
 /processorParam:Quality=Best
 /build:Sounds/Hellboar/hellboar_breath.wav
 
-#begin Tiles/spritemap_25.png
+#begin Tiles/spritemap_26.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1794,5 +1734,23 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tiles/spritemap_25.png
+/build:Tiles/spritemap_26.png
+
+#begin Sounds/Menu/message_show.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Menu/message_show.wav
+
+#begin Sounds/Tiles/boulder_fall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Tiles/boulder_fall.wav
+
+#begin Sounds/Tiles/checkpoint_break.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Tiles/checkpoint_break.wav
 

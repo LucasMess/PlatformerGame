@@ -156,7 +156,7 @@ namespace Adam
                 _infos.Add("Particle iteration: " + GameWorld.ParticleSystem?.GetIteration());
                 _infos.Add("Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles());
                 _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
-                _infos.Add("Steam Name: " + AdamGame.UserName);
+                _infos.Add("Steam Name: " + AdamGame.UserName + " ID: " + AdamGame.SteamID.m_SteamID);
 
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 

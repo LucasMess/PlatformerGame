@@ -12,7 +12,7 @@ namespace Adam.Levels
         public int RedIntensity { get; set; } = 0;
         public int GreenIntensity { get; set; } = 0;
         public int BlueIntensity { get; set; } = 0;
-        private const int DefaultRadius = 2;
+        private const int DefaultRadius = 64;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
         private static Rectangle _sourceRectangleFullWhite = new Rectangle(336, 224, 16, 16);
         private Vector2 _center;
@@ -55,7 +55,7 @@ namespace Adam.Levels
         {
             _center = newCenter;
             Vector2 offset = new Vector2();
-            float radius = GetRadius() * 32;
+            float radius = GetRadius();
             DrawRectangle = new Rectangle((int)(_center.X - radius + offset.X), (int)(_center.Y - radius + offset.Y), (int)(radius * 2), (int)(radius * 2));
             GlowRectangle = new Rectangle((int)(_center.X + offset.X - radius / 4), (int)(_center.Y + radius / 4 + offset.Y), (int)(radius / 2), (int)(radius / 2));
         }
@@ -65,7 +65,7 @@ namespace Adam.Levels
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-             //Update(_center);
+             Update(_center);
             //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
             if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
             {

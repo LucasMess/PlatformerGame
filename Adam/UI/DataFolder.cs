@@ -249,11 +249,18 @@ namespace Adam.UI
 
             DeleteLevel(CurrentLevelFilePath);
 
-            using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
+            try
             {
-                WorldConfigFile config = new WorldConfigFile();
-                config.GetDataFromGameWorld();
-                xs.Serialize(fs, config);
+                using (FileStream fs = new FileStream(CurrentLevelFilePath, FileMode.OpenOrCreate))
+                {
+                    WorldConfigFile config = new WorldConfigFile();
+                    config.GetDataFromGameWorld();
+                    xs.Serialize(fs, config);
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -318,7 +325,14 @@ namespace Adam.UI
                 // Do nothing. If it can't read the file, let the user delete it.
             }
 
-            File.Delete(filePath);
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch
+            {
+
+            }
         }
 
         /// <summary>
