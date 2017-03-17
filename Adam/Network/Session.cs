@@ -213,7 +213,7 @@ namespace Adam.Network
                 long time = DateTime.UtcNow.Ticks + 5 * 1000000;
                 _hasStartTime = true;
                 _startTime = new DateTime(time);
-                Send(BitConverter.GetBytes(time), EP2PSend.k_EP2PSendReliable, BB_StartTime);
+                Send(CalcHelper.ToByteArray(time), EP2PSend.k_EP2PSendReliable, BB_StartTime);
             }
             else
             {
@@ -223,7 +223,7 @@ namespace Adam.Network
                 }
             }
 
-            while (DateTime.UtcNow < _startTime)
+            while (DateTime.UtcNow.Ticks < _startTime.Ticks)
             {
                 LoadingScreen.LoadingText = "Starting game...";
             }

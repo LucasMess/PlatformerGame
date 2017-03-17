@@ -285,7 +285,7 @@ namespace Adam.UI.Level_Editor
             if (Id != 0)
             {
                 DrawSquareBehindTile(spriteBatch);
-                //_tile.DrawShadowVersion(spriteBatch);
+                _tile.DrawShadowVersion(spriteBatch);
                 _tile.DrawByForce(spriteBatch);
             }
         }

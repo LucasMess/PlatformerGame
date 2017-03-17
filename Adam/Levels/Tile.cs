@@ -1126,8 +1126,6 @@ namespace Adam
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //DrawShadowVersion(spriteBatch);
-
             if (Texture != null)
             {
                 if (_isInvisibleInPlayMode && AdamGame.CurrentGameMode == GameMode.Play)
@@ -1167,7 +1165,7 @@ namespace Adam
         public void DrawShadowVersion(SpriteBatch spriteBatch)
         {
             if (Texture != null)
-                spriteBatch.Draw(Texture, new Rectangle(DrawRectangle.X + 4, DrawRectangle.Y + 4, DrawRectangle.Width, DrawRectangle.Height), SourceRectangle, Color.Black * .4f);
+                spriteBatch.Draw(Texture, new Rectangle(DrawRectangle.X + 2, DrawRectangle.Y + 2, DrawRectangle.Width, DrawRectangle.Height), SourceRectangle, Color.Black * .4f);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)
