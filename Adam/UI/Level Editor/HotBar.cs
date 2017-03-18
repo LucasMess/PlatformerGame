@@ -3,6 +3,7 @@ using Adam.Misc;
 using Adam.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using static Adam.AdamGame;
 
@@ -188,6 +189,48 @@ namespace Adam.UI.Level_Editor
             {
                 _tabPressed = false;
             }
+
+            if (InputHelper.IsKeyDown(Keys.D1))
+            {
+                Tile_WasClicked(_tileHolders[0]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D2))
+            {
+                Tile_WasClicked(_tileHolders[1]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D3))
+            {
+                Tile_WasClicked(_tileHolders[2]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D4))
+            {
+                Tile_WasClicked(_tileHolders[3]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D5))
+            {
+                Tile_WasClicked(_tileHolders[4]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D6))
+            {
+                Tile_WasClicked(_tileHolders[5]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D7))
+            {
+                Tile_WasClicked(_tileHolders[6]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+            if (InputHelper.IsKeyDown(Keys.D8))
+            {
+                Tile_WasClicked(_tileHolders[7]);
+                LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
+            }
+
         }
 
         public static void Draw(SpriteBatch spriteBatch)
