@@ -136,6 +136,7 @@
     <Compile Include="Interactables\Spikes.cs" />
     <Compile Include="Interactables\Teleporter.cs" />
     <Compile Include="Interactables\Torch.cs" />
+    <Compile Include="Interactables\Water.cs" />
     <Compile Include="Levels\Background.cs" />
     <Compile Include="Levels\Chunk.cs" />
     <Compile Include="Levels\ChunkManager.cs" />

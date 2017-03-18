@@ -65,6 +65,10 @@ namespace Adam
         public bool IsDucking { get; set; }
         public bool WantsToMoveDownPlatform { get; set; }
 
+        public bool IsInWater { get; set; }
+
+        public Timer SwimTimer = new Timer();
+
         /// <summary>
         /// The amount of damage this entity deals by touching.
         /// </summary>
@@ -288,17 +292,18 @@ namespace Adam
                     Kill();
                 }
 
+                //Check for collision, if applicable.
+                if (IsCollidable)
+                {
+                    CheckTerrainCollision();
+                }
+
                 //Check for physics, if applicable.
                 if (ObeysGravity)
                 {
                     ApplyGravity();
                 }
 
-                //Check for collision, if applicable.
-                if (IsCollidable)
-                {
-                    CheckTerrainCollision();
-                }
                 else
                 {
                     // If the entity is not collidable, it should still update the position based on velocity,
@@ -309,6 +314,9 @@ namespace Adam
 
                 if (Weight != 0)
                     ApplyAirFriction();
+
+                // Reset this every update so that the tile update does not have to.
+                IsInWater = false;
 
             }
 
@@ -339,6 +347,11 @@ namespace Adam
             {
                 IsTouchingGround = true;
                 Velocity *= below.GetFrictionConstant();
+            }
+
+            if (IsInWater)
+            {
+                Velocity *= .97f;
             }
         }
 
@@ -714,7 +727,14 @@ namespace Adam
         /// </summary>
         private void ApplyGravity()
         {
-            Velocity.Y += (GravityStrength);
+            float gravity = GravityStrength;
+            if (IsInWater)
+            {
+                gravity = GravityStrength / 10f;
+            }
+
+            Velocity.Y += gravity;
+
             if (Velocity.Y > 12)
             {
                 Velocity.Y = 12;

@@ -322,7 +322,7 @@ namespace Adam
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = true;
                     _positionInSpriteSheet = new Vector2(4, 15);
-
+                    Interactable = new Water();
                     if (SubId == 1)
                         _positionInSpriteSheet = new Vector2(17, 24);
                     break;
