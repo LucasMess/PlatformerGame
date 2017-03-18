@@ -55,6 +55,7 @@ namespace Adam.UI.Level_Editor
             SelectedTile = tile;
             LevelEditor.SelectedId = tile.Id;
             tile.LastTimeUsed.Reset();
+            LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
         }
 
 

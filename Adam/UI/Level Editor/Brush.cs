@@ -1,5 +1,6 @@
 ﻿using Adam.Levels;
 using Adam.Misc;
+using Adam.UI.Elements;
 using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,6 +57,22 @@ namespace Adam.UI
             CheckIfSizeChanged();
         }
 
+
+        public void ChangeBrushMode(BrushMode mode)
+        {
+            CurrentBrushMode = mode;
+            switch (mode)
+            {
+                case BrushMode.Build:
+                    Cursor.ChangeCursor(Cursor.CursorType.Build);
+                    break;
+                case BrushMode.Erase:
+                    Cursor.ChangeCursor(Cursor.CursorType.Erase);
+                    break;
+                default:
+                    break;
+            }
+        }
         private void CheckIfSizeChanged()
         {
             MouseState mouse = Mouse.GetState();

@@ -176,9 +176,9 @@ namespace Adam.Levels
         /// <summary>
         /// Changes the array that will be modified and changes the opacity of the foreground tiles.
         /// </summary>
-        public static void ChangeToWallMode()
+        public static void ChangeWallModeTo(bool value)
         {
-            OnWallMode = !OnWallMode;
+            OnWallMode = value;
             _wallMode.PlayNewInstanceOnce();
             _wallMode.Reset();
         }
@@ -190,7 +190,7 @@ namespace Adam.Levels
         {
             if (InputHelper.IsKeyDown(Keys.L) && !_recentlyChanged)
             {
-                ChangeToWallMode();
+                ChangeWallModeTo(!OnWallMode);
                 _recentlyChanged = true;
             }
             if (InputHelper.IsKeyUp(Keys.L))
@@ -302,7 +302,6 @@ namespace Adam.Levels
 
                 if (InputHelper.IsLeftMousePressed())
                 {
-                    OnWallMode = false;
                     if (Brush.CurrentBrushMode == Brush.BrushMode.Build && lastAddedTile != IndexOfMouse)
                     {
                         lastAddedTile = IndexOfMouse;
@@ -318,7 +317,8 @@ namespace Adam.Levels
                 }
                 if (InputHelper.IsRightMousePressed())
                 {
-                    OnWallMode = true;
+                    if (!OnWallMode)
+                        ChangeWallModeTo(true);
                     if (Brush.CurrentBrushMode == Brush.BrushMode.Build && lastAddedTile != IndexOfMouse)
                     {
                         // Entities cannot be placed in wall mode.
@@ -336,11 +336,26 @@ namespace Adam.Levels
                         UpdateSelectedTiles(0);
                     }
                 }
-
                 else if (InputHelper.IsMiddleMousePressed())
                 {
-                    SelectedId = (TileType)WorldDataIds[IndexOfMouse];
-                    HotBar.AddToHotBarFromWorld(SelectedId);
+                    TileType lastSelectedId = SelectedId;
+                    SelectedId = GameWorld.WorldData.TileIDs[IndexOfMouse];
+                    if (SelectedId == 0)
+                        SelectedId = GameWorld.WorldData.WallIDs[IndexOfMouse];
+                    if (SelectedId != 0)
+                    {
+                        HotBar.AddToHotBarFromWorld(SelectedId);
+                        Brush.ChangeBrushMode(Brush.BrushMode.Build);
+                    }
+                    else
+                    {
+                        SelectedId = lastSelectedId;
+                    }
+                }
+                else
+                {
+                    if (OnWallMode)
+                        ChangeWallModeTo(false);
                 }
             }
         }
@@ -653,7 +668,7 @@ namespace Adam.Levels
 
         public static void ChangeToWallMode(Button button)
         {
-            ChangeToWallMode();
+            ChangeWallModeTo(!OnWallMode);
         }
     }
 }
