@@ -39,6 +39,8 @@ namespace Adam.UI.Level_Editor
             playButton.MouseClicked += LevelEditor.TestLevel;
             wallButton.MouseClicked += LevelEditor.ChangeToWallMode;
             expandButton.MouseClicked += Inventory.StartAnimation;
+            brushButton.MouseClicked += BrushButton_MouseClicked;
+            eraserButton.MouseClicked += EraserButton_MouseClicked;
 
             _buttons.Add(wallButton);
             _buttons.Add(playButton);
@@ -48,6 +50,18 @@ namespace Adam.UI.Level_Editor
             _buttons.Add(eraserButton);
             _buttons.Add(undoButton);
             _buttons.Add(optionsButton);
+        }
+
+        private void EraserButton_MouseClicked(Button button)
+        {
+            LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Erase;
+            Cursor.ChangeCursor(Cursor.CursorType.Erase);
+        }
+
+        private void BrushButton_MouseClicked(Button button)
+        {
+            LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Build;
+            Cursor.ChangeCursor(Cursor.CursorType.Build);
         }
 
         /// <summary>

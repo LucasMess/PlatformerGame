@@ -13,6 +13,9 @@ namespace Adam.UI
     {
         Timer gridOpacityTimer = new Timer(true);
 
+        public enum BrushMode { Build, Erase }
+        public BrushMode CurrentBrushMode;
+
         protected int MaxSize
         {
             get

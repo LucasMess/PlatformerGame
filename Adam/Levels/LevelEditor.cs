@@ -113,8 +113,6 @@ namespace Adam.Levels
 
             GameWorld.Player.Health = GameWorld.Player.MaxHealth;
 
-            Cursor.ChangeCursor(Cursor.CursorType.Build);
-
             SoundtrackManager.PlayLevelEditorTheme();
 
             _inventory.Update();
@@ -325,14 +323,16 @@ namespace Adam.Levels
                 {
                     lastAddedTile = IndexOfMouse;
                     lastRemovedTile = -1;
-                    UpdateSelectedTiles(SelectedId);
+                    if (Brush.CurrentBrushMode == Brush.BrushMode.Build)
+                        UpdateSelectedTiles(SelectedId);
+                    else UpdateSelectedTiles(0);
                 }
-                else if (InputHelper.IsRightMousePressed() && lastRemovedTile != IndexOfMouse)
-                {
-                    lastRemovedTile = IndexOfMouse;
-                    lastAddedTile = -1;
-                    UpdateSelectedTiles(0);
-                }
+                //else if (InputHelper.IsRightMousePressed() && lastRemovedTile != IndexOfMouse)
+                //{
+                //    lastRemovedTile = IndexOfMouse;
+                //    lastAddedTile = -1;
+                //    UpdateSelectedTiles(0);
+                //}
                 else if (InputHelper.IsMiddleMousePressed())
                 {
                     SelectedId = (TileType)WorldDataIds[IndexOfMouse];
