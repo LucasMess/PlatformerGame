@@ -2,6 +2,7 @@
 using Adam.Levels;
 using Adam.Misc.Helpers;
 using Adam.UI;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -135,6 +136,8 @@ namespace Adam.Graphics
 
             AdamGame.MessageBox.Draw(_spriteBatch);
             AdamGame.TextInputBox.Draw(_spriteBatch);
+
+            Cursor.Draw(_spriteBatch);
 
             _spriteBatch.End();
         }

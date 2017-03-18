@@ -113,6 +113,8 @@ namespace Adam.Levels
 
             GameWorld.Player.Health = GameWorld.Player.MaxHealth;
 
+            Cursor.ChangeCursor(Cursor.CursorType.Build);
+
             SoundtrackManager.PlayLevelEditorTheme();
 
             _inventory.Update();

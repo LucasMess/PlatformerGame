@@ -6,6 +6,7 @@ using Adam.Misc.Helpers;
 using Adam.Network;
 using Adam.PlayerCharacter;
 using Adam.UI;
+using Adam.UI.Elements;
 using Adam.UI.Information;
 using Adam.UI.Level_Editor;
 using Microsoft.Xna.Framework;
@@ -246,15 +247,9 @@ namespace Adam
                 _frameRateTimer = 0;
             }
 
-            switch (CurrentGameState)
-            {
-                case GameState.MainMenu:
-                    IsMouseVisible = true;
-                    break;
-                case GameState.GameWorld:
-                    IsMouseVisible = true;
-                    break;
-            }
+            IsMouseVisible = false;
+
+            Cursor.Update();
 
             MessageBox.Update();
             if (MessageBox.IsActive)

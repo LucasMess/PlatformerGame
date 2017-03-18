@@ -7,6 +7,7 @@ using Adam.Network;
 using Adam.Particles;
 using Adam.PlayerCharacter;
 using Adam.Projectiles;
+using Adam.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -358,6 +359,7 @@ namespace Adam.Levels
         {
             if (AdamGame.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
+
         }
 
         public static void ResetWorld()
