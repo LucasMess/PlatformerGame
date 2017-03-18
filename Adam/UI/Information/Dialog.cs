@@ -37,17 +37,21 @@ namespace Adam.UI.Information
         private int _letterPopResetTime = 30;
         private string _nextDialogCode;
         private string _partialText = "";
-        Container container;
+        Container _dialogueContainer;
+        Container _optionsContainer;
 
         /// <summary>
         ///     Displays text in dialog format to the player and lets them choose a response.
         /// </summary>
         public Dialog()
         {
-            container = new Container(850, 150);
-            container.SetPosition(AdamGame.DefaultUiWidth / 2 - container.Size.X/2, 40);
+            _dialogueContainer = new Container(850, 150);
+            _dialogueContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _dialogueContainer.Size.X/2, 40);
 
-            var origin = new Vector2(container.Size.X/2f, container.Size.Y / 2f);
+            _optionsContainer = new Container(850, 150);
+            _optionsContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _optionsContainer.Size.X / 2, AdamGame.DefaultUiHeight - 200);
+
+            var origin = new Vector2(_dialogueContainer.Size.X/2f, _dialogueContainer.Size.Y / 2f);
 
             _font = ContentHelper.LoadFont("Fonts/x16");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
@@ -82,7 +86,7 @@ namespace Adam.UI.Information
             }
 
             _nextDialogCode = nextDialogCode;
-            _dialogOptions = new DialogOptions(options, _font, (int)container.Size.X - 60);
+            _dialogOptions = new DialogOptions(options, _font, (int)_optionsContainer.Size.X - 60);
             Prepare(text);
         }
 
@@ -93,7 +97,7 @@ namespace Adam.UI.Information
         private void Prepare(string text)
         {
             IsActive = true;
-            _fullText = FontHelper.WrapText(_font, text, (int)container.Size.X - 60);
+            _fullText = FontHelper.WrapText(_font, text, (int)_dialogueContainer.Size.X - 60);
             _skipTimer.Reset();
             _letterPopTimer.Reset();
             _partialText = "";
@@ -201,9 +205,9 @@ namespace Adam.UI.Information
             if (IsActive)
             {
                 // Drawing for non-player dialog box.
-                container.Draw(spriteBatch);
+                _dialogueContainer.Draw(spriteBatch);
                 spriteBatch.DrawString(_font, _partialText,
-                    new Vector2(container.GetPosition().X + 30, container.GetPosition().Y + 30),
+                    new Vector2(_dialogueContainer.GetPosition().X + 30, _dialogueContainer.GetPosition().Y + 30),
                     Color.Black);
 
                 if (!IsWritingText())
@@ -212,14 +216,15 @@ namespace Adam.UI.Information
                     //spriteBatch.Draw(GameWorld.UiSpriteSheet, _playerDialogBox, _dialogBoxSourceRectangle, Color.White);
                     if (_dialogOptions.Count > 0)
                     {
-                        _dialogOptions.Draw(spriteBatch, _font, (int)container.GetPosition().X + (int)container.Size.X/2, (int)container.GetPosition().Y + 30);
+                        _optionsContainer.Draw(spriteBatch);
+                        _dialogOptions.Draw(spriteBatch, _font, (int)_optionsContainer.GetPosition().X + (int)_optionsContainer.Size.X/2, (int)_optionsContainer.GetPosition().Y + 30);
                     }
                     else
                     {
                         // Displays default text to continue if there are no options.
                         string text = "Press space to continue";
                         spriteBatch.DrawString(_font, text,
-                            new Vector2((int)container.GetPosition().X + (int)container.Size.X - _font.MeasureString(text).X - 5, (int)container.GetPosition().Y + (int)container.Size.Y - 30),
+                            new Vector2((int)_dialogueContainer.GetPosition().X + (int)_dialogueContainer.Size.X - _font.MeasureString(text).X - 5, (int)_dialogueContainer.GetPosition().Y + (int)_dialogueContainer.Size.Y - 30),
                             Color.Black);
                     }
                 }
