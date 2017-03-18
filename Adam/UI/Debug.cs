@@ -123,6 +123,10 @@ namespace Adam
                                 if (bool.TryParse(commands[2], out value))
                                     GameWorld.WorldData.IsRaining = value;
                                 break;
+                            case "soundtrack":
+                                if (int.TryParse(commands[2], out number))
+                                    GameWorld.WorldData.SoundtrackId = (byte)number;
+                                break;
                         }
 
                         break;
