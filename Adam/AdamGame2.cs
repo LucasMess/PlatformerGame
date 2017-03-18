@@ -18,6 +18,7 @@ using Steamworks;
 using System;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 using MessageBox = Adam.UI.MessageBox;
 
 namespace Adam
@@ -101,6 +102,8 @@ namespace Adam
             Content = new ContentManager(Services, "Content");
             GameData = new GameDataManager();
 
+            Window.IsBorderless = true;
+
 
             DataFolder.Initialize();
             SettingsFile settings = DataFolder.GetSettingsFile();
@@ -118,22 +121,6 @@ namespace Adam
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = false;
             IsFixedTimeStep = true;
-
-            // Set window to borderless.
-            //            var hWnd = Window.Handle;
-            //            var control = Control.FromHandle(hWnd);
-            //            var form = control.FindForm();
-            //#pragma warning disable
-            //            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            //            if (IsTestingMultiplayer)
-            //            {
-            //                form.WindowState = FormWindowState.Normal;
-            //            }
-            //            // ReSharper disable once PossibleNullReferenceException
-            //            form.FormBorderStyle = FormBorderStyle.None;
-            //            form.WindowState = FormWindowState.Maximized;
-            //#pragma warning restore
-
 
             _graphics.ApplyChanges();
 
@@ -249,7 +236,7 @@ namespace Adam
 
             IsMouseVisible = false;
 
-            Cursor.Update();
+            UI.Elements.Cursor.Update();
 
             MessageBox.Update();
             if (MessageBox.IsActive)

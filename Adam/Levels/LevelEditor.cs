@@ -83,25 +83,6 @@ namespace Adam.Levels
 
         }
 
-        //private void EntityScroll_TileSelected(TileSelectedArgs e)
-        //{
-        //    if (e.Id != SelectedId)
-        //    {
-        //        _select.Reset();
-        //        _select.PlayNewInstanceOnce();
-        //        SelectedId = (byte) e.Id;
-        //    }
-        //}
-
-        //private void TileScroll_TileSelected(TileSelectedArgs e)
-        //{
-        //    if (e.Id != SelectedId)
-        //    {
-        //        _select.Reset();
-        //        _select.PlayNewInstanceOnce();
-        //        SelectedId = (byte) e.Id;
-        //    }
-        //}
 
         /// <summary>
         /// Updates all UI components and checks for input.
@@ -319,20 +300,43 @@ namespace Adam.Levels
                 if (InputHelper.IsLeftMousePressed() && InputHelper.IsRightMousePressed())
                     return;
 
-                if (InputHelper.IsLeftMousePressed() && lastAddedTile != IndexOfMouse)
+                if (InputHelper.IsLeftMousePressed())
                 {
-                    lastAddedTile = IndexOfMouse;
-                    lastRemovedTile = -1;
-                    if (Brush.CurrentBrushMode == Brush.BrushMode.Build)
+                    OnWallMode = false;
+                    if (Brush.CurrentBrushMode == Brush.BrushMode.Build && lastAddedTile != IndexOfMouse)
+                    {
+                        lastAddedTile = IndexOfMouse;
+                        lastRemovedTile = -1;
                         UpdateSelectedTiles(SelectedId);
-                    else UpdateSelectedTiles(0);
+                    }
+                    else if (Brush.CurrentBrushMode == Brush.BrushMode.Erase && lastRemovedTile != IndexOfMouse)
+                    {
+                        lastRemovedTile = IndexOfMouse;
+                        lastAddedTile = -1;
+                        UpdateSelectedTiles(0);
+                    }
                 }
-                //else if (InputHelper.IsRightMousePressed() && lastRemovedTile != IndexOfMouse)
-                //{
-                //    lastRemovedTile = IndexOfMouse;
-                //    lastAddedTile = -1;
-                //    UpdateSelectedTiles(0);
-                //}
+                if (InputHelper.IsRightMousePressed())
+                {
+                    OnWallMode = true;
+                    if (Brush.CurrentBrushMode == Brush.BrushMode.Build && lastAddedTile != IndexOfMouse)
+                    {
+                        // Entities cannot be placed in wall mode.
+                        if ((int)SelectedId < 200)
+                        {
+                            lastAddedTile = IndexOfMouse;
+                            lastRemovedTile = -1;
+                            UpdateSelectedTiles(SelectedId);
+                        }
+                    }
+                    else if (Brush.CurrentBrushMode == Brush.BrushMode.Erase && lastRemovedTile != IndexOfMouse)
+                    {
+                        lastRemovedTile = IndexOfMouse;
+                        lastAddedTile = -1;
+                        UpdateSelectedTiles(0);
+                    }
+                }
+
                 else if (InputHelper.IsMiddleMousePressed())
                 {
                     SelectedId = (TileType)WorldDataIds[IndexOfMouse];

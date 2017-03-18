@@ -16,6 +16,9 @@ namespace Adam.UI.Level_Editor
         private readonly Texture2D _texture;
         private readonly List<IconButton> _buttons = new List<IconButton>();
 
+        IconButton brushButton;
+        IconButton eraserButton;
+
         public ButtonBar()
         {
             _texture = GameWorld.UiSpriteSheet;
@@ -26,10 +29,10 @@ namespace Adam.UI.Level_Editor
             _drawRectangle.X = AdamGame.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
 
             // Buttons cannot be called individually outside the constructor.
-            var brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);
+            brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);
             brushButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
-            var eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
+            eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
             eraserButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
             var undoButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Undo", ButtonImage.Undo);
@@ -92,6 +95,12 @@ namespace Adam.UI.Level_Editor
             {
                 button.Update();
             }
+
+            if (GameWorld.GetPlayer().IsBrushButtonPressed())
+                BrushButton_MouseClicked(brushButton);
+            if (GameWorld.GetPlayer().IsEraserButtonPressed())
+                EraserButton_MouseClicked(eraserButton);
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

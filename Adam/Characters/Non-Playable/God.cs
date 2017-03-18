@@ -27,6 +27,53 @@ namespace Adam.Noobs
 
         protected override void ShowDialog()
         {
+            /*
+             * How dialog formatting is going to work:
+             * 
+             * Every level has a folder with a .lvl file and a .dlg file.
+             * At level load, the .dlg file is read and each entry is put into a dictionary.
+             * This means that each dialogue text has a unique key.
+             * 
+             * [key] : [Dialogue]
+             * 
+             * Inside the Dialogue there will be the following attributes:
+             *      [Character] : the character that is speaking.
+             *      [text] : the text to be shown.
+             *      [next] : the next dialogue to be shown, if there are options, null.
+             *      [DialogOptions] : a class for the options.
+             *      
+             *      DialogOptions:
+             *          [option-n] : text for option n (n can be up to 4?)
+             *          [next-n] : the next key if option n is chosen.
+             *          
+             * Example of a .dlg file:
+             * 
+             * "2999" : {
+	                "character" : "god",
+	                "text" : "Hello! How are you doing?",
+	                "next" : 2922,
+                }
+
+              "2922" : {
+	                "character" : "god",
+	                "text" : "I don't care, let's get started.",
+	                "next" : null,
+	                "options" : {
+		                "1" : {
+			                "text" : "Why are you so rude?",
+			                "next" : "277",
+		                },
+		                "2" : {
+			                "text" : "lmao",
+			                "next" : "255"
+		                }
+	                }
+                }
+             * 
+             * 
+             */
+            
+            
             if (!AdamGame.LevelProgression.HasStartedMainQuest)
             {
                 Say("You are finally awake!.", "god-mainstory-1", new[] { "What are you talking about?", "What are you cooking there?" });

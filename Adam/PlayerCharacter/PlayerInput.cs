@@ -291,5 +291,15 @@ namespace Adam.PlayerCharacter
         {
             return InputHelper.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
         }
+
+        public bool IsBrushButtonPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.B) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+        }
+
+        public bool IsEraserButtonPressed()
+        {
+            return InputHelper.IsKeyDown(Keys.N) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+        }
     }
 }
