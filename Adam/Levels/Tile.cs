@@ -1681,7 +1681,7 @@ namespace Adam
                 midRight.Equals(mid) &&
                 bot.Equals(mid))
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1693,7 +1693,7 @@ namespace Adam
                 midLeft.Equals(mid) &&
                 bot.Equals(mid))
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1705,7 +1705,7 @@ namespace Adam
                 midLeft.Equals(mid) &&
                 top.Equals(mid))
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
@@ -1717,7 +1717,7 @@ namespace Adam
                 midRight.Equals(mid) &&
                 top.Equals(mid))
             {
-                var corner = new Tile();
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
                 corner.Id = mid.Id;
                 corner.DrawRectangle = DrawRectangle;
                 corner.Texture = Texture;
