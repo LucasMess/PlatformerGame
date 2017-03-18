@@ -103,7 +103,7 @@ namespace Adam
             {
                 player.IsJumping = true;
 
-                if (player.GetVelocity().Y > 10)
+                if (player.GetVelocity().Y > 6)
                     player.AddAnimationToQueue("fall");
             }
 

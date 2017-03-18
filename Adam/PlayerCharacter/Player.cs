@@ -67,7 +67,7 @@ namespace Adam.PlayerCharacter
             _complexAnimation.AddAnimationData("duck",
                 new ComplexAnimData(156, fallStandTexture, new Rectangle(15, 7, 12, 66), 40, 45, 40, 125, 3, false));
             _complexAnimation.AddAnimationData("jump",
-                new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 125, 4, false));
+                new ComplexAnimData(200, edenTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 250, 4, false));
             _complexAnimation.AddAnimationData("climb",
                 new ComplexAnimData(900, edenTexture, new Rectangle(6, 7, 12, 66), 160, 24, 40, 75, 4, true));
             _complexAnimation.AddAnimationData("fall",
