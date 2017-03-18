@@ -12,6 +12,8 @@ namespace Adam.UI
     /// </summary>
     public abstract class Button
     {
+        public static Color BrightRed = new Color(255, 80, 80);
+
         public delegate void EventHandler();
 
         private bool _mouseIsOver;

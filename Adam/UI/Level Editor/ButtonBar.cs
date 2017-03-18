@@ -27,14 +27,27 @@ namespace Adam.UI.Level_Editor
 
             // Buttons cannot be called individually outside the constructor.
             var brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);
+            brushButton.ChangeColors(new Color(95, 95, 95), Color.White);
+
             var eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
+            eraserButton.ChangeColors(new Color(95, 95, 95), Color.White);
+
             var undoButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Undo", ButtonImage.Undo);
+            undoButton.ChangeColors(new Color(95, 95, 95), Color.White);
+
             var wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
+            wallButton.ChangeColors(new Color(95, 95, 95), Color.White);
+
             var expandButton = new IconButton(new Vector2(293 * 2, 17 * 2), _drawRectangle, "More tiles", ButtonImage.Expand);
+
             var playButton = new IconButton(new Vector2(336 * 2, 11 * 2), _drawRectangle, "Play test level", ButtonImage.Play);
+
             var deleteButton = new IconButton(new Vector2(318 * 2, 11 * 2), _drawRectangle, "Reset level", ButtonImage.Delete);
+            deleteButton.ChangeColors(new Color(205, 205, 205), new Color(95, 95, 95));
+
             var optionsButton = new IconButton(new Vector2(354 * 2, 11 * 2), _drawRectangle, "More options",
                 ButtonImage.Settings);
+            optionsButton.ChangeColors(new Color(205,205,205), new Color(95, 95, 95));
 
             playButton.MouseClicked += LevelEditor.TestLevel;
             wallButton.MouseClicked += LevelEditor.ChangeToWallMode;

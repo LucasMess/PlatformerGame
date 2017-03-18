@@ -37,9 +37,12 @@ namespace Adam.UI.Elements
         private readonly Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
         private readonly ButtonImage _buttonImage;
         private readonly string _hoverText;
-        private BitmapFont _font;
-        private Rectangle _shadowSource = new Rectangle(128, 25, 16, 6);
+        private static BitmapFont _font;
+        private static Rectangle _shadowSource = new Rectangle(128, 25, 16, 6);
+        private static Rectangle _circleSource = new Rectangle(32,48,16,16);
         private bool _showHoverText;
+        private Color _circleColor = Button.BrightRed;
+        private Color _imageColor = Color.White;
 
         public IconButton(Vector2 position, Rectangle box, string hoverText, ButtonImage buttonImage)
         {
@@ -130,6 +133,17 @@ namespace Adam.UI.Elements
         }
 
         /// <summary>
+        /// Change the colors of this icon button to the given colors.
+        /// </summary>
+        /// <param name="circleColor"></param>
+        /// <param name="imageColor"></param>
+        public void ChangeColors(Color circleColor, Color imageColor)
+        {
+            _circleColor = circleColor;
+            _imageColor = imageColor;
+        }
+
+        /// <summary>
         /// Checks for button events and special interactions.
         /// </summary>
         public override void Update()
@@ -153,6 +167,7 @@ namespace Adam.UI.Elements
             switch (_buttonImage)
             {
                 default:
+                    spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, _circleSource, _circleColor);
                     spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, SourceRectangle, CurrentColor);
                     spriteBatch.Draw(GameWorld.UiSpriteSheet,
                         new Rectangle(CollRectangle.X, CollRectangle.Y + 11 * 2,
