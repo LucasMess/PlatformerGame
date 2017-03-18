@@ -133,6 +133,7 @@
     <Compile Include="Interactables\PlayerDetector.cs" />
     <Compile Include="Interactables\BackgroundDoor.cs" />
     <Compile Include="Interactables\Sign.cs" />
+    <Compile Include="Interactables\Spikes.cs" />
     <Compile Include="Interactables\Teleporter.cs" />
     <Compile Include="Interactables\Torch.cs" />
     <Compile Include="Levels\Background.cs" />

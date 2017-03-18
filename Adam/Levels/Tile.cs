@@ -315,6 +315,7 @@ namespace Adam
                     break;
                 case TileType.Spikes: //spikes
                     _positionInSpriteSheet = new Vector2(17, 13);
+                    Interactable = new Spikes();
                     LetsLightThrough = true;
                     break;
                 case TileType.Water: //water
