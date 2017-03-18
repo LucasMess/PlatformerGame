@@ -700,9 +700,15 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.ReinforcedWood:
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(32, 14);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case TileType.FutureBrick:
+                    CurrentBorderType = BorderType.BorderAlways;
+                    IsSolid = true;
+                    startingPoint = new Vector2(36, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 
@@ -813,6 +819,12 @@ namespace Adam
                     _hasConnectPattern = true;
                     IsSolid = true;
                     startingPoint = new Vector2(28, 14);
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
+                    break;
+                case TileType.ReinforcedWoodWall:
+                    CurrentBorderType = BorderType.BorderAlways;
+                    IsSolid = true;
+                    startingPoint = new Vector2(36, 14);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
 

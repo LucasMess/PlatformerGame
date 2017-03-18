@@ -82,6 +82,7 @@
             SapphireVase,
             MushroomDecor,
             ReinforcedWood,
+            FutureBrick,
 
 
             GoldBrickWall = 100,
@@ -98,6 +99,7 @@
             TreeOfKnowledge,
             LightYellowPaint,
             MosaicWall,
+            ReinforcedWoodWall,
 
             Player = 200,
             Snake,

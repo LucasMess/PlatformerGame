@@ -63,6 +63,7 @@ namespace Adam.UI.Level_Editor
             TileType.CompressedVoid, // Void Tile
             TileType.Hellrock, // Hellrock
             TileType.GoldBrick, // Gold Brick
+            TileType.FutureBrick,
             TileType.Metal, // Metal
             TileType.SteelBeam,
             TileType.Scaffolding, // Scaffolding
@@ -131,6 +132,7 @@ namespace Adam.UI.Level_Editor
             TileType.RedWallpaper, // Wallpaper
             TileType.LightYellowPaint,
             TileType.GoldBrickWall, // Gold Brick Wall
+            TileType.ReinforcedWoodWall,
             TileType.HellstoneWall, // Hellstone Wall
             TileType.Fence, // Fence
             TileType.Nothing, // Black
