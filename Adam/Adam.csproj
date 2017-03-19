@@ -146,7 +146,7 @@
     <Compile Include="Levels\Light.cs" />
     <Compile Include="Levels\LightingEngine.cs" />
     <Compile Include="Levels\PlayerSpawn.cs" />
-    <Compile Include="Levels\StoryMode.cs" />
+    <Compile Include="Levels\StoryTracker.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\TileDefinitions.cs" />
     <Compile Include="Levels\Weather.cs" />
@@ -224,7 +224,7 @@
     <Compile Include="UI\LevelSelection.cs" />
     <Compile Include="UI\LoadingScreen.cs" />
     <Compile Include="UI\MainMenu\LevelGrid.cs" />
-    <Compile Include="UI\MainMenu\StoryMode.cs" />
+    <Compile Include="UI\MainMenu\SaveSelector.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\OptionsMenu.cs" />
     <Compile Include="UI\Overlay.cs" />
@@ -254,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Adam_TemporaryKey.pfx" />
+    <None Include="Content\Levels\GreenHills01.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Steamworks.NET.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

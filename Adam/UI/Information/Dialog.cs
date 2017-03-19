@@ -172,7 +172,10 @@ namespace Adam.UI.Information
                 {
                     if (pauseChar == nextLetter)
                     {
-                        _letterPopResetTime = 200;
+                        _letterPopResetTime = 400;
+                        _letterPopTimer.Reset();
+                        _letterPopSound.PlayNewInstanceOnce();
+                        _letterPopSound.Reset();
                         isPause = true;
                         break;
                     }

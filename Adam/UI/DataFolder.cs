@@ -1,4 +1,6 @@
 ﻿using Adam.GameData;
+using Adam.Levels;
+using Adam.UI.MainMenu;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,9 +48,10 @@ namespace Adam.UI
                 Directory.CreateDirectory(specificFolder);
             LevelDirectory = specificFolder;
 
-            // Check if the Settings folder exists or creates it.
-            specificFolder = MainDirectory;
-            specificFolder = Path.Combine(MainDirectory, "Settings");
+            // Check if Profiles folder exists or creates it.
+            specificFolder = Path.Combine(MainDirectory, "Profiles");
+            if (!Directory.Exists(specificFolder))
+                Directory.CreateDirectory(specificFolder);
 
         }
 
@@ -144,6 +147,66 @@ namespace Adam.UI
             }
         }
 
+
+        public static PlayerProfile GetPlayerProfile(int number)
+        {
+            string filePath = MainDirectory + "/Profiles/save" + number + ".xml";
+
+            PlayerProfile profile = new PlayerProfile();
+
+            if (File.Exists(filePath))
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(PlayerProfile));
+                try
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                    {
+                        profile = (PlayerProfile)xs.Deserialize(fs);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    AdamGame.MessageBox.Show("Save is corrupt.");
+                    throw;
+                }
+            }
+            else
+            {
+                // Creates the file for the save.
+                XmlSerializer xs = new XmlSerializer(typeof(PlayerProfile));
+                using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
+                {
+                    xs.Serialize(fs, profile);
+                }
+            }
+
+            return profile;
+        }
+
+        /// <summary>
+        /// Saves that is currently loaded using the save selector.
+        /// </summary>
+        public static void SaveProfile()
+        {
+            int saveNumber = SaveSelector.ActiveSave;
+            if (saveNumber == -1)
+            {
+                Console.WriteLine("No save file is loaded.");
+                return;
+            }
+            PlayerProfile profile = StoryTracker.Profile;
+            XmlSerializer xs = new XmlSerializer(typeof(PlayerProfile));
+
+            string path = MainDirectory + "/Profiles/save" + saveNumber + ".xml";
+
+            File.Delete(path);
+
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                xs.Serialize(fs, profile);
+            }
+        }
+
         /// <summary>
         /// Attempts to create a new world.
         /// </summary>
@@ -225,7 +288,7 @@ namespace Adam.UI
         public static void PlayStoryLevel(string levelName)
         {
             string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
-            PlayLevel(basePath + "/Content/Levels/" + levelName);
+            PlayLevel(basePath + "/Content/Levels/" + levelName + ".lvl");
         }
 
         /// <summary>

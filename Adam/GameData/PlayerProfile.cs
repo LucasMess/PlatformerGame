@@ -9,9 +9,13 @@ namespace Adam.GameData
     [Serializable]
     public class PlayerProfile
     {
-        public int CurrentLevel = 0;
+        public string CurrentLevel = "GreenHills01";
 
-        // Garden of Eden
+        public bool HasPlayedTutorial = true;
+
+        // Green Hills
+
+        // Eden
         public bool HasRetrievedMap = false;
         public bool HasStartedMainQuest = false;
         public bool HasStartedCharlieCollectingQuest = false;

@@ -19,10 +19,9 @@ namespace Adam.Characters
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
-        protected override void ShowDialog()
+        public override void ShowDialog(string code, int optionChosen)
         {
             Say("Is this Diagon Alley?",null,null);
-            base.ShowDialog();
         }
 
         private void Dialog_NextDialog(string code, int optionChosen)

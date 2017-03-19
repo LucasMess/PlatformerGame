@@ -48,8 +48,6 @@ namespace Adam
         static bool _isSongPlaying;
         static BitmapFont _font8, _font32;
 
-        static StoryMode storyMode = new StoryMode();
-
         static LevelSelection _levelSelection;
 
         public enum MenuState { Main, Options, LevelSelector, MultiplayerLobby, MultiplayerSession, StoryMode }
@@ -129,6 +127,7 @@ namespace Adam
             }
 
             _levelSelection = new LevelSelection();
+            SaveSelector.Initialize();
         }
 
         private static void StartMultiplayerGame_MouseClicked(Button button)
@@ -275,7 +274,7 @@ namespace Adam
                     _storyModeButton.Update();
                     break;
                 case MenuState.StoryMode:
-                    storyMode.Update();
+                    SaveSelector.Update();
                     break;
                 case MenuState.LevelSelector:
                     _levelSelection.Update();
@@ -314,7 +313,7 @@ namespace Adam
                     _storyModeButton.Draw(spriteBatch);
                     break;
                 case MenuState.StoryMode:
-                    storyMode.Draw(spriteBatch);
+                    SaveSelector.Draw(spriteBatch);
                     break;
                 case MenuState.LevelSelector:
                     _levelSelection.Draw(spriteBatch);

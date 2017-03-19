@@ -65,7 +65,6 @@ namespace Adam
         public static readonly Random Random = new Random();
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDeviceInstance;
-        public static PlayerProfile LevelProgression = new PlayerProfile();
         public static Camera Camera;
         private static GameState _desiredGameState;
         private static Thread _reloadThread;
@@ -313,6 +312,12 @@ namespace Adam
                     if (!TimeFreeze.IsTimeFrozen())
                         GameWorld.UpdateWorld();
                     GameWorld.UpdateVisual();
+
+
+                    if (StoryTracker.IsInStoryMode)
+                    {
+                        StoryTracker.Update();
+                    }
                     break;
             }
 

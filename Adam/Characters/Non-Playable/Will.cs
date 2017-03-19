@@ -19,11 +19,6 @@ namespace Adam.Characters
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
-        protected override void ShowDialog()
-        {
-            Say("Hey..... can you leave.... please?", "will-whatiswrong-1", new[] { "Is there something wrong?", "Ok..." });
-            base.ShowDialog();
-        }
 
         private void Dialog_NextDialog(string code, int optionChosen)
         {

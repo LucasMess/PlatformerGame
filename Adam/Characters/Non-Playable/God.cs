@@ -1,4 +1,5 @@
 ﻿using Adam.Characters;
+using Adam.Levels;
 using Adam.Misc;
 using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
@@ -25,7 +26,7 @@ namespace Adam.Noobs
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
 
-        protected override void ShowDialog()
+        public override void ShowDialog(string code, int optionChosen)
         {
             /*
              * How dialog formatting is going to work:
@@ -74,7 +75,7 @@ namespace Adam.Noobs
              */
             
             
-            if (!AdamGame.LevelProgression.HasStartedMainQuest)
+            if (!StoryTracker.Profile.HasStartedMainQuest)
             {
                 Say("You are finally awake!.", "god-mainstory-1", new[] { "What are you talking about?", "What are you cooking there?" });
             }
@@ -131,7 +132,7 @@ namespace Adam.Noobs
                     break;
                 case "god-mainstory-5":
                     Say("Be very careful with it.\nNow Go!",null,null);
-                    AdamGame.LevelProgression.HasStartedMainQuest = true;
+                    StoryTracker.Profile.HasStartedMainQuest = true;
                     break;
             }
         }

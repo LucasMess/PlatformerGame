@@ -111,14 +111,14 @@ namespace Adam.Characters
             Player player = GameWorld.Player;
             if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
             {
-                _npc.ShowDialog();
+                _npc.ShowDialog(null, 0);
             }
         }
 
         /// <summary>
         /// Makes the NPC say whatever it has to say and plays talk aniamtion.
         /// </summary>
-        protected virtual void ShowDialog()
+        public virtual void ShowDialog(string code, int optionChosen)
         {
             //TODO: Add talking animation.
             //ComplexAnim.AddToQueue("talk");

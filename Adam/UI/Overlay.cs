@@ -68,7 +68,7 @@ namespace Adam.UI
         private static class BlackFade
         {
             private static bool _isActive = false;
-            private static bool _isFadingIn = false;
+            private static bool _isFadingIn = true;
             private static float _opacity = 0f;
             private const float MaxOpacity = 1f;
             private const float MinOpacity = 0f;
@@ -137,6 +137,11 @@ namespace Adam.UI
             {
                 _speed = speed;
                 _isFadingIn = false;
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, AdamGame.DefaultUiWidth, AdamGame.DefaultUiHeight), Color.Black * _opacity);
             }
         }
 
@@ -309,6 +314,7 @@ namespace Adam.UI
         {
             WhiteFlash.Update();
             RewindEffect.Update();
+            BlackFade.Update();
             Heart.Update(GameWorld.GetPlayer());
             Coin.Update(GameWorld.GetPlayer());
         }
@@ -316,6 +322,16 @@ namespace Adam.UI
         public static void FlashWhite()
         {
             WhiteFlash.Start();
+        }
+
+        public static void FadeToBlack()
+        {
+            BlackFade.FadeOut();
+        }
+
+        public static void FadeIn()
+        {
+            BlackFade.FadeIn();
         }
 
         public static void ActivateRewindEffect()
@@ -342,6 +358,8 @@ namespace Adam.UI
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);
             }
+
+            BlackFade.Draw(spriteBatch);
         }
 
         public static void DrawRipples(SpriteBatch spriteBatch)

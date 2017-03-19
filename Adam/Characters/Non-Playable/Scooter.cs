@@ -18,11 +18,6 @@ namespace Adam.Characters
             AddAnimationToQueue("still");
             AdamGame.Dialog.NextDialog += Dialog_NextDialog;
         }
-        protected override void ShowDialog()
-        {
-            Say("You see thosee clouds over there? I will be the first person to ever reach them! Momma will let me do anything I want after that.", null, null);
-            base.ShowDialog();
-        }
 
         private void Dialog_NextDialog(string code, int optionChosen)
         {
