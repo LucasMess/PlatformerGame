@@ -32,6 +32,8 @@ namespace Adam.Network
         public const int BB_Ready = 1;
         public const int BB_StartTime = 2;
         public const int BB_TileIdChange = 3;
+        public const int BB_AllEntities = 4;
+        public const int BB_EntityUpdate = 5;
 
         public static bool IsWaitingForOtherPlayers { get; set; }
 
@@ -149,6 +151,12 @@ namespace Adam.Network
                                 Packet.TileIdChange packet = (Packet.TileIdChange)CalcHelper.ConvertToObject(pubDest);
                                 LevelEditor.UpdateTileFromP2P(packet);
                                 break;
+                            case BB_AllEntities:
+                                UpdateEntities(pubDest);
+                                break;
+                            case BB_EntityUpdate:
+                                UpdateEntities(pubDest);
+                                break;
                         }
 
                         // Relay message to others.
@@ -163,6 +171,29 @@ namespace Adam.Network
 
 
                 }
+            }
+        }
+
+        public static void SendEntityUpdates()
+        {
+            List<EntityPacket> packets = new List<EntityPacket>();
+            foreach (var entity in GameWorld.GetAllEntities())
+            {
+                EntityPacket packet = new EntityPacket(entity.Id, entity);
+                packets.Add(packet);
+            }
+            byte[] data = CalcHelper.ToByteArray(packets.ToArray());
+            Send(data, EP2PSend.k_EP2PSendReliable, BB_EntityUpdate);
+        }
+
+        private static void UpdateEntities(byte[] data)
+        {
+            LoadingScreen.LoadingText = "Receiving entity data";
+
+            EntityPacket[] packets = (EntityPacket[])CalcHelper.ConvertToObject(data);
+            foreach (var packet in packets)
+            {
+                packet.UpdateEntityInGameWorld();
             }
         }
 

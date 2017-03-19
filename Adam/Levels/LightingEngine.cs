@@ -92,6 +92,14 @@ namespace Adam.Levels
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                              GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Green);
             }
+            else if (tile.Id == TileType.LampPost)
+            {
+                _lights[ind] = new Light(new Vector2(tile.GetDrawRectangle().Top + 32, tile.GetDrawRectangle().Center.Y), 15, Color.Orange);
+            }
+            else if (tile.Id == TileType.WallLamp)
+            {
+                _lights[ind] = new Light(new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Top + 32), 15, Color.Orange);
+            }
             else
             {
                 _lights[ind].IsLightSource = false;
@@ -216,7 +224,7 @@ namespace Adam.Levels
             int[] indices = GetIndicesOfAllLightsInRange(i);
             foreach (var ind in indices)
             {
-                if (ind < 0 || ind >= _lights.Length) return;
+                if (ind < 0 || ind >= _lights.Length) continue;
                 ResetLightAt(ind);
             }
 

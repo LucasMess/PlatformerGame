@@ -8,7 +8,8 @@ namespace Adam.Characters
 
         public override void Update()
         {
-            Behavior?.Update(this);
+            if (Session.IsHost)
+                Behavior?.Update(this);
             base.Update();
         }
 

@@ -712,6 +712,20 @@ namespace Adam
                     startingPoint = new Vector2(36, 19);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case TileType.FireHydrant:
+                    _positionInSpriteSheet = new Vector2(16, 17);
+                    _sizeOfTile.Y = 64;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.LampPost:
+                    _positionInSpriteSheet = new Vector2(554/16, 400/16);
+                    LetsLightThrough = true;
+                    _sizeOfTile.Y = 32 * 5;
+                    break;
+                case TileType.WallLamp:
+                    _positionInSpriteSheet = new Vector2(22, 9);
+                    LetsLightThrough = true;
+                    break;
 
                 #region Wall Textures
 

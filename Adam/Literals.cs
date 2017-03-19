@@ -83,6 +83,10 @@
             MushroomDecor,
             ReinforcedWood,
             FutureBrick,
+            LampPost,
+            WallLamp,
+            FireHydrant,
+            BillBoard,
 
 
             GoldBrickWall = 100,

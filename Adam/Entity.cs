@@ -65,6 +65,11 @@ namespace Adam
         public bool IsDucking { get; set; }
         public bool WantsToMoveDownPlatform { get; set; }
 
+        /// <summary>
+        /// Unique identifier using in multiplayer to update the entity.
+        /// </summary>
+        public string Id { get; set; }
+
         public bool IsInWater { get; set; }
 
         public Timer SwimTimer = new Timer();

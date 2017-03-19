@@ -40,6 +40,7 @@ namespace Adam.Levels
         public static Tile[] WallArray;
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
+        private static Dictionary<string, Entity> _entityDict = new Dictionary<string, Entity>();
 
         /// <summary>
         /// Returns the color data of the spritesheet used for most of the game's textures.
@@ -104,6 +105,11 @@ namespace Adam.Levels
             }
 
             LightingEngine.GenerateLights();
+
+            if (Session.IsHost)
+            {
+                Session.SendEntityUpdates();
+            }
 
             Session.WaitForPlayers();
 
@@ -173,17 +179,6 @@ namespace Adam.Levels
             ParticleSystem.Update();
             Weather.Update();
 
-            if (Session.IsActive)
-            {
-                //if (Session.IsHost)
-                //{
-                //}
-                //else
-                //{
-                //    Session.EntityPacket?.ExtractTo();
-                //}
-            }
-
             if (AdamGame.CurrentGameMode == GameMode.Edit)
             {
                 Player.ComplexAnimation.RemoveAllFromQueue();
@@ -197,8 +192,6 @@ namespace Adam.Levels
                     if (Player.IsTestLevelPressed())
                         LevelEditor.GoBackToEditing();
                 }
-
-
                 UpdateVisual();
             }
 
@@ -265,6 +258,12 @@ namespace Adam.Levels
                     TileArray[tileNumber]?.Update();
                 }
             }
+
+            if (Session.IsHost)
+            {
+                Session.SendEntityUpdates();
+            }
+
         }
 
         public static void DrawWalls(SpriteBatch spriteBatch)
@@ -428,17 +427,22 @@ namespace Adam.Levels
 
         public static void AddEntityAt(int tileIndex, Entity entity)
         {
-            foreach (var e in Entities)
+            // Only add entities during loading if it is host.
+            if (Session.IsHost)
             {
-                // An entity from that tile already exists.
-                if (e.TileIndexSpawn == tileIndex)
+                foreach (var e in Entities)
                 {
-                    return;
+                    // An entity from that tile already exists.
+                    if (e.TileIndexSpawn == tileIndex)
+                    {
+                        return;
+                    }
                 }
-            }
 
-            entity.TileIndexSpawn = tileIndex;
-            Entities.Add(entity);
+                entity.TileIndexSpawn = tileIndex;
+                Guid id = Guid.NewGuid();
+                AddEntity(id.ToString(), entity);
+            }
         }
 
         public static void RemoveEntityAt(int tileIndex)
@@ -452,6 +456,32 @@ namespace Adam.Levels
                     break;
                 }
             }
+        }
+
+        public static Entity[] GetAllEntities()
+        {
+            return Entities.ToArray();
+        }
+
+        public static void SetEntityDictionary(Dictionary<string, Entity> entities)
+        {
+            _entityDict.Clear();
+            _entityDict = entities;
+        }
+
+        public static Entity GetEntityById(string id)
+        {
+            if (_entityDict.ContainsKey(id))
+            {
+                return _entityDict[id];
+            }
+            else return null;
+        }
+
+        public static void AddEntity(string id, Entity entity)
+        {
+            Entities.Add(entity);
+            _entityDict.Add(id, entity);
         }
     }
 }

@@ -51,24 +51,10 @@ namespace Adam.Network
 
         private void ListenForClients()
         {
-            while (IsWaitingForPlayers)
-            {
-                Console.WriteLine("Waiting...");
-                TcpClient newTcpClient = _tcpListener.AcceptTcpClient();
-                Console.WriteLine("A player is attempting to connect to the server...");
-                Client newClient = new Client(this, newTcpClient);
-            }
+
         }
 
-        /// <summary>
-        /// Sends an entity packet to all clients.
-        /// </summary>
-        public void SendEntityPacket()
-        {
-            EntityPacket en = new EntityPacket();
-            byte[] packet = CalcHelper.ToByteArray(en);
-            SendToClients(packet);
-        }
+
 
         /// <summary>
         /// Send a level packet of the specified world config file.

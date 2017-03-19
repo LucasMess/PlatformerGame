@@ -90,6 +90,8 @@ namespace Adam.UI.Level_Editor
         private TileType[] _objects =
         {
             TileType.Torch, // Torch
+            TileType.WallLamp,
+            TileType.LampPost,
             TileType.Chandelier, // Chandelier
             TileType.Door, // Door
             TileType.Chest, // Chest
@@ -100,6 +102,7 @@ namespace Adam.UI.Level_Editor
             TileType.Bed, // Bed
             TileType.Bookshelf, // Bookshelf
             TileType.Painting, // Painting
+            TileType.FireHydrant,
             TileType.EmeraldVase,
             TileType.RubyVase,
             TileType.SapphireVase,
