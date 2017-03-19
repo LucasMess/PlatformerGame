@@ -127,6 +127,17 @@ namespace Adam
                                 if (int.TryParse(commands[2], out number))
                                     GameWorld.WorldData.SoundtrackId = (byte)number;
                                 break;
+                            case "sunlight":
+                                int r, g, b;
+                                if (int.TryParse(commands[2], out r))
+                                    if (int.TryParse(commands[3], out g))
+                                        if (int.TryParse(commands[4], out b))
+                                        {
+                                            GameWorld.WorldData.SunLightColor = new Color(r, g, b);
+                                            LevelEditor.SaveLevel();
+                                            DataFolder.EditLevel(DataFolder.CurrentLevelFilePath);
+                                        }
+                                break;
                         }
 
                         break;

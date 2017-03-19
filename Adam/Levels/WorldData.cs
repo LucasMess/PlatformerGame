@@ -42,6 +42,7 @@ namespace Adam.Levels
         public byte BackgroundId { get; set; }
         public byte SoundtrackId { get; set; }
         public bool IsDarkOutline { get; set; }
+        public Color SunLightColor { get; set; } = Color.White;
 
         public Vector2 SpawnPoint { get; set; }
 

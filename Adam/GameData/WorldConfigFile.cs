@@ -1,5 +1,6 @@
 ﻿using Adam.Levels;
 using Adam.Misc.Databases;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +26,7 @@ namespace Adam.GameData
         public bool IsRaining { get; set; }
         public bool IsSnowing { get; set; }
         public bool IsDarkOutline { get; set; }
+        public Color SunLightColor { get; set; } = Color.White;
 
         public bool CanBeEdited { get; set; } = true;
 
@@ -49,6 +51,7 @@ namespace Adam.GameData
             IsSnowing = false;
             IsRaining = false;
             IsDarkOutline = false;
+            SunLightColor = Color.White;
         }
 
         public void GetDataFromGameWorld()
@@ -98,6 +101,7 @@ namespace Adam.GameData
             IsSnowing = GameWorld.WorldData.IsSnowing;
             HasClouds = GameWorld.WorldData.HasClouds;
             IsDarkOutline = GameWorld.WorldData.IsDarkOutline;
+            SunLightColor = GameWorld.WorldData.SunLightColor;
         }
 
         public void LoadIntoEditor()
@@ -150,6 +154,7 @@ namespace Adam.GameData
             GameWorld.WorldData.IsRaining = IsRaining;
             GameWorld.WorldData.IsSnowing = IsSnowing;
             GameWorld.WorldData.IsDarkOutline = IsDarkOutline;
+            GameWorld.WorldData.SunLightColor = SunLightColor;
 
             GameWorld.WorldData.Song = SoundtrackDb.GetSong(1);
         }
