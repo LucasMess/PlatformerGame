@@ -370,8 +370,8 @@ namespace Adam
                     break;
                 case TileType.Tree: //Tree
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.X = 32*4;
-                    _sizeOfTile.Y = 32*6;
+                    _sizeOfTile.X = 32 * 4;
+                    _sizeOfTile.Y = 32 * 6;
 
                     DrawRectangle.Y = _originalPosition.Y - _sizeOfTile.Y + 32;
                     DrawRectangle.X = _originalPosition.X - _sizeOfTile.X / 2;
@@ -401,7 +401,7 @@ namespace Adam
                     break;
                 case TileType.Checkpoint: //Checkpoint
                     LetsLightThrough = true;
-                    _sizeOfTile.Y = 32*3;
+                    _sizeOfTile.Y = 32 * 3;
                     _sizeOfTile.X = 48;
                     DrawRectangle.X -= 16;
                     _frameCount = new Vector2(15, 0);
@@ -551,7 +551,7 @@ namespace Adam
                     break;
                 case TileType.BackgroundDoor: // Portal.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 3*32;
+                    _sizeOfTile.Y = 3 * 32;
                     _sizeOfTile.X = 64;
                     DrawRectangle.Height = _sizeOfTile.Y;
                     DrawRectangle.Width = _sizeOfTile.X;
@@ -572,13 +572,13 @@ namespace Adam
                 case TileType.Bed: // Bed.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 64;
-                    _sizeOfTile.X = 3*32;
+                    _sizeOfTile.X = 3 * 32;
                     _positionInSpriteSheet = new Vector2(10, 30);
                     LetsLightThrough = true;
                     break;
                 case TileType.Bookshelf: // Bookshelf.
                     _frameCount = new Vector2(1, 0);
-                    _sizeOfTile.Y = 3*32;
+                    _sizeOfTile.Y = 3 * 32;
                     _sizeOfTile.X = 64;
                     _positionInSpriteSheet = new Vector2(13, 30);
                     LetsLightThrough = true;
@@ -591,13 +591,13 @@ namespace Adam
                     LetsLightThrough = true;
                     break;
                 case TileType.TreeofKnowledge: // Tree of Knowledge
-                    _sizeOfTile.X = 50*2;
-                    _sizeOfTile.Y = 25*32;
+                    _sizeOfTile.X = 50 * 2;
+                    _sizeOfTile.Y = 25 * 32;
                     //Texture = ContentHelper.LoadTexture("Tiles/tree of knowledge big");
                     _positionInSpriteSheet = new Vector2(0, 0);
 
                     DrawRectangle.Y = _originalPosition.Y - _sizeOfTile.Y;
-                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X/2;
+                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X / 2;
                     LetsLightThrough = true;
                     break;
                 case TileType.TreeBark: // Tree Bark
@@ -794,12 +794,12 @@ namespace Adam
                     _positionInSpriteSheet = new Vector2(13, 9);
                     break;
                 case TileType.TreeOfKnowledge: // Tree of Knowledge
-                    _sizeOfTile.X = 10*32;
-                    _sizeOfTile.Y = 10*32;
+                    _sizeOfTile.X = 10 * 32;
+                    _sizeOfTile.Y = 10 * 32;
                     _positionInSpriteSheet = new Vector2(24, 5);
 
-                    DrawRectangle.Y = _originalPosition.Y -_sizeOfTile.Y;
-                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X/2;
+                    DrawRectangle.Y = _originalPosition.Y - _sizeOfTile.Y;
+                    DrawRectangle.X = _originalPosition.X - _sizeOfTile.X / 2;
                     break;
                 case TileType.LightYellowPaint:
                     _hasTopAndBottomPattern = true;
@@ -947,8 +947,8 @@ namespace Adam
         {
             //return new Rectangle((int)(startingPosition.X * SmallTileSize), (int)(startingPosition.Y * SmallTileSize), (int)(SmallTileSize * sizeOfTile.X), (int)(SmallTileSize * sizeOfTile.Y));
             SourceRectangle = new Rectangle((int)(_positionInSpriteSheet.X * SmallTileSize),
-                (int)(_positionInSpriteSheet.Y * SmallTileSize),  _sizeOfTile.X/2,
-                _sizeOfTile.Y/2);
+                (int)(_positionInSpriteSheet.Y * SmallTileSize), _sizeOfTile.X / 2,
+                _sizeOfTile.Y / 2);
         }
 
         /// <summary>

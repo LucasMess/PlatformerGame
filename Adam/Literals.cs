@@ -83,6 +83,8 @@
             MushroomDecor,
             ReinforcedWood,
             FutureBrick,
+            ElektranWireOFF,
+            ElektranWireON,
 
 
             GoldBrickWall = 100,

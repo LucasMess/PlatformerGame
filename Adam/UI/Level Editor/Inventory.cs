@@ -16,7 +16,7 @@ namespace Adam.UI.Level_Editor
     {
         public enum Category
         {
-            Building, Wall, Special, Objects, Characters
+            Building, Wall, Special, Objects, Elektran, Characters
         }
         public static Category CurrentCategory { get; private set; } = Category.Building;
 
@@ -136,6 +136,10 @@ namespace Adam.UI.Level_Editor
             TileType.HellstoneWall, // Hellstone Wall
             TileType.Fence, // Fence
             TileType.Nothing, // Black
+        };
+
+        private TileType[] _elektranTiles = {
+            TileType.ElektranWireOFF,
         };
 
         private TileType[] _characters =

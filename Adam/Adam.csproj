@@ -141,6 +141,7 @@
     <Compile Include="Levels\Chunk.cs" />
     <Compile Include="Levels\ChunkManager.cs" />
     <Compile Include="Levels\Cloud.cs" />
+    <Compile Include="Levels\Elektran.cs" />
     <Compile Include="Levels\GameWorld.cs" />
     <Compile Include="Levels\LevelEditor.cs" />
     <Compile Include="Levels\Light.cs" />

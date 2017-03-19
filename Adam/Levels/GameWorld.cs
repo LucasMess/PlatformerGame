@@ -38,6 +38,8 @@ namespace Adam.Levels
         public static Tile[] TileArray;
         public static int TimesUpdated;
         public static Tile[] WallArray;
+        private static Elektran[] ElektranArray;
+        private static List<Elektran> _elektranWaitList;
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
 
@@ -80,6 +82,7 @@ namespace Adam.Levels
 
             TileArray = new Tile[tileIDs.Length];
             WallArray = new Tile[tileIDs.Length];
+            ElektranArray = new Elektran[tileIDs.Length];
 
             LoadingScreen.LoadingText = "Getting tiles from junkyard...";
             ConvertToTiles(TileArray, tileIDs);
@@ -265,6 +268,13 @@ namespace Adam.Levels
                     TileArray[tileNumber]?.Update();
                 }
             }
+
+            foreach (var elektran in _elektranWaitList)
+            {
+                elektran.Activate();
+            }
+            _elektranWaitList.Clear();
+
         }
 
         public static void DrawWalls(SpriteBatch spriteBatch)
@@ -419,6 +429,18 @@ namespace Adam.Levels
         {
             index -= WorldData.LevelWidth;
             return GetTile(index);
+        }
+
+        public static Elektran GetElektran(int index)
+        {
+            if (index >= 0 && index < ElektranArray.Length)
+                return ElektranArray[index];
+            return null;
+        }
+
+        public static void AddElektranToActivateOnNextGameTick(Elektran elektran)
+        {
+            _elektranWaitList.Add(elektran);
         }
 
         public static Player GetPlayer()
