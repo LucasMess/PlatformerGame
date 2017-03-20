@@ -81,9 +81,6 @@ namespace Adam.Characters.Enemies
             Sounds.AddSoundRef("fire", "Sounds/Hellboar/hellboar_fire");
         }
 
-
-        public override byte Id => (byte)AdamGame.TileType.Hellboar;
-
         public override int MaxHealth => EnemyDb.HellboarMaxHealth;
 
         protected override SoundFx MeanSound => Sounds.GetSoundRef("scream");

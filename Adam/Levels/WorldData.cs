@@ -15,12 +15,6 @@ namespace Adam.Levels
         public bool IsRaining;
         public bool IsSnowing;
 
-        bool _obj0;
-        bool _obj1;
-        bool _obj2;
-        bool _obj3;
-        bool _obj4;
-
         public bool Trigger0;
         public bool Trigger1;
         public bool Trigger2;
@@ -29,9 +23,6 @@ namespace Adam.Levels
         public bool Trigger5;
         public bool Trigger6;
 
-        bool _privTrig0;
-
-        bool _editMode;
         public bool IsDealinGameWorldithData { get; set; }
 
         public TileType[] TileIDs { get; set; }
@@ -55,12 +46,6 @@ namespace Adam.Levels
 
         public WorldData()
         {
-            LevelEditor.Brush.SizeChanged += Brush_SizeChanged;
-        }
-
-        private void Brush_SizeChanged()
-        {
-            _privTrig0 = true;
         }
 
         public void Update()

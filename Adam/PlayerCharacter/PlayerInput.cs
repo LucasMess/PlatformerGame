@@ -12,17 +12,13 @@ namespace Adam.PlayerCharacter
         private bool _jumpButtonIsPressed;
         public event EventHandler StillUpdate;
         public event EventHandler JumpAction;
-        public event EventHandler StopJumpAction;
         public event EventHandler RightMove;
         public event EventHandler LeftMove;
         public event EventHandler InteractAction;
         public event EventHandler DuckAction;
         public event EventHandler DuckActionStop;
         public event EventHandler FireWeaponAction;
-        public event EventHandler DefendAction;
-        public event EventHandler DashAction;
         public event EventHandler RewindAction;
-        public event EventHandler UltimateAction;
         public event EventHandler FastRunActive;
         public event EventHandler FastRunInactive;
         public event EventHandler NotIdle;

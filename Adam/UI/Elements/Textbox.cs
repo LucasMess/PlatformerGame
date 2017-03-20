@@ -106,10 +106,6 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            float opacity;
-            if (IsSelected)
-                opacity = .7f;
-            else opacity = .3f;
             int spacing = 2;
             Rectangle mouse = InputHelper.GetMouseInUi();
             spriteBatch.Draw(_white, new Rectangle(mouse.X, mouse.Y, 10, 10), Color.Black);

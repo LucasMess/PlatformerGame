@@ -13,7 +13,7 @@ namespace Adam.UI
     public class MessageBox
     {
         protected const int BezelSize = 10;
-        protected readonly Container Window = new Container(250, 100);
+        protected Container Window = new Container(250, 100);
         private static SoundFx _showSound = new SoundFx("Sounds/Menu/message_show");
 
         /// <summary>

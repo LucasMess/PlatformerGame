@@ -167,8 +167,7 @@ namespace Adam.Misc
         /// <returns></returns>
         private bool CheckIfHighestPriority(string name, ref float highestPriority)
         {
-            ComplexAnimData animData;
-            if (!_animationData.TryGetValue(name, out animData))
+            if (!_animationData.TryGetValue(name, out ComplexAnimData animData))
             {
                 //throw new Exception("Animation not found.");
                 return false;
@@ -192,10 +191,9 @@ namespace Adam.Misc
         /// <param name="name">The unique identifier of the animation.</param>
         private void ChangeAnimation(string name)
         {
-            ComplexAnimData animData;
-            if (name == "")
+            if (String.IsNullOrEmpty(name))
                 name = "idle";
-            if (!_animationData.TryGetValue(name, out animData))
+            if (!_animationData.TryGetValue(name, out ComplexAnimData animData))
             {
                 return;
                 throw new Exception("Animation not found.");
@@ -216,8 +214,7 @@ namespace Adam.Misc
             _sourceRectangle.Height = _currentAnimationData.Height;
             _sourceRectangle.Y = _currentAnimationData.StartingY;
 
-            if (AnimationStateChanged != null)
-                AnimationStateChanged();
+            AnimationStateChanged?.Invoke();
 
         }
 
@@ -287,8 +284,7 @@ namespace Adam.Misc
         public void AddAnimationData(string name, ComplexAnimData data)
         {
             // Check to see if identifier already exists.
-            ComplexAnimData value;
-            if (_animationData.TryGetValue(name, out value))
+            if (_animationData.TryGetValue(name, out ComplexAnimData value))
             {
                 throw new Exception("Identifier for this animation data already exists.");
             }

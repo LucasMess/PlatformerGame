@@ -19,7 +19,6 @@ namespace Adam
 
         //leave center for later
         public Vector2 CenterPos;
-        private Vector2 _lastCenterPos;
         Vector3 _lastVelocity;
         private Viewport _viewport;
         public int TileIndex;

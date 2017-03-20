@@ -77,8 +77,7 @@ namespace Adam.GameData
             {
                 builder.Clear();
                 builder.Append(key + " ");
-                string value;
-                if (GameWorld.WorldData.MetaData.TryGetValue(key, out value))
+                if (GameWorld.WorldData.MetaData.TryGetValue(key, out string value))
                 {
                     builder.Append(value);
                     values.Add(builder.ToString());
@@ -143,8 +142,7 @@ namespace Adam.GameData
                 {
                     if (keyVal == null) continue;
                     string[] keyValSeparated = keyVal.Split(' ');
-                    int key;
-                    int.TryParse(keyValSeparated[0], out key);
+                    int.TryParse(keyValSeparated[0], out int key);
                     GameWorld.WorldData.MetaData.Add(key, keyValSeparated[1]);
                 }
             }

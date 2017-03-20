@@ -27,14 +27,6 @@ namespace Adam.Characters.Enemies
             Sounds.AddSoundRef("death", "Sounds/Snake/snake_death");
         }
 
-        public override byte Id
-        {
-            get
-            {
-                return 201;
-            }
-        }
-
         public override int MaxHealth
         {
             get

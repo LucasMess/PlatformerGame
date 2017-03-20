@@ -67,7 +67,6 @@ namespace Adam.UI
         /// </summary>
         private static class BlackFade
         {
-            private static bool _isActive = false;
             private static bool _isFadingIn = true;
             private static float _opacity = 0f;
             private const float MaxOpacity = 1f;
@@ -211,8 +210,10 @@ namespace Adam.UI
             public static void Initialize()
             {
                 position = new Vector2(30, 30);
-                animation = new ComplexAnimation();
-                animation.Scale = 4;
+                animation = new ComplexAnimation()
+                {
+                    Scale = 4
+                };
                 ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 80, 16, 16, 125, 4, true);
                 ComplexAnimData dead = new ComplexAnimData(1000, GameWorld.UiSpriteSheet, new Rectangle(), 96, 16, 16, 125, 4, true);
                 ComplexAnimData poison = new ComplexAnimData(100, GameWorld.UiSpriteSheet, new Rectangle(), 64, 16, 16, 125, 4, true);
@@ -277,8 +278,10 @@ namespace Adam.UI
             public static void Initialize()
             {
                 position = new Vector2(250, 30);
-                animation = new ComplexAnimation();
-                animation.Scale = 4;
+                animation = new ComplexAnimation()
+                {
+                    Scale = 4
+                };
                 ComplexAnimData normal = new ComplexAnimData(1, GameWorld.UiSpriteSheet, new Rectangle(), 112, 16, 16, 125, 8, true);
                 animation.AddAnimationData("normal", normal);
                 animation.AddToQueue("normal");

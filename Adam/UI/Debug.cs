@@ -159,20 +159,21 @@ namespace Adam
         {
             if (IsDebugOn)
             {
-                _infos = new List<string>();
-                _infos.Add(AdamGame.Producers + " (" + AdamGame.Version + ")");
-                _infos.Add("FPS: " + AdamGame.FPS);
-                _infos.Add("Gamestate: " + AdamGame.CurrentGameState);
-                _infos.Add("Gamemode: " + AdamGame.CurrentGameMode);
-                _infos.Add("Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y);
-                _infos.Add("Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y);
-                _infos.Add("Index of mouse: " + LevelEditor.IndexOfMouse);
-                _infos.Add("Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString());
-                _infos.Add("Particle iteration: " + GameWorld.ParticleSystem?.GetIteration());
-                _infos.Add("Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles());
-                _infos.Add("Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast);
-                _infos.Add("Steam Name: " + AdamGame.UserName + " ID: " + AdamGame.SteamID.m_SteamID);
-
+                _infos = new List<string>
+                {
+                    AdamGame.Producers + " (" + AdamGame.Version + ")",
+                    "FPS: " + AdamGame.FPS,
+                    "Gamestate: " + AdamGame.CurrentGameState,
+                    "Gamemode: " + AdamGame.CurrentGameMode,
+                    "Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y,
+                    "Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y,
+                    "Index of mouse: " + LevelEditor.IndexOfMouse,
+                    "Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString(),
+                    "Particle iteration: " + GameWorld.ParticleSystem?.GetIteration(),
+                    "Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles(),
+                    "Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast,
+                    "Steam Name: " + AdamGame.UserName + " ID: " + AdamGame.SteamID.m_SteamID
+                };
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
                 for (int i = 0; i < _infos.Count; i++)

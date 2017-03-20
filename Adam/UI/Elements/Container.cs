@@ -34,9 +34,6 @@ namespace Adam.UI.Elements
         /// <param name="height"></param>
         public Container(int width, int height)
         {
-            width = (width);
-            height = (height);
-
             Size = new Vector2(width, height);
             float x = (AdamGame.DefaultUiWidth / 2) - width / 2;
             float y = (AdamGame.DefaultUiHeight / 2) - height / 2;
@@ -59,13 +56,6 @@ namespace Adam.UI.Elements
         /// <param name="convertCoords"></param>
         public Container(int x, int y, int width, int height, bool convertCoords)
         {
-            if (convertCoords)
-            {
-                width = (width);
-                height = (height);
-                x = (x);
-                y = (y);
-            }
 
             Size = new Vector2(width, height);
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);

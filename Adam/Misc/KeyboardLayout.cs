@@ -175,18 +175,15 @@ namespace Adam.Misc
                     break;
 
                 case WmKeydown:
-                    if (KeyDown != null)
-                        KeyDown(null, new KeyEventArgs((Keys)wParam));
+                    KeyDown?.Invoke(null, new KeyEventArgs((Keys)wParam));
                     break;
 
                 case WmKeyup:
-                    if (KeyUp != null)
-                        KeyUp(null, new KeyEventArgs((Keys)wParam));
+                    KeyUp?.Invoke(null, new KeyEventArgs((Keys)wParam));
                     break;
 
                 case WmChar:
-                    if (CharEntered != null)
-                        CharEntered(null, new CharacterEventArgs((char)wParam, lParam.ToInt32()));
+                    CharEntered?.Invoke(null, new CharacterEventArgs((char)wParam, lParam.ToInt32()));
                     break;
 
                 case WmImeSetcontext:

@@ -13,7 +13,6 @@ namespace Adam.Interactables
     public class Food : Item, INewtonian
     {
         int _healAmount;
-        bool _hasHealed;
         SoundFx _hitGround;
 
         SoundEffect _pickUpSound;
@@ -30,34 +29,7 @@ namespace Adam.Interactables
             _hitGround = new SoundFx("Sounds/Items/item_pop", this);
             _pickUpSound = ContentHelper.LoadSound("Player/eatSound");
 
-            switch (enemy.Id)
-            {
-                case 201: // Snake
-                    _healAmount = 10;
-                    Texture = ContentHelper.LoadTexture("Objects/Food/snake_chest_v1");
-                    break;
-                case 202: // Frog
-                    _healAmount = 5;
-                    Texture = ContentHelper.LoadTexture("Objects/Food/frog_leg_v2");
-                    break;
-                case 204: // Lost
-                    _healAmount = 10;
-                    break;
-                case 205: // Hellboar
-                    _healAmount = 40;
-                    break;
-                case 207: // Bat
-                    _healAmount = 10;
-                    break;
-                case 208: // Duck                    
-                    _healAmount = 5;
-                    break;
-                case 209: // Being of Sight
-                    _healAmount = 30;
-                    break;
-                default:
-                    break;
-            }
+            _healAmount = 0;
 
             OnPlayerPickUp += Food_OnPlayerPickUp;
             CollidedWithTileBelow += OnCollisionWithTerrainBelow;
@@ -78,8 +50,7 @@ namespace Adam.Interactables
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!_hasHealed)
-                spriteBatch.Draw(Texture, DrawRectangle, Color.White);
+            spriteBatch.Draw(Texture, DrawRectangle, Color.White);
         }
 
         public void OnCollisionWithTerrainBelow(Entity entity, Tile tile)
@@ -95,18 +66,7 @@ namespace Adam.Interactables
             }
         }
 
-        public float GravityStrength
-        {
-            get { return AdamGame.Gravity; }
-            set
-            {
-                GravityStrength = value;
-            }
-        }
-
         public bool IsFlying { get; set; }
-
-        public bool IsJumping { get; set; }
 
         public bool IsAboveTile { get; set; }
 

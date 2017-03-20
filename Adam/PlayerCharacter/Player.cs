@@ -126,8 +126,7 @@ namespace Adam.PlayerCharacter
         private void ComplexAnim_FrameChanged(FrameArgs e)
         {
             CurrentAnimationFrame = e.CurrentFrame;
-            if (AnimationFrameChanged != null)
-                AnimationFrameChanged(this);
+            AnimationFrameChanged?.Invoke(this);
         }
 
         private void ComplexAnim_AnimationStateChanged()
@@ -148,8 +147,7 @@ namespace Adam.PlayerCharacter
         {
             if (_spawnPointNextLevel != null)
             {
-                int spawnIndex;
-                if (int.TryParse(_spawnPointNextLevel, out spawnIndex))
+                if (int.TryParse(_spawnPointNextLevel, out int spawnIndex))
                 {
                     int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;
                     int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;

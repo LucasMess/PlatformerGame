@@ -59,7 +59,6 @@ namespace Adam.Levels
             }
 
             // Make one array containing all indexes of surrounding chunks.
-            int chunkCapacity = Chunk.DefaultSize * Chunk.DefaultSize;
             List<int> indexesSurroundingChunk = new List<int>();
             foreach (Chunk c in surroundingChunks)
             {

@@ -30,12 +30,13 @@ namespace Adam.UI.MainMenu
             var back = new TextButton(new Vector2(0, 0), "Back", false);
             back.MouseClicked += Back_MouseClicked;
 
-            buttons = new List<TextButton>();
-            buttons.Add(save1);
-            buttons.Add(save2);
-            buttons.Add(save3);
-            buttons.Add(back);
-
+            buttons = new List<TextButton>
+            {
+                save1,
+                save2,
+                save3,
+                back
+            };
             foreach (var button in buttons)
             {
                 button.ChangeDimensions(new Vector2(TextButton.Width * 2, TextButton.Height * 2));

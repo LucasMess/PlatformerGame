@@ -33,8 +33,6 @@ namespace Adam
         public event EventHandler HasTakenDamage;
         public event EventHandler HasRevived;
 
-        public event EntityHandler UpdateCall;
-
         const float AirFrictionConstant = 98f / 99f;
 
         // Collision with terrain events.
@@ -43,13 +41,6 @@ namespace Adam
         public event TileHandler CollidedWithTileToRight;
         public event TileHandler CollidedWithTileToLeft;
         public event TileHandler CollidedWithTerrain;
-
-        // Collision with entity events.
-        public event EntityHandler CollidedWithEntity;
-        public event EntityHandler CollidedWithEntityAbove;
-        public event EntityHandler CollidedWithEntityBelow;
-        public event EntityHandler CollidedWithEntityToRight;
-        public event EntityHandler CollidedWithEntityToLeft;
 
         protected Vector2 Origin;
         public Vector2 Position { get; set; }
@@ -326,9 +317,8 @@ namespace Adam
             }
 
             //Animate entity if applicable.
-            if (this is IAnimated)
+            if (this is IAnimated ian)
             {
-                IAnimated ian = (IAnimated)this;
                 if (ian.Animation == null || ian.AnimationData == null)
                 {
                     throw new NullReferenceException("No animation data or animation found for object:" + GetType());
@@ -378,10 +368,8 @@ namespace Adam
 
 
             // If the entity has an animation.
-            if (this is IAnimated)
+            if (this is IAnimated ian)
             {
-                IAnimated ian = (IAnimated)this;
-
                 ian.Animation.Color = Color;
 
                 //Flip sprite if facing other way.

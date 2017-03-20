@@ -18,7 +18,7 @@ namespace Adam
             public BorderType CurrentBorderType { get; set; }
         }
 
-        public static readonly Dictionary<TileType, TileProperties> Properties = new Dictionary<TileType, TileProperties>()
+        public static Dictionary<TileType, TileProperties> Properties = new Dictionary<TileType, TileProperties>()
         {
             { TileType.Air, new TileProperties()
             {

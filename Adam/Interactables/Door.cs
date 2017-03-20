@@ -6,10 +6,6 @@ namespace Adam
 {
     public class Door : Interactable
     {
-        bool isOpen = false;
-        bool isLocked = false;
-        Rectangle rectangle;
-
         public override void Update(Tile tile)
         {
 
@@ -18,11 +14,6 @@ namespace Adam
 
         public override void OnPlayerAction(Tile tile, Player player)
         {
-            if (isLocked)
-            {
-
-            }
-            isOpen = true;
 
             base.OnPlayerAction(tile, player);
         }

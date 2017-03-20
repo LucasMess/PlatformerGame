@@ -366,9 +366,8 @@ namespace Adam.Levels
             for (var i = Entities.Count - 1; i >= 0; i--)
             {
                 var entity = Entities[i];
-                if (entity is Enemy)
+                if (entity is Enemy enemy)
                 {
-                    var enemy = (Enemy)entity;
                     enemy.Revive();
                 }
                 if (entity is Food)

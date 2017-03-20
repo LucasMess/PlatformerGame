@@ -9,7 +9,6 @@ namespace Adam
         private readonly Timer _changeLevelTimer = new Timer();
         private readonly Rectangle _collRectangle;
         private readonly SoundFx _levelFinishedSound;
-        private bool _wasPicked;
 
         public Apple(int x, int y)
         {
@@ -23,7 +22,6 @@ namespace Adam
             if (player.GetCollRectangle().Intersects(_collRectangle))
             {
                 _levelFinishedSound.PlayOnce();
-                _wasPicked = true;
             }
 
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)

@@ -127,8 +127,10 @@ namespace Adam.UI
                     {
                         //Create transparent tiles to show selected tile
                         Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
-                        Tile fakeTile = new Tile(true);
-                        fakeTile.IsBrushTile = true;
+                        Tile fakeTile = new Tile(true)
+                        {
+                            IsBrushTile = true
+                        };
                         if (Size == 1)
                         {
 

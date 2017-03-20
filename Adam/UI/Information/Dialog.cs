@@ -23,7 +23,6 @@ namespace Adam.UI.Information
 
         public delegate void TextHandler(string code, int optionSelected);
 
-        private readonly Rectangle _dialogBoxSourceRectangle;
         private readonly BitmapFont _font;
         private readonly SoundFx _letterPopSound;
         private readonly Timer _letterPopTimer = new Timer(true);

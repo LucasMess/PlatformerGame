@@ -19,14 +19,6 @@ namespace Adam.Characters.Enemies
             Behavior.Initialize(this);
         }
 
-        public override byte Id
-        {
-            get
-            {
-                return (byte)AdamGame.TileType.FallingBoulder;
-            }
-        }
-
         public override int MaxHealth
         {
             get

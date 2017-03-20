@@ -40,6 +40,9 @@
     <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>code_analysis_rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -145,7 +148,6 @@
     <Compile Include="Levels\LevelEditor.cs" />
     <Compile Include="Levels\Light.cs" />
     <Compile Include="Levels\LightingEngine.cs" />
-    <Compile Include="Levels\PlayerSpawn.cs" />
     <Compile Include="Levels\StoryTracker.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\TileDefinitions.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="Literals.cs" />
     <Compile Include="Misc\Animation.cs" />
     <Compile Include="Misc\ComplexAnimation.cs" />
-    <Compile Include="Misc\Countdown.cs" />
     <Compile Include="Misc\Databases\EnemyDB.cs" />
     <Compile Include="Misc\Databases\InputDB.cs" />
     <Compile Include="Misc\Databases\SoundtrackDB.cs" />
@@ -175,14 +176,11 @@
     <Compile Include="Misc\Sound\SoundtrackManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
     <Compile Include="Misc\Timer.cs" />
-    <Compile Include="Network\Client.cs" />
-    <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\Lobby.cs" />
     <Compile Include="Network\Packets\DataPacket.cs" />
     <Compile Include="Network\Packets\EntityPacket.cs" />
     <Compile Include="Network\Packets\LevelPacket.cs" />
     <Compile Include="Network\Packets\PlayerPacket.cs" />
-    <Compile Include="Network\Server.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
@@ -213,7 +211,6 @@
     <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="UI\Information\LevelNameNotification.cs" />
     <Compile Include="UI\Information\MessageBox.cs" />
-    <Compile Include="UI\Information\SplashNumber.cs" />
     <Compile Include="UI\Level Editor\Brush.cs" />
     <Compile Include="UI\Level Editor\ButtonBar.cs" />
     <Compile Include="UI\Level Editor\CategorySelector.cs" />

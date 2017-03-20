@@ -27,15 +27,9 @@ namespace Adam.Characters.Scripts
 
             entity.CurrentCollisionType = CollisionType.None;
             entity.CollidedWithTileBelow += Entity_CollidedWithTileBelow;
-            entity.CollidedWithEntityAbove += Entity_CollidedWithEntityAbove;
             entity.AddAnimationToQueue("still");
 
             base.Initialize(entity);
-        }
-
-        private void Entity_CollidedWithEntityAbove(Entity entity)
-        {
-            entity.SetVelY(0);
         }
 
         public override void Update(Entity entity)

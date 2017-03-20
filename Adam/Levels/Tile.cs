@@ -49,7 +49,6 @@ namespace Adam
         private Vector2 _frameCount;
         private double _frameTimer;
         private bool _hasAddedEntity;
-        private bool _hasConnectPattern;
         private bool _hasRandomStartingPoint;
         private bool _isInvisibleInPlayMode;
         private bool _isInvisibleInEditMode;
@@ -59,7 +58,6 @@ namespace Adam
         private double _restartTimer;
         private double _restartWait;
         private Point _sizeOfTile = new Point(Tilesize, Tilesize);
-        private Rectangle _startingPosition;
         private Rectangle _startingRectangle;
         private const int DefaultAnimationSpeed = 125;
         private int animationSpeed = DefaultAnimationSpeed;
@@ -209,7 +207,7 @@ namespace Adam
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.Mesa: //Mesa
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderNonSolid;
                     IsSolid = true;
                     startingPoint = new Vector2(8, 5);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -831,7 +829,7 @@ namespace Adam
                     }
                     break;
                 case TileType.MosaicWall:
-                    _hasConnectPattern = true;
+                    CurrentBorderType = BorderType.BorderAlways;
                     IsSolid = true;
                     startingPoint = new Vector2(28, 14);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
@@ -1475,10 +1473,12 @@ namespace Adam
                 midRight.IsSolid &&
                 bot.IsSolid)
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.Texture = Texture;
-                corner.SubId = 1;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    Texture = Texture,
+                    SubId = 1
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1486,11 +1486,13 @@ namespace Adam
                 midLeft.IsSolid &&
                 bot.IsSolid)
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 2;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 2
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1498,11 +1500,13 @@ namespace Adam
                 midLeft.IsSolid &&
                 top.IsSolid)
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 3;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 3
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1510,11 +1514,13 @@ namespace Adam
                 midRight.IsSolid &&
                 top.IsSolid)
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 7;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 7
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1696,11 +1702,13 @@ namespace Adam
                 midRight.Equals(mid) &&
                 bot.Equals(mid))
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 1;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 1
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1708,11 +1716,13 @@ namespace Adam
                 midLeft.Equals(mid) &&
                 bot.Equals(mid))
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 2;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 2
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1720,11 +1730,13 @@ namespace Adam
                 midLeft.Equals(mid) &&
                 top.Equals(mid))
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 3;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 3
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1732,11 +1744,13 @@ namespace Adam
                 midRight.Equals(mid) &&
                 top.Equals(mid))
             {
-                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y);
-                corner.Id = mid.Id;
-                corner.DrawRectangle = DrawRectangle;
-                corner.Texture = Texture;
-                corner.SubId = 7;
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = mid.Id,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 7
+                };
                 _cornerPieces.Add(corner);
             }
 
@@ -1956,7 +1970,6 @@ namespace Adam
 
         public event TileHandler OnTileUpdate;
         public event TileHandler OnTileDestroyed;
-        public event TileHandler OnPlayerInteraction;
 
         /// <summary>
         ///     Sets the source rectangle to the no texture found texture.
@@ -2050,9 +2063,8 @@ namespace Adam
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is Tile)
+            if (obj is Tile other)
             {
-                Tile other = (Tile)obj;
                 return (other.Id == Id);
             }
             return false;

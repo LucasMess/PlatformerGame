@@ -15,7 +15,6 @@ namespace Adam.Levels
     {
 
         private static Timer spawnTimer = new Timer();
-        private static int lastY;
         private static int[] lastIndices = new int[0];
 
         public static void Update()

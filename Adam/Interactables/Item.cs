@@ -16,7 +16,6 @@ namespace Adam.Interactables
         protected SoundFx LoopSound;
         protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + AdamGame.Random.Next(0, 5));
         protected SoundFx BounceSound;
-        private int _tileIndex;
         protected double EffectTimer;
 
         protected delegate void PickedUpHander(PickedUpArgs e);
@@ -58,8 +57,7 @@ namespace Adam.Interactables
 
             if (player.GetCollRectangle().Intersects(DrawRectangle) && _pickUpTimer.TimeElapsedInMilliSeconds > 500)
             {
-                if (OnPlayerPickUp != null)
-                    OnPlayerPickUp(new PickedUpArgs(player));
+                OnPlayerPickUp?.Invoke(new PickedUpArgs(player));
                 PickUpSound?.PlayOnce();
                 ToDelete = true;
                 LoopSound?.Stop();

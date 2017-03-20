@@ -10,7 +10,6 @@ namespace Adam.Interactables
     {
         KeyPopUp _key;
         int _id;
-        bool _playerIsOn;
 
         protected override Rectangle DrawRectangle
         {

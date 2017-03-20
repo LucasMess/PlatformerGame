@@ -25,15 +25,6 @@ namespace Adam.Characters.Enemies
             Sounds.AddSoundRef("idle", "Sounds/Frog/frog_croak");
         }
 
-
-        public override byte Id
-        {
-            get
-            {
-                return 202;
-            }
-        }
-
         public override int MaxHealth
         {
             get

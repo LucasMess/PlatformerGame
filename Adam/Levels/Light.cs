@@ -26,8 +26,6 @@ namespace Adam.Levels
         public List<Color> ColorOfSources = new List<Color>();
         private Texture2D _texture = GameWorld.SpriteSheet;
         public Light SourceLight { get; set; }
-        private float _layerDepth;
-        private bool _hasGlow;
         public bool IsLightSource { get; set; } = true;
         public bool IsShaky { get; set; }
         public bool ChangesSize { get; set; }
@@ -75,12 +73,6 @@ namespace Adam.Levels
             _hasIncremented = false;
         }
 
-        public void DrawGlow(SpriteBatch spriteBatch)
-        {
-            if (_hasGlow)
-                spriteBatch.Draw(_texture, GlowRectangle, _sourceRectangle, _color * .5f);
-        }
-
         public float GetOpacity()
         {
             int max = 0;
@@ -117,10 +109,6 @@ namespace Adam.Levels
         private const int ShakeOffset = 10;
         private Vector2 GetOffset()
         {
-            int offR = 0;
-            int offG = 0;
-            int offB = 0;
-
             if (IsLightSource)
                 return new Vector2();
 
@@ -135,10 +123,6 @@ namespace Adam.Levels
         private bool _hasIncremented;
         private float GetRadius()
         {
-            float r = 0;
-            float g = 0;
-            float b = 0;
-
             if (IsLightSource)
             {
                 if (ChangesSize)

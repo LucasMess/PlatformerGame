@@ -190,8 +190,10 @@ namespace Adam
 
             if (reloadWorld)
             {
-                _reloadThread = new Thread(BackgroundThread_FileLoad);
-                _reloadThread.IsBackground = true;
+                _reloadThread = new Thread(BackgroundThread_FileLoad)
+                {
+                    IsBackground = true
+                };
                 _reloadThread.Start();
             }
             else

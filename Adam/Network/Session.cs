@@ -125,14 +125,11 @@ namespace Adam.Network
             }
             for (i = 0; i < max; i++)
             {
-                uint messageSize;
-                while (SteamNetworking.IsP2PPacketAvailable(out messageSize, i))
+                while (SteamNetworking.IsP2PPacketAvailable(out uint messageSize, i))
                 {
-                    CSteamID steamIdRemote;
                     Console.WriteLine("Packet available of size: " + messageSize);
                     byte[] pubDest = new byte[messageSize];
-                    uint bytesRead = 0;
-                    if (SteamNetworking.ReadP2PPacket(pubDest, messageSize, out bytesRead, out steamIdRemote, i))
+                    if (SteamNetworking.ReadP2PPacket(pubDest, messageSize, out uint bytesRead, out CSteamID steamIdRemote, i))
                     {
                         switch (i)
                         {

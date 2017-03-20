@@ -27,25 +27,12 @@ namespace Adam
         static TextButton _multiplayer;
         static TextButton _storyModeButton;
 
-        //Level Selector
-        static TextButton _save1;
-        static TextButton _save2;
-        static TextButton _save3;
-
-        //Options
-        static TextButton _smoothPixels;
-        static TextButton _lighting;
-        static TextButton _fullscreen;
-
         //Multiplayer
-        static TextButton _hostGame;
-        static TextButton _joinGame;
         static TextButton _startMultiplayerGame;
 
         static TextButton _backButton;
         static List<TextButton> _buttons = new List<TextButton>();
 
-        static bool _isSongPlaying;
         static BitmapFont _font8, _font32;
 
         static LevelSelection _levelSelection;
@@ -87,34 +74,9 @@ namespace Adam
             _storyModeButton.MouseClicked += storyMode_MouseClicked;
             _buttons.Add(_storyModeButton);
 
-            //smoothPixels = new Button(first, "Smooth Pixels: ");
-            //smoothPixels.MouseClicked += smoothPixels_MouseClicked;
-            //buttons.Add(smoothPixels);
-
-            //lighting = new Button(second, "Lighting: ");
-            //lighting.MouseClicked += lighting_MouseClicked;
-            //buttons.Add(lighting);
-
-            _fullscreen = new TextButton(_first, "Borderless Mode: ", false);
-            _fullscreen.MouseClicked += fullscreen_MouseClicked;
-            //_fullscreen.IsOn = Main.GameData.Settings.IsFullscreen;
-            _buttons.Add(_fullscreen);
-
             _backButton = new TextButton(_fifth, "Back", false);
             _backButton.MouseClicked += backButton_MouseClicked;
             _buttons.Add(_backButton);
-
-            //save1 = new Button(first, "Save 1");
-            //save1.MouseClicked += level1_MouseClicked;
-            //buttons.Add(save1);
-
-            //save2 = new Button(second, "Save 2");
-            //save2.MouseClicked += level2_MouseClicked;
-            //buttons.Add(save2);
-
-            //save3 = new Button(third, "Save 3");
-            //save3.MouseClicked += level3_MouseClicked;
-            //buttons.Add(save3);
 
             _startMultiplayerGame = new TextButton(_third, "Start Game", false);
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
@@ -181,49 +143,6 @@ namespace Adam
                     break;
                 case MenuState.MultiplayerSession:
                     CurrentMenuState = MenuState.Main;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        static void fullscreen_MouseClicked(Button button)
-        {
-
-            switch (_fullscreen.IsOn)
-            {
-                case true:
-                    _fullscreen.IsOn = false;
-                    AdamGame.GameData.Settings.IsFullscreen = false;
-                    AdamGame.GameData.Settings.NeedsRestart = true;
-                    AdamGame.GameData.Settings.HasChanged = true;
-                    break;
-                case false:
-                    _fullscreen.IsOn = true;
-                    AdamGame.GameData.Settings.IsFullscreen = true;
-                    AdamGame.GameData.Settings.NeedsRestart = true;
-                    AdamGame.GameData.Settings.HasChanged = true;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        static void lighting_MouseClicked()
-        {
-            switch (_lighting.IsOn)
-            {
-                case true:
-                    _lighting.IsOn = false;
-                    AdamGame.GameData.Settings.DesiredLight = false;
-                    AdamGame.GameData.Settings.NeedsRestart = true;
-                    AdamGame.GameData.Settings.HasChanged = true;
-                    break;
-                case false:
-                    _lighting.IsOn = true;
-                    AdamGame.GameData.Settings.DesiredLight = true;
-                    AdamGame.GameData.Settings.NeedsRestart = true;
-                    AdamGame.GameData.Settings.HasChanged = true;
                     break;
                 default:
                     break;

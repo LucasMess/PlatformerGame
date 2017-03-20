@@ -30,8 +30,6 @@ namespace Adam.Levels
         private static bool _hasChangedSinceLastSave;
         private static Inventory _inventory;
         private static bool _inventoryKeyPressed;
-        private static byte _lastUsedTile = 1;
-        private static byte _lastUsedWall = 100;
         private static Minimap _miniMap;
         private static Rectangle _mouseRectInGameWorld;
         private static bool _recentlyChanged;

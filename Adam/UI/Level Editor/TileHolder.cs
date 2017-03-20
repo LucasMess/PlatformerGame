@@ -31,7 +31,6 @@ namespace Adam.UI.Level_Editor
         private bool _wasMouseReleased;
         public bool CanBeMoved { get; set; } = true;
         private Vector2 _mouseDifferential;
-        private Vector2 _positionAtStartOfMovement;
         private Vector2 _containerPosition;
         private Vector2 _tileTextureDifferential;
         private static SoundFx _pickUpSound = new SoundFx("Sounds/Level Editor/pickup_tileholder");

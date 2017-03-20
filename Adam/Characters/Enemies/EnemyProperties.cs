@@ -12,7 +12,6 @@ namespace Adam.Characters.Enemies
     {
         const short RangeRadius = 2000;
         const int MeanResetTime = 500000;
-        bool _isTakingDamage = false;
 
         Timer _wasMeanTimer = new Timer(true);
 
@@ -36,14 +35,6 @@ namespace Adam.Characters.Enemies
             _respawnTimer.SetTimeReached += Revive;
             Gem.Generate(MaxHealth/10,this);
             PlayDeathSound();
-        }
-
-        /// <summary>
-        /// The ID that identifies the enemy type.
-        /// </summary>
-        public abstract byte Id
-        {
-            get;
         }
 
         /// <summar
@@ -217,27 +208,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         protected int GetTouchDamage()
         {
-            switch (Id)
-            {
-                case 201:
-                    return EnemyDb.SnakeTouchDamage;
-                case 202:
-                    return EnemyDb.FrogTouchDamage;
-                case 204:
-                    return EnemyDb.LostTouchDamage;
-                case 205:
-                    return EnemyDb.HellboarTouchDamage;
-                case 206:
-                    return EnemyDb.FallingBoulderTouchDamage;
-                case 207:
-                    return EnemyDb.BatTouchDamage;
-                case 208:
-                    return EnemyDb.DuckTouchDamage;
-                case 209:
-                    return 0;
-                default:
-                    return 0;
-            }
+            return 0;
 
         }
 
@@ -247,13 +218,7 @@ namespace Adam.Characters.Enemies
         /// <returns></returns>
         public int GetProjectileDamage()
         {
-            switch (Id)
-            {
-                case 0:
-                    return EnemyDb.SnakeProjectileDamage;
-                default:
-                    return 0;
-            }
+            return 0;
         }
 
 
