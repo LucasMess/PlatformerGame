@@ -192,7 +192,7 @@ namespace Adam.Graphics
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
             _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
 

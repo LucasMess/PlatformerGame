@@ -217,7 +217,7 @@ namespace Adam
 
         protected override void Update(GameTime gameTime)
         {
-            //if (!IsActive) return;
+            if (!IsActive) return;
 
             if (_wantsToQuit)
                 Exit();

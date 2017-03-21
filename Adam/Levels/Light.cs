@@ -32,14 +32,16 @@ namespace Adam.Levels
         public int RateOfChange { get; set; } = 100;
         private Timer _changeSizeTimer = new Timer();
         private int oldChangeSize;
+        public bool IsSunlight { get; set; }
 
         public Light() { }
 
-        public Light(Vector2 center, int lightLevel, Color color)
+        public Light(Vector2 center, int lightLevel, Color color, bool isSunlight = false)
         {
             _color = color;
             _center = center;
             LightLevel = lightLevel;
+            IsSunlight = isSunlight;
             if (lightLevel != 0)
             {
                 IsLightSource = true;
@@ -75,6 +77,7 @@ namespace Adam.Levels
 
         public float GetOpacity()
         {
+            if (IsLightSource) return MaxLightLevel;
             int max = 0;
             if (RedIntensity > max)
                 max = RedIntensity;

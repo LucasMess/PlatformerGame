@@ -53,7 +53,7 @@ namespace Adam.Levels
             if (tile.LetsLightThrough && wall.LetsLightThrough)
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                 GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, GameWorld.WorldData.SunLightColor);
+                 GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, GameWorld.WorldData.SunLightColor, true);
             }
 
 
@@ -125,6 +125,7 @@ namespace Adam.Levels
         private static void UpdateLight(int i)
         {
             if (i < 0 || i >= _lights.Length) return;
+            if (_lights[i].IsSunlight) return;
             int width = GameWorld.WorldData.LevelWidth;
             Light[] lightsAround = new Light[4];
             if (i - width >= 0 && i - width < GameWorld.TileArray.Length)
@@ -192,6 +193,8 @@ namespace Adam.Levels
             if (newBlue > Light.MaxLightLevel) newBlue = Light.MaxLightLevel;
 
             Light thisLight = _lights[i];
+            if (thisLight.IsLightSource)
+                return;
 
             if (thisLight.RedIntensity < newRed)
             {
