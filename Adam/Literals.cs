@@ -88,6 +88,7 @@
             FireHydrant,
             BillBoard,
             PalmTree,
+            ReinforcedWoodPlatform,
 
 
             GoldBrickWall = 100,

@@ -95,7 +95,7 @@ namespace Adam.UI
                     {
                         //_selectionSquares = new Image[Size * Size];
                         _selectedBrushTiles = new Tile[Size * Size];
-                        SizeChanged();
+                        SizeChanged?.Invoke();
                     }
                 }
                 if (scrollWheel < _lastScrollWheel)
@@ -106,7 +106,7 @@ namespace Adam.UI
                     {
                         //_selectionSquares = new Image[Size * Size];
                         _selectedBrushTiles = new Tile[Size * Size];
-                        SizeChanged();
+                        SizeChanged?.Invoke();
                     }
                 }
             }

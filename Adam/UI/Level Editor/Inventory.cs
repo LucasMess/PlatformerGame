@@ -75,6 +75,7 @@ namespace Adam.UI.Level_Editor
             TileType.MarbleColumn, // Marble Column
             TileType.MarbleCeiling, // Marble Ceiling
             TileType.WoodenPlatform, // Wooden Platform
+            TileType.ReinforcedWoodPlatform,
             TileType.Vine, // Vines
             TileType.Ladder, // Ladder
             TileType.Chain, // Chain

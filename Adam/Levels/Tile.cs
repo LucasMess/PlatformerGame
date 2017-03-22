@@ -739,6 +739,24 @@ namespace Adam
                     _sizeOfTile.Y = 96 * 2;
                     LetsLightThrough = true;
                     break;
+                case TileType.ReinforcedWoodPlatform:
+                    switch (SubId)
+                    {
+
+                        case 0: // Base
+                            _positionInSpriteSheet = new Vector2(256/16, 512/16);
+                            break;
+                        case 1: // Right
+                            _positionInSpriteSheet = new Vector2(256 / 16 + 1, 512 / 16);
+                            break;
+                        case 2: // Left
+                            _positionInSpriteSheet = new Vector2(256 / 16 - 1, 512 / 16);
+                            break;
+                    }
+                    IsSolid = true;
+                    LetsLightThrough = true;
+                    CurrentCollisionType = CollisionType.FromAbove;
+                    break;
 
                 #region Wall Textures
 
@@ -1296,6 +1314,15 @@ namespace Adam
             else if (Id == TileType.Lava)
             {
                 if (ids[TileIndex - mapWidth] != TileType.Lava)
+                    SubId = 1;
+                else SubId = 0;
+            }
+
+            else if (Id == TileType.ReinforcedWoodPlatform)
+            {
+                if (ids[TileIndex - 1] != TileType.ReinforcedWoodPlatform)
+                    SubId = 2;
+                else if (ids[TileIndex + 1] != TileType.ReinforcedWoodPlatform)
                     SubId = 1;
                 else SubId = 0;
             }
