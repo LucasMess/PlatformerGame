@@ -437,6 +437,9 @@ namespace Adam
                     IsSolid = true;
                     _positionInSpriteSheet = new Vector2(12, 29);
                     LetsLightThrough = true;
+                    Interactable = new FlameSpitter(this);
+                    animationResets = true;
+                    animationPlaysOnce = true;
                     break;
                 case TileType.MachineGun: // Machine Gun
                     _frameCount = new Vector2(8, 0);

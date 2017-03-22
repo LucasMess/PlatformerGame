@@ -1766,3 +1766,9 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/spritemap_27.png
 
+#begin Sounds/Tiles/flame_spitter_fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Tiles/flame_spitter_fire.wav
+

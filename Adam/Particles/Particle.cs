@@ -83,6 +83,9 @@ namespace Adam.Particles
                     case ParticleType.RewindFire:
                         NoOpacityDefaultBehavior();
                         break;
+                    case ParticleType.FireBall:
+                        NoOpacityDefaultBehavior();
+                        break;
                     default:
                         DefaultBehavior();
                         break;
@@ -349,6 +352,17 @@ namespace Adam.Particles
                     par.IsAnimated = true;
                     par.IsTimeConstant = true;
                     break;
+                case ParticleType.FireBall:
+                    par.SourceRectangle = new Rectangle(256, 168, 8, 8);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = AdamGame.Random.Next(1, 3);
+                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par._frames = 4;
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsAnimated = true;
+                    par.IsTimeConstant = true;
+                    break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
                     break;
@@ -367,6 +381,7 @@ namespace Adam.Particles
         Rain,
         HeatEffect,
         RewindFire,
+        FireBall,
     }
 
 }
