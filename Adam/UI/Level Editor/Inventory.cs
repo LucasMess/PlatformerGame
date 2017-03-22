@@ -99,9 +99,11 @@ namespace Adam.UI.Level_Editor
             TileType.BackgroundDoor, // Portal
             TileType.Checkpoint, // Checkpoint
             TileType.Tree, // Tree
+            TileType.PalmTree,
             TileType.Bed, // Bed
             TileType.Bookshelf, // Bookshelf
             TileType.Painting, // Painting
+            TileType.BillBoard,
             TileType.FireHydrant,
             TileType.EmeraldVase,
             TileType.RubyVase,

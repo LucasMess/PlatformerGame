@@ -87,6 +87,7 @@
             WallLamp,
             FireHydrant,
             BillBoard,
+            PalmTree,
 
 
             GoldBrickWall = 100,
