@@ -14,9 +14,8 @@ namespace Adam.Interactables
 
         public override void OnEntityTouch(Tile tile, Entity entity)
         {
-            if (entity is Player)
+            if (entity is Player player)
             {
-                Player player = (Player)entity;
                 player.AddAnimationToQueue("jump");
                 player.IsJumping = true;
                 tile.CurrentFrame = 1;

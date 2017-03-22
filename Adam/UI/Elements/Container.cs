@@ -9,16 +9,74 @@ namespace Adam.UI.Elements
     /// </summary>
     public class Container : UiElement
     {
-        private static Rectangle[] _sourceRectangles =
+        public enum Style
+        {
+            SolidColor,
+            SolidColorWithBevel,
+            GameUnique,
+        }
+
+        private Style _currentContainerStyle = Style.SolidColor;
+
+        /// <summary>
+        /// Gets the source rectangles depending on what style is being used.
+        /// </summary>
+        /// <returns></returns>
+        private Rectangle[] GetSourceRectangles()
+        {
+            switch (_currentContainerStyle)
+            {
+                case Style.SolidColor:
+                    return _sourceRectanglesSolidColor;
+                case Style.SolidColorWithBevel:
+                    return _sourceRectanglesSolidColorWithBevel;
+                case Style.GameUnique:
+                    return _sourceRectanglesSpecial;
+            }
+            return _sourceRectanglesSolidColor;
+        }
+
+        private static Rectangle[] _sourceRectanglesSolidColor =
         {
             new Rectangle(320, 197, 4, 4), // top left
             new Rectangle(325, 197, 1, 4), // top
             new Rectangle(327, 197, 4, 4), // top right
-            new Rectangle(320, 202, 11, 4), // middle fill
+            new Rectangle(320, 202, 4, 4), // middle left
+            new Rectangle(325, 202, 1, 4), // middle fill
+            new Rectangle(327, 202, 4, 4), // middle right
             new Rectangle(320, 207, 4, 5), // bot left
             new Rectangle(325, 207, 1, 5), // bot
             new Rectangle(327, 207, 4, 5), // bot right
         };
+
+
+        private static Rectangle[] _sourceRectanglesSolidColorWithBevel =
+        {
+            new Rectangle(320 + 12, 197, 4, 4), // top left
+            new Rectangle(325 + 12, 197, 1, 4), // top
+            new Rectangle(327 + 12, 197, 4, 4), // top right
+            new Rectangle(320 + 12, 202, 4, 4), // middle left
+            new Rectangle(325 + 12, 202, 1, 4), // middle fill
+            new Rectangle(327 + 12, 202, 4, 4), // middle right
+            new Rectangle(320 + 12, 207, 4, 5), // bot left
+            new Rectangle(325 + 12, 207, 1, 5), // bot
+            new Rectangle(327 + 12, 207, 4, 5), // bot right
+        };
+
+        private static Rectangle[] _sourceRectanglesSpecial =
+        {
+            new Rectangle(344, 193, 6, 6), // top left
+            new Rectangle(351, 193, 1, 6), // top
+            new Rectangle(353, 193, 6, 6), // top right
+            new Rectangle(344, 200, 6, 4), // middle left
+            new Rectangle(351, 200, 1, 4), // middle fill
+            new Rectangle(353, 200, 6, 4), // middle right
+            new Rectangle(344, 205, 6, 7), // bot left
+            new Rectangle(351, 205, 1, 7), // bot
+            new Rectangle(353, 205, 6, 7), // bot right
+        };
+
+
 
         private Vector2 _hiddenPos;
         private Vector2 _shownPos;
@@ -66,6 +124,11 @@ namespace Adam.UI.Elements
             SetPosition(_hiddenPos);
         }
 
+        public void ChangeStyle(Style newStyle)
+        {
+            _currentContainerStyle = newStyle;
+        }
+
         public void DisableAnimation()
         {
             DrawRectangle = new Rectangle((int)_shownPos.X, (int)_shownPos.Y, DrawRectangle.Width, DrawRectangle.Height);
@@ -97,19 +160,26 @@ namespace Adam.UI.Elements
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            int cornerSize = (_sourceRectangles[0].Width);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, cornerSize, cornerSize), _sourceRectangles[0], Color);
-            int topBlankWidth = (int)(Size.X - cornerSize * 2);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerSize), DrawRectangle.Y, topBlankWidth, cornerSize), _sourceRectangles[1], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerSize + topBlankWidth), DrawRectangle.Y, cornerSize, cornerSize), _sourceRectangles[2], Color);
+            int cornerWidth = GetSourceRectangles()[0].Width;
+            int cornerHeight = GetSourceRectangles()[0].Height;
+            int botCornerWidth = GetSourceRectangles()[6].Width;
+            int botCornerHeight = GetSourceRectangles()[6].Height;
 
-            int midBlankHeight = (int)(Size.Y - cornerSize * 2);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, (DrawRectangle.Y + cornerSize), (int)Size.X, midBlankHeight), _sourceRectangles[3], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[0], Color);
+            int topBlankWidth = (int)(Size.X - cornerWidth * 2);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth), DrawRectangle.Y, topBlankWidth, cornerHeight), GetSourceRectangles()[1], Color);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth + topBlankWidth), DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[2], Color);
 
-            int yBot = (DrawRectangle.Y + midBlankHeight + cornerSize);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, yBot, cornerSize, cornerSize), _sourceRectangles[4], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerSize), yBot, topBlankWidth, cornerSize), _sourceRectangles[5], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerSize + topBlankWidth), yBot, cornerSize, cornerSize), _sourceRectangles[6], Color);
+            int midBlankWidth = (int)(Size.X - cornerWidth * 2);
+            int midBlankHeight = (int)(Size.Y - cornerHeight - botCornerHeight);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[3], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth, (DrawRectangle.Y + cornerHeight), midBlankWidth, midBlankHeight), GetSourceRectangles()[4], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth + midBlankWidth, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[5], Color);
+
+            int yBot = (DrawRectangle.Y + midBlankHeight + cornerHeight);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[6], Color);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth), yBot, topBlankWidth, botCornerHeight), GetSourceRectangles()[7], Color);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth + topBlankWidth), yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[8], Color);
         }
 
     }

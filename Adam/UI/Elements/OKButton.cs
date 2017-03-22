@@ -14,10 +14,11 @@ namespace Adam.UI.Elements
         {
             Text = "Yes";
             int width = 19 * 5;
-            int height = 6 * 5;
+            int height = 50;
             int x = containerRectangle.X + containerRectangle.Width / 2;
             int y = containerRectangle.Y + containerRectangle.Height;
             CollRectangle = new Rectangle(x - width / 2, y - height - 20, width, height);
+            ChangeDimensions(new Vector2(width, height));
             this._sender = sender;
             Initialize();
         }

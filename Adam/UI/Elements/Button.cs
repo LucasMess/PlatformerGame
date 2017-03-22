@@ -40,6 +40,7 @@ namespace Adam.UI
                 {
                     _container = new Container(CollRectangle.X, CollRectangle.Y, CollRectangle.Width, CollRectangle.Height,
                         false);
+                    _container.ChangeStyle(Container.Style.GameUnique);
                     _container.DisableAnimation();
                 }
                 return _container;

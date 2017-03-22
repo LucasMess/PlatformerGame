@@ -22,7 +22,7 @@ namespace Adam.UI
         public MessageBox()
         {
             int buttonWidth = 40;
-            int buttonHeight = 15;
+            int buttonHeight = 20;
             int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
             int y = Window.DrawRectangle.Bottom - buttonHeight - 4;
 
@@ -30,6 +30,8 @@ namespace Adam.UI
             Button.ChangeDimensions(new Vector2(buttonWidth, buttonHeight));
             Button.BindTo(Window.DrawRectangle);
             Button.Color = new Color(196, 69, 69);
+
+            Window.ChangeStyle(Container.Style.SolidColorWithBevel);
         }
 
         /// <summary>

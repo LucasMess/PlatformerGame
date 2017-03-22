@@ -46,9 +46,11 @@ namespace Adam.UI.Information
         {
             _dialogueContainer = new Container(850, 150);
             _dialogueContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _dialogueContainer.Size.X/2, 40);
+            _dialogueContainer.ChangeStyle(Container.Style.GameUnique);
 
             _optionsContainer = new Container(850, 150);
             _optionsContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _optionsContainer.Size.X / 2, AdamGame.DefaultUiHeight - 200);
+            _optionsContainer.ChangeStyle(Container.Style.GameUnique);
 
             var origin = new Vector2(_dialogueContainer.Size.X/2f, _dialogueContainer.Size.Y / 2f);
 

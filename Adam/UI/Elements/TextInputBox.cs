@@ -22,7 +22,7 @@ namespace Adam.UI
             _textBox.BindTo(Window.DrawRectangle);
 
             int buttonWidth = (40);
-            int buttonHeight = (15);
+            int buttonHeight = (20);
             int x = Window.DrawRectangle.Center.X - buttonWidth / 2;
             int y = Window.DrawRectangle.Bottom - buttonHeight - (4);
 
