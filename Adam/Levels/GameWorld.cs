@@ -32,6 +32,7 @@ namespace Adam.Levels
         public static bool IsTestingLevel;
         public static List<Entity> Entities;
         public static List<Projectile> PlayerProjectiles;
+        public static List<Projectile> EnemyProjectiles;
         public static bool IsOnDebug;
         public static PlayerCharacter.Player Player = new PlayerCharacter.Player();
         //Basic tile grid and the visible tile grid
@@ -53,6 +54,7 @@ namespace Adam.Levels
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
             PlayerProjectiles = new List<Projectile>();
+            EnemyProjectiles = new List<Projectile>();
             TileArray = new Tile[0];
             WallArray = new Tile[0];
         }
@@ -253,6 +255,26 @@ namespace Adam.Levels
                 }
             }
 
+            // Enemy projectile update and deletion.
+            foreach (var proj in EnemyProjectiles)
+            {
+                proj.Update();
+                if (proj.IsTouchingEntity(GetPlayer()))
+                {
+                    proj.OnCollisionWithEntity(GetPlayer());
+                }
+
+            }
+            for (int i = EnemyProjectiles.Count - 1; i >= 0; i--)
+            {
+                Projectile proj = EnemyProjectiles[i];
+                if (proj.ToDelete)
+                {
+                    EnemyProjectiles.Remove(proj);
+                    continue;
+                }
+            }
+
 
             foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
             {
@@ -311,6 +333,11 @@ namespace Adam.Levels
 
 
             foreach (var proj in PlayerProjectiles)
+            {
+                proj.Draw(spriteBatch);
+            }
+
+            foreach (var proj in EnemyProjectiles)
             {
                 proj.Draw(spriteBatch);
             }

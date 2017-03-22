@@ -112,7 +112,7 @@
     <Compile Include="Characters\Scripts\FallingBoulderScript.cs" />
     <Compile Include="Characters\Scripts\FrogScript.cs" />
     <Compile Include="Characters\Scripts\HellboarScript.cs" />
-    <Compile Include="Characters\Scripts\SnakeScript.cs" />
+    <Compile Include="Characters\Scripts\SnakeBehavior.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="GameData\GameDataManager.cs" />

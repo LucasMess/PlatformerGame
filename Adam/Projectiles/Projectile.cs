@@ -24,7 +24,8 @@ namespace Adam.Projectiles
         /// </summary>
         public enum Type
         {
-            PlayerShuriken
+            PlayerShuriken,
+            SnakeVenom,
         }
 
         Entity _source;
@@ -47,18 +48,23 @@ namespace Adam.Projectiles
             CurrentCollisionType = CollisionType.SuperBouncy;
             _source = source;
             Position = position;
-            CollRectangle = new Rectangle(0, 0, 16, 16);
             Velocity = velocity;
             ObeysGravity = true;
+            CurrentType = type;
 
             switch (CurrentType)
             {
                 case Type.PlayerShuriken:
                     SourceRectangle = new Rectangle(288, 104, 8, 8);
                     break;
+                case Type.SnakeVenom:
+                    SourceRectangle = new Rectangle(256, 240, 16, 16);
+                    break;
                 default:
                     break;
             }
+
+            CollRectangle = new Rectangle(0, 0, SourceRectangle.Width * 2, SourceRectangle.Height * 2);
         }
 
         public override void Update()
@@ -75,7 +81,9 @@ namespace Adam.Projectiles
                     GameWorld.ParticleSystem.Add(Particles.ParticleType.Flame, Position, Vector2.Zero, Color.White);
                     GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, null, new Color(255, 233, 198));
                     break;
-
+                case Type.SnakeVenom:
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, CalcHelper.GetRandXAndY(new Rectangle(0,-2,0,4)), new Color(143, 219, 116));
+                    break;
                 default:
                     break;
             }

@@ -12,7 +12,7 @@ namespace Adam.Characters.Enemies
         public Snake(int x, int y)
         {
             Weight = 10;
-            Behavior = new SnakeScript();
+            Behavior = new SnakeBehavior();
             Behavior.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/snake");
@@ -21,6 +21,19 @@ namespace Adam.Characters.Enemies
             SourceRectangle = new Rectangle(0, 0, 32, 48);
 
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 32, 48), 0, 32, 48, 125, 8, true));
+
+            _complexAnimation.AddAnimationData("attack", new ComplexAnimData()
+            {
+                Priority = 1000,
+                Texture = Texture,
+                DeltaRectangle = new Rectangle(0, 0, 32, 48),
+                StartingY = SourceRectangle.Height * 1,
+                Width = SourceRectangle.Width,
+                Height = SourceRectangle.Height,
+                Speed = 50,
+                FrameCount = 8,
+                IsRepeating = false,
+            });
 
             Sounds.AddSoundRef("idle", "Sounds/Snake/snake_idle");
             Sounds.AddSoundRef("spit", "Sounds/Snake/snake_spit");
