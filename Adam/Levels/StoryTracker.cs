@@ -19,6 +19,7 @@ namespace Adam.Levels
         static COM comNPC = new COM(0, 0);
 
         public static bool IsInStoryMode = false;
+        public static bool InCutscene = false;
 
         public static bool trigger1 = false;
         public static bool trigger2 = false;
@@ -54,6 +55,20 @@ namespace Adam.Levels
             {
                 Overlay.FadeToBlack();
                 DataFolder.PlayStoryLevel(Profile.CurrentLevel);
+            }
+        }
+
+        public static void OnLevelLoad() {
+            if (Profile == null) return;
+            switch (Profile.CurrentLevel)
+            {
+                case "GreenHills01":
+                    MediaPlayer.Pause();
+                    Overlay.BlackBars.Show();
+                    InCutscene = true;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -99,6 +114,11 @@ namespace Adam.Levels
                         {
                             comNPC.ShowDialog("greenhills01-whathappened", 0);
                             AddTrigger("whatHappened");
+                        }
+                        if (GetVal("sentCoordinates"))
+                        {
+                            InCutscene = false;
+                            Overlay.BlackBars.Hide();
                         }
                     }
 

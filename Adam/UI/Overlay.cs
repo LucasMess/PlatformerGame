@@ -144,6 +144,31 @@ namespace Adam.UI
             }
         }
 
+        public static class BlackBars
+        {
+            static bool _isActive;
+            static Texture2D _texture = ContentHelper.LoadTexture("Tiles/black");
+            const int Height = 75;
+            public static void Show()
+            {
+                _isActive = true;
+            }
+
+            public static void Hide()
+            {
+                _isActive = false;
+            }
+
+            public static void Draw(SpriteBatch spriteBatch)
+            {
+                if (_isActive)
+                {
+                    spriteBatch.Draw(_texture, new Rectangle(0, 0, AdamGame.DefaultUiWidth, Height), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, AdamGame.DefaultUiHeight - Height, AdamGame.DefaultUiWidth, Height), Color.Black);
+                }
+            }
+        }
+
         /// <summary>
         /// Does all the effects for when the player rewinds.
         /// </summary>
@@ -356,13 +381,14 @@ namespace Adam.UI
         {
             WhiteFlash.Draw(spriteBatch);
             RewindEffect.Draw(spriteBatch);
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (AdamGame.CurrentGameMode == GameMode.Play && !StoryTracker.InCutscene)
             {
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);
             }
 
             BlackFade.Draw(spriteBatch);
+            BlackBars.Draw(spriteBatch);
         }
 
         public static void DrawRipples(SpriteBatch spriteBatch)

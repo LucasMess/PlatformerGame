@@ -27,7 +27,6 @@ namespace Adam.Characters.Non_Playable
             switch (code)
             {
                 case "greenhills01-wakeup":
-                    MediaPlayer.Pause();
                     AdamGame.Dialog.Say("Dot....", "greenhills01-wakeup2", null);
                     break;
                 case "greenhills01-wakeup2":
@@ -44,7 +43,9 @@ namespace Adam.Characters.Non_Playable
                     AdamGame.Dialog.Say("I am still at the spaceship, master, but it appears to be completely unoperational. The blast right before the time jump seems to have thrown us off course by a couple thousand years, which is not something the spaceship was ever designed for.", "greenhills01-whathappened3", null);
                     break;
                 case "greenhills01-whathappened3":
-                    AdamGame.Dialog.Say("I'll send you the location of the ship. If you come back quickly we might be able to find a way out of this time period!", null,null);
+                    AdamGame.Dialog.Say("I'll send you the location of the ship. If you come back quickly we might be able to find a way out of this time period!", "greenhills01-whathappened4" ,null);
+                    break;
+                case "greenhills01-whathappened4":
                     StoryTracker.AddTrigger("sentCoordinates");
                     break;
                 default:

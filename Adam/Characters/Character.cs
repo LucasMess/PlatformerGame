@@ -1,4 +1,5 @@
-﻿using Adam.Network;
+﻿using Adam.Levels;
+using Adam.Network;
 
 namespace Adam.Characters
 {
@@ -8,7 +9,7 @@ namespace Adam.Characters
 
         public override void Update()
         {
-            if (Session.IsHost)
+            if (Session.IsHost && !StoryTracker.InCutscene)
                 Behavior?.Update(this);
             base.Update();
         }

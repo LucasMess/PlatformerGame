@@ -113,6 +113,10 @@ namespace Adam.Levels
 
             Session.WaitForPlayers();
 
+            SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
+
+            StoryTracker.OnLevelLoad();
+
             return true;
         }
 
@@ -122,6 +126,8 @@ namespace Adam.Levels
 
             ConvertToTiles(TileArray, WorldData.TileIDs);
             ConvertToTiles(WallArray, WorldData.WallIDs, true);
+
+            SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
         }
 
         private static void ConvertToTiles(Tile[] array, TileType[] ids, bool isWall = false)
@@ -194,9 +200,6 @@ namespace Adam.Levels
                 }
                 UpdateVisual();
             }
-
-            if (AdamGame.CurrentGameMode == GameMode.Play)
-                SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
 
             TimesUpdated++;
 

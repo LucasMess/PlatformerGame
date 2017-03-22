@@ -1,4 +1,5 @@
 ﻿using Adam.Characters;
+using Adam.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -140,6 +141,9 @@ namespace Adam.PlayerCharacter
             if (AdamGame.CurrentGameMode == GameMode.None) return;
 
             if (AdamGame.Dialog.IsActive)
+                return;
+
+            if (StoryTracker.InCutscene)
                 return;
 
             if (AdamGame.CurrentGameMode == GameMode.Edit)
