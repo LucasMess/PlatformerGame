@@ -314,6 +314,11 @@ namespace Adam.Levels
                         lastAddedTile = -1;
                         UpdateSelectedTiles(0);
                     }
+                    else if (Brush.CurrentBrushMode == Brush.BrushMode.Select)
+                    {
+                        Tile tile = GameWorld.GetTile(IndexOfMouse);
+                        tile.InteractInEditMode();
+                    }
                 }
                 if (InputHelper.IsRightMousePressed())
                 {
@@ -464,15 +469,6 @@ namespace Adam.Levels
                             IsWall = (CurrentArray == GameWorld.WallArray),
                         }.ToByteArray();
                         Session.Send(data, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
-                    }
-                    else
-                    {
-                        // If there is no air, then the player can interact with the tile.
-                        // Only allow interaction if the brush size is 1.
-                        if (Brush.Size == 1)
-                        {
-                            CurrentArray[i].InteractInEditMode();
-                        }
                     }
                 }
             }

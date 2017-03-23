@@ -23,7 +23,6 @@ namespace Adam.Interactables
             container = new Container(collRectangle.Width, collRectangle.Height);
             container.SetPosition(new Vector2(collRectangle.X, collRectangle.Y));
 
-            CanBeLinkedByOtherInteractables = false;
             CanBeLinkedToOtherInteractables = true;
         }
 

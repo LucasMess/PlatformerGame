@@ -15,13 +15,12 @@ namespace Adam.UI.Elements
         float _rotation;
         public bool IsActive { get; set; }
 
-
         /// <summary>
         /// Creates a line from point A to point B.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        public void Update(Vector2 a, Vector2 b)
+        public virtual void Update(Vector2 a, Vector2 b)
         {
             float distance = Vector2.Distance(a, b);
 
@@ -37,7 +36,7 @@ namespace Adam.UI.Elements
             //Console.WriteLine("Rotation:{0}, Distance:{1}", rotation, distance);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (IsActive)
                 spriteBatch.Draw(GameWorld.SpriteSheet, _rect, _sourceRect, Color.Red, _rotation, new Vector2(0, 0), SpriteEffects.None, 0);

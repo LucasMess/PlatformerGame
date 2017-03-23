@@ -64,7 +64,7 @@
             Skull,
             Stalagmite,
             Mud,
-            BackgroundDoor,
+            MarbleDoor,
             Bed,
             Bookshelf,
             Painting,
@@ -90,6 +90,7 @@
             PalmTree,
             ReinforcedWoodPlatform,
             DialogueActivator,
+            ReinforcedWoodDoor,
 
 
             GoldBrickWall = 100,

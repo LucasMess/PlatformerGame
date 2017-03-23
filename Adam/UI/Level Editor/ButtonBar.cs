@@ -35,8 +35,8 @@ namespace Adam.UI.Level_Editor
             eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
             eraserButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
-            var undoButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Undo", ButtonImage.Undo);
-            undoButton.ChangeColors(new Color(95, 95, 95), Color.White);
+            var selectButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Select", ButtonImage.Select);
+            selectButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
             var wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
             wallButton.ChangeColors(new Color(95, 95, 95), Color.White);
@@ -57,6 +57,7 @@ namespace Adam.UI.Level_Editor
             expandButton.MouseClicked += Inventory.StartAnimation;
             brushButton.MouseClicked += BrushButton_MouseClicked;
             eraserButton.MouseClicked += EraserButton_MouseClicked;
+            selectButton.MouseClicked += SelectButton_MouseClicked;
 
             _buttons.Add(wallButton);
             _buttons.Add(playButton);
@@ -64,8 +65,14 @@ namespace Adam.UI.Level_Editor
             _buttons.Add(expandButton);
             _buttons.Add(brushButton);
             _buttons.Add(eraserButton);
-            _buttons.Add(undoButton);
+            _buttons.Add(selectButton);
             _buttons.Add(optionsButton);
+        }
+
+        private void SelectButton_MouseClicked(Button button)
+        {
+            LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Select;
+            Cursor.ChangeCursor(Cursor.Type.Select);
         }
 
         private void EraserButton_MouseClicked(Button button)

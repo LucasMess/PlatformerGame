@@ -1,5 +1,8 @@
 ﻿using Adam.Levels;
 using Adam.PlayerCharacter;
+using Adam.UI.Elements;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.Interactables
 {
@@ -8,11 +11,12 @@ namespace Adam.Interactables
     /// </summary>
     public class BackgroundDoor : Interactable
     {
-        public BackgroundDoor()
-        {
+        Rectangle _collRectangle;
 
-            CanBeLinkedByOtherInteractables = true;
+        public BackgroundDoor(Tile tile)
+        {
             CanBeLinkedToOtherInteractables = false;
+            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, AdamGame.Tilesize * 3, AdamGame.Tilesize * 4);
         }
 
         protected override void OnConnectionToInteractable(Tile source, Tile other)
@@ -28,17 +32,27 @@ namespace Adam.Interactables
             }
 
             base.OnConnectionToInteractable(source, other);
-
-            base.OnConnectionToInteractable(source, other);
         }
 
+        public override void Update(Tile tile)
+        {
+            if (GameWorld.GetPlayer().GetCollRectangle().Intersects(_collRectangle))
+            {
+                KeyPopUp.Show("W", GameWorld.GetPlayer().GetCollRectangle());
+                if (GameWorld.GetPlayer().IsInteractPressed())
+                {
+                    OnPlayerAction(tile, GameWorld.GetPlayer());
+                }
+            }
+            base.Update(tile);
+        }
 
 
         public override void OnPlayerAction(Tile tile, Player player)
         {
             if (!IsConnectedToAnotherInteractable())
             {
-                AdamGame.MessageBox.Show("It's locked.");
+                AdamGame.Dialog.Say("It's locked.", null, null);
             }
             base.OnPlayerAction(tile, player);
         }

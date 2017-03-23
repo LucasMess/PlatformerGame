@@ -269,6 +269,7 @@ namespace Adam
             Dialog.Update();
 
             Overlay.Update();
+            KeyPopUp.Update();
 
             Player player = GameWorld.GetPlayer();
             if (player.IsPauseButtonDown())

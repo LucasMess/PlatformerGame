@@ -203,6 +203,7 @@
     <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Elements\Cursor.cs" />
     <Compile Include="UI\Elements\IconButton.cs" />
+    <Compile Include="UI\Elements\InteractableConnectionLine.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
     <Compile Include="UI\Elements\Line.cs" />
     <Compile Include="UI\Elements\OKButton.cs" />

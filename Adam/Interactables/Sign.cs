@@ -8,7 +8,6 @@ namespace Adam.Interactables
 {
     public class Sign : Entity
     {
-        KeyPopUp _key;
         int _id;
 
         protected override Rectangle DrawRectangle
@@ -21,14 +20,12 @@ namespace Adam.Interactables
 
         public Sign(int xCoor, int yCoor, int id)
         {
-            _key = new KeyPopUp();
             CollRectangle = new Rectangle(xCoor, yCoor, AdamGame.Tilesize, AdamGame.Tilesize);
             this._id = id;
         }
 
         public override void Update()
         {
-            _key.Update(CollRectangle);
             if (GameWorld.Player.GetCollRectangle().Intersects(CollRectangle))
             {
                 if (InputHelper.IsKeyDown(Keys.W))
@@ -41,11 +38,6 @@ namespace Adam.Interactables
         private void ShowMessage()
         {
            // Main.Dialog.Show(GameWorld.worldData.GetSignMessage(ID));
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            _key.Draw(spriteBatch);
         }
 
     }

@@ -550,24 +550,11 @@ namespace Adam
                     startingPoint = new Vector2(4, 29);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
-                case TileType.BackgroundDoor: // Portal.
+                case TileType.MarbleDoor: // Portal.
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3 * 32;
                     _sizeOfTile.X = 64;
-                    DrawRectangle.Height = _sizeOfTile.Y;
-                    DrawRectangle.Width = _sizeOfTile.X;
-                    switch (SubId)
-                    {
-                        case 0:
-                            _positionInSpriteSheet = new Vector2(8, 30);
-                            break;
-                    }
-
-                    if (!_isSampleTile && !_wasInitialized)
-                    {
-                        new BackgroundDoor();
-                        _wasInitialized = true;
-                    }
+                    Interactable = new BackgroundDoor(this);
                     LetsLightThrough = true;
                     break;
                 case TileType.Bed: // Bed.
@@ -879,6 +866,13 @@ namespace Adam
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     break;
+                case TileType.ReinforcedWoodDoor:
+                    _positionInSpriteSheet = new Vector2(272/16, 240/16);
+                    Interactable = new BackgroundDoor(this);
+                    LetsLightThrough = true;
+                    _sizeOfTile.X = 32 * 3;
+                    _sizeOfTile.Y = 32 * 4;
+                    break;
 
                 #endregion
 
@@ -985,11 +979,6 @@ namespace Adam
             Interactable?.ReadMetaData(this);
         }
 
-        private void Tile_OnTileUpdate(Tile t)
-        {
-            throw new System.NotImplementedException();
-        }
-
         /// <summary>
         ///     Takes all the variables given in DefineTexture method and returns the appropriate source rectangle.
         /// </summary>
@@ -1042,7 +1031,7 @@ namespace Adam
         public void Update()
         {
             OnTileUpdate?.Invoke(this);
-            if (!_isSampleTile)
+            if (!_isSampleTile && AdamGame.CurrentGameMode == GameMode.Play)
                 Interactable?.Update(this);
             Animate();
             ChangeOpacity();

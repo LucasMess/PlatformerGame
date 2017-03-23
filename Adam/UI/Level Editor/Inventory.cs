@@ -98,7 +98,8 @@ namespace Adam.UI.Level_Editor
             TileType.Door, // Door
             TileType.Chest, // Chest
             TileType.Sign, // Sign
-            TileType.BackgroundDoor, // Portal
+            TileType.MarbleDoor, // Portal
+            TileType.ReinforcedWoodDoor,
             TileType.Checkpoint, // Checkpoint
             TileType.Tree, // Tree
             TileType.PalmTree,

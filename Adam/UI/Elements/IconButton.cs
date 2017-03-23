@@ -25,7 +25,8 @@ namespace Adam.UI.Elements
         Brush,
         Eraser,
         Undo,
-        Settings
+        Settings,
+        Select
     }
 
     /// <summary>
@@ -116,6 +117,10 @@ namespace Adam.UI.Elements
                 case ButtonImage.Settings:
                     SourceRectangle.X = 48;
                     SourceRectangle.Y = 16;
+                    break;
+                case ButtonImage.Select:
+                    SourceRectangle.X = 16;
+                    SourceRectangle.Y = 48;
                     break;
             }
         }

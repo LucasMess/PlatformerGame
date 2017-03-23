@@ -1,38 +1,38 @@
 ﻿using Adam.Levels;
+using Adam.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Adam.UI.Elements
 {
-    public class KeyPopUp
+    public static class KeyPopUp
     {
-        bool _playerOn;
-        Rectangle _drawRectangle;
-        Rectangle _sourceRectangle;
-        Texture2D _texture;
+        private static bool _isActive;
+        private static Rectangle _drawRectangle = new Rectangle(0, 0, 32, 32);
+        private static Rectangle _sourceRectangle = new Rectangle(320, 112, 16, 16);
+        private static Texture2D _texture = GameWorld.SpriteSheet;
+        private static string _displayCharacter;
 
-        /// <summary>
-        /// To display the 'W' key above the object.
-        /// </summary>
-        public KeyPopUp()
+        public static void Show(string key, Rectangle collRectangle)
         {
-            _texture = GameWorld.SpriteSheet;
-            _sourceRectangle = new Rectangle(16 * 20, 16 * 7, 16, 16);
+            _displayCharacter = key;
+            _isActive = true;
+            _drawRectangle.X = collRectangle.Center.X - 16;
+            _drawRectangle.Y = collRectangle.Y - 40;
         }
 
-        public void Update(Rectangle collRectangle)
+        public static void Update()
         {
-            _drawRectangle = new Rectangle(collRectangle.X , collRectangle.Y - 48, 32, 32);
-
-            if (GameWorld.Player.GetCollRectangle().Intersects(collRectangle))
-                _playerOn = true;
-            else _playerOn = false;
+            _isActive = false;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
-            if (_playerOn)
-                spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White, 0, new Vector2(0,0), Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
+            if (_isActive)
+            {
+                spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[1], _displayCharacter, new Vector2(_drawRectangle.Center.X - FontHelper.Fonts[1].MeasureString(_displayCharacter).X / 2, _drawRectangle.Y + 8), 1, Color.Black, Color.DarkGray);
+            }
         }
     }
 

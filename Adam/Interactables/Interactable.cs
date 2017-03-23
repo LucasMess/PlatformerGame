@@ -180,7 +180,7 @@ namespace Adam.Interactables
         /// <returns></returns>
         public bool IsConnectedToAnotherInteractable()
         {
-            return OnActivation == null;
+            return OnActivation != null;
         }
     }
 }

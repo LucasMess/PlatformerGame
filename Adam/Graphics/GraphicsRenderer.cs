@@ -142,7 +142,6 @@ namespace Adam.Graphics
             _spriteBatch.End();
         }
 
-
         /// <summary>
         /// Draws things that are only seen by the camera in the gameworld.
         /// </summary>
@@ -160,6 +159,7 @@ namespace Adam.Graphics
             //GameWorld.DrawBackground(_spriteBatch);
             GameWorld.DrawWalls(_spriteBatch);
             GameWorld.Draw(_spriteBatch);
+            KeyPopUp.Draw(_spriteBatch);
             //GameWorld.DrawRipples(_spriteBatch);
 
 
