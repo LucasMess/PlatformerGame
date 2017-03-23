@@ -61,6 +61,8 @@ namespace Adam.Levels
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
         {
+            Cursor.Hide();
+
             LoadingScreen.LoadingText = "Where did I put that file?";
             var tileIDs = WorldData.TileIDs;
             var wallIDs = WorldData.WallIDs;

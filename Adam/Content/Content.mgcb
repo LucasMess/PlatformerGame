@@ -1772,3 +1772,9 @@
 /processorParam:Quality=Best
 /build:Sounds/Tiles/flame_spitter_fire.wav
 
+#begin Music/Heart of Nowhere.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Heart of Nowhere.mp3
+

@@ -22,6 +22,7 @@ namespace Adam.Misc.Databases
                 case 5: return ContentHelper.LoadSong("Music/Volatile Reaction"); // Chase scene maybe
                 case 6: return ContentHelper.LoadSong("Music/Sky View"); // Tutorial
                 case 7: return ContentHelper.LoadSong("Music/Another Earth");
+                case 8: return ContentHelper.LoadSong("Music/Heart of Nowhere");
 
                 case 100: return ContentHelper.LoadSong("Music/Menu/Force Reunite"); // Main Menu
 

@@ -873,6 +873,12 @@ namespace Adam
                     startingPoint = new Vector2(36, 14);
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
+                case TileType.DialogueActivator:
+                    startingPoint = new Vector2(12, 9);
+                    Interactable = new DialogueActivator(this);
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    break;
 
                 #endregion
 

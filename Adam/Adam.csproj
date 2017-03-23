@@ -126,6 +126,7 @@
     <Compile Include="Interactables\CheckPoint.cs" />
     <Compile Include="Interactables\Chest.cs" />
     <Compile Include="Interactables\Crystal.cs" />
+    <Compile Include="Interactables\DialogueActivator.cs" />
     <Compile Include="Interactables\Door.cs" />
     <Compile Include="Interactables\FlameSpitter.cs" />
     <Compile Include="Interactables\Food.cs" />

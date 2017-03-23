@@ -14,7 +14,7 @@ namespace Adam.UI
     {
         Timer gridOpacityTimer = new Timer(true);
 
-        public enum BrushMode { Build, Erase }
+        public enum BrushMode { Build, Erase, Select }
         public BrushMode CurrentBrushMode;
 
         protected int MaxSize
@@ -64,10 +64,13 @@ namespace Adam.UI
             switch (mode)
             {
                 case BrushMode.Build:
-                    Cursor.ChangeCursor(Cursor.CursorType.Build);
+                    Cursor.ChangeCursor(Cursor.Type.Build);
                     break;
                 case BrushMode.Erase:
-                    Cursor.ChangeCursor(Cursor.CursorType.Erase);
+                    Cursor.ChangeCursor(Cursor.Type.Erase);
+                    break;
+                case BrushMode.Select:
+                    Cursor.ChangeCursor(Cursor.Type.Select);
                     break;
                 default:
                     break;

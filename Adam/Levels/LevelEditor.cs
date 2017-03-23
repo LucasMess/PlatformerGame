@@ -78,7 +78,7 @@ namespace Adam.Levels
             player.SetPosition(player.RespawnPos);
             //}
 
-
+            Cursor.Show();
         }
 
 
@@ -141,6 +141,7 @@ namespace Adam.Levels
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
                     _testSound.Play();
+                    Cursor.Hide();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)
@@ -162,6 +163,7 @@ namespace Adam.Levels
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
                     _testSound.Play();
+                    Cursor.Show();
                     // DataFolder.PlayLevel(DataFolder.CurrentLevelFilePath);
                 }
                 catch (Exception e)

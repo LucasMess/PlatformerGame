@@ -71,13 +71,13 @@ namespace Adam.UI.Level_Editor
         private void EraserButton_MouseClicked(Button button)
         {
             LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Erase;
-            Cursor.ChangeCursor(Cursor.CursorType.Erase);
+            Cursor.ChangeCursor(Cursor.Type.Erase);
         }
 
         private void BrushButton_MouseClicked(Button button)
         {
             LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Build;
-            Cursor.ChangeCursor(Cursor.CursorType.Build);
+            Cursor.ChangeCursor(Cursor.Type.Build);
         }
 
         /// <summary>

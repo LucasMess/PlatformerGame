@@ -86,6 +86,7 @@ namespace Adam.UI.Level_Editor
             TileType.Poison, // Poisoned Water
             TileType.PlayerDetector, // Player Detector
             TileType.Teleporter,
+            TileType.DialogueActivator,
         };
 
         private TileType[] _objects =

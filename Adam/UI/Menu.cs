@@ -209,6 +209,9 @@ namespace Adam
                     break;
             }
 
+            Cursor.Show();
+            Cursor.ChangeCursor(Cursor.Type.Normal);
+
             if (AdamGame.CurrentGameState == GameState.MainMenu)
                 SoundtrackManager.PlayMainTheme();
 

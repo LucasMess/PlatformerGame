@@ -89,6 +89,7 @@
             BillBoard,
             PalmTree,
             ReinforcedWoodPlatform,
+            DialogueActivator,
 
 
             GoldBrickWall = 100,
