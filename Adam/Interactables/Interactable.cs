@@ -106,6 +106,11 @@ namespace Adam.Interactables
             }
         }
 
+        /// <summary>
+        /// Called when another interactable is linked to this interactable.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="other"></param>
         protected virtual void OnConnectionToInteractable(Tile source, Tile other)
         {
             line.IsActive = true;

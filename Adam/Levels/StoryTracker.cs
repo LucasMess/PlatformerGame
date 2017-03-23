@@ -4,6 +4,7 @@ using Adam.Misc;
 using Adam.Misc.Sound;
 using Adam.UI;
 using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 
 namespace Adam.Levels
@@ -58,7 +59,8 @@ namespace Adam.Levels
             }
         }
 
-        public static void OnLevelLoad() {
+        public static void OnLevelLoad()
+        {
             if (Profile == null) return;
             switch (Profile.CurrentLevel)
             {
@@ -78,6 +80,17 @@ namespace Adam.Levels
             switch (Profile.CurrentLevel)
             {
                 case "GreenHills01":
+                    if (GetVal("CaveMustBeOnlyWay") && !GetVal("CaveMustBeOnlyWay-2"))
+                    {
+                        AddTrigger("CaveMustBeOnlyWay-2");
+                        comNPC.ShowDialog("greenHills01-cave", 0);
+                    }
+                    if (GetVal("Door") && !GetVal("Door-2"))
+                    {
+                        AddTrigger("Door-2");
+                        comNPC.ShowDialog("greenHills01-door", 0);
+                    }
+
                     if (StoryTimer.TimeElapsedInMilliSeconds > 1000 && !GetVal("hasStartedWakeupDialog"))
                     {
                         AddTrigger("hasStartedWakeupDialog");
@@ -157,7 +170,11 @@ namespace Adam.Levels
 
         public static void AddTrigger(string key)
         {
-            _triggers.Add(key, true);
+            if (!_triggers.ContainsKey(key))
+            {
+                Console.WriteLine("Added trigger: " + key);
+                _triggers.Add(key, true);
+            }
         }
 
     }

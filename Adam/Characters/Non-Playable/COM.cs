@@ -48,6 +48,12 @@ namespace Adam.Characters.Non_Playable
                 case "greenhills01-whathappened4":
                     StoryTracker.AddTrigger("sentCoordinates");
                     break;
+                case "greenHills01-cave":
+                    AdamGame.Dialog.Say("There seems to be a light source in this cave. Dot, I think we are not alone on this planet.", null, null);
+                    break;
+                case "greenHills01-door":
+                    AdamGame.Dialog.Say("My sensors are reading multiple life signatures behind this door. I cannot determine their friendliness, and I cannot communicate with you if you proceed into the depths of the cave. I advise you to find another way around.", null, null);
+                    break;
                 default:
                     break;
             }

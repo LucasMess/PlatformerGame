@@ -56,7 +56,13 @@ namespace Adam.UI
         {
             MouseHover += OnMouseHover;
             MouseOut += OnMouseOut;
+            MouseClicked += OnMouseClicked;
             Origin = new Vector2(CollRectangle.Width / 2, CollRectangle.Height / 2);
+        }
+
+        private void OnMouseClicked(Button button)
+        {
+            ConfirmSound.Play();
         }
 
         /// <summary>
