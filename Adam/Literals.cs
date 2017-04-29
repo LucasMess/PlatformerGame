@@ -91,6 +91,10 @@
             ReinforcedWoodPlatform,
             DialogueActivator,
             ReinforcedWoodDoor,
+            SingleCrate,
+            MultipleCrates,
+            PressurePlate,
+            WoodenChair,
 
 
             GoldBrickWall = 100,

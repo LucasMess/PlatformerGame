@@ -84,6 +84,7 @@ namespace Adam.UI.Level_Editor
             TileType.Water, // Water
             TileType.Lava, // Lava
             TileType.Poison, // Poisoned Water
+            TileType.PressurePlate,
             TileType.PlayerDetector, // Player Detector
             TileType.Teleporter,
             TileType.DialogueActivator,
@@ -104,8 +105,11 @@ namespace Adam.UI.Level_Editor
             TileType.Tree, // Tree
             TileType.PalmTree,
             TileType.Bed, // Bed
+            TileType.WoodenChair,
             TileType.Bookshelf, // Bookshelf
             TileType.Painting, // Painting
+            TileType.SingleCrate,
+            TileType.MultipleCrates,
             TileType.BillBoard,
             TileType.FireHydrant,
             TileType.EmeraldVase,

@@ -744,6 +744,25 @@ namespace Adam
                     LetsLightThrough = true;
                     CurrentCollisionType = CollisionType.FromAbove;
                     break;
+                case TileType.SingleCrate:
+                    _positionInSpriteSheet = new Vector2(208 / 16, 528 / 16);
+                    LetsLightThrough = true;
+                    break;
+                case TileType.MultipleCrates:
+                    _positionInSpriteSheet = new Vector2(288 / 16, 512 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 2;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.WoodenChair:
+                    _positionInSpriteSheet = new Vector2(192 / 16, 512 / 16);
+                    _sizeOfTile.Y = 32 * 2;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.PressurePlate:
+                    _positionInSpriteSheet = new Vector2(224 / 16, 528 / 16);
+                    LetsLightThrough = true;
+                    break;
 
                 #region Wall Textures
 
