@@ -1,14 +1,14 @@
-﻿using Adam.Characters.Enemies;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.Misc.Interfaces;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Characters.Enemies;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Misc.Interfaces;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public class Food : Item, INewtonian
     {

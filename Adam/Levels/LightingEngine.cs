@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     public static class LightingEngine
     {

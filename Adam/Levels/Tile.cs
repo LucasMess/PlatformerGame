@@ -1,14 +1,14 @@
-﻿using Adam.Characters;
-using Adam.Characters.Enemies;
-using Adam.Interactables;
-using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Characters.Enemies;
+using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public sealed partial class Tile
     {
@@ -91,7 +91,7 @@ namespace Adam
         public Tile(int x, int y)
         {
             SetOriginalPosition(x, y);
-            DrawRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
+            DrawRectangle = new Rectangle(x, y, TMBAW_Game.Tilesize, TMBAW_Game.Tilesize);
             _defaultDrawRectangle = DrawRectangle;
             SetToDefaultSourceRect();
         }
@@ -268,8 +268,8 @@ namespace Adam
                 case TileType.Flower: //Daffodyls
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 64;
-                    _positionInSpriteSheet = new Vector2(12, 10 + AdamGame.Random.Next(0, 3) * 2);
-                    DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
+                    _positionInSpriteSheet = new Vector2(12, 10 + TMBAW_Game.Random.Next(0, 3) * 2);
+                    DrawRectangle.Y = _originalPosition.Y - TMBAW_Game.Tilesize;
                     _hasRandomStartingPoint = true;
                     LetsLightThrough = true;
                     break;
@@ -294,8 +294,8 @@ namespace Adam
                     _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(15, 30);
                     animationPlaysOnce = true;
-                    DrawRectangle.X = _originalPosition.X + AdamGame.Tilesize / 4;
-                    DrawRectangle.Y = _originalPosition.Y - AdamGame.Tilesize;
+                    DrawRectangle.X = _originalPosition.X + TMBAW_Game.Tilesize / 4;
+                    DrawRectangle.Y = _originalPosition.Y - TMBAW_Game.Tilesize;
                     Interactable = new Chest(this);
                     LetsLightThrough = true;
                     break;
@@ -451,7 +451,7 @@ namespace Adam
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.X = 64;
                     _sizeOfTile.Y = 64;
-                    switch (AdamGame.Random.Next(0, 4))
+                    switch (TMBAW_Game.Random.Next(0, 4))
                     {
                         case 0: // One branch normal.
                             _positionInSpriteSheet = new Vector2(20, 2);
@@ -621,7 +621,7 @@ namespace Adam
                     break;
                 case TileType.SteelBeam:
                     IsSolid = true;
-                    switch (AdamGame.Random.Next(0, 5))
+                    switch (TMBAW_Game.Random.Next(0, 5))
                     {
                         case 0:
                             _positionInSpriteSheet = new Vector2(12, 25);
@@ -641,7 +641,7 @@ namespace Adam
                     }
                     break;
                 case TileType.SnowCover:
-                    switch (AdamGame.Random.Next(0, 5))
+                    switch (TMBAW_Game.Random.Next(0, 5))
                     {
                         case 0:
                             _positionInSpriteSheet = new Vector2(12, 24);
@@ -670,19 +670,19 @@ namespace Adam
                     _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(25, 24);
                     LetsLightThrough = true;
-                    DrawRectangle.Y -= AdamGame.Tilesize;
+                    DrawRectangle.Y -= TMBAW_Game.Tilesize;
                     break;
                 case TileType.RubyVase:
                     _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(24, 24);
                     LetsLightThrough = true;
-                    DrawRectangle.Y -= AdamGame.Tilesize;
+                    DrawRectangle.Y -= TMBAW_Game.Tilesize;
                     break;
                 case TileType.SapphireVase:
                     _sizeOfTile.Y = 64;
                     _positionInSpriteSheet = new Vector2(26, 24);
                     LetsLightThrough = true;
-                    DrawRectangle.Y -= AdamGame.Tilesize;
+                    DrawRectangle.Y -= TMBAW_Game.Tilesize;
                     break;
                 case TileType.MushroomDecor:
                     _positionInSpriteSheet = new Vector2(8, 17);
@@ -896,7 +896,7 @@ namespace Adam
                 #endregion
 
                 case TileType.Player: //Player
-                    if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(17, 12);
                         GameWorld.GetPlayer().RespawnPos = new Vector2(DrawRectangle.X, DrawRectangle.Y);
@@ -953,7 +953,7 @@ namespace Adam
                     break;
                 case TileType.FallingBoulder: //Falling Boulder
                     LetsLightThrough = true;
-                    if (AdamGame.CurrentGameMode == GameMode.Edit)
+                    if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(19, 13);
                     }
@@ -986,7 +986,7 @@ namespace Adam
 
             if (_hasRandomStartingPoint)
             {
-                var randX = AdamGame.Random.Next(0, (int)_frameCount.X);
+                var randX = TMBAW_Game.Random.Next(0, (int)_frameCount.X);
                 SourceRectangle.X += randX * SmallTileSize;
                 CurrentFrame += randX;
             }
@@ -1023,18 +1023,18 @@ namespace Adam
 
                 if (width > height)
                 {
-                    width = AdamGame.Tilesize;
-                    height = (int)(AdamGame.Tilesize / _sizeOfTile.X);
+                    width = TMBAW_Game.Tilesize;
+                    height = (int)(TMBAW_Game.Tilesize / _sizeOfTile.X);
                 }
                 if (height > width)
                 {
-                    width = (int)(AdamGame.Tilesize / _sizeOfTile.Y);
-                    height = AdamGame.Tilesize;
+                    width = (int)(TMBAW_Game.Tilesize / _sizeOfTile.Y);
+                    height = TMBAW_Game.Tilesize;
                 }
                 if (height == width)
                 {
-                    width = AdamGame.Tilesize;
-                    height = AdamGame.Tilesize;
+                    width = TMBAW_Game.Tilesize;
+                    height = TMBAW_Game.Tilesize;
                 }
                 // Console.WriteLine("Name:{0}, Width:{1}, Height:{2}", name, width, height);
                 DrawRectangle = new Rectangle(DrawRectangle.X, DrawRectangle.Y, width, height);
@@ -1050,7 +1050,7 @@ namespace Adam
         public void Update()
         {
             OnTileUpdate?.Invoke(this);
-            if (!_isSampleTile && AdamGame.CurrentGameMode == GameMode.Play)
+            if (!_isSampleTile && TMBAW_Game.CurrentGameMode == GameMode.Play)
                 Interactable?.Update(this);
             Animate();
             ChangeOpacity();
@@ -1065,8 +1065,8 @@ namespace Adam
                     case TileType.Metal: //Metal
                         animationSpeed = 100;
                         _restartWait = 2000;
-                        _frameTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
-                        _restartTimer += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
+                        _frameTimer += TMBAW_Game.GameTime.ElapsedGameTime.TotalMilliseconds;
+                        _restartTimer += TMBAW_Game.GameTime.ElapsedGameTime.TotalMilliseconds;
 
                         if (_restartTimer < _restartWait)
                             break;
@@ -1095,7 +1095,7 @@ namespace Adam
 
         private void DefaultAnimation()
         {
-            var gameTime = AdamGame.GameTime;
+            var gameTime = TMBAW_Game.GameTime;
 
             if (animationSpeed == 0) animationSpeed = 130;
             _frameTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -1134,7 +1134,7 @@ namespace Adam
 
         private void ChangeOpacity()
         {
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
             {
                 if (LevelEditor.OnWallMode)
                 {
@@ -1200,9 +1200,9 @@ namespace Adam
         {
             if (Texture != null)
             {
-                if (_isInvisibleInPlayMode && AdamGame.CurrentGameMode == GameMode.Play)
+                if (_isInvisibleInPlayMode && TMBAW_Game.CurrentGameMode == GameMode.Play)
                     return;
-                if (_isInvisibleInEditMode && AdamGame.CurrentGameMode == GameMode.Edit)
+                if (_isInvisibleInEditMode && TMBAW_Game.CurrentGameMode == GameMode.Edit)
                     return;
                 else
                 {
@@ -1222,9 +1222,9 @@ namespace Adam
                     c.Draw(spriteBatch);
                 }
             }
-            if (AdamGame.CurrentGameMode == GameMode.Edit && IsWall)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit && IsWall)
             {
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, AdamGame.Tilesize, AdamGame.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, TMBAW_Game.Tilesize, TMBAW_Game.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
             }
         }
 
@@ -1843,7 +1843,7 @@ namespace Adam
                     var indexAbove = TileIndex - mapWidth;
                     if (array[indexAbove].Id == 0)
                     {
-                        var rand = AdamGame.Random.Next(0, 10);
+                        var rand = TMBAW_Game.Random.Next(0, 10);
                         if (rand == 0) //flower
                         {
                             array[indexAbove].Id = TileType.Flower;
@@ -1868,7 +1868,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = AdamGame.Random.Next(0, 100);
+                    var rand = TMBAW_Game.Random.Next(0, 100);
                     if (rand > 90)
                         array[indexAbove].Id = TileType.MushroomDecor;
 
@@ -1884,7 +1884,7 @@ namespace Adam
                 var indexTopRight = indexAbove + 1;
                 if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
                 {
-                    var rand = AdamGame.Random.Next(0, 100);
+                    var rand = TMBAW_Game.Random.Next(0, 100);
                     if (rand > 80)
                         array[indexAbove].Id = TileType.Cactus;
 
@@ -1898,7 +1898,7 @@ namespace Adam
                 var indexAbove = TileIndex - mapWidth;
                 if (array[indexAbove].Id == 0)
                 {
-                    var rand = AdamGame.Random.Next(0, 10);
+                    var rand = TMBAW_Game.Random.Next(0, 10);
 
                     // Skull.
                     if (rand == 0)
@@ -1912,7 +1912,7 @@ namespace Adam
             // Hellstone stalagmmite.
             if (Id == TileType.Hellrock && SubId == 13)
             {
-                if (AdamGame.Random.Next(0, 5) == 1)
+                if (TMBAW_Game.Random.Next(0, 5) == 1)
                 {
                     var indexBelow = TileIndex + mapWidth;
                     var indexTwoBelow = indexBelow + mapWidth;
@@ -1926,9 +1926,9 @@ namespace Adam
 
             // Randomly generate different plain textures for certain tiles.
             // Grass
-            if (Id == TileType.Grass && SubId == 0 && AdamGame.Random.Next(0, 100) > 80)
+            if (Id == TileType.Grass && SubId == 0 && TMBAW_Game.Random.Next(0, 100) > 80)
             {
-                switch (AdamGame.Random.Next(0, 4))
+                switch (TMBAW_Game.Random.Next(0, 4))
                 {
                     case 0:
                         SubId = 101;

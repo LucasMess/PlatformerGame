@@ -1,10 +1,10 @@
-﻿using Adam.Graphics;
-using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     /// <summary>
     ///     This creates a minimap of the level for the level editor.
@@ -31,14 +31,14 @@ namespace Adam.UI
             _antiTexture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
-            _rectangle = new Rectangle(AdamGame.DefaultUiWidth - size, AdamGame.DefaultUiHeight - size,
+            _rectangle = new Rectangle(TMBAW_Game.DefaultUiWidth - size, TMBAW_Game.DefaultUiHeight - size,
                 size, size);
 
             minimapToWorldRatio = (float)(_texture.Width) / size;
 
             int width = (_uiSourceRect.Width * 2);
             int height = (_uiSourceRect.Height * 2);
-            _uiDrawRect = new Rectangle(AdamGame.DefaultUiWidth - width, AdamGame.DefaultUiHeight - height, width, height);
+            _uiDrawRect = new Rectangle(TMBAW_Game.DefaultUiWidth - width, TMBAW_Game.DefaultUiHeight - height, width, height);
 
         }
 
@@ -60,7 +60,7 @@ namespace Adam.UI
             var isGoing = true;
             while (isGoing)
             {
-                if (AdamGame.IsLoadingContent)
+                if (TMBAW_Game.IsLoadingContent)
                     continue;
 
                 var tileArray = GameWorld.TileArray;
@@ -69,7 +69,7 @@ namespace Adam.UI
                 for (var i = 0; i < tileArray.Length; i++)
                 {
                     _pixels[i] = Color.Transparent;
-                    if (tileArray[i].Id != 0 && tileArray[i].Id < AdamGame.TileType.Player)
+                    if (tileArray[i].Id != 0 && tileArray[i].Id < TMBAW_Game.TileType.Player)
                     {
                         Color color = GameWorld.SpriteSheetColorData[tileArray[i].SourceRectangle.Center.X + tileArray[i].SourceRectangle.Center.Y * GameWorld.SpriteSheet.Width];
                         _pixels[i] = color;
@@ -119,7 +119,7 @@ namespace Adam.UI
                 spriteBatch.Draw(_antiTexture, _rectangle, Color.White);
             }
 
-            _viewDrawRect = new Rectangle((int)(AdamGame.Camera.LeftTopGameCoords.X / AdamGame.Tilesize / minimapToWorldRatio), (int)(AdamGame.Camera.LeftTopGameCoords.Y / AdamGame.Tilesize / minimapToWorldRatio), 24, 17);
+            _viewDrawRect = new Rectangle((int)(TMBAW_Game.Camera.LeftTopGameCoords.X / TMBAW_Game.Tilesize / minimapToWorldRatio), (int)(TMBAW_Game.Camera.LeftTopGameCoords.Y / TMBAW_Game.Tilesize / minimapToWorldRatio), 24, 17);
             _viewDrawRect.X += _rectangle.X;
             _viewDrawRect.Y += _rectangle.Y;
             spriteBatch.Draw(GameWorld.SpriteSheet, _viewDrawRect, _viewSourceRect, Color.Black);

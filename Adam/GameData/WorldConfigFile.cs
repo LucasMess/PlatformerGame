@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
-using Adam.Misc.Databases;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Databases;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.GameData
+namespace ThereMustBeAnotherWay.GameData
 {
     [Serializable]
     public class WorldConfigFile
@@ -107,20 +107,20 @@ namespace Adam.GameData
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Edit);
-            AdamGame.ChangeState(GameState.GameWorld, GameMode.Edit, true);
+            TMBAW_Game.ChangeState(GameState.GameWorld, GameMode.Edit, true);
         }
 
         public void LoadIntoPlay()
         {
             TransferDataToWorldData();
             //GameWorld.game1.LoadWorldFromFile(GameMode.Play);
-            AdamGame.ChangeState(GameState.GameWorld, GameMode.Play, true);
+            TMBAW_Game.ChangeState(GameState.GameWorld, GameMode.Play, true);
         }
 
         public void LoadIntoView()
         {
             TransferDataToWorldData();
-            AdamGame.ChangeState(AdamGame.CurrentGameState, GameMode.None, true);
+            TMBAW_Game.ChangeState(TMBAW_Game.CurrentGameState, GameMode.None, true);
         }
 
         public void TransferDataToWorldData()

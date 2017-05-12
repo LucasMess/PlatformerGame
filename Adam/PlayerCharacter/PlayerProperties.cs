@@ -1,9 +1,9 @@
-﻿using Adam.Characters;
-using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 
-namespace Adam.PlayerCharacter
+namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public partial class Player : Character
     {

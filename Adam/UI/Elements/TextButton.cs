@@ -1,8 +1,8 @@
-﻿using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     /// <summary>
     /// Button that has text inside of it describing its funciton.

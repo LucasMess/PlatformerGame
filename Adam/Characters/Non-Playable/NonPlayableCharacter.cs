@@ -1,12 +1,12 @@
-﻿using Adam.Characters.Non_Playable;
-using Adam.Levels;
-using Adam.Noobs;
-using Adam.PlayerCharacter;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.Characters.Non_Playable;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Noobs;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.Characters
+namespace ThereMustBeAnotherWay.Characters
 {
     /// <summary>
     /// Subset of characters that cannot be played and are not enemies. These characters can sometimes be talked to.
@@ -52,15 +52,15 @@ namespace Adam.Characters
             }
             else
             {
-                AdamGame.TextInputBox.Show("Please enter the name of the NPC you would like to put here.");
-                AdamGame.TextInputBox.OnInputEntered += OnNpcNameEntered;
+                TMBAW_Game.TextInputBox.Show("Please enter the name of the NPC you would like to put here.");
+                TMBAW_Game.TextInputBox.OnInputEntered += OnNpcNameEntered;
                 Console.WriteLine("Creating brand new NPC");
             }
         }
 
         private void OnNpcNameEntered(TextInputArgs e)
         {
-            AdamGame.TextInputBox.OnInputEntered -= OnNpcNameEntered;
+            TMBAW_Game.TextInputBox.OnInputEntered -= OnNpcNameEntered;
             string npcName = e.Input.ToLower();
             GameWorld.WorldData.MetaData[_sourceTileIndex] = "npc:" + npcName;
             CreateNpc(npcName);
@@ -95,7 +95,7 @@ namespace Adam.Characters
                     _npc = new COM(_xCoord, _yCoord);
                     break;
                 default:
-                    AdamGame.MessageBox.Show("This NPC does not exist.");
+                    TMBAW_Game.MessageBox.Show("This NPC does not exist.");
                     return;
             }
             GameWorld.AddEntityAt(_sourceTileIndex, _npc);
@@ -132,7 +132,7 @@ namespace Adam.Characters
         /// <param name="options">The options the player has to choose from.</param>
         protected void Say(string text, string nextDialogCode, string[] options)
         {
-            AdamGame.Dialog.Say(text, nextDialogCode, options);
+            TMBAW_Game.Dialog.Say(text, nextDialogCode, options);
         }
 
         /// <summary>

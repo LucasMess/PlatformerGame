@@ -1,11 +1,11 @@
-﻿using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     /// <summary>
     ///     Displays a message to the user where they have to press OK to continue.

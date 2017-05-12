@@ -1,9 +1,9 @@
-﻿using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public static class InputHelper
     {
@@ -74,7 +74,7 @@ namespace Adam
         public static Rectangle GetMouseInUi()
         {
             MouseState = Mouse.GetState();
-            return new Rectangle((int)(MouseState.X * AdamGame.UiWidthRatio), (int)(MouseState.Y * AdamGame.UiHeightRatio), 1, 1);
+            return new Rectangle((int)(MouseState.X * TMBAW_Game.UiWidthRatio), (int)(MouseState.Y * TMBAW_Game.UiHeightRatio), 1, 1);
         }
 
         ///// <summary>
@@ -96,11 +96,11 @@ namespace Adam
         public static Rectangle GetMouseRectGameWorld()
         {
             MouseState = Mouse.GetState();
-            Rectangle rectangle = new Rectangle((int)(MouseState.X * AdamGame.WidthRatio), (int)(MouseState.Y * AdamGame.HeightRatio), 1, 1);
-            rectangle.X = (int)(rectangle.X / AdamGame.Camera.GetZoom());
-            rectangle.Y = (int)(rectangle.Y / AdamGame.Camera.GetZoom());
-            rectangle.X -= (int)(AdamGame.Camera.LastCameraLeftCorner.X);
-            rectangle.Y -= (int)(AdamGame.Camera.LastCameraLeftCorner.Y);
+            Rectangle rectangle = new Rectangle((int)(MouseState.X * TMBAW_Game.WidthRatio), (int)(MouseState.Y * TMBAW_Game.HeightRatio), 1, 1);
+            rectangle.X = (int)(rectangle.X / TMBAW_Game.Camera.GetZoom());
+            rectangle.Y = (int)(rectangle.Y / TMBAW_Game.Camera.GetZoom());
+            rectangle.X -= (int)(TMBAW_Game.Camera.LastCameraLeftCorner.X);
+            rectangle.Y -= (int)(TMBAW_Game.Camera.LastCameraLeftCorner.Y);
             return rectangle;
         }
 

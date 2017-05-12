@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Runtime.InteropServices;
 
-namespace Adam.Misc
+namespace ThereMustBeAnotherWay.Misc
 {
     public class KeyboardLayout
     {

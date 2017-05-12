@@ -1,6 +1,6 @@
-﻿using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.PlayerCharacter;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class MushroomBooster : Interactable
     {

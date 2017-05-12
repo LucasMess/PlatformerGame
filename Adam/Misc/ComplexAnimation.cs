@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.Misc
+namespace ThereMustBeAnotherWay.Misc
 {
     /// <summary>
     /// Used for complex aniamtions that contain several different textures, states and variables.

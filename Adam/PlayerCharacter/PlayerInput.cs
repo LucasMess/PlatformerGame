@@ -1,9 +1,9 @@
-﻿using Adam.Characters;
-using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam.PlayerCharacter
+namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public partial class Player : Character
     {
@@ -138,15 +138,15 @@ namespace Adam.PlayerCharacter
         /// </summary>
         private void CheckInput()
         {
-            if (AdamGame.CurrentGameMode == GameMode.None) return;
+            if (TMBAW_Game.CurrentGameMode == GameMode.None) return;
 
-            if (AdamGame.Dialog.IsActive)
+            if (TMBAW_Game.Dialog.IsActive)
                 return;
 
             if (StoryTracker.InCutscene)
                 return;
 
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 return;
 
             if (IsPunchPressed() && !_attackIsPressed)
@@ -156,7 +156,7 @@ namespace Adam.PlayerCharacter
 
             if (!PlayerScript.IsDoingAction)
             {
-                if (AdamGame.CurrentGameMode == GameMode.Play)
+                if (TMBAW_Game.CurrentGameMode == GameMode.Play)
                     if (IsRewindPressed())
                     {
                         RewindAction?.Invoke();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adam.GameData
+namespace ThereMustBeAnotherWay.GameData
 {
     public class Save
     {

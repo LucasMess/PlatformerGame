@@ -1,11 +1,11 @@
-﻿using Adam.Interactables;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Chest : Interactable
     {
@@ -18,7 +18,7 @@ namespace Adam
         public Chest(Tile tile)
         {
             _openSound = new SoundFx("Sounds/Chest/open");
-            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, AdamGame.Tilesize * 2, AdamGame.Tilesize);
+            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, TMBAW_Game.Tilesize * 2, TMBAW_Game.Tilesize);
             tile.AnimationStopped = true;
 
             CanBeLinkedToOtherInteractables = true;
@@ -46,7 +46,7 @@ namespace Adam
                 _openSound.PlayOnce();
                 _isOpen = true;
 
-                int maxGems = AdamGame.Random.Next(10, 20);
+                int maxGems = TMBAW_Game.Random.Next(10, 20);
                 for (int i = 0; i < maxGems; i++)
                 {
                     GameWorld.Entities.Add(new Gem(_collRectangle.Center.X, _collRectangle.Center.Y));

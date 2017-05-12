@@ -5,14 +5,14 @@ using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.BitmapFonts;
 using System;
 
-namespace Adam.Misc.Helpers
+namespace ThereMustBeAnotherWay.Misc.Helpers
 {
     /// <summary>
     /// Provides simple loading of assets that is easier to type.
     /// </summary>
     public static class ContentHelper
     {
-        private static Texture2D _defaultTex = AdamGame.Content.Load<Texture2D>("Tiles/texture_not_found");
+        private static Texture2D _defaultTex = TMBAW_Game.Content.Load<Texture2D>("Tiles/texture_not_found");
 
         /// <summary>
         /// Loads the Texture2D at the specified file path.
@@ -23,7 +23,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return AdamGame.Content.Load<Texture2D>(file);
+                return TMBAW_Game.Content.Load<Texture2D>(file);
             }
             catch (ContentLoadException)
             {
@@ -45,7 +45,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return AdamGame.Content.Load<SoundEffect>(file);
+                return TMBAW_Game.Content.Load<SoundEffect>(file);
             }
             catch (ContentLoadException)
             {
@@ -67,7 +67,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return AdamGame.Content.Load<Song>(file);
+                return TMBAW_Game.Content.Load<Song>(file);
             }
             catch (ContentLoadException)
             {
@@ -89,7 +89,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return AdamGame.Content.Load<BitmapFont>(file);
+                return TMBAW_Game.Content.Load<BitmapFont>(file);
             }
             catch (ContentLoadException)
             {
@@ -111,7 +111,7 @@ namespace Adam.Misc.Helpers
         {
             try
             {
-                return AdamGame.Content.Load<Effect>(file);
+                return TMBAW_Game.Content.Load<Effect>(file);
             }
             catch (ContentLoadException)
             {

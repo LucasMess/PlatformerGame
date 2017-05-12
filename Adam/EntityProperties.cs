@@ -1,8 +1,8 @@
-﻿using Adam.Misc;
-using Adam.Misc.Sound;
+﻿using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Sound;
 using Microsoft.Xna.Framework;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public partial class Entity
     {

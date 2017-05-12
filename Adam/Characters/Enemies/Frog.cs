@@ -1,9 +1,9 @@
-﻿using Adam.Characters.Scripts;
-using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Characters.Scripts;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     public class Frog : Enemy
     {

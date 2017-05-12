@@ -1,8 +1,8 @@
-﻿using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     public class UiElement
     {

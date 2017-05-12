@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.Misc.Interfaces;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Misc.Interfaces;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public class CheckPoint : Interactable
     {
@@ -39,12 +39,12 @@ namespace Adam.Interactables
                         float x = (float)Math.Cos(rads);
                         float y = (float)Math.Sin(rads);
                         GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White);
+                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White);
 
                         x *= -1;
                         y *= -1;
                         GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White);
+                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White);
                     }
                     lastDeg += changeInDeg;
 

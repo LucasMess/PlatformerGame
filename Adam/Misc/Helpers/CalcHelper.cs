@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public static class CalcHelper
     {
@@ -77,7 +77,7 @@ namespace Adam
         /// <returns></returns>
         public static int GetRandomX(Rectangle rect)
         {
-            return AdamGame.Random.Next(rect.X, rect.X + rect.Width);
+            return TMBAW_Game.Random.Next(rect.X, rect.X + rect.Width);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Adam
         /// <returns></returns>
         public static int GetRandomY(Rectangle rect)
         {
-            return AdamGame.Random.Next(rect.Y, rect.Y + rect.Height);
+            return TMBAW_Game.Random.Next(rect.Y, rect.Y + rect.Height);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Adam
         /// <returns></returns>
         public static float GetScreenScale()
         {
-            return ((float)AdamGame.UserResWidth / AdamGame.DefaultResWidth);
+            return ((float)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultResWidth);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Adam
         public static int GetIndexInGameWorld(int x, int y)
         {
             if (GameWorld.WorldData == null) return -1;
-            return (int)(y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(x / AdamGame.Tilesize);
+            return (int)(y / TMBAW_Game.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(x / TMBAW_Game.Tilesize);
         }
     }
 }

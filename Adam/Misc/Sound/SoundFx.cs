@@ -1,8 +1,8 @@
-﻿using Adam.Levels;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework.Audio;
 
-namespace Adam.Misc
+namespace ThereMustBeAnotherWay.Misc
 {
     public class SoundFx
     {
@@ -12,7 +12,7 @@ namespace Adam.Misc
         bool _isGlobal = true;
         Entity _source;
 
-        public static float MaxVolume => AdamGame.MaxVolume;
+        public static float MaxVolume => TMBAW_Game.MaxVolume;
 
         public SoundFx(string file)
         {

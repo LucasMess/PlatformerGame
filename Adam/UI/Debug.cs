@@ -1,7 +1,7 @@
-﻿using Adam.Graphics;
-using Adam.Levels;
-using Adam.Misc.Helpers;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,7 +9,7 @@ using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public static class GameDebug
     {
@@ -22,7 +22,7 @@ namespace Adam
 
         private static List<string> _infos = new List<string>();
         private static BitmapFont _font = FontHelper.Fonts[1];
-        static Textbox chatBox = new Textbox(0, AdamGame.DefaultUiHeight - 60, AdamGame.DefaultUiWidth - 10, 60);
+        static Textbox chatBox = new Textbox(0, TMBAW_Game.DefaultUiHeight - 60, TMBAW_Game.DefaultUiWidth - 10, 60);
 
         static bool _debugKeyReleased;
         static bool _chatKeyReleased;
@@ -161,20 +161,20 @@ namespace Adam
             {
                 _infos = new List<string>
                 {
-                    AdamGame.Producers + " (" + AdamGame.Version + ")",
-                    "FPS: " + AdamGame.FPS,
-                    "Gamestate: " + AdamGame.CurrentGameState,
-                    "Gamemode: " + AdamGame.CurrentGameMode,
-                    "Camera Position: " + AdamGame.Camera.GetPosition().X + "," + AdamGame.Camera.GetPosition().Y,
+                    TMBAW_Game.Producers + " (" + TMBAW_Game.Version + ")",
+                    "FPS: " + TMBAW_Game.FPS,
+                    "Gamestate: " + TMBAW_Game.CurrentGameState,
+                    "Gamemode: " + TMBAW_Game.CurrentGameMode,
+                    "Camera Position: " + TMBAW_Game.Camera.GetPosition().X + "," + TMBAW_Game.Camera.GetPosition().Y,
                     "Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y,
                     "Index of mouse: " + LevelEditor.IndexOfMouse,
                     "Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString(),
                     "Particle iteration: " + GameWorld.ParticleSystem?.GetIteration(),
                     "Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles(),
                     "Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast,
-                    "Steam Name: " + AdamGame.UserName + " ID: " + AdamGame.SteamID.m_SteamID
+                    "Steam Name: " + TMBAW_Game.UserName + " ID: " + TMBAW_Game.SteamID.m_SteamID
                 };
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, AdamGame.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {
@@ -185,7 +185,7 @@ namespace Adam
 
             if (IsTyping)
             {
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, AdamGame.UserResHeight - 30, AdamGame.UserResWidth, 30), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, TMBAW_Game.UserResHeight - 30, TMBAW_Game.UserResWidth, 30), new Rectangle(304, 224, 8, 8), Color.White * .6f);
                 chatBox.Draw(spriteBatch);
             }
         }

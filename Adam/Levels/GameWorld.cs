@@ -1,20 +1,20 @@
-﻿using Adam.Characters.Enemies;
-using Adam.Interactables;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.Misc.Sound;
-using Adam.Network;
-using Adam.Particles;
-using Adam.PlayerCharacter;
-using Adam.Projectiles;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Characters.Enemies;
+using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.Network;
+using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.Projectiles;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     [Serializable]
     public static class GameWorld
@@ -78,7 +78,7 @@ namespace Adam.Levels
             var maxClouds = width / 20;
             for (var i = 0; i < maxClouds; i++)
             {
-                _clouds.Add(new Cloud(new Vector2(AdamGame.DefaultResWidth, AdamGame.DefaultResHeight), maxClouds, i));
+                _clouds.Add(new Cloud(new Vector2(TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), maxClouds, i));
             }
 
             LevelEditor.InteractableConnections.Clear();
@@ -104,7 +104,7 @@ namespace Adam.Levels
             }
             catch (ArgumentException e)
             {
-                AdamGame.MessageBox.Show(e.Message);
+                TMBAW_Game.MessageBox.Show(e.Message);
                 return false;
             }
 
@@ -141,8 +141,8 @@ namespace Adam.Levels
 
             for (var i = 0; i < ids.Length; i++)
             {
-                var xcoor = (i % width) * AdamGame.Tilesize;
-                var ycoor = ((i - (i % width)) / width) * AdamGame.Tilesize;
+                var xcoor = (i % width) * TMBAW_Game.Tilesize;
+                var ycoor = ((i - (i % width)) / width) * TMBAW_Game.Tilesize;
 
 
                 array[i] = new Tile(xcoor, ycoor);
@@ -174,9 +174,9 @@ namespace Adam.Levels
         public static void UpdateVisual()
         {
             var cameraRect = Player.GetCollRectangle();
-            AdamGame.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsPlayingDeathAnimation);
+            TMBAW_Game.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsPlayingDeathAnimation);
 
-            if (AdamGame.TimeFreeze.IsTimeFrozen())
+            if (TMBAW_Game.TimeFreeze.IsTimeFrozen())
                 ParticleSystem.UpdateTimeConstant();
 
 
@@ -189,7 +189,7 @@ namespace Adam.Levels
             ParticleSystem.Update();
             Weather.Update();
 
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
             {
                 Player.ComplexAnimation.RemoveAllFromQueue();
                 Player.AddAnimationToQueue("editMode");
@@ -217,7 +217,7 @@ namespace Adam.Levels
             }
 
             Player.Update();
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
                 PlayerTrail.Add(Player);
 
             foreach (var c in _clouds)
@@ -309,7 +309,7 @@ namespace Adam.Levels
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawBehindTiles(spriteBatch);
 
             int[] indexes = ChunkManager.GetVisibleIndexes();
@@ -347,7 +347,7 @@ namespace Adam.Levels
 
             ParticleSystem.DrawNormalParticles(spriteBatch);
 
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 LevelEditor.Draw(spriteBatch);
 
 
@@ -388,7 +388,7 @@ namespace Adam.Levels
 
         public static void DrawUi(SpriteBatch spriteBatch)
         {
-            if (AdamGame.CurrentGameMode == GameMode.Edit)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
 
         }

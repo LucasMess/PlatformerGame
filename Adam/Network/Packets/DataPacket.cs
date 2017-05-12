@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adam.Network
+namespace ThereMustBeAnotherWay.Network
 {
     [Serializable]
     /// <summary>

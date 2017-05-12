@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     /// <summary>
     /// Contains the tiles inside of it.

@@ -1,13 +1,13 @@
-﻿using Adam.Levels;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using static Adam.AdamGame;
-using Timer = Adam.Misc.Timer;
+using static ThereMustBeAnotherWay.TMBAW_Game;
+using Timer = ThereMustBeAnotherWay.Misc.Timer;
 
-namespace Adam.UI.Level_Editor
+namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
     /// <summary>
     ///     Contains all tiles and entities in grid format.

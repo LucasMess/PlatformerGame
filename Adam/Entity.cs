@@ -1,14 +1,14 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Interfaces;
-using Adam.Misc.Sound;
-using Adam.Particles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Interfaces;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     //Defines what happens to the velocity of the entity when it collides.
     public enum CollisionType
@@ -77,7 +77,7 @@ namespace Adam
 
         private int _health;
         private float _opacity = 1f;
-        private float _gravityStrength = AdamGame.Gravity;
+        private float _gravityStrength = TMBAW_Game.Gravity;
         private Timer _stompParticleTimer = new Timer(true);
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace Adam
         /// </summary>
         public virtual void Update()
         {
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
                 _positionInLastFrame = new Vector2(CollRectangle.X, CollRectangle.Y);
 
@@ -474,7 +474,7 @@ namespace Adam
 
             for (int i = 0; i < 20; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -AdamGame.Random.Next(1, 5) / 10f), Color.White);
+                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
             }
 
             //Rectangle[] desinRectangles;
@@ -536,7 +536,7 @@ namespace Adam
         /// <returns></returns>
         public int GetTileIndex(Vector2 coord)
         {
-            return (int)((int)coord.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)coord.X / AdamGame.Tilesize);
+            return (int)((int)coord.Y / TMBAW_Game.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)coord.X / TMBAW_Game.Tilesize);
         }
 
         /// <summary>
@@ -547,8 +547,8 @@ namespace Adam
         {
             int width = GameWorld.WorldData.LevelWidth;
             int startingIndex = GetTileIndex(new Vector2(CollRectangle.Center.X, CollRectangle.Y)) - width - 1;
-            int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / AdamGame.Tilesize) + 2);
-            int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / AdamGame.Tilesize) + 2);
+            int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / TMBAW_Game.Tilesize) + 2);
+            int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / TMBAW_Game.Tilesize) + 2);
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)
@@ -951,7 +951,7 @@ namespace Adam
         /// <param name="rectangles"></param>
         private void GetDisintegratedRectangles(out Rectangle[] rectangles)
         {
-            Vector2 size = new Vector2(GetDrawRectangle().Width / AdamGame.Tilesize, GetDrawRectangle().Height / AdamGame.Tilesize);
+            Vector2 size = new Vector2(GetDrawRectangle().Width / TMBAW_Game.Tilesize, GetDrawRectangle().Height / TMBAW_Game.Tilesize);
             int xSize = 4 * (int)size.X;
             int ySize = 4 * (int)size.Y;
 
@@ -983,7 +983,7 @@ namespace Adam
             {
                 for (int i = 0; i < count; i++)
                 {
-                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next(-5, 5) / 10f, -AdamGame.Random.Next(1, 5) / 10f), Color.White);
+                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next(-5, 5) / 10f, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
                 }
                 _stompParticleTimer.Reset();
             }

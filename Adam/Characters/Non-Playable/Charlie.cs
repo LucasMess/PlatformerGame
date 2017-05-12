@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters
+namespace ThereMustBeAnotherWay.Characters
 {
     class Charlie : NonPlayableCharacter
     {
@@ -17,7 +17,7 @@ namespace Adam.Characters
             SetPosition(new Vector2(x, y));
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 1, true));
             AddAnimationToQueue("still");
-            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
+            TMBAW_Game.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         private void Dialog_NextDialog(string code, int optionChosen)

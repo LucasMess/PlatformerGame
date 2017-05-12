@@ -1,9 +1,9 @@
-﻿using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     public class TextInputBox : MessageBox
     {
@@ -78,7 +78,7 @@ namespace Adam.UI
             if (IsActive)
             {
                 base.Draw(spriteBatch);
-                if (_textBox.DrawRectangle.Bottom < AdamGame.UserResHeight)
+                if (_textBox.DrawRectangle.Bottom < TMBAW_Game.UserResHeight)
                 _textBox.Draw(spriteBatch);
             }
         }

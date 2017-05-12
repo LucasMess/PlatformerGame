@@ -9,8 +9,8 @@
     <ProjectGuid>{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Adam</RootNamespace>
-    <AssemblyName>Adam</AssemblyName>
+    <RootNamespace>ThereMustBeAnotherWay</RootNamespace>
+    <AssemblyName>ThereMustBeAnotherWay</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -57,7 +57,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Adam.Program</StartupObject>
+    <StartupObject>ThereMustBeAnotherWay.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -92,7 +92,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdamGame2.cs" />
+    <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
     <Compile Include="Characters\Enemies\EnemyProperties.cs" />

@@ -1,13 +1,13 @@
-﻿using Adam.Characters.Non_Playable;
-using Adam.GameData;
-using Adam.Misc;
-using Adam.Misc.Sound;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.Characters.Non_Playable;
+using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     /// <summary>
     /// The show must go on! This class is responsible for taking the player where he needs to go.

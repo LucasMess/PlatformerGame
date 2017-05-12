@@ -1,11 +1,11 @@
-﻿using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Adam.Particles
+namespace ThereMustBeAnotherWay.Particles
 {
     /// <summary>
     /// This particle system allocates memory once for all particles.
@@ -121,7 +121,7 @@ namespace Adam.Particles
             /// </summary>
             protected void GravityDefaultBehavior()
             {
-                Position = new Vector2(Position.X, Position.Y + AdamGame.Gravity);
+                Position = new Vector2(Position.X, Position.Y + TMBAW_Game.Gravity);
                 DefaultBehavior();
             }
 
@@ -133,7 +133,7 @@ namespace Adam.Particles
 
             protected void GravityNoOpacityDefaultBehavior()
             {
-                Position = new Vector2(Position.X, Position.Y + AdamGame.Gravity);
+                Position = new Vector2(Position.X, Position.Y + TMBAW_Game.Gravity);
                 NoOpacityDefaultBehavior();
             }
 
@@ -289,23 +289,23 @@ namespace Adam.Particles
             {
 
                 case ParticleType.Smoke:
-                    par.Position = new Vector2(position.X - 4, position.Y - AdamGame.Random.Next(0, 80) / 10f);
+                    par.Position = new Vector2(position.X - 4, position.Y - TMBAW_Game.Random.Next(0, 80) / 10f);
                     par.SourceRectangle = new Rectangle(256, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(5, 30) / 10f;
+                    par.Scale = TMBAW_Game.Random.Next(5, 30) / 10f;
                     par.Position = new Vector2(par.Position.X - (par.Scale * par.Width) / 2, par.Position.Y - (par.Scale * par.Height) / 2);
-                    par._frameChange = AdamGame.Random.Next(200, 300);
+                    par._frameChange = TMBAW_Game.Random.Next(200, 300);
                     par._frames = 4;
                     par.IsAnimated = true;
                     break;
                 case ParticleType.Flame:
-                    par.Position = new Vector2(position.X - 4, position.Y - AdamGame.Random.Next(0, 80) / 10f);
+                    par.Position = new Vector2(position.X - 4, position.Y - TMBAW_Game.Random.Next(0, 80) / 10f);
                     par.SourceRectangle = new Rectangle(288, 96, 8, 8);
                     par.Velocity = velocity;
-                    par.Scale = AdamGame.Random.Next(5, 30) / 10f;
+                    par.Scale = TMBAW_Game.Random.Next(5, 30) / 10f;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
-                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
                     par._frames = 4;
                     par.IsAnimated = true;
                     break;
@@ -314,8 +314,8 @@ namespace Adam.Particles
                     par.SourceRectangle = new Rectangle(288, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
-                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par.Scale = TMBAW_Game.Random.Next(1, 10) / 10f;
+                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
                     par._frames = 4;
                     par.IsAnimated = true;
                     break;
@@ -324,29 +324,29 @@ namespace Adam.Particles
                     par.SourceRectangle = new Rectangle(288, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
+                    par.Scale = TMBAW_Game.Random.Next(1, 10) / 10f;
                     break;
                 case ParticleType.Rain:
                     par.Position = new Vector2(position.X - 4, position.Y - 4);
                     par.SourceRectangle = new Rectangle(288, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 10) / 10f;
+                    par.Scale = TMBAW_Game.Random.Next(1, 10) / 10f;
                     break;
                 case ParticleType.HeatEffect:
                     par.IsRippleEffect = true;
                     par.SourceRectangle = new Rectangle(336, 112, 16, 16);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 5);
+                    par.Scale = TMBAW_Game.Random.Next(1, 5);
                     par.Position = new Vector2(position.X - par.Scale / 2 * 8, position.Y - par.Scale / 2 * 8);
                     break;
                 case ParticleType.RewindFire:
                     par.SourceRectangle = new Rectangle(256, 160, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 3);
-                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par.Scale = TMBAW_Game.Random.Next(1, 3);
+                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;
@@ -356,8 +356,8 @@ namespace Adam.Particles
                     par.SourceRectangle = new Rectangle(256, 168, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = AdamGame.Random.Next(1, 3);
-                    par._frameChange = AdamGame.Random.Next(100, 200);
+                    par.Scale = TMBAW_Game.Random.Next(1, 3);
+                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;

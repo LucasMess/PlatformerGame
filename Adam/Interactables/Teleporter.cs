@@ -1,7 +1,7 @@
-﻿using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class Teleporter : Interactable
     {
@@ -16,7 +16,7 @@ namespace Adam.Interactables
 
         public override void OnPlayerAction(Tile tile, Player player)
         {
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
                 player.SetPosition(teleportPosition);
                 player.SetVelX(0);

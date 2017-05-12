@@ -1,4 +1,4 @@
-﻿namespace Adam.Misc.Interfaces
+﻿namespace ThereMustBeAnotherWay.Misc.Interfaces
 {
     /// <summary>
     /// Laws of gravity apply.

@@ -1,11 +1,11 @@
-﻿using Adam.Levels;
-using Adam.Misc.Helpers;
-using Adam.UI.Level_Editor;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     /// <summary>
     ///     The image that will be used as the button texture.

@@ -1,7 +1,7 @@
-﻿using Adam.GameData;
-using Adam.Levels;
-using Adam.Network.Packets;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Network.Packets;
+using ThereMustBeAnotherWay.UI;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace Adam.Network
+namespace ThereMustBeAnotherWay.Network
 {
     public static class Session
     {
@@ -23,7 +23,7 @@ namespace Adam.Network
             get
             {
                 return (from player in Lobby.PlayerList
-                        where player != AdamGame.SteamID
+                        where player != TMBAW_Game.SteamID
                         select player).ToList();
             }
         }
@@ -64,8 +64,8 @@ namespace Adam.Network
 
         private static void OnP2PSessionConnectFail(P2PSessionConnectFail_t callback)
         {
-            AdamGame.MessageBox.Show("There was an error with the connection.");
-            AdamGame.ChangeState(GameState.MainMenu, GameMode.None, true);
+            TMBAW_Game.MessageBox.Show("There was an error with the connection.");
+            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
         }
 
         private static void OnP2PSessionRequested(P2PSessionRequest_t callback)
@@ -106,7 +106,7 @@ namespace Adam.Network
             }
             else
             {
-                AdamGame.MessageBox.Show("You cannot start a game you do not own, silly boy.");
+                TMBAW_Game.MessageBox.Show("You cannot start a game you do not own, silly boy.");
             }
         }
         public static void Update()

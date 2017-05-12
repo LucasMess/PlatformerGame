@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adam.GameData
+namespace ThereMustBeAnotherWay.GameData
 {
     /// <summary>
     /// Class containing primitive variables that are saved to the player's computer and loaded. It defines where in the game

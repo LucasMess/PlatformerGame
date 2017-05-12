@@ -1,8 +1,8 @@
-﻿using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Cloud
     {
@@ -22,19 +22,19 @@ namespace Adam
             Texture4 = ContentHelper.LoadTexture("Backgrounds/cloud_4");
             _prefRes = monitorResolution;
             _velocity = new Vector2(-.03f, 0);
-            _distance = (int)(monitorResolution.X * 2 / maxClouds * AdamGame.Random.NextDouble());
-            _flipH = AdamGame.Random.Next(0, 2) == 0;
-            _flipV = AdamGame.Random.Next(0, 2) == 0;
+            _distance = (int)(monitorResolution.X * 2 / maxClouds * TMBAW_Game.Random.NextDouble());
+            _flipH = TMBAW_Game.Random.Next(0, 2) == 0;
+            _flipV = TMBAW_Game.Random.Next(0, 2) == 0;
 
             Create(i);
         }
 
         public void Create(int i)
         {
-            Rectangle = new Rectangle(i * _distance, AdamGame.Random.Next(0, 50), Texture1.Width, Texture1.Height);
+            Rectangle = new Rectangle(i * _distance, TMBAW_Game.Random.Next(0, 50), Texture1.Width, Texture1.Height);
             _position = new Vector2(Rectangle.X, Rectangle.Y);
 
-            switch (AdamGame.Random.Next(0, 3))
+            switch (TMBAW_Game.Random.Next(0, 3))
             {
                 case 0:
                     CurrentTexture = Texture1;

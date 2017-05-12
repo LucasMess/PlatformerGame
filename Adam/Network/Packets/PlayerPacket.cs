@@ -1,8 +1,8 @@
-﻿using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.Network.Packets
+namespace ThereMustBeAnotherWay.Network.Packets
 {
     [Serializable]
     public class PlayerPacket : DataPacket

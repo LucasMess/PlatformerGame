@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     public class YesButton : Button
     {

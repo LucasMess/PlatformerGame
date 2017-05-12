@@ -1,13 +1,13 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.UI.Level_Editor
+namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
     /// <summary>
     /// Used to keep useful tiles available one click away.
@@ -131,7 +131,7 @@ namespace Adam.UI.Level_Editor
                     _tileHolders[i].SetPosition(tileHolder.GetPosition());
                     _tileHolders[i].ReturnToDefaultPosition();
 
-                    tileHolder.SetPosition(AdamGame.UserResWidth, AdamGame.UserResHeight);
+                    tileHolder.SetPosition(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
                     tileHolder.ReturnToDefaultPosition(500);
 
                     _swipeSound.Play();

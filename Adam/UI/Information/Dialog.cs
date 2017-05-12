@@ -1,14 +1,14 @@
-﻿using Adam.Characters;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
 
-namespace Adam.UI.Information
+namespace ThereMustBeAnotherWay.UI.Information
 {
     /// <summary>
     /// Dialog class for displaying information.
@@ -45,11 +45,11 @@ namespace Adam.UI.Information
         public Dialog()
         {
             _dialogueContainer = new Container(850, 150);
-            _dialogueContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _dialogueContainer.Size.X/2, 40);
+            _dialogueContainer.SetPosition(TMBAW_Game.DefaultUiWidth / 2 - _dialogueContainer.Size.X/2, 40);
             _dialogueContainer.ChangeStyle(Container.Style.GameUnique);
 
             _optionsContainer = new Container(850, 150);
-            _optionsContainer.SetPosition(AdamGame.DefaultUiWidth / 2 - _optionsContainer.Size.X / 2, AdamGame.DefaultUiHeight - 200);
+            _optionsContainer.SetPosition(TMBAW_Game.DefaultUiWidth / 2 - _optionsContainer.Size.X / 2, TMBAW_Game.DefaultUiHeight - 200);
             _optionsContainer.ChangeStyle(Container.Style.GameUnique);
 
             var origin = new Vector2(_dialogueContainer.Size.X/2f, _dialogueContainer.Size.Y / 2f);

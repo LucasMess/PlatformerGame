@@ -1,11 +1,11 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Camera : UiElement
     {
@@ -38,8 +38,8 @@ namespace Adam
         public Camera(Viewport newViewport)
         {
             _viewport = newViewport;
-            _defRes = new Vector2(AdamGame.DefaultResWidth, AdamGame.DefaultResHeight);
-            _prefRes = new Vector2(AdamGame.UserResWidth, AdamGame.UserResHeight);
+            _defRes = new Vector2(TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight);
+            _prefRes = new Vector2(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
             Velocity = new Vector3(0, 0, 0);
             TileIndex = 100;
         }
@@ -72,12 +72,12 @@ namespace Adam
 
             if (currentLeftCorner.X > 0)
                 currentLeftCorner.X = 0;
-            if (currentLeftCorner.X < -(width * AdamGame.Tilesize - _defRes.X))
-                currentLeftCorner.X = -(width * AdamGame.Tilesize - _defRes.X);
+            if (currentLeftCorner.X < -(width * TMBAW_Game.Tilesize - _defRes.X))
+                currentLeftCorner.X = -(width * TMBAW_Game.Tilesize - _defRes.X);
             if (currentLeftCorner.Y > 0)
                 currentLeftCorner.Y = 0;
-            if (currentLeftCorner.Y < -(height * AdamGame.Tilesize - _defRes.Y))
-                currentLeftCorner.Y = -(height * AdamGame.Tilesize - _defRes.Y);
+            if (currentLeftCorner.Y < -(height * TMBAW_Game.Tilesize - _defRes.Y))
+                currentLeftCorner.Y = -(height * TMBAW_Game.Tilesize - _defRes.Y);
 
             //if (zoom > 1)
             //{
@@ -123,9 +123,9 @@ namespace Adam
             //LeftTopGameCoords.X -= Main.DefaultResWidth;
             //LeftTopGameCoords.Y -= Main.DefaultResHeight;
 
-            CenterGameCoords.X += AdamGame.DefaultResWidth / 2;
-            CenterGameCoords.Y += AdamGame.DefaultResHeight * 2 / 3;
-            TileIndex = (int)((int)CenterGameCoords.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)CenterGameCoords.X / AdamGame.Tilesize);
+            CenterGameCoords.X += TMBAW_Game.DefaultResWidth / 2;
+            CenterGameCoords.Y += TMBAW_Game.DefaultResHeight * 2 / 3;
+            TileIndex = (int)((int)CenterGameCoords.Y / TMBAW_Game.Tilesize * GameWorld.WorldData.LevelWidth) + (int)((int)CenterGameCoords.X / TMBAW_Game.Tilesize);
 
 
             LastCameraLeftCorner = cameraLeftCorner;
@@ -134,7 +134,7 @@ namespace Adam
             int shakeOffset = 1;
             if (_shakeTimer.TimeElapsedInMilliSeconds < 100)
             {
-                switch (AdamGame.Random.Next(0, 5))
+                switch (TMBAW_Game.Random.Next(0, 5))
                 {
                     case 0:
                         cameraLeftCorner.X += shakeOffset;

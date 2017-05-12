@@ -1,12 +1,12 @@
-﻿using Adam.GameData;
-using Adam.Levels;
-using Adam.Misc.Helpers;
-using Adam.UI;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.Graphics
+namespace ThereMustBeAnotherWay.Graphics
 {
     /// <summary>
     /// Responsible for rendering everything the screen. Keeps track of all the render targets and does special effects.
@@ -49,19 +49,19 @@ namespace Adam.Graphics
             _graphicsDevice = graphicsDevice;
             _graphicsManager = graphicsManager;
 
-            _mainRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
+            _mainRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                     _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
-            _lightingRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
+            _lightingRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                 _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
-            _userInterfaceRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
+            _userInterfaceRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                  graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                     graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
-            _rippleRenderTarget = new RenderTarget2D(graphicsDevice, AdamGame.DefaultResWidth, AdamGame.DefaultResHeight, false,
+            _rippleRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
@@ -98,7 +98,7 @@ namespace Adam.Graphics
 
         private static void DrawRipples()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawRipples(_spriteBatch);
             _spriteBatch.End();
 
@@ -113,7 +113,7 @@ namespace Adam.Graphics
         private static void DrawUserInterface()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
-            switch (AdamGame.CurrentGameState)
+            switch (TMBAW_Game.CurrentGameState)
             {
                 case GameState.MainMenu:
                     MainMenu.Draw(_spriteBatch);
@@ -131,11 +131,11 @@ namespace Adam.Graphics
             Overlay.Draw(_spriteBatch);
             PauseMenu.Draw(_spriteBatch);
             OptionsMenu.Draw(_spriteBatch);
-            AdamGame.Dialog.Draw(_spriteBatch);
+            TMBAW_Game.Dialog.Draw(_spriteBatch);
             GameDebug.Draw(_spriteBatch);
 
-            AdamGame.MessageBox.Draw(_spriteBatch);
-            AdamGame.TextInputBox.Draw(_spriteBatch);
+            TMBAW_Game.MessageBox.Draw(_spriteBatch);
+            TMBAW_Game.TextInputBox.Draw(_spriteBatch);
 
             Cursor.Draw(_spriteBatch);
 
@@ -147,7 +147,7 @@ namespace Adam.Graphics
         /// </summary>
         private static void DrawGameWorld()
         {
-            if (AdamGame.CurrentGameState == GameState.LoadingScreen)
+            if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
                 return;
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
@@ -155,7 +155,7 @@ namespace Adam.Graphics
             _spriteBatch.End();
 
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
             //GameWorld.DrawBackground(_spriteBatch);
             GameWorld.DrawWalls(_spriteBatch);
             GameWorld.Draw(_spriteBatch);
@@ -172,7 +172,7 @@ namespace Adam.Graphics
         /// </summary>
         private static void DrawLights()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, AdamGame.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawLights(_spriteBatch);
             _spriteBatch.End();
         }
@@ -182,8 +182,8 @@ namespace Adam.Graphics
         /// </summary>
         private static void CombineRenderTargets()
         {
-            int width = AdamGame.UserResWidth;
-            int height = AdamGame.UserResHeight;
+            int width = TMBAW_Game.UserResWidth;
+            int height = TMBAW_Game.UserResHeight;
 
 
             testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
@@ -233,14 +233,14 @@ namespace Adam.Graphics
         {
             _graphicsManager.PreferredBackBufferWidth = width;
             _graphicsManager.PreferredBackBufferHeight = height;
-            AdamGame.UserResWidth = width;
-            AdamGame.UserResHeight = height;
+            TMBAW_Game.UserResWidth = width;
+            TMBAW_Game.UserResHeight = height;
 
-            AdamGame.WidthRatio = (AdamGame.DefaultResWidth / (double)AdamGame.UserResWidth);
-            AdamGame.HeightRatio = (AdamGame.DefaultResHeight / (double)AdamGame.UserResHeight);
+            TMBAW_Game.WidthRatio = (TMBAW_Game.DefaultResWidth / (double)TMBAW_Game.UserResWidth);
+            TMBAW_Game.HeightRatio = (TMBAW_Game.DefaultResHeight / (double)TMBAW_Game.UserResHeight);
 
-            AdamGame.UiWidthRatio = (AdamGame.DefaultUiWidth / (double)AdamGame.UserResWidth);
-            AdamGame.UiHeightRatio = (AdamGame.DefaultUiHeight / (double)AdamGame.UserResHeight);
+            TMBAW_Game.UiWidthRatio = (TMBAW_Game.DefaultUiWidth / (double)TMBAW_Game.UserResWidth);
+            TMBAW_Game.UiHeightRatio = (TMBAW_Game.DefaultUiHeight / (double)TMBAW_Game.UserResHeight);
 
 
             _graphicsManager.ApplyChanges();

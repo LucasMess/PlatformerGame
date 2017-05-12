@@ -1,11 +1,11 @@
-﻿using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public static class LoadingScreen
     {
@@ -173,9 +173,9 @@ namespace Adam
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_background, new Rectangle(0,0,AdamGame.UserResWidth,AdamGame.UserResHeight),Color.White);
-            FontHelper.DrawWithOutline(spriteBatch,_fontBig,_loadingDots,new Vector2(50, AdamGame.UserResHeight - 100),3,Color.White,Color.DarkGray);
-            FontHelper.DrawWithOutline(spriteBatch, _fontSmall, LoadingText, new Vector2(50, AdamGame.UserResHeight - 50), 3, Color.White, Color.DarkGray);
+            spriteBatch.Draw(_background, new Rectangle(0,0,TMBAW_Game.UserResWidth,TMBAW_Game.UserResHeight),Color.White);
+            FontHelper.DrawWithOutline(spriteBatch,_fontBig,_loadingDots,new Vector2(50, TMBAW_Game.UserResHeight - 100),3,Color.White,Color.DarkGray);
+            FontHelper.DrawWithOutline(spriteBatch, _fontSmall, LoadingText, new Vector2(50, TMBAW_Game.UserResHeight - 50), 3, Color.White, Color.DarkGray);
         }
 
     }

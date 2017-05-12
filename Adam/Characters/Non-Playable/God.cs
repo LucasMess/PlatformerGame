@@ -1,10 +1,10 @@
-﻿using Adam.Characters;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Noobs
+namespace ThereMustBeAnotherWay.Noobs
 {
     public class God : NonPlayableCharacter
     {
@@ -23,7 +23,7 @@ namespace Adam.Noobs
             SetPosition(new Vector2(x, y));
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 24, 40), 0, 24, 40, 500, 4, true));
             AddAnimationToQueue("still");
-            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
+            TMBAW_Game.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         public override void ShowDialog(string code, int optionChosen)

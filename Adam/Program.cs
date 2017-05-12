@@ -2,7 +2,7 @@ using Steamworks;
 using System;
 using System.Windows.Forms;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     static class Program
     {
@@ -55,7 +55,7 @@ namespace Adam
                 MessageBox.Show(e.Message + "::" + e.StackTrace + "::" + e.InnerException.Message);
             }
 #else
-            using (AdamGame game = new AdamGame())
+            using (TMBAW_Game game = new TMBAW_Game())
             {
                 game.Run();
             }

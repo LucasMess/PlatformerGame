@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Adam.Misc.Sound
+namespace ThereMustBeAnotherWay.Misc.Sound
 {
     public class SoundFxManager
     {

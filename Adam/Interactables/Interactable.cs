@@ -1,11 +1,11 @@
-﻿using Adam.Levels;
-using Adam.PlayerCharacter;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public abstract class Interactable
     {

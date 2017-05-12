@@ -1,11 +1,11 @@
-﻿using Adam.Interactables;
-using Adam.Levels;
-using Adam.Misc.Interfaces;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Interfaces;
+using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Gem : Item, INewtonian
     {
@@ -30,7 +30,7 @@ namespace Adam
             Position = new Vector2(centerX, centerY);
             CollRectangle = new Rectangle(centerX, centerY, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(AdamGame.Random.Next(-100, 100) / 10f, -AdamGame.Random.Next(100, 100) / 10f);
+            Velocity = new Vector2(TMBAW_Game.Random.Next(-100, 100) / 10f, -TMBAW_Game.Random.Next(100, 100) / 10f);
 
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
 
@@ -45,9 +45,9 @@ namespace Adam
             Position = new Vector2(centerX, centerY);
             CollRectangle = new Rectangle(0, 0, 16, 16);
             SourceRectangle = GetSourceRectangle();
-            Velocity = new Vector2(AdamGame.Random.Next(-100, 100) / 10f, -AdamGame.Random.Next(100, 100) / 10f);
+            Velocity = new Vector2(TMBAW_Game.Random.Next(-100, 100) / 10f, -TMBAW_Game.Random.Next(100, 100) / 10f);
 
-            PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + AdamGame.Random.Next(0, 5));
+            PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + TMBAW_Game.Random.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
@@ -87,7 +87,7 @@ namespace Adam
         /// <returns>ID</returns>
         private byte GenerateId()
         {
-            int rand = AdamGame.Random.Next(0, 100);
+            int rand = TMBAW_Game.Random.Next(0, 100);
             if (rand > 95) //5% - Diamond
             {
                 return 5;
@@ -188,7 +188,7 @@ namespace Adam
         {
             for (int i = 0; i < count; i++)
             {
-                Gem gem = new Gem(tile.DrawRectangle.Center.X, tile.DrawRectangle.Y - AdamGame.Tilesize / 2, gemId);
+                Gem gem = new Gem(tile.DrawRectangle.Center.X, tile.DrawRectangle.Y - TMBAW_Game.Tilesize / 2, gemId);
                 GameWorld.Entities.Add(gem);
             }
         }

@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Particles;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public abstract class Item : Entity
     {
@@ -14,7 +14,7 @@ namespace Adam.Interactables
         protected Rectangle TopMidBound;
         private Timer _pickUpTimer = new Timer();
         protected SoundFx LoopSound;
-        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + AdamGame.Random.Next(0, 5));
+        protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + TMBAW_Game.Random.Next(0, 5));
         protected SoundFx BounceSound;
         protected double EffectTimer;
 
@@ -42,8 +42,8 @@ namespace Adam.Interactables
 
             for (int i = 0; i < 2; i++)
             {
-                float randY = (float)(AdamGame.Random.Next(-1, 0) * AdamGame.Random.NextDouble());
-                float randX = (float)(AdamGame.Random.Next(-1, 2) * AdamGame.Random.NextDouble());
+                float randY = (float)(TMBAW_Game.Random.Next(-1, 0) * TMBAW_Game.Random.NextDouble());
+                float randX = (float)(TMBAW_Game.Random.Next(-1, 2) * TMBAW_Game.Random.NextDouble());
                 GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX, randY), Color.Yellow);
             }
         }
@@ -51,7 +51,7 @@ namespace Adam.Interactables
         public override void Update()
         {
             Player player = GameWorld.GetPlayer();
-            GameTime gameTime = AdamGame.GameTime;
+            GameTime gameTime = TMBAW_Game.GameTime;
 
             _pickUpTimer.Increment();
 

@@ -1,6 +1,6 @@
-﻿namespace Adam
+﻿namespace ThereMustBeAnotherWay
 {
-    public partial class AdamGame
+    public partial class TMBAW_Game
     {
         /// <summary>
         /// Each type of tile has its own unique ID.

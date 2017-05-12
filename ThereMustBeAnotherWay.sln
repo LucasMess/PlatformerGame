@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adam", "Adam\Adam.csproj", "{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThereMustBeAnotherWay", "Adam\ThereMustBeAnotherWay.csproj", "{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMBAW_Tests", "TMBAW_Tests\TMBAW_Tests.csproj", "{8C98101D-E624-4FB5-87D6-5140FECD846F}"
 EndProject

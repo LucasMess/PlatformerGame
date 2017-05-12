@@ -1,4 +1,4 @@
-﻿namespace Adam.Misc.Databases
+﻿namespace ThereMustBeAnotherWay.Misc.Databases
 {
     public class InputDb
     {

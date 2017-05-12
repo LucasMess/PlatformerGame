@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adam.Misc.Errors
+namespace ThereMustBeAnotherWay.Misc.Errors
 {
     /// <summary>
     /// Thrown when something is trying to detect collisions but is not collidable.

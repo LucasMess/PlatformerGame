@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.PlayerCharacter;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     /// <summary>
     /// Used to teleport the player to different areas of the map or different levels.
@@ -16,7 +16,7 @@ namespace Adam.Interactables
         public BackgroundDoor(Tile tile)
         {
             CanBeLinkedToOtherInteractables = false;
-            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, AdamGame.Tilesize * 3, AdamGame.Tilesize * 4);
+            _collRectangle = new Rectangle(tile.DrawRectangle.X, tile.DrawRectangle.Y, TMBAW_Game.Tilesize * 3, TMBAW_Game.Tilesize * 4);
         }
 
         protected override void OnConnectionToInteractable(Tile source, Tile other)
@@ -52,7 +52,7 @@ namespace Adam.Interactables
         {
             if (!IsConnectedToAnotherInteractable())
             {
-                AdamGame.Dialog.Say("It's locked.", null, null);
+                TMBAW_Game.Dialog.Say("It's locked.", null, null);
             }
             base.OnPlayerAction(tile, player);
         }

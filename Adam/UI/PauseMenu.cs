@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     /// <summary>
     /// Shown when the player presses escape on a level.
@@ -52,7 +52,7 @@ namespace Adam.UI
             }
 
             int startingY = 200;
-            int x = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
+            int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
             for (int i = 0; i < _buttons.Count; i++)
             {
                 _buttons[i].SetPosition(new Vector2(x, startingY + (TextButton.Height * 2 + 10) * i));
@@ -62,7 +62,7 @@ namespace Adam.UI
         private static void _quitGame_MouseClicked(Button button)
         {
             LevelEditor.SaveLevel();
-            AdamGame.Quit();
+            TMBAW_Game.Quit();
         }
 
         private static void _showOptions_MouseClicked(Button button)
@@ -77,9 +77,9 @@ namespace Adam.UI
 
         private static void _returnToMainMenu_MouseClicked(Button button)
         {
-            if (AdamGame.CurrentGameState == GameState.GameWorld)
+            if (TMBAW_Game.CurrentGameState == GameState.GameWorld)
                 LevelEditor.SaveLevel();
-            AdamGame.ChangeState(GameState.MainMenu, GameMode.None, true);
+            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
             IsActive = false;
         }
 
@@ -92,14 +92,14 @@ namespace Adam.UI
             }
             else
             {
-                AdamGame.MessageBox.Show("You cannot edit a level you are playing!");
+                TMBAW_Game.MessageBox.Show("You cannot edit a level you are playing!");
             }
         }
 
         public static void Update()
         {
 
-            if (GameWorld.GetPlayer().IsPauseButtonDown() && _buttonReleased && AdamGame.CurrentGameState == GameState.GameWorld)
+            if (GameWorld.GetPlayer().IsPauseButtonDown() && _buttonReleased && TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
                 _buttonReleased = false;
                 IsActive = !IsActive;

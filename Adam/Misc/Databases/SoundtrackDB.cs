@@ -1,7 +1,7 @@
-﻿using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework.Media;
 
-namespace Adam.Misc.Databases
+namespace ThereMustBeAnotherWay.Misc.Databases
 {
     public static class SoundtrackDb
     {

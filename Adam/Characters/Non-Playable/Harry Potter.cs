@@ -1,8 +1,8 @@
-﻿using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters
+namespace ThereMustBeAnotherWay.Characters
 {
     class HarryPotter : NonPlayableCharacter
     {
@@ -16,7 +16,7 @@ namespace Adam.Characters
             SetPosition(new Vector2(x, y));
             _complexAnimation.AddAnimationData("still", new ComplexAnimData(1, Texture, new Rectangle(0, 0, 26, 40), 0, 26, 40, 500, 1, true));
             AddAnimationToQueue("still");
-            AdamGame.Dialog.NextDialog += Dialog_NextDialog;
+            TMBAW_Game.Dialog.NextDialog += Dialog_NextDialog;
         }
 
         public override void ShowDialog(string code, int optionChosen)

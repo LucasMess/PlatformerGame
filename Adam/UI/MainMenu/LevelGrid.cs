@@ -1,10 +1,10 @@
-﻿using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.UI.MainMenu
+namespace ThereMustBeAnotherWay.UI.MainMenu
 {
     /// <summary>
     /// Used to show the levels in squares numbered 0-n in a grid layout.
@@ -42,7 +42,7 @@ namespace Adam.UI.MainMenu
             for (int i = 0; i < 10; i++)
             {
                 x += (LevelSquare.Width) + 5;
-                if (x + (LevelSquare.Width) > AdamGame.DefaultUiWidth)
+                if (x + (LevelSquare.Width) > TMBAW_Game.DefaultUiWidth)
                 {
                     x = 100;
                     y += (LevelSquare.Height) + 5;

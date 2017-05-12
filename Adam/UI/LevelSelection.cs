@@ -1,6 +1,6 @@
-﻿using Adam.Levels;
-using Adam.Misc.Helpers;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,7 +8,7 @@ using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     /// <summary>
     /// Used to select, play, edit, create and delete levels in the main menu screen.
@@ -49,7 +49,7 @@ namespace Adam.UI
             // Defines the bounding box for the Level Info List.
             int widthOfBounds = 300 * 2;
             int heightOfBounds = 150 * 2;
-            _boundsDrawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2, AdamGame.DefaultUiHeight / 2, widthOfBounds, heightOfBounds);
+            _boundsDrawRectangle = new Rectangle(TMBAW_Game.DefaultUiWidth / 2, TMBAW_Game.DefaultUiHeight / 2, widthOfBounds, heightOfBounds);
             _boundsDrawRectangle.X -= widthOfBounds / 2;
             _boundsDrawRectangle.Y -= heightOfBounds / 2;
             _boundsSourceRectangle = new Rectangle(376, 48, 300, 150);
@@ -92,14 +92,14 @@ namespace Adam.UI
 
         private void NewButton_MouseClicked(Button button)
         {
-            AdamGame.TextInputBox.Show("Please enter the name for your new level:");
-            AdamGame.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
+            TMBAW_Game.TextInputBox.Show("Please enter the name for your new level:");
+            TMBAW_Game.TextInputBox.OnInputEntered += NewLevel_OnTextEntered;
         }
 
         private void NewLevel_OnTextEntered(TextInputArgs e)
         {
             string newPath;
-            AdamGame.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
+            TMBAW_Game.TextInputBox.OnInputEntered -= NewLevel_OnTextEntered;
 
             try
             {
@@ -107,7 +107,7 @@ namespace Adam.UI
             }
             catch (Exception ex)
             {
-                AdamGame.MessageBox.Show(ex.Message);
+                TMBAW_Game.MessageBox.Show(ex.Message);
                 return;
             }
 
@@ -117,14 +117,14 @@ namespace Adam.UI
 
         private void BackButton_MouseClicked(Button button)
         {
-            Adam.MainMenu.CurrentMenuState = Adam.MainMenu.MenuState.Main;
+            ThereMustBeAnotherWay.MainMenu.CurrentMenuState = ThereMustBeAnotherWay.MainMenu.MenuState.Main;
         }
 
         private void DeleteButton_MouseClicked(Button button)
         {
             if (_selectedLevel == null)
             {
-                AdamGame.MessageBox.Show("Please select a level.");
+                TMBAW_Game.MessageBox.Show("Please select a level.");
             }
 
             DataFolder.DeleteLevel(_selectedLevel.FilePath);
@@ -135,12 +135,12 @@ namespace Adam.UI
         {
             if (_selectedLevel == null)
             {
-                AdamGame.MessageBox.Show("Please select a level.");
+                TMBAW_Game.MessageBox.Show("Please select a level.");
                 return;
             }
-            AdamGame.TextInputBox.Show("What would you like to rename this level to?");
-            AdamGame.TextInputBox.SetTextTo(_selectedLevel.Name);
-            AdamGame.TextInputBox.OnInputEntered += RenameButton_OnInputEntered;
+            TMBAW_Game.TextInputBox.Show("What would you like to rename this level to?");
+            TMBAW_Game.TextInputBox.SetTextTo(_selectedLevel.Name);
+            TMBAW_Game.TextInputBox.OnInputEntered += RenameButton_OnInputEntered;
         }
 
         private void RenameButton_OnInputEntered(TextInputArgs e)
@@ -152,10 +152,10 @@ namespace Adam.UI
             }
             catch (Exception ex)
             {
-                AdamGame.MessageBox.Show(ex.Message);
+                TMBAW_Game.MessageBox.Show(ex.Message);
             }
 
-            AdamGame.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
+            TMBAW_Game.TextInputBox.OnInputEntered -= RenameButton_OnInputEntered;
             LoadLevels();
         }
 
@@ -163,7 +163,7 @@ namespace Adam.UI
         {
             if (_selectedLevel == null)
             {
-                AdamGame.MessageBox.Show("Please select a level.");
+                TMBAW_Game.MessageBox.Show("Please select a level.");
                 return;
             }
             DataFolder.EditLevel(_selectedLevel.FilePath);
@@ -177,7 +177,7 @@ namespace Adam.UI
             }
             catch (Exception e)
             {
-                AdamGame.MessageBox.Show(e.Message);
+                TMBAW_Game.MessageBox.Show(e.Message);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Adam.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, AdamGame.DefaultUiWidth, AdamGame.DefaultUiHeight), Color.Black * .7f);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * .7f);
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
 
             // Sets the scrolling levels to disappear if they are not inside of this bounding box.
@@ -346,7 +346,7 @@ namespace Adam.UI
             _nameFont = ContentHelper.LoadFont("Fonts/x16");
             _infoFont = ContentHelper.LoadFont("Fonts/x8");
 
-            _drawRectangle = new Rectangle(AdamGame.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
+            _drawRectangle = new Rectangle(TMBAW_Game.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
 
             _spacing = _infoFont.LineHeight + 4;
 

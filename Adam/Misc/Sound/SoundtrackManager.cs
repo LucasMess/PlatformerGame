@@ -1,7 +1,7 @@
-﻿using Adam.Misc.Databases;
+﻿using ThereMustBeAnotherWay.Misc.Databases;
 using Microsoft.Xna.Framework.Media;
 
-namespace Adam.Misc.Sound
+namespace ThereMustBeAnotherWay.Misc.Sound
 {
     public static class SoundtrackManager
     {
@@ -20,7 +20,7 @@ namespace Adam.Misc.Sound
         /// <param name="repeating"></param>
         public static void PlayTrack(byte id, bool repeating)
         {
-            if (AdamGame.IsMusicMuted)
+            if (TMBAW_Game.IsMusicMuted)
                 return;
             if (id != CurrentId)
             {
@@ -53,12 +53,12 @@ namespace Adam.Misc.Sound
             byte newId = 0;
             if (CurrentId < 101 || CurrentId > 103)
             {
-                newId = (byte)AdamGame.Random.Next(101, 103);
+                newId = (byte)TMBAW_Game.Random.Next(101, 103);
                 PlayTrack(newId, false);
             }
             else if (MediaPlayer.State == MediaState.Stopped)
             {
-                newId = (byte)AdamGame.Random.Next(101, 103);
+                newId = (byte)TMBAW_Game.Random.Next(101, 103);
                 PlayTrack(newId, false);
             }
         }

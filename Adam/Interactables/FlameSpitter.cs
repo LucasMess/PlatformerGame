@@ -1,5 +1,5 @@
-﻿using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class FlameSpitter : Interactable
     {
@@ -31,7 +31,7 @@ namespace Adam.Interactables
         {
             tile.AnimationStopped = true;
             _leftCornerTile = new Vector2(tile.GetDrawRectangle().X, tile.GetDrawRectangle().Y);
-            _collRectangle = new Rectangle(tile.GetDrawRectangle().X + 3, tile.GetDrawRectangle().Y - AdamGame.Tilesize * 3 - 3, AdamGame.Tilesize - 6, AdamGame.Tilesize * 3 - 6);
+            _collRectangle = new Rectangle(tile.GetDrawRectangle().X + 3, tile.GetDrawRectangle().Y - TMBAW_Game.Tilesize * 3 - 3, TMBAW_Game.Tilesize - 6, TMBAW_Game.Tilesize * 3 - 6);
         }
 
         public override void Update(Tile tile)

@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public class Sign : Entity
     {
@@ -20,7 +20,7 @@ namespace Adam.Interactables
 
         public Sign(int xCoor, int yCoor, int id)
         {
-            CollRectangle = new Rectangle(xCoor, yCoor, AdamGame.Tilesize, AdamGame.Tilesize);
+            CollRectangle = new Rectangle(xCoor, yCoor, TMBAW_Game.Tilesize, TMBAW_Game.Tilesize);
             this._id = id;
         }
 

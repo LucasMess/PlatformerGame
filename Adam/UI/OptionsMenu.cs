@@ -1,12 +1,12 @@
-﻿using Adam.GameData;
-using Adam.Graphics;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     public static class OptionsMenu
     {
@@ -51,7 +51,7 @@ namespace Adam.UI
             }
 
             int startingY = 200;
-            int x = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
+            int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
             for (int i = 0; i < _buttons.Count; i++)
             {
                 _buttons[i].SetPosition(new Vector2(x, startingY + (TextButton.Height * 2 + 10) * i));
@@ -71,7 +71,7 @@ namespace Adam.UI
             {
                 settings.SoundVolume = settings.SoundVolume % 1 - .25f;
             }
-            AdamGame.MaxVolume = settings.SoundVolume;
+            TMBAW_Game.MaxVolume = settings.SoundVolume;
             DataFolder.SaveSettingsFile(settings);
 
             button.Text = "Sound Volume: " + settings.SoundVolume * 100 + "%";
@@ -93,7 +93,7 @@ namespace Adam.UI
 
         private static void Resolution_MouseClicked(Button button)
         {
-            AdamGame.MessageBox.Show("Not yet implemented!");
+            TMBAW_Game.MessageBox.Show("Not yet implemented!");
         }
 
         private static void Fullscreen_MouseClicked(Button button)

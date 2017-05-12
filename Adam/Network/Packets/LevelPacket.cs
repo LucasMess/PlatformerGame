@@ -1,7 +1,7 @@
-﻿using Adam.GameData;
+﻿using ThereMustBeAnotherWay.GameData;
 using System;
 
-namespace Adam.Network.Packets
+namespace ThereMustBeAnotherWay.Network.Packets
 {
     [Serializable]
     public class LevelPacket : DataPacket

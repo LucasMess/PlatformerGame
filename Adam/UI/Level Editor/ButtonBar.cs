@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Adam.UI.Level_Editor
+namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
     /// <summary>
     ///     The UI element at the top-center of the screen in the level editor.
@@ -26,7 +26,7 @@ namespace Adam.UI.Level_Editor
             _drawRectangle = new Rectangle(0, 0, _sourceRectangle.Width * 2,
                 _sourceRectangle.Height * 2);
 
-            _drawRectangle.X = AdamGame.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
+            _drawRectangle.X = TMBAW_Game.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
 
             // Buttons cannot be called individually outside the constructor.
             brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);

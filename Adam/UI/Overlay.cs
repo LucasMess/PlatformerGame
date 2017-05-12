@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Adam.UI
 
             public static void Draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(_white, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White * _whiteOpacity);
+                spriteBatch.Draw(_white, new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), Color.White * _whiteOpacity);
             }
         }
         /// <summary>
@@ -140,7 +140,7 @@ namespace Adam.UI
 
             public static void Draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, AdamGame.DefaultUiWidth, AdamGame.DefaultUiHeight), Color.Black * _opacity);
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * _opacity);
             }
         }
 
@@ -163,8 +163,8 @@ namespace Adam.UI
             {
                 if (_isActive)
                 {
-                    spriteBatch.Draw(_texture, new Rectangle(0, 0, AdamGame.DefaultUiWidth, Height), Color.Black);
-                    spriteBatch.Draw(_texture, new Rectangle(0, AdamGame.DefaultUiHeight - Height, AdamGame.DefaultUiWidth, Height), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, Height), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, TMBAW_Game.DefaultUiHeight - Height, TMBAW_Game.DefaultUiWidth, Height), Color.Black);
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace Adam.UI
             public static void DrawRipples(SpriteBatch spriteBatch)
             {
                 if (_active)
-                    spriteBatch.Draw(_rippleTexture, new Vector2(AdamGame.DefaultUiWidth / 2, (int)(AdamGame.DefaultUiHeight * 3 / 5f)), new Rectangle(0, 0, _rippleTexture.Width, _rippleTexture.Height), Color.White * _opacity, rotation, center, 1, SpriteEffects.None, 0);
+                    spriteBatch.Draw(_rippleTexture, new Vector2(TMBAW_Game.DefaultUiWidth / 2, (int)(TMBAW_Game.DefaultUiHeight * 3 / 5f)), new Rectangle(0, 0, _rippleTexture.Width, _rippleTexture.Height), Color.White * _opacity, rotation, center, 1, SpriteEffects.None, 0);
             }
 
         }
@@ -381,7 +381,7 @@ namespace Adam.UI
         {
             WhiteFlash.Draw(spriteBatch);
             RewindEffect.Draw(spriteBatch);
-            if (AdamGame.CurrentGameMode == GameMode.Play && !StoryTracker.InCutscene)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play && !StoryTracker.InCutscene)
             {
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);

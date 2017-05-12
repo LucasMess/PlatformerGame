@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Adam.Misc
+namespace ThereMustBeAnotherWay.Misc
 {
     public interface IKeyboardSubscriber
     {

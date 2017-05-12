@@ -1,4 +1,4 @@
-﻿namespace Adam
+﻿namespace ThereMustBeAnotherWay
 {
     public class Behavior
     {

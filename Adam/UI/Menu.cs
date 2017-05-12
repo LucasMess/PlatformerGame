@@ -1,16 +1,16 @@
-﻿using Adam.Misc.Helpers;
-using Adam.Misc.Sound;
-using Adam.Network;
-using Adam.UI;
-using Adam.UI.Elements;
-using Adam.UI.MainMenu;
+﻿using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.Network;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.MainMenu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public static class MainMenu
     {
@@ -40,10 +40,10 @@ namespace Adam
         public enum MenuState { Main, Options, LevelSelector, MultiplayerLobby, MultiplayerSession, StoryMode }
         public static MenuState CurrentMenuState = MenuState.Main;
 
-        public static void Initialize(AdamGame game1)
+        public static void Initialize(TMBAW_Game game1)
         {
-            int width = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
-            int height = AdamGame.DefaultUiHeight * 2 / 5;
+            int width = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
+            int height = TMBAW_Game.DefaultUiHeight * 2 / 5;
             int diff = (TextButton.Height + 2) * 2;
             _first = new Vector2(width, height + (diff * 0));
             _second = new Vector2(width, height + (diff * 1));
@@ -163,7 +163,7 @@ namespace Adam
         static void quit_MouseClicked(Button button)
         {
             // game1.GameData.SaveGame();
-            AdamGame.Quit();
+            TMBAW_Game.Quit();
         }
 
         static void chooseLevel_MouseClicked(Button button)
@@ -212,7 +212,7 @@ namespace Adam
             Cursor.Show();
             Cursor.ChangeCursor(Cursor.Type.Normal);
 
-            if (AdamGame.CurrentGameState == GameState.MainMenu)
+            if (TMBAW_Game.CurrentGameState == GameState.MainMenu)
                 SoundtrackManager.PlayMainTheme();
 
         }
@@ -221,8 +221,8 @@ namespace Adam
         {
             //spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
-            FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font8, AdamGame.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font8, TMBAW_Game.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font8, TMBAW_Game.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
             //FontHelper.DrawWithOutline(spriteBatch, _font8, "Another Way", new Vector2((AdamGame.DefaultUiWidth / 2f) - _font32.MeasureString("Adam").X / 2, (AdamGame.DefaultUiHeight * 1 / 5f)), 3, new Color(196, 69, 69), new Color(147,52,52));
 
             switch (CurrentMenuState)

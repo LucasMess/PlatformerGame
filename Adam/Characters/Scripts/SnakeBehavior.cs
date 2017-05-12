@@ -1,6 +1,6 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Projectiles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adam.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Scripts
 {
     class SnakeBehavior : Behavior
     {
@@ -32,7 +32,7 @@ namespace Adam.Characters.Scripts
                 entity.AddAnimationToQueue("attack");
                 entity.ComplexAnimation.AnimationEnded += ComplexAnimation_AnimationEnded;
 
-                float velocityY = AdamGame.Random.Next(-200, -180) / 10f;
+                float velocityY = TMBAW_Game.Random.Next(-200, -180) / 10f;
                 float velocityX = (GameWorld.GetPlayer().CollRectangle.X - entity.GetCollRectangle().X) / 30f;
 
                 Projectile projectile = new Projectile(Projectile.Type.SnakeVenom, entity.Position + new Vector2(16, 13) * 2, new Vector2(velocityX, velocityY), entity);

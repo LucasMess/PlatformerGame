@@ -1,9 +1,9 @@
-﻿using Adam.Characters.Scripts;
-using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Characters.Scripts;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     class FallingBoulder : Enemy
     {

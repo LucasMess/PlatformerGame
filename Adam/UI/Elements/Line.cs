@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     /// <summary>
     /// Makes a line from two points.

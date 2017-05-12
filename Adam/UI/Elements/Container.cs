@@ -1,8 +1,8 @@
-﻿using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.UI.Elements
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     /// <summary>
     /// Used to contain UI elements.
@@ -93,12 +93,12 @@ namespace Adam.UI.Elements
         public Container(int width, int height)
         {
             Size = new Vector2(width, height);
-            float x = (AdamGame.DefaultUiWidth / 2) - width / 2;
-            float y = (AdamGame.DefaultUiHeight / 2) - height / 2;
+            float x = (TMBAW_Game.DefaultUiWidth / 2) - width / 2;
+            float y = (TMBAW_Game.DefaultUiHeight / 2) - height / 2;
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
-            _hiddenPos = new Vector2(x, AdamGame.DefaultUiHeight);
+            _hiddenPos = new Vector2(x, TMBAW_Game.DefaultUiHeight);
 
             SetPosition(_hiddenPos);
         }
@@ -119,7 +119,7 @@ namespace Adam.UI.Elements
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
-            _hiddenPos = new Vector2(x, AdamGame.UserResHeight);
+            _hiddenPos = new Vector2(x, TMBAW_Game.UserResHeight);
 
             SetPosition(_hiddenPos);
         }

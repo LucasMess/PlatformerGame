@@ -1,10 +1,10 @@
-﻿using Adam.Characters.Enemies;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Projectiles;
+﻿using ThereMustBeAnotherWay.Characters.Enemies;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Projectiles;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Scripts
 {
     /// <summary>
     /// Defines what the frog does along the game.
@@ -80,7 +80,7 @@ namespace Adam.Characters.Scripts
                     if (!Entity.IsPlayerToRight())
                         speed *= -1;
                 }
-                else if (AdamGame.Random.Next(0, 2) == 0)
+                else if (TMBAW_Game.Random.Next(0, 2) == 0)
                 {
                     speed *= -1;
                 }

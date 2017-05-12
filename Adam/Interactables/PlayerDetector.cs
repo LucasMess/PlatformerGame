@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.PlayerCharacter;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class PlayerDetector : Interactable
     {
@@ -17,9 +17,9 @@ namespace Adam.Interactables
         {
             int x = tile.DrawRectangle.X;
             int y = tile.DrawRectangle.Y;
-            x -= size / 2 * AdamGame.Tilesize;
-            y -= size / 2 * AdamGame.Tilesize;
-            collRectangle = new Rectangle(x, y, size * AdamGame.Tilesize, size * AdamGame.Tilesize);
+            x -= size / 2 * TMBAW_Game.Tilesize;
+            y -= size / 2 * TMBAW_Game.Tilesize;
+            collRectangle = new Rectangle(x, y, size * TMBAW_Game.Tilesize, size * TMBAW_Game.Tilesize);
             container = new Container(collRectangle.Width, collRectangle.Height);
             container.SetPosition(new Vector2(collRectangle.X, collRectangle.Y));
 

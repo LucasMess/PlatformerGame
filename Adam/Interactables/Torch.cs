@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Particles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class Torch : Interactable
     {
@@ -20,7 +20,7 @@ namespace Adam.Interactables
             if (_fireParticleTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _fireParticleTimer.Reset();
-                float velY = (float)-AdamGame.Random.NextDouble();
+                float velY = (float)-TMBAW_Game.Random.NextDouble();
                 GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), Color.White);
 
             }
@@ -28,13 +28,13 @@ namespace Adam.Interactables
             if (_heatTimer.TimeElapsedInMilliSeconds > 100)
             {
                 _heatTimer.Reset();
-                float velY = (float)-AdamGame.Random.NextDouble();
+                float velY = (float)-TMBAW_Game.Random.NextDouble();
                 GameWorld.ParticleSystem.Add(ParticleType.HeatEffect, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Top ), CalcHelper.GetRandXAndY(new Rectangle(-10,-10,20,0))/10, Color.White);
             }
             if (_smokeParticleTimer.TimeElapsedInMilliSeconds > 400)
             {
                 _smokeParticleTimer.Reset();
-                float velY = (float)-AdamGame.Random.NextDouble();
+                float velY = (float)-TMBAW_Game.Random.NextDouble();
                 GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), new Color(30, 30, 30, 150));
             }
             base.Update(tile);

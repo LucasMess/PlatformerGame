@@ -1,10 +1,10 @@
-﻿using Adam.Characters.Scripts;
-using Adam.Misc;
-using Adam.Misc.Helpers;
+﻿using ThereMustBeAnotherWay.Characters.Scripts;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     class Snake : Enemy
     {

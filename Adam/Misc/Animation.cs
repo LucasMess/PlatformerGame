@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public enum AnimationType { Loop, PlayOnce, PlayInIntervals, SlowPanVertical }
 

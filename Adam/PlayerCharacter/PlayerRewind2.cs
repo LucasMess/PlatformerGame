@@ -1,13 +1,13 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.UI;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.PlayerCharacter
+namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public class RewindTracker
     {
@@ -61,12 +61,12 @@ namespace Adam.PlayerCharacter
                         float x = (float)Math.Cos(rads);
                         float y = (float)Math.Sin(rads);
                         GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White * (float)opacity);
+                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
 
                         x *= -1;
                         y *= -1;
                         GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)AdamGame.Random.NextDouble(), Color.White * (float)opacity);
+                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
                     }
                     lastDeg += changeInDeg;
                 }
@@ -78,7 +78,7 @@ namespace Adam.PlayerCharacter
         private List<Snapshot> drawableSnapshots = new List<Snapshot>();
         private const double TimeBetweenSnapshots = 10;
         private const int Capacity = (int)(1000 / TimeBetweenSnapshots);
-        private const float MaxDistance = AdamGame.Tilesize * 5;
+        private const float MaxDistance = TMBAW_Game.Tilesize * 5;
         private Timer snapshotTimer = new Timer();
 
         SoundFx _startSound = new SoundFx("Sounds/Player/rewind_start");
@@ -133,7 +133,7 @@ namespace Adam.PlayerCharacter
         {
             IsRewinding = true;
             tracker = new Tracker();
-            AdamGame.TimeFreeze.AddFrozenTime(1000);
+            TMBAW_Game.TimeFreeze.AddFrozenTime(1000);
             Overlay.ActivateRewindEffect();
             _startSound.Play();
             _stopSound.Play();

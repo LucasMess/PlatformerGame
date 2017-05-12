@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     /// <summary>
     /// This public class stores the settings of the game.

@@ -1,10 +1,10 @@
-﻿using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     public class WorldData
     {

@@ -1,4 +1,4 @@
-﻿namespace Adam.Misc
+﻿namespace ThereMustBeAnotherWay.Misc
 {
     public class TimeFreeze
     {

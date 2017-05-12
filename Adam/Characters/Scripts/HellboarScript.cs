@@ -1,13 +1,13 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Projectiles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adam.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Scripts
 {
     class HellboarScript : Behavior
     {

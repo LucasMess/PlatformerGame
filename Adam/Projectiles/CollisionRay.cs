@@ -1,11 +1,11 @@
-﻿using Adam.Characters.Enemies;
-using Adam.Levels;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Characters.Enemies;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.Projectiles
+namespace ThereMustBeAnotherWay.Projectiles
 {
     static class CollisionRay
     {
@@ -32,7 +32,7 @@ namespace Adam.Projectiles
             {
                 rects.Add(rect);
 
-                int index = (int)(rect.Y / AdamGame.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(rect.X / AdamGame.Tilesize);
+                int index = (int)(rect.Y / TMBAW_Game.Tilesize * GameWorld.WorldData.LevelWidth) + (int)(rect.X / TMBAW_Game.Tilesize);
 
                 if (rect.Intersects(other.GetCollRectangle()))
                     return true;

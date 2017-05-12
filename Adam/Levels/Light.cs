@@ -1,9 +1,9 @@
-﻿using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     class Light
     {
@@ -136,7 +136,7 @@ namespace Adam.Levels
                         _changeSizeTimer.Increment();
                         if (_changeSizeTimer.TimeElapsedInMilliSeconds > RateOfChange)
                         {
-                            oldChangeSize = AdamGame.Random.Next(-ShakeOffset, ShakeOffset + 1);
+                            oldChangeSize = TMBAW_Game.Random.Next(-ShakeOffset, ShakeOffset + 1);
                             _changeSizeTimer.Reset();
                         }
                     }

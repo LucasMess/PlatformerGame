@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Adam.Misc;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
-using Adam.Characters.Scripts;
-using Adam.Misc.Helpers;
+using ThereMustBeAnotherWay.Characters.Scripts;
+using ThereMustBeAnotherWay.Misc.Helpers;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     public class Hellboar : Enemy
     {

@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Adam.PlayerCharacter;
+using ThereMustBeAnotherWay.PlayerCharacter;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     /// <summary>
     /// Sends a trigger word to the story tracker.
@@ -36,8 +36,8 @@ namespace Adam.Interactables
 
         public override void OnPlayerClickInEditMode(Tile tile)
         {
-            AdamGame.TextInputBox.Show("What trigger would you like to set?");
-            AdamGame.TextInputBox.OnInputEntered += TextInputBox_OnInputEntered;
+            TMBAW_Game.TextInputBox.Show("What trigger would you like to set?");
+            TMBAW_Game.TextInputBox.OnInputEntered += TextInputBox_OnInputEntered;
 
             string[] commands = GetCommands(tile);
             if (commands != null)
@@ -46,7 +46,7 @@ namespace Adam.Interactables
                 {
                     if (commands[0] == "trigger")
                     {
-                        AdamGame.TextInputBox.SetTextTo(commands[1]);
+                        TMBAW_Game.TextInputBox.SetTextTo(commands[1]);
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace Adam.Interactables
 
         private void TextInputBox_OnInputEntered(UI.TextInputArgs e)
         {
-            AdamGame.TextInputBox.OnInputEntered -= TextInputBox_OnInputEntered;
+            TMBAW_Game.TextInputBox.OnInputEntered -= TextInputBox_OnInputEntered;
             string value = "trigger:" + e.Input;
             if (GameWorld.WorldData.MetaData.ContainsKey(source.TileIndex))
             {

@@ -1,7 +1,7 @@
-﻿using Adam.Levels;
-using Adam.Network;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Network;
 
-namespace Adam.Characters
+namespace ThereMustBeAnotherWay.Characters
 {
     public abstract class Character : Entity
     {

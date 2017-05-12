@@ -1,11 +1,11 @@
-﻿using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using System.Text;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace Adam.Misc.Helpers
+namespace ThereMustBeAnotherWay.Misc.Helpers
 {
     public static class FontHelper
     {

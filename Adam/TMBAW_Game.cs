@@ -1,14 +1,14 @@
-using Adam.GameData;
-using Adam.Graphics;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.Network;
-using Adam.PlayerCharacter;
-using Adam.UI;
-using Adam.UI.Elements;
-using Adam.UI.Information;
-using Adam.UI.Level_Editor;
+using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Network;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.Information;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,9 +19,9 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using MessageBox = Adam.UI.MessageBox;
+using MessageBox = ThereMustBeAnotherWay.UI.MessageBox;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public enum GameState
     {
@@ -37,7 +37,7 @@ namespace Adam
         Play
     }
 
-    public partial class AdamGame : Game
+    public partial class TMBAW_Game : Game
     {
         public delegate void UpdateHandler();
 
@@ -94,7 +94,7 @@ namespace Adam
         public static TextInputBox TextInputBox { get; set; }
         public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
 
-        public AdamGame()
+        public TMBAW_Game()
         {
             // Important services that need to be instanstiated before other things.
             _graphics = new GraphicsDeviceManager(this);

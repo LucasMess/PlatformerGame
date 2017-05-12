@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Particles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Scripts
 {
     class FallingBoulderScript : Behavior
     {

@@ -1,13 +1,13 @@
-﻿using Adam.GameData;
-using Adam.Levels;
-using Adam.UI.MainMenu;
+﻿using ThereMustBeAnotherWay.GameData;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.MainMenu;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     public static class DataFolder
     {
@@ -114,7 +114,7 @@ namespace Adam.UI
                 }
                 catch (InvalidOperationException)
                 {
-                    AdamGame.MessageBox.Show("Settings corrupt.");
+                    TMBAW_Game.MessageBox.Show("Settings corrupt.");
                     throw;
                 }
             }
@@ -166,7 +166,7 @@ namespace Adam.UI
                 }
                 catch (InvalidOperationException)
                 {
-                    AdamGame.MessageBox.Show("Save is corrupt.");
+                    TMBAW_Game.MessageBox.Show("Save is corrupt.");
                     throw;
                 }
             }
@@ -249,13 +249,13 @@ namespace Adam.UI
 
             if (config.TileIDs.Length == 0)
             {
-                AdamGame.MessageBox.Show("There is something wrong with this level and it cannot be loaded.");
+                TMBAW_Game.MessageBox.Show("There is something wrong with this level and it cannot be loaded.");
                 return;
             }
 
             if (!config.CanBeEdited)
             {
-                AdamGame.MessageBox.Show("This level cannot be edited.");
+                TMBAW_Game.MessageBox.Show("This level cannot be edited.");
                 return;
             }
 
@@ -356,12 +356,12 @@ namespace Adam.UI
             }
             catch (FileNotFoundException)
             {
-                AdamGame.MessageBox.Show("Error: File not found.");
+                TMBAW_Game.MessageBox.Show("Error: File not found.");
                 throw;
             }
             catch (InvalidOperationException)
             {
-                AdamGame.MessageBox.Show("Error: Level data is corrupt. Cannot load level.");
+                TMBAW_Game.MessageBox.Show("Error: Level data is corrupt. Cannot load level.");
                 throw;
             }
 
@@ -379,7 +379,7 @@ namespace Adam.UI
                 WorldConfigFile config = GetWorldConfigFile(filePath);
                 if (!config.CanBeEdited)
                 {
-                    AdamGame.MessageBox.Show("This level cannot be deleted.");
+                    TMBAW_Game.MessageBox.Show("This level cannot be deleted.");
                     return;
                 }
             }
@@ -413,7 +413,7 @@ namespace Adam.UI
                 config = GetWorldConfigFile(filePath);
                 if (!config.CanBeEdited)
                 {
-                    AdamGame.MessageBox.Show("This level cannot be renamed.");
+                    TMBAW_Game.MessageBox.Show("This level cannot be renamed.");
                     return;
                 }
             }

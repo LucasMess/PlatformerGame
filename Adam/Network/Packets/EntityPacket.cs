@@ -1,8 +1,8 @@
-﻿using Adam.Levels;
+﻿using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam.Network.Packets
+namespace ThereMustBeAnotherWay.Network.Packets
 {
 
     [Serializable]

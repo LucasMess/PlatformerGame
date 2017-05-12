@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     public class Crystal
     {
@@ -23,7 +23,7 @@ namespace Adam.Interactables
 
             _collRectangle = sourceTile.DrawRectangle;
 
-            int rand = AdamGame.Random.Next(1, 9);
+            int rand = TMBAW_Game.Random.Next(1, 9);
             _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
         }
 
@@ -41,7 +41,7 @@ namespace Adam.Interactables
             {
                 _breakSound.Play();
                 _broken = true;
-                Gem.GenerateIdentical(_gemId, _sourceTile, AdamGame.Random.Next(4, 8));
+                Gem.GenerateIdentical(_gemId, _sourceTile, TMBAW_Game.Random.Next(4, 8));
                 _sourceTile.ResetToDefault();
             }
         }

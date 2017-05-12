@@ -1,4 +1,4 @@
-﻿namespace Adam.Misc
+﻿namespace ThereMustBeAnotherWay.Misc
 {
     public class Timer
     {
@@ -17,7 +17,7 @@
             IsInfinite = isInfinite;
             if (IsInfinite)
             {
-                AdamGame.GameUpdateCalled += Increment;
+                TMBAW_Game.GameUpdateCalled += Increment;
                 ActiveTimers++;
             }
         }
@@ -32,8 +32,8 @@
         /// </summary>
         public void Increment()
         {
-            _currentTimeInSeconds += AdamGame.GameTime.ElapsedGameTime.TotalSeconds;
-            _currentTimeInMilliSeconds += AdamGame.GameTime.ElapsedGameTime.TotalMilliseconds;
+            _currentTimeInSeconds += TMBAW_Game.GameTime.ElapsedGameTime.TotalSeconds;
+            _currentTimeInMilliSeconds += TMBAW_Game.GameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (_currentTimeInMilliSeconds > _notificationTime)
             {
@@ -119,7 +119,7 @@
         {
             if (IsInfinite)
             {
-                AdamGame.GameUpdateCalled -= Increment;
+                TMBAW_Game.GameUpdateCalled -= Increment;
                 ActiveTimers--;
             }
         }

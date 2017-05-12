@@ -1,14 +1,14 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.UI.Elements;
-using Adam.UI.Level_Editor;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Adam.UI
+namespace ThereMustBeAnotherWay.UI
 {
     public class Brush
     {

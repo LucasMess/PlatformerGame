@@ -1,8 +1,8 @@
-﻿using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Projectiles
+namespace ThereMustBeAnotherWay.Projectiles
 {
 
     /// <summary>

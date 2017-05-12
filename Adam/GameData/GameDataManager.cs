@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Xml.Serialization;
 
-namespace Adam.GameData
+namespace ThereMustBeAnotherWay.GameData
 {
     public class GameDataManager
     {

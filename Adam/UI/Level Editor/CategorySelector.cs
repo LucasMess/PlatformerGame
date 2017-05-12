@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Adam.UI.Level_Editor
+namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
     class CategorySelector : UiElement
     {

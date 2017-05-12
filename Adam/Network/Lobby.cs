@@ -1,5 +1,5 @@
-﻿using Adam.Misc.Helpers;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adam.Network
+namespace ThereMustBeAnotherWay.Network
 {
     public static class Lobby
     {
@@ -104,9 +104,9 @@ namespace Adam.Network
             LobbyId = result.m_ulSteamIDLobby;
             IsInLobby = true;
             Session.Join(SteamMatchmaking.GetLobbyOwner(new CSteamID(LobbyId)));
-            if (AdamGame.CurrentGameState != GameState.MainMenu)
+            if (TMBAW_Game.CurrentGameState != GameState.MainMenu)
             {
-                AdamGame.ChangeState(GameState.MainMenu, GameMode.None, true);
+                TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
             }
             MainMenu.CurrentMenuState = MainMenu.MenuState.MultiplayerLobby;
             Console.WriteLine("Entered lobby with id: " + LobbyId);
@@ -133,7 +133,7 @@ namespace Adam.Network
             }
             else
             {
-                AdamGame.MessageBox.Show("You cannot invite friends when you are not in a lobby.");
+                TMBAW_Game.MessageBox.Show("You cannot invite friends when you are not in a lobby.");
             }
         }
 
@@ -153,7 +153,7 @@ namespace Adam.Network
             }
 
             string text = "Number of players in lobby: " + UserCount;
-            FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[1], text, new Vector2(AdamGame.DefaultUiWidth/2 - FontHelper.Fonts[1].MeasureString(text).X/2, 0), 1, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[1], text, new Vector2(TMBAW_Game.DefaultUiWidth/2 - FontHelper.Fonts[1].MeasureString(text).X/2, 0), 1, Color.White, Color.Black);
 
             for (int i = 0; i < _playerNames.Count; i++)
             {

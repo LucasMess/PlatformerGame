@@ -1,9 +1,9 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     /// <summary>
     /// Class inherited by all enemies that contains basic functionality
@@ -151,7 +151,7 @@ namespace Adam.Characters.Enemies
             //Starts the timer at a random position.
             if (_startTimeOfBeingMean == 0)
             {
-                _startTimeOfBeingMean = AdamGame.Random.Next(0, MeanResetTime);
+                _startTimeOfBeingMean = TMBAW_Game.Random.Next(0, MeanResetTime);
                 _wasMeanTimer.SetToInMilliseconds(_startTimeOfBeingMean);
             }
 

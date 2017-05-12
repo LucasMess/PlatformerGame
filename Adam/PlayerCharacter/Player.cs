@@ -1,13 +1,13 @@
-﻿using Adam.Characters;
-using Adam.Levels;
-using Adam.Misc;
-using Adam.Misc.Helpers;
-using Adam.Particles;
+﻿using ThereMustBeAnotherWay.Characters;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Adam.PlayerCharacter
+namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public partial class Player : Character
     {
@@ -149,8 +149,8 @@ namespace Adam.PlayerCharacter
             {
                 if (int.TryParse(_spawnPointNextLevel, out int spawnIndex))
                 {
-                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;
-                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * AdamGame.Tilesize;
+                    int x = (spawnIndex % GameWorld.WorldData.LevelWidth) * TMBAW_Game.Tilesize;
+                    int y = (spawnIndex / GameWorld.WorldData.LevelWidth) * TMBAW_Game.Tilesize;
                     Position = new Vector2(x, y);
                     RespawnPos = new Vector2(x, y);
                     _spawnPointNextLevel = null;
@@ -202,15 +202,15 @@ namespace Adam.PlayerCharacter
         {
             if (CollRectangle.X < 0)
                 SetX(0);
-            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize - CollRectangle.Width))
-                SetX(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize - CollRectangle.Width);
+            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width))
+                SetX(GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width);
             if (CollRectangle.Y < 0)
                 SetY(0);
-            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize - CollRectangle.Width) + 100)
+            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Width) + 100)
             {
                 // Player dies when he falls out of the world in play mode.
-                if (AdamGame.CurrentGameMode == GameMode.Edit)
-                    SetY(GameWorld.WorldData.LevelHeight * AdamGame.Tilesize - CollRectangle.Height);
+                if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
+                    SetY(GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Height);
                 else
                 {
                     TakeDamage(null, MaxHealth);
@@ -229,7 +229,7 @@ namespace Adam.PlayerCharacter
                     _movementParticlesTimer.Reset();
 
                     GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
-                        new Vector2(0, (float)(AdamGame.Random.Next(-5, 5) / 10f)), Color.White);
+                        new Vector2(0, (float)(TMBAW_Game.Random.Next(-5, 5) / 10f)), Color.White);
                 }
             }
         }
@@ -320,9 +320,9 @@ namespace Adam.PlayerCharacter
         public override void Draw(SpriteBatch spriteBatch)
         {
             // Do not draw player in main menu mode.
-            if (AdamGame.CurrentGameMode == GameMode.None) return;
+            if (TMBAW_Game.CurrentGameMode == GameMode.None) return;
 
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
                 rewindTracker.Draw(this, spriteBatch);
             if (IsVisible)
                 base.Draw(spriteBatch);

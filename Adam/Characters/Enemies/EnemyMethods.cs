@@ -1,9 +1,9 @@
-﻿using Adam.Interactables;
-using Adam.Levels;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
-namespace Adam.Characters.Enemies
+namespace ThereMustBeAnotherWay.Characters.Enemies
 {
     public abstract partial class Enemy : Character
     {
@@ -12,7 +12,7 @@ namespace Adam.Characters.Enemies
         /// </summary>
         public override void Update()
         {
-            if (AdamGame.CurrentGameMode == GameMode.Play)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
                 PlayMeanSound();
                 CheckInteractionsWithPlayer();

@@ -1,8 +1,8 @@
-﻿using Adam.Levels;
-using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Apple
     {
@@ -12,7 +12,7 @@ namespace Adam
 
         public Apple(int x, int y)
         {
-            _collRectangle = new Rectangle(x, y, AdamGame.Tilesize, AdamGame.Tilesize);
+            _collRectangle = new Rectangle(x, y, TMBAW_Game.Tilesize, TMBAW_Game.Tilesize);
             _levelFinishedSound = new SoundFx("Sounds/Menu/level_complete");
         }
 
@@ -26,7 +26,7 @@ namespace Adam
 
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
-                AdamGame.ChangeState(GameState.MainMenu, GameMode.None, false);
+                TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, false);
             }
         }
     }

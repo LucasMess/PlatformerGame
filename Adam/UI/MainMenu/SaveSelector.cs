@@ -1,10 +1,10 @@
-﻿using Adam.Levels;
-using Adam.UI.Elements;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Adam.UI.MainMenu
+namespace ThereMustBeAnotherWay.UI.MainMenu
 {
     public static class SaveSelector
     {
@@ -44,7 +44,7 @@ namespace Adam.UI.MainMenu
             }
 
             int startingY = 200;
-            int x = AdamGame.DefaultUiWidth / 2 - TextButton.Width;
+            int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
             for(int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].SetPosition(new Vector2(x, startingY + (TextButton.Height * 2 + 10) * i));
@@ -67,7 +67,7 @@ namespace Adam.UI.MainMenu
 
         private static void Back_MouseClicked(Button button)
         {
-            AdamGame.ChangeState(GameState.MainMenu, GameMode.None, false);
+            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, false);
         }
 
         private static void Save1_MouseClicked(Button button)

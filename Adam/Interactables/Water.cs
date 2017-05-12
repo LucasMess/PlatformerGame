@@ -1,5 +1,5 @@
-﻿using Adam.Levels;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Adam.Interactables
+namespace ThereMustBeAnotherWay.Interactables
 {
     class Water : Interactable
     {
@@ -29,7 +29,7 @@ namespace Adam.Interactables
                     if (player.IsJumpButtonPressed() && entity.SwimTimer.TimeElapsedInMilliSeconds > 100)
                     {
                         entity.SwimTimer.Reset();
-                        if (GameWorld.GetTileAbove(tile.TileIndex).Id == AdamGame.TileType.Air)
+                        if (GameWorld.GetTileAbove(tile.TileIndex).Id == TMBAW_Game.TileType.Air)
                         {
                             player.SetVelY(-15f);
                         }

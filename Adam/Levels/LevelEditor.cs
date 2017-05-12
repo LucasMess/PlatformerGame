@@ -1,19 +1,19 @@
-﻿using Adam.Misc;
-using Adam.Misc.Sound;
-using Adam.Network;
-using Adam.Particles;
-using Adam.PlayerCharacter;
-using Adam.UI;
-using Adam.UI.Elements;
-using Adam.UI.Level_Editor;
+﻿using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.Network;
+using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using static Adam.AdamGame;
+using static ThereMustBeAnotherWay.TMBAW_Game;
 
-namespace Adam.Levels
+namespace ThereMustBeAnotherWay.Levels
 {
     /// <summary>
     /// Resposible for user interface and input for the level editor.
@@ -125,7 +125,7 @@ namespace Adam.Levels
         /// </summary>
         public static void TestLevel()
         {
-            if (AdamGame.CurrentGameMode != GameMode.Play && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
+            if (TMBAW_Game.CurrentGameMode != GameMode.Play && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
 
                 try
@@ -133,7 +133,7 @@ namespace Adam.Levels
                     SaveLevel();
                     GameWorld.IsTestingLevel = true;
                     GameWorld.PlayerTrail = new PlayerTrail();
-                    AdamGame.CurrentGameMode = GameMode.Play;
+                    TMBAW_Game.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
                     GameWorld.Player.ComplexAnimation.RemoveAllFromQueue();
                     GameWorld.Player.SetVelX(0);
@@ -146,19 +146,19 @@ namespace Adam.Levels
                 }
                 catch (Exception e)
                 {
-                    AdamGame.MessageBox.Show(e.Message);
+                    TMBAW_Game.MessageBox.Show(e.Message);
                 }
             }
         }
 
         public static void GoBackToEditing()
         {
-            if (AdamGame.CurrentGameMode != GameMode.Edit && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
+            if (TMBAW_Game.CurrentGameMode != GameMode.Edit && _switchEditAndPlayTimer.TimeElapsedInMilliSeconds > 1000)
             {
                 try
                 {
                     GameWorld.IsTestingLevel = false;
-                    AdamGame.CurrentGameMode = GameMode.Edit;
+                    TMBAW_Game.CurrentGameMode = GameMode.Edit;
                     GameWorld.PrepareLevelForTesting();
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
@@ -168,7 +168,7 @@ namespace Adam.Levels
                 }
                 catch (Exception e)
                 {
-                    AdamGame.MessageBox.Show(e.Message);
+                    TMBAW_Game.MessageBox.Show(e.Message);
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace Adam.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            AdamGame.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
+            TMBAW_Game.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
             float speed = 9f;
 
@@ -273,17 +273,17 @@ namespace Adam.Levels
             {
                 EditorRectangle.X = 0;
             }
-            if (EditorRectangle.X > (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize) - EditorRectangle.Width)
+            if (EditorRectangle.X > (GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize) - EditorRectangle.Width)
             {
-                EditorRectangle.X = (GameWorld.WorldData.LevelWidth * AdamGame.Tilesize) - EditorRectangle.Width;
+                EditorRectangle.X = (GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize) - EditorRectangle.Width;
             }
             if (EditorRectangle.Y < 0)
             {
                 EditorRectangle.Y = 0;
             }
-            if (EditorRectangle.Y > (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize) - EditorRectangle.Height)
+            if (EditorRectangle.Y > (GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize) - EditorRectangle.Height)
             {
-                EditorRectangle.Y = (GameWorld.WorldData.LevelHeight * AdamGame.Tilesize) - EditorRectangle.Height;
+                EditorRectangle.Y = (GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize) - EditorRectangle.Height;
             }
         }
 
@@ -487,8 +487,8 @@ namespace Adam.Levels
         {
             IdleTimerForSave.Reset();
             _hasChangedSinceLastSave = true;
-            Construction[AdamGame.Random.Next(0, 3)].PlayIfStopped();
-            AdamGame.Camera.Shake();
+            Construction[TMBAW_Game.Random.Next(0, 3)].PlayIfStopped();
+            TMBAW_Game.Camera.Shake();
             CreateConstructionParticles(t.DrawRectangle);
         }
 
@@ -502,7 +502,7 @@ namespace Adam.Levels
             _hasChangedSinceLastSave = true;
             _destruction.PlayIfStopped();
             CreateDestructionParticles(t.GetDrawRectangle());
-            AdamGame.Camera.Shake();
+            TMBAW_Game.Camera.Shake();
         }
 
         /// <summary>
@@ -585,7 +585,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(AdamGame.Random.Next(-10, 10) / 10f, AdamGame.Random.Next(-10, 10) / 10f), Color.White);
+                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
             }
         }
 
@@ -597,7 +597,7 @@ namespace Adam.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(AdamGame.Random.Next(-10, 10) / 10f, AdamGame.Random.Next(-10, 10) / 10f), Color.White);
+                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
             }
         }
 

@@ -1,8 +1,8 @@
-﻿using Adam.Interactables;
-using Adam.PlayerCharacter;
+﻿using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class Door : Interactable
     {

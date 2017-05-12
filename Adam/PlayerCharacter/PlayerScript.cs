@@ -1,12 +1,12 @@
-﻿using Adam.Levels;
-using Adam.Misc;
-using Adam.Particles;
-using Adam.PlayerCharacter;
-using Adam.Projectiles;
+﻿using ThereMustBeAnotherWay.Levels;
+using ThereMustBeAnotherWay.Misc;
+using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Adam
+namespace ThereMustBeAnotherWay
 {
     public class PlayerScript : Behavior
     {
@@ -65,7 +65,7 @@ namespace Adam
             _lastJumpTimer.Increment();
             if (_lastJumpTimer.TimeElapsedInMilliSeconds > 1000 || !player.IsJumpButtonPressed())
             {
-                player.GravityStrength = AdamGame.Gravity;
+                player.GravityStrength = TMBAW_Game.Gravity;
             }
 
             if (player.IsClimbing)
@@ -144,12 +144,12 @@ namespace Adam
                 player.AddAnimationToQueue("jump");
                 player.CollidedWithTileBelow += OnTouchGround;
                 _lastJumpTimer.Reset();
-                player.GravityStrength = AdamGame.Gravity * .5f;
+                player.GravityStrength = TMBAW_Game.Gravity * .5f;
 
                 if (jumpAcc != 0)
                     for (int i = 0; i < 10; i++)
                     {
-                        GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(AdamGame.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -AdamGame.Random.Next(1, 10) / 10f), Color.White);
+                        GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -TMBAW_Game.Random.Next(1, 10) / 10f), Color.White);
                     }
 
 

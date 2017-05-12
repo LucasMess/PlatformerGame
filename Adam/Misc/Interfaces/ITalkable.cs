@@ -1,4 +1,4 @@
-﻿namespace Adam.Misc.Interfaces
+﻿namespace ThereMustBeAnotherWay.Misc.Interfaces
 {
     public interface ITalkable
     {

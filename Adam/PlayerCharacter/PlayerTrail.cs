@@ -1,10 +1,10 @@
-﻿using Adam.Misc;
+﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Adam.PlayerCharacter
+namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     /// <summary>
     /// Trail seen in level editor after level is edited.
