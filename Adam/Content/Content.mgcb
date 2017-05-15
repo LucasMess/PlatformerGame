@@ -1778,3 +1778,15 @@
 /processorParam:Quality=Best
 /build:Music/Heart of Nowhere.mp3
 
+#begin Sounds/Player/timegun_fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/timegun_fire.wav
+
+#begin Sounds/Player/bulletHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/bulletHit.wav
+

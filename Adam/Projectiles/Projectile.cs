@@ -24,7 +24,7 @@ namespace ThereMustBeAnotherWay.Projectiles
         /// </summary>
         public enum Type
         {
-            PlayerShuriken,
+            PlayerTimePunch,
             SnakeVenom,
         }
 
@@ -32,6 +32,7 @@ namespace ThereMustBeAnotherWay.Projectiles
 
         private Timer _stayAliveTimer;
 
+        private SoundFx _onHitSound;
 
         /// <summary>
         /// The amount of time a projectile is alive for before being deleted.
@@ -42,6 +43,7 @@ namespace ThereMustBeAnotherWay.Projectiles
 
         public Projectile(Type type, Vector2 position, Vector2 velocity, Entity source)
         {
+            CanTakeDamage = false;
             _stayAliveTimer = new Timer();
             Weight = 10;
             Texture = GameWorld.SpriteSheet;
@@ -51,11 +53,16 @@ namespace ThereMustBeAnotherWay.Projectiles
             Velocity = velocity;
             ObeysGravity = true;
             CurrentType = type;
+            CollidedWithTerrain += Projectile_CollidedWithTerrain;
 
             switch (CurrentType)
             {
-                case Type.PlayerShuriken:
-                    SourceRectangle = new Rectangle(288, 104, 8, 8);
+                case Type.PlayerTimePunch:
+                    SourceRectangle = new Rectangle(256, 176, 16, 16);
+                    ObeysGravity = false;
+                    CurrentCollisionType = CollisionType.Rigid;
+                    Weight = 0;
+                    _onHitSound = new SoundFx("Sounds/Player/bulletHit");
                     break;
                 case Type.SnakeVenom:
                     SourceRectangle = new Rectangle(256, 240, 16, 16);
@@ -67,6 +74,23 @@ namespace ThereMustBeAnotherWay.Projectiles
             CollRectangle = new Rectangle(0, 0, SourceRectangle.Width * 2, SourceRectangle.Height * 2);
         }
 
+        private void Projectile_CollidedWithTerrain(Entity entity, Tile tile)
+        {
+            switch (CurrentType) {
+                case Type.PlayerTimePunch:
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Explosion, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), Vector2.Zero, Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.TilePiece, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), new Vector2(tile.SourceRectangle.X, tile.SourceRectangle.Y), Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.TilePiece, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), new Vector2(tile.SourceRectangle.X, tile.SourceRectangle.Y), Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.TilePiece, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), new Vector2(tile.SourceRectangle.X, tile.SourceRectangle.Y), Color.White);
+                    break;
+            }
+
+            _onHitSound?.Play();
+
+            CollidedWithTerrain -= Projectile_CollidedWithTerrain;
+            ToDelete = true;
+        }
+
         public override void Update()
         {
             _stayAliveTimer.Increment();
@@ -75,11 +99,15 @@ namespace ThereMustBeAnotherWay.Projectiles
                 ToDelete = true;
             }
 
+            IsFacingRight = Velocity.X < 0;
+
             switch (CurrentType)
             {
-                case Type.PlayerShuriken:
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Flame, Position, Vector2.Zero, Color.White);
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, null, new Color(255, 233, 198));
+                case Type.PlayerTimePunch:
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1,-2,2,4)), Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1, -2, 2, 4)), Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1, -2, 2, 4)), Color.White);
+                    GameWorld.ParticleSystem.Add(Particles.ParticleType.ProjectileHeatTrail, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), Vector2.Zero, Color.White);
                     break;
                 case Type.SnakeVenom:
                     GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, CalcHelper.GetRandXAndY(new Rectangle(0,-2,0,4)), new Color(143, 219, 116));
@@ -99,6 +127,7 @@ namespace ThereMustBeAnotherWay.Projectiles
             other.TakeDamage(_source, _source.DamagePointsProj);
             ToDelete = true;
         }
+
 
     }
 }

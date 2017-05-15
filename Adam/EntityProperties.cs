@@ -8,7 +8,7 @@ namespace ThereMustBeAnotherWay
     {
         protected ComplexAnimation _complexAnimation = new ComplexAnimation();
 
-        readonly Timer _hitRecentlyTimer = new Timer(true);
+        readonly Timer _hitRecentlyTimer = new Timer(false, 10000);
         readonly Timer _deathAnimationTimer = new Timer(true);
         protected readonly Timer _respawnTimer = new Timer(true);
 

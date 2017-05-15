@@ -12,7 +12,7 @@
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
 
-        public Timer(bool isInfinite = false)
+        public Timer(bool isInfinite = false, double initialTime = 0)
         {
             IsInfinite = isInfinite;
             if (IsInfinite)
@@ -20,6 +20,7 @@
                 TMBAW_Game.GameUpdateCalled += Increment;
                 ActiveTimers++;
             }
+            SetToInMilliseconds(initialTime);
         }
 
         /// <summary>

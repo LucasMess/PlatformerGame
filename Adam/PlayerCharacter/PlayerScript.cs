@@ -31,6 +31,7 @@ namespace ThereMustBeAnotherWay
 
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
+        SoundFx _timeGunFireSound = new SoundFx("Sounds/Player/timegun_fire");
 
         public void Initialize(Player player)
         {
@@ -304,14 +305,15 @@ namespace ThereMustBeAnotherWay
 
         public void OnWeaponFire(Player player)
         {
-            if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 100)
+            if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _weaponFireRateTimer.Reset();
-                Vector2 velocity = new Vector2(25, -10);
+                Vector2 velocity = new Vector2(20, 0);
                 if (!player.IsFacingRight)
                     velocity.X *= -1;
-                Projectile proj = new Projectile(Projectile.Type.PlayerShuriken, player.Position, velocity, player);
+                Projectile proj = new Projectile(Projectile.Type.PlayerTimePunch, player.Position + new Vector2(0,16), velocity, player);
                 GameWorld.PlayerProjectiles.Add(proj);
+                _timeGunFireSound.Play();
             }
         }
 

@@ -28,13 +28,13 @@ namespace ThereMustBeAnotherWay.Particles
             public Vector2 Velocity { get; set; }
             public float Opacity { get; set; } = 1;
             public Color Color { get; set; } = Color.White;
-            public int Width { get; set; } = 8;
-            public int Height { get; set; } = 8;
+            public int Width => SourceRectangle.Width * 2;
+            public int Height => SourceRectangle.Height * 2;
             public float Scale { get; set; } = 1;
             public bool IsAnimated { get; set; }
             public bool IsRippleEffect { get; set; } = false;
             public int TimeToLive { get; set; } = -1;
-            public bool IsTimeConstant { get; internal set; }
+            public bool IsImmuneToTimeEffects { get; internal set; }
 
             public bool IsDead()
             {
@@ -49,8 +49,6 @@ namespace ThereMustBeAnotherWay.Particles
 
             public void Reset()
             {
-                Width = 8;
-                Height = 8;
                 Scale = 1;
                 Opacity = 1;
                 IsAnimated = false;
@@ -84,6 +82,9 @@ namespace ThereMustBeAnotherWay.Particles
                         NoOpacityDefaultBehavior();
                         break;
                     case ParticleType.FireBall:
+                        NoOpacityDefaultBehavior();
+                        break;
+                    case ParticleType.Explosion:
                         NoOpacityDefaultBehavior();
                         break;
                     default:
@@ -210,7 +211,7 @@ namespace ThereMustBeAnotherWay.Particles
         public void UpdateTimeConstant()
         {
             var query = from particle in _particles
-                        where particle.IsTimeConstant
+                        where particle.IsImmuneToTimeEffects
                         select particle;
 
             foreach (var item in query)
@@ -335,11 +336,11 @@ namespace ThereMustBeAnotherWay.Particles
                     break;
                 case ParticleType.HeatEffect:
                     par.IsRippleEffect = true;
-                    par.SourceRectangle = new Rectangle(336, 112, 16, 16);
+                    par.SourceRectangle = new Rectangle(256, 144, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
                     par.Scale = TMBAW_Game.Random.Next(1, 5);
-                    par.Position = new Vector2(position.X - par.Scale / 2 * 8, position.Y - par.Scale / 2 * 8);
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     break;
                 case ParticleType.RewindFire:
                     par.SourceRectangle = new Rectangle(256, 160, 8, 8);
@@ -350,7 +351,7 @@ namespace ThereMustBeAnotherWay.Particles
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;
-                    par.IsTimeConstant = true;
+                    par.IsImmuneToTimeEffects = true;
                     break;
                 case ParticleType.FireBall:
                     par.SourceRectangle = new Rectangle(256, 168, 8, 8);
@@ -361,7 +362,46 @@ namespace ThereMustBeAnotherWay.Particles
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;
-                    par.IsTimeConstant = true;
+                    par.IsImmuneToTimeEffects = true;
+                    break;
+                case ParticleType.Tiny:
+                    par.SourceRectangle = new Rectangle(256, 112, 4, 4);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = 1;
+                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
+                    par._frames = 4;
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsAnimated = true;
+                    par.IsImmuneToTimeEffects = false;
+                    break;
+                case ParticleType.ProjectileHeatTrail:
+                    par.IsRippleEffect = true;
+                    par.SourceRectangle = new Rectangle(256, 144, 8, 8);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = TMBAW_Game.Random.Next(5, 7);
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    break;
+                case ParticleType.Explosion:
+                    par.SourceRectangle = new Rectangle(400, 80, 48, 48);
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.Scale = 1;
+                    par._frameChange = 50;
+                    par._frames = 4;
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsAnimated = true;
+                    par.IsImmuneToTimeEffects = false;
+                    break;
+                case ParticleType.TilePiece:
+                    velocity += CalcHelper.GetRandXAndY(new Rectangle(0, 0, 12, 12));
+                    par.SourceRectangle = new Rectangle((int)(velocity.X) , (int)(velocity.Y), 4, 4);
+                    par.Velocity = CalcHelper.GetRandXAndY(new Rectangle(-2,-2,4,4));
+                    par.Color = color;
+                    par.Scale = 1;
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsImmuneToTimeEffects = false;
                     break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
@@ -382,6 +422,10 @@ namespace ThereMustBeAnotherWay.Particles
         HeatEffect,
         RewindFire,
         FireBall,
+        Tiny,
+        ProjectileHeatTrail,
+        Explosion,
+        TilePiece,
     }
 
 }

@@ -55,6 +55,7 @@ namespace ThereMustBeAnotherWay
         public bool IsTouchingGround { get; set; }
         public bool IsDucking { get; set; }
         public bool WantsToMoveDownPlatform { get; set; }
+        public bool CanTakeDamage { get; set; } = true;
 
         /// <summary>
         /// Unique identifier using in multiplayer to update the entity.
@@ -278,6 +279,8 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public virtual void Update()
         {
+            _hitRecentlyTimer.Increment();
+
             if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
                 _positionInLastFrame = new Vector2(CollRectangle.X, CollRectangle.Y);
@@ -906,7 +909,7 @@ namespace ThereMustBeAnotherWay
         /// <param name="damage"></param>
         public void TakeDamage(Entity damageDealer, int damage)
         {
-            if (IsTakingDamage || IsPlayingDeathAnimation)
+            if (IsTakingDamage || IsPlayingDeathAnimation || !CanTakeDamage)
                 return;
 
             // Main.TimeFreeze.AddFrozenTime(damage*3);
