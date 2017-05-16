@@ -902,6 +902,11 @@ namespace ThereMustBeAnotherWay
             return (_hitRecentlyTimer.TimeElapsedInSeconds < .2);
         }
 
+        public Vector2 Center
+        {
+            get { return new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y); }
+        }
+
         /// <summary>
         /// Deals a certain amount of damage to the entity.
         /// </summary>
@@ -916,6 +921,7 @@ namespace ThereMustBeAnotherWay
 
             IsTakingDamage = true;
             Health -= damage;
+            GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255,108,108));
             _hitRecentlyTimer.ResetAndWaitFor(500);
             _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
 

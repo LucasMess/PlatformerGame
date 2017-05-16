@@ -92,6 +92,8 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Characters\Enemies\Lost.cs" />
+    <Compile Include="Characters\Behavior\LostBehavior.cs" />
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
@@ -109,10 +111,10 @@
     <Compile Include="Characters\Non-Playable\Scooter.cs" />
     <Compile Include="Characters\Non-Playable\Vladimir.cs" />
     <Compile Include="Characters\Non-Playable\Will.cs" />
-    <Compile Include="Characters\Scripts\FallingBoulderScript.cs" />
-    <Compile Include="Characters\Scripts\FrogScript.cs" />
-    <Compile Include="Characters\Scripts\HellboarScript.cs" />
-    <Compile Include="Characters\Scripts\SnakeBehavior.cs" />
+    <Compile Include="Characters\Behavior\FallingBoulderBehavior.cs" />
+    <Compile Include="Characters\Behavior\FrogBehavior.cs" />
+    <Compile Include="Characters\Behavior\HellboarBehavior.cs" />
+    <Compile Include="Characters\Behavior\SnakeBehavior.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityProperties.cs" />
     <Compile Include="GameData\GameDataManager.cs" />

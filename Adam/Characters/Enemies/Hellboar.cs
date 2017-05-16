@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
     {
         public Hellboar(int x, int y)
         {
-            Behavior = new HellboarScript();
+            Behavior = new HellboarBehavior();
             Weight = 10;
             Behavior.Initialize(this);
 

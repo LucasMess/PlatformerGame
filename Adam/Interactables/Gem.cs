@@ -56,7 +56,7 @@ namespace ThereMustBeAnotherWay
         private void Gem_OnPlayerPickUp(PickedUpArgs e)
         {
             e.Player.Score += GetValue();
-
+            GameWorld.ParticleSystem.Add("+" + GetValue() + "g", Center, new Vector2(0, -13), new Color(255, 233, 108));
             //GameWorld.ParticleSystem.Add(new SplashNumber(this, GetValue(), Color.DarkGoldenrod));
         }
 

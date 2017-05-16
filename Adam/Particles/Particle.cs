@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using System;
 
 namespace ThereMustBeAnotherWay.Particles
 {
@@ -35,6 +37,8 @@ namespace ThereMustBeAnotherWay.Particles
             public bool IsRippleEffect { get; set; } = false;
             public int TimeToLive { get; set; } = -1;
             public bool IsImmuneToTimeEffects { get; internal set; }
+            public bool IsText { get; set; }
+            public string Text { get; set; }
 
             public bool IsDead()
             {
@@ -59,6 +63,8 @@ namespace ThereMustBeAnotherWay.Particles
                 _currentFrame = 0;
                 TimeToLive = 60 * 5;
                 _animationTimer.Reset();
+                IsText = false;
+                Text = null;
             }
 
 
@@ -86,6 +92,12 @@ namespace ThereMustBeAnotherWay.Particles
                         break;
                     case ParticleType.Explosion:
                         NoOpacityDefaultBehavior();
+                        break;
+                    case ParticleType.TilePiece:
+                        GravityDefaultBehavior();
+                        break;
+                    case ParticleType.SplashText:
+                        GravityDefaultBehavior();
                         break;
                     default:
                         DefaultBehavior();
@@ -122,7 +134,7 @@ namespace ThereMustBeAnotherWay.Particles
             /// </summary>
             protected void GravityDefaultBehavior()
             {
-                Position = new Vector2(Position.X, Position.Y + TMBAW_Game.Gravity);
+                Velocity = new Vector2(Velocity.X, Velocity.Y + TMBAW_Game.Gravity);
                 DefaultBehavior();
             }
 
@@ -140,8 +152,13 @@ namespace ThereMustBeAnotherWay.Particles
 
             public virtual void Draw(SpriteBatch spriteBatch)
             {
-                if (_texture != null)
+                if (IsText && Text != null)
+                {
+                    FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[2], Text, Position, 1, Color, Color.Black);
+                }
+                else if (_texture != null)
                     spriteBatch.Draw(_texture, new Rectangle((int)Position.X, (int)Position.Y, (int)(Width * Scale), (int)(Height * Scale)), SourceRectangle, Color * Opacity);
+
             }
 
         }
@@ -255,6 +272,13 @@ namespace ThereMustBeAnotherWay.Particles
         private void GetAllParticles()
         {
             _emptyParticles = _particles.ToList();
+        }
+
+        string textOfNextPar;
+        public void Add(string text, Vector2 position, Vector2 velocityArg, Color color)
+        {
+            textOfNextPar = text;
+            Add(ParticleType.SplashText, position, velocityArg, color);
         }
 
         public void Add(ParticleType type, Vector2 position, Vector2? velocityArg, Color color)
@@ -396,12 +420,24 @@ namespace ThereMustBeAnotherWay.Particles
                     break;
                 case ParticleType.TilePiece:
                     velocity += CalcHelper.GetRandXAndY(new Rectangle(0, 0, 12, 12));
-                    par.SourceRectangle = new Rectangle((int)(velocity.X) , (int)(velocity.Y), 4, 4);
-                    par.Velocity = CalcHelper.GetRandXAndY(new Rectangle(-2,-2,4,4));
+                    par.SourceRectangle = new Rectangle((int)(velocity.X), (int)(velocity.Y), 4, 4);
+                    par.Velocity = CalcHelper.GetRandXAndY(new Rectangle(-2, -2, 4, 4));
                     par.Color = color;
                     par.Scale = 1;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsImmuneToTimeEffects = false;
+                    break;
+                case ParticleType.SplashText:
+                    par.Text = textOfNextPar;
+                    par.IsText = true;
+                    par.Velocity = velocity;
+                    par.Color = color;
+                    par.SourceRectangle.Height = 64;
+                    double parsed;
+                    double.TryParse(textOfNextPar, out parsed);
+                    par.SourceRectangle.Height *= (int)Math.Ceiling(parsed / 50);
+                    par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
+                    par.IsImmuneToTimeEffects = true;
                     break;
                 default:
                     par.SourceRectangle = new Rectangle(0, 0, 0, 0);
@@ -426,6 +462,7 @@ namespace ThereMustBeAnotherWay.Particles
         ProjectileHeatTrail,
         Explosion,
         TilePiece,
+        SplashText,
     }
 
 }

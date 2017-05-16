@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ThereMustBeAnotherWay.Characters.Scripts
 {
-    class HellboarScript : Behavior
+    class HellboarBehavior : Behavior
     {
         bool isAngry;
         bool isRunningToPlayer;

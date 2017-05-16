@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             SourceRectangle = new Rectangle(192, 416, 16 * 2, 16 * 2);
             CollRectangle = new Rectangle(0, 0, SourceRectangle.Width * 2, SourceRectangle.Height * 2);
 
-            Behavior = new FallingBoulderScript();
+            Behavior = new FallingBoulderBehavior();
             Behavior.Initialize(this);
         }
 

@@ -930,7 +930,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(18, 12);
+                    _positionInSpriteSheet = new Vector2(21, 12);
                     break;
                 case TileType.NPC: // NPC
                     if (!_isSampleTile)
@@ -938,10 +938,15 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(18, 12);
+                    _positionInSpriteSheet = new Vector2(18, 13);
                     break;
                 case TileType.Lost: //Lost
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new Lost(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(21, 12);
                     break;
                 case TileType.Hellboar: //Hellboar
                     if (!_isSampleTile)

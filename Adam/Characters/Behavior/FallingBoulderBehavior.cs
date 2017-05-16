@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace ThereMustBeAnotherWay.Characters.Scripts
 {
-    class FallingBoulderScript : Behavior
+    class FallingBoulderBehavior : Behavior
     {
         Vector2 originalPosition;
         bool isFalling;
