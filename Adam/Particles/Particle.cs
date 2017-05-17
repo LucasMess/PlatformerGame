@@ -318,7 +318,7 @@ namespace ThereMustBeAnotherWay.Particles
                     par.SourceRectangle = new Rectangle(256, 104, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = TMBAW_Game.Random.Next(5, 30) / 10f;
+                    par.Scale = TMBAW_Game.Random.Next(5, 20) / 10f;
                     par.Position = new Vector2(par.Position.X - (par.Scale * par.Width) / 2, par.Position.Y - (par.Scale * par.Height) / 2);
                     par._frameChange = TMBAW_Game.Random.Next(200, 300);
                     par._frames = 4;

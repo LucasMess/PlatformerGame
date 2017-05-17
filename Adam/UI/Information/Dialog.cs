@@ -26,7 +26,7 @@ namespace ThereMustBeAnotherWay.UI.Information
         private readonly BitmapFont _font;
         private readonly SoundFx _letterPopSound;
         private readonly Timer _letterPopTimer = new Timer(true);
-        private readonly char[] _pauseChars = {'!', '.', ',', '?'};
+        private readonly char[] _pauseChars = { '!', '.', ',', '?' };
         private readonly Timer _selectBufferTimer = new Timer(true);
         private readonly Timer _skipTimer = new Timer(true);
         private int _currentLetterIndex;
@@ -45,16 +45,16 @@ namespace ThereMustBeAnotherWay.UI.Information
         public Dialog()
         {
             _dialogueContainer = new Container(850, 150);
-            _dialogueContainer.SetPosition(TMBAW_Game.DefaultUiWidth / 2 - _dialogueContainer.Size.X/2, 40);
+            _dialogueContainer.SetPosition(TMBAW_Game.DefaultUiWidth / 2 - _dialogueContainer.Size.X / 2, 40);
             _dialogueContainer.ChangeStyle(Container.Style.GameUnique);
 
             _optionsContainer = new Container(850, 150);
             _optionsContainer.SetPosition(TMBAW_Game.DefaultUiWidth / 2 - _optionsContainer.Size.X / 2, TMBAW_Game.DefaultUiHeight - 200);
             _optionsContainer.ChangeStyle(Container.Style.GameUnique);
 
-            var origin = new Vector2(_dialogueContainer.Size.X/2f, _dialogueContainer.Size.Y / 2f);
+            var origin = new Vector2(_dialogueContainer.Size.X / 2f, _dialogueContainer.Size.Y / 2f);
 
-            _font = ContentHelper.LoadFont("Fonts/x16");
+            _font = ContentHelper.LoadFont("Fonts/x24");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
         }
 
@@ -107,7 +107,7 @@ namespace ThereMustBeAnotherWay.UI.Information
 
         public void Update()
         {
-            
+
             if (IsActive)
             {
                 // Checks to see if player wants to move on to the next dialog.
@@ -221,7 +221,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                     if (_dialogOptions.Count > 0)
                     {
                         _optionsContainer.Draw(spriteBatch);
-                        _dialogOptions.Draw(spriteBatch, _font, (int)_optionsContainer.GetPosition().X + (int)_optionsContainer.Size.X/2, (int)_optionsContainer.GetPosition().Y + 30);
+                        _dialogOptions.Draw(spriteBatch, _font, (int)_optionsContainer.GetPosition().X + (int)_optionsContainer.Size.X / 2, (int)_optionsContainer.GetPosition().Y + 30);
                     }
                     else
                     {
@@ -272,7 +272,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                 lineNumber[i] = wrapped[i].Split('\n').Length;
 
                 // Determines the height of each element.
-                _heights[i] = font.MeasureString(wrapped[i]).Y;
+                 _heights[i] = font.LineHeight * lineNumber[i];
 
                 i++;
             }
@@ -317,10 +317,10 @@ namespace ThereMustBeAnotherWay.UI.Information
                 float deltaY = 0;
                 for (var h = 0; h < i; h++)
                 {
-                    deltaY += _heights[h];
+                    deltaY += _heights[h] + 10;
                 }
 
-                var x = centerX - font.MeasureString(_options[i]).X/2;
+                var x = centerX - font.MeasureString(_options[i]).X / 2;
                 var y = startingY + deltaY;
                 spriteBatch.DrawString(font, _options[i], new Vector2(x, y), Color.Black);
                 if (SelectedOption == i)
@@ -355,11 +355,11 @@ namespace ThereMustBeAnotherWay.UI.Information
         /// <param name="positionOfText"></param>
         public void DrawAroundText(SpriteBatch spriteBatch, string text, BitmapFont font, Vector2 positionOfText)
         {
-            _drawRectangle = new Rectangle((int) positionOfText.X - Size - Size/2, (int) positionOfText.Y + 4, Size,
+            _drawRectangle = new Rectangle((int)positionOfText.X - Size - Size / 2, (int)positionOfText.Y + 4, Size,
                 Size);
             spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White);
 
-            _drawRectangle.X += Size + (int) font.MeasureString(text).X + 4;
+            _drawRectangle.X += Size + (int)font.MeasureString(text).X + 4;
             spriteBatch.Draw(_texture, _drawRectangle, _sourceRectangle, Color.White, 0, Vector2.Zero,
                 SpriteEffects.FlipHorizontally, 0);
         }

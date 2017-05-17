@@ -30,7 +30,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
             MouseClicked += YesButton_MouseClicked;
             SourceRectangle = new Rectangle(320, 20, 19, 6);
             Texture = GameWorld.SpriteSheet;
-            Font = ContentHelper.LoadFont("Fonts/x8");
+            Font = ContentHelper.LoadFont("Fonts/x16");
         }
 
         private void YesButton_MouseClicked(Button button)

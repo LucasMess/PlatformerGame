@@ -1358,19 +1358,6 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/ui_spritemap_4.png
 
-#begin Fonts/LuckiestGuyOutline.png
-/importer:TextureImporter
-/processor:FontTextureProcessor
-/processorParam:FirstCharacter= 
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Color
-/build:Fonts/LuckiestGuyOutline.png
-
-#begin Fonts/x8.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:Fonts/x8.fnt
-
 #begin Fonts/x16.fnt
 /importer:BitmapFontImporter
 /processor:BitmapFontProcessor
@@ -1395,23 +1382,6 @@
 /importer:BitmapFontImporter
 /processor:BitmapFontProcessor
 /build:debug.fnt
-
-#begin Fonts/splashNumber.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:Fonts/splashNumber.fnt
-
-#begin Fonts/x8_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Fonts/x8_0.png
 
 #begin Fonts/x16_0.png
 /importer:TextureImporter
@@ -1484,23 +1454,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Fonts/x64_2.png
-
-#begin Fonts/x4.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:Fonts/x4.fnt
-
-#begin Fonts/x4_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Fonts/x4_0.png
 
 #begin Characters/new_player.png
 /importer:TextureImporter
@@ -1789,4 +1742,33 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/Player/bulletHit.wav
+
+#begin Fonts/x48.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/x48.fnt
+
+#begin Fonts/x48_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x48_0.png
+
+#begin Fonts/x48_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/x48_1.png
 

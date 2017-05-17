@@ -10,10 +10,10 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
     public static class FontHelper
     {
         public static BitmapFont[] Fonts = {
-            ContentHelper.LoadFont("Fonts/x8"),
             ContentHelper.LoadFont("Fonts/x16"),
             ContentHelper.LoadFont("Fonts/x24"),
             ContentHelper.LoadFont("Fonts/x32"),
+            ContentHelper.LoadFont("Fonts/x48"),
             ContentHelper.LoadFont("Fonts/x64")
         };
 
