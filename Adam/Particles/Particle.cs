@@ -393,7 +393,7 @@ namespace ThereMustBeAnotherWay.Particles
                     par.Velocity = velocity;
                     par.Color = color;
                     par.Scale = 1;
-                    par._frameChange = TMBAW_Game.Random.Next(100, 200);
+                    par._frameChange = TMBAW_Game.Random.Next(100, 500);
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;

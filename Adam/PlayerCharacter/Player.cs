@@ -38,6 +38,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             var ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
             var fallStandTexture = ContentHelper.LoadTexture("Characters/adam_fall");
             var fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
+            var punchTexture = ContentHelper.LoadTexture("Characters/time_punch");
 
             AttackSound = new SoundFx("Player/attackSound");
 
@@ -75,7 +76,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             _complexAnimation.AddAnimationData("ninjaDash",
                 new ComplexAnimData(1100, ninjaDash, new Rectangle(19, 8, 12, 66), 0, 48, 40, 200, 1, false));
             _complexAnimation.AddAnimationData("punch",
-                new ComplexAnimData(1110, fightTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 75, 4, false));
+                new ComplexAnimData(1110, punchTexture,new Rectangle(25,7,11,33),0,60,40,75,3,false));
             _complexAnimation.AddAnimationData("punch2",
                 new ComplexAnimData(1111, fightTexture, new Rectangle(6, 7, 12, 66), 80, 24, 40, 75, 4, false));
            // ComplexAnim.AddAnimationData("death",

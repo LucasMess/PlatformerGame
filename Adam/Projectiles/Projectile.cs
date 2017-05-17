@@ -104,10 +104,16 @@ namespace ThereMustBeAnotherWay.Projectiles
             switch (CurrentType)
             {
                 case Type.PlayerTimePunch:
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1,-2,2,4)), Color.White);
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1, -2, 2, 4)), Color.White);
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), CalcHelper.GetRandXAndY(new Rectangle(-1, -2, 2, 4)), Color.White);
-                    GameWorld.ParticleSystem.Add(Particles.ParticleType.ProjectileHeatTrail, new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), Vector2.Zero, Color.White);
+                    for (int i = 0; i < 3; i++) {
+                        Vector2 randPos = CalcHelper.GetRandXAndY(new Rectangle(Position.ToPoint(), new Point(DrawRectangle.Width - 4, DrawRectangle.Height - 4)));
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, randPos, Vector2.Zero, new Color(0, 246, 255));
+                    }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Vector2 randPos = CalcHelper.GetRandXAndY(new Rectangle(Position.ToPoint(), new Point(DrawRectangle.Width - 4, DrawRectangle.Height - 4)));
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, randPos, Vector2.Zero,Color.White);
+                    }
+
                     break;
                 case Type.SnakeVenom:
                     GameWorld.ParticleSystem.Add(Particles.ParticleType.Round_Common, Position, CalcHelper.GetRandXAndY(new Rectangle(0,-2,0,4)), new Color(143, 219, 116));

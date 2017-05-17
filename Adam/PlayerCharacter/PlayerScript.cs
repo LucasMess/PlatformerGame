@@ -308,13 +308,31 @@ namespace ThereMustBeAnotherWay
             if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _weaponFireRateTimer.Reset();
-                Vector2 velocity = new Vector2(20, 0);
-                if (!player.IsFacingRight)
+               
+                player.AddAnimationToQueue("punch");
+                player.ComplexAnimation.FrameChanged += TimePunchFireProjectile;
+                player.AnimationEnded += PunchEnded;
+            }
+        }
+
+        private void TimePunchFireProjectile(FrameArgs e)
+        {
+            if (e.CurrentFrame == 1)
+            {
+                Vector2 velocity = new Vector2(15, 0);
+                if (!_player.IsFacingRight)
                     velocity.X *= -1;
-                Projectile proj = new Projectile(Projectile.Type.PlayerTimePunch, player.Position + new Vector2(0,16), velocity, player);
+                Projectile proj = new Projectile(Projectile.Type.PlayerTimePunch, _player.Position + new Vector2(0, 21), velocity, _player);
                 GameWorld.PlayerProjectiles.Add(proj);
                 _timeGunFireSound.Play();
+                _player.ComplexAnimation.FrameChanged -= TimePunchFireProjectile;
             }
+        }
+
+        private void PunchEnded(Player player)
+        {
+            player.RemoveAnimationFromQueue("punch");
+            player.AnimationEnded -= PunchEnded;
         }
 
         public void OnRewindAction(Player player)
