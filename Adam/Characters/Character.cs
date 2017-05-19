@@ -1,11 +1,12 @@
 ﻿using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Network;
+using ThereMustBeAnotherWay.Characters.Behavior;
 
 namespace ThereMustBeAnotherWay.Characters
 {
     public abstract class Character : Entity
     {
-        protected Behavior Behavior;
+        protected Behavior.Behavior Behavior;
 
         public override void Update()
         {

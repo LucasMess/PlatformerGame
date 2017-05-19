@@ -159,6 +159,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.Lost, // Lost
             TileType.Hellboar, // Hellboar
             TileType.FallingBoulder, // Falling Boulder
+            TileType.SwingingAxe,
             TileType.Bat, // Bay
             TileType.Duck, // Duck
             TileType.BeingofSight, // Being of Sight

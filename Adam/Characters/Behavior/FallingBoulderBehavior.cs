@@ -3,7 +3,7 @@ using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
 
-namespace ThereMustBeAnotherWay.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Behavior
 {
     class FallingBoulderBehavior : Behavior
     {

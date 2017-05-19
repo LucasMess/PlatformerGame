@@ -1,4 +1,4 @@
-﻿namespace ThereMustBeAnotherWay
+﻿namespace ThereMustBeAnotherWay.Characters.Behavior
 {
     public class Behavior
     {

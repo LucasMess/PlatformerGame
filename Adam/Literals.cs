@@ -112,6 +112,7 @@
             LightYellowPaint,
             MosaicWall,
             ReinforcedWoodWall,
+            SwingingAxe,
 
             Player = 200,
             Snake,

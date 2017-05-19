@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
-using ThereMustBeAnotherWay.Characters.Scripts;
+using ThereMustBeAnotherWay.Characters.Behavior;
 using ThereMustBeAnotherWay.Misc.Helpers;
 
 namespace ThereMustBeAnotherWay.Characters.Enemies

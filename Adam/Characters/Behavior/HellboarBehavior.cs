@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ThereMustBeAnotherWay.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Behavior
 {
     class HellboarBehavior : Behavior
     {

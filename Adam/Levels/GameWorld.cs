@@ -20,7 +20,7 @@ namespace ThereMustBeAnotherWay.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_27");
+        public static readonly Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_28");
         public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
         public static readonly Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
         private static Timer _stopMovingTimer = new Timer(true);

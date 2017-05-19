@@ -4,7 +4,7 @@ using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Projectiles;
 using Microsoft.Xna.Framework;
 
-namespace ThereMustBeAnotherWay.Characters.Scripts
+namespace ThereMustBeAnotherWay.Characters.Behavior
 {
     /// <summary>
     /// Defines what the frog does along the game.

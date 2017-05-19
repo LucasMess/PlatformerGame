@@ -1,23 +1,38 @@
-﻿using ThereMustBeAnotherWay.Characters.Behavior;
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ThereMustBeAnotherWay.Characters.Behavior;
 using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Misc;
-using Microsoft.Xna.Framework;
-using ThereMustBeAnotherWay.Characters.Behavior;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ThereMustBeAnotherWay.Characters.Enemies
 {
-    class FallingBoulder : Enemy
+    class SwingingAxe : Enemy
     {
-        public FallingBoulder(int x, int y)
+        public Vector2 PivotPoint { get; set; }
+        public float Rotation { get; set; }
+
+        public SwingingAxe(int x, int y)
         {
-            Weight = 10;
+            Weight = 0;
+            ObeysGravity = false;
             Texture = GameWorld.SpriteSheet;
             SetPosition(new Vector2(x, y));
-            SourceRectangle = new Rectangle(192, 416, 16 * 2, 16 * 2);
+            SourceRectangle = new Rectangle(592, 80, 16 * 3, 16 * 7);
             CollRectangle = new Rectangle(0, 0, SourceRectangle.Width * 2, SourceRectangle.Height * 2);
 
-            Behavior = new FallingBoulderBehavior();
+            Behavior = new SwingingAxeBehavior();
             Behavior.Initialize(this);
+            PivotPoint = new Vector2(24, 8);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White, Rotation, PivotPoint, SpriteEffects.None, 0);
         }
 
         public override int MaxHealth
@@ -44,6 +59,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             }
         }
 
+
         protected override Rectangle DrawRectangle
         {
             get
@@ -59,5 +75,6 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
                 return null;
             }
         }
+
     }
 }

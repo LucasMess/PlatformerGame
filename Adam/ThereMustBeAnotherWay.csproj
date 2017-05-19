@@ -92,8 +92,10 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Characters\Behavior\SwingingAxeBehavior.cs" />
     <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Characters\Behavior\LostBehavior.cs" />
+    <Compile Include="Characters\Enemies\SwingingAxe.cs" />
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
@@ -187,13 +189,13 @@
     <Compile Include="Network\Packets\PlayerPacket.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="Particles\Particle.cs" />
-    <Compile Include="PlayerCharacter\Player.cs" />
-    <Compile Include="PlayerCharacter\PlayerInput.cs" />
-    <Compile Include="PlayerCharacter\PlayerProperties.cs" />
-    <Compile Include="PlayerCharacter\PlayerRewind2.cs" />
-    <Compile Include="PlayerCharacter\PlayerScript.cs" />
-    <Compile Include="PlayerCharacter\PlayerTrail.cs" />
-    <Compile Include="PlayerCharacter\Script.cs" />
+    <Compile Include="Characters\Player\Player.cs" />
+    <Compile Include="Characters\Player\PlayerInput.cs" />
+    <Compile Include="Characters\Player\PlayerProperties.cs" />
+    <Compile Include="Characters\Player\PlayerRewind2.cs" />
+    <Compile Include="Characters\Player\PlayerScript.cs" />
+    <Compile Include="Characters\Player\PlayerTrail.cs" />
+    <Compile Include="Characters\Behavior\Behavior.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectiles\CollisionRay.cs" />
     <Compile Include="Projectiles\Projectile.cs" />

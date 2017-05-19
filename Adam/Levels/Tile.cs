@@ -972,6 +972,16 @@ namespace ThereMustBeAnotherWay
                         }
                     }
                     break;
+                case TileType.SwingingAxe:
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new SwingingAxe(DrawRectangle.X, DrawRectangle.Y));
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(592/16, 80/16);
+                    _sizeOfTile.X = 32 * 3;
+                    _sizeOfTile.Y = 32 * 7;
+                    break;
                 case TileType.Bat: //Bat
                     LetsLightThrough = true;
                     break;

@@ -1,4 +1,4 @@
-﻿using ThereMustBeAnotherWay.Characters.Scripts;
+﻿using ThereMustBeAnotherWay.Characters.Behavior;
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Misc.Helpers;
 using Microsoft.Xna.Framework;
