@@ -4,6 +4,7 @@ using ThereMustBeAnotherWay.Misc.Interfaces;
 using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace ThereMustBeAnotherWay
 {
@@ -27,13 +28,13 @@ namespace ThereMustBeAnotherWay
         {
             _gemId = GenerateId();
             Texture = GameWorld.SpriteSheet;
-            Position = new Vector2(centerX, centerY);
-            CollRectangle = new Rectangle(centerX, centerY, 16, 16);
+            SetPosition( new Vector2(centerX, centerY));
+            CollRectangle = new Rectangle(0, 0, 16, 16);
             SourceRectangle = GetSourceRectangle();
             Velocity = new Vector2(TMBAW_Game.Random.Next(-100, 100) / 10f, -TMBAW_Game.Random.Next(100, 100) / 10f);
-
+            SimpleAnimation = new Animation(Texture, CollRectangle, SourceRectangle, 125, 4, 0, AnimationType.Loop);
+            SimpleAnimation.SwitchFrame = 125;
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
-
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
         }
@@ -117,22 +118,22 @@ namespace ThereMustBeAnotherWay
             switch (_gemId)
             {
                 case 0:
-                    source = new Rectangle(21 * 16, 9 * 16, 16, 16);
+                    source = new Rectangle(320, 160, 8, 8);
                     break;
                 case 1:
-                    source = new Rectangle(20 * 16, 9 * 16, 16, 16);
+                    source = new Rectangle(320, 136, 8, 8);
                     break;
                 case 2:
-                    source = new Rectangle(21 * 16, 8 * 16, 16, 16);
+                    source = new Rectangle(320, 152, 8, 8);
                     break;
                 case 3:
-                    source = new Rectangle(20 * 16, 8 * 16, 16, 16);
+                    source = new Rectangle(320, 128, 8, 8);
                     break;
                 case 4:
-                    source = new Rectangle(21 * 16, 10 * 16, 16, 16);
+                    source = new Rectangle(320, 144, 8, 8);
                     break;
                 case 5:
-                    source = new Rectangle(20 * 16, 10 * 16, 16, 16);
+                    source = new Rectangle(320, 160, 8, 8);
                     break;
             }
             return source;
@@ -156,12 +157,6 @@ namespace ThereMustBeAnotherWay
                     return Color.Cyan;
             }
             return Color.White;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color.White);
-
         }
 
         /// <summary>

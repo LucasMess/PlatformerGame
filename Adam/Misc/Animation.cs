@@ -18,6 +18,7 @@ namespace ThereMustBeAnotherWay
         public bool IsFlipped;
         Vector2 _frameCount;
         public Color Color = Color.White;
+        int startingX = 0;
 
         AnimationType _type;
 
@@ -30,6 +31,27 @@ namespace ThereMustBeAnotherWay
             this.SwitchFrame = switchFrame;
             this.Restart = restart;
             _frameCount = new Vector2(texture.Width / drawRectangle.Width, texture.Height / drawRectangle.Height);
+        }
+
+        /// <summary>
+        /// For simple animations where the animation texture has other sprites that do not belong to the animation.
+        /// </summary>
+        /// <param name=""></param>
+        /// <param name="drawRectangle"></param>
+        /// <param name="sourceRectangle"></param>
+        /// <param name="switchFrame"></param>
+        /// <param name="frameCount"></param>
+        /// <param name="restart"></param>
+        /// <param name="type"></param>
+        public Animation(Texture2D texture, Rectangle drawRectangle, Rectangle sourceRectangle, int switchFrame, int frameCount, int restart, AnimationType type) {
+            this._type = type;
+            SourceRectangle = sourceRectangle;
+            this.Texture = texture;
+            this.DrawRectangle = drawRectangle;
+            this.SwitchFrame = switchFrame;
+            this.Restart = restart;
+            startingX = sourceRectangle.X;
+            _frameCount = new Vector2(frameCount, 0);
         }
 
         /// <summary>
@@ -64,11 +86,10 @@ namespace ThereMustBeAnotherWay
                     {
                         animationData.FrameTimer = 0;
                         animationData.CurrentFrame++;
-                        SourceRectangle.X = animationData.CurrentFrame * SourceRectangle.Width;
+                        SourceRectangle.X = startingX + animationData.CurrentFrame * SourceRectangle.Width;
                         if (animationData.CurrentFrame > animationData.FrameCount.X)
                         {
                             animationData.CurrentFrame = 0;
-                            SourceRectangle.X = 0;
                         }
                     }
                     break;
@@ -120,7 +141,7 @@ namespace ThereMustBeAnotherWay
                     if (_currentFrameCount >= _frameCount.X)
                     {
                         _currentFrameCount = 0;
-                        SourceRectangle.X = 0;
+                        SourceRectangle.X = startingX;
                     }
 
                     break;

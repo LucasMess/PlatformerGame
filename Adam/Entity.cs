@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Misc.Helpers;
 
 namespace ThereMustBeAnotherWay
 {
@@ -46,6 +47,7 @@ namespace ThereMustBeAnotherWay
         public Vector2 Position { get; set; }
         private Vector2 _positionInLastFrame;
         protected Vector2 Velocity;
+        protected Animation SimpleAnimation;
 
         private Texture2D _texture;
         private Color _color = Color.White;
@@ -329,6 +331,11 @@ namespace ThereMustBeAnotherWay
                 ian.Animate();
             }
 
+            if (SimpleAnimation != null)
+            {
+                SimpleAnimation.Update(TMBAW_Game.GameTime, CollRectangle);
+            }
+
             // Update complex animations if this entity has it.
             _complexAnimation?.Update(this);
 
@@ -366,12 +373,13 @@ namespace ThereMustBeAnotherWay
             if (_complexAnimation != null && _complexAnimation.AnimationDataCount != 0)
             {
                 _complexAnimation.Draw(spriteBatch, IsFacingRight, Color);
-                return;
             }
-
-
+            else if (SimpleAnimation != null)
+            {
+                SimpleAnimation.Draw(spriteBatch);
+            }
             // If the entity has an animation.
-            if (this is IAnimated ian)
+            else if (this is IAnimated ian)
             {
                 ian.Animation.Color = Color;
 
@@ -398,6 +406,8 @@ namespace ThereMustBeAnotherWay
             {
                 spriteBatch.Draw(Texture, DrawRectangle, Color * Opacity);
             }
+
+            DrawSurroundIndexes(spriteBatch);
         }
 
         /// <summary>
@@ -713,8 +723,7 @@ namespace ThereMustBeAnotherWay
             {
                 if (i >= GameWorld.TileArray.Length || i < 0) continue;
                 Tile t = GameWorld.TileArray[i];
-                if (t == null) throw new NullReferenceException("t");
-                //spriteBatch.Draw( , t.DrawRectangle, t.SourceRectangle, Color.Red);
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), t.DrawRectangle, Color.Red * .5f);
             }
         }
 
