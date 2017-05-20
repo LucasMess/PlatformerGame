@@ -408,7 +408,8 @@ namespace ThereMustBeAnotherWay
                 spriteBatch.Draw(Texture, DrawRectangle, Color * Opacity);
             }
 
-            //DrawSurroundIndexes(spriteBatch);
+            if (GameDebug.IsDebugOn)
+                DrawSurroundIndexes(spriteBatch);
         }
 
         /// <summary>
@@ -561,7 +562,7 @@ namespace ThereMustBeAnotherWay
         {
             int width = GameWorld.WorldData.LevelWidth;
             int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / TMBAW_Game.Tilesize) + 2);
-            int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / TMBAW_Game.Tilesize) + 2);
+            int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / TMBAW_Game.Tilesize) + 3);
             int startingIndex = GetTileIndex(new Vector2(CollRectangle.X, CollRectangle.Y)) - width - 1;
 
             List<int> indexes = new List<int>();
@@ -707,8 +708,8 @@ namespace ThereMustBeAnotherWay
             // Anything further than 20 tiles cannot be heard.
             listener = listener.Get();
             int maxDist = 20;
-            float xDist = (listener.CollRectangle.Center.X - CollRectangle.Center.X)/ TMBAW_Game.Tilesize;
-            float yDist = (listener.CollRectangle.Center.Y - CollRectangle.Center.Y)/ TMBAW_Game.Tilesize;
+            float xDist = (listener.CollRectangle.Center.X - CollRectangle.Center.X) / TMBAW_Game.Tilesize;
+            float yDist = (listener.CollRectangle.Center.Y - CollRectangle.Center.Y) / TMBAW_Game.Tilesize;
             float retVal = maxVolume * (1 - (xDist + yDist) / maxDist);
             return retVal < 0 ? 0 : retVal;
         }
@@ -930,7 +931,7 @@ namespace ThereMustBeAnotherWay
 
             IsTakingDamage = true;
             Health -= damage;
-            GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255,108,108));
+            GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255, 108, 108));
             _hitRecentlyTimer.ResetAndWaitFor(500);
             _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
 
