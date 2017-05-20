@@ -704,14 +704,13 @@ namespace ThereMustBeAnotherWay
         /// <returns>Volume of sound.</returns>
         public float GetSoundVolume(Entity listener, float maxVolume)
         {
+            // Anything further than 20 tiles cannot be heard.
             listener = listener.Get();
-            float xDist = listener.CollRectangle.Center.X - CollRectangle.Center.X;
-            float yDist = listener.CollRectangle.Center.Y - CollRectangle.Center.Y;
-            float distanceTo = CalcHelper.GetPythagoras(xDist, yDist);
-
-            if (distanceTo < 64)
-                return maxVolume;
-            else return (float)(1 / Math.Sqrt(distanceTo)) * maxVolume;
+            int maxDist = 20;
+            float xDist = (listener.CollRectangle.Center.X - CollRectangle.Center.X)/ TMBAW_Game.Tilesize;
+            float yDist = (listener.CollRectangle.Center.Y - CollRectangle.Center.Y)/ TMBAW_Game.Tilesize;
+            float retVal = maxVolume * (1 - (xDist + yDist) / maxDist);
+            return retVal < 0 ? 0 : retVal;
         }
 
         /// <summary>
