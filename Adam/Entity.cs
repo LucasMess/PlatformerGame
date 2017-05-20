@@ -293,11 +293,7 @@ namespace ThereMustBeAnotherWay
                     Kill();
                 }
 
-                //Check for collision, if applicable.
-                if (IsCollidable)
-                {
-                    CheckTerrainCollision();
-                }
+
 
                 //Check for physics, if applicable.
                 if (ObeysGravity)
@@ -305,6 +301,11 @@ namespace ThereMustBeAnotherWay
                     ApplyGravity();
                 }
 
+                //Check for collision, if applicable.
+                if (IsCollidable)
+                {
+                    CheckTerrainCollision();
+                }
                 else
                 {
                     // If the entity is not collidable, it should still update the position based on velocity,
@@ -407,7 +408,7 @@ namespace ThereMustBeAnotherWay
                 spriteBatch.Draw(Texture, DrawRectangle, Color * Opacity);
             }
 
-            DrawSurroundIndexes(spriteBatch);
+            //DrawSurroundIndexes(spriteBatch);
         }
 
         /// <summary>
@@ -559,9 +560,9 @@ namespace ThereMustBeAnotherWay
         public int[] GetNearbyTileIndexes()
         {
             int width = GameWorld.WorldData.LevelWidth;
-            int startingIndex = GetTileIndex(new Vector2(CollRectangle.Center.X, CollRectangle.Y)) - width - 1;
             int heightInTiles = (int)(Math.Ceiling((double)CollRectangle.Height / TMBAW_Game.Tilesize) + 2);
             int widthInTiles = (int)(Math.Ceiling((double)CollRectangle.Width / TMBAW_Game.Tilesize) + 2);
+            int startingIndex = GetTileIndex(new Vector2(CollRectangle.X, CollRectangle.Y)) - width - 1;
 
             List<int> indexes = new List<int>();
             for (int h = 0; h < heightInTiles; h++)

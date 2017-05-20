@@ -26,7 +26,16 @@ namespace ThereMustBeAnotherWay.Interactables
         {
             OnPlayerPickUp += SpawnSparkles;
             CollidedWithTerrain += Item_CollidedWithTerrain;
+            CollidedWithTileBelow += Item_CollidedWithTileBelow;
             BounceSound = new SoundFx("Sounds/Items/item_pop", this);
+        }
+
+        private void Item_CollidedWithTileBelow(Entity entity, Tile tile)
+        {
+            if (Velocity.Y < 3)
+            {
+                SetVelY(-7);
+            }
         }
 
         private void Item_CollidedWithTerrain(Entity entity, Tile tile)

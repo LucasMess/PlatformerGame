@@ -33,7 +33,6 @@ namespace ThereMustBeAnotherWay
             SourceRectangle = GetSourceRectangle();
             Velocity = new Vector2(TMBAW_Game.Random.Next(-100, 100) / 10f, -TMBAW_Game.Random.Next(100, 100) / 10f);
             SimpleAnimation = new Animation(Texture, CollRectangle, SourceRectangle, 125, 4, 0, AnimationType.Loop);
-            SimpleAnimation.SwitchFrame = 125;
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
@@ -47,7 +46,7 @@ namespace ThereMustBeAnotherWay
             CollRectangle = new Rectangle(0, 0, 16, 16);
             SourceRectangle = GetSourceRectangle();
             Velocity = new Vector2(TMBAW_Game.Random.Next(-100, 100) / 10f, -TMBAW_Game.Random.Next(100, 100) / 10f);
-
+            SimpleAnimation = new Animation(Texture, CollRectangle, SourceRectangle, 125, 4, 0, AnimationType.Loop);
             PickUpSound = new Misc.SoundFx("Sounds/Items/gold" + TMBAW_Game.Random.Next(0, 5));
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
