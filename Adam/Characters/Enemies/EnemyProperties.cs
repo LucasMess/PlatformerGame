@@ -186,7 +186,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         /// Returns true if the player is intersecting the enemy's collision rectangle.
         /// </summary>
         /// <returns></returns>
-        protected bool IsIntersectingPlayer()
+        protected virtual bool IsIntersectingPlayer()
         {
             Player player = GameWorld.Player;
             return (player.GetCollRectangle().Intersects(CollRectangle));

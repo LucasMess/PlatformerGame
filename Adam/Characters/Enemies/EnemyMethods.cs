@@ -16,7 +16,8 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             {
                 PlayMeanSound();
                 CheckInteractionsWithPlayer();
-                if (IsCollidableWithEnemies) CheckCollisionWithOtherEnemies();
+                if (IsCollidableWithEnemies)
+                    CheckCollisionWithOtherEnemies();
             }
             base.Update();
         }

@@ -38,13 +38,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             {
                 _jumpTimer.ChangeWaitTime(TimeBetweenJumps_ACTIVE);
                 _canSeePlayer = true;
-                entity.Color = Color.Red;
             }
             else
             {
                 _jumpTimer.ChangeWaitTime(TimeBetweenJumps_IDLE);
                 _canSeePlayer = false;
-                entity.Color = Color.White;
             }
             base.Update(entity);
         }
