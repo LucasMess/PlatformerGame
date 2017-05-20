@@ -240,6 +240,13 @@ namespace ThereMustBeAnotherWay
                     Interactable = new Torch();
                     LetsLightThrough = true;
                     break;
+                case TileType.GreenTorch:
+                    _frameCount = new Vector2(4, 0);
+                    _sizeOfTile.Y = 64;
+                    _positionInSpriteSheet = new Vector2(480/16, 448/16);
+                    Interactable = new Torch();
+                    LetsLightThrough = true;
+                    break;
                 case TileType.Chandelier: //Chandelier
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.X = 64;

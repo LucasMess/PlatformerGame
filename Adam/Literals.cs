@@ -95,6 +95,8 @@
             MultipleCrates,
             PressurePlate,
             WoodenChair,
+            SwingingAxe,
+            GreenTorch,
 
 
             GoldBrickWall = 100,
@@ -112,7 +114,6 @@
             LightYellowPaint,
             MosaicWall,
             ReinforcedWoodWall,
-            SwingingAxe,
 
             Player = 200,
             Snake,

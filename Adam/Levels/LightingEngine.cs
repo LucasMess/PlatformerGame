@@ -65,6 +65,14 @@ namespace ThereMustBeAnotherWay.Levels
                     ChangesSize = true,
                 };
             }
+            else if (tile.Id == TileType.GreenTorch)
+            {
+                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+                           GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, Color.Green)
+                {
+                    ChangesSize = true,
+                };
+            }
             else if (tile.Id == TileType.Chandelier) // Chandelier
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,

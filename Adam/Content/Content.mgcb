@@ -1796,3 +1796,9 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/spritemap_28.png
 
+#begin Music/Long Note Three.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/Long Note Three.mp3
+

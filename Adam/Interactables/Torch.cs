@@ -21,7 +21,12 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 _fireParticleTimer.Reset();
                 float velY = (float)-TMBAW_Game.Random.NextDouble();
-                GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), Color.White);
+                Color color = Color.White;
+                if (tile.Id == TMBAW_Game.TileType.GreenTorch)
+                {
+                    color = Color.Green;
+                }
+                GameWorld.ParticleSystem.Add(ParticleType.Flame, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Center.Y - 10), new Vector2(0, velY), color);
 
             }
 

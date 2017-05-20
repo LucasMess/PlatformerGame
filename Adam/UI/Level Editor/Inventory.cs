@@ -93,6 +93,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         private TileType[] _objects =
         {
             TileType.Torch, // Torch
+            TileType.GreenTorch,
             TileType.WallLamp,
             TileType.LampPost,
             TileType.Chandelier, // Chandelier
