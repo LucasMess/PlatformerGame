@@ -98,6 +98,16 @@ namespace ThereMustBeAnotherWay.UI
 
         public static void Update()
         {
+            if (IsActive)
+            {
+                Cursor.ChangeCursor(Cursor.Type.Normal);
+                Cursor.Show();
+            }
+            else
+            {
+                if (TMBAW_Game.CurrentGameMode == GameMode.Play)
+                    Cursor.Hide();
+            }
 
             if (GameWorld.GetPlayer().IsPauseButtonDown() && _buttonReleased && TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
