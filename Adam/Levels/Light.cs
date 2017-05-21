@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ThereMustBeAnotherWay.Levels
 {
-    class Light
+    public class Light
     {
         public const int MaxLightLevel = 16;
         public int LightLevel { get; set; } = 0;
@@ -51,11 +51,14 @@ namespace ThereMustBeAnotherWay.Levels
             }
             Update(_center);
         }
+
+        public float Scale { get; set; } = 1;
+
         public void Update(Vector2 newCenter)
         {
             _center = newCenter;
             Vector2 offset = new Vector2();
-            float radius = GetRadius();
+            float radius = GetRadius() * Scale;
             DrawRectangle = new Rectangle((int)(_center.X - radius + offset.X), (int)(_center.Y - radius + offset.Y), (int)(radius * 2), (int)(radius * 2));
             GlowRectangle = new Rectangle((int)(_center.X + offset.X - radius / 4), (int)(_center.Y + radius / 4 + offset.Y), (int)(radius / 2), (int)(radius / 2));
         }

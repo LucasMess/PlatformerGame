@@ -28,6 +28,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
         public RewindTracker rewindTracker = new RewindTracker();
         public Timer rewindTimer = new Timer();
+        private Light lightAroundPlayer;
 
         public Player()
         {
@@ -89,6 +90,13 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             Sounds.AddSoundRef("fail", "Sounds/Menu/level_fail");
 
             _complexAnimation.AddToQueue("idle");
+
+            //Animation information
+            CollRectangle = new Rectangle(0, 0, 32, 64);
+            SourceRectangle = new Rectangle(0, 0, 24, 40);
+
+            lightAroundPlayer = new Light(Center, 15, Color.White, false) { Scale = 1 };
+
 
             InitializeInput();
             Initialize(0, 0);
@@ -165,9 +173,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
             NoError:
 
-            //Animation information
-            CollRectangle = new Rectangle(0, 0, 32, 64);
-            SourceRectangle = new Rectangle(0, 0, 24, 40);
+            if (!LightingEngine.HasLight(lightAroundPlayer))
+                LightingEngine.AddDynamicLight(lightAroundPlayer);
 
             InitializeInput();
         }
@@ -195,6 +202,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 ObeysGravity = false;
             }
             else ObeysGravity = true;
+
+            lightAroundPlayer.Update(Center);
 
             base.Update();
         }

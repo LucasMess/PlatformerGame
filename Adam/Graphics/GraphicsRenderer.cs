@@ -172,6 +172,10 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         private static void DrawLights()
         {
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _lightingRenderTarget.Bounds, Color.White * .05f);
+            _spriteBatch.End();
+
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawLights(_spriteBatch);
             _spriteBatch.End();

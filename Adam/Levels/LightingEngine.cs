@@ -11,7 +11,29 @@ namespace ThereMustBeAnotherWay.Levels
         //TODO: Work on lower performance lighting system.
 
         private static Light[] _lights;
+        private static List<Light> _dynamicLights = new List<Light>();
         static Color Sunset = new Color(244, 158, 66);
+
+
+        public static void AddDynamicLight(Light light)
+        {
+            _dynamicLights.Add(light);
+        }
+
+        public static void RemoveDynamicLight(Light light)
+        {
+            _dynamicLights.Remove(light);
+        }
+
+        public static void RemoveAllLights()
+        {
+            _dynamicLights.Clear();
+        }
+
+        public static bool HasLight(Light light)
+        {
+            return _dynamicLights.Contains(light);
+        }
 
         public static void GenerateLights()
         {
@@ -268,6 +290,11 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void DrawLights(SpriteBatch spriteBatch)
         {
+            foreach (var light in _dynamicLights)
+            {
+                light.DrawLight(spriteBatch);
+            }
+
             if (GameWorld.TileArray == null || GameWorld.TileArray.Length == 0)
                 return;
 
@@ -283,6 +310,7 @@ namespace ThereMustBeAnotherWay.Levels
                 //_lights[index]?.DrawG(spriteBatch);
                 //_lights[index]?.DrawB(spriteBatch);
             }
+
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)
