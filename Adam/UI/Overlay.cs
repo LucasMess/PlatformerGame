@@ -219,6 +219,27 @@ namespace ThereMustBeAnotherWay.UI
 
         }
 
+        public static class ColoredCorners
+        {
+            static Texture2D texture = ContentHelper.LoadTexture("Overlay/ui_whiteCorners");
+            static Color color = Color.Black;
+            static Color changeColor;
+            static Timer timer = new Timer(true);
+
+            public static void FlashColor(Color color)
+            {
+                timer.Reset();
+                changeColor = color;
+            }
+
+            internal static void Draw(SpriteBatch spriteBatch)
+            {
+                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black);
+                color = changeColor * (float)((500 - timer.TimeElapsedInMilliSeconds) / 500);
+                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), color);
+            }
+        }
+
 
         private static class Heart
         {
@@ -381,12 +402,12 @@ namespace ThereMustBeAnotherWay.UI
         {
             WhiteFlash.Draw(spriteBatch);
             RewindEffect.Draw(spriteBatch);
+            ColoredCorners.Draw(spriteBatch);
             if (TMBAW_Game.CurrentGameMode == GameMode.Play && !StoryTracker.InCutscene)
             {
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);
             }
-
             BlackFade.Draw(spriteBatch);
             BlackBars.Draw(spriteBatch);
         }

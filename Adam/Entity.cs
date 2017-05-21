@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay
 {
@@ -928,6 +929,11 @@ namespace ThereMustBeAnotherWay
         {
             if (IsTakingDamage || IsPlayingDeathAnimation || !CanTakeDamage)
                 return;
+
+            if (this == GameWorld.GetPlayer())
+            {
+                Overlay.ColoredCorners.FlashColor(Color.Red);
+            }
 
             // Main.TimeFreeze.AddFrozenTime(damage*3);
 
