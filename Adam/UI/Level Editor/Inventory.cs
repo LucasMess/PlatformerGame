@@ -88,6 +88,9 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.PlayerDetector, // Player Detector
             TileType.Teleporter,
             TileType.DialogueActivator,
+            TileType.MarbleDoor, // Portal
+            TileType.ClosedMineshaftDoor,
+            TileType.ReinforcedWoodDoor,
         };
 
         private TileType[] _objects =
@@ -100,8 +103,6 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.Door, // Door
             TileType.Chest, // Chest
             TileType.Sign, // Sign
-            TileType.MarbleDoor, // Portal
-            TileType.ReinforcedWoodDoor,
             TileType.Checkpoint, // Checkpoint
             TileType.Tree, // Tree
             TileType.PalmTree,
@@ -131,6 +132,11 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.AquaantCrystal, // Aquaant Crystal
             TileType.HeliauraCrystal, // Heliaura Crystal
             TileType.SentistractSludge, // Sentistract Sludge
+            TileType.CobWebSmall,
+            TileType.CobWebMedium,
+            TileType.CobWebLarge,
+            TileType.Minecart,
+            TileType.SittingSkeleton,
         };
 
         private TileType[] _wallTiles =

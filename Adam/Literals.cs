@@ -97,6 +97,12 @@
             WoodenChair,
             SwingingAxe,
             GreenTorch,
+            CobWebSmall,
+            CobWebMedium,
+            CobWebLarge,
+            Minecart,
+            SittingSkeleton,
+            ClosedMineshaftDoor,
 
 
             GoldBrickWall = 100,

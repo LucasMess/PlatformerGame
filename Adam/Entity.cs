@@ -711,7 +711,9 @@ namespace ThereMustBeAnotherWay
             float xDist = (listener.CollRectangle.Center.X - CollRectangle.Center.X) / TMBAW_Game.Tilesize;
             float yDist = (listener.CollRectangle.Center.Y - CollRectangle.Center.Y) / TMBAW_Game.Tilesize;
             float retVal = maxVolume * (1 - (xDist + yDist) / maxDist);
-            return retVal < 0 ? 0 : retVal;
+            if (retVal > 1) retVal = 1;
+            if (retVal < 0) retVal = 0;
+            return retVal;
         }
 
         /// <summary>

@@ -770,6 +770,39 @@ namespace ThereMustBeAnotherWay
                     _positionInSpriteSheet = new Vector2(224 / 16, 528 / 16);
                     LetsLightThrough = true;
                     break;
+                case TileType.CobWebSmall:
+                    _positionInSpriteSheet = new Vector2(240 / 16, 528 / 16);
+                    LetsLightThrough = true;
+                    break;
+                case TileType.CobWebMedium:
+                    _positionInSpriteSheet = new Vector2(256 / 16, 528 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.CobWebLarge:
+                    _positionInSpriteSheet = new Vector2(432 / 16, 384 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 2;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.Minecart:
+                    _positionInSpriteSheet = new Vector2(448 / 16, 448 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 2;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.SittingSkeleton:
+                    _positionInSpriteSheet = new Vector2(384 / 16, 448 / 16);
+                    _sizeOfTile.Y = 32 * 2;
+                    _sizeOfTile.X = (int)(32 * 1.5);
+                    LetsLightThrough = true;
+                    break;
+                case TileType.ClosedMineshaftDoor:
+                    _positionInSpriteSheet = new Vector2(512 / 16, 176 / 16);
+                    _sizeOfTile.X = 32 * 3;
+                    _sizeOfTile.Y = 32 * 3;
+                    LetsLightThrough = true;
+                    break;
 
                 #region Wall Textures
 
