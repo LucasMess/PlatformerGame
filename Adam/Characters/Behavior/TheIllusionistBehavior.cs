@@ -38,8 +38,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         Timer castingSpellTimer = new Timer(true);
         Timer meteorShowerTimer = new Timer(true);
         Timer meteorSpacingTimer = new Timer(true);
-        Timer levitateEntities = new Timer(true);
+        Timer levitateEntitiesTimer = new Timer(true);
         Timer attackTimer = new Timer(true);
+
+        SoundFx laughSound = new SoundFx("Sounds/Illusionist/evil_laugh");
+        SoundFx spawnSound = new SoundFx("Sounds/Illusionist/spawn_enemies");
 
         public TheIllusionistBehavior()
         {
@@ -136,15 +139,16 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
 
         private void LevitateEntities()
         {
-            const float velocity = -20f;
-            GameWorld.GetPlayer().SetVelY(velocity);
-            GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(GameWorld.GetPlayer().GetCollRectangle()), null, Color.Yellow);
+            const float maxVel = 20f;
+            float velocity = maxVel/2 * -(float)Math.Cos(2 * Math.PI * levitateEntitiesTimer.TimeElapsedInMilliSeconds / 10000) + maxVel / 2 + 1;
+            GameWorld.GetPlayer().SetVelY(-velocity);
+            GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(GameWorld.GetPlayer().GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
             foreach (var entity in GameWorld.Entities)
             {
                 if (entity != Entity)
                 {
-                    entity.SetVelY(velocity);
-                    GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(entity.GetCollRectangle()), null, Color.Yellow);
+                    entity.SetVelY(-velocity);
+                    GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(entity.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
                 }
             }
         }
@@ -181,8 +185,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 Entity.AddAnimationToQueue("castSpell");
                 castingSpellTimer.ResetAndWaitFor(3000);
                 castingSpellTimer.SetTimeReached += CastingSpellTimer_SetTimeReached;
-                Entity.Sounds.GetSoundRef("spawn_enemies").Play();
-                Entity.Sounds.GetSoundRef("laugh").Play();
+                spawnSound.Play();
+                laughSound.Play();
             }
         }
         private void CastingSpellTimer_SetTimeReached()
@@ -223,8 +227,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             CastSpell();
             isLevitatingEntities = true;
             TMBAW_Game.Camera.LockedY = false;
-            levitateEntities.ResetAndWaitFor(5000);
-            levitateEntities.SetTimeReached += LevitateEntities_SetTimeReached;
+            levitateEntitiesTimer.ResetAndWaitFor(5000);
+            levitateEntitiesTimer.SetTimeReached += LevitateEntities_SetTimeReached;
             attackTimer.ResetAndWaitFor(Int32.MaxValue);
             GameWorld.GetPlayer().CollidedWithTerrain += OnPlayerFallFromLevitation;
         }

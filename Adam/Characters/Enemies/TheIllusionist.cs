@@ -28,9 +28,6 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             _complexAnimation.AddAnimationData("castSpell", new ComplexAnimData(200, Texture, new Rectangle(23, 13, 21, 41), 56*2, 60, 56, 60, 4, true));
 
             AddAnimationToQueue("still");
-
-            Sounds.AddSoundRef("laugh", "Sounds/Illusionist/evil_laugh");
-            Sounds.AddSoundRef("spawn_enemies", "Sounds/Illusionist/spawn_enemies");
         }
         public override int MaxHealth => 1000;
 
