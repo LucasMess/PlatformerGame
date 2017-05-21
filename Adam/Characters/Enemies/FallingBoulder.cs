@@ -10,7 +10,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
     {
         public FallingBoulder(int x, int y)
         {
-            Weight = 10;
+            Weight = 100;
             Texture = GameWorld.SpriteSheet;
             SetPosition(new Vector2(x, y));
             SourceRectangle = new Rectangle(192, 416, 16 * 2, 16 * 2);

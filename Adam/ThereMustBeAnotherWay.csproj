@@ -93,9 +93,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Characters\Behavior\SwingingAxeBehavior.cs" />
+    <Compile Include="Characters\Behavior\TheIllusionistBehavior.cs" />
     <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Characters\Behavior\LostBehavior.cs" />
     <Compile Include="Characters\Enemies\SwingingAxe.cs" />
+    <Compile Include="Characters\Enemies\TheIllusionist.cs" />
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />

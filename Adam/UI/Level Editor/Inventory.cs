@@ -88,6 +88,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.PlayerDetector, // Player Detector
             TileType.Teleporter,
             TileType.DialogueActivator,
+            TileType.EnemySpawner,
             TileType.MarbleDoor, // Portal
             TileType.ClosedMineshaftDoor,
             TileType.ReinforcedWoodDoor,
@@ -170,6 +171,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.Bat, // Bay
             TileType.Duck, // Duck
             TileType.BeingofSight, // Being of Sight
+            TileType.TheIllusionist,
         };
 
         public Inventory()

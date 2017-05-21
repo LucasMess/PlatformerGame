@@ -14,7 +14,6 @@ namespace ThereMustBeAnotherWay.Levels
         private static List<Light> _dynamicLights = new List<Light>();
         static Color Sunset = new Color(244, 158, 66);
 
-
         public static void AddDynamicLight(Light light)
         {
             _dynamicLights.Add(light);

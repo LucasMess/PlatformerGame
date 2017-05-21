@@ -15,6 +15,10 @@ namespace ThereMustBeAnotherWay.Graphics
     {
         public static bool ShadowsEnabled { get; set; } = true;
         public static bool ComplexLightingEnabled { get; set; } = true;
+        /// <summary>
+        /// Enable if static lights from tiles should be drawn.
+        /// </summary>
+        public static bool StaticLightsEnabled { get; set; } = true;
 
         private static bool IsDarkOutline => GameWorld.WorldData.IsDarkOutline;
 
@@ -196,9 +200,12 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
-            _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
-            _spriteBatch.End();
+            if (StaticLightsEnabled)
+            {
+                _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
+                _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+                _spriteBatch.End();
+            }
 
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);

@@ -468,7 +468,12 @@ namespace ThereMustBeAnotherWay
             _deathAnimationTimer.ResetAndWaitFor(1000);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
             IsPlayingDeathAnimation = true;
-            SetVelY(-20f);
+            SetVelY(-30f);
+
+            for (int i = 0; i < 20; i++)
+            {
+                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
+            }
         }
 
         /// <summary>
@@ -486,11 +491,6 @@ namespace ThereMustBeAnotherWay
         {
             _deathAnimationTimer.SetTimeReached -= DeathAnimationEnded;
             IsDead = true;
-
-            for (int i = 0; i < 20; i++)
-            {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
-            }
 
             //Rectangle[] desinRectangles;
             //GetDisintegratedRectangles(out desinRectangles);
@@ -741,7 +741,7 @@ namespace ThereMustBeAnotherWay
                 gravity = GravityStrength / 10f;
             }
 
-            Velocity.Y += gravity;
+            Velocity.Y += gravity * Weight/100;
 
             if (Velocity.Y > 12)
             {

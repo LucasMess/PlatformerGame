@@ -35,6 +35,11 @@ namespace ThereMustBeAnotherWay
         public Vector2 LeftTopGameCoords;
         public Vector2 InvertedCoordsBeforeShake;
 
+        public bool LockedX { get; set; } = false;
+        public bool LockedY { get; set; } = false;
+
+        public bool RestricedToGameWorld { get; set; } = true;
+
         public Camera(Viewport newViewport)
         {
             _viewport = newViewport;
@@ -47,6 +52,12 @@ namespace ThereMustBeAnotherWay
         public override Vector2 GetPosition()
         {
             return LeftTopGameCoords;
+        }
+
+        public override void SetPosition(Vector2 position)
+        {
+            LastCameraLeftCorner = new Vector3(-position.X, -position.Y, 0);
+            base.SetPosition(position);
         }
 
         /// <summary>
@@ -70,15 +81,25 @@ namespace ThereMustBeAnotherWay
                 currentLeftCorner = LastCameraLeftCorner;
             }
 
-            if (currentLeftCorner.X > 0)
-                currentLeftCorner.X = 0;
-            if (currentLeftCorner.X < -(width * TMBAW_Game.Tilesize - _defRes.X))
-                currentLeftCorner.X = -(width * TMBAW_Game.Tilesize - _defRes.X);
-            if (currentLeftCorner.Y > 0)
-                currentLeftCorner.Y = 0;
-            if (currentLeftCorner.Y < -(height * TMBAW_Game.Tilesize - _defRes.Y))
-                currentLeftCorner.Y = -(height * TMBAW_Game.Tilesize - _defRes.Y);
-
+            if (LockedX)
+            {
+                currentLeftCorner.X = LastCameraLeftCorner.X;
+            }
+            if (LockedY)
+            {
+                currentLeftCorner.Y = LastCameraLeftCorner.Y;
+            }
+            if (RestricedToGameWorld)
+            {
+                if (currentLeftCorner.X > 0)
+                    currentLeftCorner.X = 0;
+                if (currentLeftCorner.X < -(width * TMBAW_Game.Tilesize - _defRes.X))
+                    currentLeftCorner.X = -(width * TMBAW_Game.Tilesize - _defRes.X);
+                if (currentLeftCorner.Y > 0)
+                    currentLeftCorner.Y = 0;
+                if (currentLeftCorner.Y < -(height * TMBAW_Game.Tilesize - _defRes.Y))
+                    currentLeftCorner.Y = -(height * TMBAW_Game.Tilesize - _defRes.Y);
+            }
             //if (zoom > 1)
             //{
             //    translation = Matrix.CreateTranslation(new Vector3(-playerPos.X + ((int)defRes.X /zoom/ 2), -playerPos.Y + (3 * (int)defRes.Y /zoom/ 5), 0))

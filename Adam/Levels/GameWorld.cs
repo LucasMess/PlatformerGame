@@ -124,6 +124,11 @@ namespace ThereMustBeAnotherWay.Levels
             return true;
         }
 
+        internal static void GetIndicesOfTilesWithId(TileType tileType, object type)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void PrepareLevelForTesting()
         {
             Entities = new List<Entity>();
@@ -513,6 +518,20 @@ namespace ThereMustBeAnotherWay.Levels
         {
             Entities.Add(entity);
             _entityDict.Add(id, entity);
+        }
+
+        public static List<Tile> GetTilesWithId(TileType type)
+        {
+            List<Tile> tiles = new List<Tile>();
+            foreach (var tile in TileArray)
+            {
+                if (tile.Id == type)
+                {
+                    tiles.Add(tile);
+                }
+            }
+
+            return tiles;
         }
     }
 }

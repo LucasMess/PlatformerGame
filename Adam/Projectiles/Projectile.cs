@@ -45,12 +45,12 @@ namespace ThereMustBeAnotherWay.Projectiles
         {
             CanTakeDamage = false;
             _stayAliveTimer = new Timer();
-            Weight = 10;
+            Weight = 100;
             Texture = GameWorld.SpriteSheet;
             CurrentCollisionType = CollisionType.SuperBouncy;
             _source = source;
             Position = position;
-            Velocity = velocity;
+            Velocity = velocity + source.GetVelocity();
             ObeysGravity = true;
             CurrentType = type;
             CollidedWithTerrain += Projectile_CollidedWithTerrain;

@@ -103,6 +103,7 @@
             Minecart,
             SittingSkeleton,
             ClosedMineshaftDoor,
+            EnemySpawner,
 
 
             GoldBrickWall = 100,
@@ -130,7 +131,8 @@
             FallingBoulder,
             Bat,
             Duck,
-            BeingofSight
+            BeingofSight,
+            TheIllusionist,
         }
 
     }

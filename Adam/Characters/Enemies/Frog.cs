@@ -9,7 +9,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
     {
         public Frog(int x, int y)
         {
-            Weight = 10;
+            Weight = 90;
             Behavior = new FrogBehavior();
             Behavior.Initialize(this);
 

@@ -803,6 +803,11 @@ namespace ThereMustBeAnotherWay
                     _sizeOfTile.Y = 32 * 3;
                     LetsLightThrough = true;
                     break;
+                case TileType.EnemySpawner:
+                    _positionInSpriteSheet = new Vector2(224 / 16, 144 / 16);
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    break;
 
                 #region Wall Textures
 
@@ -1030,6 +1035,14 @@ namespace ThereMustBeAnotherWay
                     break;
                 case TileType.BeingofSight: //Flying Wheel
                     LetsLightThrough = true;
+                    break;
+                case TileType.TheIllusionist:
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new TheIllusionist(DrawRectangle.X, DrawRectangle.Y));
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(21, 12);
                     break;
             }
 

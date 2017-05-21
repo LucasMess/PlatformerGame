@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.Interactables
         private Timer _pickUpTimer = new Timer();
         protected SoundFx LoopSound;
         protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + TMBAW_Game.Random.Next(0, 5));
-        protected SoundFx BounceSound;
+        protected static SoundFx BounceSound;
         protected double EffectTimer;
 
         protected delegate void PickedUpHander(PickedUpArgs e);
@@ -28,6 +28,7 @@ namespace ThereMustBeAnotherWay.Interactables
             CollidedWithTerrain += Item_CollidedWithTerrain;
             CollidedWithTileBelow += Item_CollidedWithTileBelow;
             BounceSound = new SoundFx("Sounds/Items/item_pop", this);
+            Weight = 70;
         }
 
         private void Item_CollidedWithTileBelow(Entity entity, Tile tile)

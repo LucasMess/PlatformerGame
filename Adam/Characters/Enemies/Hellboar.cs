@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         public Hellboar(int x, int y)
         {
             Behavior = new HellboarBehavior();
-            Weight = 10;
+            Weight = 100;
             Behavior.Initialize(this);
 
             Texture = ContentHelper.LoadTexture("Enemies/hellboar");

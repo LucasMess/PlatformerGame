@@ -24,6 +24,10 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         public bool IsInvulnerable;
         public bool IsClimbing { get; set; }
         public bool IsVisible { get; set; } = true;
+        /// <summary>
+        /// Used to not let the player move outside of the game world boundaries.
+        /// </summary>
+        public bool RestrictedToGameWorld { get; set; } = true;
         private string _spawnPointNextLevel;
 
         public RewindTracker rewindTracker = new RewindTracker();
@@ -33,7 +37,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         public Player()
         {
             script.Initialize(this);
-
+            Weight = 100;
             var edenTexture = ContentHelper.LoadTexture("Characters/new_player");
             var idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
             var ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
@@ -210,20 +214,23 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
         private void ContainInGameWorld()
         {
-            if (CollRectangle.X < 0)
-                SetX(0);
-            if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width))
-                SetX(GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width);
-            if (CollRectangle.Y < 0)
-                SetY(0);
-            if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Width) + 100)
+            if (RestrictedToGameWorld)
             {
-                // Player dies when he falls out of the world in play mode.
-                if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
-                    SetY(GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Height);
-                else
+                if (CollRectangle.X < 0)
+                    SetX(0);
+                if (CollRectangle.X > (GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width))
+                    SetX(GameWorld.WorldData.LevelWidth * TMBAW_Game.Tilesize - CollRectangle.Width);
+                if (CollRectangle.Y < 0)
+                    SetY(0);
+                if (CollRectangle.Y > (GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Width) + 100)
                 {
-                    TakeDamage(null, MaxHealth);
+                    // Player dies when he falls out of the world in play mode.
+                    if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
+                        SetY(GameWorld.WorldData.LevelHeight * TMBAW_Game.Tilesize - CollRectangle.Height);
+                    else
+                    {
+                        TakeDamage(null, MaxHealth);
+                    }
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
 
         public Snake(int x, int y)
         {
-            Weight = 10;
+            Weight = 100;
             Behavior = new SnakeBehavior();
             Behavior.Initialize(this);
 

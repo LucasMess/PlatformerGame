@@ -24,6 +24,7 @@ namespace ThereMustBeAnotherWay.Misc.Databases
                 case 7: return ContentHelper.LoadSong("Music/Another Earth");
                 case 8: return ContentHelper.LoadSong("Music/Heart of Nowhere");
                 case 9: return ContentHelper.LoadSong("Music/Long Note Three"); // Dark and mysterious cave.
+                case 10: return ContentHelper.LoadSong("Music/Mischief Maker"); // Illusionist boss fight.
 
                 case 100: return ContentHelper.LoadSong("Music/Menu/Force Reunite"); // Main Menu
 
