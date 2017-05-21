@@ -1820,3 +1820,15 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/illusionist.png
 
+#begin Sounds/Illusionist/spawn_enemies.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Illusionist/spawn_enemies.wav
+
+#begin Sounds/Illusionist/evil_laugh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Illusionist/evil_laugh.wav
+

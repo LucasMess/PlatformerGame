@@ -29,8 +29,8 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
 
             AddAnimationToQueue("still");
 
-            //Sounds.AddSoundRef("jump", "Sounds/Frog/frog_jump");
-            //Sounds.AddSoundRef("idle", "Sounds/Frog/frog_croak");
+            Sounds.AddSoundRef("laugh", "Sounds/Illusionist/evil_laugh");
+            Sounds.AddSoundRef("spawn_enemies", "Sounds/Illusionist/spawn_enemies");
         }
         public override int MaxHealth => 1000;
 

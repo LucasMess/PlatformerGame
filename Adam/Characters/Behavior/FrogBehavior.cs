@@ -23,6 +23,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         public override void Initialize(Entity entity)
         {
             _jumpTimer.ResetAndWaitFor(TimeBetweenJumps_IDLE);
+            entity.IsJumping = true;
             _jumpTimer.SetTimeReached += JumpTimer_SetTimeReached;
 
             entity.CurrentCollisionType = CollisionType.None;

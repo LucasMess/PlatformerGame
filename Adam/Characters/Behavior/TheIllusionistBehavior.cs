@@ -18,13 +18,16 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         private bool isInBossFight = false;
         private bool fightStarted = false;
         private bool castingSpell = false;
+        private bool isCastingSpellParticles = false;
         private bool isAttacking = false;
         private bool foundEnemySpawners = false;
+        private bool isSpawningEnemies = false;
         private bool isLevitatingEntities = false;
 
         private static Vector2 CameraPositionArena = new Vector2(3474, 3388);
 
         List<Tile> enemySpawners = new List<Tile>();
+        List<Enemy> enemiesBeingSpawned = new List<Enemy>();
 
         private enum Difficulty { HaveFun, YouAreQuiteTheTrick, StopThat }
         private Difficulty CurrentDifficulty = Difficulty.HaveFun;
@@ -78,6 +81,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 TMBAW_Game.Camera.RestricedToGameWorld = false;
                 GameWorld.GetPlayer().RestrictedToGameWorld = false;
                 GraphicsRenderer.StaticLightsEnabled = false;
+
+                castingSpellTimer.SetTimeReached += OnEnemiesSpawned;
             }
 
             if (isAttacking)
@@ -90,6 +95,43 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 LevitateEntities();
             }
 
+            if (isSpawningEnemies)
+                SpawnEnemyParticles();
+
+            if (castingSpell)
+                SpawnSpellParticles();
+
+        }
+
+        private void SpawnSpellParticles()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Vector2 offset;
+                if (Entity.IsFacingRight)
+                {
+                    offset = new Vector2(40, 3);
+                }
+                else
+                {
+                    offset = new Vector2(20, 3);
+                }
+                GameWorld.ParticleSystem.Add(ParticleType.Tiny, new Vector2(Entity.GetDrawRectangle().X, Entity.GetDrawRectangle().Y) + offset , CalcHelper.GetRandXAndY(new Rectangle(-10,-10,20,20))/10, Color.Yellow);
+            }
+        }
+
+        private void SpawnEnemyParticles()
+        {
+            foreach (var en in enemiesBeingSpawned)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(en.GetDrawRectangle()), CalcHelper.GetRandXAndY(new Rectangle(-1, -1, 2, 2)), Color.Yellow);
+                }
+
+                en.SetVelX(0);
+                en.SetVelY(0);
+            }
         }
 
         private void LevitateEntities()
@@ -139,6 +181,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 Entity.AddAnimationToQueue("castSpell");
                 castingSpellTimer.ResetAndWaitFor(3000);
                 castingSpellTimer.SetTimeReached += CastingSpellTimer_SetTimeReached;
+                Entity.Sounds.GetSoundRef("spawn_enemies").Play();
+                Entity.Sounds.GetSoundRef("laugh").Play();
             }
         }
         private void CastingSpellTimer_SetTimeReached()
@@ -151,20 +195,22 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         private void SpawnEnemies()
         {
             CastSpell();
-
+            enemiesBeingSpawned.Clear();
             foreach (var spawner in enemySpawners)
             {
                 var en = new Frog(spawner.DrawRectangle.X, spawner.DrawRectangle.Y);
                 GameWorld.Entities.Add(en);
-                for (int i = 0; i < 5; i++)
-                {
-                    GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(en.GetDrawRectangle()), null, Color.White);
-                }
+                enemiesBeingSpawned.Add(en);
             }
             attackTimer.ResetAndWaitFor(10000);
             CurrentAttackMove = AttackMove.ToTheSky;
+            isSpawningEnemies = true;
 
+        }
 
+        private void OnEnemiesSpawned()
+        {
+            isSpawningEnemies = false;
         }
 
         private void SpawnMeteors()
