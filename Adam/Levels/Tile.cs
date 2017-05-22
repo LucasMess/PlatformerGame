@@ -45,6 +45,7 @@ namespace ThereMustBeAnotherWay
         private bool animationPlaysOnce = false;
         private bool animationResets = false;
         private List<Tile> _cornerPieces = new List<Tile>();
+        private List<Tile> _shadowCornerPieces = new List<Tile>();
         public int CurrentFrame;
         private Vector2 _frameCount;
         private double _frameTimer;
@@ -72,6 +73,7 @@ namespace ThereMustBeAnotherWay
         public bool IsWall;
         public Rectangle SourceRectangle;
         public byte SubId;
+        private byte shadowSubId;
         public Texture2D Texture;
         private static Rectangle _gridSourceRectangle = new Rectangle(352, 160, 32, 32);
 
@@ -243,7 +245,7 @@ namespace ThereMustBeAnotherWay
                 case TileType.GreenTorch:
                     _frameCount = new Vector2(4, 0);
                     _sizeOfTile.Y = 64;
-                    _positionInSpriteSheet = new Vector2(480/16, 448/16);
+                    _positionInSpriteSheet = new Vector2(480 / 16, 448 / 16);
                     Interactable = new Torch();
                     LetsLightThrough = true;
                     break;
@@ -738,7 +740,7 @@ namespace ThereMustBeAnotherWay
                     {
 
                         case 0: // Base
-                            _positionInSpriteSheet = new Vector2(256/16, 512/16);
+                            _positionInSpriteSheet = new Vector2(256 / 16, 512 / 16);
                             break;
                         case 1: // Right
                             _positionInSpriteSheet = new Vector2(256 / 16 + 1, 512 / 16);
@@ -931,7 +933,7 @@ namespace ThereMustBeAnotherWay
                     _isInvisibleInPlayMode = true;
                     break;
                 case TileType.ReinforcedWoodDoor:
-                    _positionInSpriteSheet = new Vector2(272/16, 240/16);
+                    _positionInSpriteSheet = new Vector2(272 / 16, 240 / 16);
                     Interactable = new BackgroundDoor(this);
                     LetsLightThrough = true;
                     _sizeOfTile.X = 32 * 3;
@@ -1023,7 +1025,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(592/16, 80/16);
+                    _positionInSpriteSheet = new Vector2(592 / 16, 80 / 16);
                     _sizeOfTile.X = 32 * 3;
                     _sizeOfTile.Y = 32 * 7;
                     break;
@@ -1043,6 +1045,10 @@ namespace ThereMustBeAnotherWay
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
                     _positionInSpriteSheet = new Vector2(21, 12);
+                    break;
+
+                case TileType.Shadow:
+                    _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(new Vector2(640, 304) / 16);
                     break;
             }
 
@@ -1276,6 +1282,7 @@ namespace ThereMustBeAnotherWay
                 {
                     Interactable?.Draw(spriteBatch, this);
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);
+
                 }
             }
             if (_cornerPieces.Count != 0)
@@ -1293,6 +1300,20 @@ namespace ThereMustBeAnotherWay
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit && IsWall)
             {
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(_originalPosition.X, _originalPosition.Y, TMBAW_Game.Tilesize, TMBAW_Game.Tilesize), _gridSourceRectangle, Color.CornflowerBlue * .5f);
+            }
+        }
+
+        public void DrawWallShadow(SpriteBatch spriteBatch)
+        {
+            if (Texture != null)
+            {
+                Vector2 start = GetPositionInSpriteSheetOfShadowTextures(new Vector2(640, 304) / 16);
+                Rectangle sourceRect = new Rectangle((int)start.X * 16, (int)start.Y * 16, 16, 16);
+                spriteBatch.Draw(Texture, DrawRectangle, sourceRect, Color.White);
+                foreach (var tileShadow in _shadowCornerPieces)
+                {
+                    tileShadow.Draw(spriteBatch);
+                }
             }
         }
 
@@ -1425,7 +1446,251 @@ namespace ThereMustBeAnotherWay
                     break;
             }
 
+            if (IsWall)
+            {
+                ConnectShadows();
+            }
 
+
+        }
+
+        private void ConnectShadows()
+        {
+            int mapWidth = GameWorld.WorldData.LevelWidth;
+
+            var m = TileIndex;
+            var t = m - mapWidth;
+            var b = m + mapWidth;
+            var tl = t - 1;
+            var tr = t + 1;
+            var ml = m - 1;
+            var mr = m + 1;
+            var bl = b - 1;
+            var br = b + 1;
+
+            var topLeft = GameWorld.GetTile(tl, false);
+            var top = GameWorld.GetTile(t, false);
+            var topRight = GameWorld.GetTile(tr, false);
+            var midLeft = GameWorld.GetTile(ml, false);
+            var mid = GameWorld.GetTile(m, true);
+            var midRight = GameWorld.GetTile(mr, false);
+            var botLeft = GameWorld.GetTile(bl, false);
+            var bot = GameWorld.GetTile(b, false);
+            var botRight = GameWorld.GetTile(br, false);
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                shadowSubId = 9;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                !botRight.IsSolid)
+                shadowSubId = 9;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                shadowSubId = 0;
+
+            if (!topLeft.IsSolid &&
+                top.IsSolid &&
+                topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                shadowSubId = 0;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 14;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 19;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 12;
+
+            if (topLeft.IsSolid &&
+                top.IsSolid &&
+                !topRight.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                botLeft.IsSolid &&
+                bot.IsSolid &&
+                botRight.IsSolid)
+                shadowSubId = 0;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 18;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 0;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 16;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 13;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 6;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 11;
+
+            if (top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 4;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                bot.IsSolid)
+                shadowSubId = 17;
+
+            if (!top.IsSolid &&
+                !midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 10;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 15;
+
+            if (!top.IsSolid &&
+                midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 8;
+
+            if (top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+                shadowSubId = 5;
+
+            // ALL BLACK BEHIND TILES
+            if (GameWorld.GetTile(TileIndex).IsSolid)
+                shadowSubId = 20;
+
+
+            if (topLeft.IsSolid &&
+                !top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+            {
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = TileType.Shadow,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 3
+                };
+                _shadowCornerPieces.Add(corner);
+            }
+
+            if (topRight.IsSolid &&
+                !top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+            {
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = TileType.Shadow,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 7
+                };
+                _shadowCornerPieces.Add(corner);
+            }
+
+            if (botLeft.IsSolid &&
+                !top.IsSolid &&
+                !midLeft.IsSolid &&
+                !midRight.IsSolid &&
+                !bot.IsSolid)
+            {
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = TileType.Shadow,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 2
+                };
+                _shadowCornerPieces.Add(corner);
+            }
+
+            if (botRight.IsSolid &&
+               !top.IsSolid &&
+               !midLeft.IsSolid &&
+               !midRight.IsSolid &&
+               !bot.IsSolid)
+            {
+                var corner = new Tile(DrawRectangle.X, DrawRectangle.Y)
+                {
+                    Id = TileType.Shadow,
+                    DrawRectangle = DrawRectangle,
+                    Texture = Texture,
+                    SubId = 1
+                };
+                _shadowCornerPieces.Add(corner);
+            }
+
+            foreach (var corners in _shadowCornerPieces)
+            {
+                corners.DefineTexture();
+            }
         }
 
         private void ConnectWithSolids()
@@ -2082,6 +2347,79 @@ namespace ThereMustBeAnotherWay
                     break;
                 case 19: //Bot vertical
                     position = startingPoint + new Vector2(3, 4);
+                    break;
+            }
+            return position;
+        }
+
+        private Vector2 GetPositionInSpriteSheetOfShadowTextures(Vector2 startingPoint)
+        {
+            // Sample tiles such as the ones in the tileholders have the same sub id, but the brush tiles do not.
+            var position = new Vector2();
+            switch (shadowSubId)
+            {
+                case 0: //Dirt
+                    position = startingPoint + new Vector2(0, 0);
+                    break;
+                case 1: //Inner bot right corner
+                    position = startingPoint + new Vector2(1, 0);
+                    break;
+                case 2: //Inner bot left corner
+                    position = startingPoint + new Vector2(2, 0);
+                    break;
+                case 3: //Inner top left corner
+                    position = startingPoint + new Vector2(3, 0);
+                    break;
+                case 4: //Top left corner
+                    position = startingPoint + new Vector2(0, 1);
+                    break;
+                case 5: //Top
+                    position = startingPoint + new Vector2(1, 1);
+                    break;
+                case 6: //Top right corner
+                    position = startingPoint + new Vector2(2, 1);
+                    break;
+                case 7: //Inner top right corner
+                    position = startingPoint + new Vector2(3, 1);
+                    break;
+                case 8: //Left
+                    position = startingPoint + new Vector2(0, 2);
+                    break;
+                case 9: //Middle
+                    position = startingPoint + new Vector2(1, 2);
+                    break;
+                case 10: //Right
+                    position = startingPoint + new Vector2(2, 2);
+                    break;
+                case 11: //Top vertical
+                    position = startingPoint + new Vector2(3, 2);
+                    break;
+                case 12: //Bot left corner
+                    position = startingPoint + new Vector2(0, 3);
+                    break;
+                case 13: //Bot
+                    position = startingPoint + new Vector2(1, 3);
+                    break;
+                case 14: //Bot right corner
+                    position = startingPoint + new Vector2(2, 3);
+                    break;
+                case 15: //Middle vertical
+                    position = startingPoint + new Vector2(3, 3);
+                    break;
+                case 16: //Left horizontal
+                    position = startingPoint + new Vector2(0, 4);
+                    break;
+                case 17: //Middle horizontal
+                    position = startingPoint + new Vector2(1, 4);
+                    break;
+                case 18: //Right horizontal
+                    position = startingPoint + new Vector2(2, 4);
+                    break;
+                case 19: //Bot vertical
+                    position = startingPoint + new Vector2(3, 4);
+                    break;
+                case 20: // All black
+                    position = startingPoint + new Vector2(4, 4);
                     break;
             }
             return position;

@@ -133,6 +133,8 @@
             Duck,
             BeingofSight,
             TheIllusionist,
+
+            Shadow = 2000,
         }
 
     }

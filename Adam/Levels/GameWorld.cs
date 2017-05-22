@@ -312,6 +312,20 @@ namespace ThereMustBeAnotherWay.Levels
             }
         }
 
+        public static void DrawWallShadows(SpriteBatch spriteBatch)
+        {
+            int[] indexes = ChunkManager.GetVisibleIndexes();
+            if (indexes == null)
+                return;
+            foreach (var tileNumber in indexes)
+            {
+                if (tileNumber > 0 && tileNumber < TileArray.Length)
+                {
+                    WallArray[tileNumber].DrawWallShadow(spriteBatch);
+                }
+            }
+        }
+
         public static void Draw(SpriteBatch spriteBatch)
         {
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
@@ -386,8 +400,8 @@ namespace ThereMustBeAnotherWay.Levels
             if (_clouds != null)
                 foreach (var c in _clouds)
                 {
-                    //if (WorldData.HasClouds)
-                    c.Draw(spriteBatch);
+                    if (WorldData.HasClouds)
+                        c.Draw(spriteBatch);
                 }
         }
 

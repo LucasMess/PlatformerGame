@@ -38,6 +38,8 @@ namespace ThereMustBeAnotherWay.Graphics
 
         private static RenderTarget2D _lightingRenderTarget;
         private static RenderTarget2D _userInterfaceRenderTarget;
+        private static RenderTarget2D _backgroundRenderTarget;
+        private static RenderTarget2D _wallRenderTarget;
         private static RenderTarget2D _mainRenderTarget;
         private static RenderTarget2D _rippleRenderTarget;
 
@@ -56,6 +58,14 @@ namespace ThereMustBeAnotherWay.Graphics
             _mainRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                     _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
+            _wallRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
+                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
+                    _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
+            _backgroundRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
+               graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
+                   _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
             _lightingRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
@@ -78,6 +88,14 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         public static void Draw()
         {
+            _graphicsDevice.SetRenderTarget(_backgroundRenderTarget);
+            _graphicsDevice.Clear(Color.Transparent);
+            DrawBackground();
+
+            _graphicsDevice.SetRenderTarget(_wallRenderTarget);
+            _graphicsDevice.Clear(Color.Transparent);
+            DrawWalls();
+
             _graphicsDevice.SetRenderTarget(_mainRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
             DrawGameWorld();
@@ -98,6 +116,13 @@ namespace ThereMustBeAnotherWay.Graphics
             _graphicsDevice.Clear(Color.Green);
             CombineRenderTargets();
 
+        }
+
+        private static void DrawBackground()
+        {
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            GameWorld.DrawBackground(_spriteBatch);
+            _spriteBatch.End();
         }
 
         private static void DrawRipples()
@@ -146,24 +171,50 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
         }
 
+        private static void DrawWalls()
+        {
+            if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
+                return;
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            GameWorld.DrawWalls(_spriteBatch);
+            _spriteBatch.End();
+
+            BlendState bs = new BlendState
+            {
+                AlphaSourceBlend = Blend.DestinationAlpha,
+                ColorSourceBlend = Blend.One,
+                ColorDestinationBlend = Blend.InverseSourceAlpha,
+                AlphaDestinationBlend = Blend.InverseSourceAlpha,
+            };
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            GameWorld.DrawWallShadows(_spriteBatch);
+            _spriteBatch.End();
+        }
+
         /// <summary>
         /// Draws things that are only seen by the camera in the gameworld.
         /// </summary>
         private static void DrawGameWorld()
         {
+            int width = TMBAW_Game.UserResWidth;
+            int height = TMBAW_Game.UserResHeight;
+
             if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
                 return;
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             GameWorld.DrawBackground(_spriteBatch);
+            _spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), GetMainRenderTargetColor());
             _spriteBatch.End();
 
 
+
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
-            //GameWorld.DrawBackground(_spriteBatch);
-            GameWorld.DrawWalls(_spriteBatch);
             GameWorld.Draw(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
+            _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
 
@@ -193,10 +244,11 @@ namespace ThereMustBeAnotherWay.Graphics
             int width = TMBAW_Game.UserResWidth;
             int height = TMBAW_Game.UserResHeight;
 
-
             testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
             testEffect.Parameters["LastTexture"].SetValue(_mainRenderTarget);
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
+            //_spriteBatch.Draw(_backgroundRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
+            //_spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
