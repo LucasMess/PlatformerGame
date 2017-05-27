@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ThereMustBeAnotherWay.Misc.Helpers;
 using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ThereMustBeAnotherWay.Particles
 {
@@ -18,7 +20,7 @@ namespace ThereMustBeAnotherWay.Particles
         {
             private static Texture2D _texture => GameWorld.SpriteSheet;
             public Rectangle SourceRectangle;
-            private Timer _animationTimer = new Timer();
+            private ThereMustBeAnotherWay.Misc.Timer _animationTimer = new Misc.Timer();
             public int _frameChange;
             public int _frames;
             public int _currentFrame;
@@ -166,6 +168,12 @@ namespace ThereMustBeAnotherWay.Particles
         Particle par;
 
         IEnumerable<Particle> _emptyParticles;
+        public static Stopwatch updateTimer = new Stopwatch();
+        public static Stopwatch drawTimer = new Stopwatch();
+        Thread updateThread;
+        Thread updateTimeConstThread;
+        public static AutoResetEvent UpdateStartEvent = new AutoResetEvent(true);
+        public static AutoResetEvent UpdateStartEvent_TimeConstant = new AutoResetEvent(true);
 
         /// <summary>
         /// The next available index for creating a particle. Returns -1 if there are no more particles.
@@ -173,7 +181,7 @@ namespace ThereMustBeAnotherWay.Particles
         int GetNextIndex()
         {
 
-            _nextInt++;
+            _nextInt++;     
             if (_nextInt >= _emptyParticles.Count())
                 _nextInt = -1;
             return _nextInt;
@@ -183,10 +191,11 @@ namespace ThereMustBeAnotherWay.Particles
         public int GetIteration() => _nextInt;
 
         readonly Particle[] _particles;
+        const int MaxParticles = 10000;
 
         public ParticleSystem()
         {
-            _particles = new Particle[10000];
+            _particles = new Particle[MaxParticles];
 
             for (int i = 0; i < _particles.Length; i++)
             {
@@ -194,24 +203,52 @@ namespace ThereMustBeAnotherWay.Particles
             }
 
             GetAvailableParticles();
+
+
+            VisibleParticles = from particle in _particles
+                               where !particle.IsDead()
+                               select particle;
+
+            updateThread = new Thread(new ThreadStart(Update))
+            {
+                IsBackground = true,
+
+            };
+
+            updateTimeConstThread = new Thread(new ThreadStart(UpdateTimeConstant))
+            {
+                IsBackground = true,
+            };
+
+            updateThread.Start();
+            updateTimeConstThread.Start();
         }
 
         public void Update()
         {
-            for (int i = 0; i < _particles.Length; i++)
+            while (true)
             {
-                _particles[i].Update();
+                UpdateStartEvent.WaitOne();
+
+                updateTimer.Restart();
+                for (int i = 0; i < _particles.Length; i++)
+                {
+                    _particles[i].Update();
+                }
+
+                VisibleParticles = from particle in _particles
+                                   where !particle.IsDead()
+                                   select particle;
+
+                updateTimer.Stop();
             }
         }
 
         public void DrawNormalParticles(SpriteBatch spriteBatch)
         {
-            //for (int i = 0; i < _particles.Length; i++)
-            //{
-            //    _particles[i].Draw(spriteBatch);
-            //}
 
-            var query = from particle in _particles
+            drawTimer.Restart();
+            var query = from particle in VisibleParticles
                         where !particle.IsRippleEffect
                         select particle;
 
@@ -219,6 +256,7 @@ namespace ThereMustBeAnotherWay.Particles
             {
                 par.Draw(spriteBatch);
             }
+            drawTimer.Stop();
         }
 
         /// <summary>
@@ -227,21 +265,28 @@ namespace ThereMustBeAnotherWay.Particles
         /// <param name="spriteBatch"></param>
         public void UpdateTimeConstant()
         {
-            var query = from particle in _particles
-                        where particle.IsImmuneToTimeEffects
-                        select particle;
-
-            foreach (var item in query)
+            while (true)
             {
-                item.Update();
+                UpdateStartEvent_TimeConstant.WaitOne();
+                var query = from particle in VisibleParticles
+                            where particle.IsImmuneToTimeEffects
+                            select particle;
+
+                foreach (var item in query)
+                {
+                    item.Update();
+                }
             }
         }
 
+        IEnumerable<Particle> VisibleParticles;
+
         public void DrawEffectParticles(SpriteBatch spriteBatch)
         {
-            var query = from particle in _particles
+            var query = from particle in VisibleParticles
                         where particle.IsRippleEffect
                         select particle;
+
 
             foreach (Particle par in query)
             {

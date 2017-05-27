@@ -44,7 +44,7 @@ namespace ThereMustBeAnotherWay
 #if !DEBUG
             try
             {
-                using (AdamGame game = new AdamGame())
+                using (TMBAW_Game game = new TMBAW_Game())
                 {
                     game.Run();
                 }

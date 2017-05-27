@@ -217,6 +217,9 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
+            _spriteBatch.End();
 
 
             _spriteBatch.End();

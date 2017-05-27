@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
+using System.Diagnostics;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -42,6 +43,8 @@ namespace ThereMustBeAnotherWay.Levels
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
         private static Dictionary<string, Entity> _entityDict = new Dictionary<string, Entity>();
+        public static Stopwatch updateTimer = new Stopwatch();
+        public static Stopwatch drawTimer = new Stopwatch();
 
         /// <summary>
         /// Returns the color data of the spritesheet used for most of the game's textures.
@@ -182,7 +185,8 @@ namespace ThereMustBeAnotherWay.Levels
             TMBAW_Game.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsPlayingDeathAnimation);
 
             if (TMBAW_Game.TimeFreeze.IsTimeFrozen())
-                ParticleSystem.UpdateTimeConstant();
+                ParticleSystem.UpdateStartEvent_TimeConstant.Set();
+                //ParticleSystem.UpdateTimeConstant();
 
 
             Background.Update();
@@ -191,7 +195,8 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void UpdateWorld()
         {
-            ParticleSystem.Update();
+            ParticleSystem.UpdateStartEvent.Set();
+            //ParticleSystem.Update();
             Weather.Update();
 
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
@@ -364,7 +369,7 @@ namespace ThereMustBeAnotherWay.Levels
             }
 
 
-            ParticleSystem.DrawNormalParticles(spriteBatch);
+            //ParticleSystem.DrawNormalParticles(spriteBatch);
 
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 LevelEditor.Draw(spriteBatch);

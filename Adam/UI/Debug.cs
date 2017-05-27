@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Particles;
 
 namespace ThereMustBeAnotherWay
 {
@@ -21,7 +22,7 @@ namespace ThereMustBeAnotherWay
         //bool _definitionFound;
 
         private static List<string> _infos = new List<string>();
-        private static BitmapFont _font = FontHelper.Fonts[1];
+        private static BitmapFont _font = FontHelper.Fonts[0];
         static Textbox chatBox = new Textbox(0, TMBAW_Game.DefaultUiHeight - 60, TMBAW_Game.DefaultUiWidth - 10, 60);
 
         static bool _debugKeyReleased;
@@ -172,7 +173,11 @@ namespace ThereMustBeAnotherWay
                     "Particle iteration: " + GameWorld.ParticleSystem?.GetIteration(),
                     "Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles(),
                     "Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast,
-                    "Steam Name: " + TMBAW_Game.UserName + " ID: " + TMBAW_Game.SteamID.m_SteamID
+                    "Steam Name: " + TMBAW_Game.UserName + " ID: " + TMBAW_Game.SteamID.m_SteamID,
+                    "Particle update time: " + ParticleSystem.updateTimer.ElapsedTicks + " " + (double)ParticleSystem.updateTimer.ElapsedTicks/GameWorld.updateTimer.ElapsedTicks*100 + "% of update time",
+                    "Particle draw time: " + ParticleSystem.drawTimer.ElapsedTicks+ " " +  (double)ParticleSystem.drawTimer.ElapsedTicks/GameWorld.drawTimer.ElapsedTicks*100 + "% of draw time",
+                    "World update time: " + GameWorld.updateTimer.ElapsedTicks,
+                    "World draw time: " + GameWorld.drawTimer.ElapsedTicks,
                 };
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
