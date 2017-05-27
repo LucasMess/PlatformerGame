@@ -26,7 +26,10 @@ namespace ThereMustBeAnotherWay.UI.Elements
         Eraser,
         Undo,
         Settings,
-        Select
+        Select,
+        Plus,
+        Minus,
+        LightBulb,
     }
 
     /// <summary>
@@ -120,6 +123,18 @@ namespace ThereMustBeAnotherWay.UI.Elements
                     break;
                 case ButtonImage.Select:
                     SourceRectangle.X = 16;
+                    SourceRectangle.Y = 48;
+                    break;
+                case ButtonImage.Plus:
+                    SourceRectangle.X = 112;
+                    SourceRectangle.Y = 0;
+                    break;
+                case ButtonImage.Minus:
+                    SourceRectangle.X = 112;
+                    SourceRectangle.Y = 16;
+                    break;
+                case ButtonImage.LightBulb:
+                    SourceRectangle.X = 64;
                     SourceRectangle.Y = 48;
                     break;
             }

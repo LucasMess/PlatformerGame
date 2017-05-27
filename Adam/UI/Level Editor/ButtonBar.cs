@@ -52,6 +52,17 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 ButtonImage.Settings);
             optionsButton.ChangeColors(new Color(205,205,205), new Color(95, 95, 95));
 
+            // Buttons for minimap, which will be conveniently placed here...
+            var plusButton = new IconButton(new Vector2(413 * 2, 158 * 2), _drawRectangle, "Zoom In", ButtonImage.Plus);
+            plusButton.MouseClicked += PlusButton_MouseClicked;
+            plusButton.ChangeColors(new Color(95, 95, 95), Color.White);
+            _buttons.Add(plusButton);
+
+            var minusButton = new IconButton(new Vector2(413 * 2, 176 * 2), _drawRectangle, "Zoom Out", ButtonImage.Minus);
+            minusButton.MouseClicked += MinusButton_MouseClicked;
+            minusButton.ChangeColors(new Color(95, 95, 95), Color.White);
+            _buttons.Add(minusButton);
+
             playButton.MouseClicked += LevelEditor.TestLevel;
             wallButton.MouseClicked += LevelEditor.ChangeToWallMode;
             expandButton.MouseClicked += Inventory.StartAnimation;
@@ -67,6 +78,16 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             _buttons.Add(eraserButton);
             _buttons.Add(selectButton);
             _buttons.Add(optionsButton);
+        }
+
+        public static void MinusButton_MouseClicked(Button button)
+        {
+            TMBAW_Game.Camera.SetZoomTo(.5f);
+        }
+
+        public static void PlusButton_MouseClicked(Button button)
+        {
+            TMBAW_Game.Camera.ResetZoom();
         }
 
         private void SelectButton_MouseClicked(Button button)

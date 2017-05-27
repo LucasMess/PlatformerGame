@@ -4,6 +4,7 @@ using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 
 namespace ThereMustBeAnotherWay
 {
@@ -121,9 +122,9 @@ namespace ThereMustBeAnotherWay
             //    return;
             //}
             if (InputHelper.IsKeyDown(Keys.OemMinus))
-                SetZoomTo(.5f);
-            if (InputHelper.IsKeyDown(Keys.OemMinus))
-                ResetZoom();
+                ButtonBar.MinusButton_MouseClicked(null);
+            if (InputHelper.IsKeyDown(Keys.OemPlus))
+                ButtonBar.PlusButton_MouseClicked(null) ;
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 

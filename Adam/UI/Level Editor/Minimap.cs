@@ -125,5 +125,12 @@ namespace ThereMustBeAnotherWay.UI
             spriteBatch.Draw(GameWorld.SpriteSheet, _viewDrawRect, _viewSourceRect, Color.Black);
 
         }
+
+        public bool IsIntersecting(Rectangle rectangle)
+        {
+            Rectangle mainRect = new Rectangle(397 * 2, 191 * 2, 83 * 2, 79 * 2);
+            Rectangle plusAndMinusRect = new Rectangle(459 * 2, 154 * 2, 21 * 2, 37 * 2);
+            return rectangle.Intersects(mainRect) || rectangle.Intersects(plusAndMinusRect);
+        }
     }
 }

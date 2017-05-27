@@ -635,10 +635,10 @@ namespace ThereMustBeAnotherWay.Levels
         /// <param name="spriteBatch"></param>
         public static void DrawUi(SpriteBatch spriteBatch)
         {
+            _miniMap.Draw(spriteBatch);
             _inventory.Draw(spriteBatch);
             _buttonBar.Draw(spriteBatch);
             HotBar.Draw(spriteBatch);
-            _miniMap.Draw(spriteBatch);
             _inventory.DrawOnTop(spriteBatch);
         }
 
@@ -652,6 +652,8 @@ namespace ThereMustBeAnotherWay.Levels
             if (mouse.Intersects(_buttonBar.GetCollRectangle()))
                 return true;
             if (Inventory.IsOpen && mouse.Intersects(_inventory.GetCollRectangle()))
+                return true;
+            if (_miniMap.IsIntersecting(mouse))
                 return true;
 
             return false;
