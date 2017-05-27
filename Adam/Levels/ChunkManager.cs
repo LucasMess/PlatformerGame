@@ -79,10 +79,10 @@ namespace ThereMustBeAnotherWay.Levels
                 }
             }
 
-            PreCalculateIndexes();
+            RecalculateVisibleChunks();
         }
 
-        private void PreCalculateIndexes()
+        private void RecalculateVisibleChunks()
         {
             foreach (Chunk c in _chunks)
             {
@@ -90,6 +90,7 @@ namespace ThereMustBeAnotherWay.Levels
             }
         }
 
+        Chunk lastActiveChunk = new Chunk(-1);
         /// <summary>
         /// Gathers all the indexes of the visible chunks around the camera.
         /// </summary>
@@ -104,7 +105,11 @@ namespace ThereMustBeAnotherWay.Levels
             }
 
             _activeChunk = GetChunk((int)TMBAW_Game.Camera.CenterGameCoords.X, (int)TMBAW_Game.Camera.CenterGameCoords.Y);
-            // Chunk activeChunk = GetChunk(128 * Main.Tilesize, 128 * Main.Tilesize);
+            if (lastActiveChunk != _activeChunk)
+            {
+                lastActiveChunk = _activeChunk;
+                _activeChunk.StoreIndexesOfSurroundingChunks(_chunks, _maxChunksX);
+            }
             return _activeChunk.GetSurroundIndexes();
         }
 

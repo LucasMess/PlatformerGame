@@ -35,9 +35,22 @@ namespace ThereMustBeAnotherWay
         public Vector2 LeftTopGameCoords;
         public Vector2 InvertedCoordsBeforeShake;
 
+        /// <summary>
+        /// Set to true if the camera cannot move in the x-direction from its set position.
+        /// </summary>
         public bool LockedX { get; set; } = false;
+        /// <summary>
+        /// Set to true if the camera cannot move in the y-direction from its set position.
+        /// </summary>
         public bool LockedY { get; set; } = false;
-
+        /// <summary>
+        /// Returns true if the camera is currently zoomed out from its default zoom.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsZoomedOut()
+        {
+            return _zoom < 1;
+        }
         public bool RestricedToGameWorld { get; set; } = true;
 
         public Camera(Viewport newViewport)
@@ -107,7 +120,7 @@ namespace ThereMustBeAnotherWay
 
             //    return;
             //}
-            if (InputHelper.IsKeyDown(Keys.OemPlus))
+            if (InputHelper.IsKeyDown(Keys.OemMinus))
                 SetZoomTo(.5f);
             if (InputHelper.IsKeyDown(Keys.OemMinus))
                 ResetZoom();

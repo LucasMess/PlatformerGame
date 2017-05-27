@@ -10,8 +10,28 @@ namespace ThereMustBeAnotherWay.Levels
         // At 48 pixels tilesize, 20x12 tiles are visible.
 
         public const int DefaultSize = 8;
-        public const int WidthVisible = 6;
-        public const int HeightVisible = 4;
+        public static int WidthVisible
+        {
+            get
+            {
+                if (TMBAW_Game.Camera.IsZoomedOut())
+                {
+                    return 10;
+                }
+                else return 6;
+            }
+        }
+        public static int HeightVisible
+        {
+            get
+            {
+                if (TMBAW_Game.Camera.IsZoomedOut())
+                {
+                    return 7;
+                }
+                else return 4;
+            }
+        }
         private int[] _indexes = new int[DefaultSize * DefaultSize];
         private int[] _indexesAround;
 
