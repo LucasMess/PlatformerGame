@@ -65,7 +65,7 @@ namespace ThereMustBeAnotherWay.Network
         private static void OnP2PSessionConnectFail(P2PSessionConnectFail_t callback)
         {
             TMBAW_Game.MessageBox.Show("There was an error with the connection.");
-            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
+            TMBAW_Game.GoToMainMenu();
         }
 
         private static void OnP2PSessionRequested(P2PSessionRequest_t callback)

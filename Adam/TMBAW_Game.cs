@@ -162,9 +162,19 @@ namespace ThereMustBeAnotherWay
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<BitmapFont>("debug");
+            
+            GoToMainMenu();
 
+            if (Program.LaunchedFromInvite)
+            {
+                Lobby.JoinLobby(Program.GameLaunchLobbyId);
+            }
+        }
+
+        public static void GoToMainMenu()
+        {
+            CurrentGameState = GameState.MainMenu;
             CurrentGameMode = GameMode.None;
-
             string basePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
             try
             {
@@ -175,10 +185,6 @@ namespace ThereMustBeAnotherWay
 
             }
 
-            if (Program.LaunchedFromInvite)
-            {
-                Lobby.JoinLobby(Program.GameLaunchLobbyId);
-            }
         }
 
         public static void ChangeState(GameState desiredGameState, GameMode mode, bool reloadWorld)

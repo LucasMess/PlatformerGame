@@ -106,7 +106,7 @@ namespace ThereMustBeAnotherWay.Network
             Session.Join(SteamMatchmaking.GetLobbyOwner(new CSteamID(LobbyId)));
             if (TMBAW_Game.CurrentGameState != GameState.MainMenu)
             {
-                TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
+                TMBAW_Game.GoToMainMenu();
             }
             MainMenu.CurrentMenuState = MainMenu.MenuState.MultiplayerLobby;
             Console.WriteLine("Entered lobby with id: " + LobbyId);

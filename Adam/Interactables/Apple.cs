@@ -26,7 +26,7 @@ namespace ThereMustBeAnotherWay
 
             if (_changeLevelTimer.TimeElapsedInMilliSeconds > 3000)
             {
-                TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, false);
+                TMBAW_Game.GoToMainMenu();
             }
         }
     }

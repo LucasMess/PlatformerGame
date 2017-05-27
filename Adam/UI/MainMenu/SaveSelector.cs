@@ -67,7 +67,7 @@ namespace ThereMustBeAnotherWay.UI.MainMenu
 
         private static void Back_MouseClicked(Button button)
         {
-            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, false);
+            TMBAW_Game.GoToMainMenu();
         }
 
         private static void Save1_MouseClicked(Button button)

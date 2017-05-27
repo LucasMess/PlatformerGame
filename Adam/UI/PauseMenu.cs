@@ -79,7 +79,7 @@ namespace ThereMustBeAnotherWay.UI
         {
             if (TMBAW_Game.CurrentGameState == GameState.GameWorld)
                 LevelEditor.SaveLevel();
-            TMBAW_Game.ChangeState(GameState.MainMenu, GameMode.None, true);
+            TMBAW_Game.GoToMainMenu();
             IsActive = false;
         }
 
