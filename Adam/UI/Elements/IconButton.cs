@@ -43,7 +43,8 @@ namespace ThereMustBeAnotherWay.UI.Elements
         private readonly string _hoverText;
         private static BitmapFont _font;
         private static Rectangle _shadowSource = new Rectangle(128, 25, 16, 6);
-        private static Rectangle _circleSource = new Rectangle(32,48,16,16);
+        private static Rectangle _circleSource = new Rectangle(32, 48, 16, 16);
+        private static Rectangle _isOnSource = new Rectangle(64, 48, 16, 16);
         private bool _showHoverText;
         private Color _circleColor = Button.BrightRed;
         private Color _imageColor = Color.White;
@@ -193,6 +194,10 @@ namespace ThereMustBeAnotherWay.UI.Elements
                         new Rectangle(CollRectangle.X, CollRectangle.Y + 11 * 2,
                             _shadowSource.Width * 2, _shadowSource.Height * 2),
                         _shadowSource, Color.White);
+                    if (IsOn)
+                    {
+                        spriteBatch.Draw(GameWorld.UiSpriteSheet, CollRectangle, _isOnSource, CurrentColor);
+                    }
                     break;
                 case ButtonImage.Expand:
                     if (IsOn)

@@ -18,6 +18,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
 
         IconButton brushButton;
         IconButton eraserButton;
+        IconButton selectButton;
 
         public ButtonBar()
         {
@@ -35,7 +36,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             eraserButton = new IconButton(new Vector2(29 * 2, 11 * 2), _drawRectangle, "Eraser", ButtonImage.Eraser);
             eraserButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
-            var selectButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Select", ButtonImage.Select);
+            selectButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Select", ButtonImage.Select);
             selectButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
             var wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
@@ -94,18 +95,27 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         {
             LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Select;
             Cursor.ChangeCursor(Cursor.Type.Select);
+            selectButton.IsOn = true;
+            brushButton.IsOn = false;
+            eraserButton.IsOn = false;
         }
 
         private void EraserButton_MouseClicked(Button button)
         {
             LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Erase;
             Cursor.ChangeCursor(Cursor.Type.Erase);
+            selectButton.IsOn = false;
+            brushButton.IsOn = false;
+            eraserButton.IsOn = true;
         }
 
         private void BrushButton_MouseClicked(Button button)
         {
             LevelEditor.Brush.CurrentBrushMode = Brush.BrushMode.Build;
             Cursor.ChangeCursor(Cursor.Type.Build);
+            selectButton.IsOn = false;
+            brushButton.IsOn = true;
+            eraserButton.IsOn = false;
         }
 
         /// <summary>
