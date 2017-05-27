@@ -19,6 +19,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         IconButton brushButton;
         IconButton eraserButton;
         IconButton selectButton;
+        IconButton lightingButton;
 
         public ButtonBar()
         {
@@ -46,12 +47,13 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
 
             var playButton = new IconButton(new Vector2(336 * 2, 11 * 2), _drawRectangle, "Play test level", ButtonImage.Play);
 
-            var deleteButton = new IconButton(new Vector2(318 * 2, 11 * 2), _drawRectangle, "Reset level", ButtonImage.Delete);
-            deleteButton.ChangeColors(new Color(205, 205, 205), new Color(95, 95, 95));
+            lightingButton = new IconButton(new Vector2(318 * 2, 11 * 2), _drawRectangle, "Enable/Disable Lighting", ButtonImage.LightBulb);
+            lightingButton.ChangeColors(new Color(95, 95, 95), Color.White);
+            lightingButton.IsOn = true;
 
             var optionsButton = new IconButton(new Vector2(354 * 2, 11 * 2), _drawRectangle, "More options",
                 ButtonImage.Settings);
-            optionsButton.ChangeColors(new Color(205,205,205), new Color(95, 95, 95));
+            optionsButton.ChangeColors(new Color(205, 205, 205), new Color(95, 95, 95));
 
             // Buttons for minimap, which will be conveniently placed here...
             var plusButton = new IconButton(new Vector2(413 * 2, 158 * 2), _drawRectangle, "Zoom In", ButtonImage.Plus);
@@ -70,15 +72,22 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             brushButton.MouseClicked += BrushButton_MouseClicked;
             eraserButton.MouseClicked += EraserButton_MouseClicked;
             selectButton.MouseClicked += SelectButton_MouseClicked;
+            lightingButton.MouseClicked += LightingButton_MouseClicked;
 
             _buttons.Add(wallButton);
             _buttons.Add(playButton);
-            _buttons.Add(deleteButton);
+            _buttons.Add(lightingButton);
             _buttons.Add(expandButton);
             _buttons.Add(brushButton);
             _buttons.Add(eraserButton);
             _buttons.Add(selectButton);
             _buttons.Add(optionsButton);
+        }
+
+        private void LightingButton_MouseClicked(Button button)
+        {
+            button.IsOn = !button.IsOn;
+            LevelEditor.IsLightingEnabled = !LevelEditor.IsLightingEnabled;
         }
 
         public static void MinusButton_MouseClicked(Button button)

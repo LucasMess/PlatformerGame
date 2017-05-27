@@ -135,7 +135,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
                     SourceRectangle.Y = 16;
                     break;
                 case ButtonImage.LightBulb:
-                    SourceRectangle.X = 64;
+                    SourceRectangle.X = 48;
                     SourceRectangle.Y = 48;
                     break;
             }

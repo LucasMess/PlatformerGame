@@ -255,11 +255,14 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
-            if (StaticLightsEnabled)
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play || LevelEditor.IsLightingEnabled)
             {
-                _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
-                _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
-                _spriteBatch.End();
+                if (StaticLightsEnabled)
+                {
+                    _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
+                    _spriteBatch.Draw(_lightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+                    _spriteBatch.End();
+                }
             }
 
 

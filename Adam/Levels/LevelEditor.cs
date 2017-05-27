@@ -38,6 +38,10 @@ namespace ThereMustBeAnotherWay.Levels
         public static Rectangle EditorRectangle;
         public static int IndexOfMouse;
         public static bool OnWallMode;
+        /// <summary>
+        /// Returns true if the user has enabled lighting in edit mode.
+        /// </summary>
+        public static bool IsLightingEnabled { get; set; } = true;
         public static TileType SelectedId = TileType.Grass;
         private static int lastAddedTile = -1;
         private static int lastRemovedTile = -1;
