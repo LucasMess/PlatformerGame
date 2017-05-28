@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -170,6 +171,18 @@ namespace ThereMustBeAnotherWay.Levels
 
             return DefaultRadius;
 
+        }
+
+        internal void DrawLightAsGlow(SpriteBatch spriteBatch)
+        {
+            Update(_center);
+            //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
+            if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
+            {
+                return;
+            }
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)) * .5f, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            _hasIncremented = false;
         }
     }
 }

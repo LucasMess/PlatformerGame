@@ -398,6 +398,11 @@ namespace ThereMustBeAnotherWay.Levels
             //    }
         }
 
+        public static void DrawGlows(SpriteBatch spriteBatch)
+        {
+            LightingEngine.DrawGlows(spriteBatch);
+        }
+
         public static void DrawBackground(SpriteBatch spriteBatch)
         {
             Background.Draw(spriteBatch);

@@ -266,6 +266,7 @@ namespace ThereMustBeAnotherWay.Graphics
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
+            //GameWorld.DrawGlows(_spriteBatch);
             _spriteBatch.End();
 
 
