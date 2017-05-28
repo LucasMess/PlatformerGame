@@ -5,6 +5,7 @@ using ThereMustBeAnotherWay.UI;
 using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace ThereMustBeAnotherWay.Graphics
 {
@@ -30,6 +31,52 @@ namespace ThereMustBeAnotherWay.Graphics
             AlphaSourceBlend = Blend.DestinationColor,
             ColorSourceBlend = Blend.DestinationColor,
             ColorDestinationBlend = Blend.Zero
+        };
+
+        /// <summary>
+        /// Rasterizer state for drawing inside a scissor rectangle.
+        /// </summary>
+        public static RasterizerState ScissorRectRasterizer = new RasterizerState()
+        {
+            CullMode = CullMode.CullCounterClockwiseFace,
+            FillMode = FillMode.Solid,
+            DepthBias = 0,
+            MultiSampleAntiAlias = false,
+            ScissorTestEnable = true,
+            SlopeScaleDepthBias = 0,
+        };
+
+        /// <summary>
+        /// Default Rasterizer State
+        /// </summary>
+        public static RasterizerState DefaultRasterizer = new RasterizerState()
+        {
+            CullMode = CullMode.CullCounterClockwiseFace,
+            FillMode = FillMode.Solid,
+            DepthBias = 0,
+            MultiSampleAntiAlias = false,
+            ScissorTestEnable = false,
+            SlopeScaleDepthBias = 0,
+        };
+
+        public static DepthStencilState DefaultDepthStencil = new DepthStencilState()
+        {
+            DepthBufferEnable = true,
+            DepthBufferWriteEnable = true,
+            DepthBufferFunction = CompareFunction.LessEqual,
+            StencilEnable = false,
+            StencilFunction = CompareFunction.Always,
+            StencilPass = StencilOperation.Keep,
+            StencilFail = StencilOperation.Keep,
+            StencilDepthBufferFail = StencilOperation.Keep,
+            TwoSidedStencilMode = false,
+            CounterClockwiseStencilFunction = CompareFunction.Always,
+            CounterClockwiseStencilFail = StencilOperation.Keep,
+            CounterClockwiseStencilPass = StencilOperation.Keep,
+            CounterClockwiseStencilDepthBufferFail = StencilOperation.Keep,
+            StencilMask = Int32.MaxValue,
+            StencilWriteMask = Int32.MaxValue,
+            ReferenceStencil = 0,
         };
 
         private static SpriteBatch _spriteBatch;
@@ -120,18 +167,18 @@ namespace ThereMustBeAnotherWay.Graphics
 
         private static void DrawBackground()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
             GameWorld.DrawBackground(_spriteBatch);
             _spriteBatch.End();
         }
 
         private static void DrawRipples()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawRipples(_spriteBatch);
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
             Overlay.DrawRipples(_spriteBatch);
             _spriteBatch.End();
         }
@@ -141,7 +188,7 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         private static void DrawUserInterface()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, ScissorRectRasterizer);
             switch (TMBAW_Game.CurrentGameState)
             {
                 case GameState.MainMenu:
@@ -176,7 +223,7 @@ namespace ThereMustBeAnotherWay.Graphics
             if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
                 return;
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawWalls(_spriteBatch);
             _spriteBatch.End();
 
@@ -188,7 +235,7 @@ namespace ThereMustBeAnotherWay.Graphics
                 AlphaDestinationBlend = Blend.InverseSourceAlpha,
             };
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawWallShadows(_spriteBatch);
             _spriteBatch.End();
         }
@@ -204,20 +251,20 @@ namespace ThereMustBeAnotherWay.Graphics
             if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
                 return;
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
             GameWorld.DrawBackground(_spriteBatch);
             _spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), GetMainRenderTargetColor());
             _spriteBatch.End();
 
 
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.Draw(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
             _spriteBatch.End();
 
@@ -230,11 +277,11 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         private static void DrawLights()
         {
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
             _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _lightingRenderTarget.Bounds, Color.White * .05f);
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawLights(_spriteBatch);
             _spriteBatch.End();
         }
@@ -249,7 +296,7 @@ namespace ThereMustBeAnotherWay.Graphics
 
             testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
             testEffect.Parameters["LastTexture"].SetValue(_mainRenderTarget);
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, testEffect);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, testEffect);
             //_spriteBatch.Draw(_backgroundRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             //_spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
@@ -266,7 +313,7 @@ namespace ThereMustBeAnotherWay.Graphics
             }
 
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
             _spriteBatch.Draw(_userInterfaceRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
 

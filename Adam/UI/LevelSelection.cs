@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -58,7 +59,7 @@ namespace ThereMustBeAnotherWay.UI
             HeightOfBounds = heightOfBounds;
 
             // Defines how big the level selection box will be based on the game's resolution.
-            _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + 6, _boundsDrawRectangle.Y + 6, _boundsDrawRectangle.Width - 12, _boundsDrawRectangle.Height - 12);
+            _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + 12, _boundsDrawRectangle.Y + 12, _boundsDrawRectangle.Width - 24, _boundsDrawRectangle.Height - 24);
 
             // Defines where the function buttons will be.
             _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - (4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + 8, 184, 40);
@@ -294,6 +295,8 @@ namespace ThereMustBeAnotherWay.UI
             spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * .7f);
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
 
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, GraphicsRenderer.DefaultDepthStencil, GraphicsRenderer.ScissorRectRasterizer);
             // Sets the scrolling levels to disappear if they are not inside of this bounding box.
             Rectangle originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _scissorRectangle;
@@ -304,7 +307,9 @@ namespace ThereMustBeAnotherWay.UI
             }
 
             // Returns the scissor rectangle to original.
+            spriteBatch.End();
             spriteBatch.GraphicsDevice.ScissorRectangle = originalScissorRectangle;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, GraphicsRenderer.DefaultDepthStencil, GraphicsRenderer.ScissorRectRasterizer);
 
             // Draw buttons.
             foreach (IconButton b in _buttons)
