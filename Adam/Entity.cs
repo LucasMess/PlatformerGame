@@ -462,19 +462,14 @@ namespace ThereMustBeAnotherWay
         /// <summary>
         /// Begins the process of killing the entity. This will start the death animation, make it disappear and invoke an event when it is complete.
         /// </summary>
-        private void Kill()
+        protected virtual void Kill()
         {
             // Queues up death animation and waits for it to finish.
             _complexAnimation.AddToQueue("death");
-            _deathAnimationTimer.ResetAndWaitFor(1000);
+            _deathAnimationTimer.ResetAndWaitFor(500);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
             IsPlayingDeathAnimation = true;
-            SetVelY(-30f);
-
-            for (int i = 0; i < 20; i++)
-            {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
-            }
+            SetVelY(-20f);
         }
 
         /// <summary>
@@ -492,6 +487,11 @@ namespace ThereMustBeAnotherWay
         {
             _deathAnimationTimer.SetTimeReached -= DeathAnimationEnded;
             IsDead = true;
+
+            for (int i = 0; i < 20; i++)
+            {
+                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
+            }
 
             //Rectangle[] desinRectangles;
             //GetDisintegratedRectangles(out desinRectangles);

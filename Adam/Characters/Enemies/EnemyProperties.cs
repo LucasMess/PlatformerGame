@@ -33,7 +33,6 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         {
             _respawnTimer.ResetAndWaitFor(120 * 1000);
             _respawnTimer.SetTimeReached += Revive;
-            Gem.Generate(MaxHealth/10,this);
             PlayDeathSound();
         }
 

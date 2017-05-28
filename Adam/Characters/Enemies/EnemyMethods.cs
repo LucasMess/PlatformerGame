@@ -36,6 +36,15 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             }
         }
 
+        protected override void Kill()
+        {
+            if (!IsDead)
+            {
+                Gem.Generate(MaxHealth / 10, this);
+            }
+            base.Kill();
+        }
+
         /// <summary>
         /// Checks to see if it is time to be mean again.
         /// </summary>
@@ -90,7 +99,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             {
                 if (en is Enemy && en != this)
                 {
-                    Enemy enemy = (Enemy) en;
+                    Enemy enemy = (Enemy)en;
                     if (!enemy.IsCollidableWithEnemies) continue;
                     if (en.GetCollRectangle().Intersects(CollRectangle))
                     {
