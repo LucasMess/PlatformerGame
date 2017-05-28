@@ -164,6 +164,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.NPC, // NPC
             TileType.Snake, // Snake
             TileType.Frog, // Frog
+            TileType.StoneGolem,
             TileType.Lost, // Lost
             TileType.Hellboar, // Hellboar
             TileType.FallingBoulder, // Falling Boulder

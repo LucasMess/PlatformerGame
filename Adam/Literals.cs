@@ -133,6 +133,7 @@
             Duck,
             BeingofSight,
             TheIllusionist,
+            StoneGolem,
 
             Shadow = 2000,
         }

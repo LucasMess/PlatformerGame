@@ -988,7 +988,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(18, 13);
+                    _positionInSpriteSheet = new Vector2(288/16, 208/16);
                     break;
                 case TileType.Lost: //Lost
                     if (!_isSampleTile)
@@ -996,7 +996,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(21, 12);
+                    _positionInSpriteSheet = new Vector2(304, 192)/16;
                     break;
                 case TileType.Hellboar: //Hellboar
                     if (!_isSampleTile)
@@ -1004,23 +1004,23 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(320, 192)/16;
+                    break;
+                case TileType.StoneGolem: //Hellboar
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new StoneGolem(DrawRectangle.X, DrawRectangle.Y));
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
                     _positionInSpriteSheet = new Vector2(18, 12);
                     break;
                 case TileType.FallingBoulder: //Falling Boulder
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
-                    if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
-                    {
-                        _positionInSpriteSheet = new Vector2(19, 13);
-                    }
-                    else
-                    {
-                        if (!_hasAddedEntity)
-                        {
-                            GameWorld.Entities.Add(new FallingBoulder(DrawRectangle.X, DrawRectangle.Y));
-                            _hasAddedEntity = true;
-                            _isInvisibleInPlayMode = true;
-                        }
-                    }
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(19, 13);
                     break;
                 case TileType.SwingingAxe:
                     if (!_isSampleTile)
