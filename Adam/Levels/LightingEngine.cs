@@ -16,12 +16,14 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void AddDynamicLight(Light light)
         {
-            _dynamicLights.Add(light);
+            if (light != null)
+                _dynamicLights.Add(light);
         }
 
         public static void RemoveDynamicLight(Light light)
         {
-            _dynamicLights.Remove(light);
+            if (light != null && _dynamicLights.Contains(light))
+                _dynamicLights.Remove(light);
         }
 
         public static void RemoveAllLights()
@@ -104,21 +106,21 @@ namespace ThereMustBeAnotherWay.Levels
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
                              GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 10, Color.Red);
             }
-            else if (tile.Id == TileType.SapphireCrystal) // Sapphire
-            {
-                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Blue);
-            }
-            else if (tile.Id == TileType.RubyCrystal) // Ruby
-            {
-                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Red);
-            }
-            else if (tile.Id == TileType.EmeraldCrystal) // Emerald
-            {
-                _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                             GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Green);
-            }
+            //else if (tile.Id == TileType.SapphireCrystal) // Sapphire
+            //{
+            //    _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+            //                GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Blue);
+            //}
+            //else if (tile.Id == TileType.RubyCrystal) // Ruby
+            //{
+            //    _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+            //                GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Red);
+            //}
+            //else if (tile.Id == TileType.EmeraldCrystal) // Emerald
+            //{
+            //    _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
+            //                 GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 6, Color.Green);
+            //}
             else if (tile.Id == TileType.LampPost)
             {
                 _lights[ind] = new Light(new Vector2(tile.GetDrawRectangle().Top + 32, tile.GetDrawRectangle().Center.Y), 15, Color.Orange);

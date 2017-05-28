@@ -23,13 +23,19 @@ namespace ThereMustBeAnotherWay.Interactables
         private bool isBeingInteractedWith = false;
         private static bool ButtonWasReleased = false;
         private static bool SelectingAnotherTile = false;
+        protected Light Light;
 
         public delegate void InteractionHandler(Tile tile, Player player);
         public event InteractionHandler OnActivation;
 
         public Interactable()
         {
+        }
+
+        public virtual void Initialize()
+        {
             LevelEditor.InteractableConnections.Add(line);
+            LightingEngine.AddDynamicLight(Light);
         }
 
         /// <summary>
@@ -163,6 +169,8 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 SelectingAnotherTile = false;
             }
+            LightingEngine.RemoveDynamicLight(Light);
+
         }
 
         /// <summary>

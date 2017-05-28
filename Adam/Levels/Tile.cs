@@ -62,7 +62,10 @@ namespace ThereMustBeAnotherWay
         private Rectangle _startingRectangle;
         private const int DefaultAnimationSpeed = 125;
         private int animationSpeed = DefaultAnimationSpeed;
-        private bool _wasInitialized;
+        /// <summary>
+        /// Set to true if the tile should not be shown in the gameworld anymore.
+        /// </summary>
+        public bool IsHidden { get; set; } = false;
         private bool _hasTopAndBottomPattern;
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
@@ -505,19 +508,19 @@ namespace ThereMustBeAnotherWay
                 case TileType.AquaantCrystal: // Blue crystal.
                     _frameCount = new Vector2(2, 0);
                     _positionInSpriteSheet = new Vector2(20, 27);
-                    new Crystal(this, 3);
+                    Interactable = new Crystal(this, 3);
                     LetsLightThrough = true;
                     break;
                 case TileType.HeliauraCrystal: // Yellow crystal.
                     _frameCount = new Vector2(4, 0);
                     _positionInSpriteSheet = new Vector2(20, 29);
-                    new Crystal(this, 1);
+                    Interactable = new Crystal(this, 1);
                     LetsLightThrough = true;
                     break;
                 case TileType.SentistractSludge: // Green sludge.
                     _frameCount = new Vector2(6, 0);
                     _positionInSpriteSheet = new Vector2(14, 27);
-                    new Crystal(this, 2);
+                    Interactable = new Crystal(this, 2);
                     LetsLightThrough = true;
                     break;
                 case TileType.VoidFireSpitter: // Void FireSpitter.
@@ -528,19 +531,19 @@ namespace ThereMustBeAnotherWay
                 case TileType.SapphireCrystal: // Sapphire Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 24);
-                    new Crystal(this, 3);
+                    Interactable = new Crystal(this, 3);
                     LetsLightThrough = true;
                     break;
                 case TileType.RubyCrystal: // Ruby Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(22, 25);
-                    new Crystal(this, 4);
+                    Interactable = new Crystal(this, 4);
                     LetsLightThrough = true;
                     break;
                 case TileType.EmeraldCrystal: // Emerald Crystal.
                     _frameCount = new Vector2(1, 0);
                     _positionInSpriteSheet = new Vector2(21, 25);
-                    new Crystal(this, 2);
+                    Interactable = new Crystal(this, 2);
                     LetsLightThrough = true;
                     break;
                 case TileType.Skull: // Skull.
@@ -1251,7 +1254,7 @@ namespace ThereMustBeAnotherWay
             animationSpeed = DefaultAnimationSpeed;
             DrawRectangle = _defaultDrawRectangle;
             _frameCount = Vector2.Zero;
-            _wasInitialized = false;
+            IsHidden = false;
             LetsLightThrough = false;
             _sizeOfTile = new Point(32, 32);
             DefineDrawRectangle();
@@ -1278,7 +1281,7 @@ namespace ThereMustBeAnotherWay
                     return;
                 if (_isInvisibleInEditMode && TMBAW_Game.CurrentGameMode == GameMode.Edit)
                     return;
-                else
+                else if (!IsHidden)
                 {
                     Interactable?.Draw(spriteBatch, this);
                     spriteBatch.Draw(Texture, DrawRectangle, SourceRectangle, Color * _opacity);

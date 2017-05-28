@@ -49,6 +49,7 @@ namespace ThereMustBeAnotherWay
         private Vector2 _positionInLastFrame;
         protected Vector2 Velocity;
         protected Animation SimpleAnimation;
+        protected Light Light;
 
         private Texture2D _texture;
         private Color _color = Color.White;
@@ -315,6 +316,9 @@ namespace ThereMustBeAnotherWay
                     MoveBy(Velocity.X, 0);
                 }
 
+                // Update light position.
+                Light?.Update(Center);
+
                 if (Weight != 0)
                     ApplyAirFriction();
 
@@ -477,6 +481,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public virtual void Destroy()
         {
+            LightingEngine.RemoveDynamicLight(Light);
             GameWorld.Entities.Remove(this);
         }
 

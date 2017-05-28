@@ -2,10 +2,11 @@
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
-    public class Crystal
+    public class Crystal : Interactable
     {
         Rectangle _collRectangle;
         bool _broken;
@@ -18,32 +19,40 @@ namespace ThereMustBeAnotherWay.Interactables
             this._gemId = gemId;
             this._sourceTile = sourceTile;
 
-            sourceTile.OnTileDestroyed += SourceTile_OnTileDestroyed;
-            sourceTile.OnTileUpdate += Update;
-
             _collRectangle = sourceTile.DrawRectangle;
 
             int rand = TMBAW_Game.Random.Next(1, 9);
             _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
+            Light = new Light(new Vector2(_collRectangle.Center.X, _collRectangle.Center.Y), Light.MaxLightLevel, Gem.GetGemColor(gemId), false);
+            Initialize();
         }
 
-        private void SourceTile_OnTileDestroyed(Tile t)
+        public override void Update(Tile tile)
         {
-            _sourceTile.OnTileUpdate -= Update;
-            _sourceTile.OnTileUpdate -= SourceTile_OnTileDestroyed;
+            foreach (var proj in GameWorld.EnemyProjectiles.Concat(GameWorld.PlayerProjectiles))
+            {
+                if (proj.GetCollRectangle().Intersects(_collRectangle))
+                {
+                    OnPlayerAction(tile, GameWorld.GetPlayer());
+                }
+            }
+
+            base.Update(tile);
         }
 
-        public void Update(Tile t)
+        public override void OnPlayerAction(Tile tile, Player player)
         {
-            Player player = GameWorld.Player;
-
-            if (player.GetCollRectangle().Intersects(_collRectangle) && !_broken)
+            if (!_broken)
             {
                 _breakSound.Play();
                 _broken = true;
                 Gem.GenerateIdentical(_gemId, _sourceTile, TMBAW_Game.Random.Next(4, 8));
-                _sourceTile.ResetToDefault();
+                tile.IsHidden = true;
+                LightingEngine.RemoveDynamicLight(Light);
             }
+
+            base.OnPlayerAction(tile, player);
+
         }
     }
 }
