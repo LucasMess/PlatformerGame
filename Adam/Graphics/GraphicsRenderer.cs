@@ -28,9 +28,18 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         private static BlendState LightingBlend = new BlendState
         {
-            AlphaSourceBlend = Blend.DestinationColor,
+            AlphaSourceBlend = Blend.DestinationAlpha,
             ColorSourceBlend = Blend.DestinationColor,
-            ColorDestinationBlend = Blend.Zero
+            ColorDestinationBlend = Blend.Zero,
+            AlphaDestinationBlend = Blend.InverseSourceAlpha,
+        };
+
+        private static BlendState OnAlphaBlend = new BlendState
+        {
+            AlphaSourceBlend = Blend.DestinationAlpha,
+            ColorSourceBlend = Blend.One,
+            ColorDestinationBlend = Blend.InverseSourceAlpha,
+            AlphaDestinationBlend = Blend.InverseSourceAlpha,
         };
 
         /// <summary>
@@ -91,6 +100,7 @@ namespace ThereMustBeAnotherWay.Graphics
         private static RenderTarget2D _mainRenderTarget;
         private static RenderTarget2D _rippleRenderTarget;
         private static RenderTarget2D _combinedLightingRenderTarget;
+        private static RenderTarget2D _combinedWorldRenderTarget;
 
         private static Effect testEffect;
 
@@ -136,6 +146,10 @@ namespace ThereMustBeAnotherWay.Graphics
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
+            _combinedWorldRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
+                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
+                   graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
             testEffect = ContentHelper.LoadEffect("Effects/testEffect");
 
         }
@@ -171,21 +185,24 @@ namespace ThereMustBeAnotherWay.Graphics
 
             _graphicsDevice.SetRenderTarget(_combinedLightingRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer);
             int width = TMBAW_Game.DefaultResWidth;
             int height = TMBAW_Game.DefaultResHeight;
-            _spriteBatch.Draw(_sunlightRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.Draw(_otherLightsRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+            _spriteBatch.Draw(_sunlightRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
             _graphicsDevice.SetRenderTarget(_rippleRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
             DrawRipples();
 
-            _graphicsDevice.SetRenderTarget(null);
-            _graphicsDevice.Clear(Color.Green);
+            _graphicsDevice.SetRenderTarget(_combinedWorldRenderTarget);
+            _graphicsDevice.Clear(Color.Transparent);
             CombineRenderTargets();
+
+            _graphicsDevice.SetRenderTarget(null);
+            _graphicsDevice.Clear(Color.Transparent);
+            FinalRender();
 
         }
 
@@ -251,15 +268,7 @@ namespace ThereMustBeAnotherWay.Graphics
             GameWorld.DrawWalls(_spriteBatch);
             _spriteBatch.End();
 
-            BlendState bs = new BlendState
-            {
-                AlphaSourceBlend = Blend.DestinationAlpha,
-                ColorSourceBlend = Blend.One,
-                ColorDestinationBlend = Blend.InverseSourceAlpha,
-                AlphaDestinationBlend = Blend.InverseSourceAlpha,
-            };
-
-            _spriteBatch.Begin(SpriteSortMode.Deferred, bs, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, OnAlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawWallShadows(_spriteBatch);
             _spriteBatch.End();
         }
@@ -276,22 +285,21 @@ namespace ThereMustBeAnotherWay.Graphics
                 return;
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
-            GameWorld.DrawBackground(_spriteBatch);
             _spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
             _spriteBatch.End();
 
 
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.Draw(_spriteBatch);
+            GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
+            if (GameDebug.IsDebugOn)
+                LightingEngine.DrawDebug(_spriteBatch);
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
-            GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
-            if (GameDebug.IsDebugOn)
-                GameWorld.DrawGlows(_spriteBatch);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
+            GameWorld.DrawGlows(_spriteBatch);
             _spriteBatch.End();
 
 
@@ -324,14 +332,12 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         private static void CombineRenderTargets()
         {
-            int width = TMBAW_Game.UserResWidth;
-            int height = TMBAW_Game.UserResHeight;
+            int width = TMBAW_Game.DefaultResWidth;
+            int height = TMBAW_Game.DefaultResHeight;
 
             testEffect.Parameters["InputTexture"].SetValue(_rippleRenderTarget);
             testEffect.Parameters["LastTexture"].SetValue(_mainRenderTarget);
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, testEffect);
-            //_spriteBatch.Draw(_backgroundRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
-            //_spriteBatch.Draw(_wallRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.Draw(_mainRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
 
@@ -345,11 +351,17 @@ namespace ThereMustBeAnotherWay.Graphics
                 }
             }
 
+        }
 
+        private static void FinalRender()
+        {
+            int width = TMBAW_Game.UserResWidth;
+            int height = TMBAW_Game.UserResHeight;
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
+            _spriteBatch.Draw(_backgroundRenderTarget, new Rectangle(0, 0, width, height), Color.White);
+            _spriteBatch.Draw(_combinedWorldRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.Draw(_userInterfaceRenderTarget, new Rectangle(0, 0, width, height), Color.White);
             _spriteBatch.End();
-
         }
 
         /// <summary>
@@ -365,7 +377,8 @@ namespace ThereMustBeAnotherWay.Graphics
         {
             if (IsDarkOutline) return Color.Black;
 
-            return new Color(63, 37, 140);
+            // Good color for night time.
+            //return new Color(63, 37, 140);
 
             return GameWorld.WorldData.SunLightColor;
         }

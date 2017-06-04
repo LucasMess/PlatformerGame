@@ -163,7 +163,6 @@ namespace ThereMustBeAnotherWay.Levels
         private static void UpdateLight(int i)
         {
             if (i < 0 || i >= _lights.Length) return;
-            if (_lights[i].IsSunlight) return;
             int width = GameWorld.WorldData.LevelWidth;
             Light[] lightsAround = new Light[4];
             if (i - width >= 0 && i - width < GameWorld.TileArray.Length)
@@ -187,10 +186,12 @@ namespace ThereMustBeAnotherWay.Levels
             Light sourceRed = new Light();
             Light sourceGreen = new Light();
             Light sourceBlue = new Light();
+            Light sourceSun = new Light();
             int count = 0;
-            int maxRed = 0;
-            int maxGreen = 0;
-            int maxBlue = 0;
+            sbyte maxRed = 0;
+            sbyte maxGreen = 0;
+            sbyte maxBlue = 0;
+            sbyte maxSun = 0;
             foreach (var light in lightsAround)
             {
                 if (light != null)
@@ -210,25 +211,33 @@ namespace ThereMustBeAnotherWay.Levels
                         maxBlue = light.BlueIntensity;
                         sourceBlue = light;
                     }
+                    if (light.SunlightIntensity > maxSun)
+                    {
+                        maxSun = light.SunlightIntensity;
+                        sourceSun = light;
+                    }
                 }
                 count++;
             }
 
-            int change = 1;
+            sbyte change = 1;
             if (!GameWorld.TileArray[i].LetsLightThrough)
                 change += 2;
 
 
-            int newRed = maxRed - change;
-            int newGreen = maxGreen - change;
-            int newBlue = maxBlue - change;
+            sbyte newRed = (sbyte)(maxRed - change);
+            sbyte newGreen = (sbyte)(maxGreen - change);
+            sbyte newBlue = (sbyte)(maxBlue - change);
+            sbyte newSun = (sbyte)(maxSun - change);
 
             if (newRed < 0) newRed = 0;
             if (newGreen < 0) newGreen = 0;
             if (newBlue < 0) newBlue = 0;
+            if (newSun < 0) newBlue = 0;
             if (newRed > Light.MaxLightLevel) newRed = Light.MaxLightLevel;
             if (newGreen > Light.MaxLightLevel) newGreen = Light.MaxLightLevel;
             if (newBlue > Light.MaxLightLevel) newBlue = Light.MaxLightLevel;
+            if (newSun > Light.MaxLightLevel) newSun = Light.MaxLightLevel;
 
             Light thisLight = _lights[i];
 
@@ -251,6 +260,11 @@ namespace ThereMustBeAnotherWay.Levels
                 thisLight.BlueIntensity = newBlue;
                 if (sourceBlue != null)
                     thisLight.BlueSource = sourceBlue;
+                _needsToUpdateAgain = true;
+            }
+            if (thisLight.SunlightIntensity < newSun)
+            {
+                thisLight.SunlightIntensity = newSun;
                 _needsToUpdateAgain = true;
             }
         }
@@ -306,8 +320,7 @@ namespace ThereMustBeAnotherWay.Levels
 
             foreach (var index in indexes)
             {
-                if (_lights != null && _lights[index] != null && _lights[index].IsSunlight)
-                    _lights?[index]?.DrawLight(spriteBatch);
+                _lights?[index]?.DrawSunlight(spriteBatch);
             }
 
         }
@@ -328,18 +341,32 @@ namespace ThereMustBeAnotherWay.Levels
 
             foreach (var index in indexes)
             {
-                if (_lights != null && _lights[index] != null && !_lights[index].IsSunlight)
-                    _lights?[index]?.DrawLight(spriteBatch);
+                _lights?[index]?.DrawLight(spriteBatch);
             }
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)
         {
-            //foreach (var light in _dynamicLights)
-            //{
-            //    light.DrawLightAsGlow(spriteBatch);
-            //    light.DrawDebug(spriteBatch);
-            //}
+            foreach (var light in _dynamicLights)
+            {
+                light.DrawLightAsGlow(spriteBatch);
+            }
+
+            if (GameWorld.TileArray == null || GameWorld.TileArray.Length == 0)
+                return;
+
+            int[] indexes = GameWorld.ChunkManager.GetVisibleIndexes();
+            if (indexes == null)
+                return;
+
+            foreach (var index in indexes)
+            {
+                _lights?[index]?.DrawLightAsGlow(spriteBatch);
+            }
+        }
+
+        public static void DrawDebug(SpriteBatch spriteBatch)
+        {
             foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
             {
                 //_lights[index]?.DrawGlow(spriteBatch);

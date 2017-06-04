@@ -11,19 +11,17 @@ namespace ThereMustBeAnotherWay.Levels
 {
     public class Light
     {
-        public const int MaxLightLevel = 16;
-        public int LightLevel { get; set; } = 0;
-        public int RedIntensity { get; set; } = 0;
-        public int GreenIntensity { get; set; } = 0;
-        public int BlueIntensity { get; set; } = 0;
+        public const sbyte MaxLightLevel = 16;
+        public sbyte RedIntensity { get; set; } = 0;
+        public sbyte GreenIntensity { get; set; } = 0;
+        public sbyte BlueIntensity { get; set; } = 0;
+        public sbyte SunlightIntensity { get; set; } = 0;
+ 
+
         private const int DefaultRadius = 64;
         private static Rectangle _sourceRectangle = new Rectangle(320, 240, 64, 64);
         private static Rectangle _sourceRectangleFullWhite = new Rectangle(336, 224, 16, 16);
         private Vector2 _center;
-        public Color _color = Color.Black;
-        public float Red { get; set; }
-        public float Green { get; set; }
-        public float Blue { get; set; }
         public Light RedSource { get; set; }
         public Light GreenSource { get; set; }
         public Light BlueSource { get; set; }
@@ -42,16 +40,22 @@ namespace ThereMustBeAnotherWay.Levels
 
         public Light(Vector2 center, int lightLevel, Color color, bool isSunlight = false)
         {
-            _color = color;
             _center = center;
-            LightLevel = lightLevel;
             IsSunlight = isSunlight;
-            if (lightLevel != 0)
+            if (isSunlight)
             {
-                IsLightSource = true;
-                RedIntensity = (int)(Light.MaxLightLevel * color.R / 255f);
-                GreenIntensity = (int)(Light.MaxLightLevel * color.G / 255f);
-                BlueIntensity = (int)(Light.MaxLightLevel * color.B / 255f);
+                SunlightIntensity = MaxLightLevel;
+                IsLightSource = false;
+            }
+            else
+            {
+                if (lightLevel != 0)
+                {
+                    IsLightSource = true;
+                    RedIntensity = (sbyte)(MaxLightLevel * color.R / 255f);
+                    GreenIntensity = (sbyte)(MaxLightLevel * color.G / 255f);
+                    BlueIntensity = (sbyte)(MaxLightLevel * color.B / 255f);
+                }
             }
             Update(_center);
         }
@@ -70,10 +74,16 @@ namespace ThereMustBeAnotherWay.Levels
         public Rectangle DrawRectangle { get; private set; }
         public Rectangle GlowRectangle { get; private set; }
 
+        public void DrawSunlight(SpriteBatch spriteBatch)
+        {
+            if (SunlightIntensity == 0) return;
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, Color.White * ((float)SunlightIntensity / Light.MaxLightLevel), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+        }
+
         public void DrawLight(SpriteBatch spriteBatch)
         {
              Update(_center);
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
+            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, (GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
             _hasIncremented = false;
         }
 
@@ -152,14 +162,15 @@ namespace ThereMustBeAnotherWay.Levels
 
         internal void DrawLightAsGlow(SpriteBatch spriteBatch)
         {
-            Update(_center);
-            //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
-            if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
+            if (IsLightSource)
             {
-                return;
+                float old = Scale;
+                Scale /= 2;
+                Update(_center);
+                Scale = old;
+                spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)) * .5f, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                _hasIncremented = false;
             }
-            spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)) * .5f, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-            _hasIncremented = false;
         }
 
         public void DrawDebug(SpriteBatch spriteBatch)
