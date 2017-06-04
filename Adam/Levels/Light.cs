@@ -169,7 +169,6 @@ namespace ThereMustBeAnotherWay.Levels
                 Update(_center);
                 Scale = old;
                 spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)) * .5f, 0, new Vector2(0, 0), SpriteEffects.None, 0);
-                _hasIncremented = false;
             }
         }
 

@@ -293,8 +293,8 @@ namespace ThereMustBeAnotherWay.Graphics
             GameWorld.Draw(_spriteBatch);
             GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
-            if (GameDebug.IsDebugOn)
-                LightingEngine.DrawDebug(_spriteBatch);
+            //if (GameDebug.IsDebugOn)
+            //    LightingEngine.DrawDebug(_spriteBatch);
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
