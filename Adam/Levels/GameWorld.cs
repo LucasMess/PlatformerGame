@@ -387,15 +387,20 @@ namespace ThereMustBeAnotherWay.Levels
             }
         }
 
-        public static void DrawLights(SpriteBatch spriteBatch)
+        public static void DrawSunlight(SpriteBatch spriteBatch)
         {
-            LightingEngine.DrawLights(spriteBatch);
+            LightingEngine.DrawSunlight(spriteBatch);
 
             //if (LightingEngine.LASTMODIFIEDINDICES != null)
             //    foreach (var ind in LightingEngine.LASTMODIFIEDINDICES)
             //    {
             //        TileArray[ind].DebugDraw(spriteBatch);
             //    }
+        }
+
+        public static void DrawOtherLights(SpriteBatch spriteBatch)
+        {
+            LightingEngine.DrawOtherLights(spriteBatch);
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)

@@ -83,7 +83,7 @@ namespace ThereMustBeAnotherWay.Levels
             if (tile.LetsLightThrough && wall.LetsLightThrough)
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                 GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, GameWorld.WorldData.SunLightColor, true);
+                 GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), Light.MaxLightLevel, Color.White, true);
             }
 
 
@@ -294,17 +294,26 @@ namespace ThereMustBeAnotherWay.Levels
             return indices.ToArray();
         }
 
-        public static void DrawLights(SpriteBatch spriteBatch)
+        public static void DrawSunlight(SpriteBatch spriteBatch)
         {
-            //_sunLights = from light in _lights
-            //             where light.IsSunlight
-            //             select light;
 
-            //_staticLights = from light in _lights
-            //                where !light.IsSunlight
-            //                select light;
+            if (GameWorld.TileArray == null || GameWorld.TileArray.Length == 0)
+                return;
 
+            int[] indexes = GameWorld.ChunkManager.GetVisibleIndexes();
+            if (indexes == null)
+                return;
 
+            foreach (var index in indexes)
+            {
+                if (_lights != null && _lights[index] != null && _lights[index].IsSunlight)
+                    _lights?[index]?.DrawLight(spriteBatch);
+            }
+
+        }
+
+        public static void DrawOtherLights(SpriteBatch spriteBatch)
+        {
             foreach (var light in _dynamicLights)
             {
                 light.DrawLight(spriteBatch);
@@ -320,15 +329,8 @@ namespace ThereMustBeAnotherWay.Levels
             foreach (var index in indexes)
             {
                 if (_lights != null && _lights[index] != null && !_lights[index].IsSunlight)
-                 _lights?[index]?.DrawLight(spriteBatch);
-            }
-
-            foreach (var index in indexes)
-            {
-                if (_lights != null && _lights[index] != null && _lights[index].IsSunlight)
                     _lights?[index]?.DrawLight(spriteBatch);
             }
-
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)
