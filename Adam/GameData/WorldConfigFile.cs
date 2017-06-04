@@ -23,6 +23,7 @@ namespace ThereMustBeAnotherWay.GameData
         public byte AmbienceId { get; set; }
 
         public bool HasClouds { get; set; }
+        public bool HasSun { get; set; }
         public bool IsRaining { get; set; }
         public bool IsSnowing { get; set; }
         public bool IsDarkOutline { get; set; }
@@ -149,6 +150,7 @@ namespace ThereMustBeAnotherWay.GameData
 
             GameWorld.WorldData.LevelName = LevelName;
             GameWorld.WorldData.HasClouds = HasClouds;
+            GameWorld.WorldData.HasSun = HasSun;
             GameWorld.WorldData.IsRaining = IsRaining;
             GameWorld.WorldData.IsSnowing = IsSnowing;
             GameWorld.WorldData.IsDarkOutline = IsDarkOutline;

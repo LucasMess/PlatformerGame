@@ -99,7 +99,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             CollRectangle = new Rectangle(0, 0, 32, 64);
             SourceRectangle = new Rectangle(0, 0, 24, 40);
 
-            lightAroundPlayer = new Light(Center, 15, Color.White, false) { Scale = 1 };
+            lightAroundPlayer = new Light(Center, 15, Color.White, false) { Scale = 1, IsLightSource = false, };
 
 
             InitializeInput();

@@ -84,7 +84,7 @@ namespace ThereMustBeAnotherWay
 
             middleCoords[0] = new Vector2((TMBAW_Game.Camera.LastCameraLeftCorner.X / 10) % TMBAW_Game.DefaultResWidth, (TMBAW_Game.Camera.LastCameraLeftCorner.Y / (TMBAW_Game.Tilesize * GameWorld.WorldData.LevelHeight) * TMBAW_Game.DefaultResHeight * 1 / 4) + TMBAW_Game.DefaultResHeight * 1 / 4);
 
-            foreCoords[0] = new Vector2((TMBAW_Game.Camera.LastCameraLeftCorner.X / 5) % TMBAW_Game.DefaultResWidth, (TMBAW_Game.Camera.LastCameraLeftCorner.Y / (TMBAW_Game.Tilesize * GameWorld.WorldData.LevelHeight) * TMBAW_Game.DefaultResHeight * 1/3) + TMBAW_Game.DefaultResHeight * 1 / 3);
+            foreCoords[0] = new Vector2((TMBAW_Game.Camera.LastCameraLeftCorner.X / 5) % TMBAW_Game.DefaultResWidth, (TMBAW_Game.Camera.LastCameraLeftCorner.Y / (TMBAW_Game.Tilesize * GameWorld.WorldData.LevelHeight) * TMBAW_Game.DefaultResHeight * 1 / 3) + TMBAW_Game.DefaultResHeight * 1 / 3);
 
             middleCoords[1] = middleCoords[0] + new Vector2(TMBAW_Game.DefaultResWidth, 0);
             foreCoords[1] = foreCoords[0] + new Vector2(TMBAW_Game.DefaultResWidth, 0);
@@ -102,7 +102,8 @@ namespace ThereMustBeAnotherWay
 
             }
 
-            spriteBatch.Draw(_sun, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+            if (GameWorld.WorldData.HasSun)
+                spriteBatch.Draw(_sun, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
 
             if (_middlegroundTexture != null)
             {

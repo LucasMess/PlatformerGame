@@ -124,6 +124,14 @@ namespace ThereMustBeAnotherWay
                                 if (bool.TryParse(commands[2], out value))
                                     GameWorld.WorldData.IsRaining = value;
                                 break;
+                            case "clouds":
+                                if (bool.TryParse(commands[2], out value))
+                                    GameWorld.WorldData.HasClouds = value;
+                                break;
+                            case "sun":
+                                if (bool.TryParse(commands[2], out value))
+                                    GameWorld.WorldData.HasSun = value;
+                                break;
                             case "soundtrack":
                                 if (int.TryParse(commands[2], out number))
                                     GameWorld.WorldData.SoundtrackId = (byte)number;

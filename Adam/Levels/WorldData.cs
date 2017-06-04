@@ -34,7 +34,7 @@ namespace ThereMustBeAnotherWay.Levels
         public byte SoundtrackId { get; set; }
         public bool IsDarkOutline { get; set; }
         public Color SunLightColor { get; set; } = Color.White;
-
+        public bool HasSun { get; set; }
         public Vector2 SpawnPoint { get; set; }
 
         /// <summary>
