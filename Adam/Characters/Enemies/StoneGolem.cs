@@ -38,6 +38,6 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
 
         protected override SoundFx DeathSound => null;
 
-        protected override Rectangle DrawRectangle => CollRectangle;
+        protected override Rectangle DrawRectangle => ComplexAnimation.GetDrawRectangle();
     }
 }

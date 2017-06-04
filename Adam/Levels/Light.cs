@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
+using System.Text;
+using ThereMustBeAnotherWay.Misc.Helpers;
+using MonoGame.Extended.BitmapFonts;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -70,11 +73,6 @@ namespace ThereMustBeAnotherWay.Levels
         public void DrawLight(SpriteBatch spriteBatch)
         {
              Update(_center);
-            //spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, 32,32), _sourceRectangleFullWhite, Color.White);
-            if (BlueIntensity == 0 && RedIntensity == 0 && GreenIntensity == 0)
-            {
-                return;
-            }
             spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)), 0, new Vector2(0, 0), SpriteEffects.None, 0);
             _hasIncremented = false;
         }
@@ -90,27 +88,6 @@ namespace ThereMustBeAnotherWay.Levels
             if (BlueIntensity > max)
                 max = BlueIntensity;
             return max;
-        }
-
-        public Color GetRedSourceColor()
-        {
-            if (IsLightSource || RedSource == null)
-                return _color;
-            else return RedSource.GetRedSourceColor();
-        }
-
-        public Color GetGreenSourceColor()
-        {
-            if (IsLightSource || GreenSource == null)
-                return _color;
-            else return GreenSource.GetGreenSourceColor();
-        }
-
-        public Color GetBlueSourceColor()
-        {
-            if (IsLightSource || BlueSource == null)
-                return _color;
-            else return BlueSource.GetBlueSourceColor();
         }
 
         private const int ShakeOffset = 10;
@@ -183,6 +160,13 @@ namespace ThereMustBeAnotherWay.Levels
             }
             spriteBatch.Draw(_texture, DrawRectangle, _sourceRectangle, new Color((float)RedIntensity / MaxLightLevel, (float)GreenIntensity / MaxLightLevel, (float)BlueIntensity / MaxLightLevel, ((float)GetOpacity() / MaxLightLevel)) * .5f, 0, new Vector2(0, 0), SpriteEffects.None, 0);
             _hasIncremented = false;
+        }
+
+        public void DrawDebug(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(FontHelper.Fonts[0], RedIntensity.ToString(), new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y), Color.Red);
+            spriteBatch.DrawString(FontHelper.Fonts[0], GreenIntensity.ToString(), new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y + 8), Color.Green);
+            spriteBatch.DrawString(FontHelper.Fonts[0], BlueIntensity.ToString(), new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y + 16), Color.Blue);
         }
     }
 }

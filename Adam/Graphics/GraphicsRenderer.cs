@@ -264,9 +264,10 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
-            //GameWorld.DrawGlows(_spriteBatch);
+            if (GameDebug.IsDebugOn)
+                GameWorld.DrawGlows(_spriteBatch);
             _spriteBatch.End();
 
 
@@ -282,7 +283,7 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _lightingRenderTarget.Bounds, Color.White * .05f);
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.DrawLights(_spriteBatch);
             _spriteBatch.End();
         }

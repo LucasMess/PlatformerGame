@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ThereMustBeAnotherWay.Misc.Helpers;
 using static ThereMustBeAnotherWay.TMBAW_Game;
 
 namespace ThereMustBeAnotherWay.Levels
@@ -11,8 +14,12 @@ namespace ThereMustBeAnotherWay.Levels
         //TODO: Work on lower performance lighting system.
 
         private static Light[] _lights;
+
         private static List<Light> _dynamicLights = new List<Light>();
         static Color Sunset = new Color(244, 158, 66);
+
+        private static IEnumerable<Light> _staticLights;
+        private static IEnumerable<Light> _sunLights;
 
         public static void AddDynamicLight(Light light)
         {
@@ -224,8 +231,6 @@ namespace ThereMustBeAnotherWay.Levels
             if (newBlue > Light.MaxLightLevel) newBlue = Light.MaxLightLevel;
 
             Light thisLight = _lights[i];
-            if (thisLight.IsLightSource)
-                return;
 
             if (thisLight.RedIntensity < newRed)
             {
@@ -291,6 +296,15 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void DrawLights(SpriteBatch spriteBatch)
         {
+            //_sunLights = from light in _lights
+            //             where light.IsSunlight
+            //             select light;
+
+            //_staticLights = from light in _lights
+            //                where !light.IsSunlight
+            //                select light;
+
+
             foreach (var light in _dynamicLights)
             {
                 light.DrawLight(spriteBatch);
@@ -305,33 +319,38 @@ namespace ThereMustBeAnotherWay.Levels
 
             foreach (var index in indexes)
             {
-                _lights?[index]?.DrawLight(spriteBatch);
+                if (_lights != null && _lights[index] != null && !_lights[index].IsSunlight)
+                 _lights?[index]?.DrawLight(spriteBatch);
+            }
 
-                //_lights[index]?.DrawR(spriteBatch);
-                //_lights[index]?.DrawG(spriteBatch);
-                //_lights[index]?.DrawB(spriteBatch);
+            foreach (var index in indexes)
+            {
+                if (_lights != null && _lights[index] != null && _lights[index].IsSunlight)
+                    _lights?[index]?.DrawLight(spriteBatch);
             }
 
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)
         {
-            foreach (var light in _dynamicLights)
-            {
-                light.DrawLightAsGlow(spriteBatch);
-            }
-            //foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
+            //foreach (var light in _dynamicLights)
             //{
-            //    //_lights[index]?.DrawGlow(spriteBatch);
-            //    //Light light = _lights[index];
-            //    ////string text = _lights?[index]?.LightLevel.ToString();
-            //    ////Color color = _lights[index].GetColor();
-            //    //StringBuilder text = new StringBuilder();
-            //    //text.Append(light.RedIntensity + ",");
-            //    //text.Append(light.GreenIntensity + ",");
-            //    //text.Append(light.BlueIntensity);
-            //    //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+            //    light.DrawLightAsGlow(spriteBatch);
+            //    light.DrawDebug(spriteBatch);
             //}
+            foreach (var index in GameWorld.ChunkManager.GetVisibleIndexes())
+            {
+                //_lights[index]?.DrawGlow(spriteBatch);
+                Light light = _lights[index];
+                light.DrawDebug(spriteBatch);
+                //string text = _lights?[index]?.LightLevel.ToString();
+                //Color color = _lights[index].GetColor();
+                //StringBuilder text = new StringBuilder();
+                //text.Append(light.RedIntensity + ",");
+                //text.Append(light.GreenIntensity + ",");
+                //text.Append(light.BlueIntensity + "|");
+                //FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[0], text.ToString(), new Vector2(GameWorld.TileArray[index].DrawRectangle.Center.X - FontHelper.Fonts[0].MeasureString(text).X / 2, GameWorld.TileArray[index].DrawRectangle.Y), 1, Color.White, Color.Black);
+            }
         }
     }
 }

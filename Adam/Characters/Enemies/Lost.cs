@@ -11,14 +11,14 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
     public class Lost : Enemy
     {
         public Lost(int x, int y) { }
-        public override int MaxHealth => throw new NotImplementedException();
+        public override int MaxHealth => 50;
 
-        protected override SoundFx MeanSound => throw new NotImplementedException();
+        protected override SoundFx MeanSound => null;
 
-        protected override SoundFx AttackSound => throw new NotImplementedException();
+        protected override SoundFx AttackSound => null;
 
-        protected override SoundFx DeathSound => throw new NotImplementedException();
+        protected override SoundFx DeathSound => null;
 
-        protected override Rectangle DrawRectangle => throw new NotImplementedException();
+        protected override Rectangle DrawRectangle => CollRectangle;
     }
 }
