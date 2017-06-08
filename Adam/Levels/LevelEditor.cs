@@ -23,7 +23,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static Timer _switchEditAndPlayTimer = new Timer(true);
         private static readonly SoundFx[] Construction = new SoundFx[3];
         private static readonly Timer IdleTimerForSave = new Timer(true);
-        private static ButtonBar _buttonBar;
+        public static ButtonBar ButtonBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
         private static SoundFx _testSound = new SoundFx("Sounds/Level Editor/test_level");
@@ -55,7 +55,7 @@ namespace ThereMustBeAnotherWay.Levels
         public static void Load()
         {
             _inventory = new Inventory();
-            _buttonBar = new ButtonBar();
+            ButtonBar = new ButtonBar();
             HotBar.Initialize();
             _miniMap = new Minimap();
             _miniMap.StartUpdating();
@@ -99,7 +99,7 @@ namespace ThereMustBeAnotherWay.Levels
             SoundtrackManager.PlayLevelEditorTheme();
 
             _inventory.Update();
-            _buttonBar.Update();
+            ButtonBar.Update();
             HotBar.Update();
             Brush.Update();
             CheckIfOnInventory();
@@ -641,7 +641,7 @@ namespace ThereMustBeAnotherWay.Levels
         {
             _miniMap.Draw(spriteBatch);
             _inventory.Draw(spriteBatch);
-            _buttonBar.Draw(spriteBatch);
+            ButtonBar.Draw(spriteBatch);
             HotBar.Draw(spriteBatch);
             _inventory.DrawOnTop(spriteBatch);
         }
@@ -653,7 +653,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static bool IsIntersectingUi()
         {
             Rectangle mouse = InputHelper.GetMouseInUi();
-            if (mouse.Intersects(_buttonBar.GetCollRectangle()))
+            if (mouse.Intersects(ButtonBar.GetCollRectangle()))
                 return true;
             if (Inventory.IsOpen && mouse.Intersects(_inventory.GetCollRectangle()))
                 return true;

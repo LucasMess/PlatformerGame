@@ -9,7 +9,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
     /// <summary>
     ///     The UI element at the top-center of the screen in the level editor.
     /// </summary>
-    internal class ButtonBar
+    public class ButtonBar
     {
         private readonly Rectangle _drawRectangle;
         private readonly Rectangle _sourceRectangle;
@@ -99,6 +99,10 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         {
             TMBAW_Game.Camera.ResetZoom();
         }
+
+        public void OnSelectButtonClicked() => SelectButton_MouseClicked(selectButton);
+        public void OnEraserButtonClicked() => EraserButton_MouseClicked(eraserButton);
+        public void OnBrushButtonClicked() => BrushButton_MouseClicked(brushButton);
 
         private void SelectButton_MouseClicked(Button button)
         {

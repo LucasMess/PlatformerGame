@@ -64,13 +64,13 @@ namespace ThereMustBeAnotherWay.UI
             switch (mode)
             {
                 case BrushMode.Build:
-                    Cursor.ChangeCursor(Cursor.Type.Build);
+                    LevelEditor.ButtonBar.OnBrushButtonClicked();
                     break;
                 case BrushMode.Erase:
-                    Cursor.ChangeCursor(Cursor.Type.Erase);
+                    LevelEditor.ButtonBar.OnEraserButtonClicked();
                     break;
                 case BrushMode.Select:
-                    Cursor.ChangeCursor(Cursor.Type.Select);
+                    LevelEditor.ButtonBar.OnSelectButtonClicked();
                     break;
                 default:
                     break;
