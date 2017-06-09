@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -37,7 +38,8 @@ namespace ThereMustBeAnotherWay.UI
         private Rectangle bright, dim, middle;
         Image[] _selectionSquares = new Image[1];
         Tile[] _selectedBrushTiles = new Tile[1];
-        public int[] SelectedIndexes;
+        public int[] SelectedIndices;
+        private int[] _lastSelectedIndices;
 
         int _lastScrollWheel;
 
@@ -119,17 +121,29 @@ namespace ThereMustBeAnotherWay.UI
 
         private void CreateBrush()
         {
-            SelectedIndexes = GetTilesCoveredByBrush();
+            SelectedIndices = GetTilesCoveredByBrush();
+
+            // Check if the indices are the same as the last tick. This prevents the flickering for random subIds.
+            if (_lastSelectedIndices != null)
+            {
+                var union = from a in SelectedIndices
+                            join b in _lastSelectedIndices on a equals b
+                            select a;
+
+                // Return if two arrays are identical.
+                if (SelectedIndices.Length == _lastSelectedIndices.Length && union.Count() == SelectedIndices.Length)
+                    return;
+            }
 
             // Create grid.
-            if (SelectedIndexes[0] >= 0 && SelectedIndexes[0] < GameWorld.TileArray.Length)
+            if (SelectedIndices[0] >= 0 && SelectedIndices[0] < GameWorld.TileArray.Length)
             {
                 for (int i = 0; i < _selectedBrushTiles.Length; i++)
                 {
-                    if (SelectedIndexes[i] >= 0 && SelectedIndexes[i] < GameWorld.TileArray.Length)
+                    if (SelectedIndices[i] >= 0 && SelectedIndices[i] < GameWorld.TileArray.Length)
                     {
                         //Create transparent tiles to show selected tile
-                        Tile hoveredTile = GameWorld.TileArray[SelectedIndexes[i]];
+                        Tile hoveredTile = GameWorld.TileArray[SelectedIndices[i]];
                         Tile fakeTile = new Tile(true)
                         {
                             IsBrushTile = true
@@ -177,6 +191,9 @@ namespace ThereMustBeAnotherWay.UI
 
             grid.Rectangle = new Rectangle(firstTile.GetDrawRectangle().X - 4, firstTile.GetDrawRectangle().Y - 4, width, height);
             grid.Texture = GameWorld.UiSpriteSheet;
+
+            _lastSelectedIndices = new int[SelectedIndices.Length];
+            SelectedIndices.CopyTo(_lastSelectedIndices, 0);
 
         }
 

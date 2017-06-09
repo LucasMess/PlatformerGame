@@ -420,7 +420,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static void UpdateSelectedTiles(TileType desiredId)
         {
             bool hasChanged = false;
-            foreach (var i in Brush.SelectedIndexes)
+            foreach (var i in Brush.SelectedIndices)
             {
                 if (i < 0 || i > WorldDataIds.Length)
                     continue;
@@ -516,14 +516,14 @@ namespace ThereMustBeAnotherWay.Levels
         {
             if (Brush.Size == 1)
             {
-                LightingEngine.UpdateLightingAt(Brush.SelectedIndexes[0], true);
+                LightingEngine.UpdateLightingAt(Brush.SelectedIndices[0], true);
             }
             else
             {
-                int leftTop = Brush.SelectedIndexes[0];
-                int rightTop = Brush.SelectedIndexes[Brush.Size - 1];
-                int leftBot = Brush.SelectedIndexes[(Brush.Size - 1) * (Brush.Size - 2) + 1];
-                int rightBot = Brush.SelectedIndexes[Brush.SelectedIndexes.Length - 1];
+                int leftTop = Brush.SelectedIndices[0];
+                int rightTop = Brush.SelectedIndices[Brush.Size - 1];
+                int leftBot = Brush.SelectedIndices[(Brush.Size - 1) * (Brush.Size - 2) + 1];
+                int rightBot = Brush.SelectedIndices[Brush.SelectedIndices.Length - 1];
 
                 LightingEngine.UpdateLightingAt(leftTop, true);
                 LightingEngine.UpdateLightingAt(rightTop, true);
