@@ -100,6 +100,10 @@
     <Compile Include="Characters\Enemies\StoneGolem.cs" />
     <Compile Include="Characters\Enemies\SwingingAxe.cs" />
     <Compile Include="Characters\Enemies\TheIllusionist.cs" />
+    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="Particles\ParticleData.cs" />
+    <Compile Include="Particles\Emitter.cs" />
+    <Compile Include="Particles\ParticleGenerator.cs" />
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
@@ -192,7 +196,7 @@
     <Compile Include="Network\Packets\LevelPacket.cs" />
     <Compile Include="Network\Packets\PlayerPacket.cs" />
     <Compile Include="Network\Session.cs" />
-    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="Particles\ParticleSystem.cs" />
     <Compile Include="Characters\Player\Player.cs" />
     <Compile Include="Characters\Player\PlayerInput.cs" />
     <Compile Include="Characters\Player\PlayerProperties.cs" />
