@@ -52,8 +52,16 @@ namespace ThereMustBeAnotherWay
 
         public override void Update(Entity entity)
         {
-            _player = (Player)_player.Get();
             _weaponFireRateTimer.Increment();
+
+            if (_player.IsClimbing)
+            {
+                if (!_player.IsMoveLeftPressed() && !_player.IsMoveRightPressed())
+                {
+                    _player.SetVelX(0);
+                }
+            }
+
             base.Update(entity);
         }
 
@@ -267,7 +275,6 @@ namespace ThereMustBeAnotherWay
 
         public void OnClimbingUpAction(Player player)
         {
-            player.SetVelX(0);
             player.AddAnimationToQueue("climb");
             player.SetVelY(-ClimbingSpeed);
             player.IsClimbing = true;
@@ -275,7 +282,6 @@ namespace ThereMustBeAnotherWay
 
         public void OnClimbingDownAction(Player player)
         {
-            player.SetVelX(0);
             player.AddAnimationToQueue("climb");
             player.SetVelY(ClimbingSpeed);
             player.IsClimbing = true;
@@ -293,8 +299,11 @@ namespace ThereMustBeAnotherWay
             {
                 OnClimbingDownAction(player);
             }
-            player.AddAnimationToQueue("duck");
-            player.IsDucking = true;
+            else
+            {
+                player.AddAnimationToQueue("duck");
+                player.IsDucking = true;
+            }
         }
 
         public void OnDuckActionStop(Player player)
@@ -309,7 +318,7 @@ namespace ThereMustBeAnotherWay
             if (_weaponFireRateTimer.TimeElapsedInMilliSeconds > 500)
             {
                 _weaponFireRateTimer.Reset();
-               
+
                 player.AddAnimationToQueue("punch");
                 player.ComplexAnimation.FrameChanged += TimePunchFireProjectile;
                 player.AnimationEnded += PunchEnded;

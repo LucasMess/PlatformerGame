@@ -51,6 +51,10 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             _complexAnimation.AnimationStateChanged += ComplexAnim_AnimationStateChanged;
             _complexAnimation.FrameChanged += ComplexAnim_FrameChanged;
 
+            // Animation information.
+            CollRectangle = new Rectangle(0, 0, 24, 64);
+            SourceRectangle = new Rectangle(0, 0, 24, 40);
+
             // Animation textures.
             _complexAnimation.AddAnimationData("editMode",
             new ComplexAnimData(9999, edenTexture, new Rectangle(6, 7, 12, 66), 0, 24, 40, 400, 4, true));
@@ -94,10 +98,6 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             Sounds.AddSoundRef("fail", "Sounds/Menu/level_fail");
 
             _complexAnimation.AddToQueue("idle");
-
-            //Animation information
-            CollRectangle = new Rectangle(0, 0, 32, 64);
-            SourceRectangle = new Rectangle(0, 0, 24, 40);
 
             lightAroundPlayer = new Light(Center, 15, Color.White, false) { Scale = 1, IsLightSource = false, };
 
@@ -208,6 +208,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             else ObeysGravity = true;
 
             lightAroundPlayer.Update(Center);
+
+            script.Update(this);
 
             base.Update();
         }
@@ -336,6 +338,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), CollRectangle, Color.Red);
+
             // Do not draw player in main menu mode.
             if (TMBAW_Game.CurrentGameMode == GameMode.None) return;
 
