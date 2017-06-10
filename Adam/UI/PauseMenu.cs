@@ -22,6 +22,7 @@ namespace ThereMustBeAnotherWay.UI
 
         public static bool IsActive { get; private set; }
         private static bool _buttonReleased;
+        static bool removedLevelEditor = false;
 
         public static void Initialize()
         {
@@ -51,6 +52,11 @@ namespace ThereMustBeAnotherWay.UI
                 button.ChangeDimensions(new Vector2(TextButton.Width * 2, TextButton.Height * 2));
                 button.Color = new Color(196, 69, 69);
             }
+            SetPositionOfButtons();
+        }
+
+        private static void SetPositionOfButtons()
+        {
 
             int startingY = 200;
             int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
@@ -99,6 +105,20 @@ namespace ThereMustBeAnotherWay.UI
 
         public static void Update()
         {
+            // Remove the level editor button as required.
+            if (removedLevelEditor && GameWorld.IsTestingLevel)
+            {
+                _buttons.Insert(_buttons.Count - 1, _returnToLevelEditor);
+                SetPositionOfButtons();
+                removedLevelEditor = false;
+            }
+            else if (!removedLevelEditor && !GameWorld.IsTestingLevel)
+            {
+                _buttons.Remove(_returnToLevelEditor);
+                SetPositionOfButtons();
+                removedLevelEditor = true;
+            }
+
             if (IsActive)
             {
                 Cursor.ChangeCursor(Cursor.Type.Normal);
