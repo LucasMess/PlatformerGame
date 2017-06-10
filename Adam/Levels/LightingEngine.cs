@@ -24,7 +24,8 @@ namespace ThereMustBeAnotherWay.Levels
         public static void AddDynamicLight(Light light)
         {
             if (light != null)
-                _dynamicLights.Add(light);
+                if (!_dynamicLights.Contains(light))
+                    _dynamicLights.Add(light);
         }
 
         public static void RemoveDynamicLight(Light light)
@@ -90,7 +91,7 @@ namespace ThereMustBeAnotherWay.Levels
             if (tile.Id == TileType.Torch) // Torch
             {
                 _lights[ind] = new Light(new Vector2(GameWorld.TileArray[ind].GetDrawRectangle().Center.X,
-                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y), 15, new Color(255, 207, 100))
+                            GameWorld.TileArray[ind].GetDrawRectangle().Center.Y - 16), 15, new Color(255, 207, 100))
                 {
                     ChangesSize = true,
                 };
@@ -267,6 +268,11 @@ namespace ThereMustBeAnotherWay.Levels
                 thisLight.SunlightIntensity = newSun;
                 _needsToUpdateAgain = true;
             }
+        }
+
+        internal static int GetDynamicLightCount()
+        {
+            return _dynamicLights.Count;
         }
 
         private static void UpdateLightsAround(int i)

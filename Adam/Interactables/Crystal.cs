@@ -23,7 +23,7 @@ namespace ThereMustBeAnotherWay.Interactables
 
             int rand = TMBAW_Game.Random.Next(1, 9);
             _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
-            Light = new Light(new Vector2(_collRectangle.Center.X, _collRectangle.Center.Y), Light.MaxLightLevel, Gem.GetGemColor(gemId), false);
+            Light = new Light(new Vector2(_collRectangle.X + 16, _collRectangle.Y + 16), Light.MaxLightLevel, Gem.GetGemColor(gemId), false);
             Initialize();
         }
 

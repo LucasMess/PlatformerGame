@@ -190,6 +190,7 @@ namespace ThereMustBeAnotherWay
                     "World update time: " + GameWorld.updateTimer.ElapsedTicks,
                     "World draw time: " + GameWorld.drawTimer.ElapsedTicks,
                     "Visible tiles: " + GameWorld.ChunkManager?.GetVisibleIndexes()?.Length,
+                    "Dynamic light count: " +LightingEngine.GetDynamicLightCount(),
                 };
                 spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 

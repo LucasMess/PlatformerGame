@@ -87,6 +87,7 @@ namespace ThereMustBeAnotherWay.UI
             if (Size > MaxSize)
             {
                 Size = MaxSize;
+                DeleteOldTiles();
                 _selectedBrushTiles = new Tile[Size * Size];
             }
 
@@ -98,7 +99,7 @@ namespace ThereMustBeAnotherWay.UI
                     if (Size > MaxSize) Size = MaxSize;
                     else
                     {
-                        //_selectionSquares = new Image[Size * Size];
+                        DeleteOldTiles();
                         _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged?.Invoke();
                     }
@@ -109,7 +110,7 @@ namespace ThereMustBeAnotherWay.UI
                     if (Size < MinSize) Size = MinSize;
                     else
                     {
-                        //_selectionSquares = new Image[Size * Size];
+                        DeleteOldTiles();
                         _selectedBrushTiles = new Tile[Size * Size];
                         SizeChanged?.Invoke();
                     }
@@ -117,6 +118,20 @@ namespace ThereMustBeAnotherWay.UI
             }
 
             _lastScrollWheel = scrollWheel;
+        }
+
+        /// <summary>
+        /// Delete the tiles first, to prevent residual lights and interactables.
+        /// </summary>
+        private void DeleteOldTiles()
+        {
+            if (_selectedBrushTiles != null)
+            {
+                foreach (var tile in _selectedBrushTiles)
+                {
+                    tile?.ResetToDefault();
+                }
+            }
         }
 
         private void CreateBrush()
@@ -134,6 +149,8 @@ namespace ThereMustBeAnotherWay.UI
                 if (SelectedIndices.Length == _lastSelectedIndices.Length && union.Count() == SelectedIndices.Length)
                     return;
             }
+
+            DeleteOldTiles();
 
             // Create grid.
             if (SelectedIndices[0] >= 0 && SelectedIndices[0] < GameWorld.TileArray.Length)

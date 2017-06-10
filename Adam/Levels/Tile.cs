@@ -134,6 +134,9 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public void DefineTexture()
         {
+            // Destroy current interactable to prevent duplicates.
+            Interactable?.OnTileDestroyed(this);
+
             //Air ID is 0, so it can emit sunlight.
             if (Id == 0)
             {
