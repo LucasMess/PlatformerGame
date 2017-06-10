@@ -168,7 +168,7 @@ namespace ThereMustBeAnotherWay.Levels
 
             foreach (var t in array)
             {
-                t.FindConnectedTextures(ids, width);
+                t.FindConnectedTextures(ids, width, isWall);
                 t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                 t.DefineTexture();
             }
@@ -468,10 +468,10 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static Tile GetTileBelow(int index)
+        public static Tile GetTileBelow(int index, bool isWall = false)
         {
             index += WorldData.LevelWidth;
-            return GetTile(index);
+            return GetTile(index, isWall);
         }
 
         /// <summary>
@@ -479,10 +479,10 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static Tile GetTileAbove(int index)
+        public static Tile GetTileAbove(int index, bool isWall = false)
         {
             index -= WorldData.LevelWidth;
-            return GetTile(index);
+            return GetTile(index, isWall);
         }
 
         public static Player GetPlayer()

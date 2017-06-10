@@ -67,6 +67,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public bool IsHidden { get; set; } = false;
         private bool _hasTopAndBottomPattern;
+        private bool _hasLeftAndRightPattern;
         public Color Color = Color.White;
         public Rectangle DrawRectangle;
         private Rectangle _defaultDrawRectangle;
@@ -189,6 +190,7 @@ namespace ThereMustBeAnotherWay
                 case TileType.MarbleFloor: //Marble Floor
                     IsSolid = true;
                     LetsLightThrough = true;
+                    _hasLeftAndRightPattern = true;
                     switch (SubId)
                     {
                         case 0: //Foundation
@@ -290,6 +292,7 @@ namespace ThereMustBeAnotherWay
                     break;
                 case TileType.MarbleColumn: //Marble Column
                     LetsLightThrough = true;
+                    _hasTopAndBottomPattern = true;
                     switch (SubId)
                     {
                         case 0: //middle
@@ -334,6 +337,7 @@ namespace ThereMustBeAnotherWay
                 case TileType.Water: //water
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = true;
+                    _hasTopAndBottomPattern = true;
                     _positionInSpriteSheet = new Vector2(4, 15);
                     Interactable = new Water();
                     if (SubId == 1)
@@ -342,7 +346,7 @@ namespace ThereMustBeAnotherWay
                 case TileType.Lava: //lava
                     Interactable = new Lava();
                     animationSpeed = 1000;
-
+                    _hasTopAndBottomPattern = true;
                     _frameCount = new Vector2(4, 0);
                     _hasRandomStartingPoint = false;
                     _positionInSpriteSheet = new Vector2(0, 15);
@@ -365,6 +369,7 @@ namespace ThereMustBeAnotherWay
                 case TileType.MarbleCeiling: //Marble ceiling
                     IsSolid = true;
                     LetsLightThrough = true;
+                    _hasLeftAndRightPattern = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -743,9 +748,9 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     break;
                 case TileType.ReinforcedWoodPlatform:
+                    _hasLeftAndRightPattern = true;
                     switch (SubId)
                     {
-
                         case 0: // Base
                             _positionInSpriteSheet = new Vector2(256 / 16, 512 / 16);
                             break;
@@ -839,6 +844,7 @@ namespace ThereMustBeAnotherWay
                     IsSolid = true;
                     break;
                 case TileType.Fence: //Fences
+                    _hasTopAndBottomPattern = true;
                     switch (SubId)
                     {
                         case 0: //Plain
@@ -847,6 +853,7 @@ namespace ThereMustBeAnotherWay
                         case 1: //Top point
                             _positionInSpriteSheet = new Vector2(12, 6);
                             break;
+                        case 2: goto case 0;
                     }
                     LetsLightThrough = true;
                     break;
@@ -992,7 +999,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(288/16, 208/16);
+                    _positionInSpriteSheet = new Vector2(288 / 16, 208 / 16);
                     break;
                 case TileType.Lost: //Lost
                     if (!_isSampleTile)
@@ -1000,7 +1007,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(304, 192)/16;
+                    _positionInSpriteSheet = new Vector2(304, 192) / 16;
                     break;
                 case TileType.Hellboar: //Hellboar
                     if (!_isSampleTile)
@@ -1008,7 +1015,7 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
-                    _positionInSpriteSheet = new Vector2(320, 192)/16;
+                    _positionInSpriteSheet = new Vector2(320, 192) / 16;
                     break;
                 case TileType.StoneGolem: //Hellboar
                     if (!_isSampleTile)
@@ -1251,6 +1258,7 @@ namespace ThereMustBeAnotherWay
             Id = 0;
             Interactable = null;
             _hasTopAndBottomPattern = false;
+            _hasLeftAndRightPattern = false;
             IsSolid = false;
             SubId = 0;
             animationPlaysOnce = false;
@@ -1347,94 +1355,33 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         /// <param name="ids">The tile array that will be analyzed.</param>
         /// <param name="mapWidth">The width of the map in tiles.</param>
-        public void FindConnectedTextures(TileType[] ids, int mapWidth)
+        public void FindConnectedTextures(TileType[] ids, int mapWidth, bool isWall)
         {
             _cornerPieces.Clear();
 
-            // Wallpaper.
+            // i.e Wallpaper.
             if (_hasTopAndBottomPattern)
             {
-                var indexAbove = TileIndex - mapWidth;
-                var indexBelow = TileIndex + mapWidth;
-                if (ids[indexAbove] != Id)
+                var tileAbove = GameWorld.GetTileAbove(TileIndex);
+                var tileBelow = GameWorld.GetTileBelow(TileIndex);
+                if (tileAbove.Id != Id)
                 {
                     SubId = 1;
                 }
-                else if (ids[indexBelow] != Id)
-                {
-                    SubId = 2;
-                }
-                else SubId = 0;
-            }
-
-            //Marble columns
-            if (Id == TileType.MarbleColumn)
-            {
-                var indexAbove = TileIndex - mapWidth;
-                var indexBelow = TileIndex + mapWidth;
-                if (ids[indexAbove] != TileType.MarbleColumn)
-                {
-                    SubId = 1;
-                }
-                else if (ids[indexBelow] != TileType.MarbleColumn)
+                else if (tileBelow.Id != Id)
                 {
                     SubId = 2;
                 }
                 else SubId = 0;
             }
 
-            //Marble Floor
-            else if (Id == TileType.MarbleFloor)
+            // i.e Marble Floor
+            else if (_hasLeftAndRightPattern)
             {
-                if (ids[TileIndex - 1] != TileType.MarbleFloor)
+                if (GameWorld.GetTile(TileIndex + 1).Id != Id)
+                    SubId = 1;
+                else if (GameWorld.GetTile(TileIndex - 1).Id != Id)
                     SubId = 2;
-                else if (ids[TileIndex + 1] != TileType.MarbleFloor)
-                    SubId = 1;
-                else SubId = 0;
-            }
-
-
-            //Marble Ceiling
-            else if (Id == TileType.MarbleCeiling)
-            {
-                if (ids[TileIndex + 1] != TileType.MarbleCeiling)
-                    SubId = 1;
-                else if (ids[TileIndex - 1] != TileType.MarbleCeiling)
-                    SubId = 2;
-                else SubId = 0;
-            }
-
-            //Fences
-            else if (Id == TileType.Fence)
-            {
-                if (ids[TileIndex - mapWidth] != TileType.Fence)
-                    SubId = 1;
-                else SubId = 0;
-            }
-
-            // Water.
-            else if (Id == TileType.Water)
-            {
-                if (ids[TileIndex - mapWidth] != TileType.Water)
-                    SubId = 1;
-                else SubId = 0;
-            }
-
-            // Lava.
-            else if (Id == TileType.Lava)
-            {
-                if (ids[TileIndex - mapWidth] != TileType.Lava)
-                    SubId = 1;
-                else SubId = 0;
-            }
-
-            else if (Id == TileType.ReinforcedWoodPlatform)
-            {
-                if (ids[TileIndex - 1] != TileType.ReinforcedWoodPlatform)
-                    SubId = 2;
-                else if (ids[TileIndex + 1] != TileType.ReinforcedWoodPlatform)
-                    SubId = 1;
-                else SubId = 0;
             }
 
             switch (CurrentBorderType)
@@ -1457,7 +1404,6 @@ namespace ThereMustBeAnotherWay
             {
                 ConnectShadows();
             }
-
 
         }
 
@@ -2168,11 +2114,11 @@ namespace ThereMustBeAnotherWay
                 {
                     if (IsSolid)
                     {
-                        var indexAbove = TileIndex - mapWidth;
-                        if (array[indexAbove].Id == TileType.Air)
+                        var tileAbove = GameWorld.GetTileAbove(TileIndex);
+                        if (tileAbove.Id == TileType.Air)
                         {
-                            array[indexAbove].Id = TileType.SnowCover;
-                            array[indexAbove].DefineTexture();
+                            tileAbove.Id = TileType.SnowCover;
+                            tileAbove.DefineTexture();
                         }
                     }
                 }
@@ -2183,24 +2129,24 @@ namespace ThereMustBeAnotherWay
                 //Add decoration on top of grass tile.
                 if (Id == TileType.Grass && SubId == 5)
                 {
-                    var indexAbove = TileIndex - mapWidth;
-                    if (array[indexAbove].Id == 0)
+                    var tileAbove = GameWorld.GetTileAbove(TileIndex, IsWall);
+                    if (tileAbove.Id == 0)
                     {
                         var rand = TMBAW_Game.Random.Next(0, 10);
                         if (rand == 0) //flower
                         {
-                            array[indexAbove].Id = TileType.Flower;
+                            tileAbove.Id = TileType.Flower;
                         }
                         else if (rand == 1 || rand == 2) //tall grass
                         {
-                            array[indexAbove].Id = TileType.TallGrass;
+                            tileAbove.Id = TileType.TallGrass;
                         }
                         else //short grass
                         {
-                            array[indexAbove].Id = TileType.ShortGrass;
+                            tileAbove.Id = TileType.ShortGrass;
                         }
 
-                        array[indexAbove].DefineTexture();
+                        tileAbove.DefineTexture();
                     }
                 }
             }
@@ -2208,47 +2154,47 @@ namespace ThereMustBeAnotherWay
             // Random decorations for mud.
             if (Id == TileType.Mud && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth;
-                if (array[indexAbove].Id == 0)
+                var tileAbove = GameWorld.GetTileAbove(TileIndex, IsWall);
+                if (tileAbove.Id == 0)
                 {
                     var rand = TMBAW_Game.Random.Next(0, 100);
                     if (rand > 90)
-                        array[indexAbove].Id = TileType.MushroomDecor;
+                        tileAbove.Id = TileType.MushroomDecor;
 
-                    array[indexAbove].DefineTexture();
+                    tileAbove.DefineTexture();
                 }
             }
 
             // Random decorations for sand.
             if (Id == TileType.Sand && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth * 2;
-                var indexToRight = TileIndex - mapWidth + 1;
-                var indexTopRight = indexAbove + 1;
-                if (array[indexAbove].Id == 0 && array[indexToRight].Id == 0 && array[indexTopRight].Id == 0)
+                var tileTwoAbove = GameWorld.GetTile(TileIndex - mapWidth * 2, IsWall);
+                var tileTopRight = GameWorld.GetTile(TileIndex - mapWidth + 1, IsWall);
+                var tileTwoAboveRight = GameWorld.GetTile(TileIndex - mapWidth * 2 + 1, IsWall);
+                if (tileTwoAbove.Id == 0 && tileTopRight.Id == 0 && tileTwoAboveRight.Id == 0)
                 {
                     var rand = TMBAW_Game.Random.Next(0, 100);
                     if (rand > 80)
-                        array[indexAbove].Id = TileType.Cactus;
+                        tileTwoAbove.Id = TileType.Cactus;
 
-                    array[indexAbove].DefineTexture();
+                    tileTwoAbove.DefineTexture();
                 }
             }
 
             // Random decoration for hellstone.
             if (Id == TileType.Hellrock && SubId == 5)
             {
-                var indexAbove = TileIndex - mapWidth;
-                if (array[indexAbove].Id == 0)
+                var tileAbove = GameWorld.GetTileAbove(TileIndex, IsWall);
+                if (tileAbove.Id == 0)
                 {
                     var rand = TMBAW_Game.Random.Next(0, 10);
 
                     // Skull.
                     if (rand == 0)
                     {
-                        array[indexAbove].Id = TileType.Skull;
+                        tileAbove.Id = TileType.Skull;
                     }
-                    array[indexAbove].DefineTexture();
+                    tileAbove.DefineTexture();
                 }
             }
 
@@ -2257,12 +2203,12 @@ namespace ThereMustBeAnotherWay
             {
                 if (TMBAW_Game.Random.Next(0, 5) == 1)
                 {
-                    var indexBelow = TileIndex + mapWidth;
-                    var indexTwoBelow = indexBelow + mapWidth;
-                    if (array[indexBelow].Id == 0 && array[indexTwoBelow].Id == 0)
+                    var tileBelow = GameWorld.GetTileBelow(TileIndex, IsWall);
+                    var tileTwoBelow = GameWorld.GetTile(TileIndex + mapWidth * 2);
+                    if (tileBelow.Id == 0 && tileTwoBelow.Id == 0)
                     {
-                        array[indexBelow].Id = TileType.Stalagmite;
-                        array[indexBelow].DefineTexture();
+                        tileBelow.Id = TileType.Stalagmite;
+                        tileBelow.DefineTexture();
                     }
                 }
             }
