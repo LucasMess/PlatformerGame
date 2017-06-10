@@ -573,7 +573,7 @@ namespace ThereMustBeAnotherWay.Levels
                 {
                     var t = CurrentArray[ind];
                     t.FindConnectedTextures(WorldDataIds,
-    GameWorld.WorldData.LevelWidth, OnWallMode);
+    GameWorld.WorldData.LevelWidth);
                     t.DefineTexture();
                     t.AddRandomlyGeneratedDecoration(CurrentArray, GameWorld.WorldData.LevelWidth);
                 }

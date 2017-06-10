@@ -168,7 +168,7 @@ namespace ThereMustBeAnotherWay.Levels
 
             foreach (var t in array)
             {
-                t.FindConnectedTextures(ids, width, isWall);
+                t.FindConnectedTextures(ids, width);
                 t.AddRandomlyGeneratedDecoration(array, WorldData.LevelWidth);
                 t.DefineTexture();
             }

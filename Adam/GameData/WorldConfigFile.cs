@@ -92,8 +92,8 @@ namespace ThereMustBeAnotherWay.GameData
             //Gets IDs of the arrays
             for (int i = 0; i < size; i++)
             {
-                TileIDs[i] = (byte)GameWorld.WorldData.TileIDs[i];
-                WallIDs[i] = (byte)GameWorld.WorldData.WallIDs[i];
+                TileIDs[i] = (int)GameWorld.WorldData.TileIDs[i];
+                WallIDs[i] = (int)GameWorld.WorldData.WallIDs[i];
             }
 
             //Level conditions

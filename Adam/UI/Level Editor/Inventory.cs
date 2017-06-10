@@ -110,6 +110,8 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.Bed, // Bed
             TileType.WoodenChair,
             TileType.Bookshelf, // Bookshelf
+            TileType.Shelf,
+            TileType.Nightstand,
             TileType.Painting, // Painting
             TileType.SingleCrate,
             TileType.MultipleCrates,
@@ -154,6 +156,8 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.GoldBrickWall, // Gold Brick Wall
             TileType.ReinforcedWoodWall,
             TileType.HellstoneWall, // Hellstone Wall
+            TileType.WoodenWindow,
+            TileType.WhitePaintedWindow,
             TileType.Fence, // Fence
             TileType.Nothing, // Black
         };

@@ -104,6 +104,10 @@
             SittingSkeleton,
             ClosedMineshaftDoor,
             EnemySpawner,
+            WoodenWindow,
+            WhitePaintedWindow,
+            Shelf = 1000,
+            Nightstand,
 
 
             GoldBrickWall = 100,

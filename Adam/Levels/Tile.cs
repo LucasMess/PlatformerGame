@@ -822,6 +822,30 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     break;
+                case TileType.WoodenWindow:
+                    _positionInSpriteSheet = new Vector2(560 / 16, 176 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 3;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.WhitePaintedWindow:
+                    _positionInSpriteSheet = new Vector2(560 / 16, 128 / 16);
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 3;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.Shelf:
+                    _positionInSpriteSheet = new Vector2(336, 528) / 16;
+                    _sizeOfTile.X = 32 * 3;
+                    _sizeOfTile.Y = 32 * 1;
+                    LetsLightThrough = true;
+                    break;
+                case TileType.Nightstand:
+                    _positionInSpriteSheet = new Vector2(416, 432) / 16;
+                    _sizeOfTile.X = 32 * 2;
+                    _sizeOfTile.Y = 32 * 3;
+                    LetsLightThrough = true;
+                    break;
 
                 #region Wall Textures
 
@@ -1355,15 +1379,15 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         /// <param name="ids">The tile array that will be analyzed.</param>
         /// <param name="mapWidth">The width of the map in tiles.</param>
-        public void FindConnectedTextures(TileType[] ids, int mapWidth, bool isWall)
+        public void FindConnectedTextures(TileType[] ids, int mapWidth)
         {
             _cornerPieces.Clear();
 
             // i.e Wallpaper.
             if (_hasTopAndBottomPattern)
             {
-                var tileAbove = GameWorld.GetTileAbove(TileIndex);
-                var tileBelow = GameWorld.GetTileBelow(TileIndex);
+                var tileAbove = GameWorld.GetTileAbove(TileIndex, IsWall);
+                var tileBelow = GameWorld.GetTileBelow(TileIndex, IsWall);
                 if (tileAbove.Id != Id)
                 {
                     SubId = 1;
@@ -1378,9 +1402,9 @@ namespace ThereMustBeAnotherWay
             // i.e Marble Floor
             else if (_hasLeftAndRightPattern)
             {
-                if (GameWorld.GetTile(TileIndex + 1).Id != Id)
+                if (GameWorld.GetTile(TileIndex + 1, IsWall).Id != Id)
                     SubId = 1;
-                else if (GameWorld.GetTile(TileIndex - 1).Id != Id)
+                else if (GameWorld.GetTile(TileIndex - 1, IsWall).Id != Id)
                     SubId = 2;
             }
 
