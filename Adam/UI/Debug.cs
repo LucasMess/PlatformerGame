@@ -54,16 +54,19 @@ namespace ThereMustBeAnotherWay
             }
 
             // Chat box.
-            if (!GameWorld.GetPlayer().IsEnterCommandPressed())
+            if (TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
-                _chatKeyReleased = true;
-            }
+                if (!GameWorld.GetPlayer().IsEnterCommandPressed())
+                {
+                    _chatKeyReleased = true;
+                }
 
-            if (GameWorld.GetPlayer().IsEnterCommandPressed() && _chatKeyReleased && !IsTyping)
-            {
-                _chatKeyReleased = false;
-                IsTyping = true;
-                chatBox.Reset();
+                if (GameWorld.GetPlayer().IsEnterCommandPressed() && _chatKeyReleased && !IsTyping)
+                {
+                    _chatKeyReleased = false;
+                    IsTyping = true;
+                    chatBox.Reset();
+                }
             }
         }
 
