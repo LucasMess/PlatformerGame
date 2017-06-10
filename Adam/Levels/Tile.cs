@@ -134,7 +134,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public void DefineTexture()
         {
-            // Destroy current interactable to prevent duplicates.
+            // Destroy current interactable to p
             Interactable?.OnTileDestroyed(this);
 
             //Air ID is 0, so it can emit sunlight.
@@ -1463,6 +1463,9 @@ namespace ThereMustBeAnotherWay
 
         private void ConnectShadows()
         {
+            _shadowCornerPieces.Clear();
+
+
             int mapWidth = GameWorld.WorldData.LevelWidth;
 
             var m = TileIndex;
