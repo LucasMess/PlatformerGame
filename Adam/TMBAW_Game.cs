@@ -81,7 +81,7 @@ namespace ThereMustBeAnotherWay
         private double _frameRateTimer;
         public SamplerState DesiredSamplerState;
         public static event UpdateHandler GameUpdateCalled;
-        private bool _wasEscapeReleased;
+        public static bool WasEscapeButtonReleased;
         public bool IsInStoryMode = false;
         public static string UserName;
         private static bool _wantsToQuit;
@@ -278,21 +278,6 @@ namespace ThereMustBeAnotherWay
             KeyPopUp.Update();
 
             Player player = GameWorld.GetPlayer();
-            if (player.IsPauseButtonDown())
-                _wasEscapeReleased = true;
-
-            if (_wasEscapeReleased)
-            {
-                if (player.IsPauseButtonDown() && CurrentGameState != GameState.MainMenu &&
-                    CurrentGameState != GameState.LoadingScreen)
-                {
-                    if (CurrentGameState == GameState.GameWorld && CurrentGameMode == GameMode.Edit && Inventory.IsOpen)
-                    {
-                        _wasEscapeReleased = false;
-                        Inventory.OpenOrClose();
-                    }
-                }
-            }
 
             Session.Update();
 

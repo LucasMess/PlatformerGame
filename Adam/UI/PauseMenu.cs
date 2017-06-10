@@ -3,6 +3,7 @@ using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -109,10 +110,18 @@ namespace ThereMustBeAnotherWay.UI
                     Cursor.Hide();
             }
 
+            // TODO: Change button mechanics to detect when button was pressed before.
             if (GameWorld.GetPlayer().IsPauseButtonDown() && _buttonReleased && TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
+                if (Inventory.IsOpen)
+                {
+                    Inventory.OpenOrClose();
+                }
+                else
+                {
+                    IsActive = !IsActive;
+                }
                 _buttonReleased = false;
-                IsActive = !IsActive;
             }
 
             if (!GameWorld.GetPlayer().IsPauseButtonDown())
