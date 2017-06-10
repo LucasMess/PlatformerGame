@@ -932,41 +932,43 @@ namespace ThereMustBeAnotherWay
         /// <param name="damage"></param>
         public void TakeDamage(Entity damageDealer, int damage)
         {
-            if (IsTakingDamage || IsPlayingDeathAnimation || !CanTakeDamage)
-                return;
-
-            if (this == GameWorld.GetPlayer())
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
-                Overlay.ColoredCorners.FlashColor(Color.Red);
+                if (IsTakingDamage || IsPlayingDeathAnimation || !CanTakeDamage)
+                    return;
+
+                if (this == GameWorld.GetPlayer())
+                {
+                    Overlay.ColoredCorners.FlashColor(Color.Red);
+                }
+
+                // Main.TimeFreeze.AddFrozenTime(damage*3);
+
+                IsTakingDamage = true;
+                Health -= damage;
+                GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255, 108, 108));
+                _hitRecentlyTimer.ResetAndWaitFor(500);
+                _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
+
+                //Creates damage particles.
+                int particleCount = damage / 2;
+                if (particleCount > 100)
+                    particleCount = 100;
+                for (int i = 0; i < particleCount; i++)
+                {
+                    GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), null, Color.Red);
+                }
+
+                //if (damageDealer == null)
+                //    return;
+
+                //Velocity.Y = -8f;
+                //Velocity.X = (Weight / 2f);
+                //if (!damageDealer.IsFacingRight)
+                //    Velocity.X *= -1;
+
+                HasTakenDamage?.Invoke();
             }
-
-            // Main.TimeFreeze.AddFrozenTime(damage*3);
-
-            IsTakingDamage = true;
-            Health -= damage;
-            GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255, 108, 108));
-            _hitRecentlyTimer.ResetAndWaitFor(500);
-            _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
-
-            //Creates damage particles.
-            int particleCount = damage / 2;
-            if (particleCount > 100)
-                particleCount = 100;
-            for (int i = 0; i < particleCount; i++)
-            {
-                GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), null, Color.Red);
-            }
-
-            //if (damageDealer == null)
-            //    return;
-
-            //Velocity.Y = -8f;
-            //Velocity.X = (Weight / 2f);
-            //if (!damageDealer.IsFacingRight)
-            //    Velocity.X *= -1;
-
-            HasTakenDamage?.Invoke();
-
         }
 
         /// <summary>
