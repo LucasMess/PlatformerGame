@@ -1,6 +1,7 @@
 ﻿using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace ThereMustBeAnotherWay.Projectiles
 {
@@ -43,6 +44,13 @@ namespace ThereMustBeAnotherWay.Projectiles
 
         public Projectile(Type type, Vector2 position, Vector2 velocity, Entity source)
         {
+            // This prevents the projectile from hitting the floor when the player is standing still.
+            Vector2 velSource = source.GetVelocity();
+            if (Math.Abs(velSource.Y) < 1)
+            {
+                velSource.Y = 0;
+            }
+
             CanTakeDamage = false;
             _stayAliveTimer = new Timer();
             Weight = 100;
@@ -50,7 +58,7 @@ namespace ThereMustBeAnotherWay.Projectiles
             CurrentCollisionType = CollisionType.SuperBouncy;
             _source = source;
             Position = position;
-            Velocity = velocity + source.GetVelocity();
+            Velocity = velocity + velSource;
             ObeysGravity = true;
             CurrentType = type;
             CollidedWithTerrain += Projectile_CollidedWithTerrain;
