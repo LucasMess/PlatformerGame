@@ -563,6 +563,7 @@ namespace ThereMustBeAnotherWay
                     _positionInSpriteSheet = GetPositionInSpriteSheetOfConnectedTextures(startingPoint);
                     break;
                 case TileType.MarbleDoor: // Portal.
+                    _positionInSpriteSheet = new Vector2(128, 480) / 16;
                     _frameCount = new Vector2(1, 0);
                     _sizeOfTile.Y = 3 * 32;
                     _sizeOfTile.X = 64;
