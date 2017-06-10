@@ -43,7 +43,9 @@ namespace ThereMustBeAnotherWay.Interactables
         {
             if (Math.Abs(Velocity.Y) > 3)
             {
-                BounceSound?.PlayIfStopped();
+                // Prevent annoying bounce sound for infinity.
+                if (_pickUpTimer.TimeElapsedInMilliSeconds < 5000)
+                    BounceSound?.PlayIfStopped();
             }
         }
 
