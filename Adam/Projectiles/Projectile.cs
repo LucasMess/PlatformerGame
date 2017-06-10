@@ -138,6 +138,9 @@ namespace ThereMustBeAnotherWay.Projectiles
         /// <param name="other"></param>
         public virtual void OnCollisionWithEntity(Entity other)
         {
+            // Collisions do not occur with items.
+            if (other is Interactables.Item)
+                return;
             other.TakeDamage(_source, _source.DamagePointsProj);
             ToDelete = true;
         }
