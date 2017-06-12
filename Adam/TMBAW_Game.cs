@@ -94,6 +94,7 @@ namespace ThereMustBeAnotherWay
         public static TextInputBox TextInputBox { get; set; }
         public static TimeFreeze TimeFreeze { get; set; } = new TimeFreeze();
 
+
         public TMBAW_Game()
         {
             // Important services that need to be instanstiated before other things.
@@ -101,7 +102,7 @@ namespace ThereMustBeAnotherWay
             Content = new ContentManager(Services, "Content");
             GameData = new GameDataManager();
 
-            Window.IsBorderless = true;
+           // Window.IsBorderless = true;
 
 
             DataFolder.Initialize();

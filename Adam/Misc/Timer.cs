@@ -1,4 +1,6 @@
-﻿namespace ThereMustBeAnotherWay.Misc
+﻿using System;
+
+namespace ThereMustBeAnotherWay.Misc
 {
     public class Timer
     {
@@ -80,6 +82,23 @@
         {
             Reset();
             ChangeWaitTime(time);
+        }
+
+        /// <summary>
+        /// Calls the function passed after a certain time once.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="action"></param>
+        public void ResetAndWaitFor(int time, Action action, bool isRecurring = false)
+        {
+            ResetAndWaitFor(time);
+            EventHandler onTimeReached = delegate ()
+            {
+                action?.Invoke();
+                if (!isRecurring)
+                    SetTimeReached -= SetTimeReached;
+            };
+            SetTimeReached += onTimeReached;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Particles;
 using Microsoft.Xna.Framework;
+using System.Collections;
 
 namespace ThereMustBeAnotherWay.Characters.Behavior
 {

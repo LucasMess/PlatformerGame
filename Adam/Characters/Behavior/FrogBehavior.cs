@@ -3,6 +3,8 @@ using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Projectiles;
 using Microsoft.Xna.Framework;
+using System.Threading.Tasks;
+using System.Collections;
 
 namespace ThereMustBeAnotherWay.Characters.Behavior
 {
@@ -11,10 +13,9 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
     /// </summary>
     public class FrogBehavior : Behavior
     {
-        Timer _jumpTimer = new Timer(true);
-
         const int TimeBetweenJumps_ACTIVE = 200;
         const int TimeBetweenJumps_IDLE = 2000;
+        private Misc.Timer _jumpTimer;
         const float JumpVel = -14f;
         const float MoveVel = 5;
 
@@ -22,9 +23,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
 
         public override void Initialize(Entity entity)
         {
-            _jumpTimer.ResetAndWaitFor(TimeBetweenJumps_IDLE);
-            entity.IsJumping = true;
-            _jumpTimer.SetTimeReached += JumpTimer_SetTimeReached;
+            _jumpTimer = CreateTimedAction(TimeBetweenJumps_IDLE, Jump);
 
             entity.CurrentCollisionType = CollisionType.None;
             entity.CollidedWithTileBelow += Entity_CollidedWithTileBelow;
@@ -55,13 +54,12 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 Enemy enemy = (Enemy)entity;
                 enemy.IsCollidableWithEnemies = true;
                 entity.SetVelY(0);
-                _jumpTimer.Reset();
                 entity.RemoveAnimationFromQueue("jump");
                 entity.IsJumping = false;
             }
         }
 
-        private void JumpTimer_SetTimeReached()
+        private void Jump()
         {
             if (!Entity.IsJumping)
             {
