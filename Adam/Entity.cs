@@ -661,7 +661,7 @@ namespace ThereMustBeAnotherWay
             foreach (int quadrant in q)
             {
                 Tile tile = GameWorld.GetTile(quadrant);
-                if (tile != null)
+                if (tile.GetDrawRectangle().Intersects(CollRectangle))
                     tile.OnEntityTouch(this);
             }
         }
@@ -930,7 +930,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         /// <param name="damageDealer">Can be null.</param>
         /// <param name="damage"></param>
-        public void TakeDamage(Entity damageDealer, int damage)
+        public virtual void TakeDamage(Entity damageDealer, int damage)
         {
             if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {

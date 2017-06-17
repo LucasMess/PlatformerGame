@@ -136,8 +136,17 @@ namespace ThereMustBeAnotherWay.Levels
         {
             Entities = new List<Entity>();
 
-            ConvertToTiles(TileArray, WorldData.TileIDs);
-            ConvertToTiles(WallArray, WorldData.WallIDs, true);
+            //LightingEngine.RemoveAllLights();
+
+            foreach (Tile tile in TileArray)
+            {
+                tile.DefineTexture();
+            }
+
+            foreach (Tile tile in WallArray)
+            {
+                tile.DefineTexture();
+            }
 
             SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
         }

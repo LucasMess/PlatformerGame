@@ -170,7 +170,6 @@ namespace ThereMustBeAnotherWay.Interactables
                 SelectingAnotherTile = false;
             }
             LightingEngine.RemoveDynamicLight(Light);
-
         }
 
         /// <summary>

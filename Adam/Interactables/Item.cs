@@ -24,6 +24,7 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public Item()
         {
+            CanTakeDamage = false;
             OnPlayerPickUp += SpawnSparkles;
             CollidedWithTerrain += Item_CollidedWithTerrain;
             CollidedWithTileBelow += Item_CollidedWithTileBelow;
