@@ -104,6 +104,11 @@
     <Compile Include="Particles\ParticleData.cs" />
     <Compile Include="Particles\Emitter.cs" />
     <Compile Include="Particles\ParticleGenerator.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\Enemies\EnemyMethods.cs" />
@@ -266,8 +271,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Adam_TemporaryKey.pfx" />
+    <None Include="app.config" />
     <None Include="Content\Levels\GreenHills01.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Steamworks.NET.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

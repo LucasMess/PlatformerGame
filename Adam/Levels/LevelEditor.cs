@@ -466,13 +466,13 @@ namespace ThereMustBeAnotherWay.Levels
                         hasChanged = true;
 
                         // Send change over network.
-                        byte[] data = new Packet.TileIdChange()
-                        {
-                            TileIndex = i,
-                            TileId = (int)desiredId,
-                            IsWall = (CurrentArray == GameWorld.WallArray),
-                        }.ToByteArray();
-                        Session.Send(data, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
+                        //byte[] data = new Packet.TileIdChange()
+                        //{
+                        //    TileIndex = i,
+                        //    TileId = (int)desiredId,
+                        //    IsWall = (CurrentArray == GameWorld.WallArray),
+                        //}.ToByteArray();
+                        //Session.Send(data, Steamworks.EP2PSend.k_EP2PSendReliable, Session.BB_TileIdChange);
                     }
                 }
             }
