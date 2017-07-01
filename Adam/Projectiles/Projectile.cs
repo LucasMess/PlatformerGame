@@ -112,11 +112,11 @@ namespace ThereMustBeAnotherWay.Projectiles
             switch (CurrentType)
             {
                 case Type.PlayerTimePunch:
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 1; i++) {
                         Vector2 randPos = CalcHelper.GetRandXAndY(new Rectangle(Position.ToPoint(), new Point(DrawRectangle.Width - 4, DrawRectangle.Height - 4)));
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, randPos, Vector2.Zero, new Color(0, 246, 255));
+                        GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, randPos, new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-30,30)/10f), new Color(0, 246, 255));
                     }
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         Vector2 randPos = CalcHelper.GetRandXAndY(new Rectangle(Position.ToPoint(), new Point(DrawRectangle.Width - 4, DrawRectangle.Height - 4)));
                         GameWorld.ParticleSystem.Add(Particles.ParticleType.Tiny, randPos, Vector2.Zero,Color.White);

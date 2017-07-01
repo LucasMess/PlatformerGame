@@ -11,7 +11,7 @@ namespace ThereMustBeAnotherWay.UI
     class Textbox : UiElement
     {
         Texture2D _white;
-        BitmapFont _font;
+        SpriteFont _font;
         Timer _flashingTimer = new Timer(true);
 
         bool _editLineFlashing;
@@ -120,11 +120,11 @@ namespace ThereMustBeAnotherWay.UI
 
             if (_editLineFlashing)
             {
-                spriteBatch.DrawString(_font, Text + "|", new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineHeight / 2), Color.Black);
+                spriteBatch.DrawString(_font, Text + "|", new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
             }
             else
             {
-                spriteBatch.DrawString(_font, Text, new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineHeight / 2), Color.Black);
+                spriteBatch.DrawString(_font, Text, new Vector2(DrawRectangle.X + spacing, DrawRectangle.Center.Y - _font.LineSpacing / 2), Color.Black);
             }
 
             // Returns the scissor rectangle to its original size.

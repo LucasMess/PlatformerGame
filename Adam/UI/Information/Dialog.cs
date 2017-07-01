@@ -23,7 +23,7 @@ namespace ThereMustBeAnotherWay.UI.Information
 
         public delegate void TextHandler(string code, int optionSelected);
 
-        private readonly BitmapFont _font;
+        private readonly SpriteFont _font;
         private readonly SoundFx _letterPopSound;
         private readonly Timer _letterPopTimer = new Timer(true);
         private readonly char[] _pauseChars = { '!', '.', ',', '?' };
@@ -54,7 +54,7 @@ namespace ThereMustBeAnotherWay.UI.Information
 
             var origin = new Vector2(_dialogueContainer.Size.X / 2f, _dialogueContainer.Size.Y / 2f);
 
-            _font = ContentHelper.LoadFont("Fonts/x24");
+            _font = ContentHelper.LoadFont("Fonts/x16");
             _letterPopSound = new SoundFx("Sounds/Menu/letterPop");
         }
 
@@ -212,7 +212,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                 _dialogueContainer.Draw(spriteBatch);
                 spriteBatch.DrawString(_font, _partialText,
                     new Vector2(_dialogueContainer.GetPosition().X + 30, _dialogueContainer.GetPosition().Y + 30),
-                    Color.Black);
+                    new Color(51, 51, 51));
 
                 if (!IsWritingText())
                 {
@@ -229,7 +229,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                         string text = "Press space to continue";
                         spriteBatch.DrawString(_font, text,
                             new Vector2((int)_dialogueContainer.GetPosition().X + (int)_dialogueContainer.Size.X - _font.MeasureString(text).X - 5, (int)_dialogueContainer.GetPosition().Y + (int)_dialogueContainer.Size.Y - 30),
-                            Color.Black);
+                            new Color(51, 51, 51));
                     }
                 }
             }
@@ -255,7 +255,7 @@ namespace ThereMustBeAnotherWay.UI.Information
         private readonly string[] _options;
         private readonly float[] _heights;
 
-        public DialogOptions(string[] options, BitmapFont font, int maxLineWidth)
+        public DialogOptions(string[] options, SpriteFont font, int maxLineWidth)
         {
             _options = options ?? new string[0];
 
@@ -272,7 +272,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                 lineNumber[i] = wrapped[i].Split('\n').Length;
 
                 // Determines the height of each element.
-                 _heights[i] = font.LineHeight * lineNumber[i];
+                 _heights[i] = font.LineSpacing * lineNumber[i];
 
                 i++;
             }
@@ -310,7 +310,7 @@ namespace ThereMustBeAnotherWay.UI.Information
             _selectorSound.Reset();
         }
 
-        public void Draw(SpriteBatch spriteBatch, BitmapFont font, int centerX, int startingY)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont font, int centerX, int startingY)
         {
             for (var i = 0; i < _options.Length; i++)
             {
@@ -322,7 +322,7 @@ namespace ThereMustBeAnotherWay.UI.Information
 
                 var x = centerX - font.MeasureString(_options[i]).X / 2;
                 var y = startingY + deltaY;
-                spriteBatch.DrawString(font, _options[i], new Vector2(x, y), Color.Black);
+                spriteBatch.DrawString(font, _options[i], new Vector2(x, y), new Color(51,51,51));
                 if (SelectedOption == i)
                 {
                     _leafSelectors.DrawAroundText(spriteBatch, _options[i], font, new Vector2(x, y));
@@ -353,7 +353,7 @@ namespace ThereMustBeAnotherWay.UI.Information
         /// <param name="text"></param>
         /// <param name="font"></param>
         /// <param name="positionOfText"></param>
-        public void DrawAroundText(SpriteBatch spriteBatch, string text, BitmapFont font, Vector2 positionOfText)
+        public void DrawAroundText(SpriteBatch spriteBatch, string text, SpriteFont font, Vector2 positionOfText)
         {
             _drawRectangle = new Rectangle((int)positionOfText.X - Size - Size / 2, (int)positionOfText.Y + 4, Size,
                 Size);

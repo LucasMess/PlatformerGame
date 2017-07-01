@@ -245,8 +245,8 @@ namespace ThereMustBeAnotherWay.UI
         {
             static ComplexAnimation animation;
             static Vector2 position;
-            static BitmapFont fontBig;
-            static BitmapFont fontSmall;
+            static SpriteFont fontBig;
+            static SpriteFont fontSmall;
             static int health;
             static int maxHealth;
 
@@ -314,8 +314,8 @@ namespace ThereMustBeAnotherWay.UI
         {
             static ComplexAnimation animation;
             static Vector2 position;
-            static BitmapFont fontBig;
-            static BitmapFont fontSmall;
+            static SpriteFont fontBig;
+            static SpriteFont fontSmall;
             static int score;
 
             /// <summary>

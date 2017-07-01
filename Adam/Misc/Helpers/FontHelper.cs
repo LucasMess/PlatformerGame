@@ -9,13 +9,15 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
 {
     public static class FontHelper
     {
-        public static BitmapFont[] Fonts = {
-            ContentHelper.LoadFont("Fonts/x16"),
-            ContentHelper.LoadFont("Fonts/x24"),
-            ContentHelper.LoadFont("Fonts/x32"),
-            ContentHelper.LoadFont("Fonts/x48"),
-            ContentHelper.LoadFont("Fonts/x64")
+
+        public static SpriteFont[] Fonts = {
+             ContentHelper.LoadFont("Fonts/x16"),
+             ContentHelper.LoadFont("Fonts/x24"),
+             ContentHelper.LoadFont("Fonts/x32"),
+             ContentHelper.LoadFont("Fonts/x48"),
+            ContentHelper.LoadFont("Fonts/x64"),
         };
+
 
         private static Container _window;
 
@@ -29,7 +31,7 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         /// <param name="outlineWidth">The width of the outline.</param>
         /// <param name="fontColor">The color of the font.</param>
         /// <param name="outlineColor">The color of the outline.</param>
-        public static void DrawWithOutline(SpriteBatch spriteBatch, BitmapFont font, string text, Vector2 position,
+        public static void DrawWithOutline(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position,
             int outlineWidth, Color fontColor, Color outlineColor)
         {
             DrawWithOutline(spriteBatch, font, text, position, outlineWidth, fontColor, outlineColor, 1);
@@ -47,46 +49,32 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         /// <param name="fontColor">The color of the font.</param>
         /// <param name="outlineColor">The color of the outline.</param>
         /// <param name="scale">"The size of the text"</param>
-        public static void DrawWithOutline(SpriteBatch spriteBatch, BitmapFont font, string text, Vector2 position, int outlineWidth, Color fontColor, Color outlineColor, float scale)
+        public static void DrawWithOutline(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position, int outlineWidth, Color fontColor, Color outlineColor, float scale)
         {
             if (text == null)
                 text = "";
-            spriteBatch.DrawString(font, text, position + new Vector2(1,1), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(1, 1), outlineColor);
             spriteBatch.DrawString(font, text, position, fontColor);
-            // spriteBatch.DrawString(font, text, new Vector2(position.X + 3, position.Y + 3), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            // spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y), fontColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-
-            //int i = outlineWidth;
-            //float lostWidth = font.MeasureString(text).X * scale / 2;
-            //if (scale == 1) lostWidth = 0;
-
-            //spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            ////spriteBatch.DrawString(font, text, new Vector2(position.X - outlineWidth, position.Y), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            //spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            ////spriteBatch.DrawString(font, text, new Vector2(position.X, position.Y - outlineWidth), outlineColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-            //spriteBatch.DrawString(font, text, new Vector2(position.X + i - lostWidth, position.Y + i), outlineColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-
-            //spriteBatch.DrawString(font, text, new Vector2(position.X - lostWidth, position.Y), fontColor, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
 
         /// <summary>
         /// Wraps text in a container.
         /// </summary>
-        /// <param name="BitmapFont">The font used.</param>
+        /// <param name="SpriteFont">The font used.</param>
         /// <param name="text">The text to be wrapped.</param>
         /// <param name="maxLineWidth">The width of the container.</param>
         /// <returns></returns>
-        public static string WrapText(BitmapFont BitmapFont, string text, float maxLineWidth)
+        public static string WrapText(SpriteFont SpriteFont, string text, float maxLineWidth)
         {
             if (text == null) return "";
             string[] words = text.Split(' ');
             StringBuilder sb = new StringBuilder();
             float lineWidth = 0f;
-            float spaceWidth = BitmapFont.MeasureString(" ").X;
+            float spaceWidth = SpriteFont.MeasureString(" ").X;
 
             foreach (string word in words)
             {
-                Vector2 size = BitmapFont.MeasureString(word);
+                Vector2 size = SpriteFont.MeasureString(word);
 
                 if (lineWidth + size.X < maxLineWidth)
                 {
@@ -108,11 +96,11 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         /// </summary>
         /// <param name="height">The desired line height for the container.</param>
         /// <returns></returns>
-        public static BitmapFont ChooseBestFont(int height)
+        public static SpriteFont ChooseBestFont(int height)
         {
             for (int i = 1; i < Fonts.Length; i++)
             {
-                if ((height - 2) < Fonts[i].LineHeight)
+                if ((height - 2) < Fonts[i].LineSpacing)
                     return Fonts[i - 1];
             }
 

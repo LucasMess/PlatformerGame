@@ -72,7 +72,7 @@ namespace ThereMustBeAnotherWay.UI
         protected Texture2D Texture { get; set; }
         protected Rectangle CollRectangle;
         protected Rectangle SourceRectangle;
-        protected BitmapFont Font { get; set; } = ContentHelper.LoadFont("Fonts/x16");
+        protected SpriteFont Font { get; set; } = ContentHelper.LoadFont("Fonts/x16");
         public string Text { get; set; }
 
         /// <summary>

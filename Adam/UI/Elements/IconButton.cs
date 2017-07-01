@@ -41,7 +41,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
         private readonly Texture2D _black = ContentHelper.LoadTexture("Tiles/black");
         private readonly ButtonImage _buttonImage;
         private readonly string _hoverText;
-        private static BitmapFont _font;
+        private static SpriteFont _font;
         private static Rectangle _shadowSource = new Rectangle(128, 25, 16, 6);
         private static Rectangle _circleSource = new Rectangle(32, 48, 16, 16);
         private static Rectangle _isOnSource = new Rectangle(64, 48, 16, 16);

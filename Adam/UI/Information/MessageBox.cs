@@ -49,7 +49,7 @@ namespace ThereMustBeAnotherWay.UI
         /// </summary>
         protected string Message { get; set; } = "Error 404:Text not found.";
 
-        protected BitmapFont Font
+        protected SpriteFont Font
         {
             get { return ContentHelper.LoadFont("Fonts/x8"); }
         }

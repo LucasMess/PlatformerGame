@@ -81,19 +81,19 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         }
 
         /// <summary>
-        /// Loads the BitmapFont at the specified file path.
+        /// Loads the SpriteFont at the specified file path.
         /// </summary>
         /// <param name="file">The file path of the font.</param>
         /// <returns>Loaded font.</returns>
-        public static BitmapFont LoadFont(string file)
+        public static SpriteFont LoadFont(string file)
         {
             try
             {
-                return TMBAW_Game.Content.Load<BitmapFont>(file);
+                return TMBAW_Game.Content.Load<SpriteFont>(file);
             }
             catch (ContentLoadException)
             {
-                Console.WriteLine("BitmapFont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
+                Console.WriteLine("SpriteFont location ({0}) could not be found. Make sure the file path is spelled correctly or that the file exists.", file);
 #if DEBUG
                 throw;
 #else
@@ -103,7 +103,7 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         }
 
         /// <summary>
-        /// Loads the BitmapFont at the specified file path.
+        /// Loads the SpriteFont at the specified file path.
         /// </summary>
         /// <param name="file">The file path of the font.</param>
         /// <returns>Loaded font.</returns>

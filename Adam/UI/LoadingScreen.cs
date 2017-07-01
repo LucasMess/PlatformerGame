@@ -10,7 +10,7 @@ namespace ThereMustBeAnotherWay
     public static class LoadingScreen
     {
         private static Texture2D _background;
-        static BitmapFont _fontBig, _fontSmall;
+        static SpriteFont _fontBig, _fontSmall;
         static Timer dotTimer = new Timer(true);
 
         public static string LoadingText = "Contemplating life...";

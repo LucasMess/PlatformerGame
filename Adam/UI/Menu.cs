@@ -33,7 +33,7 @@ namespace ThereMustBeAnotherWay
         static TextButton _backButton;
         static List<TextButton> _buttons = new List<TextButton>();
 
-        static BitmapFont _font8, _font32;
+        static SpriteFont _font8, _font32;
 
         static LevelSelection _levelSelection;
 

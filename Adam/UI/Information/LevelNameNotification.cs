@@ -8,7 +8,7 @@ namespace ThereMustBeAnotherWay.UI
     public class LevelNameNotification
     {
 
-        BitmapFont _font;
+        SpriteFont _font;
         Texture2D _texture;
         Rectangle _drawRectangle;
         string _text = "";

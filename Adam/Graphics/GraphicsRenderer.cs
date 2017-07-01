@@ -250,7 +250,6 @@ namespace ThereMustBeAnotherWay.Graphics
             OptionsMenu.Draw(_spriteBatch);
             TMBAW_Game.Dialog.Draw(_spriteBatch);
             GameDebug.Draw(_spriteBatch);
-
             TMBAW_Game.MessageBox.Draw(_spriteBatch);
             TMBAW_Game.TextInputBox.Draw(_spriteBatch);
 

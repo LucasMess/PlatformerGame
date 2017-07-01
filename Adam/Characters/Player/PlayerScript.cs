@@ -330,7 +330,7 @@ namespace ThereMustBeAnotherWay
         {
             if (e.CurrentFrame == 1)
             {
-                Vector2 velocity = new Vector2(15, 0);
+                Vector2 velocity = new Vector2(25, 0);
                 if (!_player.IsFacingRight)
                     velocity.X *= -1;
                 Projectile proj = new Projectile(Projectile.Type.PlayerTimePunch, _player.Position + new Vector2(0, 21), velocity, _player);

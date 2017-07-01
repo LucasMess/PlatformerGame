@@ -22,7 +22,7 @@ namespace ThereMustBeAnotherWay
         //bool _definitionFound;
 
         private static List<string> _infos = new List<string>();
-        private static BitmapFont _font = FontHelper.Fonts[0];
+        private static SpriteFont _font = FontHelper.Fonts[0];
         static Textbox chatBox = new Textbox(0, TMBAW_Game.DefaultUiHeight - 60, TMBAW_Game.DefaultUiWidth - 10, 60);
 
         static bool _debugKeyReleased;
@@ -192,11 +192,11 @@ namespace ThereMustBeAnotherWay
                     "Visible tiles: " + GameWorld.ChunkManager?.GetVisibleIndexes()?.Length,
                     "Dynamic light count: " +LightingEngine.GetDynamicLightCount(),
                 };
-                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (_infos.Count) * _font.LineHeight), new Rectangle(304, 224, 8, 8), Color.White * .6f);
+                spriteBatch.Draw(GameWorld.SpriteSheet, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (_infos.Count) * _font.LineSpacing), new Rectangle(304, 224, 8, 8), Color.White * .6f);
 
                 for (int i = 0; i < _infos.Count; i++)
                 {
-                    Point pos = new Point(0, i * _font.LineHeight);
+                    Point pos = new Point(0, i * _font.LineSpacing);
                     FontHelper.DrawWithOutline(spriteBatch, _font, _infos[i], pos.ToVector2(), 1, new Color(220, 220, 220), Color.Black);
                 }
             }

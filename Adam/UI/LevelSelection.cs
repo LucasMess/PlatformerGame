@@ -20,7 +20,7 @@ namespace ThereMustBeAnotherWay.UI
         private Rectangle _boundsDrawRectangle;
         private Rectangle _boundsSourceRectangle;
 
-        private BitmapFont _headerFont;
+        private SpriteFont _headerFont;
         private Vector2 _headerPos;
         private string _headerText;
 
@@ -85,10 +85,10 @@ namespace ThereMustBeAnotherWay.UI
             _newButton.MouseClicked += NewButton_MouseClicked;
             _backButton.MouseClicked += BackButton_MouseClicked;
 
-            // Define the BitmapFont for the "Select Level" header and its position.
+            // Define the SpriteFont for the "Select Level" header and its position.
             _headerFont = ContentHelper.LoadFont("Fonts/x32");
             _headerText = "Select a Level:";
-            _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineHeight - (10));
+            _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineSpacing - (10));
         }
 
         private void NewButton_MouseClicked(Button button)
@@ -333,8 +333,8 @@ namespace ThereMustBeAnotherWay.UI
     {
         Rectangle _drawRectangle;
         Rectangle _sourceRectangle;
-        BitmapFont _infoFont;
-        BitmapFont _nameFont;
+        SpriteFont _infoFont;
+        SpriteFont _nameFont;
 
         private static int _spacing;
 
@@ -353,7 +353,7 @@ namespace ThereMustBeAnotherWay.UI
 
             _drawRectangle = new Rectangle(TMBAW_Game.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
 
-            _spacing = _infoFont.LineHeight + 4;
+            _spacing = _infoFont.LineSpacing + 4;
 
             _sourceRectangle = new Rectangle(128, 0, 284, 25);
         }
@@ -401,9 +401,9 @@ namespace ThereMustBeAnotherWay.UI
 
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _drawRectangle, _sourceRectangle, color);
 
-            Vector2 namePos = new Vector2(_drawRectangle.X + _spacing, _drawRectangle.Y + _drawRectangle.Height / 2 - _nameFont.LineHeight / 2);
+            Vector2 namePos = new Vector2(_drawRectangle.X + _spacing, _drawRectangle.Y + _drawRectangle.Height / 2 - _nameFont.LineSpacing / 2);
             FontHelper.DrawWithOutline(spriteBatch, _nameFont, Name, namePos, 2, Color.LightGray, Color.Black);
-            spriteBatch.DrawString(_infoFont, GetDate(LastModifiedDate), new Vector2(_drawRectangle.X + _drawRectangle.Width - 20 - _infoFont.MeasureString(GetDate(LastModifiedDate)).X, _drawRectangle.Y + _drawRectangle.Height / 2 - _infoFont.LineHeight / 2), Color.Black);
+            spriteBatch.DrawString(_infoFont, GetDate(LastModifiedDate), new Vector2(_drawRectangle.X + _drawRectangle.Width - 20 - _infoFont.MeasureString(GetDate(LastModifiedDate)).X, _drawRectangle.Y + _drawRectangle.Height / 2 - _infoFont.LineSpacing / 2), Color.Black);
         }
 
         /// <summary>

@@ -75,7 +75,7 @@ namespace ThereMustBeAnotherWay
         public static bool WasPressed, DebugOn, DebugPressed;
         private readonly GraphicsDeviceManager _graphics;
         private Texture2D _blackScreen;
-        private BitmapFont _debugFont;
+        private SpriteFont _debugFont;
         public static int FPS { get; set; }
         private int _totalFrames;
         private double _frameRateTimer;
@@ -102,7 +102,7 @@ namespace ThereMustBeAnotherWay
             Content = new ContentManager(Services, "Content");
             GameData = new GameDataManager();
 
-           // Window.IsBorderless = true;
+            Window.IsBorderless = true;
 
 
             DataFolder.Initialize();
@@ -162,7 +162,7 @@ namespace ThereMustBeAnotherWay
         {
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
-            _debugFont = Content.Load<BitmapFont>("debug");
+            _debugFont = Content.Load<SpriteFont>("Fonts/x16");
             
             GoToMainMenu();
 
@@ -224,7 +224,9 @@ namespace ThereMustBeAnotherWay
 
         protected override void Update(GameTime gameTime)
         {
+#if !DEBUG
             if (!IsActive) return;
+#endif
 
             if (_wantsToQuit)
                 Exit();
