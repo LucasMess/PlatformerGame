@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.UI.Level_Editor;
+using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.Misc.Helpers;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -154,6 +156,8 @@ namespace ThereMustBeAnotherWay.UI
 
             if (IsActive)
             {
+                Overlay.DarkBackground.Show();
+                SoundtrackManager.Pause();
                 foreach (var button in _buttons)
                 {
                     button.Update();
@@ -168,6 +172,8 @@ namespace ThereMustBeAnotherWay.UI
 
             if (IsActive)
             {
+                string pauseText = "Game Paused";
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[3], pauseText, new Vector2(TMBAW_Game.DefaultUiWidth / 2 - FontHelper.Fonts[3].MeasureString(pauseText).X / 2, 75), 1, Color.White, Color.DarkGray);
                 foreach (var button in _buttons)
                 {
                     button.Draw(spriteBatch);

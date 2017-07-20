@@ -20,6 +20,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using MessageBox = ThereMustBeAnotherWay.UI.MessageBox;
+using ThereMustBeAnotherWay.Misc.Sound;
 
 namespace ThereMustBeAnotherWay
 {
@@ -247,6 +248,7 @@ namespace ThereMustBeAnotherWay
             IsMouseVisible = false;
 
             UI.Elements.Cursor.Update();
+            SoundtrackManager.Update();
 
             MessageBox.Update();
             if (MessageBox.IsActive)

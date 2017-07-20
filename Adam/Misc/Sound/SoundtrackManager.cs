@@ -1,10 +1,12 @@
 ﻿using ThereMustBeAnotherWay.Misc.Databases;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
 namespace ThereMustBeAnotherWay.Misc.Sound
 {
     public static class SoundtrackManager
     {
+        static bool isPaused = false;
 
         public static byte CurrentId
         {
@@ -30,6 +32,24 @@ namespace ThereMustBeAnotherWay.Misc.Sound
                 MediaPlayer.Play(_currentSong);
                 MediaPlayer.IsRepeating = repeating;
             }
+        }
+
+        public static void Update()
+        {
+            if (isPaused)
+            {
+                MediaPlayer.Pause();
+            }
+            else
+            {
+                MediaPlayer.Resume();
+            }
+            isPaused = false;
+        }
+
+        public static void Pause()
+        {
+            isPaused = true;
         }
 
         public static void Stop()

@@ -230,6 +230,7 @@ namespace ThereMustBeAnotherWay.Graphics
         private static void DrawUserInterface()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, ScissorRectRasterizer);
+            Overlay.Draw(_spriteBatch);
             switch (TMBAW_Game.CurrentGameState)
             {
                 case GameState.MainMenu:
@@ -245,7 +246,6 @@ namespace ThereMustBeAnotherWay.Graphics
                     break;
             }
 
-            Overlay.Draw(_spriteBatch);
             PauseMenu.Draw(_spriteBatch);
             OptionsMenu.Draw(_spriteBatch);
             TMBAW_Game.Dialog.Draw(_spriteBatch);

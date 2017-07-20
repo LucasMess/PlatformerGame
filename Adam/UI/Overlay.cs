@@ -353,6 +353,28 @@ namespace ThereMustBeAnotherWay.UI
             }
         }
 
+        /// <summary>
+        /// The semi-transparent black texture behind active UI elements that require immediate attention.
+        /// </summary>
+        public static class DarkBackground
+        {
+            static bool active;
+            public static void Show()
+            {
+                active = true;
+            }
+            public static void Hide()
+            {
+                active = false;
+            }
+            internal static void Draw(SpriteBatch spriteBatch)
+            {
+                if (active)
+                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * .7f);
+                Hide();
+            }
+        }
+
         public static void Initialize()
         {
             Heart.Initialize();
@@ -408,6 +430,7 @@ namespace ThereMustBeAnotherWay.UI
                 Heart.Draw(spriteBatch);
                 Coin.Draw(spriteBatch);
             }
+            DarkBackground.Draw(spriteBatch);
             BlackFade.Draw(spriteBatch);
             BlackBars.Draw(spriteBatch);
         }
