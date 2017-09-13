@@ -1,6 +1,7 @@
 ﻿using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Misc.Sound;
 using Microsoft.Xna.Framework;
+using ThereMustBeAnotherWay.Levels;
 
 namespace ThereMustBeAnotherWay
 {

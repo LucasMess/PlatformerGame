@@ -15,6 +15,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         public event EventHandler JumpAction;
         public event EventHandler RightMove;
         public event EventHandler LeftMove;
+        public event EventHandler UpMove;
+        public event EventHandler DownMove;
         public event EventHandler InteractAction;
         public event EventHandler DuckAction;
         public event EventHandler DuckActionStop;
@@ -33,6 +35,8 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 JumpAction += Player_JumpAction;
                 RightMove += Player_RightMove;
                 LeftMove += Player_LeftMove;
+                UpMove += Player_UpMove;
+                DownMove += Player_DownMove;
                 InteractAction += Player_InteractAction;
                 DuckAction += Player_DuckAction;
                 DuckActionStop += Player_DuckActionStop; ;
@@ -48,6 +52,16 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 NotIdle += Player_NotIdle;
                 _hasInitialized = true;
             }
+        }
+
+        private void Player_DownMove()
+        {
+            script.OnDownMove(this);
+        }
+
+        private void Player_UpMove()
+        {
+            script.OnUpMove(this);
         }
 
         private void Player_RewindAction()
@@ -166,10 +180,28 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 if (IsMoveRightPressed())
                     RightMove?.Invoke();
                 if (IsMoveDownPressed())
-                    DuckAction?.Invoke();
+                {
+                    if (GameWorld.WorldData.IsTopDown)
+                    {
+                        DownMove?.Invoke();
+                    }
+                    else
+                    {
+                        DuckAction?.Invoke();
+                    }
+                }
                 else DuckActionStop?.Invoke();
                 if (IsInteractPressed())
-                    InteractAction?.Invoke();
+                {
+                    if (GameWorld.WorldData.IsTopDown)
+                    {
+                        UpMove?.Invoke();
+                    }
+                    else
+                    {
+                        InteractAction?.Invoke();
+                    }
+                }
 
                 if (!IsMoveDownPressed() && !IsInteractPressed())
                     ReleaseUpAndDownAction?.Invoke();

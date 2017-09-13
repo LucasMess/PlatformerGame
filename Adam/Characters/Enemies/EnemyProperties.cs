@@ -157,6 +157,40 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             return (_wasMeanTimer.TimeElapsedInMilliSeconds > MeanResetTime);
         }
 
+
+        private Rectangle _vulnerableArea;
+        /// <summary>
+        /// The part of the collision rectangle that the player can hit.
+        /// </summary>
+        public Rectangle VulnerableArea
+        {
+            get
+            {
+                _vulnerableArea.X = CollRectangle.X;
+                _vulnerableArea.Y = CollRectangle.Y;
+                _vulnerableArea.Width = CollRectangle.Width;
+                _vulnerableArea.Height = (int)(CollRectangle.Height * .2);
+                return _vulnerableArea;
+            }
+        }
+
+
+        private Rectangle _damagingArea;
+        /// <summary>
+        /// The part of the collision rectangle that will damage the player.
+        /// </summary>
+        public Rectangle DamagingArea
+        {
+            get
+            {
+                _damagingArea.Width = CollRectangle.Width;
+                _damagingArea.Height = (int)(CollRectangle.Height - CollRectangle.Height * .2);
+                _damagingArea.X = CollRectangle.X;
+                _damagingArea.Y = CollRectangle.Y + (int)(CollRectangle.Height * .2);
+                return _vulnerableArea;
+            }
+        }
+
         /// <summary>
         /// Returns true is the player is to the right of the enemy.
         /// </summary>

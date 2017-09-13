@@ -85,10 +85,19 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         {
             Player player = GameWorld.Player;
 
-            //Deals damage to player if he is touching.
+            // Deal damage to the entity that is damaging the other.
             if (IsIntersectingPlayer() && !IsPlayingDeathAnimation)
             {
-                player.TakeDamage(this, GetTouchDamage());
+                if (player.AttackArea.Intersects(VulnerableArea) && player.GetVelocity().Y > 0)
+                {
+                    this.TakeDamage(player, player.GetDamage());
+                    SetVelY(player.GetVelocity().Y);
+                    player.OnJumpOnAnotherEntity(this);
+                }
+                else
+                {
+                    player.TakeDamage(this, GetTouchDamage());
+                }
             }
 
         }

@@ -37,6 +37,8 @@ namespace ThereMustBeAnotherWay.Levels
         public bool HasSun { get; set; }
         public Vector2 SpawnPoint { get; set; }
 
+        public bool IsTopDown { get; set; } = true;
+
         /// <summary>
         /// Used to retrieve special information about a tile in the index key.
         /// </summary>

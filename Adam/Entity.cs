@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.Misc.Helpers;
 using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.Interactables;
 
 namespace ThereMustBeAnotherWay
 {
@@ -84,6 +85,17 @@ namespace ThereMustBeAnotherWay
         private float _opacity = 1f;
         private float _gravityStrength = TMBAW_Game.Gravity;
         private Timer _stompParticleTimer = new Timer(true);
+
+
+        /// <summary>
+        /// The sound that the entity makes when it jumps on another entity.
+        /// </summary>
+        private static SoundFx jumpOnEntitySound = new SoundFx("Sounds/Player/enemy_jumpedOn");
+
+        /// <summary>
+        /// Sets the rotation of the sprite.
+        /// </summary>
+        public float Rotation { get; set; }
 
         /// <summary>
         /// Subscribes to events and initializes other variables.
@@ -285,6 +297,11 @@ namespace ThereMustBeAnotherWay
         {
             _hitRecentlyTimer.Increment();
 
+            if (IsPlayingDeathAnimation)
+            {
+                Rotation += .09f;
+            }
+
             if (TMBAW_Game.CurrentGameMode == GameMode.Play)
             {
                 _positionInLastFrame = new Vector2(CollRectangle.X, CollRectangle.Y);
@@ -298,7 +315,7 @@ namespace ThereMustBeAnotherWay
 
 
                 //Check for physics, if applicable.
-                if (ObeysGravity)
+                if (ObeysGravity && !GameWorld.WorldData.IsTopDown)
                 {
                     ApplyGravity();
                 }
@@ -353,11 +370,21 @@ namespace ThereMustBeAnotherWay
         private void ApplyAirFriction()
         {
             IsTouchingGround = false;
-            Tile below = GameWorld.GetTileBelow(GetTileIndex());
-            if ((CollRectangle.Y + CollRectangle.Height) - below?.GetDrawRectangle().Y < 1)
+            Tile below;
+            if (GameWorld.WorldData.IsTopDown)
             {
+                below = GameWorld.GetTile(GetTileIndex());
                 IsTouchingGround = true;
                 Velocity *= below.GetFrictionConstant();
+            }
+            else
+            {
+                below = GameWorld.GetTileBelow(GetTileIndex());
+                if ((CollRectangle.Y + CollRectangle.Height) - below?.GetDrawRectangle().Y < 1)
+                {
+                    IsTouchingGround = true;
+                    Velocity *= below.GetFrictionConstant();
+                }
             }
 
             if (IsInWater)
@@ -473,7 +500,7 @@ namespace ThereMustBeAnotherWay
             _deathAnimationTimer.ResetAndWaitFor(500);
             _deathAnimationTimer.SetTimeReached += DeathAnimationEnded;
             IsPlayingDeathAnimation = true;
-            SetVelY(-20f);
+            SetVelY(-5f);
         }
 
         /// <summary>
@@ -597,7 +624,7 @@ namespace ThereMustBeAnotherWay
                 if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length)
                 {
                     Tile tile = GameWorld.TileArray[quadrant];
-                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid)
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && GameWorld.WorldData.IsTopDown ? tile.IsSolidTopDown : tile.IsSolid)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tileRect))
@@ -635,7 +662,7 @@ namespace ThereMustBeAnotherWay
                 {
                     Tile tile = GameWorld.TileArray[quadrant];
                     if (tile.CurrentCollisionType == Tile.CollisionType.FromAbove) continue;
-                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && tile.IsSolid)
+                    if (quadrant >= 0 && quadrant < GameWorld.TileArray.Length && GameWorld.WorldData.IsTopDown ? tile.IsSolidTopDown : tile.IsSolid)
                     {
                         Rectangle tileRect = tile.DrawRectangle;
                         if (CollRectangle.Intersects(tile.DrawRectangle))
@@ -747,7 +774,7 @@ namespace ThereMustBeAnotherWay
                 gravity = GravityStrength / 10f;
             }
 
-            Velocity.Y += gravity * Weight/100;
+            Velocity.Y += gravity * Weight / 100;
 
             if (Velocity.Y > 12)
             {
@@ -925,6 +952,16 @@ namespace ThereMustBeAnotherWay
             get { return new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y); }
         }
 
+        public Vector2 SpriteCenter
+        {
+            get
+            {
+                if (Texture != null)
+                    return new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2);
+                return new Vector2();
+            }
+        }
+
         /// <summary>
         /// Deals a certain amount of damage to the entity.
         /// </summary>
@@ -1074,6 +1111,26 @@ namespace ThereMustBeAnotherWay
         public void SetY(float y)
         {
             Position = new Vector2(Position.X, y);
+        }
+
+        /// <summary>
+        /// The damage dealt by the entity when jumping on top of another entity.
+        /// </summary>
+        /// <returns></returns>
+        public virtual int GetDamage()
+        {
+            return 20;
+        }
+
+        /// <summary>
+        /// Determines what happens to this entity when it jumps on another entity.
+        /// </summary>
+        /// <param name="other"></param>
+        public virtual void OnJumpOnAnotherEntity(Entity other)
+        {
+            jumpOnEntitySound.Play();
+            SetVelY(MushroomBooster.WeakBoost);
+            SetY(other.GetCollRectangle().Y - GetCollRectangle().Height);
         }
 
     }

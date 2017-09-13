@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Misc.Helpers;
 
 namespace ThereMustBeAnotherWay.Misc
 {
@@ -17,6 +18,8 @@ namespace ThereMustBeAnotherWay.Misc
 
         public delegate void FrameHandler(FrameArgs e);
         public delegate void EventHandler();
+
+        private Entity entity;
 
         /// <summary>
         /// Returns the number of animations saved.
@@ -82,6 +85,7 @@ namespace ThereMustBeAnotherWay.Misc
         public void UpdatePositionOnly(Entity entity)
         {
             _drawRectangle = new Rectangle(entity.GetCollRectangle().X - _currentAnimationData.DeltaRectangle.X, entity.GetCollRectangle().Y - _currentAnimationData.DeltaRectangle.Y, _currentAnimationData.Width * Scale, _currentAnimationData.Height * Scale);
+            this.entity = entity;
         }
 
         /// <summary>
@@ -252,7 +256,16 @@ namespace ThereMustBeAnotherWay.Misc
         {
             if (_currentAnimationData.Texture == null)
                 return;
-            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 0);
+            float rotation = 0;
+            Vector2 center = new Vector2();
+            if (entity != null)
+            {
+                center = entity.SpriteCenter;
+                rotation = entity.Rotation;
+            }
+            position.X += center.X;
+            position.Y += center.Y;
+            spriteBatch.Draw(_currentAnimationData.Texture, position, _sourceRectangle, Color.White, rotation, center, Scale, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -265,15 +278,25 @@ namespace ThereMustBeAnotherWay.Misc
         {
             if (_currentAnimationData.Texture == null)
                 return;
-
+            float rotation = 0;
+            Vector2 center = new Vector2();
+            if (entity != null)
+            {
+                rotation = entity.Rotation;
+                center = entity.SpriteCenter;
+            }
+            Rectangle tempRect = _drawRectangle;
+            tempRect.X += (int)center.X * 2;
+            tempRect.Y += (int)center.Y * 2;
             if (!isFacingRight)
             {
-                spriteBatch.Draw(_currentAnimationData.Texture, _drawRectangle, _sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(_currentAnimationData.Texture, tempRect, _sourceRectangle, color, rotation, center, SpriteEffects.FlipHorizontally, 0);
             }
             else
             {
-                spriteBatch.Draw(_currentAnimationData.Texture, _drawRectangle, _sourceRectangle, color, 0, new Vector2(0, 0), SpriteEffects.None, 0);
+                spriteBatch.Draw(_currentAnimationData.Texture, tempRect, _sourceRectangle, color, rotation, center, SpriteEffects.None, 0);
             }
+            //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), tempRect, new Rectangle(0,0, _sourceRectangle.Width, _sourceRectangle.Height), Color.Red, rotation, center, SpriteEffects.FlipHorizontally, 0);
         }
 
         /// <summary>

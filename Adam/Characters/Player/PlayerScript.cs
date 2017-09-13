@@ -266,6 +266,96 @@ namespace ThereMustBeAnotherWay
             player.AddAnimationToQueue("walk");
         }
 
+        public void OnDownMove(Player player)
+        {
+            if (player.IsDucking)
+                return;
+
+            float acc = WalkAcc;
+            if (player.IsRunningFast)
+            {
+                acc = RunAcc;
+                player.AddAnimationToQueue("run");
+            }
+
+            if (!player.IsTouchingGround)
+            {
+                acc = MoveJumpAcc;
+            }
+
+            if (player.GetVelocity().Y > 3 && player.IsRunningFast)
+            {
+                player.AddAnimationToQueue("slide");
+            }
+
+            player.SetVelY(player.GetVelocity().Y + acc);
+            player.CreateMovingParticles();
+
+            if (player.IsRunningFast)
+            {
+                if (player.GetVelocity().Y > MaxRunVelX)
+                    player.SetVelY(MaxRunVelX);
+            }
+            else if (player.GetVelocity().Y > MaxWalkVelX)
+                player.SetVelY(MaxWalkVelX);
+
+            if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
+            {
+                _stepSound.PlayNewInstanceOnce();
+            }
+            else
+            {
+                _stepSound.Reset();
+            }
+
+            player.AddAnimationToQueue("walk");
+        }
+
+        public void OnUpMove(Player player)
+        {
+            if (player.IsDucking)
+                return;
+
+            float acc = WalkAcc;
+            if (player.IsRunningFast)
+            {
+                acc = RunAcc;
+                player.AddAnimationToQueue("run");
+            }
+
+            if (!player.IsTouchingGround)
+            {
+                acc = MoveJumpAcc;
+            }
+
+            if (player.GetVelocity().Y > 3 && player.IsRunningFast)
+            {
+                player.AddAnimationToQueue("slide");
+            }
+
+            player.SetVelY(player.GetVelocity().Y - acc);
+            player.CreateMovingParticles();
+
+            if (player.IsRunningFast)
+            {
+                if (player.GetVelocity().Y < -MaxRunVelX)
+                    player.SetVelY(-MaxRunVelX);
+            }
+            else if (player.GetVelocity().Y < -MaxWalkVelX)
+                player.SetVelY(-MaxWalkVelX);
+
+            if (player.CurrentAnimationFrame == 1 || player.CurrentAnimationFrame == 3)
+            {
+                _stepSound.PlayNewInstanceOnce();
+            }
+            else
+            {
+                _stepSound.Reset();
+            }
+
+            player.AddAnimationToQueue("walk");
+        }
+
         public void OnInteractAction(Player player)
         {
             if (player.IsOnVines && player.GetVelocity().Y >= 0)

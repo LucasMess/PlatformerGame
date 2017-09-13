@@ -1974,3 +1974,21 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/x8.spritefont
 
+#begin Sounds/Player/enemy_jumpedOn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Player/enemy_jumpedOn.wav
+
+#begin Tiles/spritemap_level_select_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/spritemap_level_select_1.png
+

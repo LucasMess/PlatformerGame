@@ -342,7 +342,7 @@ namespace ThereMustBeAnotherWay.Graphics
 
             if (TMBAW_Game.CurrentGameMode == GameMode.Play || LevelEditor.IsLightingEnabled)
             {
-                if (StaticLightsEnabled)
+                if (StaticLightsEnabled && !GameWorld.WorldData.IsTopDown)
                 {
                     _spriteBatch.Begin(SpriteSortMode.Deferred, LightingBlend, SamplerState.AnisotropicClamp);
                     _spriteBatch.Draw(_combinedLightingRenderTarget, new Rectangle(0, 0, width, height), Color.White);

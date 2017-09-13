@@ -270,6 +270,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="steam_appid.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Adam_TemporaryKey.pfx" />
     <None Include="app.config" />
     <None Include="Content\Levels\GreenHills01.lvl">
@@ -287,9 +290,6 @@
     </None>
     <None Include="steam_api.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="steam_appid.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="SDL2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

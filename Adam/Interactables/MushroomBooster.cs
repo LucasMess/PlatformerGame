@@ -4,8 +4,8 @@ namespace ThereMustBeAnotherWay.Interactables
 {
     class MushroomBooster : Interactable
     {
-        const float WeakBoost = -10f;
-        const float StrongBoost = -20;
+        public const float WeakBoost = -10f;
+        public const float StrongBoost = -20;
 
         public MushroomBooster()
         {

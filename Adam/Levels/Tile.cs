@@ -74,6 +74,7 @@ namespace ThereMustBeAnotherWay
         public Interactable Interactable { get; private set; }
         public bool IsClimbable;
         public bool IsSolid;
+        public bool IsSolidTopDown = false;
         public bool IsWall;
         public Rectangle SourceRectangle;
         public byte SubId;
@@ -335,13 +336,28 @@ namespace ThereMustBeAnotherWay
                     LetsLightThrough = true;
                     break;
                 case TileType.Water: //water
-                    _frameCount = new Vector2(4, 0);
-                    _hasRandomStartingPoint = true;
                     _hasTopAndBottomPattern = true;
-                    _positionInSpriteSheet = new Vector2(4, 15);
-                    Interactable = new Water();
-                    if (SubId == 1)
-                        _positionInSpriteSheet = new Vector2(17, 24);
+                    IsSolidTopDown = true;
+                    if (GameWorld.WorldData.IsTopDown)
+                    {
+                        _positionInSpriteSheet = new Vector2(4, 16);
+                        if (SubId == 1)
+                        {
+                            _positionInSpriteSheet = new Vector2(4, 15);
+                            DrawRectangle.Y = _originalPosition.Y - 32;
+                            _sizeOfTile.Y = 64;
+                        }
+                    }
+                    else
+                    {
+                        _frameCount = new Vector2(4, 0);
+                        _hasRandomStartingPoint = true;
+                        Interactable = new Water();
+                        _positionInSpriteSheet = new Vector2(4, 15);
+                        if (SubId == 1)
+                            _positionInSpriteSheet = new Vector2(17, 24);
+                    }
+
                     break;
                 case TileType.Lava: //lava
                     Interactable = new Lava();
@@ -1284,6 +1300,7 @@ namespace ThereMustBeAnotherWay
             _hasTopAndBottomPattern = false;
             _hasLeftAndRightPattern = false;
             IsSolid = false;
+            IsSolidTopDown = false;
             SubId = 0;
             animationPlaysOnce = false;
             animationResets = false;
@@ -1305,7 +1322,7 @@ namespace ThereMustBeAnotherWay
 
         public void DrawRipples(SpriteBatch spriteBatch)
         {
-            if (Id == TileType.Water && Texture != null)
+            if (Id == TileType.Water && Texture != null && !GameWorld.WorldData.IsTopDown)
                 spriteBatch.Draw(Texture, DrawRectangle, new Rectangle(SourceRectangle.X, SourceRectangle.Y + 16, 16, 16), Color.White);
         }
 
@@ -2131,6 +2148,10 @@ namespace ThereMustBeAnotherWay
 
         public void AddRandomlyGeneratedDecoration(Tile[] array, int mapWidth)
         {
+            // Ignore decoration when on top down mode.
+            if (GameWorld.WorldData.IsTopDown)
+                return;
+
             // Add snow cover if it is snowing, otherwise add flowers and grass.
             if (GameWorld.WorldData.IsSnowing)
             {

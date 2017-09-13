@@ -336,6 +336,28 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             _spawnPointNextLevel = spawnPoint;
         }
 
+        private Rectangle _attackArea;
+        /// <summary>
+        /// The area at the player's feet where they can damage enemies.
+        /// </summary>
+        public Rectangle AttackArea
+        {
+            get
+            {
+                _attackArea.X = CollRectangle.X;
+                _attackArea.Height = (int)(CollRectangle.Height * .2f);
+                _attackArea.Y = CollRectangle.Y + CollRectangle.Height - _attackArea.Height;
+                _attackArea.Width = CollRectangle.Width;
+                return _attackArea;
+            }
+        }
+
+        public override void OnJumpOnAnotherEntity(Entity other)
+        {
+
+            base.OnJumpOnAnotherEntity(other);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), CollRectangle, Color.Red);
