@@ -50,7 +50,7 @@ namespace ThereMustBeAnotherWay.UI
             // Defines the bounding box for the Level Info List.
             int widthOfBounds = 300 * 2;
             int heightOfBounds = 150 * 2;
-            _boundsDrawRectangle = new Rectangle(TMBAW_Game.DefaultUiWidth / 2, TMBAW_Game.DefaultUiHeight / 2, widthOfBounds, heightOfBounds);
+            _boundsDrawRectangle = new Rectangle(TMBAW_Game.UserResWidth / 2, TMBAW_Game.UserResHeight / 2, widthOfBounds, heightOfBounds);
             _boundsDrawRectangle.X -= widthOfBounds / 2;
             _boundsDrawRectangle.Y -= heightOfBounds / 2;
             _boundsSourceRectangle = new Rectangle(376, 48, 300, 150);
@@ -88,6 +88,30 @@ namespace ThereMustBeAnotherWay.UI
             // Define the SpriteFont for the "Select Level" header and its position.
             _headerFont = ContentHelper.LoadFont("Fonts/x32");
             _headerText = "Select a Level:";
+            _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineSpacing - (10));
+
+            GraphicsRenderer.OnResolutionChanged += SetElementPositions;
+            SetElementPositions(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
+        }
+
+        private void SetElementPositions(int width, int height)
+        {
+            _boundsDrawRectangle.X = TMBAW_Game.UserResWidth / 2 - _boundsDrawRectangle.Width / 2;
+            _boundsDrawRectangle.Y = TMBAW_Game.UserResHeight / 2 - _boundsDrawRectangle.Height / 2;
+
+            // Defines how big the level selection box will be based on the game's resolution.
+            _scissorRectangle = new Rectangle(_boundsDrawRectangle.X + 12, _boundsDrawRectangle.Y + 12, _boundsDrawRectangle.Width - 24, _boundsDrawRectangle.Height - 24);
+
+            // Defines where the function buttons will be.
+            _functionButtonContainer = new Rectangle(_scissorRectangle.X + _scissorRectangle.Width - (4 + 128 + 16 + 32), _scissorRectangle.Y + _scissorRectangle.Height + 8, 184, 40);
+            _playButton.SetPosition(new Vector2(4 + IconButton.Size * 0, 4), _functionButtonContainer);
+            _editButton.SetPosition(new Vector2(4 + IconButton.Size * 1 + 4, 4), _functionButtonContainer);
+            _renameButton.SetPosition(new Vector2(4 + IconButton.Size * 2 + 8, 4), _functionButtonContainer);
+            _deleteButton.SetPosition(new Vector2(4 + IconButton.Size * 3 + 12, 4), _functionButtonContainer);
+            _newButton.SetPosition(new Vector2(4 + IconButton.Size * 4 + 16, 4), _functionButtonContainer);
+            _backButton.SetPosition(new Vector2(-500 + IconButton.Size * 3 + 4, 4), _functionButtonContainer);
+
+            // Define the SpriteFont for the "Select Level" header and its position.
             _headerPos = new Vector2(_scissorRectangle.X, _scissorRectangle.Y - _headerFont.LineSpacing - (10));
         }
 
@@ -292,7 +316,7 @@ namespace ThereMustBeAnotherWay.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * .7f);
+            spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), Color.Black * .7f);
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _boundsDrawRectangle, _boundsSourceRectangle, Color.White);
 
             spriteBatch.End();
@@ -351,7 +375,7 @@ namespace ThereMustBeAnotherWay.UI
             _nameFont = ContentHelper.LoadFont("Fonts/x16");
             _infoFont = ContentHelper.LoadFont("Fonts/x8");
 
-            _drawRectangle = new Rectangle(TMBAW_Game.DefaultUiWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
+            _drawRectangle = new Rectangle(TMBAW_Game.UserResWidth / 2 - LevelSelection.WidthOfBounds / 2 + 8 * 2, 8, LevelSelection.WidthOfBounds - 16 * 2, 25 * 2);
 
             _spacing = _infoFont.LineSpacing + 4;
 

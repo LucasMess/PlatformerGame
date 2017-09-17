@@ -140,7 +140,7 @@ namespace ThereMustBeAnotherWay.UI
 
             public static void Draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * _opacity);
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/black"), new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), Color.Black * _opacity);
             }
         }
 
@@ -163,8 +163,8 @@ namespace ThereMustBeAnotherWay.UI
             {
                 if (_isActive)
                 {
-                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, Height), Color.Black);
-                    spriteBatch.Draw(_texture, new Rectangle(0, TMBAW_Game.DefaultUiHeight - Height, TMBAW_Game.DefaultUiWidth, Height), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.UserResHeight, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, (TMBAW_Game.UserResHeight - (int)(Height * TMBAW_Game.HeightRatio)) , TMBAW_Game.UserResHeight, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
                 }
             }
         }
@@ -234,9 +234,9 @@ namespace ThereMustBeAnotherWay.UI
 
             internal static void Draw(SpriteBatch spriteBatch)
             {
-                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black);
+                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), Color.Black);
                 color = changeColor * (float)((500 - timer.TimeElapsedInMilliSeconds) / 500);
-                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), color);
+                spriteBatch.Draw(texture, new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), color);
             }
         }
 
@@ -370,7 +370,7 @@ namespace ThereMustBeAnotherWay.UI
             internal static void Draw(SpriteBatch spriteBatch)
             {
                 if (active)
-                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultUiWidth, TMBAW_Game.DefaultUiHeight), Color.Black * .7f);
+                    spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight), Color.Black * .7f);
                 Hide();
             }
         }

@@ -9,7 +9,7 @@ namespace ThereMustBeAnotherWay.UI
     /// <summary>
     ///     This creates a minimap of the level for the level editor.
     /// </summary>
-    internal class Minimap
+    public class Minimap
     {
         private Texture2D _antiTexture;
         private Color[] _pixels;
@@ -22,6 +22,8 @@ namespace ThereMustBeAnotherWay.UI
         private Rectangle _viewSourceRect = new Rectangle(352, 160, 32, 32);
         private Rectangle _viewDrawRect;
         private float minimapToWorldRatio;
+        public const int Width = 77 * 2;
+        public const int Height = 114 * 2;
 
         public Minimap()
         {
@@ -31,14 +33,14 @@ namespace ThereMustBeAnotherWay.UI
             _antiTexture = new Texture2D(GraphicsRenderer.GetGraphicsDevice(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight);
             _pixels = new Color[_texture.Width * _texture.Height];
-            _rectangle = new Rectangle(TMBAW_Game.DefaultUiWidth - size, TMBAW_Game.DefaultUiHeight - size,
+            _rectangle = new Rectangle(0, 0,
                 size, size);
 
             minimapToWorldRatio = (float)(_texture.Width) / size;
 
             int width = (_uiSourceRect.Width * 2);
             int height = (_uiSourceRect.Height * 2);
-            _uiDrawRect = new Rectangle(TMBAW_Game.DefaultUiWidth - width, TMBAW_Game.DefaultUiHeight - height, width, height);
+            _uiDrawRect = new Rectangle(0, 0, width, height);
 
         }
 
@@ -110,6 +112,12 @@ namespace ThereMustBeAnotherWay.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // Change the position on the fly because of resolution changes.
+            _uiDrawRect.X = TMBAW_Game.UserResWidth - _uiDrawRect.Width;
+            _uiDrawRect.Y = TMBAW_Game.UserResHeight - _uiDrawRect.Height;
+            _rectangle.X = TMBAW_Game.UserResWidth - _rectangle.Width;
+            _rectangle.Y = TMBAW_Game.UserResHeight - _rectangle.Height;
+
             spriteBatch.Draw(GameWorld.UiSpriteSheet, _uiDrawRect, _uiSourceRect, Color.White);
 
             if (_isAnti)
@@ -128,9 +136,9 @@ namespace ThereMustBeAnotherWay.UI
 
         public bool IsIntersecting(Rectangle rectangle)
         {
-            Rectangle mainRect = new Rectangle(397 * 2, 191 * 2, 83 * 2, 79 * 2);
-            Rectangle plusAndMinusRect = new Rectangle(459 * 2, 154 * 2, 21 * 2, 37 * 2);
-            return rectangle.Intersects(mainRect) || rectangle.Intersects(plusAndMinusRect);
+            Rectangle mainRect = new Rectangle(_rectangle.X - 3 * 2, _rectangle.Y - 3 * 2, 77 * 2, 77 * 2);
+            Rectangle plusAndMinusRect = new Rectangle(mainRect.X + 56 * 2, mainRect.Y - 37 * 2, 21 * 2, 37 * 2);
+            return (rectangle.Intersects(mainRect) || rectangle.Intersects(plusAndMinusRect));
         }
     }
 }

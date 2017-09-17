@@ -30,7 +30,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static bool _hasChangedSinceLastSave;
         private static Inventory _inventory;
         private static bool _inventoryKeyPressed;
-        private static Minimap _miniMap;
+        private static Minimap _minimap;
         private static Rectangle _mouseRectInGameWorld;
         private static bool _recentlyChanged;
         private static SoundFx _wallMode;
@@ -57,8 +57,8 @@ namespace ThereMustBeAnotherWay.Levels
             _inventory = new Inventory();
             ButtonBar = new ButtonBar();
             HotBar.Initialize();
-            _miniMap = new Minimap();
-            _miniMap.StartUpdating();
+            _minimap = new Minimap();
+            _minimap.StartUpdating();
 
             for (var i = 1; i <= Construction.Length; i++)
             {
@@ -639,7 +639,7 @@ namespace ThereMustBeAnotherWay.Levels
         /// <param name="spriteBatch"></param>
         public static void DrawUi(SpriteBatch spriteBatch)
         {
-            _miniMap.Draw(spriteBatch);
+            _minimap.Draw(spriteBatch);
             _inventory.Draw(spriteBatch);
             ButtonBar.Draw(spriteBatch);
             HotBar.Draw(spriteBatch);
@@ -657,7 +657,7 @@ namespace ThereMustBeAnotherWay.Levels
                 return true;
             if (Inventory.IsOpen && mouse.Intersects(_inventory.GetCollRectangle()))
                 return true;
-            if (_miniMap.IsIntersecting(mouse))
+            if (_minimap.IsIntersecting(mouse))
                 return true;
 
             return false;

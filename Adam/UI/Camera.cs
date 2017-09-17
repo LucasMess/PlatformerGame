@@ -25,6 +25,7 @@ namespace ThereMustBeAnotherWay
         public int TileIndex;
 
         float _zoom = 1;
+        bool _updateInstantly = false;
         int _lastScrollWheel;
 
         Vector2 _prefRes;
@@ -114,13 +115,7 @@ namespace ThereMustBeAnotherWay
                 if (currentLeftCorner.Y < -(height * TMBAW_Game.Tilesize - _defRes.Y))
                     currentLeftCorner.Y = -(height * TMBAW_Game.Tilesize - _defRes.Y);
             }
-            //if (zoom > 1)
-            //{
-            //    translation = Matrix.CreateTranslation(new Vector3(-playerPos.X + ((int)defRes.X /zoom/ 2), -playerPos.Y + (3 * (int)defRes.Y /zoom/ 5), 0))
-            //        * Matrix.CreateScale(new Vector3(zoom, zoom, 0));
 
-            //    return;
-            //}
             if (InputHelper.IsKeyDown(Keys.OemMinus))
                 ButtonBar.MinusButton_MouseClicked(null);
             if (InputHelper.IsKeyDown(Keys.OemPlus))
@@ -128,35 +123,23 @@ namespace ThereMustBeAnotherWay
             if (InputHelper.IsKeyDown(Keys.R))
                 ResetZoom();
 
-
-            //MoveTo(new Vector2(currentLeftCorner.X, currentLeftCorner.Y), 2000);
-
-
             Velocity = (currentLeftCorner - LastCameraLeftCorner) / 5;
             Vector3 cameraLeftCorner = LastCameraLeftCorner;
-            cameraLeftCorner += Velocity;
 
-
-            // Make sure mult of 2.
-            //double mult = .5;
-            //if (cameraLeftCorner.X % mult != 0)
-            //{
-            //    cameraLeftCorner.X = (int)(cameraLeftCorner.X*2)/ 2;
-            //}
-            //if (cameraLeftCorner.Y % mult != 0)
-            //{
-            //    cameraLeftCorner.Y = (int)(cameraLeftCorner.Y * 2) / 2;
-            //}
-            //if (cameraLeftCorner.Z % mult != 0)
-            //{
-            //    cameraLeftCorner.Z++;
-            //}
+            // Used if the camera zoom changed.
+            if (_updateInstantly)
+            {
+                cameraLeftCorner = currentLeftCorner;
+                _updateInstantly = false;
+            }
+            else
+            {
+                cameraLeftCorner += Velocity;
+            }
 
             CenterGameCoords = new Vector2(-currentLeftCorner.X, -currentLeftCorner.Y);
 
             LeftTopGameCoords = CenterGameCoords;
-            //LeftTopGameCoords.X -= Main.DefaultResWidth;
-            //LeftTopGameCoords.Y -= Main.DefaultResHeight;
 
             CenterGameCoords.X += TMBAW_Game.DefaultResWidth / 2;
             CenterGameCoords.Y += TMBAW_Game.DefaultResHeight * 2 / 3;
@@ -197,15 +180,13 @@ namespace ThereMustBeAnotherWay
         //Slowly zooom in.
         public void ZoomIn()
         {
-            _zoom += .005f;
-            if (_zoom > 2)
-                _zoom = 2;
+            SetZoomTo(_zoom + .005f);
         }
 
         //Resets the zoom to its default value.
         public void ResetZoom()
         {
-            _zoom = 1;
+            SetZoomTo(1);
         }
 
         /// <summary>
@@ -213,9 +194,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public void ZoomOut()
         {
-            _zoom -= .05f;
-            if (_zoom < 0.25)
-                _zoom = 0.25f;
+            SetZoomTo(_zoom - .005f);
         }
 
         /// <summary>
@@ -224,6 +203,11 @@ namespace ThereMustBeAnotherWay
         /// <param name="newZoom"></param>
         public void SetZoomTo(float newZoom)
         {
+            if (newZoom < .25)
+                newZoom = .25f;
+            if (newZoom > 2)
+                newZoom = 2;
+            _updateInstantly = true;
             _zoom = newZoom;
         }
 

@@ -14,6 +14,10 @@ namespace ThereMustBeAnotherWay.Graphics
     /// </summary>
     public static class GraphicsRenderer
     {
+
+        public static event ResolutionHandler OnResolutionChanged;
+        public delegate void ResolutionHandler(int width, int height);
+
         public static bool ShadowsEnabled { get; set; } = true;
         public static bool ComplexLightingEnabled { get; set; } = true;
         /// <summary>
@@ -145,10 +149,6 @@ namespace ThereMustBeAnotherWay.Graphics
             _combinedWorldRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
-
-            // The user interface rendertarget has the size of the user's screen.
-            ChangeUserInterfaceResolution();
-
 
             testEffect = ContentHelper.LoadEffect("Effects/testEffect");
 
@@ -421,14 +421,16 @@ namespace ThereMustBeAnotherWay.Graphics
             TMBAW_Game.UserResWidth = width;
             TMBAW_Game.UserResHeight = height;
 
-            TMBAW_Game.WidthRatio = (TMBAW_Game.DefaultResWidth / (double)TMBAW_Game.UserResWidth);
-            TMBAW_Game.HeightRatio = (TMBAW_Game.DefaultResHeight / (double)TMBAW_Game.UserResHeight);
+            TMBAW_Game.WidthRatio = ((double)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultUiWidth);
+            TMBAW_Game.HeightRatio = ((double)TMBAW_Game.UserResHeight / TMBAW_Game.DefaultUiHeight);
 
-            TMBAW_Game.UiWidthRatio = (TMBAW_Game.DefaultUiWidth / (double)TMBAW_Game.UserResWidth);
-            TMBAW_Game.UiHeightRatio = (TMBAW_Game.DefaultUiHeight / (double)TMBAW_Game.UserResHeight);
+            TMBAW_Game.UiWidthRatio = ((double)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultUiWidth);
+            TMBAW_Game.UiHeightRatio = ((double)TMBAW_Game.UserResHeight / TMBAW_Game.DefaultUiHeight);
 
             _graphicsManager.ApplyChanges();
             ChangeUserInterfaceResolution();
+
+            OnResolutionChanged?.Invoke(width, height);
         }
 
         /// <summary>

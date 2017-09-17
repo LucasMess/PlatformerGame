@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
@@ -30,18 +31,35 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
 
         public static void Initialize()
         {
+            GraphicsRenderer.OnResolutionChanged += SetTilePositions;
+
             for (int i = 0; i < 8; i++)
             {
                 TileHolder tileHolder = new TileHolder(0);
-                tileHolder.SetPosition(StartingX + (i * (tileHolder.Size + SpacingBetweenTiles)), StartingY);
-                tileHolder.BindTo(new Vector2(0, 0));
                 tileHolder.WasClicked += Tile_WasClicked;
                 tileHolder.CanBeMoved = false;
                 _tileHolders.Add(tileHolder);
             }
+            SetTilePositions(UserResWidth, UserResHeight);
 
             _tileHolders[0].ChangeId(TileType.Grass);
             Tile_WasClicked(_tileHolders[0]);
+        }
+
+        /// <summary>
+        /// When the resolution changes, the tile positions need to be recalculated.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        private static void SetTilePositions(int width, int height)
+        {
+            // The starting position is the button bar's position plus the offset.
+            int x = LevelEditor.ButtonBar.GetCollRectangle().X + 96 * 2;
+            for (int i = 0; i < 8; i++)
+            {
+                _tileHolders[i].SetPosition(x + (i * (_tileHolders[i].Size + SpacingBetweenTiles)), StartingY);
+                _tileHolders[i].BindTo(new Vector2(0, 0));
+            }
         }
 
         /// <summary>

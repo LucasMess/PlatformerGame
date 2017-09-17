@@ -53,8 +53,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
         {
             Initialize();
 
-            CollRectangle.X = (int)position.X + box.X;
-            CollRectangle.Y = (int)position.Y + box.Y;
+            SetPosition(position, box);
             _buttonImage = buttonImage;
             _hoverText = hoverText;
 

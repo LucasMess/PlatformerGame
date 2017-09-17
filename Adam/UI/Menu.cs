@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay
 {
@@ -42,43 +43,34 @@ namespace ThereMustBeAnotherWay
 
         public static void Initialize(TMBAW_Game game1)
         {
-            int width = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
-            int height = TMBAW_Game.DefaultUiHeight * 2 / 5;
-            int diff = (TextButton.Height + 2) * 2;
-            _first = new Vector2(width, height + (diff * 0));
-            _second = new Vector2(width, height + (diff * 1));
-            _third = new Vector2(width, height + (diff * 2));
-            _fourth = new Vector2(width, height + (diff * 3));
-            _fifth = new Vector2(width, height + (diff * 4));
-
             _font8 = ContentHelper.LoadFont("Fonts/x8");
             _font32 = ContentHelper.LoadFont("Fonts/x32");
 
-            _chooseLevel = new TextButton(_second, "Choose a Level", false);
+            _chooseLevel = new TextButton(Vector2.Zero, "Choose a Level", false);
             _chooseLevel.MouseClicked += chooseLevel_MouseClicked;
             _buttons.Add(_chooseLevel);
 
-            _quit = new TextButton(_fifth, "Quit", false);
+            _quit = new TextButton(Vector2.Zero, "Quit", false);
             _quit.MouseClicked += quit_MouseClicked;
             _buttons.Add(_quit);
 
-            _options = new TextButton(_third, "Options", false);
+            _options = new TextButton(Vector2.Zero, "Options", false);
             _options.MouseClicked += options_MouseClicked;
             _buttons.Add(_options);
 
-            _multiplayer = new TextButton(_fourth, "Multiplayer", false);
+            _multiplayer = new TextButton(Vector2.Zero, "Multiplayer", false);
             _multiplayer.MouseClicked += multiplayer_MouseClicked;
             _buttons.Add(_multiplayer);
 
-            _storyModeButton = new TextButton(_first, "Story Mode", false);
+            _storyModeButton = new TextButton(Vector2.Zero, "Story Mode", false);
             _storyModeButton.MouseClicked += storyMode_MouseClicked;
             _buttons.Add(_storyModeButton);
 
-            _backButton = new TextButton(_fifth, "Back", false);
+            _backButton = new TextButton(Vector2.Zero, "Back", false);
             _backButton.MouseClicked += backButton_MouseClicked;
             _buttons.Add(_backButton);
 
-            _startMultiplayerGame = new TextButton(_third, "Start Game", false);
+            _startMultiplayerGame = new TextButton(Vector2.Zero, "Start Game", false);
             _startMultiplayerGame.MouseClicked += StartMultiplayerGame_MouseClicked;
             _buttons.Add(_startMultiplayerGame);
 
@@ -90,6 +82,30 @@ namespace ThereMustBeAnotherWay
 
             _levelSelection = new LevelSelection();
             SaveSelector.Initialize();
+
+            GraphicsRenderer.OnResolutionChanged += SetElementPositions;
+            SetElementPositions(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
+        }
+
+        private static void SetElementPositions(int width, int height)
+        {
+            int middle = width / 2 - TextButton.Width;
+            int startingY = height * 2 / 5;
+            int diff = (TextButton.Height + 2) * 2;
+
+            _first = new Vector2(middle, startingY + (diff * 0));
+            _second = new Vector2(middle, startingY + (diff * 1));
+            _third = new Vector2(middle, startingY + (diff * 2));
+            _fourth = new Vector2(middle, startingY + (diff * 3));
+            _fifth = new Vector2(middle, startingY + (diff * 4));
+
+            _chooseLevel.SetPosition(_second);
+            _quit.SetPosition(_fifth);
+            _options.SetPosition(_third);
+            _multiplayer.SetPosition(_fourth);
+            _storyModeButton.SetPosition(_first);
+            _backButton.SetPosition(_fifth);
+            _startMultiplayerGame.SetPosition(_third);
         }
 
         private static void StartMultiplayerGame_MouseClicked(Button button)
@@ -104,27 +120,6 @@ namespace ThereMustBeAnotherWay
         {
             CurrentMenuState = MenuState.StoryMode;
         }
-
-        //void level4_MouseClicked()
-        //{
-        //    game1.ChangeState(GameState.GameWorld);
-        //}
-
-        //void level3_MouseClicked()
-        //{
-        //    game1.ChangeState(GameState.GameWorld);
-        //}
-
-        //void level2_MouseClicked()
-        //{
-        //    game1.ChangeState(GameState.GameWorld);
-        //}
-
-        //void level1_MouseClicked()
-        //{
-        //    game1.GameData.SelectedSave = 0;
-        //    game1.ChangeState(GameState.GameWorld);
-        //}
 
         static void backButton_MouseClicked(Button button)
         {
@@ -222,11 +217,11 @@ namespace ThereMustBeAnotherWay
             //spriteBatch.Draw(background, new Rectangle(0, 0, AdamGame.UserResWidth, AdamGame.UserResHeight), Color.White);
 
             FontHelper.DrawWithOutline(spriteBatch, _font8, TMBAW_Game.Producers, new Vector2(5, 5), 3, Color.White, Color.Black);
-            FontHelper.DrawWithOutline(spriteBatch, _font8, TMBAW_Game.Version, new Vector2(5, 30), 3, Color.White, Color.Black);
+            FontHelper.DrawWithOutline(spriteBatch, _font8, TMBAW_Game.Version, new Vector2(5, 20), 3, Color.White, Color.Black);
 
 
             string title = "There Must Be Another Way";
-            FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[2], title, new Vector2(TMBAW_Game.DefaultUiWidth / 2 - FontHelper.Fonts[2].MeasureString(title).X / 2, 120), 1, Color.White, Color.DarkGray);
+            FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[2], title, new Vector2(TMBAW_Game.UserResWidth / 2 - FontHelper.Fonts[2].MeasureString(title).X / 2, 120), 1, Color.White, Color.DarkGray);
 
             switch (CurrentMenuState)
             {

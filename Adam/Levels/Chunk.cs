@@ -16,9 +16,9 @@ namespace ThereMustBeAnotherWay.Levels
             {
                 if (TMBAW_Game.Camera.IsZoomedOut())
                 {
-                    return 10;
+                    return 12;
                 }
-                else return 6;
+                else return 7;
             }
         }
         public static int HeightVisible
@@ -64,7 +64,7 @@ namespace ThereMustBeAnotherWay.Levels
         {
             // Put the surrounding chunks in a list.
             List<Chunk> surroundingChunks = new List<Chunk>();
-            int startingChunk = Index - maxChunksX * 2 - 2;
+            int startingChunk = Index - maxChunksX * 2 - 3;
             int width = WidthVisible;
             int height = HeightVisible;
 

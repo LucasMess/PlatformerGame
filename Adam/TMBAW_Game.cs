@@ -45,10 +45,10 @@ namespace ThereMustBeAnotherWay
         private const bool InDebugMode = true;
         private const bool IsTestingMultiplayer = false;
         public const int Tilesize = 32;
-        public const int DefaultResWidth = 960; // Default 960x540
-        public const int DefaultResHeight = 540;
-        public const int DefaultUiWidth = 960;
-        public const int DefaultUiHeight = 540;
+        public const int DefaultResWidth = 1280;
+        public const int DefaultResHeight = 720;
+        public const int DefaultUiWidth = 1280;
+        public const int DefaultUiHeight = 720;
         public const string Version = "Version 0.10.4 Beta";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
@@ -109,8 +109,6 @@ namespace ThereMustBeAnotherWay
             DataFolder.Initialize();
             SettingsFile settings = DataFolder.GetSettingsFile();
 
-            UserResWidth = settings.ResolutionWidth;
-            UserResHeight = settings.ResolutionHeight;
             UserName = SteamFriends.GetPersonaName();
             SteamID = SteamUser.GetSteamID();
 #if DEBUG

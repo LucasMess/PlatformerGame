@@ -106,6 +106,17 @@ namespace ThereMustBeAnotherWay.UI
         }
 
         /// <summary>
+        /// Sets the position of the element relative to its parent.
+        /// </summary>
+        /// <param name="offset">The offset of the element relative to its parent</param>
+        /// <param name="parent"></param>
+        public virtual void SetPosition(Vector2 offset, Rectangle parent)
+        {
+            CollRectangle.X = (int)offset.X + parent.X;
+            CollRectangle.Y = (int)offset.Y + parent.Y;
+        }
+
+        /// <summary>
         /// The difference in coordinates between the container and the button.
         /// </summary>
         protected Rectangle ContainerDiff;

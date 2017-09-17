@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
 using Timer = ThereMustBeAnotherWay.Misc.Timer;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
@@ -23,8 +24,8 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         private const int SpacingBetweenTiles = 2 * 2;
 
         // The starting coordinates for the first tile in the grid.
-        private const int DefaultX = 155 * 2;
-        private const int DefaultY = 47 * 2;
+        private int TileGridStartingX => 68 * 2 + _backDrop.X;
+        private int TileGridStartingY => 8 * 2 + _backDrop.Y;
 
         private const int TilesPerRow = 9;
 
@@ -38,8 +39,8 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         private List<Button> _categoryButtons = new List<Button>();
 
         // The position the backdrop should be in when open or closed.
-        private readonly int _activeY;
-        private readonly int _inactiveY;
+        private int _activeY;
+        private int _inactiveY;
 
         private List<TileHolder> _tileHolders = new List<TileHolder>();
         public static TileHolder TileBeingMoved { get; private set; } = new TileHolder(0);
@@ -222,36 +223,64 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 button.ChangeDimensions(new Rectangle(0, 0, (buttonWidth), (buttonHeight)));
                 button.Color = new Color(95, 95, 95);
             }
+
+            GraphicsRenderer.OnResolutionChanged += SetElementPositions;
+            SetElementPositions(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
+        }
+
+        private void SetElementPositions(int width, int height)
+        {
+            _backDrop.X = TMBAW_Game.UserResWidth / 2 - _backDrop.Width / 2;
+            CreateTileHolders();
+
+            int buttonHeight = 15 * 2;
+            int spacingBetweenButtons = 6;
+
+            int startingX = 12 * 2;
+            int startingY = 15 * 2;
+
+            for (int i = 0; i < _categoryButtons.Count; i++)
+            {
+                _categoryButtons[i].SetPosition(new Vector2(startingX, startingY + buttonHeight * i + spacingBetweenButtons * i * 2), _backDrop);
+                _categoryButtons[i].BindTo(_backDrop);
+            }
+
+            BuldingCatClicked(_categoryButtons[0]);
         }
 
         private void SpecialCatClicked(Button button)
         {
             ChangeCategory(Category.Special);
             _categorySelector.MoveTo(button.GetPosition(), 100);
+            _categorySelector.BindToButton(button);
         }
 
         private void CharactersCatClicked(Button button)
         {
             ChangeCategory(Category.Characters);
             _categorySelector.MoveTo(button.GetPosition(), 100);
+            _categorySelector.BindToButton(button);
         }
 
         private void ObjectsCatClicked(Button button)
         {
             ChangeCategory(Category.Objects);
             _categorySelector.MoveTo(button.GetPosition(), 100);
+            _categorySelector.BindToButton(button);
         }
 
         private void BuldingCatClicked(Button button)
         {
             ChangeCategory(Category.Building);
             _categorySelector.MoveTo(button.GetPosition(), 100);
+            _categorySelector.BindToButton(button);
         }
 
         private void WallCatClicked(Button button)
         {
             ChangeCategory(Category.Wall);
             _categorySelector.MoveTo(button.GetPosition(), 100);
+            _categorySelector.BindToButton(button);
         }
 
         private void ChangeCategory(Category cat)
@@ -294,10 +323,10 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             var counter = 0;
             foreach (var tile in _tileHolders)
             {
-                var x = (DefaultX) +
+                var x = (TileGridStartingX) +
                         (counter % TilesPerRow) *
                         (tile.Size + SpacingBetweenTiles);
-                var y = (DefaultY) +
+                var y = (TileGridStartingY) +
                         (counter / TilesPerRow) *
                         (tile.Size + SpacingBetweenTiles);
 
@@ -386,7 +415,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             {
                 button.Update(_backDrop);
             }
-
+            _categorySelector.Update();
         }
 
         private void OnTileClicked(TileHolder tile)

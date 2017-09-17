@@ -3,6 +3,7 @@ using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
@@ -11,7 +12,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
     /// </summary>
     public class ButtonBar
     {
-        private readonly Rectangle _drawRectangle;
+        private Rectangle _drawRectangle;
         private readonly Rectangle _sourceRectangle;
         private readonly Texture2D _texture;
         private readonly List<IconButton> _buttons = new List<IconButton>();
@@ -21,6 +22,9 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         IconButton selectButton;
         IconButton lightingButton;
 
+        // Other buttons that only need a reference to update their position on a res change.
+        IconButton wallButton, expandButton, playButton, optionsButton, plusButton, minusButton;
+
         public ButtonBar()
         {
             _texture = GameWorld.UiSpriteSheet;
@@ -28,9 +32,8 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             _drawRectangle = new Rectangle(0, 0, _sourceRectangle.Width * 2,
                 _sourceRectangle.Height * 2);
 
-            _drawRectangle.X = TMBAW_Game.DefaultUiWidth / 2 - _drawRectangle.Width / 2;
+            _drawRectangle.X = TMBAW_Game.UserResWidth / 2 - _drawRectangle.Width / 2;
 
-            // Buttons cannot be called individually outside the constructor.
             brushButton = new IconButton(new Vector2(11 * 2, 11 * 2), _drawRectangle, "Brush", ButtonImage.Brush);
             brushButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
@@ -40,28 +43,28 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             selectButton = new IconButton(new Vector2(47 * 2, 11 * 2), _drawRectangle, "Select", ButtonImage.Select);
             selectButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
-            var wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
+            wallButton = new IconButton(new Vector2(65 * 2, 11 * 2), _drawRectangle, "Toggle wall mode", ButtonImage.Wall);
             wallButton.ChangeColors(new Color(95, 95, 95), Color.White);
 
-            var expandButton = new IconButton(new Vector2(293 * 2, 17 * 2), _drawRectangle, "More tiles", ButtonImage.Expand);
+            expandButton = new IconButton(new Vector2(293 * 2, 17 * 2), _drawRectangle, "More tiles", ButtonImage.Expand);
 
-            var playButton = new IconButton(new Vector2(336 * 2, 11 * 2), _drawRectangle, "Play test level", ButtonImage.Play);
+            playButton = new IconButton(new Vector2(336 * 2, 11 * 2), _drawRectangle, "Play test level", ButtonImage.Play);
 
             lightingButton = new IconButton(new Vector2(318 * 2, 11 * 2), _drawRectangle, "Enable/Disable Lighting", ButtonImage.LightBulb);
             lightingButton.ChangeColors(new Color(95, 95, 95), Color.White);
             lightingButton.IsOn = true;
 
-            var optionsButton = new IconButton(new Vector2(354 * 2, 11 * 2), _drawRectangle, "More options",
+            optionsButton = new IconButton(new Vector2(354 * 2, 11 * 2), _drawRectangle, "More options",
                 ButtonImage.Settings);
             optionsButton.ChangeColors(new Color(205, 205, 205), new Color(95, 95, 95));
 
             // Buttons for minimap, which will be conveniently placed here...
-            var plusButton = new IconButton(new Vector2(413 * 2, 158 * 2), _drawRectangle, "Zoom In", ButtonImage.Plus);
+            plusButton = new IconButton(new Vector2(413 * 2, 158 * 2), _drawRectangle, "Zoom In", ButtonImage.Plus);
             plusButton.MouseClicked += PlusButton_MouseClicked;
             plusButton.ChangeColors(new Color(95, 95, 95), Color.White);
             _buttons.Add(plusButton);
 
-            var minusButton = new IconButton(new Vector2(413 * 2, 176 * 2), _drawRectangle, "Zoom Out", ButtonImage.Minus);
+            minusButton = new IconButton(new Vector2(413 * 2, 176 * 2), _drawRectangle, "Zoom Out", ButtonImage.Minus);
             minusButton.MouseClicked += MinusButton_MouseClicked;
             minusButton.ChangeColors(new Color(95, 95, 95), Color.White);
             _buttons.Add(minusButton);
@@ -82,6 +85,28 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             _buttons.Add(eraserButton);
             _buttons.Add(selectButton);
             _buttons.Add(optionsButton);
+
+            GraphicsRenderer.OnResolutionChanged += SetElementPositions;
+            SetElementPositions(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
+        }
+
+        private void SetElementPositions(int width, int height)
+        {
+            _drawRectangle.X = TMBAW_Game.UserResWidth / 2 - _drawRectangle.Width / 2;
+            _drawRectangle.Y = 0;
+
+            brushButton.SetPosition(new Vector2(11 * 2, 11 * 2), _drawRectangle);
+            eraserButton.SetPosition(new Vector2(29 * 2, 11 * 2), _drawRectangle);
+            selectButton.SetPosition(new Vector2(47 * 2, 11 * 2), _drawRectangle);
+            wallButton.SetPosition(new Vector2(65 * 2, 11 * 2), _drawRectangle);
+            expandButton.SetPosition(new Vector2(293 * 2, 17 * 2), _drawRectangle);
+            playButton.SetPosition(new Vector2(336 * 2, 11 * 2), _drawRectangle);
+            lightingButton.SetPosition(new Vector2(318 * 2, 11 * 2), _drawRectangle);
+            optionsButton.SetPosition(new Vector2(354 * 2, 11 * 2), _drawRectangle);
+
+            // Minimap buttons.
+            plusButton.SetPosition(new Vector2(TMBAW_Game.UserResWidth - 18 * 2, TMBAW_Game.UserResHeight - 112 * 2));
+            minusButton.SetPosition(new Vector2(TMBAW_Game.UserResWidth - 18 * 2, TMBAW_Game.UserResHeight - 94 * 2));
         }
 
         private void LightingButton_MouseClicked(Button button)

@@ -20,9 +20,6 @@ namespace ThereMustBeAnotherWay.UI
         /// Available resolutions for the game.
         /// </summary>
         private static Point[] resolutions = new Point[]{
-            new Point(960,540),
-            new Point(1024,576),
-            new Point(1152,648),
             new Point(1280,720),
             new Point(1366,768),
             new Point(1600,900),
@@ -64,8 +61,14 @@ namespace ThereMustBeAnotherWay.UI
                 button.Color = new Color(196, 69, 69);
             }
 
-            int startingY = 200;
-            int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
+            GraphicsRenderer.OnResolutionChanged += SetElementPositions;
+            SetElementPositions(TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight);
+        }
+
+        private static void SetElementPositions(int width, int height)
+        {
+            int startingY = (int)(200 * TMBAW_Game.HeightRatio);
+            int x = TMBAW_Game.UserResWidth / 2 - TextButton.Width;
             for (int i = 0; i < _buttons.Count; i++)
             {
                 _buttons[i].SetPosition(new Vector2(x, startingY + (TextButton.Height * 2 + 10) * i));
