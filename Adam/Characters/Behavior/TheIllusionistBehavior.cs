@@ -10,6 +10,7 @@ using ThereMustBeAnotherWay.Graphics;
 using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.PlayerCharacter;
 using static ThereMustBeAnotherWay.TMBAW_Game;
 
 namespace ThereMustBeAnotherWay.Characters.Behavior
@@ -83,7 +84,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 TMBAW_Game.Camera.LockedX = true;
                 TMBAW_Game.Camera.LockedY = true;
                 TMBAW_Game.Camera.RestricedToGameWorld = false;
-                GameWorld.GetPlayer().RestrictedToGameWorld = false;
+                foreach (Player player in GameWorld.GetPlayers())
+                    player.RestrictedToGameWorld = false;
                 GraphicsRenderer.StaticLightsEnabled = false;
 
                 castingSpellTimer.SetTimeReached += OnEnemiesSpawned;
@@ -142,8 +144,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         {
             const float maxVel = 20f;
             float velocity = maxVel/2 * -(float)Math.Cos(2 * Math.PI * levitateEntitiesTimer.TimeElapsedInMilliSeconds / 10000) + maxVel / 2 + 1;
-            GameWorld.GetPlayer().SetVelY(-velocity);
-            GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(GameWorld.GetPlayer().GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                player.SetVelY(-velocity);
+                GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(player.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
+            }
             foreach (var entity in GameWorld.Entities)
             {
                 if (entity != Entity)
@@ -231,7 +236,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             levitateEntitiesTimer.ResetAndWaitFor(5000);
             levitateEntitiesTimer.SetTimeReached += LevitateEntities_SetTimeReached;
             attackTimer.ResetAndWaitFor(Int32.MaxValue);
-            GameWorld.GetPlayer().CollidedWithTerrain += OnPlayerFallFromLevitation;
+            GameWorld.GetPlayers()[0].CollidedWithTerrain += OnPlayerFallFromLevitation;
         }
 
         private void LevitateEntities_SetTimeReached()
@@ -242,8 +247,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         private void OnPlayerFallFromLevitation(Entity entity, Tile tile)
         {
             attackTimer.ResetAndWaitFor(5000);
-            GameWorld.GetPlayer().CollidedWithTerrain -= OnPlayerFallFromLevitation;
-
+            GameWorld.GetPlayers()[0].CollidedWithTerrain -= OnPlayerFallFromLevitation;
         }
     }
 }

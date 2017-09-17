@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using ThereMustBeAnotherWay.Characters.Enemies;
 
 namespace ThereMustBeAnotherWay.Characters.Behavior
 {
@@ -43,7 +44,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         private void ChargeUpTimer_SetTimeReached()
         {
             isRunningToPlayer = true;
-            playerToRightWhenAngry = Entity.IsPlayerToRight();
+            playerToRightWhenAngry = Entity.IsPlayerToTheRight();
         }
 
         private void Stun(Entity entity)
@@ -59,11 +60,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
 
         public override void Update(Entity entity)
         {
-            if (CollisionRay.IsEntityInSight(entity, GameWorld.GetPlayer()) && !isAngry)
+            if (CollisionRay.IsEntityInSight(entity, GameWorld.GetPlayers()[0]) && !isAngry)
             {
                 isAngry = true;
                 chargeUpTimer.ResetAndWaitFor(1000);
-                entity.IsFacingRight = !entity.IsPlayerToRight();
+                entity.IsFacingRight = !entity.IsPlayerToTheRight();
             }
 
             if (isAngry)

@@ -19,8 +19,8 @@ namespace ThereMustBeAnotherWay
         private const float MaxRunVelX = 10f;
         private const float MoveJumpAcc = .05f;
         const float JumpAcc = -12f;
-        const float WalkAcc = .3f;
-        const float RunAcc = .4f;
+        const float WalkAcc = .5f;
+        const float RunAcc = .7f;
         const float DashSpeed = 24f;
         const float ClimbingSpeed = 4f;
         public const double RewindCooldown = 4000;
@@ -92,9 +92,9 @@ namespace ThereMustBeAnotherWay
 
             if (_idleTimer.TimeElapsedInSeconds > 10)
             {
-                player.AddAnimationToQueue("smellPoop");
-                player.AnimationEnded += OnSmellPoopAnimationEnd;
-                _idleTimer.Reset();
+                //player.AddAnimationToQueue("smellPoop");
+                //player.AnimationEnded += OnSmellPoopAnimationEnd;
+                //_idleTimer.Reset();
             }
 
             if (Math.Abs(player.GetVelocity().X) < 1f)

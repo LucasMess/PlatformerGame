@@ -63,17 +63,18 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public override void Update()
         {
-            Player player = GameWorld.GetPlayer();
             GameTime gameTime = TMBAW_Game.GameTime;
-
             _pickUpTimer.Increment();
-
-            if (player.GetCollRectangle().Intersects(DrawRectangle) && _pickUpTimer.TimeElapsedInMilliSeconds > 500)
+            foreach (Player player in GameWorld.GetPlayers())
             {
-                OnPlayerPickUp?.Invoke(new PickedUpArgs(player));
-                PickUpSound?.PlayOnce();
-                ToDelete = true;
-                LoopSound?.Stop();
+                if (player.GetCollRectangle().Intersects(DrawRectangle) && _pickUpTimer.TimeElapsedInMilliSeconds > 500)
+                {
+                    OnPlayerPickUp?.Invoke(new PickedUpArgs(player));
+                    PickUpSound?.PlayOnce();
+                    ToDelete = true;
+                    LoopSound?.Stop();
+                    break;
+                }
             }
 
             LoopSound?.PlayIfStopped();

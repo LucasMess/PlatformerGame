@@ -34,7 +34,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 entity.ComplexAnimation.AnimationEnded += ComplexAnimation_AnimationEnded;
 
                 float velocityY = TMBAW_Game.Random.Next(-200, -180) / 10f;
-                float velocityX = (GameWorld.GetPlayer().CollRectangle.X - entity.GetCollRectangle().X) / 30f;
+                float velocityX = (GameWorld.GetPlayers()[0].CollRectangle.X - entity.GetCollRectangle().X) / 30f;
 
                 Projectile projectile = new Projectile(Projectile.Type.SnakeVenom, entity.Position + new Vector2(16, 13) * 2, new Vector2(velocityX, velocityY), entity);
                 GameWorld.EnemyProjectiles.Add(projectile);

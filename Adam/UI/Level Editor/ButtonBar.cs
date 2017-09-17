@@ -172,9 +172,9 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 button.Update();
             }
 
-            if (GameWorld.GetPlayer().IsBrushButtonPressed())
+            if (GameWorld.GetPlayers()[0].IsBrushButtonPressed())
                 BrushButton_MouseClicked(brushButton);
-            if (GameWorld.GetPlayer().IsEraserButtonPressed())
+            if (GameWorld.GetPlayers()[0].IsEraserButtonPressed())
                 EraserButton_MouseClicked(eraserButton);
 
         }

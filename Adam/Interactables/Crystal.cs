@@ -22,7 +22,7 @@ namespace ThereMustBeAnotherWay.Interactables
             _collRectangle = sourceTile.DrawRectangle;
 
             int rand = TMBAW_Game.Random.Next(1, 9);
-            _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.Player);
+            _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.GetPlayers()[0]);
             Light = new Light(new Vector2(_collRectangle.X + 16, _collRectangle.Y + 16), Light.MaxLightLevel, Gem.GetGemColor(gemId), false);
             Initialize();
         }
@@ -33,7 +33,7 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 if (proj.GetCollRectangle().Intersects(_collRectangle))
                 {
-                    OnPlayerAction(tile, GameWorld.GetPlayer());
+                    OnPlayerAction(tile, GameWorld.GetPlayers()[0]);
                 }
             }
 

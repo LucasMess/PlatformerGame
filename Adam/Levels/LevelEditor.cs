@@ -71,16 +71,9 @@ namespace ThereMustBeAnotherWay.Levels
             _open = new SoundFx("Sounds/Level Editor/close");
             _select = new SoundFx("Sounds/Level Editor/select");
 
-            Player player = GameWorld.GetPlayer();
-            //if (player.RespawnPos == Vector2.Zero)
-            //{
-            //    player.SetPosition(new Vector2(GameWorld.WorldData.LevelWidth * AdamGame.Tilesize / 2,
-            //    GameWorld.WorldData.LevelHeight * AdamGame.Tilesize / 2));
-            //}
-            //else
-            //{
-            player.SetPosition(player.RespawnPos);
-            //}
+
+            foreach (Player player in GameWorld.GetPlayers())
+                player.SetPosition(player.RespawnPos);
 
             Cursor.Show();
         }
@@ -94,7 +87,8 @@ namespace ThereMustBeAnotherWay.Levels
             if (GameDebug.IsTyping)
                 return;
 
-            GameWorld.Player.Health = GameWorld.Player.MaxHealth;
+            foreach (Player player in GameWorld.GetPlayers())
+                player.Health = player.MaxHealth;
 
             SoundtrackManager.PlayLevelEditorTheme();
 
@@ -139,9 +133,12 @@ namespace ThereMustBeAnotherWay.Levels
                     GameWorld.PlayerTrail = new PlayerTrail();
                     TMBAW_Game.CurrentGameMode = GameMode.Play;
                     GameWorld.PrepareLevelForTesting();
-                    GameWorld.Player.ComplexAnimation.RemoveAllFromQueue();
-                    GameWorld.Player.SetVelX(0);
-                    GameWorld.Player.SetVelY(0);
+                    foreach (Player player in GameWorld.GetPlayers())
+                    {
+                        player.ComplexAnimation.RemoveAllFromQueue();
+                        player.SetVelX(0);
+                        player.SetVelY(0);
+                    }
                     Overlay.FlashWhite();
                     _switchEditAndPlayTimer.Reset();
                     _testSound.Play();
@@ -240,35 +237,36 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         private static void CheckForCameraMovement()
         {
-            TMBAW_Game.Camera.UpdateSmoothly(GameWorld.Player.GetCollRectangle(), GameWorld.WorldData.LevelWidth,
+            TMBAW_Game.Camera.UpdateSmoothly(GameWorld.GetPlayers()[0].GetCollRectangle(), GameWorld.WorldData.LevelWidth,
                 GameWorld.WorldData.LevelHeight, true);
             float speed = 9f;
 
-            Player player = GameWorld.GetPlayer();
-
-            if (player.IsMoveLeftPressed())
+            foreach (Player player in GameWorld.GetPlayers())
             {
-                IdleTimerForSave.Reset();
-                GameWorld.Player.MoveBy(-speed, 0);
-            }
-            if (player.IsMoveRightPressed())
-            {
-                IdleTimerForSave.Reset();
-                GameWorld.Player.MoveBy(speed, 0);
-            }
-            if (player.IsMoveUpPressed())
-            {
-                IdleTimerForSave.Reset();
-                GameWorld.Player.MoveBy(0, -speed);
-            }
-            if (player.IsMoveDownPressed())
-            {
-                IdleTimerForSave.Reset();
-                GameWorld.Player.MoveBy(0, speed);
-            }
-            if (player.IsTestLevelPressed())
-            {
-                TestLevel();
+                if (player.IsMoveLeftPressed())
+                {
+                    IdleTimerForSave.Reset();
+                    player.MoveBy(-speed, 0);
+                }
+                if (player.IsMoveRightPressed())
+                {
+                    IdleTimerForSave.Reset();
+                    player.MoveBy(speed, 0);
+                }
+                if (player.IsMoveUpPressed())
+                {
+                    IdleTimerForSave.Reset();
+                    player.MoveBy(0, -speed);
+                }
+                if (player.IsMoveDownPressed())
+                {
+                    IdleTimerForSave.Reset();
+                    player.MoveBy(0, speed);
+                }
+                if (player.IsTestLevelPressed())
+                {
+                    TestLevel();
+                }
             }
 
 

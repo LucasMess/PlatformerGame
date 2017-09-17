@@ -163,8 +163,8 @@ namespace ThereMustBeAnotherWay.UI
             {
                 if (_isActive)
                 {
-                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.UserResHeight, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
-                    spriteBatch.Draw(_texture, new Rectangle(0, (TMBAW_Game.UserResHeight - (int)(Height * TMBAW_Game.HeightRatio)) , TMBAW_Game.UserResHeight, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, (TMBAW_Game.UserResHeight - (int)(Height * TMBAW_Game.HeightRatio)) , TMBAW_Game.UserResWidth, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
                 }
             }
         }
@@ -386,8 +386,8 @@ namespace ThereMustBeAnotherWay.UI
             WhiteFlash.Update();
             RewindEffect.Update();
             BlackFade.Update();
-            Heart.Update(GameWorld.GetPlayer());
-            Coin.Update(GameWorld.GetPlayer());
+            Heart.Update(GameWorld.GetPlayers()[0]);
+            Coin.Update(GameWorld.GetPlayers()[0]);
         }
 
         public static void FlashWhite()

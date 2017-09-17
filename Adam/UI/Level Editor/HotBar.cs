@@ -192,7 +192,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
 
         private static void CheckSwitchTile()
         {
-            Player player = GameWorld.GetPlayer();
+            Player player = GameWorld.GetPlayers()[0];
             if (player.IsChangeHotBarTileDown() && !_tabPressed)
             {
                 int index = (_tileHolders.IndexOf(SelectedTile) + 1) % NumberOfVisible;

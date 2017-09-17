@@ -102,7 +102,7 @@ namespace ThereMustBeAnotherWay.Levels
                         {
                             MediaPlayer.Resume();
                             StoryTimer.Reset();
-                            GameWorld.GetPlayer().IsFacingRight = false;
+                            GameWorld.GetPlayers()[0].IsFacingRight = false;
                             AddTrigger("resetTimer");
                         }
                         else
@@ -111,13 +111,13 @@ namespace ThereMustBeAnotherWay.Levels
                             {
                                 if (!GetVal("hasLookedLeft"))
                                 {
-                                    GameWorld.GetPlayer().IsFacingRight = true;
+                                    GameWorld.GetPlayers()[0].IsFacingRight = true;
                                     AddTrigger("hasLookedLeft");
                                     StoryTimer.Reset();
                                 }
                                 else if (!GetVal("hasLookedRight"))
                                 {
-                                    GameWorld.GetPlayer().IsFacingRight = false;
+                                    GameWorld.GetPlayers()[0].IsFacingRight = false;
                                     AddTrigger("hasLookedRight");
                                     StoryTimer.Reset();
                                 }

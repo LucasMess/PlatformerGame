@@ -99,7 +99,8 @@ namespace ThereMustBeAnotherWay.Characters
                     return;
             }
             GameWorld.AddEntityAt(_sourceTileIndex, _npc);
-            GameWorld.Player.InteractAction += Player_InteractAction;
+            foreach (Player player in GameWorld.GetPlayers())
+                player.InteractAction += Player_InteractAction;
             Console.WriteLine("NPC created successfully.");
         }
 
@@ -108,11 +109,11 @@ namespace ThereMustBeAnotherWay.Characters
         /// </summary>
         private void Player_InteractAction()
         {
-            Player player = GameWorld.Player;
-            if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
-            {
-                _npc.ShowDialog(null, 0);
-            }
+            foreach (Player player in GameWorld.GetPlayers())
+                if (player.GetCollRectangle().Intersects(_npc.GetCollRectangle()))
+                {
+                    _npc.ShowDialog(null, 0);
+                }
         }
 
         /// <summary>

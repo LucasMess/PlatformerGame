@@ -136,7 +136,7 @@ namespace ThereMustBeAnotherWay.Levels
         /// <returns>Visible chunks.</returns>
         private Chunk[] GetVisibleChunks()
         {
-            if (GameWorld.Player == null || _chunks == null || TMBAW_Game.Camera == null) return new Chunk[0];
+            if (_chunks == null || TMBAW_Game.Camera == null) return new Chunk[0];
 
             // Gets the chunk the camera is in.
 

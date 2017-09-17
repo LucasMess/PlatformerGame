@@ -9,8 +9,8 @@ namespace ThereMustBeAnotherWay.UI.Elements
     /// </summary>
     public class TextButton : Button
     {
-        public const int Width = 89;
-        public const int Height = 16;
+        public const int Width = 100;
+        public const int Height = 24;
 
         /// <summary>
         /// The button is created using game coordinates.

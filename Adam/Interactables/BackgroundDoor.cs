@@ -36,14 +36,15 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public override void Update(Tile tile)
         {
-            if (GameWorld.GetPlayer().GetCollRectangle().Intersects(_collRectangle))
-            {
-                KeyPopUp.Show("W", GameWorld.GetPlayer().GetCollRectangle());
-                if (GameWorld.GetPlayer().IsInteractPressed())
+            foreach (Player player in GameWorld.GetPlayers())
+                if (player.GetCollRectangle().Intersects(_collRectangle))
                 {
-                    OnPlayerAction(tile, GameWorld.GetPlayer());
+                    KeyPopUp.Show("W", player.GetCollRectangle());
+                    if (player.IsInteractPressed())
+                    {
+                        OnPlayerAction(tile, player);
+                    }
                 }
-            }
             base.Update(tile);
         }
 

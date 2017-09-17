@@ -3,6 +3,7 @@ using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ThereMustBeAnotherWay.PlayerCharacter;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
@@ -26,18 +27,19 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public override void Update()
         {
-            if (GameWorld.Player.GetCollRectangle().Intersects(CollRectangle))
-            {
-                if (InputHelper.IsKeyDown(Keys.W))
+            foreach (Player player in GameWorld.GetPlayers())
+                if (player.GetCollRectangle().Intersects(CollRectangle))
                 {
-                    ShowMessage();
+                    if (InputHelper.IsKeyDown(Keys.W))
+                    {
+                        ShowMessage();
+                    }
                 }
-            }
         }
 
         private void ShowMessage()
         {
-           // Main.Dialog.Show(GameWorld.worldData.GetSignMessage(ID));
+            // Main.Dialog.Show(GameWorld.worldData.GetSignMessage(ID));
         }
 
     }

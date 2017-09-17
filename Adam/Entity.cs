@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using ThereMustBeAnotherWay.Misc.Helpers;
 using ThereMustBeAnotherWay.UI;
 using ThereMustBeAnotherWay.Interactables;
+using ThereMustBeAnotherWay.PlayerCharacter;
 
 namespace ThereMustBeAnotherWay
 {
@@ -337,7 +338,7 @@ namespace ThereMustBeAnotherWay
                 Light?.Update(Center);
 
                 if (Weight != 0)
-                    ApplyAirFriction();
+                    ApplyFriction();
 
                 // Reset this every update so that the tile update does not have to.
                 IsInWater = false;
@@ -367,7 +368,7 @@ namespace ThereMustBeAnotherWay
         /// <summary>
         /// Reduces the entities velocity based on what tile it is touching.
         /// </summary>
-        private void ApplyAirFriction()
+        private void ApplyFriction()
         {
             IsTouchingGround = false;
             Tile below;
@@ -974,7 +975,7 @@ namespace ThereMustBeAnotherWay
                 if (IsTakingDamage || IsPlayingDeathAnimation || !CanTakeDamage)
                     return;
 
-                if (this == GameWorld.GetPlayer())
+                if (this is Player)
                 {
                     Overlay.ColoredCorners.FlashColor(Color.Red);
                 }
@@ -1060,16 +1061,6 @@ namespace ThereMustBeAnotherWay
             }
         }
 
-
-        /// <summary>
-        /// Returns true if the player is to the right of this entity in the game world.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsPlayerToRight()
-        {
-            return (Position.X < GameWorld.GetPlayer().Position.X);
-        }
-
         /// <summary>
         /// Returns a reference to the Complex Animation object of this entity, responsible for keeping track 
         /// of all animations and sorting them based on priorities.
@@ -1131,6 +1122,44 @@ namespace ThereMustBeAnotherWay
             jumpOnEntitySound.Play();
             SetVelY(MushroomBooster.WeakBoost);
             SetY(other.GetCollRectangle().Y - GetCollRectangle().Height);
+        }
+
+        /// <summary>
+        /// Returns true if the player closest to the entity is to the right of the entity.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPlayerToTheRight()
+        {
+            int minDist = int.MaxValue;
+            bool retVal = false;
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                int dist = player.GetCollRectangle().X - CollRectangle.X;
+                if (Math.Abs(dist) < minDist)
+                {
+                    retVal = player.GetCollRectangle().X > CollRectangle.X;
+                }
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Returns true if the player closest to the entity is above the entity.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPlayerAbove()
+        {
+            int minDist = int.MaxValue;
+            bool retVal = false;
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                int dist = player.GetCollRectangle().Y - CollRectangle.Y;
+                if (Math.Abs(dist) < minDist)
+                {
+                    retVal = player.GetCollRectangle().Y < CollRectangle.Y;
+                }
+            }
+            return retVal;
         }
 
     }

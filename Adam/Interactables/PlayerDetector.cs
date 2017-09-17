@@ -43,13 +43,15 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public override void Update(Tile tile)
         {
-            Player player = GameWorld.GetPlayer();
-            if (player.GetCollRectangle().Intersects(collRectangle))
+            foreach (Player player in GameWorld.GetPlayers())
             {
-                color = Color.Red;
-                OnPlayerAction(tile, player);
+                if (player.GetCollRectangle().Intersects(collRectangle))
+                {
+                    color = Color.Red;
+                    OnPlayerAction(tile, player);
+                }
+                else color = Color.Green;
             }
-            else color = Color.Green;
 
             base.Update(tile);
         }

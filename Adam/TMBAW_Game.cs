@@ -103,7 +103,7 @@ namespace ThereMustBeAnotherWay
             Content = new ContentManager(Services, "Content");
             GameData = new GameDataManager();
 
-            Window.IsBorderless = true;
+            //Window.IsBorderless = true;
 
 
             DataFolder.Initialize();
@@ -282,7 +282,7 @@ namespace ThereMustBeAnotherWay
             Overlay.Update();
             KeyPopUp.Update();
 
-            Player player = GameWorld.GetPlayer();
+            Player player = GameWorld.GetPlayers()[0];
 
             Session.Update();
 

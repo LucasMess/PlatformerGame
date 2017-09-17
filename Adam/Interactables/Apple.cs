@@ -18,7 +18,7 @@ namespace ThereMustBeAnotherWay
 
         public void Update()
         {
-            var player = GameWorld.Player;
+            var player = GameWorld.GetPlayers()[0];
             if (player.GetCollRectangle().Intersects(_collRectangle))
             {
                 _levelFinishedSound.PlayOnce();

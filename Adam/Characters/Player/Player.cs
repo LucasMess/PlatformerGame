@@ -32,14 +32,30 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
         public RewindTracker rewindTracker = new RewindTracker();
         public Timer rewindTimer = new Timer();
+
+        /// <summary>
+        /// The current controller controlling this player.
+        /// </summary>
+        public PlayerIndex PlayerIndex { get; set; } = PlayerIndex.One;
         private Light lightAroundPlayer;
 
-        public Player()
+        public Player(PlayerIndex playerIndex)
         {
+            PlayerIndex = playerIndex;
             script.Initialize(this);
             Weight = 100;
-            var edenTexture = ContentHelper.LoadTexture("Characters/new_player");
+            Texture2D edenTexture;
+            if (PlayerIndex == PlayerIndex.One)
+            {
+                edenTexture = ContentHelper.LoadTexture("Characters/dot/dot");
+            }
+            else
+            {
+                edenTexture = ContentHelper.LoadTexture("Characters/dot/dot_green");
+            }
+
             var idlePoop = ContentHelper.LoadTexture("Characters/adam_poop");
+
             var ninjaDash = ContentHelper.LoadTexture("Characters/adam_ninja");
             var fallStandTexture = ContentHelper.LoadTexture("Characters/adam_fall");
             var fightTexture = ContentHelper.LoadTexture("Characters/adam_punch");
@@ -370,5 +386,6 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             if (IsVisible)
                 base.Draw(spriteBatch);
         }
+
     }
 }

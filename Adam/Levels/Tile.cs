@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
+using ThereMustBeAnotherWay.PlayerCharacter;
 
 namespace ThereMustBeAnotherWay
 {
@@ -1000,7 +1001,10 @@ namespace ThereMustBeAnotherWay
                     if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                     {
                         _positionInSpriteSheet = new Vector2(17, 12);
-                        GameWorld.GetPlayer().RespawnPos = new Vector2(DrawRectangle.X, DrawRectangle.Y);
+                        foreach (Player player in GameWorld.GetPlayers())
+                        {
+                            player.RespawnPos = new Vector2(DrawRectangle.X, DrawRectangle.Y);
+                        }
                     }
                     else if (GameWorld.IsTestingLevel)
                     {
@@ -1010,7 +1014,11 @@ namespace ThereMustBeAnotherWay
                     {
                         if (!_hasAddedEntity)
                         {
-                            GameWorld.GetPlayer().Initialize(DrawRectangle.X, DrawRectangle.Y);
+                            List<Player> players = GameWorld.GetPlayers();
+                            for (int i = 0; i < players.Count; i++)
+                            {
+                                players[i].Initialize(DrawRectangle.X + i * 10, DrawRectangle.Y);
+                            }
                             _hasAddedEntity = true;
                         }
                     }
@@ -2474,9 +2482,11 @@ namespace ThereMustBeAnotherWay
             switch (Id)
             {
                 case 0:
-                    return .94f;
+                    return .90f;
+                case TileType.Snow:
+                    return .95f;
                 default:
-                    return .94f;
+                    return .90f;
             }
         }
 

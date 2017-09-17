@@ -56,8 +56,12 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
 
         protected override bool IsIntersectingPlayer()
         {
-            Player player = GameWorld.Player;
-            return (player.GetCollRectangle().Intersects(BladeRectangle));
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                if (player.GetCollRectangle().Intersects(BladeRectangle))
+                    return true;
+            }
+            return false;
         }
 
         public override int MaxHealth

@@ -49,7 +49,7 @@ namespace ThereMustBeAnotherWay.Misc
             if (!_isPlaying)
             {
                 SoundEffectInstance newInstance = _soundEffect.CreateInstance();
-                if (!_isGlobal) newInstance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
+                if (!_isGlobal) newInstance.Volume = _source.GetSoundVolume(GameWorld.GetPlayers()[0], MaxVolume);
                 if (newInstance.Volume > MaxVolume)
                 {
                     newInstance.Volume = MaxVolume;
@@ -63,7 +63,7 @@ namespace ThereMustBeAnotherWay.Misc
         {
             if (!_isPlaying)
             {
-                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.GetPlayers()[0], MaxVolume);
                 if (_instance.Volume > MaxVolume)
                 {
                     _instance.Volume = MaxVolume;
@@ -82,7 +82,7 @@ namespace ThereMustBeAnotherWay.Misc
         {
             if (_instance.State == SoundState.Stopped)
             {
-                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.Player, MaxVolume);
+                if (!_isGlobal) _instance.Volume = _source.GetSoundVolume(GameWorld.GetPlayers()[0], MaxVolume);
                 if (_instance.Volume > MaxVolume)
                 {
                     _instance.Volume = MaxVolume;

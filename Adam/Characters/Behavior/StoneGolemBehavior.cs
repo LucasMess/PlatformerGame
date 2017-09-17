@@ -21,11 +21,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         public override void Update(Entity entity)
         {
             StoneGolem golem = entity as StoneGolem;
-            if (CollisionRay.IsEntityInSight(entity, GameWorld.GetPlayer()))
+            if (CollisionRay.IsEntityInSight(entity, GameWorld.GetPlayers()[0]))
             {
                 float velX = 1.0f;
                 golem.IsFacingRight =false;
-                if (!golem.IsPlayerToRight())
+                if (!golem.IsPlayerToTheRight())
                 {
                     velX *= -1;
                     golem.IsFacingRight = true;

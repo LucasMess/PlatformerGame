@@ -34,7 +34,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
 
         public override void Update(Entity entity)
         {
-            if (CollisionRay.IsEntityInSight(entity as Enemy, GameWorld.GetPlayer()))
+            if (CollisionRay.IsEntityInSight(entity as Enemy, GameWorld.GetPlayers()[0]))
             {
                 _jumpTimer.ChangeWaitTime(TimeBetweenJumps_ACTIVE);
                 _canSeePlayer = true;
@@ -74,7 +74,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
 
                 if (_canSeePlayer)
                 {
-                    if (!Entity.IsPlayerToRight())
+                    if (!enemy.IsPlayerToTheRight())
                         speed *= -1;
                 }
                 else if (TMBAW_Game.Random.Next(0, 2) == 0)

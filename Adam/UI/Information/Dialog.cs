@@ -114,7 +114,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                 if (_skipTimer.TimeElapsedInSeconds > .5)
                 {
                     // If player presses button to skip dialog.
-                    if (GameWorld.GetPlayer().IsContinueChatPressed() && !_dialogSkipPressedPressed)
+                    if (GameWorld.GetPlayers()[0].IsContinueChatPressed() && !_dialogSkipPressedPressed)
                     {
                         _dialogSkipPressedPressed = true;
                         // If the dialog has not finished displaying the text, simply display the text.
@@ -128,7 +128,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                             NextDialog?.Invoke(_nextDialogCode, _dialogOptions.SelectedOption);
                         }
                     }
-                    if (!GameWorld.GetPlayer().IsContinueChatPressed()) _dialogSkipPressedPressed = false;
+                    if (!GameWorld.GetPlayers()[0].IsContinueChatPressed()) _dialogSkipPressedPressed = false;
                 }
 
                 // Move the selector leaves around depending on keys pressed.

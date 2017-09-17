@@ -7,7 +7,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public partial class Player : Character
     {
-        private static bool _hasInitialized;
+        private bool _hasInitialized;
         public bool IsController { get; set; }
         private bool _attackIsPressed;
         private bool _jumpButtonIsPressed;
@@ -251,87 +251,189 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
         public bool IsJumpButtonPressed()
         {
-            return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+                default:
+                    return InputHelper.IsKeyDown(Keys.NumPad0) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.A);
+            }
         }
 
         public bool IsMoveRightPressed()
         {
-            return InputHelper.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
+                default:
+                    return InputHelper.IsKeyDown(Keys.Right) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickRight);
+            }
         }
 
         public bool IsMoveLeftPressed()
         {
-            return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
+                default:
+                    return InputHelper.IsKeyDown(Keys.Left) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickLeft);
+            }
         }
 
         public bool IsMoveDownPressed()
         {
-            return InputHelper.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
+                default:
+                    return InputHelper.IsKeyDown(Keys.Down) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickDown);
+            }
         }
 
         public bool IsInteractPressed()
         {
-            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
+                default:
+                    return InputHelper.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.DPadUp);
+            }
         }
 
         public bool IsPunchPressed()
         {
-            return InputHelper.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+                default:
+                    return InputHelper.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
+            }
         }
 
         public bool IsSprintButtonPressed()
         {
-            return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger);
+                default:
+                    return InputHelper.IsKeyDown(Keys.RightControl) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftTrigger);
+            }
         }
 
         public bool IsRewindPressed()
         {
-            return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                default:
+                    return InputHelper.IsKeyDown(Keys.NumPad2) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
+            }
         }
 
         public bool IsEnterCommandPressed()
         {
-            return InputHelper.IsKeyDown(Keys.Enter);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.Enter);
+                default:
+                    return false;
+            }
         }
 
         public bool IsContinueChatPressed()
         {
-            return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
+            }
         }
 
         public bool IsTestLevelPressed()
         {
-            return InputHelper.IsKeyDown(Keys.T) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.T) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Start);
+            }
         }
 
         public bool IsMoveUpPressed()
         {
-            return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp);
+                default:
+                    return InputHelper.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickUp);
+            }
         }
 
         public bool IsWeaponFirePressed()
         {
-            return Mouse.GetState().LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return Mouse.GetState().LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+                default:
+                    return InputHelper.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
+            }
         }
 
         public bool IsPauseButtonDown()
         {
-            return InputHelper.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Back);
+            }
         }
 
         public bool IsChangeHotBarTileDown()
         {
-            return InputHelper.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.RightShoulder);
+            }
         }
 
         public bool IsBrushButtonPressed()
         {
-            return InputHelper.IsKeyDown(Keys.B) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.B) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
+            }
         }
 
         public bool IsEraserButtonPressed()
         {
-            return InputHelper.IsKeyDown(Keys.N) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+            switch (PlayerIndex)
+            {
+                case PlayerIndex.One:
+                    return InputHelper.IsKeyDown(Keys.N) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                default:
+                    return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
+            }
         }
     }
 }

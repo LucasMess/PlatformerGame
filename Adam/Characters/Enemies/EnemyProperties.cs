@@ -2,6 +2,7 @@
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace ThereMustBeAnotherWay.Characters.Enemies
 {
@@ -17,7 +18,8 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
 
         protected Enemy()
         {
-            GameWorld.GetPlayer().PlayerAttacked += OnPlayerAttack;
+            foreach (Player player in GameWorld.GetPlayers())
+                player.PlayerAttacked += OnPlayerAttack;
             HasFinishedDying += Enemy_HasFinishedDying;
             RespawnPos = new Vector2(CollRectangle.X, CollRectangle.Y);
             AddAnimationToQueue("idle");
@@ -129,13 +131,17 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         }
 
         /// <summary>
-        /// Return whether the enemy is currently in range of the player.
+        /// Return whether the enemy is currently in range of a player.
         /// </summary>
         /// <returns></returns>
         protected bool IsInRange()
         {
-            Player player = GameWorld.Player;
-            return (RangeRect.Intersects(player.GetCollRectangle()));
+            foreach (Player player in GameWorld.GetPlayers())
+                if (RangeRect.Intersects(player.GetCollRectangle()))
+                {
+                    return true;
+                }
+            return false;
         }
 
 
@@ -191,29 +197,6 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
             }
         }
 
-        /// <summary>
-        /// Returns true is the player is to the right of the enemy.
-        /// </summary>
-        /// <returns></returns>
-        protected bool IsPlayerToTheRight()
-        {
-            Player player = GameWorld.Player;
-            if (player.GetCollRectangle().X > CollRectangle.X)
-                return true;
-            else return false;
-        }
-
-        /// <summary>
-        /// Returns true if the player is above the enemy.
-        /// </summary>
-        /// <returns></returns>
-        protected bool IsPlayerAbove()
-        {
-            Player player = GameWorld.Player;
-            if (player.GetCollRectangle().Y < CollRectangle.Y)
-                return true;
-            else return false;
-        }
 
         /// <summary>
         /// Returns true if the player is intersecting the enemy's collision rectangle.
@@ -221,8 +204,12 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         /// <returns></returns>
         protected virtual bool IsIntersectingPlayer()
         {
-            Player player = GameWorld.Player;
-            return (player.GetCollRectangle().Intersects(CollRectangle));
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                if (player.GetCollRectangle().Intersects(CollRectangle))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -231,8 +218,12 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         /// <returns></returns>
         protected bool IsBeingAttacked()
         {
-            Player player = GameWorld.Player;
-            return (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1);
+            foreach (Player player in GameWorld.GetPlayers())
+            {
+                if (player.GetCollRectangle().Intersects(DamageBox) && player.GetCollRectangle().Y < DamageBox.Y && player.GetVelocity().Y > 1)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

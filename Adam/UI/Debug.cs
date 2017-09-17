@@ -57,12 +57,12 @@ namespace ThereMustBeAnotherWay
             // Chat box.
             if (TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
-                if (!GameWorld.GetPlayer().IsEnterCommandPressed())
+                if (!GameWorld.GetPlayers()[0].IsEnterCommandPressed())
                 {
                     _chatKeyReleased = true;
                 }
 
-                if (GameWorld.GetPlayer().IsEnterCommandPressed() && _chatKeyReleased && !IsTyping)
+                if (GameWorld.GetPlayers()[0].IsEnterCommandPressed() && _chatKeyReleased && !IsTyping)
                 {
                     _chatKeyReleased = false;
                     IsTyping = true;
@@ -82,7 +82,7 @@ namespace ThereMustBeAnotherWay
             {
                 chatBox.IsSelected = true;
                 chatBox.Update(new Rectangle());
-                if (GameWorld.GetPlayer().IsEnterCommandPressed())
+                if (GameWorld.GetPlayers()[0].IsEnterCommandPressed())
                 {
                     _chatKeyReleased = false;
                     IsTyping = false;
@@ -186,7 +186,7 @@ namespace ThereMustBeAnotherWay
                     "Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString(),
                     "Particle iteration: " + GameWorld.ParticleSystem?.GetIteration(),
                     "Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles(),
-                    "Is Sprinting: " + GameWorld.GetPlayer().IsRunningFast,
+                    "Is Sprinting: " + GameWorld.GetPlayers()[0].IsRunningFast,
                     "Steam Name: " + TMBAW_Game.UserName + " ID: " + TMBAW_Game.SteamID.m_SteamID,
                     "Particle update time: " + ParticleSystem.updateTimer.ElapsedTicks + " " + (double)ParticleSystem.updateTimer.ElapsedTicks/GameWorld.updateTimer.ElapsedTicks*100 + "% of update time",
                     "Particle draw time: " + ParticleSystem.drawTimer.ElapsedTicks+ " " +  (double)ParticleSystem.drawTimer.ElapsedTicks/GameWorld.drawTimer.ElapsedTicks*100 + "% of draw time",

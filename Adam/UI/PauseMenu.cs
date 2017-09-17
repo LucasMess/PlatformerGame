@@ -133,7 +133,7 @@ namespace ThereMustBeAnotherWay.UI
             }
 
             // TODO: Change button mechanics to detect when button was pressed before.
-            if (GameWorld.GetPlayer().IsPauseButtonDown() && _buttonReleased && TMBAW_Game.CurrentGameState == GameState.GameWorld)
+            if (GameWorld.GetPlayers()[0].IsPauseButtonDown() && _buttonReleased && TMBAW_Game.CurrentGameState == GameState.GameWorld)
             {
                 if (Inventory.IsOpen)
                 {
@@ -146,7 +146,7 @@ namespace ThereMustBeAnotherWay.UI
                 _buttonReleased = false;
             }
 
-            if (!GameWorld.GetPlayer().IsPauseButtonDown())
+            if (!GameWorld.GetPlayers()[0].IsPauseButtonDown())
             {
                 _buttonReleased = true;
             }

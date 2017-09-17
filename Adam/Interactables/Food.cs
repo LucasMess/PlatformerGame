@@ -41,13 +41,6 @@ namespace ThereMustBeAnotherWay.Interactables
             _pickUpSound.Play();
         }
 
-        public override void Update()
-        {
-            Player player = GameWorld.Player;
-
-            base.Update();
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, DrawRectangle, Color.White);

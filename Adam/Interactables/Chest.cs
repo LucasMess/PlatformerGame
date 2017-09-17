@@ -28,15 +28,15 @@ namespace ThereMustBeAnotherWay
         public override void Update(Tile t)
         {
             t.AnimationStopped = !_isOpen;
-            Player player = GameWorld.Player;
-            if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
-            {
-                // If player presses open button, open chest.
-                if (InputHelper.IsKeyDown(Keys.W))
+            foreach (Player player in GameWorld.GetPlayers())
+                if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
                 {
-                    OnPlayerAction(t, player);
+                    // If player presses open button, open chest.
+                    if (InputHelper.IsKeyDown(Keys.W))
+                    {
+                        OnPlayerAction(t, player);
+                    }
                 }
-            }
         }
 
         public override void OnPlayerAction(Tile tile, Player player)

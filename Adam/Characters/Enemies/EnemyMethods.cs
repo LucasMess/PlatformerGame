@@ -31,7 +31,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         {
             if (damageArea.Intersects(CollRectangle))
             {
-                TakeDamage(GameWorld.GetPlayer(), damage);
+                TakeDamage(GameWorld.GetPlayers()[0], damage);
                 HitSound?.Play();
             }
         }
@@ -83,20 +83,21 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         /// </summary>
         private void CheckInteractionsWithPlayer()
         {
-            Player player = GameWorld.Player;
-
-            // Deal damage to the entity that is damaging the other.
-            if (IsIntersectingPlayer() && !IsPlayingDeathAnimation)
+            foreach (Player player in GameWorld.GetPlayers())
             {
-                if (player.AttackArea.Intersects(VulnerableArea) && player.GetVelocity().Y > 0)
+                // Deal damage to the entity that is damaging the other.
+                if (IsIntersectingPlayer() && !IsPlayingDeathAnimation)
                 {
-                    this.TakeDamage(player, player.GetDamage());
-                    SetVelY(player.GetVelocity().Y);
-                    player.OnJumpOnAnotherEntity(this);
-                }
-                else
-                {
-                    player.TakeDamage(this, GetTouchDamage());
+                    if (player.AttackArea.Intersects(VulnerableArea) && player.GetVelocity().Y > 0)
+                    {
+                        this.TakeDamage(player, player.GetDamage());
+                        SetVelY(player.GetVelocity().Y);
+                        player.OnJumpOnAnotherEntity(this);
+                    }
+                    else
+                    {
+                        player.TakeDamage(this, GetTouchDamage());
+                    }
                 }
             }
 

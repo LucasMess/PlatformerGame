@@ -36,7 +36,7 @@ namespace ThereMustBeAnotherWay.Levels
         public static List<Projectile> PlayerProjectiles;
         public static List<Projectile> EnemyProjectiles;
         public static bool IsOnDebug;
-        public static PlayerCharacter.Player Player = new PlayerCharacter.Player();
+        private static List<Player> _players = new List<Player>(4);
         //Basic tile grid and the visible tile grid
         public static Tile[] TileArray;
         public static int TimesUpdated;
@@ -61,6 +61,8 @@ namespace ThereMustBeAnotherWay.Levels
             EnemyProjectiles = new List<Projectile>();
             TileArray = new Tile[0];
             WallArray = new Tile[0];
+            _players.Add(new Player(PlayerIndex.One));
+            _players.Add(new Player(PlayerIndex.Two));
         }
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
@@ -200,8 +202,8 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void UpdateVisual()
         {
-            var cameraRect = Player.GetCollRectangle();
-            TMBAW_Game.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !Player.IsPlayingDeathAnimation);
+            var cameraRect = GetPlayers()[0].GetCollRectangle();
+            TMBAW_Game.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !GetPlayers()[0].IsPlayingDeathAnimation);
 
             if (TMBAW_Game.TimeFreeze.IsTimeFrozen())
                 ParticleSystem.UpdateStartEvent_TimeConstant.Set();
@@ -220,15 +222,18 @@ namespace ThereMustBeAnotherWay.Levels
 
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
             {
-                Player.ComplexAnimation.RemoveAllFromQueue();
-                Player.AddAnimationToQueue("editMode");
+                foreach (Player player in GetPlayers())
+                {
+                    player.ComplexAnimation.RemoveAllFromQueue();
+                    player.AddAnimationToQueue("editMode");
+                }
                 LevelEditor.Update();
             }
             else
             {
                 if (IsTestingLevel)
                 {
-                    if (Player.IsTestLevelPressed())
+                    if (GetPlayers()[0].IsTestLevelPressed())
                         LevelEditor.GoBackToEditing();
                 }
                 UpdateVisual();
@@ -244,10 +249,14 @@ namespace ThereMustBeAnotherWay.Levels
                     entity.Destroy();
                 }
             }
+            foreach (Player player in GetPlayers())
+                player.Update();
 
-            Player.Update();
             if (TMBAW_Game.CurrentGameMode == GameMode.Play)
-                PlayerTrail.Add(Player);
+            {
+                foreach (Player player in GameWorld.GetPlayers())
+                    PlayerTrail.Add(player);
+            }
 
             foreach (var c in _clouds)
             {
@@ -290,11 +299,11 @@ namespace ThereMustBeAnotherWay.Levels
             foreach (var proj in EnemyProjectiles)
             {
                 proj.Update();
-                if (proj.IsTouchingEntity(GetPlayer()))
-                {
-                    proj.OnCollisionWithEntity(GetPlayer());
-                }
-
+                foreach (Player player in GetPlayers())
+                    if (proj.IsTouchingEntity(player))
+                    {
+                        proj.OnCollisionWithEntity(player);
+                    }
             }
             for (int i = EnemyProjectiles.Count - 1; i >= 0; i--)
             {
@@ -368,7 +377,8 @@ namespace ThereMustBeAnotherWay.Levels
                 }
             }
 
-            Player.Draw(spriteBatch);
+            foreach (Player player in GameWorld.GetPlayers())
+                player.Draw(spriteBatch);
 
             for (var i = 0; i < Entities.Count; i++)
             {
@@ -504,9 +514,13 @@ namespace ThereMustBeAnotherWay.Levels
             return GetTile(index, isWall);
         }
 
-        public static Player GetPlayer()
+        /// <summary>
+        /// Returns a list with all the players.
+        /// </summary>
+        /// <returns></returns>
+        public static List<Player> GetPlayers()
         {
-            return Player;
+            return _players;
         }
 
         public static void AddEntityAt(int tileIndex, Entity entity)
