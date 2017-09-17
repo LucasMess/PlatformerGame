@@ -109,6 +109,8 @@ namespace ThereMustBeAnotherWay
             DataFolder.Initialize();
             SettingsFile settings = DataFolder.GetSettingsFile();
 
+            UserResWidth = settings.ResolutionWidth;
+            UserResHeight = settings.ResolutionHeight;
             UserName = SteamFriends.GetPersonaName();
             SteamID = SteamUser.GetSteamID();
 #if DEBUG

@@ -22,6 +22,7 @@ namespace ThereMustBeAnotherWay.GameData
         public byte SoundtrackId { get; set; }
         public byte AmbienceId { get; set; }
 
+        public bool IsTopDown { get; set; }
         public bool HasClouds { get; set; }
         public bool HasSun { get; set; }
         public bool IsRaining { get; set; }
@@ -48,6 +49,7 @@ namespace ThereMustBeAnotherWay.GameData
             TileIDs = new int[LevelWidth * LevelHeight];
             WallIDs = new int[LevelWidth * LevelHeight];
 
+            IsTopDown = false;
             HasClouds = true;
             IsSnowing = false;
             IsRaining = false;
@@ -102,6 +104,7 @@ namespace ThereMustBeAnotherWay.GameData
             HasClouds = GameWorld.WorldData.HasClouds;
             IsDarkOutline = GameWorld.WorldData.IsDarkOutline;
             SunLightColor = GameWorld.WorldData.SunLightColor;
+            IsTopDown = GameWorld.WorldData.IsTopDown;
         }
 
         public void LoadIntoEditor()
@@ -148,6 +151,7 @@ namespace ThereMustBeAnotherWay.GameData
                 }
             }
 
+            GameWorld.WorldData.IsTopDown = IsTopDown;
             GameWorld.WorldData.LevelName = LevelName;
             GameWorld.WorldData.HasClouds = HasClouds;
             GameWorld.WorldData.HasSun = HasSun;

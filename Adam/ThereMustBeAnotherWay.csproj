@@ -216,6 +216,7 @@
     <Compile Include="UI\Camera.cs" />
     <Compile Include="UI\DataFolder.cs" />
     <Compile Include="UI\Debug.cs" />
+    <Compile Include="UI\Elements\ActionDialog.cs" />
     <Compile Include="UI\Elements\Container.cs" />
     <Compile Include="UI\Elements\Button.cs" />
     <Compile Include="UI\Elements\Cursor.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="UI\OptionsMenu.cs" />
     <Compile Include="UI\Overlay.cs" />
     <Compile Include="UI\PauseMenu.cs" />
+    <Compile Include="UI\UiController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

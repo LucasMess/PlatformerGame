@@ -138,10 +138,6 @@ namespace ThereMustBeAnotherWay.Graphics
                graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                 _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
 
-            _userInterfaceRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
-                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
-                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
-
             _rippleRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
@@ -149,6 +145,10 @@ namespace ThereMustBeAnotherWay.Graphics
             _combinedWorldRenderTarget = new RenderTarget2D(graphicsDevice, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight, false,
                 graphicsDevice.PresentationParameters.BackBufferFormat, graphicsDevice.PresentationParameters.DepthStencilFormat,
                    graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
+            // The user interface rendertarget has the size of the user's screen.
+            ChangeUserInterfaceResolution();
+
 
             testEffect = ContentHelper.LoadEffect("Effects/testEffect");
 
@@ -206,6 +206,9 @@ namespace ThereMustBeAnotherWay.Graphics
 
         }
 
+        /// <summary>
+        /// Draw the background of the level in a static position.
+        /// </summary>
         private static void DrawBackground()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
@@ -213,6 +216,9 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
         }
 
+        /// <summary>
+        /// Draw the special effect ripples that use a shader.
+        /// </summary>
         private static void DrawRipples()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
@@ -258,6 +264,10 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
         }
 
+
+        /// <summary>
+        /// Draws all the walls in the gameworld along with the shadows on them..
+        /// </summary>
         private static void DrawWalls()
         {
             if (TMBAW_Game.CurrentGameState == GameState.LoadingScreen)
@@ -319,6 +329,10 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.End();
         }
 
+
+        /// <summary>
+        /// Draw all the other lights that are not static, such as lights from projectiles or from the player.
+        /// </summary>
         private static void DrawOtherLights()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
@@ -352,6 +366,9 @@ namespace ThereMustBeAnotherWay.Graphics
 
         }
 
+        /// <summary>
+        /// Final render routine, the three different layers are combined.
+        /// </summary>
         private static void FinalRender()
         {
             int width = TMBAW_Game.UserResWidth;
@@ -372,6 +389,10 @@ namespace ThereMustBeAnotherWay.Graphics
             return _graphicsDevice;
         }
 
+        /// <summary>
+        /// Returns the color that the main render target should be colored as, which is specified in the level's world data.
+        /// </summary>
+        /// <returns></returns>
         private static Color GetMainRenderTargetColor()
         {
             if (IsDarkOutline) return Color.Black;
@@ -389,6 +410,12 @@ namespace ThereMustBeAnotherWay.Graphics
         /// <param name="height"></param>
         public static void ChangeResolution(int width, int height)
         {
+            Point max = GetMonitorResolution();
+            if (width > max.X || height > max.Y)
+            {
+                Console.WriteLine("Too big: {0}x{1}", width, height);
+                throw new ArgumentOutOfRangeException("width", "This resolution is bigger than the max resolution of: " + max.X + "x" + max.Y);
+            }
             _graphicsManager.PreferredBackBufferWidth = width;
             _graphicsManager.PreferredBackBufferHeight = height;
             TMBAW_Game.UserResWidth = width;
@@ -400,15 +427,32 @@ namespace ThereMustBeAnotherWay.Graphics
             TMBAW_Game.UiWidthRatio = (TMBAW_Game.DefaultUiWidth / (double)TMBAW_Game.UserResWidth);
             TMBAW_Game.UiHeightRatio = (TMBAW_Game.DefaultUiHeight / (double)TMBAW_Game.UserResHeight);
 
-
             _graphicsManager.ApplyChanges();
+            ChangeUserInterfaceResolution();
         }
 
+        /// <summary>
+        /// Changes the resolution of the game to be the monitor's resolution.
+        /// </summary>
         public static void ChangeToNativeResolution()
         {
             ChangeResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 
+        /// <summary>
+        /// Changes the size of the user interface rendertarget so that the user interface scales well with the screen resolution.
+        /// </summary>
+        private static void ChangeUserInterfaceResolution()
+        {
+            _userInterfaceRenderTarget = new RenderTarget2D(_graphicsDevice, TMBAW_Game.UserResWidth, TMBAW_Game.UserResHeight, false,
+                 _graphicsDevice.PresentationParameters.BackBufferFormat, _graphicsDevice.PresentationParameters.DepthStencilFormat,
+                    _graphicsDevice.PresentationParameters.MultiSampleCount, RenderTargetUsage.DiscardContents);
+        }
+
+        /// <summary>
+        /// Sets the game to full screen and changes the resolution to match.
+        /// </summary>
+        /// <param name="value"></param>
         public static void SetFullscreen(bool value)
         {
             _graphicsManager.IsFullScreen = value;
@@ -423,6 +467,15 @@ namespace ThereMustBeAnotherWay.Graphics
                 ChangeResolution(settings.ResolutionWidth, settings.ResolutionHeight);
             }
 
+        }
+
+        /// <summary>
+        /// Returns the user's current monitor resolution.
+        /// </summary>
+        /// <returns></returns>
+        public static Point GetMonitorResolution()
+        {
+            return new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 
     }

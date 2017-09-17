@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
+using System;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -12,10 +13,23 @@ namespace ThereMustBeAnotherWay.UI
     {
 
         private static List<TextButton> _buttons;
-
-
         public static bool IsActive { get; private set; }
         private static bool _buttonReleased;
+
+        /// <summary>
+        /// Available resolutions for the game.
+        /// </summary>
+        private static Point[] resolutions = new Point[]{
+            new Point(960,540),
+            new Point(1024,576),
+            new Point(1152,648),
+            new Point(1280,720),
+            new Point(1366,768),
+            new Point(1600,900),
+            new Point(1920,1080),
+            new Point(2560,1440),
+            new Point(3840,2160),
+        };
 
         public static void Initialize()
         {
@@ -93,7 +107,27 @@ namespace ThereMustBeAnotherWay.UI
 
         private static void Resolution_MouseClicked(Button button)
         {
-            TMBAW_Game.MessageBox.Show("Not yet implemented!");
+            SettingsFile settings = DataFolder.GetSettingsFile();
+
+            // Find the next resolution to cycle through.
+            Point curr = new Point(settings.ResolutionWidth, settings.ResolutionHeight);
+            int index = Array.IndexOf(resolutions, curr);
+            Point next = resolutions[(index + 1) % resolutions.Length];
+            try
+            {
+                GraphicsRenderer.ChangeResolution(next.X, next.Y);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // This resolution is too big, so just loop around to the first available resolution.
+                next = resolutions[0];
+                GraphicsRenderer.ChangeResolution(next.X, next.Y);
+            }
+
+            settings.ResolutionWidth = next.X;
+            settings.ResolutionHeight = next.Y;
+            DataFolder.SaveSettingsFile(settings);
+            button.Text = "Resolution: " + settings.ResolutionWidth + "x" + settings.ResolutionHeight;
         }
 
         private static void Fullscreen_MouseClicked(Button button)

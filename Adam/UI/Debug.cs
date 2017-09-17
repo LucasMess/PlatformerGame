@@ -9,6 +9,7 @@ using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.Particles;
+using ThereMustBeAnotherWay.GameData;
 
 namespace ThereMustBeAnotherWay
 {
@@ -171,10 +172,12 @@ namespace ThereMustBeAnotherWay
         {
             if (IsDebugOn)
             {
+                SettingsFile settings = DataFolder.GetSettingsFile();         
+
                 _infos = new List<string>
                 {
                     TMBAW_Game.Producers + " (" + TMBAW_Game.Version + ")",
-                    "FPS: " + TMBAW_Game.FPS,
+                    "FPS: " + TMBAW_Game.FPS + " Resolution: " + settings.ResolutionWidth + "x" + settings.ResolutionHeight,
                     "Gamestate: " + TMBAW_Game.CurrentGameState,
                     "Gamemode: " + TMBAW_Game.CurrentGameMode,
                     "Camera Position: " + TMBAW_Game.Camera.GetPosition().X + "," + TMBAW_Game.Camera.GetPosition().Y,

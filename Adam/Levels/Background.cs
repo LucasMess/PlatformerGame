@@ -95,29 +95,37 @@ namespace ThereMustBeAnotherWay
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_backgroundTexture != null)
+            if (GameWorld.WorldData.IsTopDown)
             {
-
-                spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
-
+                // Draw a blue background to hide holes between ground and water in top down view.
+                spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), new Color(65,96,228));
             }
-
-            if (GameWorld.WorldData.HasSun)
-                spriteBatch.Draw(_sun, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
-
-            if (_middlegroundTexture != null)
+            else
             {
-                for (int i = 0; i < 3; i++)
+                if (_backgroundTexture != null)
                 {
-                    spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+
+                    spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+
                 }
-            }
 
-            if (_foregroundTexture != null)
-            {
-                for (int i = 0; i < 3; i++)
+                if (GameWorld.WorldData.HasSun)
+                    spriteBatch.Draw(_sun, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+
+                if (_middlegroundTexture != null)
                 {
-                    spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                    }
+                }
+
+                if (_foregroundTexture != null)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                    }
                 }
             }
         }
