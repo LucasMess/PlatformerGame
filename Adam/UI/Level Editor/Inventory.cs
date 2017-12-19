@@ -178,6 +178,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             TileType.Duck, // Duck
             TileType.BeingofSight, // Being of Sight
             TileType.TheIllusionist,
+            TileType.GunCommonEnemy,
         };
 
         public Inventory()

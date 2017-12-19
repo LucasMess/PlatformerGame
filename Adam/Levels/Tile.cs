@@ -1100,6 +1100,14 @@ namespace ThereMustBeAnotherWay
                 case TileType.BeingofSight: //Flying Wheel
                     LetsLightThrough = true;
                     break;
+                case TileType.GunCommonEnemy:
+                    if (!_isSampleTile)
+                        GameWorld.AddEntityAt(TileIndex, new GunCommon(DrawRectangle.X, DrawRectangle.Y));
+                    LetsLightThrough = true;
+                    _isInvisibleInPlayMode = true;
+                    _isInvisibleInEditMode = true;
+                    _positionInSpriteSheet = new Vector2(21, 12);
+                    break;
                 case TileType.TheIllusionist:
                     if (!_isSampleTile)
                         GameWorld.AddEntityAt(TileIndex, new TheIllusionist(DrawRectangle.X, DrawRectangle.Y));

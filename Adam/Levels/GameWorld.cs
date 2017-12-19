@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
 using System.Diagnostics;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -33,8 +34,8 @@ namespace ThereMustBeAnotherWay.Levels
         private static List<Cloud> _clouds;
         public static bool IsTestingLevel;
         public static List<Entity> Entities;
-        public static List<Projectile> PlayerProjectiles;
-        public static List<Projectile> EnemyProjectiles;
+        public static List<ProjectileSystem> PlayerProjectiles;
+        public static List<ProjectileSystem> EnemyProjectiles;
         public static bool IsOnDebug;
         private static List<Player> _players = new List<Player>(4);
         //Basic tile grid and the visible tile grid
@@ -57,16 +58,17 @@ namespace ThereMustBeAnotherWay.Levels
             SpriteSheet.GetData<Color>(SpriteSheetColorData);
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            PlayerProjectiles = new List<Projectile>();
-            EnemyProjectiles = new List<Projectile>();
+            PlayerProjectiles = new List<ProjectileSystem>();
+            EnemyProjectiles = new List<ProjectileSystem>();
             TileArray = new Tile[0];
             WallArray = new Tile[0];
             _players.Add(new Player(PlayerIndex.One));
-            _players.Add(new Player(PlayerIndex.Two));
+            //_players.Add(new Player(PlayerIndex.Two));
         }
 
         public static bool TryLoadFromFile(GameMode currentGameMode)
         {
+            Overlay.FadeToBlack();
             Cursor.Hide();
 
             if (WorldData.IsTopDown)
@@ -85,7 +87,7 @@ namespace ThereMustBeAnotherWay.Levels
             LoadingScreen.LoadingText = "Starting up world...";
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            PlayerProjectiles = new List<Projectile>();
+            PlayerProjectiles = new List<ProjectileSystem>();
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -135,6 +137,9 @@ namespace ThereMustBeAnotherWay.Levels
             SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
 
             StoryTracker.OnLevelLoad();
+
+            TMBAW_Game.Camera.ResetZoom();
+            Overlay.FadeIn();
 
             return true;
         }
@@ -269,6 +274,23 @@ namespace ThereMustBeAnotherWay.Levels
                 if (entity.IsDead)
                     continue;
                 entity.Update();
+
+                // Check enemy collision with other enemies.
+                for (int j = i + 1; j < Entities.Count; j++)
+                {
+                    if (Entities[i].IsTouchingEntity(Entities[j]))
+                    {
+                        if (Entities[i].Position.X > Entities[j].Position.X)
+                        {
+                            Entities[i].SetX(Entities[j].Position.X + Entities[j].CollRectangle.Width/2);
+                        }
+                        else
+                        {
+                            Entities[i].SetX(Entities[j].Position.X - Entities[i].CollRectangle.Width/2);
+                        }
+                        Entities[i].ForceUpdateCollisionRectangle();
+                    }
+                }
             }
 
             // Player projectile update and deletion.
@@ -287,7 +309,7 @@ namespace ThereMustBeAnotherWay.Levels
             }
             for (int i = PlayerProjectiles.Count - 1; i >= 0; i--)
             {
-                Projectile proj = PlayerProjectiles[i];
+                ProjectileSystem proj = PlayerProjectiles[i];
                 if (proj.ToDelete)
                 {
                     PlayerProjectiles.Remove(proj);
@@ -307,7 +329,7 @@ namespace ThereMustBeAnotherWay.Levels
             }
             for (int i = EnemyProjectiles.Count - 1; i >= 0; i--)
             {
-                Projectile proj = EnemyProjectiles[i];
+                ProjectileSystem proj = EnemyProjectiles[i];
                 if (proj.ToDelete)
                 {
                     EnemyProjectiles.Remove(proj);

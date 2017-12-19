@@ -12,11 +12,16 @@ namespace ThereMustBeAnotherWay.UI.Elements
     /// </summary>
     class ActionDialog
     {
-        private Container container;
+        private UiWindow _window;
 
         public event EventHandler OnPositiveButtonClick;
         public event EventHandler OnNegativeButtonClick;
         public event EventHandler OnDialogDismissed;
+
+        public void Show()
+        {
+            UiController.EnqueueActionDialog(this);
+        }
 
         public void Update()
         {

@@ -124,6 +124,7 @@ namespace ThereMustBeAnotherWay.UI
             /// <param name="speed">1 = slowest, 5 = fastest.</param>
             public static void FadeIn(int speed = 1)
             {
+                _opacity = 1;
                 _speed = speed;
                 _isFadingIn = true;
             }

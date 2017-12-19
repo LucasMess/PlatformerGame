@@ -423,7 +423,7 @@ namespace ThereMustBeAnotherWay
                 Vector2 velocity = new Vector2(25, 0);
                 if (!_player.IsFacingRight)
                     velocity.X *= -1;
-                Projectile proj = new Projectile(Projectile.Type.PlayerTimePunch, _player.Position + new Vector2(0, 21), velocity, _player);
+                ProjectileSystem proj = new ProjectileSystem(ProjectileSystem.Type.PlayerTimePunch, _player.Position + new Vector2(0, 21), velocity, _player);
                 GameWorld.PlayerProjectiles.Add(proj);
                 _timeGunFireSound.Play();
                 _player.ComplexAnimation.FrameChanged -= TimePunchFireProjectile;

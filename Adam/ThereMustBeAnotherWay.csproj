@@ -95,15 +95,18 @@
     <Compile Include="Characters\Behavior\StoneGolemBehavior.cs" />
     <Compile Include="Characters\Behavior\SwingingAxeBehavior.cs" />
     <Compile Include="Characters\Behavior\TheIllusionistBehavior.cs" />
+    <Compile Include="Characters\Enemies\GunCommon.cs" />
     <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Characters\Behavior\LostBehavior.cs" />
     <Compile Include="Characters\Enemies\StoneGolem.cs" />
     <Compile Include="Characters\Enemies\SwingingAxe.cs" />
     <Compile Include="Characters\Enemies\TheIllusionist.cs" />
+    <Compile Include="Particles\Explosion.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Particles\ParticleData.cs" />
     <Compile Include="Particles\Emitter.cs" />
     <Compile Include="Particles\ParticleGenerator.cs" />
+    <Compile Include="Projectiles\IProjectile.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -223,12 +226,17 @@
     <Compile Include="UI\Elements\IconButton.cs" />
     <Compile Include="UI\Elements\InteractableConnectionLine.cs" />
     <Compile Include="UI\Elements\KeyPopUp.cs" />
+    <Compile Include="UI\Elements\Label.cs" />
     <Compile Include="UI\Elements\Line.cs" />
-    <Compile Include="UI\Elements\OKButton.cs" />
+    <Compile Include="UI\Elements\Message.cs" />
+    <Compile Include="UI\Elements\MessageDialog.cs" />
+    <Compile Include="UI\Elements\YesButton.cs" />
     <Compile Include="UI\Elements\Textbox.cs" />
     <Compile Include="UI\Elements\TextButton.cs" />
     <Compile Include="UI\Elements\TextInputBox.cs" />
     <Compile Include="UI\Elements\UiElement.cs" />
+    <Compile Include="UI\Elements\UiWindow.cs" />
+    <Compile Include="UI\Elements\UserInputDialog.cs" />
     <Compile Include="UI\Information\Dialog.cs" />
     <Compile Include="UI\Information\LevelNameNotification.cs" />
     <Compile Include="UI\Information\MessageBox.cs" />

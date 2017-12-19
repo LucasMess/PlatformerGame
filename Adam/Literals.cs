@@ -138,6 +138,7 @@
             BeingofSight,
             TheIllusionist,
             StoneGolem,
+            GunCommonEnemy,
 
             Shadow = 2000,
         }

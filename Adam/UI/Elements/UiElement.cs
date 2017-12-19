@@ -1,11 +1,17 @@
 ﻿using ThereMustBeAnotherWay.Misc;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Elements
 {
     public class UiElement
     {
+
+        public virtual Texture2D Texture { get; set; }
+        public virtual Rectangle SourceRectangle { get; set; }
+        public int Width { get { return DrawRectangle.Width; } }
+        public int Height { get { return DrawRectangle.Height; } }
 
         private Rectangle _container;
         private Timer _movementTimer = new Timer(true);
@@ -98,5 +104,14 @@ namespace ThereMustBeAnotherWay.UI.Elements
         }
 
         public virtual Vector2 GetPosition() { return new Vector2(DrawRectangle.X, DrawRectangle.Y); }
+
+        /// <summary>
+        /// Draws the element.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+
+        }
     }
 }

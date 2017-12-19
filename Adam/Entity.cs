@@ -1162,5 +1162,12 @@ namespace ThereMustBeAnotherWay
             return retVal;
         }
 
+        public void ForceUpdateCollisionRectangle()
+        {
+            CollRectangle = new Rectangle((int)Position.X, (int)Position.Y, CollRectangle.Width, CollRectangle.Height);
+
+
+        }
+
     }
 }
