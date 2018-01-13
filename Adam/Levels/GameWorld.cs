@@ -22,11 +22,11 @@ namespace ThereMustBeAnotherWay.Levels
     public static class GameWorld
     {
         public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
-        private static Texture2D defaultSpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_28");
-        public static Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_28");
+        private static Texture2D defaultSpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_29");
+        public static Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_29");
         public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
         public static readonly Texture2D ParticleSpriteSheet = ContentHelper.LoadTexture("Tiles/particles_spritemap");
-        private static Timer _stopMovingTimer = new Timer(true);
+        private static GameTimer _stopMovingTimer = new GameTimer(true);
         private static readonly Background Background = new Background();
         public static readonly ChunkManager ChunkManager = new ChunkManager();
         //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
@@ -34,8 +34,6 @@ namespace ThereMustBeAnotherWay.Levels
         private static List<Cloud> _clouds;
         public static bool IsTestingLevel;
         public static List<Entity> Entities;
-        public static List<ProjectileSystem> PlayerProjectiles;
-        public static List<ProjectileSystem> EnemyProjectiles;
         public static bool IsOnDebug;
         private static List<Player> _players = new List<Player>(4);
         //Basic tile grid and the visible tile grid
@@ -58,11 +56,10 @@ namespace ThereMustBeAnotherWay.Levels
             SpriteSheet.GetData<Color>(SpriteSheetColorData);
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            PlayerProjectiles = new List<ProjectileSystem>();
-            EnemyProjectiles = new List<ProjectileSystem>();
             TileArray = new Tile[0];
             WallArray = new Tile[0];
             _players.Add(new Player(PlayerIndex.One));
+            ProjectileSystem.Initialize();
             //_players.Add(new Player(PlayerIndex.Two));
         }
 
@@ -87,7 +84,6 @@ namespace ThereMustBeAnotherWay.Levels
             LoadingScreen.LoadingText = "Starting up world...";
             _clouds = new List<Cloud>();
             Entities = new List<Entity>();
-            PlayerProjectiles = new List<ProjectileSystem>();
 
             var width = WorldData.LevelWidth;
             var height = WorldData.LevelHeight;
@@ -124,8 +120,6 @@ namespace ThereMustBeAnotherWay.Levels
                 TMBAW_Game.MessageBox.Show(e.Message);
                 return false;
             }
-
-            LightingEngine.GenerateLights();
 
             if (Session.IsHost)
             {
@@ -246,6 +240,8 @@ namespace ThereMustBeAnotherWay.Levels
 
             TimesUpdated++;
 
+            ProjectileSystem.Update();
+
             for (var i = Entities.Count - 1; i >= 0; i--)
             {
                 var entity = Entities[i];
@@ -282,58 +278,14 @@ namespace ThereMustBeAnotherWay.Levels
                     {
                         if (Entities[i].Position.X > Entities[j].Position.X)
                         {
-                            Entities[i].SetX(Entities[j].Position.X + Entities[j].CollRectangle.Width/2);
+                            Entities[i].SetX(Entities[j].Position.X + Entities[j].CollRectangle.Width / 2);
                         }
                         else
                         {
-                            Entities[i].SetX(Entities[j].Position.X - Entities[i].CollRectangle.Width/2);
+                            Entities[i].SetX(Entities[j].Position.X - Entities[i].CollRectangle.Width / 2);
                         }
                         Entities[i].ForceUpdateCollisionRectangle();
                     }
-                }
-            }
-
-            // Player projectile update and deletion.
-            foreach (var proj in PlayerProjectiles)
-            {
-                proj.Update();
-
-                foreach (var entity in Entities)
-                {
-                    if (entity.IsDead) continue;
-                    if (proj.IsTouchingEntity(entity))
-                    {
-                        proj.OnCollisionWithEntity(entity);
-                    }
-                }
-            }
-            for (int i = PlayerProjectiles.Count - 1; i >= 0; i--)
-            {
-                ProjectileSystem proj = PlayerProjectiles[i];
-                if (proj.ToDelete)
-                {
-                    PlayerProjectiles.Remove(proj);
-                    continue;
-                }
-            }
-
-            // Enemy projectile update and deletion.
-            foreach (var proj in EnemyProjectiles)
-            {
-                proj.Update();
-                foreach (Player player in GetPlayers())
-                    if (proj.IsTouchingEntity(player))
-                    {
-                        proj.OnCollisionWithEntity(player);
-                    }
-            }
-            for (int i = EnemyProjectiles.Count - 1; i >= 0; i--)
-            {
-                ProjectileSystem proj = EnemyProjectiles[i];
-                if (proj.ToDelete)
-                {
-                    EnemyProjectiles.Remove(proj);
-                    continue;
                 }
             }
 
@@ -389,7 +341,6 @@ namespace ThereMustBeAnotherWay.Levels
             int[] indexes = ChunkManager.GetVisibleIndexes();
             if (indexes != null)
             {
-
                 foreach (var tileNumber in indexes)
                 {
                     if (tileNumber >= 0 && tileNumber < TileArray.Length)
@@ -408,17 +359,7 @@ namespace ThereMustBeAnotherWay.Levels
                     Entities[i].Draw(spriteBatch);
             }
 
-
-            foreach (var proj in PlayerProjectiles)
-            {
-                proj.Draw(spriteBatch);
-            }
-
-            foreach (var proj in EnemyProjectiles)
-            {
-                proj.Draw(spriteBatch);
-            }
-
+            ProjectileSystem.Draw(spriteBatch);
 
             //ParticleSystem.DrawNormalParticles(spriteBatch);
 
@@ -438,25 +379,44 @@ namespace ThereMustBeAnotherWay.Levels
             }
         }
 
-        public static void DrawSunlight(SpriteBatch spriteBatch)
+        public static void DrawLights(SpriteBatch spriteBatch)
         {
-            LightingEngine.DrawSunlight(spriteBatch);
+            int[] indices = ChunkManager.GetVisibleIndexes();
+            if (indices != null)
+            {
+                foreach (var tileNumber in indices)
+                {
+                    if (tileNumber >= 0 && tileNumber < TileArray.Length)
+                    {
+                        TileArray[tileNumber]?.DrawLight(spriteBatch);
+                    }
+                }
+            }
 
-            //if (LightingEngine.LASTMODIFIEDINDICES != null)
-            //    foreach (var ind in LightingEngine.LASTMODIFIEDINDICES)
-            //    {
-            //        TileArray[ind].DebugDraw(spriteBatch);
-            //    }
-        }
+            foreach (Entity en in Entities)
+            {
+                en.DrawLight(spriteBatch);
+            }
 
-        public static void DrawOtherLights(SpriteBatch spriteBatch)
-        {
-            LightingEngine.DrawOtherLights(spriteBatch);
+            ProjectileSystem.DrawLights(spriteBatch);
         }
 
         public static void DrawGlows(SpriteBatch spriteBatch)
         {
-            LightingEngine.DrawGlows(spriteBatch);
+            foreach (var tileNumber in ChunkManager.GetVisibleIndexes())
+            {
+                if (tileNumber >= 0 && tileNumber < TileArray.Length)
+                {
+                    TileArray[tileNumber]?.DrawGlow(spriteBatch);
+                }
+            }
+
+            foreach (Entity en in Entities)
+            {
+                en.DrawGlow(spriteBatch);
+            }
+
+            ProjectileSystem.DrawGlow(spriteBatch);
         }
 
         public static void DrawBackground(SpriteBatch spriteBatch)

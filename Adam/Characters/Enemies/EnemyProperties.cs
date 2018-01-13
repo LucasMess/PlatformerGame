@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.Characters.Enemies
         const short RangeRadius = 2000;
         const int MeanResetTime = 500000;
 
-        Timer _wasMeanTimer = new Timer(true);
+        GameTimer _wasMeanTimer = new GameTimer(true);
 
         protected Enemy()
         {

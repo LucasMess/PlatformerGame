@@ -8,9 +8,9 @@ namespace ThereMustBeAnotherWay.Interactables
     class Torch : Interactable
     {
 
-        private Timer _fireParticleTimer = new Timer();
-        private Timer _smokeParticleTimer = new Timer();
-        private Timer _heatTimer = new Timer();
+        private GameTimer _fireParticleTimer = new GameTimer();
+        private GameTimer _smokeParticleTimer = new GameTimer();
+        private GameTimer _heatTimer = new GameTimer();
         public override void Update(Tile tile)
         {
 

@@ -37,11 +37,11 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         private enum AttackMove { SpawnEnemies, Meteors, ToTheSky, StopTime }
         private AttackMove CurrentAttackMove = AttackMove.SpawnEnemies;
 
-        Timer castingSpellTimer = new Timer(true);
-        Timer meteorShowerTimer = new Timer(true);
-        Timer meteorSpacingTimer = new Timer(true);
-        Timer levitateEntitiesTimer = new Timer(true);
-        Timer attackTimer = new Timer(true);
+        GameTimer castingSpellTimer = new GameTimer(true);
+        GameTimer meteorShowerTimer = new GameTimer(true);
+        GameTimer meteorSpacingTimer = new GameTimer(true);
+        GameTimer levitateEntitiesTimer = new GameTimer(true);
+        GameTimer attackTimer = new GameTimer(true);
 
         SoundFx laughSound = new SoundFx("Sounds/Illusionist/evil_laugh");
         SoundFx spawnSound = new SoundFx("Sounds/Illusionist/spawn_enemies");

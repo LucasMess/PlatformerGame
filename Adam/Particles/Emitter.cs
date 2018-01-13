@@ -19,7 +19,7 @@ namespace ThereMustBeAnotherWay.Particles
         /// </summary>
         public class Emitter
         {
-            private Misc.Timer _timer = new Misc.Timer();
+            private Misc.GameTimer _timer = new Misc.GameTimer();
             public Emitter(ParticleData data, int intervalInMilliseconds)
             {
                 GameWorld.ParticleSystem._emitters.Add(this);       

@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
         public int Height { get { return DrawRectangle.Height; } }
 
         private Rectangle _container;
-        private Timer _movementTimer = new Timer(true);
+        private GameTimer _movementTimer = new GameTimer(true);
         private Vector2 _previousPosition;
         private Vector2 _newPosition;
         private Vector2 _delta;

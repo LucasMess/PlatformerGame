@@ -35,7 +35,6 @@ namespace ThereMustBeAnotherWay.Interactables
         public virtual void Initialize()
         {
             LevelEditor.InteractableConnections.Add(line);
-            LightingEngine.AddDynamicLight(Light);
         }
 
         /// <summary>
@@ -169,7 +168,6 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 SelectingAnotherTile = false;
             }
-            LightingEngine.RemoveDynamicLight(Light);
         }
 
         /// <summary>

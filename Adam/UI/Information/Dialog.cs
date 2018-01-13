@@ -25,10 +25,10 @@ namespace ThereMustBeAnotherWay.UI.Information
 
         private readonly SpriteFont _font;
         private readonly SoundFx _letterPopSound;
-        private readonly Timer _letterPopTimer = new Timer(true);
+        private readonly GameTimer _letterPopTimer = new GameTimer(true);
         private readonly char[] _pauseChars = { '!', '.', ',', '?' };
-        private readonly Timer _selectBufferTimer = new Timer(true);
-        private readonly Timer _skipTimer = new Timer(true);
+        private readonly GameTimer _selectBufferTimer = new GameTimer(true);
+        private readonly GameTimer _skipTimer = new GameTimer(true);
         private int _currentLetterIndex;
         private DialogOptions _dialogOptions;
         private bool _dialogSkipPressedPressed;

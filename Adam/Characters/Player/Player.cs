@@ -1,11 +1,11 @@
-﻿using ThereMustBeAnotherWay.Characters;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using ThereMustBeAnotherWay.Characters;
 using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Misc.Helpers;
 using ThereMustBeAnotherWay.Particles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace ThereMustBeAnotherWay.PlayerCharacter
 {
@@ -31,13 +31,12 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         private string _spawnPointNextLevel;
 
         public RewindTracker rewindTracker = new RewindTracker();
-        public Timer rewindTimer = new Timer();
+        public GameTimer rewindTimer = new GameTimer();
 
         /// <summary>
         /// The current controller controlling this player.
         /// </summary>
         public PlayerIndex PlayerIndex { get; set; } = PlayerIndex.One;
-        private Light lightAroundPlayer;
 
         public Player(PlayerIndex playerIndex)
         {
@@ -115,7 +114,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
             _complexAnimation.AddToQueue("idle");
 
-            lightAroundPlayer = new Light(Center, 15, Color.White, false) { Scale = 1, IsLightSource = false, };
+            Light = new Light(Center, Color.White, 100);
 
 
             InitializeInput();
@@ -183,18 +182,12 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                     Position = new Vector2(x, y);
                     RespawnPos = new Vector2(x, y);
                     _spawnPointNextLevel = null;
-                    goto NoError;
                 }
 
             }
             //Set the player position according to where in the map his default spawn point is.
             Position = new Vector2(setX, setY);
             RespawnPos = new Vector2(setX, setY);
-
-            NoError:
-
-            if (!LightingEngine.HasLight(lightAroundPlayer))
-                LightingEngine.AddDynamicLight(lightAroundPlayer);
 
             InitializeInput();
         }
@@ -222,8 +215,6 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 ObeysGravity = false;
             }
             else ObeysGravity = true;
-
-            lightAroundPlayer.Update(Center);
 
             script.Update(this);
 

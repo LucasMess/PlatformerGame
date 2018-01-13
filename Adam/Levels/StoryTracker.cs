@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.Levels
     public static class StoryTracker
     {
         public static PlayerProfile Profile { get; set; }
-        public static Timer StoryTimer = new Timer();
+        public static GameTimer StoryTimer = new GameTimer();
 
         static COM comNPC = new COM(0, 0);
 

@@ -6,7 +6,7 @@ namespace ThereMustBeAnotherWay
 {
     public class Apple
     {
-        private readonly Timer _changeLevelTimer = new Timer();
+        private readonly GameTimer _changeLevelTimer = new GameTimer();
         private readonly Rectangle _collRectangle;
         private readonly SoundFx _levelFinishedSound;
 

@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.Levels
     public static class Weather
     {
 
-        private static Timer spawnTimer = new Timer();
+        private static GameTimer spawnTimer = new GameTimer();
         private static int[] lastIndices = new int[0];
 
         public static void Update()

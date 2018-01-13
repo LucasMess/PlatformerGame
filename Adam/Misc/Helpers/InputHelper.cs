@@ -7,7 +7,7 @@ namespace ThereMustBeAnotherWay
 {
     public static class InputHelper
     {
-        static Timer _keyPressedTimer = new Timer(true);
+        static GameTimer _keyPressedTimer = new GameTimer(true);
 
         public static bool IsAnyInputPressed()
         {

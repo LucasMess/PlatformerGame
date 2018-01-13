@@ -17,7 +17,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         bool isRunningToPlayer;
         bool firingUp;
         bool playerToRightWhenAngry;
-        Timer chargeUpTimer = new Timer();
+        GameTimer chargeUpTimer = new GameTimer();
 
         public override void Initialize(Entity entity)
         {

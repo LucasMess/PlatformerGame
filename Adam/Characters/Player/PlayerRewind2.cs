@@ -27,7 +27,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         {
             public bool IsDrawingBackwards = true;
             public int CurrentDraw = 0;
-            public Timer DrawTimer = new Timer();
+            public GameTimer DrawTimer = new GameTimer();
             public const double DrawInterval = 1;
         }
 
@@ -35,7 +35,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         {
             static Texture2D _texture = ContentHelper.LoadTexture("Overlay/rewind_ring");
             static Vector2 _center = new Vector2(_texture.Width / 2, _texture.Height / 2);
-            Timer _particleTimer = new Timer();
+            GameTimer _particleTimer = new GameTimer();
 
             int lastDeg = 0;
             const int changeInDeg = 20;
@@ -79,7 +79,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         private const double TimeBetweenSnapshots = 10;
         private const int Capacity = (int)(1000 / TimeBetweenSnapshots);
         private const float MaxDistance = TMBAW_Game.Tilesize * 5;
-        private Timer snapshotTimer = new Timer();
+        private GameTimer snapshotTimer = new GameTimer();
 
         SoundFx _startSound = new SoundFx("Sounds/Player/rewind_start");
         SoundFx _stopSound = new SoundFx("Sounds/Player/rewind_stop");

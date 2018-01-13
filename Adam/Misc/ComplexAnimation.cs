@@ -43,7 +43,7 @@ namespace ThereMustBeAnotherWay.Misc
         Dictionary<string, ComplexAnimData> _animationData = new Dictionary<string, ComplexAnimData>();
         List<string> _queue = new List<string>();
 
-        Timer _frameTimer = new Timer(true);
+        GameTimer _frameTimer = new GameTimer(true);
 
         Texture2D _texture;
         Rectangle _sourceRectangle;

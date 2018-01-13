@@ -11,7 +11,7 @@ namespace ThereMustBeAnotherWay
     {
         private static Texture2D _background;
         static SpriteFont _fontBig, _fontSmall;
-        static Timer dotTimer = new Timer(true);
+        static GameTimer dotTimer = new GameTimer(true);
 
         public static string LoadingText = "Contemplating life...";
         private static string _loadingDots;

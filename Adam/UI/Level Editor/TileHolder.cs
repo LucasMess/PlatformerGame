@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using static ThereMustBeAnotherWay.TMBAW_Game;
-using Timer = ThereMustBeAnotherWay.Misc.Timer;
+using GameTimer = ThereMustBeAnotherWay.Misc.GameTimer;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
 {
@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         private const int SpacingBetweenSquareAndTile = 3 * 2;
         private Vector2 _positionRelativeToContainer;
         private Tile _tile;
-        public Timer LastTimeUsed { get; set; } = new Timer(true);
+        public GameTimer LastTimeUsed { get; set; } = new GameTimer(true);
         public static Rectangle SourceRectangle = new Rectangle(297, 189, 22, 23);
 
         private readonly Color _hoveredColor = new Color(69, 96, 198);

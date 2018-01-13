@@ -12,7 +12,7 @@ namespace ThereMustBeAnotherWay.Interactables
     {
         public bool WasPickedUp;
         protected Rectangle TopMidBound;
-        private Timer _pickUpTimer = new Timer();
+        private GameTimer _pickUpTimer = new GameTimer();
         protected SoundFx LoopSound;
         protected SoundFx PickUpSound = new SoundFx("Sounds/Items/gold" + TMBAW_Game.Random.Next(0, 5));
         protected static SoundFx BounceSound;

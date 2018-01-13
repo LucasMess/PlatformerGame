@@ -19,7 +19,6 @@ namespace ThereMustBeAnotherWay.Graphics
         public delegate void ResolutionHandler(int width, int height);
 
         public static bool ShadowsEnabled { get; set; } = true;
-        public static bool ComplexLightingEnabled { get; set; } = true;
         /// <summary>
         /// Enable if static lights from tiles should be drawn.
         /// </summary>
@@ -302,8 +301,6 @@ namespace ThereMustBeAnotherWay.Graphics
             GameWorld.Draw(_spriteBatch);
             GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
-            //if (GameDebug.IsDebugOn)
-            //    LightingEngine.DrawDebug(_spriteBatch);
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);
 
@@ -321,12 +318,12 @@ namespace ThereMustBeAnotherWay.Graphics
         private static void DrawSunlight()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
-            _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _otherLightsRenderTarget.Bounds, Color.White * .05f);
+            _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _otherLightsRenderTarget.Bounds, Color.White);
             _spriteBatch.End();
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
-            GameWorld.DrawSunlight(_spriteBatch);
-            _spriteBatch.End();
+            //_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
+            //LightingSystem.DrawSunlight(_spriteBatch);
+            //_spriteBatch.End();
         }
 
 
@@ -336,7 +333,7 @@ namespace ThereMustBeAnotherWay.Graphics
         private static void DrawOtherLights()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
-            GameWorld.DrawOtherLights(_spriteBatch);
+            GameWorld.DrawLights(_spriteBatch);
             _spriteBatch.End();
         }
 

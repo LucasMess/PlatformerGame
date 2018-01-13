@@ -9,7 +9,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
     public class Behavior
     {
         protected Entity Entity;
-        private List<Misc.Timer> _waitTimers = new List<Misc.Timer>();
+        private List<Misc.GameTimer> _waitTimers = new List<Misc.GameTimer>();
 
         public virtual void Initialize(Entity entity)
         {
@@ -35,7 +35,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         /// <returns></returns>
         protected void WaitThen(int duration, Action action)
         {
-            Misc.Timer timer = new Misc.Timer();
+            Misc.GameTimer timer = new Misc.GameTimer();
             _waitTimers.Add(timer);
             timer.ResetAndWaitFor(duration, delegate ()
              {
@@ -51,9 +51,9 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         /// <param name="waitDuration"></param>
         /// <param name="action"></param>
         /// <returns>A timer that has the set time</returns>
-        protected Misc.Timer CreateTimedAction(int duration, Action action)
+        protected Misc.GameTimer CreateTimedAction(int duration, Action action)
         {
-            Misc.Timer timer = new Misc.Timer();
+            Misc.GameTimer timer = new Misc.GameTimer();
             _waitTimers.Add(timer);
             timer.ResetAndWaitFor(duration, delegate ()
             {

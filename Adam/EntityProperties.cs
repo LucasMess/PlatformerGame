@@ -9,9 +9,9 @@ namespace ThereMustBeAnotherWay
     {
         protected ComplexAnimation _complexAnimation = new ComplexAnimation();
 
-        readonly Timer _hitRecentlyTimer = new Timer(false, 10000);
-        readonly Timer _deathAnimationTimer = new Timer(true);
-        protected readonly Timer _respawnTimer = new Timer(true);
+        readonly GameTimer _hitRecentlyTimer = new GameTimer(false, 10000);
+        readonly GameTimer _deathAnimationTimer = new GameTimer(true);
+        protected readonly GameTimer _respawnTimer = new GameTimer(true);
 
         public SoundFxManager Sounds { get; set; }
         /// <summary>
@@ -59,7 +59,8 @@ namespace ThereMustBeAnotherWay
             get; private set;
         }
         /// <summary>
-        /// Used in calculations such as how far back the entity is knocked back and friction against ground.
+        /// Used in calculations such as how far back the entity is knocked back and friction against ground. If friction is zero,
+        /// then no friction is applied.
         /// </summary>
         public int Weight { get; set; } = 10;
 

@@ -70,7 +70,7 @@ namespace ThereMustBeAnotherWay
 
         public bool IsInWater { get; set; }
 
-        public Timer SwimTimer = new Timer();
+        public GameTimer SwimTimer = new GameTimer();
 
         /// <summary>
         /// The amount of damage this entity deals by touching.
@@ -85,7 +85,7 @@ namespace ThereMustBeAnotherWay
         private int _health;
         private float _opacity = 1f;
         private float _gravityStrength = TMBAW_Game.Gravity;
-        private Timer _stompParticleTimer = new Timer(true);
+        private GameTimer _stompParticleTimer = new GameTimer(true);
 
 
         /// <summary>
@@ -454,6 +454,16 @@ namespace ThereMustBeAnotherWay
             spriteBatch.Draw(Texture, DrawRectangle, null, Color.White, 0, Origin, SpriteEffects.None, 0);
         }
 
+        public void DrawLight(SpriteBatch spriteBatch)
+        {
+            Light?.Draw(spriteBatch);
+        }
+
+        public void DrawGlow(SpriteBatch spriteBatch)
+        {
+            Light?.DrawGlow(spriteBatch);
+        }
+
         /// <summary>
         /// Returns the current velocity of the entity.
         /// </summary>
@@ -509,7 +519,6 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public virtual void Destroy()
         {
-            LightingEngine.RemoveDynamicLight(Light);
             GameWorld.Entities.Remove(this);
         }
 

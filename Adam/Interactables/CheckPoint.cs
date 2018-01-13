@@ -11,7 +11,7 @@ namespace ThereMustBeAnotherWay.Interactables
     public class CheckPoint : Interactable
     {
         SoundFx _breakingSound = new SoundFx("Sounds/Tiles/checkpoint_break");
-        Timer _particleTimer = new Timer();
+        GameTimer _particleTimer = new GameTimer();
         int lastDeg = 0;
         int changeInDeg = 10;
         int radius = 50;

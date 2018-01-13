@@ -23,20 +23,12 @@ namespace ThereMustBeAnotherWay.Interactables
 
             int rand = TMBAW_Game.Random.Next(1, 9);
             _breakSound = new SoundFx("Sounds/Crystal/Glass_0" + rand, GameWorld.GetPlayers()[0]);
-            Light = new Light(new Vector2(_collRectangle.X + 16, _collRectangle.Y + 16), Light.MaxLightLevel, Gem.GetGemColor(gemId), false);
+            Light = new Light(new Vector2(_collRectangle.X + 16, _collRectangle.Y + 16), Gem.GetGemColor(gemId), 80);
             Initialize();
         }
 
         public override void Update(Tile tile)
         {
-            foreach (var proj in GameWorld.EnemyProjectiles.Concat(GameWorld.PlayerProjectiles))
-            {
-                if (proj.GetCollRectangle().Intersects(_collRectangle))
-                {
-                    OnPlayerAction(tile, GameWorld.GetPlayers()[0]);
-                }
-            }
-
             base.Update(tile);
         }
 
@@ -48,7 +40,6 @@ namespace ThereMustBeAnotherWay.Interactables
                 _broken = true;
                 Gem.GenerateIdentical(_gemId, _sourceTile, TMBAW_Game.Random.Next(4, 8));
                 tile.IsHidden = true;
-                LightingEngine.RemoveDynamicLight(Light);
             }
 
             base.OnPlayerAction(tile, player);

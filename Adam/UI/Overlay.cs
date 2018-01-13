@@ -225,7 +225,7 @@ namespace ThereMustBeAnotherWay.UI
             static Texture2D texture = ContentHelper.LoadTexture("Overlay/ui_whiteCorners");
             static Color color = Color.Black;
             static Color changeColor;
-            static Timer timer = new Timer(true);
+            static GameTimer timer = new GameTimer(true);
 
             public static void FlashColor(Color color)
             {

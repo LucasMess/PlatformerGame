@@ -13,8 +13,8 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
         const float RecoilVelocity = -5f;
         const double TimeBetweenFalls = 2000;
         const double TimeBetweenImpactAndRecoil = 1000;
-        Timer fallAgainTimer = new Timer();
-        Timer riseTimer = new Timer();
+        GameTimer fallAgainTimer = new GameTimer();
+        GameTimer riseTimer = new GameTimer();
         SoundFx _impactSound = new SoundFx("Sounds/Tiles/boulder_fall");
 
         public override void Initialize(Entity entity)

@@ -95,18 +95,21 @@
     <Compile Include="Characters\Behavior\StoneGolemBehavior.cs" />
     <Compile Include="Characters\Behavior\SwingingAxeBehavior.cs" />
     <Compile Include="Characters\Behavior\TheIllusionistBehavior.cs" />
-    <Compile Include="Characters\Enemies\GunCommon.cs" />
     <Compile Include="Characters\Enemies\Lost.cs" />
     <Compile Include="Characters\Behavior\LostBehavior.cs" />
     <Compile Include="Characters\Enemies\StoneGolem.cs" />
     <Compile Include="Characters\Enemies\SwingingAxe.cs" />
     <Compile Include="Characters\Enemies\TheIllusionist.cs" />
+    <Compile Include="Levels\Light.cs" />
+    <Compile Include="Levels\LightingSystem.cs" />
     <Compile Include="Particles\Explosion.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Particles\ParticleData.cs" />
     <Compile Include="Particles\Emitter.cs" />
     <Compile Include="Particles\ParticleGenerator.cs" />
-    <Compile Include="Projectiles\IProjectile.cs" />
+    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Projectiles\Player\BlueBlastProjectile.cs" />
+    <Compile Include="Projectiles\ProjectileBehavior.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -168,8 +171,6 @@
     <Compile Include="Levels\Cloud.cs" />
     <Compile Include="Levels\GameWorld.cs" />
     <Compile Include="Levels\LevelEditor.cs" />
-    <Compile Include="Levels\Light.cs" />
-    <Compile Include="Levels\LightingEngine.cs" />
     <Compile Include="Levels\StoryTracker.cs" />
     <Compile Include="Levels\Tile.cs" />
     <Compile Include="Levels\TileDefinitions.cs" />
@@ -197,7 +198,7 @@
     <Compile Include="Misc\Sound\SoundFxManager.cs" />
     <Compile Include="Misc\Sound\SoundtrackManager.cs" />
     <Compile Include="Misc\TimeFreeze.cs" />
-    <Compile Include="Misc\Timer.cs" />
+    <Compile Include="Misc\GameTimer.cs" />
     <Compile Include="Network\Lobby.cs" />
     <Compile Include="Network\Packets\DataPacket.cs" />
     <Compile Include="Network\Packets\EntityPacket.cs" />
@@ -214,11 +215,11 @@
     <Compile Include="Characters\Behavior\Behavior.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projectiles\CollisionRay.cs" />
-    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Projectiles\ProjectileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Camera.cs" />
     <Compile Include="UI\DataFolder.cs" />
-    <Compile Include="UI\Debug.cs" />
+    <Compile Include="UI\GameDebug.cs" />
     <Compile Include="UI\Elements\ActionDialog.cs" />
     <Compile Include="UI\Elements\Container.cs" />
     <Compile Include="UI\Elements\Button.cs" />

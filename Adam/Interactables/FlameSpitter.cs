@@ -13,8 +13,8 @@ namespace ThereMustBeAnotherWay.Interactables
     class FlameSpitter : Interactable
     {
         // This timer is infinite so that all spitters are in sync.
-        private Timer _spitTimer = new Timer();
-        private Timer _fireBallTimer = new Timer();
+        private GameTimer _spitTimer = new GameTimer();
+        private GameTimer _fireBallTimer = new GameTimer();
 
         private bool _isSpittingFire;
         private Vector2 _leftCornerTile;

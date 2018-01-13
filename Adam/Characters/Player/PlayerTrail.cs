@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         private List<Rectangle> _drawRectangles = new List<Rectangle>();
         private List<Rectangle> _sourceRectangles = new List<Rectangle>();
         private List<bool> _isFacingRight = new List<bool>();
-        private Timer _drawTimer = new Timer(true);
+        private GameTimer _drawTimer = new GameTimer(true);
         private int _currentlyShown = 0;
         private const int DistanceBetweenShots = 64;
         private const int NumberOfTrails = 20;

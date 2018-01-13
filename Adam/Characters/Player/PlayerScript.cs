@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System;
 using ThereMustBeAnotherWay.Characters.Behavior;
 using System.Collections;
+using ThereMustBeAnotherWay.Projectiles.Player;
 
 namespace ThereMustBeAnotherWay
 {
@@ -25,11 +26,11 @@ namespace ThereMustBeAnotherWay
         const float ClimbingSpeed = 4f;
         public const double RewindCooldown = 4000;
 
-        Timer _idleTimer = new Timer(true);
-        Timer _lastJumpTimer = new Timer(true);
-        Timer _weaponFireRateTimer = new Timer(true);
+        GameTimer _idleTimer = new GameTimer(true);
+        GameTimer _lastJumpTimer = new GameTimer(true);
+        GameTimer _weaponFireRateTimer = new GameTimer(true);
 
-        public static Timer TimeSinceLastPunch = new Timer(true);
+        public static GameTimer TimeSinceLastPunch = new GameTimer(true);
 
 
         SoundFx _stepSound = new SoundFx("Sounds/Movement/walk1");
@@ -420,11 +421,7 @@ namespace ThereMustBeAnotherWay
         {
             if (e.CurrentFrame == 1)
             {
-                Vector2 velocity = new Vector2(25, 0);
-                if (!_player.IsFacingRight)
-                    velocity.X *= -1;
-                ProjectileSystem proj = new ProjectileSystem(ProjectileSystem.Type.PlayerTimePunch, _player.Position + new Vector2(0, 21), velocity, _player);
-                GameWorld.PlayerProjectiles.Add(proj);
+                ProjectileSystem.Add(new BlueBlastProjectile(_player));
                 _timeGunFireSound.Play();
                 _player.ComplexAnimation.FrameChanged -= TimePunchFireProjectile;
             }

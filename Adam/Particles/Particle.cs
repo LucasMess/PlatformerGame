@@ -16,7 +16,7 @@ namespace ThereMustBeAnotherWay.Particles
         {
             private static Texture2D _texture => GameWorld.SpriteSheet;
             public Rectangle SourceRectangle;
-            private ThereMustBeAnotherWay.Misc.Timer _animationTimer = new Misc.Timer();
+            private ThereMustBeAnotherWay.Misc.GameTimer _animationTimer = new Misc.GameTimer();
             public int _frameChange;
             public int _frames;
             public int _currentFrame;
@@ -85,6 +85,12 @@ namespace ThereMustBeAnotherWay.Particles
                     case ParticleType.RewindFire:
                         NoOpacityDefaultBehavior();
                         break;
+                    case ParticleType.RewindFireRibbon:
+                        NoOpacityDefaultBehavior();
+                        break;
+                    case ParticleType.RewindFireExplosion:
+                        NoOpacityDefaultBehavior();
+                        break;
                     case ParticleType.FireBall:
                         NoOpacityDefaultBehavior();
                         break;
@@ -132,7 +138,7 @@ namespace ThereMustBeAnotherWay.Particles
             /// </summary>
             protected void GravityDefaultBehavior()
             {
-                Velocity = new Vector2(Velocity.X, Velocity.Y + TMBAW_Game.Gravity);
+                Velocity = new Vector2(Velocity.X, Velocity.Y + TMBAW_Game.Gravity / 2);
                 DefaultBehavior();
             }
 

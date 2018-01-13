@@ -13,7 +13,7 @@ namespace ThereMustBeAnotherWay.UI
 {
     public class Brush
     {
-        Timer gridOpacityTimer = new Timer(true);
+        GameTimer gridOpacityTimer = new GameTimer(true);
 
         public enum BrushMode { Build, Erase, Select }
         public BrushMode CurrentBrushMode;

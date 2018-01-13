@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
-    "",
     "\\Adam",
+    "\\Adam\\Characters",
+    "\\Adam\\Characters\\Player",
     "\\Adam\\Levels"
   ],
-  "SelectedNode": "\\Adam\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

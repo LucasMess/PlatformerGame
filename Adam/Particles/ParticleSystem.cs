@@ -204,7 +204,7 @@ namespace ThereMustBeAnotherWay.Particles
             Vector2 velocity;
             if (velocityArg == null)
             {
-                velocity = CalcHelper.GetRandXAndY(new Rectangle(-5, -5, 10, 10));
+                velocity = CalcHelper.GetRandXAndY(new Rectangle(-3, -3, 6, 6)) / 10;
             }
             else
             {
@@ -271,11 +271,33 @@ namespace ThereMustBeAnotherWay.Particles
                     par.SourceRectangle = new Rectangle(256, 160, 8, 8);
                     par.Velocity = velocity;
                     par.Color = color;
-                    par.Scale = TMBAW_Game.Random.Next(1, 3);
+                    par.Scale = TMBAW_Game.Random.Next(5, 10) / 10f;
                     par._frameChange = TMBAW_Game.Random.Next(100, 200);
                     par._frames = 4;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsAnimated = true;
+                    par.IsImmuneToTimeEffects = true;
+                    break;
+                case ParticleType.RewindFireRibbon:
+                    par.SourceRectangle = new Rectangle(256, 152, 8, 8);
+                    par.Velocity = Vector2.Zero;
+                    par.Color = color;
+                    par.Scale = 1;
+                    par._frameChange = TMBAW_Game.Random.Next(20, 50);
+                    par._frames = 4;
+                    par.Position = new Vector2(position.X, position.Y);
+                    par.IsAnimated = true;
+                    par.IsImmuneToTimeEffects = true;
+                    break;
+                case ParticleType.RewindFireExplosion:
+                    par.SourceRectangle = new Rectangle(288, 168, 24, 24);
+                    par.Velocity = Vector2.Zero;
+                    par.Color = color;
+                    par.Scale = 1;
+                    par._frameChange = TMBAW_Game.Random.Next(20, 50);
+                    par._frames = 1;
+                    par.Position = new Vector2(position.X, position.Y);
+                    par.IsAnimated = false;
                     par.IsImmuneToTimeEffects = true;
                     break;
                 case ParticleType.FireBall:
@@ -322,9 +344,9 @@ namespace ThereMustBeAnotherWay.Particles
                 case ParticleType.TilePiece:
                     velocity += CalcHelper.GetRandXAndY(new Rectangle(0, 0, 12, 12));
                     par.SourceRectangle = new Rectangle((int)(velocity.X), (int)(velocity.Y), 4, 4);
-                    par.Velocity = CalcHelper.GetRandXAndY(new Rectangle(-2, -2, 4, 4));
+                    par.Velocity = CalcHelper.GetRandXAndY(new Rectangle(-100, -100, 200, 200))/ 10f;
                     par.Color = color;
-                    par.Scale = 1;
+                    par.Scale = TMBAW_Game.Random.Next(5, 10) / 10f;
                     par.Position = new Vector2(position.X - (par.Scale * par.Width) / 2, position.Y - (par.Scale * par.Height) / 2);
                     par.IsImmuneToTimeEffects = false;
                     break;
@@ -370,6 +392,8 @@ namespace ThereMustBeAnotherWay.Particles
         Rain,
         HeatEffect,
         RewindFire,
+        RewindFireRibbon,
+        RewindFireExplosion,
         FireBall,
         Tiny,
         ProjectileHeatTrail,

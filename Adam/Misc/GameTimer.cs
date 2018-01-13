@@ -2,7 +2,7 @@
 
 namespace ThereMustBeAnotherWay.Misc
 {
-    public class Timer
+    public class GameTimer
     {
         public static int ActiveTimers = 0;
 
@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.Misc
         public delegate void EventHandler();
         public event EventHandler SetTimeReached;
 
-        public Timer(bool isInfinite = false, double initialTime = 0)
+        public GameTimer(bool isInfinite = false, double initialTime = 0)
         {
             IsInfinite = isInfinite;
             if (IsInfinite)

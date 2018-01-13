@@ -7,10 +7,10 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 {
     public partial class Player : Character
     {
-        Timer _onFireTimer = new Timer(true);
-        Timer _fireTickTimer = new Timer(true);
-        Timer _fireSpawnTimer = new Timer(true);
-        Timer _movementParticlesTimer = new Timer(true);
+        GameTimer _onFireTimer = new GameTimer(true);
+        GameTimer _fireTickTimer = new GameTimer(true);
+        GameTimer _fireSpawnTimer = new GameTimer(true);
+        GameTimer _movementParticlesTimer = new GameTimer(true);
 
         /// <summary>
         /// Returns true if player is on fire and is taking damage per second.

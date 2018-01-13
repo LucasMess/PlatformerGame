@@ -81,6 +81,7 @@ namespace ThereMustBeAnotherWay
         public byte SubId;
         private byte shadowSubId;
         public Texture2D Texture;
+        public Light Light;
         private static Rectangle _gridSourceRectangle = new Rectangle(352, 160, 32, 32);
 
         /// <summary>
@@ -251,6 +252,7 @@ namespace ThereMustBeAnotherWay
                     _positionInSpriteSheet = new Vector2(12, 0);
                     Interactable = new Torch();
                     LetsLightThrough = true;
+                    Light = new Light(Position + new Vector2(8,11) * 2, new Color(255, 154, 34), 300);
                     break;
                 case TileType.GreenTorch:
                     _frameCount = new Vector2(4, 0);
@@ -1102,7 +1104,7 @@ namespace ThereMustBeAnotherWay
                     break;
                 case TileType.GunCommonEnemy:
                     if (!_isSampleTile)
-                        GameWorld.AddEntityAt(TileIndex, new GunCommon(DrawRectangle.X, DrawRectangle.Y));
+                        //GameWorld.AddEntityAt(TileIndex, new GunCommon(DrawRectangle.X, DrawRectangle.Y));
                     LetsLightThrough = true;
                     _isInvisibleInPlayMode = true;
                     _isInvisibleInEditMode = true;
@@ -1330,7 +1332,7 @@ namespace ThereMustBeAnotherWay
             DefineSourceRectangle();
             SetToDefaultSourceRect();
             CurrentCollisionType = CollisionType.All;
-
+            Light = null;
 
             //DefineTexture();
             //LightingEngine.UpdateLightAt(TileIndex);
@@ -1399,6 +1401,16 @@ namespace ThereMustBeAnotherWay
         {
             if (Texture != null)
                 spriteBatch.Draw(Texture, new Rectangle(DrawRectangle.X + 2, DrawRectangle.Y + 2, DrawRectangle.Width, DrawRectangle.Height), SourceRectangle, Color.Black * .4f);
+        }
+
+        public void DrawLight(SpriteBatch spriteBatch)
+        {
+            Light?.Draw(spriteBatch);
+        }
+
+        public void DrawGlow(SpriteBatch spriteBatch)
+        {
+            Light?.DrawGlow(spriteBatch);
         }
 
         public void DebugDraw(SpriteBatch spriteBatch)
@@ -2551,5 +2563,7 @@ namespace ThereMustBeAnotherWay
             return false;
         }
 
+        public Vector2 Center => new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y);
+        public Vector2 Position => new Vector2(DrawRectangle.X, DrawRectangle.Y);
     }
 }

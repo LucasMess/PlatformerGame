@@ -20,9 +20,9 @@ namespace ThereMustBeAnotherWay.Levels
     /// </summary>
     public static class LevelEditor
     {
-        private static Timer _switchEditAndPlayTimer = new Timer(true);
+        private static GameTimer _switchEditAndPlayTimer = new GameTimer(true);
         private static readonly SoundFx[] Construction = new SoundFx[3];
-        private static readonly Timer IdleTimerForSave = new Timer(true);
+        private static readonly GameTimer IdleTimerForSave = new GameTimer(true);
         public static ButtonBar ButtonBar;
         private static SoundFx _close, _open, _select;
         private static SoundFx _destruction;
@@ -408,7 +408,6 @@ namespace ThereMustBeAnotherWay.Levels
                 Construct(array[tileIndex]);
             }
             UpdateTilesAround(tileIndex);
-            LightingEngine.UpdateLightingAt(tileIndex, true);
         }
 
         /// <summary>
@@ -477,7 +476,6 @@ namespace ThereMustBeAnotherWay.Levels
             if (hasChanged)
             {
                 UpdateTilesAround(IndexOfMouse);
-                UpdateLightingByCorners();
             }
         }
 
@@ -505,29 +503,6 @@ namespace ThereMustBeAnotherWay.Levels
             _destruction.PlayIfStopped();
             CreateDestructionParticles(t.GetDrawRectangle());
             TMBAW_Game.Camera.Shake();
-        }
-
-        /// <summary>
-        /// Used to update the lighting of many tiles at once.
-        /// </summary>
-        private static void UpdateLightingByCorners()
-        {
-            if (Brush.Size == 1)
-            {
-                LightingEngine.UpdateLightingAt(Brush.SelectedIndices[0], true);
-            }
-            else
-            {
-                int leftTop = Brush.SelectedIndices[0];
-                int rightTop = Brush.SelectedIndices[Brush.Size - 1];
-                int leftBot = Brush.SelectedIndices[(Brush.Size - 1) * (Brush.Size - 2) + 1];
-                int rightBot = Brush.SelectedIndices[Brush.SelectedIndices.Length - 1];
-
-                LightingEngine.UpdateLightingAt(leftTop, true);
-                LightingEngine.UpdateLightingAt(rightTop, true);
-                LightingEngine.UpdateLightingAt(leftBot, true);
-                LightingEngine.UpdateLightingAt(rightBot, true);
-            }
         }
 
         /// <summary>

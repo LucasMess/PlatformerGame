@@ -15,7 +15,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
     {
         const int TimeBetweenJumps_ACTIVE = 200;
         const int TimeBetweenJumps_IDLE = 2000;
-        private Misc.Timer _jumpTimer;
+        private Misc.GameTimer _jumpTimer;
         const float JumpVel = -14f;
         const float MoveVel = 5;
 

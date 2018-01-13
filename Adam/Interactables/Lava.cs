@@ -9,7 +9,7 @@ namespace ThereMustBeAnotherWay.Interactables
     class Lava : Interactable
     {
 
-        Timer heatTimer = new Timer();
+        GameTimer heatTimer = new GameTimer();
         private static readonly SoundFx bubblingSound = new SoundFx("Sounds/Tiles/lava");
 
         public override void OnEntityTouch(Tile tile, Entity entity)

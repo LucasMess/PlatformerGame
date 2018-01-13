@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
-using Timer = ThereMustBeAnotherWay.Misc.Timer;
+using GameTimer = ThereMustBeAnotherWay.Misc.GameTimer;
 using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
@@ -32,7 +32,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         // This is used to keep track of where the backdrop was when the animation started.
         private static int _posAtStartOfAnimation;
 
-        private static readonly Timer AnimationTimer = new Timer(true);
+        private static readonly GameTimer AnimationTimer = new GameTimer(true);
         private static Rectangle _backDrop;
         private readonly Rectangle _backDropSource = new Rectangle(0, 252, 305, 205);
         private CategorySelector _categorySelector = new CategorySelector();

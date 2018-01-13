@@ -14,7 +14,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
     {
         const float MaxHeight = (float)(Math.PI - Math.PI/8)/2;
         const float Period = 2000;
-        Timer timer = new Timer();
+        GameTimer timer = new GameTimer();
 
         public SwingingAxeBehavior()
         {

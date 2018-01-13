@@ -36,11 +36,7 @@ namespace ThereMustBeAnotherWay
             //pickUpSound = new Misc.SoundFx("Sounds/Items/gold" + GameWorld.RandGen.Next(0, 5));
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
-            Light = new Light(Center, Light.MaxLightLevel, Gem.GetGemColor(_gemId), false)
-            {
-                Scale = .5f,
-            };
-            LightingEngine.AddDynamicLight(Light);
+            Light = new Light(Center, Gem.GetGemColor(_gemId), 20);
         }
 
         public Gem(int centerX, int centerY, byte id)
@@ -56,8 +52,7 @@ namespace ThereMustBeAnotherWay
 
             OnPlayerPickUp += Gem_OnPlayerPickUp;
             CurrentCollisionType = CollisionType.Bouncy;
-            Light = new Light(Center, Light.MaxLightLevel, Gem.GetGemColor(id), false);
-            LightingEngine.AddDynamicLight(Light);
+            Light = new Light(Center, Gem.GetGemColor(_gemId), 20);
         }
 
         private void Gem_OnPlayerPickUp(PickedUpArgs e)

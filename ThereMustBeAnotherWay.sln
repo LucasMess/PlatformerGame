@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThereMustBeAnotherWay", "Adam\ThereMustBeAnotherWay.csproj", "{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMBAW_Tests", "TMBAW_Tests\TMBAW_Tests.csproj", "{8C98101D-E624-4FB5-87D6-5140FECD846F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleBoss", "BattleBoss\BattleBoss.csproj", "{7D8744E3-2ADE-4A37-A96B-9CF6749A49FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleBoss", "BattleBoss\BattleBoss.csproj", "{7D8744E3-2ADE-4A37-A96B-9CF6749A49FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,22 +35,6 @@ Global
 		{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}.Release|x64.Build.0 = Release|Any CPU
 		{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}.Release|x86.ActiveCfg = Release|x86
 		{B4F20D2B-BE99-4C35-B7AB-0EB8E9499BAB}.Release|x86.Build.0 = Release|x86
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|ARM.Build.0 = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|x64.Build.0 = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Debug|x86.Build.0 = Debug|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|ARM.ActiveCfg = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|ARM.Build.0 = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|x64.ActiveCfg = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|x64.Build.0 = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|x86.ActiveCfg = Release|Any CPU
-		{8C98101D-E624-4FB5-87D6-5140FECD846F}.Release|x86.Build.0 = Release|Any CPU
 		{7D8744E3-2ADE-4A37-A96B-9CF6749A49FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D8744E3-2ADE-4A37-A96B-9CF6749A49FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D8744E3-2ADE-4A37-A96B-9CF6749A49FC}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -72,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B974AD97-517F-46AE-966F-460CC9FA32D1}
 	EndGlobalSection
 EndGlobal
