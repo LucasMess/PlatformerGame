@@ -47,10 +47,10 @@ namespace ThereMustBeAnotherWay.Projectiles.Player
         public override void SpawnExplosion(Vector2 position)
         {
             for (int i = 0; i < 50; i++)
-                GameWorld.ParticleSystem.Add(ParticleType.TilePiece, position, null, Color.White);
+                ParticleSystem.Add(ParticleType.TilePiece, position, null, Color.White);
 
             position -= new Vector2(24, 24);
-            GameWorld.ParticleSystem.Add(ParticleType.RewindFireExplosion, position, null, Color.White);
+            ParticleSystem.Add(ParticleType.BlueFireExplosion, position, null, Color.White);
 
         }
 
@@ -63,11 +63,11 @@ namespace ThereMustBeAnotherWay.Projectiles.Player
         {
             if (_particleAlternatingVar)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.RewindFire, Center, null, Color.White);
+                ParticleSystem.Add(ParticleType.BlueFire, Center, null, Color.White);
             }
             else
             {
-                GameWorld.ParticleSystem.Add(ParticleType.RewindFire, Center, null, new Color(0, 246, 255));
+                ParticleSystem.Add(ParticleType.BlueFire, Center, null, new Color(0, 246, 255));
             }
             _particleAlternatingVar = !_particleAlternatingVar;
         }
@@ -75,7 +75,7 @@ namespace ThereMustBeAnotherWay.Projectiles.Player
         public override void SpawnRibbon(int x)
         {
             Vector2 position = new Vector2(x, Center.Y - 8);
-            GameWorld.ParticleSystem.Add(ParticleType.RewindFireRibbon, position, null, Color.White);
+            ParticleSystem.Add(ParticleType.BlueFireRibbon, position, null, Color.White);
         }
     }
 }

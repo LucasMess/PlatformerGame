@@ -14,6 +14,7 @@ namespace ThereMustBeAnotherWay.Particles
     {
         private class Particle
         {
+            private const int DEFAULT_TIME_TO_LIVE = 1000;
             private static Texture2D _texture => GameWorld.SpriteSheet;
             public Rectangle SourceRectangle;
             private ThereMustBeAnotherWay.Misc.GameTimer _animationTimer = new Misc.GameTimer();
@@ -59,7 +60,7 @@ namespace ThereMustBeAnotherWay.Particles
                 _frameChange = 0;
                 _frames = 1;
                 _currentFrame = 0;
-                TimeToLive = 60 * 5;
+                TimeToLive = DEFAULT_TIME_TO_LIVE;
                 _animationTimer.Reset();
                 IsText = false;
                 Text = null;
@@ -68,6 +69,8 @@ namespace ThereMustBeAnotherWay.Particles
 
             public virtual void Update()
             {
+                TimeToLive--;
+
                 switch (CurrentParticleType)
                 {
                     case ParticleType.Smoke:
@@ -82,13 +85,13 @@ namespace ThereMustBeAnotherWay.Particles
                     case ParticleType.Rain:
                         NoOpacityDefaultBehavior();
                         break;
-                    case ParticleType.RewindFire:
+                    case ParticleType.BlueFire:
                         NoOpacityDefaultBehavior();
                         break;
-                    case ParticleType.RewindFireRibbon:
+                    case ParticleType.BlueFireRibbon:
                         NoOpacityDefaultBehavior();
                         break;
-                    case ParticleType.RewindFireExplosion:
+                    case ParticleType.BlueFireExplosion:
                         NoOpacityDefaultBehavior();
                         break;
                     case ParticleType.FireBall:
@@ -145,7 +148,6 @@ namespace ThereMustBeAnotherWay.Particles
             protected void NoOpacityDefaultBehavior()
             {
                 Position += Velocity;
-                TimeToLive--;
             }
 
             protected void GravityNoOpacityDefaultBehavior()

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.Particles;
 
 namespace ThereMustBeAnotherWay.PlayerCharacter
 {
@@ -57,16 +58,16 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                     lastDeg %= 360;
                     for (int i = lastDeg; i < lastDeg + changeInDeg; i += 1)
                     {
-                        double rads = Math.PI * i / 180;
-                        float x = (float)Math.Cos(rads);
-                        float y = (float)Math.Sin(rads);
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
+                        //double rads = Math.PI * i / 180;
+                        //float x = (float)Math.Cos(rads);
+                        //float y = (float)Math.Sin(rads);
+                        //ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                        //    new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
 
-                        x *= -1;
-                        y *= -1;
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
-                            new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
+                        //x *= -1;
+                        //y *= -1;
+                        //ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                        //    new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White * (float)opacity);
                     }
                     lastDeg += changeInDeg;
                 }

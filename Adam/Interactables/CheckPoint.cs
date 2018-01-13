@@ -5,6 +5,7 @@ using ThereMustBeAnotherWay.Misc.Interfaces;
 using ThereMustBeAnotherWay.PlayerCharacter;
 using Microsoft.Xna.Framework;
 using System;
+using ThereMustBeAnotherWay.Particles;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
@@ -38,12 +39,12 @@ namespace ThereMustBeAnotherWay.Interactables
                         double rads = Math.PI * i / 180;
                         float x = (float)Math.Cos(rads);
                         float y = (float)Math.Sin(rads);
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                        ParticleSystem.Add(Particles.ParticleType.BlueFire, new Vector2(radius * x, radius * y) + position,
                             new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White);
 
                         x *= -1;
                         y *= -1;
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.RewindFire, new Vector2(radius * x, radius * y) + position,
+                        ParticleSystem.Add(Particles.ParticleType.BlueFire, new Vector2(radius * x, radius * y) + position,
                             new Vector2(x, y) * 2 * (float)TMBAW_Game.Random.NextDouble(), Color.White);
                     }
                     lastDeg += changeInDeg;

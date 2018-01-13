@@ -6,6 +6,8 @@ using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using ThereMustBeAnotherWay.Particles;
+using BattleBoss.Utilities;
 
 namespace ThereMustBeAnotherWay.Graphics
 {
@@ -107,6 +109,11 @@ namespace ThereMustBeAnotherWay.Graphics
 
         private static Effect testEffect;
 
+        public static AverageStopwatch LightDrawTimer = new AverageStopwatch();
+        public static AverageStopwatch TileDrawTimer = new AverageStopwatch();
+        public static AverageStopwatch ShadowsDrawTimer = new AverageStopwatch();
+        public static AverageStopwatch UserInterfaceDrawTimer = new AverageStopwatch();
+
         /// <summary>
         /// Initializes all of the components used for rendering, such as rendertargets and spritebatches.
         /// </summary>
@@ -158,6 +165,8 @@ namespace ThereMustBeAnotherWay.Graphics
         /// </summary>
         public static void Draw()
         {
+            TileDrawTimer.Start();
+
             _graphicsDevice.SetRenderTarget(_backgroundRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
             DrawBackground();
@@ -170,9 +179,17 @@ namespace ThereMustBeAnotherWay.Graphics
             _graphicsDevice.Clear(Color.Transparent);
             DrawGameWorld();
 
+            TileDrawTimer.Stop();
+
+            UserInterfaceDrawTimer.Start();
+
             _graphicsDevice.SetRenderTarget(_userInterfaceRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
             DrawUserInterface();
+
+            UserInterfaceDrawTimer.Stop();
+
+            LightDrawTimer.Start();
 
             _graphicsDevice.SetRenderTarget(_sunlightRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
@@ -191,9 +208,15 @@ namespace ThereMustBeAnotherWay.Graphics
             _spriteBatch.Draw(_sunlightRenderTarget, new Rectangle(0, 0, width, height), GetMainRenderTargetColor());
             _spriteBatch.End();
 
+            LightDrawTimer.Stop();
+
+            TileDrawTimer.Start();
+
             _graphicsDevice.SetRenderTarget(_rippleRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
             DrawRipples();
+
+            TileDrawTimer.Stop();
 
             _graphicsDevice.SetRenderTarget(_combinedWorldRenderTarget);
             _graphicsDevice.Clear(Color.Transparent);
@@ -203,6 +226,9 @@ namespace ThereMustBeAnotherWay.Graphics
             _graphicsDevice.Clear(Color.Transparent);
             FinalRender();
 
+            TileDrawTimer.Measure();
+            UserInterfaceDrawTimer.Measure();
+            LightDrawTimer.Measure();
         }
 
         /// <summary>
@@ -299,7 +325,7 @@ namespace ThereMustBeAnotherWay.Graphics
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
             GameWorld.Draw(_spriteBatch);
-            GameWorld.ParticleSystem.DrawNormalParticles(_spriteBatch);
+            ParticleSystem.DrawNormalParticles(_spriteBatch);
             KeyPopUp.Draw(_spriteBatch);
             _spriteBatch.End();
             //GameWorld.DrawRipples(_spriteBatch);

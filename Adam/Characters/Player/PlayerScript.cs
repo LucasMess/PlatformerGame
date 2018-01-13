@@ -161,7 +161,7 @@ namespace ThereMustBeAnotherWay
                 if (jumpAcc != 0)
                     for (int i = 0; i < 10; i++)
                     {
-                        GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -TMBAW_Game.Random.Next(1, 10) / 10f), Color.White);
+                        ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(player.GetCollRectangle()), player.GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next((int)player.GetVelocity().X - 1, (int)player.GetVelocity().X + 1) / 10f, -TMBAW_Game.Random.Next(1, 10) / 10f), Color.White);
                     }
 
 

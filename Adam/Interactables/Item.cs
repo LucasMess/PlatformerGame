@@ -57,7 +57,7 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 float randY = (float)(TMBAW_Game.Random.Next(-1, 0) * TMBAW_Game.Random.NextDouble());
                 float randX = (float)(TMBAW_Game.Random.Next(-1, 2) * TMBAW_Game.Random.NextDouble());
-                GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX, randY), Color.Yellow);
+                ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(randX, randY), Color.Yellow);
             }
         }
 

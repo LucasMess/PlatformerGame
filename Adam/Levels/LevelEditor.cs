@@ -562,7 +562,7 @@ namespace ThereMustBeAnotherWay.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
+                ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
             }
         }
 
@@ -574,7 +574,7 @@ namespace ThereMustBeAnotherWay.Levels
         {
             for (var i = 0; i < 5; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
+                ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(rect), new Vector2(TMBAW_Game.Random.Next(-10, 10) / 10f, TMBAW_Game.Random.Next(-10, 10) / 10f), Color.White);
             }
         }
 

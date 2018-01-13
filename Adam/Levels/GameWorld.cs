@@ -15,13 +15,13 @@ using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
 using System.Diagnostics;
 using ThereMustBeAnotherWay.UI;
+using BattleBoss.Utilities;
 
 namespace ThereMustBeAnotherWay.Levels
 {
     [Serializable]
     public static class GameWorld
     {
-        public static readonly ParticleSystem ParticleSystem = new ParticleSystem();
         private static Texture2D defaultSpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_29");
         public static Texture2D SpriteSheet = ContentHelper.LoadTexture("Tiles/spritemap_29");
         public static readonly Texture2D UiSpriteSheet = ContentHelper.LoadTexture("Tiles/ui_spritemap_4");
@@ -43,8 +43,8 @@ namespace ThereMustBeAnotherWay.Levels
         public static WorldData WorldData = new WorldData();
         public static PlayerTrail PlayerTrail = new PlayerTrail();
         private static Dictionary<string, Entity> _entityDict = new Dictionary<string, Entity>();
-        public static Stopwatch updateTimer = new Stopwatch();
-        public static Stopwatch drawTimer = new Stopwatch();
+        public static AverageStopwatch TotalUpdateTimer = new AverageStopwatch();
+        public static AverageStopwatch TotalDrawTimer = new AverageStopwatch();
 
         /// <summary>
         /// Returns the color data of the spritesheet used for most of the game's textures.
@@ -60,6 +60,7 @@ namespace ThereMustBeAnotherWay.Levels
             WallArray = new Tile[0];
             _players.Add(new Player(PlayerIndex.One));
             ProjectileSystem.Initialize();
+            ParticleSystem.Initialize();
             //_players.Add(new Player(PlayerIndex.Two));
         }
 
@@ -204,8 +205,8 @@ namespace ThereMustBeAnotherWay.Levels
             var cameraRect = GetPlayers()[0].GetCollRectangle();
             TMBAW_Game.Camera.UpdateSmoothly(cameraRect, WorldData.LevelWidth, WorldData.LevelHeight, !GetPlayers()[0].IsPlayingDeathAnimation);
 
-            if (TMBAW_Game.TimeFreeze.IsTimeFrozen())
-                ParticleSystem.UpdateStartEvent_TimeConstant.Set();
+            //if (TMBAW_Game.TimeFreeze.IsTimeFrozen())
+            //    ParticleSystem.UpdateStartEvent_TimeConstant.Set();
             //ParticleSystem.UpdateTimeConstant();
 
 
@@ -215,7 +216,7 @@ namespace ThereMustBeAnotherWay.Levels
 
         public static void UpdateWorld()
         {
-            ParticleSystem.UpdateStartEvent.Set();
+            ParticleSystem.Update();
             //ParticleSystem.Update();
             Weather.Update();
 

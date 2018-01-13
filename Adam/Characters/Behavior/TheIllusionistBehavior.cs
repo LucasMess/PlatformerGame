@@ -122,7 +122,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
                 {
                     offset = new Vector2(20, 3);
                 }
-                GameWorld.ParticleSystem.Add(ParticleType.Tiny, new Vector2(Entity.GetDrawRectangle().X, Entity.GetDrawRectangle().Y) + offset , CalcHelper.GetRandXAndY(new Rectangle(-10,-10,20,20))/10, Color.Yellow);
+                ParticleSystem.Add(ParticleType.Tiny, new Vector2(Entity.GetDrawRectangle().X, Entity.GetDrawRectangle().Y) + offset , CalcHelper.GetRandXAndY(new Rectangle(-10,-10,20,20))/10, Color.Yellow);
             }
         }
 
@@ -132,7 +132,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(en.GetDrawRectangle()), CalcHelper.GetRandXAndY(new Rectangle(-1, -1, 2, 2)), Color.Yellow);
+                    ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(en.GetDrawRectangle()), CalcHelper.GetRandXAndY(new Rectangle(-1, -1, 2, 2)), Color.Yellow);
                 }
 
                 en.SetVelX(0);
@@ -147,14 +147,14 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             foreach (Player player in GameWorld.GetPlayers())
             {
                 player.SetVelY(-velocity);
-                GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(player.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
+                ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(player.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
             }
             foreach (var entity in GameWorld.Entities)
             {
                 if (entity != Entity)
                 {
                     entity.SetVelY(-velocity);
-                    GameWorld.ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(entity.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
+                    ParticleSystem.Add(ParticleType.Tiny, CalcHelper.GetRandXAndY(entity.GetCollRectangle()), Vector2.Zero, new Color(196, 148, 255));
                 }
             }
         }

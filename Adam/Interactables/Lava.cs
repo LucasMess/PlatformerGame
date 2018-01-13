@@ -27,7 +27,7 @@ namespace ThereMustBeAnotherWay.Interactables
             {
                 heatTimer.Reset();
                 if (GameWorld.GetTileAbove(tile.TileIndex).Id == TMBAW_Game.TileType.Air)
-                    GameWorld.ParticleSystem.Add(ParticleType.HeatEffect, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Top), CalcHelper.GetRandXAndY(new Rectangle(-10, -10, 10, 0)) / 10, Color.White);
+                    ParticleSystem.Add(ParticleType.HeatEffect, new Vector2(tile.GetDrawRectangle().Center.X, tile.GetDrawRectangle().Top), CalcHelper.GetRandXAndY(new Rectangle(-10, -10, 10, 0)) / 10, Color.White);
             }
         }
     }

@@ -172,7 +172,7 @@ namespace ThereMustBeAnotherWay
         {
             if (IsDebugOn)
             {
-                SettingsFile settings = DataFolder.GetSettingsFile();         
+                SettingsFile settings = DataFolder.GetSettingsFile();
 
                 _infos = new List<string>
                 {
@@ -184,14 +184,16 @@ namespace ThereMustBeAnotherWay
                     "Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y,
                     "Index of mouse: " + LevelEditor.IndexOfMouse,
                     "Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString(),
-                    "Particle iteration: " + GameWorld.ParticleSystem?.GetIteration(),
-                    "Empty Particle Count: " + GameWorld.ParticleSystem?.GetNumberOfAvailableParticles(),
+                    "Particles in use: " + ParticleSystem.GetInUseParticleCount(),
                     "Is Sprinting: " + GameWorld.GetPlayers()[0].IsRunningFast,
                     "Steam Name: " + TMBAW_Game.UserName + " ID: " + TMBAW_Game.SteamID.m_SteamID,
-                    "Particle update time: " + ParticleSystem.updateTimer.ElapsedTicks + " " + (double)ParticleSystem.updateTimer.ElapsedTicks/GameWorld.updateTimer.ElapsedTicks*100 + "% of update time",
-                    "Particle draw time: " + ParticleSystem.drawTimer.ElapsedTicks+ " " +  (double)ParticleSystem.drawTimer.ElapsedTicks/GameWorld.drawTimer.ElapsedTicks*100 + "% of draw time",
-                    "World update time: " + GameWorld.updateTimer.ElapsedTicks,
-                    "World draw time: " + GameWorld.drawTimer.ElapsedTicks,
+                    "Particle update time: " + ParticleSystem.UpdateTime + " " + String.Format("{0:0.00}", ParticleSystem.UpdateTime * 100 / GameWorld.TotalUpdateTimer.GetAverage()) + "% of update time",
+                    "Particle draw time: " + ParticleSystem.DrawTime + " " + String.Format("{0:0.00}", ParticleSystem.DrawTime * 100 / GameWorld.TotalDrawTimer.GetAverage()) + "% of draw time",
+                    "Tile draw time: " + GraphicsRenderer.TileDrawTimer.GetAverage() + " " + String.Format("{0:0.00}", GraphicsRenderer.TileDrawTimer.GetAverage() * 100 / GameWorld.TotalDrawTimer.GetAverage() ) + "% of draw time",
+                    "UI draw time: " + GraphicsRenderer.UserInterfaceDrawTimer.GetAverage() + " " + String.Format("{0:0.00}",  GraphicsRenderer.UserInterfaceDrawTimer.GetAverage() * 100 / GameWorld.TotalDrawTimer.GetAverage() ) + "% of draw time",
+                    "Light draw time: " + GraphicsRenderer.LightDrawTimer.GetAverage() + " " + String.Format("{0:0.00}", GraphicsRenderer.LightDrawTimer.GetAverage() * 100 / GameWorld.TotalDrawTimer.GetAverage()) + "% of draw time",
+                    "Total update time: " + GameWorld.TotalUpdateTimer.GetAverage(),
+                    "Total draw time: " + GameWorld.TotalDrawTimer.GetAverage(),
                     "Visible tiles: " + GameWorld.ChunkManager?.GetVisibleIndexes()?.Length,
                     "Ambient Color: " + GameWorld.WorldData.SunLightColor,
                 };

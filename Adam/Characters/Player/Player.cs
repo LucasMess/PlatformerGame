@@ -254,7 +254,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 {
                     _movementParticlesTimer.Reset();
 
-                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
+                    ParticleSystem.Add(ParticleType.Smoke, new Vector2(CollRectangle.Center.X, CollRectangle.Bottom),
                         new Vector2(0, (float)(TMBAW_Game.Random.Next(-5, 5) / 10f)), Color.White);
                 }
             }

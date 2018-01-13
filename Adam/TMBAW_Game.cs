@@ -308,11 +308,11 @@ namespace ThereMustBeAnotherWay
                     if (IsLoadingContent) return;
                     if (GameWorld.IsOnDebug)
                         break;
-                    GameWorld.updateTimer.Restart();
+                    GameWorld.TotalUpdateTimer.Start();
                     if (!TimeFreeze.IsTimeFrozen())
                         GameWorld.UpdateWorld();
                     GameWorld.UpdateVisual();
-                    GameWorld.updateTimer.Stop();
+                    GameWorld.TotalUpdateTimer.Measure();
 
 
                     if (StoryTracker.IsInStoryMode)
@@ -330,9 +330,9 @@ namespace ThereMustBeAnotherWay
         protected override void Draw(GameTime gameTime)
         {
             _totalFrames++;
-            GameWorld.drawTimer.Restart();
+            GameWorld.TotalDrawTimer.Start();
             GraphicsRenderer.Draw();
-            GameWorld.drawTimer.Stop();
+            GameWorld.TotalDrawTimer.Measure();
             base.Draw(gameTime);
         }
 

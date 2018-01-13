@@ -532,7 +532,7 @@ namespace ThereMustBeAnotherWay
 
             for (int i = 0; i < 20; i++)
             {
-                GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
+                ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(CollRectangle), new Vector2(0, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
             }
 
             //Rectangle[] desinRectangles;
@@ -993,7 +993,7 @@ namespace ThereMustBeAnotherWay
 
                 IsTakingDamage = true;
                 Health -= damage;
-                GameWorld.ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255, 108, 108));
+                ParticleSystem.Add("-" + damage, Center, new Vector2(TMBAW_Game.Random.Next(0, 2) * -2 + 1, -15), new Color(255, 108, 108));
                 _hitRecentlyTimer.ResetAndWaitFor(500);
                 _hitRecentlyTimer.SetTimeReached += HitByPlayerTimer_SetTimeReached;
 
@@ -1003,7 +1003,7 @@ namespace ThereMustBeAnotherWay
                     particleCount = 100;
                 for (int i = 0; i < particleCount; i++)
                 {
-                    GameWorld.ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), null, Color.Red);
+                    ParticleSystem.Add(ParticleType.Round_Common, CalcHelper.GetRandXAndY(CollRectangle), null, Color.Red);
                 }
 
                 //if (damageDealer == null)
@@ -1064,7 +1064,7 @@ namespace ThereMustBeAnotherWay
             {
                 for (int i = 0; i < count; i++)
                 {
-                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next(-5, 5) / 10f, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
+                    ParticleSystem.Add(ParticleType.Smoke, new Vector2(CalcHelper.GetRandomX(GetCollRectangle()), GetCollRectangle().Bottom), new Vector2(TMBAW_Game.Random.Next(-5, 5) / 10f, -TMBAW_Game.Random.Next(1, 5) / 10f), Color.White);
                 }
                 _stompParticleTimer.Reset();
             }

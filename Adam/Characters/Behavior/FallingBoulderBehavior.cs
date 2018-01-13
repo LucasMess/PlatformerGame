@@ -32,7 +32,7 @@ namespace ThereMustBeAnotherWay.Characters.Behavior
             {
                 for (int i = 0; i < 20; i++)
                 {
-                    GameWorld.ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(new Rectangle(entity.GetCollRectangle().X, entity.GetCollRectangle().Bottom, entity.GetCollRectangle().Width, 1)),
+                    ParticleSystem.Add(ParticleType.Smoke, CalcHelper.GetRandXAndY(new Rectangle(entity.GetCollRectangle().X, entity.GetCollRectangle().Bottom, entity.GetCollRectangle().Width, 1)),
                                 CalcHelper.GetRandXAndY(new Rectangle(-40, -5, 80, 10))/10f, Color.White);
                 }
             }

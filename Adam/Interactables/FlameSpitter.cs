@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.Particles;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
@@ -68,8 +69,8 @@ namespace ThereMustBeAnotherWay.Interactables
                     if (_fireBallTimer.TimeElapsedInMilliSeconds > ParticleTime)
                     {
                         _fireBallTimer.Reset();
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.FireBall, _leftCornerTile + new Vector2(3, 0) * 2, CalcHelper.GetRandXAndY(new Rectangle(-10, -50, 20, 30)) / 10f, Color.White);
-                        GameWorld.ParticleSystem.Add(Particles.ParticleType.FireBall, _leftCornerTile + new Vector2(12, 0) * 2, CalcHelper.GetRandXAndY(new Rectangle(-10, -50, 20, 30)) / 10f, Color.White);
+                        ParticleSystem.Add(Particles.ParticleType.FireBall, _leftCornerTile + new Vector2(3, 0) * 2, CalcHelper.GetRandXAndY(new Rectangle(-10, -50, 20, 30)) / 10f, Color.White);
+                        ParticleSystem.Add(Particles.ParticleType.FireBall, _leftCornerTile + new Vector2(12, 0) * 2, CalcHelper.GetRandXAndY(new Rectangle(-10, -50, 20, 30)) / 10f, Color.White);
                     }
                 }
                 else
