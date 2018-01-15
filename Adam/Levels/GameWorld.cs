@@ -16,6 +16,7 @@ using static ThereMustBeAnotherWay.TMBAW_Game;
 using System.Diagnostics;
 using ThereMustBeAnotherWay.UI;
 using BattleBoss.Utilities;
+using ThereMustBeAnotherWay.Scripting;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -45,6 +46,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static Dictionary<string, Entity> _entityDict = new Dictionary<string, Entity>();
         public static AverageStopwatch TotalUpdateTimer = new AverageStopwatch();
         public static AverageStopwatch TotalDrawTimer = new AverageStopwatch();
+        private static ScriptManager scriptManager = new ScriptManager("testScript");
 
         /// <summary>
         /// Returns the color data of the spritesheet used for most of the game's textures.
@@ -135,6 +137,9 @@ namespace ThereMustBeAnotherWay.Levels
 
             TMBAW_Game.Camera.ResetZoom();
             Overlay.FadeIn();
+
+            // Start scripting system.
+
 
             return true;
         }
