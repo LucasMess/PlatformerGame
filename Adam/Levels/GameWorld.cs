@@ -34,6 +34,7 @@ namespace ThereMustBeAnotherWay.Levels
         //performance.
         private static List<Cloud> _clouds;
         public static bool IsTestingLevel;
+        public static bool IsInCutsceneMode = false;
         public static List<Entity> Entities;
         public static bool IsOnDebug;
         private static List<Player> _players = new List<Player>(4);
@@ -46,7 +47,7 @@ namespace ThereMustBeAnotherWay.Levels
         private static Dictionary<string, Entity> _entityDict = new Dictionary<string, Entity>();
         public static AverageStopwatch TotalUpdateTimer = new AverageStopwatch();
         public static AverageStopwatch TotalDrawTimer = new AverageStopwatch();
-        private static ScriptManager scriptManager = new ScriptManager("testScript");
+        private static ScriptManager scriptManager = new ScriptManager();
 
         /// <summary>
         /// Returns the color data of the spritesheet used for most of the game's textures.
@@ -63,6 +64,7 @@ namespace ThereMustBeAnotherWay.Levels
             _players.Add(new Player(PlayerIndex.One));
             ProjectileSystem.Initialize();
             ParticleSystem.Initialize();
+            scriptManager.Initialize();
             //_players.Add(new Player(PlayerIndex.Two));
         }
 
@@ -138,8 +140,12 @@ namespace ThereMustBeAnotherWay.Levels
             TMBAW_Game.Camera.ResetZoom();
             Overlay.FadeIn();
 
-            // Start scripting system.
-
+            // Start interpreting the script for this world.
+            scriptManager.SetFilename(WorldData.LevelName);
+            if (currentGameMode == GameMode.Play)
+            {
+                scriptManager.Start();
+            }
 
             return true;
         }
@@ -166,6 +172,8 @@ namespace ThereMustBeAnotherWay.Levels
             }
 
             SoundtrackManager.PlayTrack(WorldData.SoundtrackId, true);
+
+            scriptManager.Start();
         }
 
         private static void ConvertToTiles(Tile[] array, TileType[] ids, bool isWall = false)

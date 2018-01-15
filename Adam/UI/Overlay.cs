@@ -149,9 +149,10 @@ namespace ThereMustBeAnotherWay.UI
         {
             static bool _isActive;
             static Texture2D _texture = ContentHelper.LoadTexture("Tiles/black");
-            const int Height = 75;
+            static int _height;
             public static void Show()
             {
+                _height = (int)(TMBAW_Game.UserResHeight * .2f);
                 _isActive = true;
             }
 
@@ -164,8 +165,8 @@ namespace ThereMustBeAnotherWay.UI
             {
                 if (_isActive)
                 {
-                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
-                    spriteBatch.Draw(_texture, new Rectangle(0, (TMBAW_Game.UserResHeight - (int)(Height * TMBAW_Game.HeightRatio)) , TMBAW_Game.UserResWidth, (int)(Height * TMBAW_Game.HeightRatio)), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, 0, TMBAW_Game.UserResWidth, (int)(_height)), Color.Black);
+                    spriteBatch.Draw(_texture, new Rectangle(0, (TMBAW_Game.UserResHeight - (int)(_height)) , TMBAW_Game.UserResWidth, (int)(_height * TMBAW_Game.HeightRatio)), Color.Black);
                 }
             }
         }

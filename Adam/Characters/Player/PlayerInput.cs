@@ -157,7 +157,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             if (TMBAW_Game.Dialog.IsActive)
                 return;
 
-            if (StoryTracker.InCutscene)
+            if (StoryTracker.InCutscene || GameWorld.IsInCutsceneMode)
                 return;
 
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)

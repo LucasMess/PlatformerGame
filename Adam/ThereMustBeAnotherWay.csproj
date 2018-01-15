@@ -119,6 +119,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Scripting\ScriptFunctions.cs" />
     <Compile Include="Scripting\ScriptManager.cs" />
     <Compile Include="TMBAW_Game.cs" />
     <Compile Include="Characters\Character.cs" />
@@ -300,8 +301,8 @@
     <None Include="Content\Levels\GreenHills01.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Scripts\testScript.lua">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Content\Scripts\Testing.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
