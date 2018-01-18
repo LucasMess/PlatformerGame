@@ -22,6 +22,7 @@ namespace ThereMustBeAnotherWay
         private Vector2[] middleCoords = new Vector2[3];
         private Vector2[] foreCoords = new Vector2[3];
         private const float FogGradient = .25f;
+        public Sky Sky = new Sky();
 
         /// <summary>
         /// The current background Id.
@@ -81,6 +82,7 @@ namespace ThereMustBeAnotherWay
                 Load();
             }
 
+            Sky.Update();
 
             middleCoords[0] = new Vector2((TMBAW_Game.Camera.LastCameraLeftCorner.X / 10) % TMBAW_Game.DefaultResWidth, (TMBAW_Game.Camera.LastCameraLeftCorner.Y / (TMBAW_Game.Tilesize * GameWorld.WorldData.LevelHeight) * TMBAW_Game.DefaultResHeight * 1 / 4) + TMBAW_Game.DefaultResHeight * 1 / 4);
 
@@ -102,12 +104,14 @@ namespace ThereMustBeAnotherWay
             }
             else
             {
-                if (_backgroundTexture != null)
-                {
+                Sky.Draw(spriteBatch);
 
-                    spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                //if (_backgroundTexture != null)
+                //{
 
-                }
+                //    spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+
+                //}
 
                 if (GameWorld.WorldData.HasSun)
                     spriteBatch.Draw(_sun, new Rectangle(0, 0, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
@@ -116,7 +120,7 @@ namespace ThereMustBeAnotherWay
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                        spriteBatch.Draw(_middlegroundTexture, new Rectangle((int)middleCoords[i].X, (int)middleCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Sky.GetAmbientLight());
                     }
                 }
 
@@ -124,7 +128,7 @@ namespace ThereMustBeAnotherWay
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Color.White);
+                        spriteBatch.Draw(_foregroundTexture, new Rectangle((int)foreCoords[i].X, (int)foreCoords[i].Y, TMBAW_Game.DefaultResWidth, TMBAW_Game.DefaultResHeight), Sky.GetAmbientLight());
                     }
                 }
             }

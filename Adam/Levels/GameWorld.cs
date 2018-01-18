@@ -592,5 +592,7 @@ namespace ThereMustBeAnotherWay.Levels
 
             return tiles;
         }
+
+        public static Color AmbientLight => Background.Sky.GetAmbientLight();
     }
 }

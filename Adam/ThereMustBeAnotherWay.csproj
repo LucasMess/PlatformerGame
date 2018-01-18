@@ -105,6 +105,7 @@
     <Compile Include="Characters\Enemies\TheIllusionist.cs" />
     <Compile Include="Levels\Light.cs" />
     <Compile Include="Levels\LightingSystem.cs" />
+    <Compile Include="Levels\Sky.cs" />
     <Compile Include="Misc\AverageStopwatch.cs" />
     <Compile Include="Particles\Explosion.cs" />
     <Compile Include="Particles\Particle.cs" />

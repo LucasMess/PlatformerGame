@@ -46,7 +46,7 @@ namespace ThereMustBeAnotherWay
         public const int DefaultResHeight = 720;
         public const int DefaultUiWidth = 1280;
         public const int DefaultUiHeight = 720;
-        public const string Version = "Version 0.10.4 Beta";
+        public const string Version = "Version 0.11.0";
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
         public static bool IsLoadingContent;

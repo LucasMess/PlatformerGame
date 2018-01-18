@@ -345,7 +345,7 @@ namespace ThereMustBeAnotherWay.Graphics
         private static void DrawSunlight()
         {
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null);
-            _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _otherLightsRenderTarget.Bounds, Color.White);
+            _spriteBatch.Draw(ContentHelper.LoadTexture("Tiles/white"), _otherLightsRenderTarget.Bounds, GameWorld.AmbientLight);
             _spriteBatch.End();
 
             //_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DefaultDepthStencil, DefaultRasterizer, null, TMBAW_Game.Camera.Translate);
