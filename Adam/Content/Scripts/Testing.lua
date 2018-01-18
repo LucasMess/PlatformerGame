@@ -1,3 +1,2 @@
-﻿activateCutsceneMode()
-wait(1000)
-deactivateCutsceneMode()
+﻿showDialogue("Adam", "Hi there! I was wondering when you were going to wake up...")
+showDialogue("Adam", "Hi there! Anyway, I hope to see you soon! \nBut do not forget to send someone  my way if they are lost or something. I would not want anyone to be lost around here, you know?")

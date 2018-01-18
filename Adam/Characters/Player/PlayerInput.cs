@@ -2,6 +2,7 @@
 using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using ThereMustBeAnotherWay.UI.Dialogue;
 
 namespace ThereMustBeAnotherWay.PlayerCharacter
 {
@@ -26,6 +27,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
         public event EventHandler FastRunInactive;
         public event EventHandler NotIdle;
         public event EventHandler ReleaseUpAndDownAction;
+
 
         private void InitializeInput()
         {
@@ -160,6 +162,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             if (StoryTracker.InCutscene || GameWorld.IsInCutsceneMode)
                 return;
 
+            if (DialogueSystem.IsShowingDialogue)
+                return;
+
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 return;
 
@@ -222,18 +227,17 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 if (IsWeaponFirePressed())
                     FireWeaponAction?.Invoke();
 
-                if (IsJumpButtonPressed())
+                if (InputSystem.WasKeyReleased(Keys.Space) && IsJumpButtonPressed())
                 {
-                    if (!_jumpButtonIsPressed)
-                    {
+ 
                         JumpAction?.Invoke();
-                        _jumpButtonIsPressed = true;
-                    }
+                        //_jumpButtonIsPressed = true;
+     
                 }
-                else
-                {
-                    _jumpButtonIsPressed = false;
-                }
+                //else
+                //{
+                //    _jumpButtonIsPressed = false;
+                //}
                 if (IsSprintButtonPressed())
                     FastRunActive?.Invoke();
                 else
@@ -245,7 +249,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
 
             StillUpdate?.Invoke();
 
-            if (InputHelper.IsAnyInputPressed())
+            if (InputSystem.IsAnyInputPressed())
                 NotIdle?.Invoke();
         }
 
@@ -254,9 +258,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
+                    return InputSystem.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
                 default:
-                    return InputHelper.IsKeyDown(Keys.NumPad0) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.A);
+                    return InputSystem.IsKeyDown(Keys.NumPad0) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.A);
             }
         }
 
@@ -265,9 +269,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
+                    return InputSystem.IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickRight);
                 default:
-                    return InputHelper.IsKeyDown(Keys.Right) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickRight);
+                    return InputSystem.IsKeyDown(Keys.Right) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickRight);
             }
         }
 
@@ -276,9 +280,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
+                    return InputSystem.IsKeyDown(Keys.A) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickLeft);
                 default:
-                    return InputHelper.IsKeyDown(Keys.Left) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickLeft);
+                    return InputSystem.IsKeyDown(Keys.Left) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickLeft);
             }
         }
 
@@ -287,9 +291,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
+                    return InputSystem.IsKeyDown(Keys.S) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown);
                 default:
-                    return InputHelper.IsKeyDown(Keys.Down) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickDown);
+                    return InputSystem.IsKeyDown(Keys.Down) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickDown);
             }
         }
 
@@ -298,9 +302,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
+                    return InputSystem.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp);
                 default:
-                    return InputHelper.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.DPadUp);
+                    return InputSystem.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.DPadUp);
             }
         }
 
@@ -309,9 +313,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+                    return InputSystem.IsKeyDown(Keys.H) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
                 default:
-                    return InputHelper.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
+                    return InputSystem.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
             }
         }
 
@@ -320,9 +324,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger);
+                    return InputSystem.IsKeyDown(Keys.LeftShift) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger);
                 default:
-                    return InputHelper.IsKeyDown(Keys.RightControl) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftTrigger);
+                    return InputSystem.IsKeyDown(Keys.RightControl) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftTrigger);
             }
         }
 
@@ -331,9 +335,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                    return InputSystem.IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
                 default:
-                    return InputHelper.IsKeyDown(Keys.NumPad2) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
+                    return InputSystem.IsKeyDown(Keys.NumPad2) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
             }
         }
 
@@ -342,18 +346,18 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.Enter);
+                    return InputSystem.IsKeyDown(Keys.Enter);
                 default:
                     return false;
             }
         }
 
-        public bool IsContinueChatPressed()
+        public bool IsSkipDialoguePressed()
         {
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                    return InputSystem.IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
             }
@@ -364,7 +368,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.T) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
+                    return InputSystem.IsKeyDown(Keys.T) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Start);
             }
@@ -375,9 +379,9 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp);
+                    return InputSystem.IsKeyDown(Keys.W) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp);
                 default:
-                    return InputHelper.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickUp);
+                    return InputSystem.IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.LeftThumbstickUp);
             }
         }
 
@@ -388,7 +392,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
                 case PlayerIndex.One:
                     return Mouse.GetState().LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
                 default:
-                    return InputHelper.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
+                    return InputSystem.IsKeyDown(Keys.NumPad1) || GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
             }
         }
 
@@ -397,7 +401,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
+                    return InputSystem.IsKeyDown(Keys.Escape) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Back);
             }
@@ -408,7 +412,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
+                    return InputSystem.IsKeyDown(Keys.Tab) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightShoulder);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.RightShoulder);
             }
@@ -419,7 +423,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.B) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
+                    return InputSystem.IsKeyDown(Keys.B) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.X);
             }
@@ -430,7 +434,7 @@ namespace ThereMustBeAnotherWay.PlayerCharacter
             switch (PlayerIndex)
             {
                 case PlayerIndex.One:
-                    return InputHelper.IsKeyDown(Keys.N) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
+                    return InputSystem.IsKeyDown(Keys.N) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Y);
                 default:
                     return GamePad.GetState(PlayerIndex).IsButtonDown(Buttons.Y);
             }

@@ -32,7 +32,7 @@ namespace ThereMustBeAnotherWay
                 if (player.GetCollRectangle().Intersects(_collRectangle) && !_isOpen)
                 {
                     // If player presses open button, open chest.
-                    if (InputHelper.IsKeyDown(Keys.W))
+                    if (InputSystem.IsKeyDown(Keys.W))
                     {
                         OnPlayerAction(t, player);
                     }

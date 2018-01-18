@@ -24,7 +24,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
 
         public static void Update()
         {
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
             _drawRectangle.X = mouse.X - 5;
             _drawRectangle.Y = mouse.Y - 5;
         }

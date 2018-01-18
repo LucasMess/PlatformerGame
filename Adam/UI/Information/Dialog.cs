@@ -114,7 +114,7 @@ namespace ThereMustBeAnotherWay.UI.Information
                 if (_skipTimer.TimeElapsedInSeconds > .5)
                 {
                     // If player presses button to skip dialog.
-                    if (GameWorld.GetPlayers()[0].IsContinueChatPressed() && !_dialogSkipPressedPressed)
+                    if (GameWorld.GetPlayers()[0].IsSkipDialoguePressed() && !_dialogSkipPressedPressed)
                     {
                         _dialogSkipPressedPressed = true;
                         // If the dialog has not finished displaying the text, simply display the text.
@@ -128,18 +128,18 @@ namespace ThereMustBeAnotherWay.UI.Information
                             NextDialog?.Invoke(_nextDialogCode, _dialogOptions.SelectedOption);
                         }
                     }
-                    if (!GameWorld.GetPlayers()[0].IsContinueChatPressed()) _dialogSkipPressedPressed = false;
+                    if (!GameWorld.GetPlayers()[0].IsSkipDialoguePressed()) _dialogSkipPressedPressed = false;
                 }
 
                 // Move the selector leaves around depending on keys pressed.
                 if (!IsWritingText())
                 {
-                    if (InputHelper.IsKeyDown(Keys.S) && _selectBufferTimer.TimeElapsedInSeconds > .2)
+                    if (InputSystem.IsKeyDown(Keys.S) && _selectBufferTimer.TimeElapsedInSeconds > .2)
                     {
                         _dialogOptions.IncrementSelectedIndex();
                         _selectBufferTimer.Reset();
                     }
-                    if (InputHelper.IsKeyDown(Keys.W) && _selectBufferTimer.TimeElapsedInSeconds > .2)
+                    if (InputSystem.IsKeyDown(Keys.W) && _selectBufferTimer.TimeElapsedInSeconds > .2)
                     {
                         _dialogOptions.DecrementSelectedIndex();
                         _selectBufferTimer.Reset();

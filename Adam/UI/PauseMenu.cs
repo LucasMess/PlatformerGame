@@ -1,11 +1,12 @@
 ﻿using ThereMustBeAnotherWay.Levels;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using ThereMustBeAnotherWay.UI.Level_Editor;
 using ThereMustBeAnotherWay.Misc.Sound;
 using ThereMustBeAnotherWay.Misc.Helpers;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.Level_Editor;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay.UI
 {

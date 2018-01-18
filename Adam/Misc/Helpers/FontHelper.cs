@@ -53,6 +53,21 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
         {
             if (text == null)
                 text = "";
+            spriteBatch.DrawString(font, text, position + new Vector2(outlineWidth, 0), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(-outlineWidth, 0), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(0, outlineWidth), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(0, -outlineWidth), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(outlineWidth/2, outlineWidth/2), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(-outlineWidth/2, outlineWidth/2), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(outlineWidth/2, -outlineWidth/2), outlineColor);
+            spriteBatch.DrawString(font, text, position + new Vector2(-outlineWidth/2, -outlineWidth/2), outlineColor);
+            spriteBatch.DrawString(font, text, position, fontColor);
+        }
+
+        public static void DrawWithShadows(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position, int outlineWidth, Color fontColor, Color outlineColor, float scale)
+        {
+            if (text == null)
+                text = "";
             spriteBatch.DrawString(font, text, position + new Vector2(1, 1), outlineColor);
             spriteBatch.DrawString(font, text, position, fontColor);
         }
@@ -74,6 +89,12 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
 
             foreach (string word in words)
             {
+                // If the word has a new line character, reset the size.
+                if (word.Contains("\n"))
+                {
+                    lineWidth = 0;
+                }
+
                 Vector2 size = SpriteFont.MeasureString(word);
 
                 if (lineWidth + size.X < maxLineWidth)
@@ -119,7 +140,7 @@ namespace ThereMustBeAnotherWay.Misc.Helpers
             if (string.IsNullOrEmpty(text))
                 return;
             var font = ChooseBestFont(24);
-            var mouse = InputHelper.GetMouseInUi();
+            var mouse = InputSystem.GetMouseInUi();
 
             _window = new Container(mouse.X - (8), mouse.Y - (int)font.MeasureString(text).Y - (4),
                 (int)font.MeasureString(text).X + (16),

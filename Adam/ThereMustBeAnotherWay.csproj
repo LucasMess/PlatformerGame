@@ -193,7 +193,7 @@
     <Compile Include="Misc\Helpers\CalcHelper.cs" />
     <Compile Include="Misc\Helpers\ContentHelper.cs" />
     <Compile Include="Misc\Helpers\FontHelper.cs" />
-    <Compile Include="Misc\Helpers\InputHelper.cs" />
+    <Compile Include="Misc\Helpers\InputSystem.cs" />
     <Compile Include="Misc\Interfaces\IAnimated.cs" />
     <Compile Include="Misc\Interfaces\INewtonian.cs" />
     <Compile Include="Misc\Interfaces\ISpecialTile.cs" />
@@ -225,6 +225,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Camera.cs" />
     <Compile Include="UI\DataFolder.cs" />
+    <Compile Include="UI\Dialogue\DialogueBox.cs" />
+    <Compile Include="UI\Dialogue\DialogueData.cs" />
+    <Compile Include="UI\Dialogue\DialogueSystem.cs" />
     <Compile Include="UI\GameDebug.cs" />
     <Compile Include="UI\Elements\ActionDialog.cs" />
     <Compile Include="UI\Elements\Container.cs" />
@@ -263,6 +266,7 @@
     <Compile Include="UI\Overlay.cs" />
     <Compile Include="UI\PauseMenu.cs" />
     <Compile Include="UI\UiController.cs" />
+    <Compile Include="UI\UserInterfaceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="KeraLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=04d04586786c6f34, processorArchitecture=MSIL">

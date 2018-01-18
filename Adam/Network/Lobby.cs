@@ -5,9 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ThereMustBeAnotherWay.Network
 {
@@ -57,7 +55,7 @@ namespace ThereMustBeAnotherWay.Network
 
         }
 
-        private static void BackButton_MouseClicked(UI.Button button)
+        private static void BackButton_MouseClicked(Button button)
         {
             MainMenu.CurrentMenuState = MainMenu.MenuState.Main;
         }
@@ -75,12 +73,12 @@ namespace ThereMustBeAnotherWay.Network
             }
         }
 
-        private static void StartGame_MouseClicked(UI.Button button)
+        private static void StartGame_MouseClicked(Button button)
         {
             Session.Start();
         }
 
-        private static void InviteFriend_MouseClicked(UI.Button button)
+        private static void InviteFriend_MouseClicked(Button button)
         {
             InviteFriendToLobby();
         }

@@ -1,11 +1,10 @@
 ﻿using ThereMustBeAnotherWay.Misc;
 using ThereMustBeAnotherWay.Misc.Helpers;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
-namespace ThereMustBeAnotherWay.UI
+namespace ThereMustBeAnotherWay.UI.Elements
 {
     /// <summary>
     /// Simple base class for all UI elements that can be clicked on.
@@ -188,19 +187,19 @@ namespace ThereMustBeAnotherWay.UI
         {
             Container.SetPosition(new Vector2(CollRectangle.X, CollRectangle.Y));
             Container.Color = CurrentColor;
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
 
 
             if (mouse.Intersects(CollRectangle))
             {
                 MouseHover?.Invoke();
 
-                if (InputHelper.IsLeftMousePressed())
+                if (InputSystem.IsLeftMousePressed())
                 {
                     _wasPressed = true;
                     _wasReleased = false;
                 }
-                if (InputHelper.IsLeftMouseReleased() && _wasPressed)
+                if (InputSystem.IsLeftMouseReleased() && _wasPressed)
                 {
                     _wasReleased = true;
                 }

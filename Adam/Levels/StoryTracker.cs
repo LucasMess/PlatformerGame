@@ -1,7 +1,6 @@
 ﻿using ThereMustBeAnotherWay.Characters.Non_Playable;
 using ThereMustBeAnotherWay.GameData;
 using ThereMustBeAnotherWay.Misc;
-using ThereMustBeAnotherWay.Misc.Sound;
 using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework.Media;
 using System;

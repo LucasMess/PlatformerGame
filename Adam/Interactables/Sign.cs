@@ -30,7 +30,7 @@ namespace ThereMustBeAnotherWay.Interactables
             foreach (Player player in GameWorld.GetPlayers())
                 if (player.GetCollRectangle().Intersects(CollRectangle))
                 {
-                    if (InputHelper.IsKeyDown(Keys.W))
+                    if (InputSystem.IsKeyDown(Keys.W))
                     {
                         ShowMessage();
                     }

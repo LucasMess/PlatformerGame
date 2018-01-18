@@ -237,7 +237,7 @@ namespace ThereMustBeAnotherWay.UI
         {
             // Checks if there is scrolling.
             int scrollWheel = Mouse.GetState().ScrollWheelValue;
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
 
 
             if (_levelCount > 5)
@@ -279,7 +279,7 @@ namespace ThereMustBeAnotherWay.UI
             }
 
             // Check to see if a level info is being selected.
-            if (InputHelper.IsLeftMousePressed() && mouse.Intersects(_scissorRectangle))
+            if (InputSystem.IsLeftMousePressed() && mouse.Intersects(_scissorRectangle))
             {
                 foreach (LevelInfo level in _levelInfos)
                 {
@@ -451,7 +451,7 @@ namespace ThereMustBeAnotherWay.UI
         /// <returns></returns>
         public bool IsBeingClickedOn()
         {
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
             return (mouse.Intersects(_drawRectangle));
         }
 

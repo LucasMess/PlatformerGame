@@ -6,21 +6,18 @@ using ThereMustBeAnotherWay.Misc.Helpers;
 using ThereMustBeAnotherWay.Network;
 using ThereMustBeAnotherWay.PlayerCharacter;
 using ThereMustBeAnotherWay.UI;
-using ThereMustBeAnotherWay.UI.Elements;
-using ThereMustBeAnotherWay.UI.Information;
-using ThereMustBeAnotherWay.UI.Level_Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.BitmapFonts;
 using Steamworks;
 using System;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
-using MessageBox = ThereMustBeAnotherWay.UI.MessageBox;
 using ThereMustBeAnotherWay.Misc.Sound;
+using ThereMustBeAnotherWay.UI.Information;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
 
 namespace ThereMustBeAnotherWay
 {
@@ -237,6 +234,8 @@ namespace ThereMustBeAnotherWay
             GameTime = gameTime;
             GameUpdateCalled?.Invoke();
 
+            InputSystem.Update();
+
             _frameRateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_frameRateTimer > 1000f)
             {
@@ -247,7 +246,7 @@ namespace ThereMustBeAnotherWay
 
             IsMouseVisible = false;
 
-            UI.Elements.Cursor.Update();
+            Cursor.Update();
             SoundtrackManager.Update();
 
             MessageBox.Update();

@@ -1,9 +1,10 @@
 ﻿using ThereMustBeAnotherWay.Levels;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI.Level_Editor;
 
 namespace ThereMustBeAnotherWay.UI.Level_Editor
 {

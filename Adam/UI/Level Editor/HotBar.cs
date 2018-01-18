@@ -208,42 +208,42 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 _tabPressed = false;
             }
 
-            if (InputHelper.IsKeyDown(Keys.D1))
+            if (InputSystem.IsKeyDown(Keys.D1))
             {
                 Tile_WasClicked(_tileHolders[0]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D2))
+            if (InputSystem.IsKeyDown(Keys.D2))
             {
                 Tile_WasClicked(_tileHolders[1]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D3))
+            if (InputSystem.IsKeyDown(Keys.D3))
             {
                 Tile_WasClicked(_tileHolders[2]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D4))
+            if (InputSystem.IsKeyDown(Keys.D4))
             {
                 Tile_WasClicked(_tileHolders[3]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D5))
+            if (InputSystem.IsKeyDown(Keys.D5))
             {
                 Tile_WasClicked(_tileHolders[4]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D6))
+            if (InputSystem.IsKeyDown(Keys.D6))
             {
                 Tile_WasClicked(_tileHolders[5]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D7))
+            if (InputSystem.IsKeyDown(Keys.D7))
             {
                 Tile_WasClicked(_tileHolders[6]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);
             }
-            if (InputHelper.IsKeyDown(Keys.D8))
+            if (InputSystem.IsKeyDown(Keys.D8))
             {
                 Tile_WasClicked(_tileHolders[7]);
                 LevelEditor.Brush.ChangeBrushMode(Brush.BrushMode.Build);

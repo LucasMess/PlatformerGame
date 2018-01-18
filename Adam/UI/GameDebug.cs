@@ -41,7 +41,7 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         private static void CheckIfDebugIsOn()
         {
-            if (InputHelper.IsKeyUp(Keys.F3))
+            if (InputSystem.IsKeyUp(Keys.F3))
             {
                 _debugKeyReleased = true;
             }
@@ -181,7 +181,7 @@ namespace ThereMustBeAnotherWay
                     "Gamestate: " + TMBAW_Game.CurrentGameState,
                     "Gamemode: " + TMBAW_Game.CurrentGameMode,
                     "Camera Position: " + TMBAW_Game.Camera.GetPosition().X + "," + TMBAW_Game.Camera.GetPosition().Y,
-                    "Mouse (Game): " + InputHelper.GetMouseRectGameWorld().X + "," + InputHelper.GetMouseRectGameWorld().Y,
+                    "Mouse (Game): " + InputSystem.GetMouseRectGameWorld().X + "," + InputSystem.GetMouseRectGameWorld().Y,
                     "Index of mouse: " + LevelEditor.IndexOfMouse,
                     "Tile Type: " + GameWorld.GetTile(LevelEditor.IndexOfMouse)?.Id.ToString(),
                     "Particles in use: " + ParticleSystem.GetInUseParticleCount(),

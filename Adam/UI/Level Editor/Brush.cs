@@ -216,7 +216,7 @@ namespace ThereMustBeAnotherWay.UI
 
         private int[] GetTilesCoveredByBrush()
         {
-            Rectangle mouse = InputHelper.GetMouseRectGameWorld();
+            Rectangle mouse = InputSystem.GetMouseRectGameWorld();
             _index = CalcHelper.GetIndexInGameWorld(mouse.X, mouse.Y);
 
             //Get indexes around brush

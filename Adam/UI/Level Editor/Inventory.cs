@@ -397,7 +397,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
 
             if (IsOpen)
             {
-                if (InputHelper.IsLeftMousePressed() && !IsMovingTile)
+                if (InputSystem.IsLeftMousePressed() && !IsMovingTile)
                 {
                     foreach (var tile in _tileHolders)
                     {

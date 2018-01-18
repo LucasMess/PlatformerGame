@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using static ThereMustBeAnotherWay.TMBAW_Game;
+using ThereMustBeAnotherWay.UI.Level_Editor;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -189,12 +191,12 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         private static void CheckIfChangedToWallMode()
         {
-            if (InputHelper.IsKeyDown(Keys.L) && !_recentlyChanged)
+            if (InputSystem.IsKeyDown(Keys.L) && !_recentlyChanged)
             {
                 ChangeWallModeTo(!OnWallMode);
                 _recentlyChanged = true;
             }
-            if (InputHelper.IsKeyUp(Keys.L))
+            if (InputSystem.IsKeyUp(Keys.L))
             {
                 _recentlyChanged = false;
             }
@@ -208,7 +210,7 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         private static void CheckIfOnInventory()
         {
-            if (InputHelper.IsKeyDown(Keys.E))
+            if (InputSystem.IsKeyDown(Keys.E))
             {
                 if (!_inventoryKeyPressed)
                 {
@@ -226,7 +228,7 @@ namespace ThereMustBeAnotherWay.Levels
                     _inventoryKeyPressed = true;
                 }
             }
-            if (InputHelper.IsKeyUp(Keys.E))
+            if (InputSystem.IsKeyUp(Keys.E))
             {
                 _inventoryKeyPressed = false;
             }
@@ -294,15 +296,15 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         private static void CheckForMouseInput()
         {
-            _mouseRectInGameWorld = InputHelper.GetMouseRectGameWorld();
+            _mouseRectInGameWorld = InputSystem.GetMouseRectGameWorld();
             IndexOfMouse = CalcHelper.GetIndexInGameWorld(_mouseRectInGameWorld.X, _mouseRectInGameWorld.Y);
 
             if (!IsIntersectingUi())
             {
-                if (InputHelper.IsLeftMousePressed() && InputHelper.IsRightMousePressed())
+                if (InputSystem.IsLeftMousePressed() && InputSystem.IsRightMousePressed())
                     return;
 
-                if (InputHelper.IsLeftMousePressed())
+                if (InputSystem.IsLeftMousePressed())
                 {
                     if (Brush.CurrentBrushMode == Brush.BrushMode.Build && lastAddedTile != IndexOfMouse)
                     {
@@ -322,7 +324,7 @@ namespace ThereMustBeAnotherWay.Levels
                         tile.InteractInEditMode();
                     }
                 }
-                if (InputHelper.IsRightMousePressed())
+                if (InputSystem.IsRightMousePressed())
                 {
                     if (!OnWallMode)
                         ChangeWallModeTo(true);
@@ -343,7 +345,7 @@ namespace ThereMustBeAnotherWay.Levels
                         UpdateSelectedTiles(0);
                     }
                 }
-                else if (InputHelper.IsMiddleMousePressed())
+                else if (InputSystem.IsMiddleMousePressed())
                 {
                     TileType lastSelectedId = SelectedId;
                     SelectedId = GameWorld.WorldData.TileIDs[IndexOfMouse];
@@ -372,7 +374,7 @@ namespace ThereMustBeAnotherWay.Levels
         /// </summary>
         private static void CheckIfPositioningPlayer()
         {
-            if (InputHelper.IsKeyDown(Keys.P))
+            if (InputSystem.IsKeyDown(Keys.P))
             {
                 Brush.Size = 1;
                 UpdateSelectedTiles(TileType.Player);
@@ -625,7 +627,7 @@ namespace ThereMustBeAnotherWay.Levels
         /// <returns></returns>
         private static bool IsIntersectingUi()
         {
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
             if (mouse.Intersects(ButtonBar.GetCollRectangle()))
                 return true;
             if (Inventory.IsOpen && mouse.Intersects(_inventory.GetCollRectangle()))

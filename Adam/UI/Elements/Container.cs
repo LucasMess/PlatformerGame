@@ -1,6 +1,7 @@
 ﻿using ThereMustBeAnotherWay.Levels;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ThereMustBeAnotherWay.Graphics;
 
 namespace ThereMustBeAnotherWay.UI.Elements
 {
@@ -84,17 +85,36 @@ namespace ThereMustBeAnotherWay.UI.Elements
         public bool IsHidden { get; private set; } = true;
         private Texture2D _texture = GameWorld.UiSpriteSheet;
         public Color Color { get; set; } = Color.White;
+        public float Opacity { get; set; } = 1f;
+
+
+        private Container()
+        {
+        }
+
+        /// <summary>
+        /// Resets the position of the container if the resolution changes.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void ResetPosition()
+        {
+            // Moves the container around instantly on a resolution change.
+            if (IsHidden)
+                SetPosition(_hiddenPos);
+            else SetPosition(_shownPos);
+        }
 
         /// <summary>
         /// Makes a window with these game dimensions at the center of the screen.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public Container(int width, int height)
+        public Container(int width, int height) : base()
         {
             Size = new Vector2(width, height);
-            float x = (TMBAW_Game.DefaultUiWidth / 2) - width / 2;
-            float y = (TMBAW_Game.DefaultUiHeight / 2) - height / 2;
+            float x = (TMBAW_Game.UserResWidth / 2) - width / 2;
+            float y = (TMBAW_Game.UserResHeight / 2) - height / 2;
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
@@ -112,7 +132,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="convertCoords"></param>
-        public Container(int x, int y, int width, int height, bool convertCoords)
+        public Container(int x, int y, int width, int height, bool convertCoords) : base()
         {
 
             Size = new Vector2(width, height);
@@ -136,50 +156,63 @@ namespace ThereMustBeAnotherWay.UI.Elements
 
         public void Show()
         {
-            if (IsHidden)
-            {
-                IsHidden = false;
-                MoveTo(_shownPos, 100);
-            }
+            IsHidden = false;
+            MoveTo(_shownPos, 100);
         }
 
         public void Hide()
         {
-            if (!IsHidden)
-            {
-                IsHidden = true;
-                MoveTo(_hiddenPos, 100);
-            }
+            IsHidden = true;
+            MoveTo(_hiddenPos, 100);
         }
 
-        public void SetColor(Color color)
+        /// <summary>
+        /// Overrides the default shown position with the given one.
+        /// </summary>
+        /// <param name="position">The center of the shown position.</param>
+        public void SetShownPosition(Vector2 position)
         {
-            Color = color;
+            Vector2 leftCorner = new Vector2();
+            leftCorner.X = position.X - Width / 2;
+            leftCorner.Y = position.Y - Height / 2;
+            _shownPos = leftCorner;
+        }
+
+        /// <summary>
+        /// Overrides the default hidden position with the given one.
+        /// </summary>
+        /// <param name="position">The center of the hidden position.</param>
+        public void SetHiddenPosition(Vector2 position)
+        {
+            Vector2 leftCorner = new Vector2();
+            leftCorner.X = position.X - Width / 2;
+            leftCorner.Y = position.Y - Height / 2;
+            _hiddenPos = leftCorner;
         }
 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             int cornerWidth = GetSourceRectangles()[0].Width;
             int cornerHeight = GetSourceRectangles()[0].Height;
             int botCornerWidth = GetSourceRectangles()[6].Width;
             int botCornerHeight = GetSourceRectangles()[6].Height;
 
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[0], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[0], Color * Opacity);
             int topBlankWidth = (int)(Size.X - cornerWidth * 2);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth), DrawRectangle.Y, topBlankWidth, cornerHeight), GetSourceRectangles()[1], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth + topBlankWidth), DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[2], Color);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth), DrawRectangle.Y, topBlankWidth, cornerHeight), GetSourceRectangles()[1], Color * Opacity);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + cornerWidth + topBlankWidth), DrawRectangle.Y, cornerWidth, cornerHeight), GetSourceRectangles()[2], Color * Opacity);
 
             int midBlankWidth = (int)(Size.X - cornerWidth * 2);
             int midBlankHeight = (int)(Size.Y - cornerHeight - botCornerHeight);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[3], Color);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth, (DrawRectangle.Y + cornerHeight), midBlankWidth, midBlankHeight), GetSourceRectangles()[4], Color);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth + midBlankWidth, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[5], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[3], Color * Opacity);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth, (DrawRectangle.Y + cornerHeight), midBlankWidth, midBlankHeight), GetSourceRectangles()[4], Color * Opacity);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X + cornerWidth + midBlankWidth, (DrawRectangle.Y + cornerHeight), cornerWidth, midBlankHeight), GetSourceRectangles()[5], Color * Opacity);
 
             int yBot = (DrawRectangle.Y + midBlankHeight + cornerHeight);
-            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[6], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth), yBot, topBlankWidth, botCornerHeight), GetSourceRectangles()[7], Color);
-            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth + topBlankWidth), yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[8], Color);
+            spriteBatch.Draw(_texture, new Rectangle(DrawRectangle.X, yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[6], Color * Opacity);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth), yBot, topBlankWidth, botCornerHeight), GetSourceRectangles()[7], Color * Opacity);
+            spriteBatch.Draw(_texture, new Rectangle((DrawRectangle.X + botCornerWidth + topBlankWidth), yBot, botCornerWidth, botCornerHeight), GetSourceRectangles()[8], Color * Opacity);
         }
 
     }

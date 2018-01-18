@@ -17,6 +17,7 @@ using System.Diagnostics;
 using ThereMustBeAnotherWay.UI;
 using BattleBoss.Utilities;
 using ThereMustBeAnotherWay.Scripting;
+using ThereMustBeAnotherWay.UI.Dialogue;
 
 namespace ThereMustBeAnotherWay.Levels
 {
@@ -30,15 +31,12 @@ namespace ThereMustBeAnotherWay.Levels
         private static GameTimer _stopMovingTimer = new GameTimer(true);
         private static readonly Background Background = new Background();
         public static readonly ChunkManager ChunkManager = new ChunkManager();
-        //The goal with all these lists is to have two: entities and particles. The particles will potentially be updated in its own thread to improve
-        //performance.
         private static List<Cloud> _clouds;
         public static bool IsTestingLevel;
         public static bool IsInCutsceneMode = false;
         public static List<Entity> Entities;
         public static bool IsOnDebug;
         private static List<Player> _players = new List<Player>(4);
-        //Basic tile grid and the visible tile grid
         public static Tile[] TileArray;
         public static int TimesUpdated;
         public static Tile[] WallArray;
@@ -65,6 +63,7 @@ namespace ThereMustBeAnotherWay.Levels
             ProjectileSystem.Initialize();
             ParticleSystem.Initialize();
             scriptManager.Initialize();
+            DialogueSystem.Initialize();
             //_players.Add(new Player(PlayerIndex.Two));
         }
 
@@ -222,6 +221,7 @@ namespace ThereMustBeAnotherWay.Levels
             //    ParticleSystem.UpdateStartEvent_TimeConstant.Set();
             //ParticleSystem.UpdateTimeConstant();
 
+            DialogueSystem.Update();
 
             Background.Update();
             WorldData.Update();
@@ -449,7 +449,8 @@ namespace ThereMustBeAnotherWay.Levels
         {
             if (TMBAW_Game.CurrentGameMode == GameMode.Edit)
                 LevelEditor.DrawUi(spriteBatch);
-
+            if (TMBAW_Game.CurrentGameMode == GameMode.Play)
+                DialogueSystem.Draw(spriteBatch);
         }
 
         public static void ResetWorld()

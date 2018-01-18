@@ -1,8 +1,8 @@
-﻿using ThereMustBeAnotherWay.UI.Elements;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using ThereMustBeAnotherWay.UI.Elements;
 
 namespace ThereMustBeAnotherWay.UI.MainMenu
 {

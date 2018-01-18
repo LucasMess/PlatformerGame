@@ -2,14 +2,14 @@
 using ThereMustBeAnotherWay.Misc.Sound;
 using ThereMustBeAnotherWay.Network;
 using ThereMustBeAnotherWay.UI;
-using ThereMustBeAnotherWay.UI.Elements;
 using ThereMustBeAnotherWay.UI.MainMenu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Collections.Generic;
 using ThereMustBeAnotherWay.Graphics;
+using ThereMustBeAnotherWay.UI.Elements;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay
 {

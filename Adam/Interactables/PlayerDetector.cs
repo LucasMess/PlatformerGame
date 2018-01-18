@@ -58,7 +58,8 @@ namespace ThereMustBeAnotherWay.Interactables
 
         public override void Draw(SpriteBatch spriteBatch, Tile tile)
         {
-            container.SetColor(color * .5f);
+            container.Color = color;
+            container.Opacity = .5f;
             container.Draw(spriteBatch);
 
             base.Draw(spriteBatch, tile);

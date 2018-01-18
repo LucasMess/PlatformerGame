@@ -54,9 +54,9 @@ namespace ThereMustBeAnotherWay.UI
         /// </summary>
         private void CheckIfSelected()
         {
-            if (InputHelper.IsLeftMousePressed())
+            if (InputSystem.IsLeftMousePressed())
             {
-                if (InputHelper.GetMouseInUi().Intersects(DrawRectangle))
+                if (InputSystem.GetMouseInUi().Intersects(DrawRectangle))
                 {
                     _isSelected = true;
                 }
@@ -94,10 +94,10 @@ namespace ThereMustBeAnotherWay.UI
         private void ConvertInput()
         {
             // Inputs new characters.
-            InputHelper.TryLinkToKeyboardInput(ref _text, _currentKbState, _oldKbState);
+            InputSystem.TryLinkToKeyboardInput(ref _text, _currentKbState, _oldKbState);
 
             // Resets flashing line if anything is being pressed.
-            if (InputHelper.IsAnyInputPressed())
+            if (InputSystem.IsAnyInputPressed())
             {
                 _flashingTimer.Reset();
                 _editLineFlashing = false;
@@ -107,7 +107,7 @@ namespace ThereMustBeAnotherWay.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             int spacing = 2;
-            Rectangle mouse = InputHelper.GetMouseInUi();
+            Rectangle mouse = InputSystem.GetMouseInUi();
             spriteBatch.Draw(_white, new Rectangle(mouse.X, mouse.Y, 10, 10), Color.Black);
             spriteBatch.Draw(_white, new Rectangle(DrawRectangle.X - spacing, DrawRectangle.Y - spacing, DrawRectangle.Width + spacing * 2, DrawRectangle.Height + spacing * 2), new Color(153, 153, 153));
             spriteBatch.Draw(_white, DrawRectangle, new Color(224, 224, 224));

@@ -1,8 +1,8 @@
 ﻿using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.PlayerCharacter;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ThereMustBeAnotherWay.UI.Elements;
 
 namespace ThereMustBeAnotherWay.Interactables
 {

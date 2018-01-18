@@ -1,11 +1,12 @@
 ﻿using ThereMustBeAnotherWay.GameData;
 using ThereMustBeAnotherWay.Graphics;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System;
+using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Elements;
 
 namespace ThereMustBeAnotherWay.UI
 {
@@ -156,7 +157,7 @@ namespace ThereMustBeAnotherWay.UI
         {
             if (IsActive)
             {
-                if (!InputHelper.IsLeftMousePressed())
+                if (!InputSystem.IsLeftMousePressed())
                 {
                     _buttonReleased = true;
                 }

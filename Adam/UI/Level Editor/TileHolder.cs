@@ -94,7 +94,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 _pickUpSound.Play();
                 _isBeingMoved = true;
                 _wasMouseReleased = false;
-                Rectangle mouse = InputHelper.GetMouseInUi();
+                Rectangle mouse = InputSystem.GetMouseInUi();
                 float x = mouse.X - Position.X;
                 float y = mouse.Y - Position.Y;
                 _mouseDifferential = new Vector2(x, y);
@@ -170,10 +170,10 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
             if (_isBeingMoved)
             {
                 Inventory.IsMovingTile = true;
-                Rectangle mouse = InputHelper.GetMouseInUi();
+                Rectangle mouse = InputSystem.GetMouseInUi();
                 SetPosition(mouse.X - (int)_mouseDifferential.X, mouse.Y - (int)_mouseDifferential.Y);
 
-                if (InputHelper.IsLeftMousePressed() && _wasMouseReleased)
+                if (InputSystem.IsLeftMousePressed() && _wasMouseReleased)
                 {
                     _wasMouseReleased = false;
                     ReturnToDefaultPosition();
@@ -184,7 +184,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
                 }
             }
 
-            if (InputHelper.IsLeftMouseReleased())
+            if (InputSystem.IsLeftMouseReleased())
                 _wasMouseReleased = true;
         }
 
@@ -193,7 +193,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         /// </summary>
         public void CheckIfClickedOn()
         {
-            if (IsHovered() && InputHelper.IsLeftMousePressed())
+            if (IsHovered() && InputSystem.IsLeftMousePressed())
             {
                 WasClicked?.Invoke(this);
             }
@@ -205,7 +205,7 @@ namespace ThereMustBeAnotherWay.UI.Level_Editor
         /// <returns></returns>
         private bool IsHovered()
         {
-            return InputHelper.GetMouseInUi().Intersects(DrawRectangle);
+            return InputSystem.GetMouseInUi().Intersects(DrawRectangle);
         }
 
         /// <summary>

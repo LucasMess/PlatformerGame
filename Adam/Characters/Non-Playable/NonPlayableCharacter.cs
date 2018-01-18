@@ -5,6 +5,7 @@ using ThereMustBeAnotherWay.PlayerCharacter;
 using ThereMustBeAnotherWay.UI;
 using Microsoft.Xna.Framework;
 using System;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay.Characters
 {

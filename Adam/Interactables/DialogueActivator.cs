@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ThereMustBeAnotherWay.PlayerCharacter;
+using ThereMustBeAnotherWay.UI;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
@@ -54,7 +55,7 @@ namespace ThereMustBeAnotherWay.Interactables
             base.OnPlayerClickInEditMode(tile);
         }
 
-        private void TextInputBox_OnInputEntered(UI.TextInputArgs e)
+        private void TextInputBox_OnInputEntered(TextInputArgs e)
         {
             TMBAW_Game.TextInputBox.OnInputEntered -= TextInputBox_OnInputEntered;
             string value = "trigger:" + e.Input;

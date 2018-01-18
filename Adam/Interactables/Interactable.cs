@@ -1,9 +1,9 @@
 ﻿using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.PlayerCharacter;
-using ThereMustBeAnotherWay.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ThereMustBeAnotherWay.UI.Elements;
 
 namespace ThereMustBeAnotherWay.Interactables
 {
@@ -82,11 +82,11 @@ namespace ThereMustBeAnotherWay.Interactables
 
             if (isBeingInteractedWith && ButtonWasReleased)
             {
-                Rectangle mouse = InputHelper.GetMouseRectGameWorld();
+                Rectangle mouse = InputSystem.GetMouseRectGameWorld();
                 line.Update(new Vector2(tile.DrawRectangle.Center.X, tile.DrawRectangle.Center.Y),
                     new Vector2(mouse.Center.X, mouse.Center.Y));
 
-                if (InputHelper.IsLeftMousePressed())
+                if (InputSystem.IsLeftMousePressed())
                 {
                     int index = CalcHelper.GetIndexInGameWorld(mouse.Center.X, mouse.Center.Y);
                     Tile other = GameWorld.GetTile(index);

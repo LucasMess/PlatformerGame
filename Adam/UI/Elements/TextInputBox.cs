@@ -52,7 +52,7 @@ namespace ThereMustBeAnotherWay.UI
         {
             if (IsActive)
             {
-                if (InputHelper.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter))
+                if (InputSystem.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter))
                 {
                     Button_MouseClicked(Button);
                 }

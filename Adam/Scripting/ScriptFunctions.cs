@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThereMustBeAnotherWay.Levels;
 using ThereMustBeAnotherWay.UI;
+using ThereMustBeAnotherWay.UI.Dialogue;
 
 namespace ThereMustBeAnotherWay.Scripting
 {
@@ -35,6 +36,30 @@ namespace ThereMustBeAnotherWay.Scripting
         public void Wait(double time)
         {
             Thread.Sleep((int)time);
+        }
+
+        public int ShowDialogue(string characterName, string text, params string[] options)
+        {
+            DialogueSystem.Enqueue(new DialogueData()
+            {
+                CharacterName = characterName,
+                Text = text,
+                Options = options,
+            });
+
+            bool dialogueIsDone = false;
+            int optionChosen = -1;
+            DialogueSystem.OnDialogueEnd += delegate(int code){
+                optionChosen = code;
+                dialogueIsDone = true;
+            };
+
+            while (!dialogueIsDone)
+            {
+                Thread.Sleep(100);
+            }
+
+            return optionChosen;
         }
     }
 }

@@ -116,11 +116,11 @@ namespace ThereMustBeAnotherWay
                     currentLeftCorner.Y = -(height * TMBAW_Game.Tilesize - _defRes.Y);
             }
 
-            if (InputHelper.IsKeyDown(Keys.OemMinus))
+            if (InputSystem.IsKeyDown(Keys.OemMinus))
                 ButtonBar.MinusButton_MouseClicked(null);
-            if (InputHelper.IsKeyDown(Keys.OemPlus))
+            if (InputSystem.IsKeyDown(Keys.OemPlus))
                 ButtonBar.PlusButton_MouseClicked(null) ;
-            if (InputHelper.IsKeyDown(Keys.R))
+            if (InputSystem.IsKeyDown(Keys.R))
                 ResetZoom();
 
             Velocity = (currentLeftCorner - LastCameraLeftCorner) / 5;

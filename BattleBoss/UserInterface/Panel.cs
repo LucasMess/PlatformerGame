@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BattleBoss.UserInterface
+namespace BattleBoss.UI
 {
     public class Panel
     {

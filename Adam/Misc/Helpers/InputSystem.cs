@@ -5,9 +5,34 @@ using System.Collections.Generic;
 
 namespace ThereMustBeAnotherWay
 {
-    public static class InputHelper
+    public static class InputSystem
     {
         static GameTimer _keyPressedTimer = new GameTimer(true);
+        private static Dictionary<Keys, bool> _recentlyPressedKeys = new Dictionary<Keys, bool>();
+
+        /// <summary>
+        /// Updates the currently pressed keys.
+        /// </summary>
+        public static void Update()
+        {
+            List<Keys> changedKeys = new List<Keys>();
+
+            // Change the flag for the keys that are pressed if they are not being pressed anymore.
+            KeyboardState state = Keyboard.GetState();
+            foreach (var pair in _recentlyPressedKeys)
+            {
+                if (state.IsKeyUp(pair.Key) && _recentlyPressedKeys[pair.Key])
+                {
+                    changedKeys.Add(pair.Key);
+                }
+            }
+
+            // Update the dictionary after to prevent Collection Modified exception.
+            foreach (var key in changedKeys)
+            {
+                _recentlyPressedKeys[key] = false;
+            }
+        }
 
         public static bool IsAnyInputPressed()
         {
@@ -23,12 +48,47 @@ namespace ThereMustBeAnotherWay
             else return false;
         }
 
+        /// <summary>
+        /// Returns true if the key was released since the last time it was pressed. 
+        /// NOTE: Call this functions before checking if the key is pressed.
+        /// </summary>
+        /// <returns></returns>
+        public static bool WasKeyReleased(Keys key)
+        {
+            if(_recentlyPressedKeys.TryGetValue(key, out bool value))
+            {
+                return !value;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Determines if the given key is pressed and marks it as pressed if it is not.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static bool IsKeyDown(Keys key)
         {
             KeyboardState keyboard = Keyboard.GetState();
+
+            // If key does not currently exist in dictionary, add it.
+            if (!_recentlyPressedKeys.TryGetValue(key, out bool value))
+            {
+                _recentlyPressedKeys.Add(key, false);
+            }
+
+            // Check if key is pressed.
             if (keyboard.IsKeyDown(key))
+            {
+                // If it is, mark it as pressed until it is released again.
+                _recentlyPressedKeys[key] = true;
                 return true;
-            else return false;
+            }
+
+            return false;
         }
         public static bool IsKeyUp(Keys key)
         {
@@ -148,7 +208,7 @@ namespace ThereMustBeAnotherWay
                             charactersList.Add(tempChar);
 
                         // If backspace is pressed, delete last character.
-                        if (InputHelper.IsKeyDown(Keys.Back))
+                        if (InputSystem.IsKeyDown(Keys.Back))
                         {
                             if (text.Length != 0)
                                 text = text.Remove(text.Length - 1, 1);
