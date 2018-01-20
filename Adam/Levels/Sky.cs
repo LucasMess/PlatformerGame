@@ -23,7 +23,7 @@ namespace ThereMustBeAnotherWay.Levels
 
         private Period _currentPeriod = Period.Daytime;
 
-        private const int TRANSITION_LENGTH = 5000;
+        private const int TRANSITION_LENGTH = 300000;
 
         private GameTimer _transitionTimer = new GameTimer();
         private GameTimer _worldClock = new GameTimer();
@@ -87,12 +87,14 @@ namespace ThereMustBeAnotherWay.Levels
 
         private float GetOpacityBasedOnTransitionTime()
         {
-            return (float)(_transitionTimer.TimeElapsedInMilliSeconds / TRANSITION_LENGTH);
+            float time = (float)(_transitionTimer.TimeElapsedInMilliSeconds / TRANSITION_LENGTH);
+            return (float)(-Math.Cos(time * Math.PI) + 1) / 2;
         }
 
         private float GetInverseOpacityBasedOnTransitionTime()
         {
-            return (float)(1 - _transitionTimer.TimeElapsedInMilliSeconds / TRANSITION_LENGTH);
+            float time = (float)(_transitionTimer.TimeElapsedInMilliSeconds / TRANSITION_LENGTH);
+            return (float)(Math.Cos(time * Math.PI) + 1) / 2;
         }
 
         private Color AddColors(Color color, Color other)

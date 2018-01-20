@@ -68,9 +68,19 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public string Id { get; set; }
 
-        public bool IsInWater { get; set; }
-
-        public GameTimer SwimTimer = new GameTimer();
+        /// <summary>
+        /// Returns true if the tile behind the entity's center is water.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsInWater()
+        {
+            int index = GetTileIndex();
+            if (GameWorld.GetTile(index).Id == TMBAW_Game.TileType.Water)
+            {
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// The amount of damage this entity deals by touching.
@@ -340,9 +350,6 @@ namespace ThereMustBeAnotherWay
                 if (Weight != 0)
                     ApplyFriction();
 
-                // Reset this every update so that the tile update does not have to.
-                IsInWater = false;
-
             }
 
             //Animate entity if applicable.
@@ -388,7 +395,7 @@ namespace ThereMustBeAnotherWay
                 }
             }
 
-            if (IsInWater)
+            if (IsInWater())
             {
                 Velocity *= .97f;
             }
@@ -779,9 +786,36 @@ namespace ThereMustBeAnotherWay
         private void ApplyGravity()
         {
             float gravity = GravityStrength;
-            if (IsInWater)
+            if (IsInWater())
             {
-                gravity = GravityStrength / 10f;
+                const float SWIM_UP_VELOCITY = -1f;
+                const float SWIM_IDLE_VELOCITY = -.6f;
+                const float SWIM_OUT_JUMP_VELOCITY = -15f;
+                const float MAX_SWIM_VELOCITY = -7f;
+
+                // Force of water opposing gravity.
+                SetVelY(GetVelocity().Y + SWIM_IDLE_VELOCITY);
+                if (this is Player)
+                {
+                    Player player = (Player)this;
+                    if (player.IsJumpButtonPressed())
+                    {
+                        if (GameWorld.GetTileAbove(GetTileIndex()).Id == TMBAW_Game.TileType.Air)
+                        {
+                            player.SetVelY(SWIM_OUT_JUMP_VELOCITY);
+                        }
+                        else
+                        {
+                            if (player.GetVelocity().Y > MAX_SWIM_VELOCITY)
+                                player.SetVelY(GetVelocity().Y + SWIM_UP_VELOCITY);
+                        }
+                    }
+                }
+                else
+                {
+                    if (GetVelocity().Y > MAX_SWIM_VELOCITY)
+                        SetVelY(GetVelocity().Y + SWIM_UP_VELOCITY);
+                }
             }
 
             Velocity.Y += gravity * Weight / 100;
@@ -957,11 +991,17 @@ namespace ThereMustBeAnotherWay
             return (_hitRecentlyTimer.TimeElapsedInSeconds < .2);
         }
 
+        /// <summary>
+        /// The center of the draw rectangle.
+        /// </summary>
         public Vector2 Center
         {
             get { return new Vector2(DrawRectangle.Center.X, DrawRectangle.Center.Y); }
         }
 
+        /// <summary>
+        /// The center of the of the source rectangle.
+        /// </summary>
         public Vector2 SpriteCenter
         {
             get
@@ -1174,8 +1214,17 @@ namespace ThereMustBeAnotherWay
         public void ForceUpdateCollisionRectangle()
         {
             CollRectangle = new Rectangle((int)Position.X, (int)Position.Y, CollRectangle.Width, CollRectangle.Height);
+        }
 
-
+        /// <summary>
+        /// Apply a force with the given values. This increments the current entity's velocity.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void ApplyForce(float x, float y)
+        {
+            SetVelX(GetVelocity().X + x);
+            SetVelY(GetVelocity().Y + y);
         }
 
     }

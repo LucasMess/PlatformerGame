@@ -46,7 +46,13 @@ namespace ThereMustBeAnotherWay
         public const int DefaultResHeight = 720;
         public const int DefaultUiWidth = 1280;
         public const int DefaultUiHeight = 720;
-        public const string Version = "Version 0.11.0";
+        public static string Version
+        {
+            get
+            {
+                return "0.11.0" + " - Build Date: " + File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString("yyyy.MM.dd.HH.mm.ss");
+            }
+        }
         public const string Producers = "BitBite Games";
         public const float Gravity = .8f;
         public static bool IsLoadingContent;
@@ -161,7 +167,7 @@ namespace ThereMustBeAnotherWay
             _blackScreen = ContentHelper.LoadTexture("Tiles/black");
 
             _debugFont = Content.Load<SpriteFont>("Fonts/x16");
-            
+
             GoToMainMenu();
 
             if (Program.LaunchedFromInvite)

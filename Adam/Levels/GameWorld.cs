@@ -285,22 +285,22 @@ namespace ThereMustBeAnotherWay.Levels
                     continue;
                 entity.Update();
 
-                // Check enemy collision with other enemies.
-                for (int j = i + 1; j < Entities.Count; j++)
-                {
-                    if (Entities[i].IsTouchingEntity(Entities[j]))
-                    {
-                        if (Entities[i].Position.X > Entities[j].Position.X)
-                        {
-                            Entities[i].SetX(Entities[j].Position.X + Entities[j].CollRectangle.Width / 2);
-                        }
-                        else
-                        {
-                            Entities[i].SetX(Entities[j].Position.X - Entities[i].CollRectangle.Width / 2);
-                        }
-                        Entities[i].ForceUpdateCollisionRectangle();
-                    }
-                }
+                //// Check enemy collision with other enemies.
+                //for (int j = i + 1; j < Entities.Count; j++)
+                //{
+                //    if (Entities[i].IsTouchingEntity(Entities[j]))
+                //    {
+                //        if (Entities[i].Position.X > Entities[j].Position.X)
+                //        {
+                //            Entities[i].SetX(Entities[j].Position.X + Entities[j].CollRectangle.Width / 2);
+                //        }
+                //        else
+                //        {
+                //            Entities[i].SetX(Entities[j].Position.X - Entities[i].CollRectangle.Width / 2);
+                //        }
+                //        Entities[i].ForceUpdateCollisionRectangle();
+                //    }
+                //}
             }
 
 

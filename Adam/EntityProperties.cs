@@ -46,10 +46,24 @@ namespace ThereMustBeAnotherWay
         /// </summary>
         public bool ObeysGravity { get; set; } = true;
 
+
+        private bool _isJumping;
         /// <summary>
         /// Determines whether the entity is in the air.
         /// </summary>
-        public bool IsJumping { get; set; }
+        public bool IsJumping
+        {
+            get
+            {
+                // Prevent entities from jumping while in water.
+                 if (IsInWater()) return true;
+                return _isJumping;
+            }
+            set
+            {
+                _isJumping = value;
+            }
+        }
 
         /// <summary>
         /// Determines if the entity has recently taken damage.

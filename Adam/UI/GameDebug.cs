@@ -176,7 +176,7 @@ namespace ThereMustBeAnotherWay
 
                 _infos = new List<string>
                 {
-                    TMBAW_Game.Producers + " (" + TMBAW_Game.Version + ")",
+                    "There Must Be Another Way - Version " + TMBAW_Game.Version,
                     "FPS: " + TMBAW_Game.FPS + " Resolution: " + settings.ResolutionWidth + "x" + settings.ResolutionHeight,
                     "Gamestate: " + TMBAW_Game.CurrentGameState,
                     "Gamemode: " + TMBAW_Game.CurrentGameMode,
