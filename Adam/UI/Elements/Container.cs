@@ -118,7 +118,7 @@ namespace ThereMustBeAnotherWay.UI.Elements
             DrawRectangle = new Rectangle((int)x, (int)y, width, height);
 
             _shownPos = new Vector2(x, y);
-            _hiddenPos = new Vector2(x, TMBAW_Game.DefaultUiHeight);
+            _hiddenPos = new Vector2(x, TMBAW_Game.UserResHeight);
 
             SetPosition(_hiddenPos);
         }

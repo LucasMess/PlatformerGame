@@ -445,8 +445,8 @@ namespace ThereMustBeAnotherWay.Graphics
             TMBAW_Game.UserResWidth = width;
             TMBAW_Game.UserResHeight = height;
 
-            TMBAW_Game.WidthRatio = ((double)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultUiWidth);
-            TMBAW_Game.HeightRatio = ((double)TMBAW_Game.UserResHeight / TMBAW_Game.DefaultUiHeight);
+            TMBAW_Game.WidthRatio = ((double)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultResWidth);
+            TMBAW_Game.HeightRatio = ((double)TMBAW_Game.UserResHeight / TMBAW_Game.DefaultResHeight);
 
             TMBAW_Game.UiWidthRatio = ((double)TMBAW_Game.UserResWidth / TMBAW_Game.DefaultUiWidth);
             TMBAW_Game.UiHeightRatio = ((double)TMBAW_Game.UserResHeight / TMBAW_Game.DefaultUiHeight);

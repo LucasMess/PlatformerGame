@@ -47,7 +47,7 @@ namespace ThereMustBeAnotherWay.UI
         /// <summary>
         ///     The message shown in the message box.
         /// </summary>
-        protected string Message { get; set; } = "Error 404:Text not found.";
+        protected string Message { get; set; } = "Error 404: Text not found.";
 
         protected SpriteFont Font
         {

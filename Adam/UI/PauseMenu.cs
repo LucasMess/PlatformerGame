@@ -29,6 +29,8 @@ namespace ThereMustBeAnotherWay.UI
 
         public static void Initialize()
         {
+            _buttons.Clear();
+
             _returnToLevelEditor = new TextButton(new Vector2(), "Return to Level Editor", false);
             _returnToLevelEditor.MouseClicked += _returnToLevelEditor_MouseClicked;
 
@@ -61,8 +63,8 @@ namespace ThereMustBeAnotherWay.UI
         private static void SetPositionOfButtons()
         {
 
-            int startingY = 200;
-            int x = TMBAW_Game.DefaultUiWidth / 2 - TextButton.Width;
+            int startingY = TMBAW_Game.UserResHeight / 2 - (TextButton.Height + 10) * _buttons.Count;
+            int x = TMBAW_Game.UserResWidth / 2 - TextButton.Width;
             for (int i = 0; i < _buttons.Count; i++)
             {
                 _buttons[i].SetPosition(new Vector2(x, startingY + (TextButton.Height * 2 + 10) * i));
@@ -153,7 +155,12 @@ namespace ThereMustBeAnotherWay.UI
             }
 
             if (OptionsMenu.IsActive)
+            {
+                Overlay.DarkBackground.Show();
+                SoundtrackManager.Pause();
                 return;
+            }
+                
 
             if (IsActive)
             {
@@ -174,7 +181,7 @@ namespace ThereMustBeAnotherWay.UI
             if (IsActive)
             {
                 string pauseText = "Game Paused";
-                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[3], pauseText, new Vector2(TMBAW_Game.DefaultUiWidth / 2 - FontHelper.Fonts[3].MeasureString(pauseText).X / 2, 75), 1, Color.White, Color.DarkGray);
+                FontHelper.DrawWithOutline(spriteBatch, FontHelper.Fonts[3], pauseText, new Vector2(TMBAW_Game.UserResWidth / 2 - FontHelper.Fonts[3].MeasureString(pauseText).X / 2, 75), 1, Color.White, Color.DarkGray);
                 foreach (var button in _buttons)
                 {
                     button.Draw(spriteBatch);

@@ -129,6 +129,25 @@ namespace ThereMustBeAnotherWay
             _graphics.ApplyChanges();
 
             Thread.CurrentThread.Priority = ThreadPriority.Highest;
+
+            GraphicsRenderer.OnResolutionChanged += OnResolutionChanged;
+        }
+
+        private void OnResolutionChanged(int width, int height)
+        {
+            // When the resolution changes, we need to reset the UI.
+            InitializeUi();
+        }
+
+        private void InitializeUi()
+        {
+            MainMenu.Initialize(this);
+            OptionsMenu.Initialize();
+            Overlay.Initialize();
+            PauseMenu.Initialize();
+            Dialog = new Dialog();
+            MessageBox = new MessageBox();
+            TextInputBox = new TextInputBox();
         }
 
         protected override void Initialize()
@@ -140,13 +159,8 @@ namespace ThereMustBeAnotherWay
             GraphicsRenderer.SetFullscreen(settings.IsFullscreen);
 
             Camera = new Camera(GraphicsDevice.Viewport);
-            MainMenu.Initialize(this);
-            OptionsMenu.Initialize();
-            Dialog = new Dialog();
-            MessageBox = new MessageBox();
-            TextInputBox = new TextInputBox();
-            Overlay.Initialize();
-            PauseMenu.Initialize();
+
+            InitializeUi();
             Session.Initialize();
             GameWorld.Initialize();
             LoadingScreen.Initialize();
@@ -273,12 +287,10 @@ namespace ThereMustBeAnotherWay
                 return;
             }
 
-
+            PauseMenu.Update();
             OptionsMenu.Update();
             if (OptionsMenu.IsActive)
                 return;
-
-            PauseMenu.Update();
             if (PauseMenu.IsActive)
                 return;
 
